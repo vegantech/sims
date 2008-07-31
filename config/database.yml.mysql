@@ -1,0 +1,19 @@
+defaults: &defaults
+  adapter: mysql
+  encoding: utf8
+  username: root
+  socket: /var/run/mysqld/mysqld.sock
+#  password: root
+#  socket: /opt/local/var/run/mysql5/mysqld.sock
+
+development:
+  database: sims_development
+  <<: *defaults
+
+test:
+  database: sims_test 
+  <<: *defaults
+
+production:
+  database: sims_production
+  <<: *defaults

@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @district.name %>
+</p>
+
+<p>
+  <b>Abbrev:</b>
+  <%=h @district.abbrev %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%=h @district.state %>
+</p>
+
+
+<%= link_to 'Edit', edit_district_path(@district) %> |
+<%= link_to 'Back', districts_path %>

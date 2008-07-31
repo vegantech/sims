@@ -1,0 +1,16 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+state_wi:
+  country: country_us
+  name: Wisconsin
+  abbrev: wi
+
+state_mi:
+  country: country_us
+  name: Michigan
+  abbrev: mi
+
+one:
+  country: country_us
+  name: one
+  abbrev: one
