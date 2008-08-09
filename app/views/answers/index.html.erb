@@ -1,0 +1,26 @@
+<h1>Listing answers</h1>
+
+<table>
+  <tr>
+    <th>Text</th>
+    <th>District</th>
+    <th>Answer definition definition</th>
+    <th>Checklist definition</th>
+  </tr>
+
+<% for answer in @answers %>
+  <tr>
+    <td><%=h answer.text %></td>
+    <td><%=h answer.district %></td>
+    <td><%=h answer.answer_definition_definition %></td>
+    <td><%=h answer.checklist_definition %></td>
+    <td><%= link_to 'Show', answer %></td>
+    <td><%= link_to 'Edit', edit_answer_path(answer) %></td>
+    <td><%= link_to 'Destroy', answer, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New answer', new_answer_path %>

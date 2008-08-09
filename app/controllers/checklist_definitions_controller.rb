@@ -1,0 +1,2 @@
+class ChecklistDefinitionsController < ApplicationController
+end

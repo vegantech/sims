@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  value: MyString
+  position: 1
+  text: MyText
+  district: 
+  element_definition: 
+
+two:
+  value: MyString
+  position: 1
+  text: MyText
+  district: 
+  element_definition: 

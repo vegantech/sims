@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  references: 
+  position: 1
+  kind: MyString
+  text: MyText
+  references: 
+
+two:
+  references: 
+  position: 1
+  kind: MyString
+  text: MyText
+  references: 

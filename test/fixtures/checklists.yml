@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  from_tier: 1
+  student_id: 1
+  passed: false
+  references: 
+  references: 
+  references: 
+
+two:
+  from_tier: 1
+  student_id: 1
+  passed: false
+  references: 
+  references: 
+  references: 

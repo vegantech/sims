@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  text: MyText
+  directions: MyText
+  active: false
+  references: 
+
+two:
+  text: MyText
+  directions: MyText
+  active: false
+  references: 

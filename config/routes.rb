@@ -1,4 +1,18 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :frequencies
+
+  map.resources :element_definitions
+
+  map.resources :checklists
+
+  map.resources :checklist_definitions
+
+  map.resources :attachments
+
+  map.resources :answers
+
+  map.resources :answer_definitions
+
   map.resources :districts
 
   map.resources :states

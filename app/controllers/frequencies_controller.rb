@@ -1,0 +1,2 @@
+class FrequenciesController < ApplicationController
+end

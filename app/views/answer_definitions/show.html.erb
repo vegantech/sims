@@ -1,0 +1,28 @@
+<p>
+  <b>Value:</b>
+  <%=h @answer_definition.value %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%=h @answer_definition.position %>
+</p>
+
+<p>
+  <b>Text:</b>
+  <%=h @answer_definition.text %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @answer_definition.district %>
+</p>
+
+<p>
+  <b>Element definition:</b>
+  <%=h @answer_definition.element_definition %>
+</p>
+
+
+<%= link_to 'Edit', edit_answer_definition_path(@answer_definition) %> |
+<%= link_to 'Back', answer_definitions_path %>

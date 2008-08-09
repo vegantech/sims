@@ -1,0 +1,2 @@
+module ChecklistDefinitionsHelper
+end
