@@ -1,2 +1,0 @@
-class ChecklistsController < ApplicationController
-end
