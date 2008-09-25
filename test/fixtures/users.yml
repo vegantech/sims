@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  username: MyString
+  passwordhash: 
+  first_name: MyString
+  last_name: MyString
+  district: district_mmsd
+
+two:
+  username: MyString
+  passwordhash: 
+  first_name: MyString
+  last_name: MyString
