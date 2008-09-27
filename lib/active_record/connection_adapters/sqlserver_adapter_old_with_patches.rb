@@ -1,6 +1,5 @@
 require 'active_record/connection_adapters/abstract_adapter'
 
-require 'base64'
 require 'bigdecimal'
 require 'bigdecimal/util'
 
@@ -42,7 +41,7 @@ module ActiveRecord
         raise ArgumentError, "Missing Database. Argument ':database' must be set in order for this adapter to work." unless config.has_key?(:database)
         database  = config[:database]
         host      = config[:host] ? config[:host].to_s : 'localhost'
-        driver_url = "DBI:ADO:Provider=SQLOLEDB;Data Source=#{host};Initial Catalog=#{database};User ID=#{username};Password=#{password};"
+        driver_url = "DBI:ADO:Provider=SQLOLEDB;Data Source=#{host};Initial Catalog=#{database};User Id=#{username};Password=#{password};"
       end
       conn      = DBI.connect(driver_url, username, password)
       conn["AutoCommit"] = autocommit
@@ -65,7 +64,6 @@ module ActiveRecord
 
       def simplified_type(field_type)
         case field_type
-          when /real/i              then :float
           when /money/i             then :decimal
           when /image/i             then :binary
           when /bit/i               then :boolean
@@ -105,7 +103,6 @@ module ActiveRecord
    
         if value.is_a?(DateTime)
           return Time.mktime(value.year, value.mon, value.day, value.hour, value.min, value.sec)
-          #return DateTime.new(value.year, value.mon, value.day, value.hour, value.min, value.sec)
         end
         
         return cast_to_time(value) if value.is_a?(Date) or value.is_a?(String) rescue nil
@@ -124,13 +121,27 @@ module ActiveRecord
 
       # These methods will only allow the adapter to insert binary data with a length of 7K or less
       # because of a SQL Server statement length policy.
-      def self.string_to_binary(value) 
- 	      Base64.encode64(value) 
-      end 
- 	       
- 	    def self.binary_to_string(value) 
- 	      Base64.decode64(value) 
- 	    end 
+      def self.string_to_binary(value)
+        value.gsub(/(\r|\n|\0|\x1a)/) do
+          case $1
+            when "\r"   then  "%00"
+            when "\n"   then  "%01"
+            when "\0"   then  "%02"
+            when "\x1a" then  "%03"
+          end
+        end
+      end
+
+      def self.binary_to_string(value)
+        value.gsub(/(%00|%01|%02|%03)/) do
+          case $1
+            when "%00"    then  "\r"
+            when "%01"    then  "\n"
+            when "%02\0"  then  "\0"
+            when "%03"    then  "\x1a"
+          end
+        end
+      end
     end
 
     # In ADO mode, this adapter will ONLY work on Windows systems, 
@@ -157,13 +168,11 @@ module ActiveRecord
     # * <tt>:mode</tt>      -- ADO or ODBC. Defaults to ADO.
     # * <tt>:username</tt>  -- Defaults to sa.
     # * <tt>:password</tt>  -- Defaults to empty string.
-    # * <tt>:windows_auth</tt> -- Defaults to "User ID=#{username};Password=#{password}"
     #
     # ADO specific options:
     #
     # * <tt>:host</tt>      -- Defaults to localhost.
     # * <tt>:database</tt>  -- The name of the database. No default, must be provided.
-    # * <tt>:windows_auth</tt> -- Use windows authentication instead of username/password.
     #
     # ODBC specific options:                   
     #
@@ -244,46 +253,51 @@ module ActiveRecord
         @connection.disconnect rescue nil
       end
 
-      def select_rows(sql, name = nil)
-        rows = []
-        repair_special_columns(sql)
-        log(sql, name) do
-          @connection.select_all(sql) do |row|
-            record = []
-            row.each do |col|
-              if col.is_a? DBI::Timestamp
-                record << col.to_time
-              else
-                record << col
-              end
+
+
+# Local patch for bug 6636,  the sql server adapter does not properly handle connections to multiple databases.  The colums method strips off the database name
+# Author Shawn Balestracci <inquiz@acm.org>
+# Date:   11/17/2006
+      def pk_and_sequence_for(table_name)
+        ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = false
+        indexes = nil
+        execute("EXEC sp_helpindex '#{table_name}'", nil) do |sth|
+          sth.each do |index|
+            primary = index[1] =~ /primary key/
+            if primary
+              indexes= index.last
             end
-            rows << record
           end
         end
-        rows
+        indexes
+      ensure
+        ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = true
+        #return primary_key(table_name), nil
       end
 
       def columns(table_name, name = nil)
         return [] if table_name.blank?
         table_name = table_name.to_s if table_name.is_a?(Symbol)
-        table_name = table_name.split('.')[-1] unless table_name.nil?
-        table_name = table_name.gsub(/[\[\]]/, '')
+        table_names = table_name.split('.') unless table_name.nil?
+        table_name = table_names[-1]
+        db_name=table_names[0] +'.' if table_names.length == 3
+
         sql = %Q{
-          SELECT 
-            cols.COLUMN_NAME as ColName,  
-            cols.COLUMN_DEFAULT as DefaultValue,
-            cols.NUMERIC_SCALE as numeric_scale,
-            cols.NUMERIC_PRECISION as numeric_precision, 
-            cols.DATA_TYPE as ColType, 
-            cols.IS_NULLABLE As IsNullable,  
-            COL_LENGTH(cols.TABLE_NAME, cols.COLUMN_NAME) as Length,  
-            COLUMNPROPERTY(OBJECT_ID(cols.TABLE_NAME), cols.COLUMN_NAME, 'IsIdentity') as IsIdentity,  
-            cols.NUMERIC_SCALE as Scale 
-          FROM INFORMATION_SCHEMA.COLUMNS cols 
-          WHERE cols.TABLE_NAME = '#{table_name}'   
+          SELECT
+          cols.COLUMN_NAME as ColName,
+          cols.COLUMN_DEFAULT as DefaultValue,
+          cols.NUMERIC_SCALE as numeric_scale,
+          cols.NUMERIC_PRECISION as numeric_precision,
+          cols.DATA_TYPE as ColType,
+          cols.IS_NULLABLE As IsNullable,
+          COL_LENGTH(cols.TABLE_NAME, cols.COLUMN_NAME) as Length,
+          COLUMNPROPERTY(OBJECT_ID(cols.TABLE_NAME), cols.COLUMN_NAME, 'IsIdentity') as IsIdentity,
+          cols.NUMERIC_SCALE as Scale
+          FROM #{db_name}INFORMATION_SCHEMA.COLUMNS cols
+          WHERE cols.TABLE_NAME = '#{table_name}'
         }
         # Comment out if you want to have the Columns select statment logged.
-        # Personally, I think it adds unnecessary bloat to the log. 
+        # Personally, I think it adds unnecessary bloat to the log.
         # If you do comment it out, make sure to un-comment the "result" line that follows
         result = log(sql, name) { @connection.select_all(sql) }
         #result = @connection.select_all(sql)
@@ -301,47 +315,53 @@ module ActiveRecord
         end
         columns
       end
-      
-      def empty_insert_statement(table_name)
-        "INSERT INTO #{table_name} DEFAULT VALUES"
-      end      
-
-      def insert_sql(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
-        super || select_value("SELECT @@IDENTITY AS Ident")
-      end
-
-      def update_sql(sql, name = nil)          
-        autoCommiting = @connection["AutoCommit"]
-        begin
-          begin_db_transaction if autoCommiting
-          execute(sql, name)
-          affectedRows = select_value("SELECT @@ROWCOUNT AS AffectedRows")
-          commit_db_transaction if autoCommiting
-          affectedRows
-        rescue
-          rollback_db_transaction if autoCommiting
-          raise
-        end                    
-      end
 
       def execute(sql, name = nil)
-        if sql =~ /^\s*INSERT/i && (table_name = query_requires_identity_insert?(sql))
-          log(sql, name) do
-            with_identity_insert_enabled(table_name) do 
+        tried=0
+        begin
+          if sql =~ /^\s*INSERT/i && (table_name = query_requires_identity_insert?(sql))
+            log(sql, name) do
+              with_identity_insert_enabled(table_name) do
+                @connection.execute(sql) do |handle|
+                  yield(handle) if block_given?
+                end
+              end
+            end
+          else
+            log(sql, name) do
               @connection.execute(sql) do |handle|
                 yield(handle) if block_given?
               end
             end
           end
-        else
-          log(sql, name) do
-            @connection.execute(sql) do |handle|
-              yield(handle) if block_given?
+        rescue ActiveRecord::StatementInvalid => exception
+          if exception.message =~ /DBI::DatabaseError/
+            if reconnect!  && tried<3
+              tried +=1
+              sleep(2)  unless ENV["RAILS_ENV"] == "test"
+              retry
+            else
+              raise
             end
+
           end
         end
+      end #def execute
+
+      def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
+        execute(sql, name)
+        id_value || select_one("SELECT @@IDENTITY AS Ident")["Ident"]
       end
 
+      def update(sql, name = nil)
+        execute(sql, name) do |handle|
+          handle.rows
+        end || select_one("SELECT @@ROWCOUNT AS AffectedRows")["AffectedRows"]        
+      end
+      
+      alias_method :delete, :update
+
+      
       def begin_db_transaction
         @connection["AutoCommit"] = false
       rescue Exception => e
@@ -366,14 +386,9 @@ module ActiveRecord
         case value
           when TrueClass             then '1'
           when FalseClass            then '0'
-          else
-            if value.acts_like?(:time)
-              "'#{value.strftime("%Y%m%d %H:%M:%S")}'"
-            elsif value.acts_like?(:date)
-              "'#{value.strftime("%Y%m%d")}'"
-            else
-              super
-            end
+          when Time, DateTime        then "'#{value.strftime("%Y%m%d %H:%M:%S")}'"
+          when Date                  then "'#{value.strftime("%Y%m%d")}'"
+          else                       super
         end
       end
 
@@ -394,7 +409,7 @@ module ActiveRecord
           sql.sub!(/^\s*SELECT(\s+DISTINCT)?/i, "SELECT * FROM (SELECT TOP #{options[:limit]} * FROM (SELECT#{$1} TOP #{options[:limit] + options[:offset]} ")
           sql << ") AS tmp1"
           if options[:order]
-            order = options[:order].split(',').map do |field|
+            options[:order] = options[:order].split(',').map do |field|
               parts = field.split(" ")
               tc = parts[0]
               if sql =~ /\.\[/ and tc =~ /\./ # if column quoting used in query
@@ -408,7 +423,7 @@ module ActiveRecord
               end
               parts.join(' ')
             end.join(', ')
-            sql << " ORDER BY #{change_order_direction(order)}) AS tmp2 ORDER BY #{order}"
+            sql << " ORDER BY #{change_order_direction(options[:order])}) AS tmp2 ORDER BY #{options[:order]}"
           else
             sql << " ) AS tmp2"
           end
@@ -417,11 +432,6 @@ module ActiveRecord
             "SELECT#{$1} TOP #{options[:limit]}"
           end unless options[:limit].nil?
         end
-      end
-
-      def add_lock!(sql, options)
-        @logger.info "Warning: SQLServer :lock option '#{options[:lock].inspect}' not supported" if @logger && options.has_key?(:lock)
-        sql
       end
 
       def recreate_database(name)
@@ -443,9 +453,9 @@ module ActiveRecord
 
       def tables(name = nil)
         execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'", name) do |sth|
-          result = sth.inject([]) do |tables, field|
+          sth.inject([]) do |tables, field|
             table_name = field[0]
-            tables << table_name unless table_name == 'dtproperties'            
+            tables << table_name unless table_name == 'dtproperties'
             tables
           end
         end
@@ -454,28 +464,28 @@ module ActiveRecord
       def indexes(table_name, name = nil)
         ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = false
         indexes = []        
-        execute("EXEC sp_helpindex '#{table_name}'", name) do |handle|
-          if handle.column_info.any?
-            handle.each do |index| 
-              unique = index[1] =~ /unique/
-              primary = index[1] =~ /primary key/
-              if !primary
-                indexes << IndexDefinition.new(table_name, index[0], unique, index[2].split(", ").map {|e| e.gsub('(-)','')})
-              end
+        execute("EXEC sp_helpindex '#{table_name}'", name) do |sth|
+          sth.each do |index| 
+            unique = index[1] =~ /unique/
+            primary = index[1] =~ /primary key/
+            if !primary
+              indexes << IndexDefinition.new(table_name, index[0], unique, index[2].split(", "))
             end
           end
         end
         indexes
-      ensure
-        ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = true
+        ensure
+          ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = true
       end
             
       def rename_table(name, new_name)
         execute "EXEC sp_rename '#{name}', '#{new_name}'"
       end
-
+      
+      # Adds a new column to the named table.
+      # See TableDefinition#column for details of the options you can use.
       def add_column(table_name, column_name, type, options = {})
-        add_column_sql = "ALTER TABLE #{table_name} ADD #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"      
+        add_column_sql = "ALTER TABLE #{table_name} ADD #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
         add_column_options!(add_column_sql, options)
         # TODO: Add support to mimic date columns, using constraints to mark them as such in the database
         # add_column_sql << " CONSTRAINT ck__#{table_name}__#{column_name}__date_only CHECK ( CONVERT(CHAR(12), #{quote_column_name(column_name)}, 14)='00:00:00:000' )" if type == :date       
@@ -487,27 +497,20 @@ module ActiveRecord
       end
       
       def change_column(table_name, column_name, type, options = {}) #:nodoc:
-        sql = "ALTER TABLE #{table_name} ALTER COLUMN #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
-        sql << " NOT NULL" if options[:null] == false
-        sql_commands = [sql]        
+        sql_commands = ["ALTER TABLE #{table_name} ALTER COLUMN #{column_name} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"]
         if options_include_default?(options)
           remove_default_constraint(table_name, column_name)
-          sql_commands << "ALTER TABLE #{table_name} ADD CONSTRAINT DF_#{table_name}_#{column_name} DEFAULT #{quote(options[:default], options[:column])} FOR #{quote_column_name(column_name)}"
+          sql_commands << "ALTER TABLE #{table_name} ADD CONSTRAINT DF_#{table_name}_#{column_name} DEFAULT #{quote(options[:default], options[:column])} FOR #{column_name}"
         end
         sql_commands.each {|c|
           execute(c)
         }
       end
       
-      def change_column_default(table_name, column_name, default)
-        remove_default_constraint(table_name, column_name)
-        execute "ALTER TABLE #{table_name} ADD CONSTRAINT DF_#{table_name}_#{column_name} DEFAULT #{quote(default, column_name)} FOR #{quote_column_name(column_name)}"  
-      end
-      
       def remove_column(table_name, column_name)
         remove_check_constraints(table_name, column_name)
         remove_default_constraint(table_name, column_name)
-        execute "ALTER TABLE [#{table_name}] DROP COLUMN #{quote_column_name(column_name)}"
+        execute "ALTER TABLE [#{table_name}] DROP COLUMN [#{column_name}]"
       end
       
       def remove_default_constraint(table_name, column_name)
@@ -625,3 +628,8 @@ module ActiveRecord
     end #class SQLServerAdapter < AbstractAdapter
   end #module ConnectionAdapters
 end #module ActiveRecord
+
+
+
+
+
