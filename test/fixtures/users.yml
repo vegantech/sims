@@ -12,3 +12,11 @@ two:
   passwordhash: 
   first_name: MyString
   last_name: MyString
+
+oneschool:
+  username: oneschool
+  passwordhash:
+  first_name: "1First."
+  last_name: "oneschool"
+  passwordhash: <%= User.encrypted_password("oneschool") %>
+  district: district_mmsd

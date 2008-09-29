@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   belongs_to :district
 
+  validates_presence_of :username, :passwordhash, :last_name, :first_name
+  validates_uniqueness_of :username, :scope=>:district_id
+
    def self.authenticate(username, password)
      @user = self.find_by_username(username)
        
