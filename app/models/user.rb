@@ -18,6 +18,16 @@ class User < ActiveRecord::Base
       Digest::SHA1.hexdigest(password.downcase)
    end
 
+   
+  def fullname 
+    first_name.to_s + ' ' + last_name.to_s
+  end
+
+  def fullname_last_first
+    last_name.to_s + ', ' + first_name.to_s
+  end
+
+
 
 
 end
