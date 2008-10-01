@@ -1,0 +1,12 @@
+<h1>Splash Page</h1>
+<p>Find me in app/views/main/index.html.erb</p>
+
+<%=flash[:notice] %>
+
+<% if session[:user_id] %>
+  <%= render :partial => 'login/logout' %>
+<% else %>
+  <%=render :partial=>'login/login' %>
+<% end %>
+
+
