@@ -1,6 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-district_mmsd:
+wi_mmsd:
   name: Madison Metropolitan School District
   abbrev: MyString
   state: state_wi

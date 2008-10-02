@@ -16,8 +16,8 @@ two:
 
 alpha:
   name: Alpha Elementary
-  district:  district_mmsd
+  district:  wi_mmsd
 
 bravo:
   name: bravo Elementary
-  district:  district_mmsd
+  district:  wi_mmsd

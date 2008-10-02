@@ -1,0 +1,24 @@
+<h1>Editing enrollment</h1>
+
+<% form_for(@enrollment) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :school %><br />
+    <%= f.text_field :school %>
+  </p>
+  <p>
+    <%= f.label :student %><br />
+    <%= f.text_field :student %>
+  </p>
+  <p>
+    <%= f.label :grade %><br />
+    <%= f.text_field :grade %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @enrollment %> |
+<%= link_to 'Back', enrollments_path %>

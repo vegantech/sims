@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  district: 
+  last_name: MyString
+  first_name: MyString
+  id_district: 1
+  id_state: 1
+  id_country: 1
+
+
+two:
+  district: 
+  last_name: MyString
+  first_name: MyString
+  id_district: 1
+  id_state: 1
+  id_country: 1
+
+alpha_first_grader:
+  district: wi_mmsd
+  last_name: Grader
+  first_name: Alpha_First
+
+

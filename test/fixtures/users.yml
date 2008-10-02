@@ -5,7 +5,7 @@ one:
   passwordhash: 
   first_name: MyString
   last_name: MyString
-  district: district_mmsd
+  district: wi_mmsd
 
 two:
   username: MyString
@@ -18,13 +18,13 @@ oneschool:
   first_name: "1First."
   last_name: "oneschool"
   passwordhash: <%= User.encrypted_password("oneschool") %>
-  district: district_mmsd
+  district: wi_mmsd
   schools: alpha
 
 twoschools:
-  username: twoschool
+  username: twoschools
   first_name: "2Second."
   last_name: "twoschools"
   passwordhash: <%= User.encrypted_password("twoschools") %>
-  district: district_mmsd
+  district: wi_mmsd
   schools: alpha, bravo

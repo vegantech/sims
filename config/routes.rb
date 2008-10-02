@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :enrollments
+
+  map.resources :students, :collection => {:select => :get }
+
   map.resources :schools, :collection => {:select =>:get}
 
 

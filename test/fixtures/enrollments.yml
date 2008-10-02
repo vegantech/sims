@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: alpha
+  student: alpha_first_grader 
+  grade: 01
+
+two:
+  school: 
+  student: 
+  grade: MyString
