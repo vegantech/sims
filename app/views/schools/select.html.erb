@@ -1,0 +1,4 @@
+<% form_tag() do %>    
+  <%= collection_select(:school, :id, @schools, "id", "name") %>
+  <%= submit_tag "Choose School"%>
+<% end %>

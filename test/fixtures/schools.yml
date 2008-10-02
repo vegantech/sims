@@ -17,9 +17,7 @@ two:
 alpha:
   name: Alpha Elementary
   district:  district_mmsd
-  users: oneschool
 
 bravo:
   name: bravo Elementary
   district:  district_mmsd
-  users: oneschool, twoschools

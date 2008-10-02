@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
      if @user
        expected_password=encrypted_password(password)
        if @user.passwordhash != expected_password
-         @user = nil #  unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
+         @user = nil   unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
        end
        @user
      end

@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :schools
+  map.resources :schools, :collection => {:select =>:get}
+
 
   map.resources :users
 

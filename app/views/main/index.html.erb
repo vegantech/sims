@@ -5,8 +5,9 @@
 
 <% if session[:user_id] %>
   <%= render :partial => 'login/logout' %>
+  <%= link_to 'School Selection', :action => 'select', :controller => :schools %>
 <% else %>
-  <%=render :partial=>'login/login' %>
+  <%=render :partial => 'login/login' %>
 <% end %>
 
 
