@@ -2,16 +2,39 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    @students = Student.find(:all)
+    #use search criteria when implemented
+    # user interface not admin
+    @students = School.find(session[:school_id]).enrollments(:include=>:students)
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @students }
     end
   end
-  
+
   def select
-    @students = School.find(session[:school_id]).enrollments(:include=>:students)
+    # add selected students to session redirect to show
+    
+    #need to make sure user has access to these
+    session[:selected_students]=params[:id]
+    if session[:selected_students].blank?
+      flash[:notice]='No students selected'
+    else
+      session[:selected_student]=session[:selected_students].first
+      redirect_to student_url(session[:selected_student])
+    end
+      
+    
+  end
+  
+  def search
+    school = School.find(session[:school_id])
+    if request.get?
+      @grades = school.enrollments.collect(&:grade).uniq
+      @grades.unshift("*")
+    else
+      redirect_to students_url
+    end
   end
 
   # GET /students/1

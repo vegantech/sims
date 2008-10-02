@@ -28,8 +28,6 @@
   <%=h @student.id_country %>
 </p>
 
-<p>
-  <b>Grade:</b>
-  <%=h @student.enrollments.first.grade %> (until we handle school)
-</p>
 
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

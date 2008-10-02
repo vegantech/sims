@@ -1,30 +1,10 @@
-<h1>Listing students</h1>
-
-<table>
-  <tr>
-    <th>District</th>
-    <th>Last name</th>
-    <th>First name</th>
-    <th>Id district</th>
-    <th>Id state</th>
-    <th>Id country</th>
-  </tr>
-
-<% for student in @students %>
-  <tr>
-    <td><%=h student.district %></td>
-    <td><%=h student.last_name %></td>
-    <td><%=h student.first_name %></td>
-    <td><%=h student.id_district %></td>
-    <td><%=h student.id_state %></td>
-    <td><%=h student.id_country %></td>
-    <td><%= link_to 'Show', student %></td>
-    <td><%= link_to 'Edit', edit_student_path(student) %></td>
-    <td><%= link_to 'Destroy', student, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<% form_tag({:action=>'select'}, {:name => "select_students_form"}) do %>
+  <div id='table'>
+    <table>
+      <%= render :partial =>'enrolled_student', :collection=>@students -%>
+    </table>
+  </div>
+  <%='&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
+  <%= submit_tag "select for problem solving", :name => 'process' %>
 <% end %>
-</table>
 
-<br />
-
-<%= link_to 'New student', new_student_path %>

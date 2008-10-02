@@ -1,9 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :enrollments
 
-  map.resources :students, :collection => {:select => :get }
+  map.resources :students, :collection => {:search => :get, :select => :post}
 
-  map.resources :schools, :collection => {:select =>:get}
+  map.resources :schools, :collection => {:select => :post}
 
 
   map.resources :users
