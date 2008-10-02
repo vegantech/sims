@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StudentsControllerTest < ActionController::TestCase
   def test_should_get_index
-    get :index
+    get :index,{}, {:school_id=>schools(:alpha).id}
     assert_response :success
     assert_not_nil assigns(:students)
   end
@@ -21,7 +21,7 @@ class StudentsControllerTest < ActionController::TestCase
   end
 
   def test_should_show_student
-    get :show, :id => students(:one).id
+    get :show, :id => students(:alpha_first_grader).id
     assert_response :success
   end
 
