@@ -20,3 +20,13 @@ oneschool:
   last_name: "oneschool"
   passwordhash: <%= User.encrypted_password("oneschool") %>
   district: district_mmsd
+  schools: alpha
+
+twoschools:
+  username: twoschool
+  passwordhash:
+  first_name: "2Second."
+  last_name: "twoschools"
+  passwordhash: <%= User.encrypted_password("twoschools") %>
+  district: district_mmsd
+  schools: alpha, bravo

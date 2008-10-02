@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   belongs_to :district
+  has_and_belongs_to_many :schools
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
@@ -10,7 +11,7 @@ class User < ActiveRecord::Base
      if @user
        expected_password=encrypted_password(password)
        if @user.passwordhash != expected_password
-         @user = nil  unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
+         @user = nil #  unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
        end
        @user
      end
