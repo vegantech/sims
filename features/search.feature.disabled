@@ -1,0 +1,9 @@
+Feature: Search Page
+  In order to pick students to manage
+  A SIMS user
+  Should be able to find students using search criteria
+  
+  Scenario: Register new search
+    Given I am on the search page
+    And I press "Create"
+
