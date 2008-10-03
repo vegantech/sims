@@ -5,3 +5,4 @@ doc/app
 config/database.yml
 *~
 *.sqlite3
+coverage.data
