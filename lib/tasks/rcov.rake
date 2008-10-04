@@ -1,5 +1,7 @@
 begin
   RCOV_OPTS=""
+  $:.unshift RAILS_ROOT+"/vendor/gems/rcov/lib"
+
   require 'rcov/rcovtask'
   require File.expand_path("vendor/plugins/rspec/lib//spec/rake/spectask")
 
@@ -59,7 +61,7 @@ begin
       end
     end
   end
-  
+ 
   namespace :spec do
     namespace :rcov do
 
@@ -88,6 +90,7 @@ begin
  #   Rake::Task["spec:rcov:functional"].invoke
     Rake::Task["test:coverage:functional"].invoke
     remove_coverage_data
+    Rake::Task["features_with_rcov"].invoke
     
  #   Rake::Task["spec:rcov:integration"].invoke
    # Rake::Task["test:coverage:integration"].invoke
