@@ -15,7 +15,7 @@ end
 remove_task :default
 task "default" => ["test:coverage"]
 
-task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional] #, :verify_rcov_integration] 
+task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration] 
 task "test:coverage" => [:verify_rcov]
 
 #Lowering these until I integrate rspec   +10  turns out integration test coverage was including unit and functional
@@ -30,6 +30,6 @@ RCov::VerifyTask.new('verify_rcov_functional') do |t|
 end
 
 RCov::VerifyTask.new('verify_rcov_integration') do |t|
-  t.threshold = 0.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 10.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/integration/index.html'
 end
