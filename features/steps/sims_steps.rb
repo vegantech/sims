@@ -12,8 +12,9 @@ Given /I am on the "(.*)" page/ do |page_name|
 	go_to_page page_name
 end
 
-Given /student "(.*)" "(.*)" in grade (\d+)/ do |first, last, student_grade|
-	create_student first, last, student_grade
+Given /student "(.*)" "(.*)" in grade (\d+) at "(.*)"/ do |first, last, student_grade, school_name|
+	school = School.find_by_name(school_name)
+	create_student first, last, student_grade, school
 end
 
 Given /school "(.*)"/ do |school_name|

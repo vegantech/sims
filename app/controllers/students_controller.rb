@@ -4,7 +4,10 @@ class StudentsController < ApplicationController
   def index
     #use search criteria when implemented
     # user interface not admin
-    @students = School.find(session[:school_id]).enrollments(:include=>:students)
+    enrollments = School.find(session[:school_id]).enrollments(:include=>:students)
+		# puts "#{params.inspect}"
+    @students = enrollments
+		# puts "@students: #{@students.inspect}"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,12 +32,12 @@ class StudentsController < ApplicationController
   
   def search
     school = School.find(session[:school_id])
-    if request.get?
-      @grades = school.enrollments.collect(&:grade).uniq
-      @grades.unshift("*")
-    else
-      redirect_to students_url
-    end
+		if request.get?
+			@grades = school.enrollments.collect(&:grade).uniq
+			@grades.unshift("*")
+		else
+			redirect_to students_url
+		end
   end
 
   # GET /students/1

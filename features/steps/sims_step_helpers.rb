@@ -38,15 +38,16 @@ def create_user user_name, password
 end
 
 def create_school school_name
-	s = School.create! :name => school_name
-	default_user.schools << s
+	found = School.find_by_name(school_name)
+	s = found || School.create!(:name => school_name)
+	default_user.schools << s unless default_user.schools.include?(s)
 	s
 end
 
-def create_student first_name, last_name, grade
+def create_student first_name, last_name, grade, school
 	s = Student.create! :first_name => first_name, :last_name => last_name
 	# :grade => grade
-	enrollment = Enrollment.create! :grade => '1'
+	enrollment = Enrollment.create! :grade => grade, :school => school
 	s.enrollments << enrollment
 	s.save!
 end
