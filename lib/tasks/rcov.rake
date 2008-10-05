@@ -49,7 +49,7 @@ begin
     
     %w[unit functional integration].each do |target|
       namespace :coverage do
-        Rcov::RcovTask.new(target => ["test:coverage:clean","db:test:prepare" ]) do |t|
+        Rcov::RcovTask.new(target => ['build_rcov_gem_binaries', "test:coverage:clean","db:test:prepare" ]) do |t|
           t.libs << "test"
           t.test_files = FileList["test/#{target}/*_test.rb"] +
           FileList["test/#{target}/*/*_test.rb"]
