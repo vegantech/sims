@@ -85,15 +85,15 @@ begin
   end
   desc 'run all Test:Unit tests, specs, and stories and generate coverage reports'
   task(:coverage_all) do
-#    Rake::Task["spec:rcov:unit"].invoke
+    Rake::Task["spec:rcov:unit"].invoke
     Rake::Task["test:coverage:unit"].invoke
     remove_coverage_data
- #   Rake::Task["spec:rcov:functional"].invoke
+   Rake::Task["spec:rcov:functional"].invoke
     Rake::Task["test:coverage:functional"].invoke
     remove_coverage_data
     Rake::Task["features_with_rcov"].invoke
     
- #   Rake::Task["spec:rcov:integration"].invoke
+    Rake::Task["spec:rcov:integration"].invoke
    # Rake::Task["test:coverage:integration"].invoke
   end
                             

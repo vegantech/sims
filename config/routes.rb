@@ -1,4 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :ignore_flags
+
+  map.resources :custom_flags
+
+
   map.resources :enrollments
 
   map.resources :students, :collection => {:search => :get, :select => :post}

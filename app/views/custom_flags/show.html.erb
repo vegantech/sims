@@ -1,0 +1,28 @@
+<p>
+  <b>Category:</b>
+  <%=h @custom_flag.category %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @custom_flag.user %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @custom_flag.district %>
+</p>
+
+<p>
+  <b>Reason:</b>
+  <%=h @custom_flag.reason %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @custom_flag.type %>
+</p>
+
+
+<%= link_to 'Edit', edit_custom_flag_path(@custom_flag) %> |
+<%= link_to 'Back', custom_flags_path %>

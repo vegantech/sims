@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  category: MyString
+  user: 
+  district: 
+  reason: MyText
+  type: MyString
+
+two:
+  category: MyString
+  user: 
+  district: 
+  reason: MyText
+  type: MyString

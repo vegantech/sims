@@ -1,0 +1,2 @@
+class IgnoreFlag < Flag
+end
