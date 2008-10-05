@@ -1,0 +1,2 @@
+class CustomFlag < Flag
+end

@@ -1,0 +1,2 @@
+module CustomFlagsHelper
+end

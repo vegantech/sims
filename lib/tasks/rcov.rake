@@ -1,5 +1,8 @@
 begin
   RCOV_OPTS=""
+  $:.unshift (RAILS_ROOT + '/vendor/gems/rcov-0.8.1.3.0/lib')
+  ENV['PATH']='.:' + ENV['PATH']
+
   require 'rcov/rcovtask'
   require File.expand_path("vendor/plugins/rspec/lib//spec/rake/spectask")
 
@@ -46,7 +49,7 @@ begin
     
     %w[unit functional integration].each do |target|
       namespace :coverage do
-        Rcov::RcovTask.new(target => ["test:coverage:clean","db:test:prepare" ]) do |t|
+        Rcov::RcovTask.new(target => ['build_rcov_gem_binaries', "test:coverage:clean","db:test:prepare" ]) do |t|
           t.libs << "test"
           t.test_files = FileList["test/#{target}/*_test.rb"] +
           FileList["test/#{target}/*/*_test.rb"]
@@ -59,7 +62,7 @@ begin
       end
     end
   end
-  
+ 
   namespace :spec do
     namespace :rcov do
 
@@ -82,14 +85,15 @@ begin
   end
   desc 'run all Test:Unit tests, specs, and stories and generate coverage reports'
   task(:coverage_all) do
-#    Rake::Task["spec:rcov:unit"].invoke
+    Rake::Task["spec:rcov:unit"].invoke
     Rake::Task["test:coverage:unit"].invoke
     remove_coverage_data
- #   Rake::Task["spec:rcov:functional"].invoke
+   Rake::Task["spec:rcov:functional"].invoke
     Rake::Task["test:coverage:functional"].invoke
     remove_coverage_data
+    Rake::Task["features_with_rcov"].invoke
     
- #   Rake::Task["spec:rcov:integration"].invoke
+    Rake::Task["spec:rcov:integration"].invoke
    # Rake::Task["test:coverage:integration"].invoke
   end
                             

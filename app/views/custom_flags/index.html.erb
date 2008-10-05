@@ -1,0 +1,28 @@
+<h1>Listing custom_flags</h1>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>User</th>
+    <th>District</th>
+    <th>Reason</th>
+    <th>Type</th>
+  </tr>
+
+<% for custom_flag in @custom_flags %>
+  <tr>
+    <td><%=h custom_flag.category %></td>
+    <td><%=h custom_flag.user %></td>
+    <td><%=h custom_flag.district %></td>
+    <td><%=h custom_flag.reason %></td>
+    <td><%=h custom_flag.type %></td>
+    <td><%= link_to 'Show', custom_flag %></td>
+    <td><%= link_to 'Edit', edit_custom_flag_path(custom_flag) %></td>
+    <td><%= link_to 'Destroy', custom_flag, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New custom_flag', new_custom_flag_path %>

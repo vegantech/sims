@@ -1,0 +1,28 @@
+<h1>Listing ignore_flags</h1>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>User</th>
+    <th>District</th>
+    <th>Reason</th>
+    <th>Type</th>
+  </tr>
+
+<% for ignore_flag in @ignore_flags %>
+  <tr>
+    <td><%=h ignore_flag.category %></td>
+    <td><%=h ignore_flag.user %></td>
+    <td><%=h ignore_flag.district %></td>
+    <td><%=h ignore_flag.reason %></td>
+    <td><%=h ignore_flag.type %></td>
+    <td><%= link_to 'Show', ignore_flag %></td>
+    <td><%= link_to 'Edit', edit_ignore_flag_path(ignore_flag) %></td>
+    <td><%= link_to 'Destroy', ignore_flag, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New ignore_flag', new_ignore_flag_path %>
