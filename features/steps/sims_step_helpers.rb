@@ -43,6 +43,14 @@ def create_school school_name
 	s
 end
 
+def create_student first_name, last_name, grade
+	s = Student.create! :first_name => first_name, :last_name => last_name
+	# :grade => grade
+	enrollment = Enrollment.create! :grade => '1'
+	s.enrollments << enrollment
+	s.save!
+end
+
 private
 
 def default_user

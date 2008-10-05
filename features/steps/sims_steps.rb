@@ -12,7 +12,8 @@ Given /I am on the "(.*)" page/ do |page_name|
 	go_to_page page_name
 end
 
-Given /(\d+) students? in grade (\d+)/ do |num_students, grade|
+Given /student "(.*)" "(.*)" in grade (\d+)/ do |first, last, student_grade|
+	create_student first, last, student_grade
 end
 
 Given /school "(.*)"/ do |school_name|
