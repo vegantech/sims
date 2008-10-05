@@ -29,10 +29,10 @@ Rails::Initializer.run do |config|
   config.gem :rcov #, :version => "= 0.8.1.3 "
   config.gem 'hpricot'
   config.gem 'treetop'
+  config.gem 'term-ansicolor', :lib => "term/ansicolor"
 
  # need to upgrade rubygems
   # config.gem 'hpricot'
-  # config.gem 'term-ansicolor'
   # config.gem 'treetop'
   #  config.gem 'diff-lcs'
 
