@@ -22,6 +22,7 @@ class StudentsController < ApplicationController
     session[:selected_students]=params[:id]
     if session[:selected_students].blank?
       flash[:notice]='No students selected'
+      redirect_to students_url
     else
       session[:selected_student]=session[:selected_students].first
       redirect_to student_url(session[:selected_student])
