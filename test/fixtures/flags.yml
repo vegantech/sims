@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  category: attendance
+  user: oneschool
+  district: wi_mmsd
+  student: alpha_first_grader
+  reason: Poor Attendance
+  type: CustomFlag
