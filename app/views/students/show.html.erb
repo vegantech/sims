@@ -1,5 +1,8 @@
 Student Profile for <%= @student.fullname %>
   <span id='studentflags'> <%= status_display(@student) %></span>
+  <div id="customflag">
+    <%= render :partial=>"custom_flags/list",:locals=>{:student=>@student} %>
+  </div>
 
 <p>
   <b>District:</b>
@@ -32,7 +35,7 @@ Student Profile for <%= @student.fullname %>
 </p>
 
 <p>
-  <b>Grade:</b>
-  <%=h @student.enrollments.first.grade %> (until we handle school)
+  <b>Enrollments:</b>
+  <%=h @student.enrollments.first.grade %> (Should iterate through enrollments and show the current ones.)
 </p>
 

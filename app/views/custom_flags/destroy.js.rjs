@@ -1,4 +1,4 @@
 page.replace_html("studentflags", "#{status_display @custom_flag.student, true}")
 page.call("nd")
-page.replace_html("customflag", :partial=>"list")
+page.replace_html("customflag", :partial=>"list" ,:locals=>{:student=>@custom_flag.student})
 page.visual_effect :pulsate, 'studentflags'

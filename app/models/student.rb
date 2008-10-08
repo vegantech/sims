@@ -4,7 +4,11 @@ class Student < ActiveRecord::Base
   has_many :schools, :through=>:enrollments
   has_many :flags do
     def custom_summary
-      find_all_by_type('CustomFlag').collect(&:summary)
+      custom.collect(&:summary)
+    end
+
+    def custom
+      find_all_by_type('CustomFlag')
     end
     
     def current
