@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  before_filter :enforce_session_selections, :except => [:index, :select, :search, :new]
+
   # GET /students
   # GET /students.xml
   def index
@@ -111,6 +113,18 @@ class StudentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(students_url) }
       format.xml  { head :ok }
+    end
+  end
+
+
+  private
+  def enforce_session_selections
+    return true unless params[:id] 
+    if selected_students_ids.include?(params[:id])
+      return true
+    else
+      flash[:notice]='Student not selected'
+      redirect_to students_url and return false
     end
   end
 

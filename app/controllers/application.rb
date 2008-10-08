@@ -11,5 +11,50 @@ class ApplicationController < ActionController::Base
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
+  #
+
+
+  private
+  def current_user_id
+    session[:user_id]
+  end
+
+  def current_user
+    @user=User.find(current_user_id)
+  end
+
+  def selected_students_ids
+    session[:selected_students]  
+  end
+
+  def multiple_selected_students?
+    selected_students_ids.size > 1
+  end
+
+  def current_student_id
+    session[:selected_student]
+  end
+
+
+  def current_student
+    @student=Student.find(current_student_id)
+  end
+
+  def current_school_id
+    session[:school_id]
+  end
+
+  def current_school
+    @school=School.find(current_school_id)
+  end
+
+  def current_district_id
+    nil
+  end
+
+  def current_district
+    @district=District.find(current_district_id)
+  end
+
 end
