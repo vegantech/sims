@@ -1,0 +1,5 @@
+<ul>
+  <%=render :partial=>"custom_flags/flag", :collection=>@student.flags.custom %>
+</ul>
+&nbsp;<%=link_to_remote_degrades "Create Custom Flag",:url=>{:action=>"new",:id=>@student,:controller=>"custom_flags"} %>
+
