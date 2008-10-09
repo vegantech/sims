@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :student_comments
+
   map.resources :ignore_flags
 
   map.resources :custom_flags

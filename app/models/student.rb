@@ -2,6 +2,7 @@ class Student < ActiveRecord::Base
   belongs_to :district
   has_many :enrollments
   has_many :schools, :through=>:enrollments
+  has_many :comments, :class_name=>"StudentComment"
   has_many :flags do
     def custom_summary
       custom.collect(&:summary)

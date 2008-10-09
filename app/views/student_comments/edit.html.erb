@@ -1,0 +1,11 @@
+<h1>Editing student_comment</h1>
+
+<% form_for(@student_comment) do |f| %>
+ <%= render :partial=>f %>
+
+ <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', current_student %>

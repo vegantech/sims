@@ -1,0 +1,14 @@
+<p>
+  <b>User:</b>
+  <%=h comment.user.fullname %>
+</p>
+
+<p>
+  <b>Body:</b>
+  <%=h comment.body %>
+</p>
+
+<p>
+    <%= link_to 'Edit', edit_student_comment_path(comment) %>
+    <%= link_to 'Destroy', comment, :confirm => 'Are you sure?', :method => :delete %>
+</p>

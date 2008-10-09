@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081005220736) do
+ActiveRecord::Schema.define(:version => 20081009180131) do
 
   create_table "countries", :force => true do |t|
     t.string   "name"
@@ -71,6 +71,14 @@ ActiveRecord::Schema.define(:version => 20081005220736) do
     t.string   "name"
     t.string   "abbrev"
     t.integer  "country_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "student_comments", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "user_id"
+    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
