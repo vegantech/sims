@@ -5,6 +5,10 @@ describe StudentCommentsController do
   def mock_student_comment(stubs={})
     @mock_student_comment ||= mock_model(StudentComment, stubs)
   end
+
+  def mock_student(stubs={})
+    @mock_student ||= mock_model(Student,stubs)
+  end
   
   describe "responding to GET index" do
 
@@ -76,14 +80,16 @@ describe StudentCommentsController do
       
       it "should expose a newly created student_comment as @student_comment" do
         StudentComment.should_receive(:new).with({'these' => 'params'}).and_return(mock_student_comment(:save => true))
+        controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
         post :create, :student_comment => {:these => 'params'}
         assigns(:student_comment).should equal(mock_student_comment)
       end
 
       it "should redirect to the created student_comment" do
         StudentComment.stub!(:new).and_return(mock_student_comment(:save => true))
-        post :create, :student_comment => {}
-        response.should redirect_to(student_comment_url(mock_student_comment))
+        controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+        post :create, {:student_comment => {}}, :selected_student_ids=>[1]
+        response.should redirect_to(student_url(1))
       end
       
     end
@@ -118,14 +124,16 @@ describe StudentCommentsController do
 
       it "should expose the requested student_comment as @student_comment" do
         StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => true))
+        controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
         put :update, :id => "1"
         assigns(:student_comment).should equal(mock_student_comment)
       end
 
       it "should redirect to the student_comment" do
         StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(student_comment_url(mock_student_comment))
+        controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+        put :update, {:id => "37"}, {:selected_students=>[1]}
+        response.should redirect_to(student_url(1))
       end
 
     end
@@ -159,13 +167,15 @@ describe StudentCommentsController do
     it "should destroy the requested student_comment" do
       StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
       mock_student_comment.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+      delete :destroy, {:id => "37"}, {:selected_students=>[1]}
     end
   
     it "should redirect to the student_comments list" do
       StudentComment.stub!(:find).and_return(mock_student_comment(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(student_comments_url)
+      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+      delete :destroy, {:id => "37"}, {:selected_students=>[1]}
+      response.should redirect_to(student_url(1))
     end
 
   end
