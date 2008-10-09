@@ -4,7 +4,7 @@ $:.unshift (RAILS_ROOT + '/vendor/gems/rcov-0.8.1.3.0/lib')
 ENV['PATH']='.:' + ENV['PATH']
 
 require 'cucumber/rake/task'
-load File.dirname(__FILE__)+ '/rcov.rake'
+#load File.dirname(__FILE__)+ '/rcov.rake'
 Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "--format pretty"
 end
