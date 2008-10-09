@@ -6,3 +6,4 @@ config/database.yml
 *~
 *.sqlite3
 coverage.data
+rcovrt.so

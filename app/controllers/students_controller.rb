@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_filter :enforce_session_selections, :except => [:index, :select, :search, :new]
+	before_filter :enforce_session_selections, :except => [:index, :select, :search, :new, :create]
 
   # GET /students
   # GET /students.xml
@@ -35,12 +35,12 @@ class StudentsController < ApplicationController
   
   def search
     school = School.find(session[:school_id])
-		if request.get?
+		# if request.get?
 			@grades = school.enrollments.collect(&:grade).uniq
 			@grades.unshift("*")
-		else
-			redirect_to students_url
-		end
+		# else
+			# redirect_to students_url
+		# end
   end
 
   # GET /students/1
@@ -120,7 +120,8 @@ class StudentsController < ApplicationController
   private
   def enforce_session_selections
     return true unless params[:id] 
-    if selected_students_ids.include?(params[:id])
+		# raise "I'm here" if selected_students_ids.nil?
+    if selected_students_ids and selected_students_ids.include?(params[:id])
       session[:selected_student]=params[:id]
       return true
     else
