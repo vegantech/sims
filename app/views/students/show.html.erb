@@ -3,6 +3,7 @@ Student Profile for <%= @student.fullname %>
   <div id="customflag">
     <%= render :partial=>"custom_flags/list",:locals=>{:student=>@student} %>
   </div>
+  <%= selected_navigation %>
 
 <p>
   <b>District:</b>

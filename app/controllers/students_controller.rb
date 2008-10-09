@@ -121,6 +121,7 @@ class StudentsController < ApplicationController
   def enforce_session_selections
     return true unless params[:id] 
     if selected_students_ids.include?(params[:id])
+      session[:selected_student]=params[:id]
       return true
     else
       flash[:notice]='Student not selected'
