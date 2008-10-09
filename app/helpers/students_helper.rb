@@ -5,7 +5,7 @@ module StudentsHelper
       ret = "Student #{index+1} of #{selected_students_ids.size} &nbsp;&nbsp; "
       
       unless index == 0
-        ret += link_to('<<', student_url(selected_students_ids[0]))
+        ret += link_to('<<', student_url(selected_students_ids.first))
         ret += "&nbsp;&nbsp;"
         ret += link_to('Previous', student_url(selected_students_ids[index-1]))
         ret += "&nbsp;&nbsp;"
@@ -14,7 +14,7 @@ module StudentsHelper
       unless index == (selected_students_ids.size() -1)
         ret += link_to('Next', student_url(selected_students_ids[index+1]))
         ret += "&nbsp;&nbsp;"
-        ret += link_to('>>', student_url(selected_students_ids[0]))
+        ret += link_to('>>', student_url(selected_students_ids.last))
       end
       content_tag :p, ret
         
