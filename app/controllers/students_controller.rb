@@ -7,6 +7,12 @@ class StudentsController < ApplicationController
     #use search criteria when implemented
     # user interface not admin
     enrollments = School.find(session[:school_id]).enrollments(:include=>:students)
+		params[:students] ||= {}
+		selected_grade = params[:students][:grade]
+		if selected_grade and selected_grade != '*'
+			enrollments = enrollments.select{|e| e.grade == selected_grade}
+		end
+
 		# puts "#{params.inspect}"
     @students = enrollments
 		# puts "@students: #{@students.inspect}"
@@ -29,8 +35,6 @@ class StudentsController < ApplicationController
       session[:selected_student]=session[:selected_students].first
       redirect_to student_url(session[:selected_student])
     end
-      
-    
   end
   
   def search
