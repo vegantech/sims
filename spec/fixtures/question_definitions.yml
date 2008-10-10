@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  checklist_definition_id: 1
+  text: MyText
+  position: 1
+
+two:
+  checklist_definition_id: 1
+  text: MyText
+  position: 1
