@@ -1,0 +1,14 @@
+one:
+  id: 1
+  checklist_definition: checklist_definition_one
+  from_tier: 1
+  promoted: false
+  created_at: 2007-08-06 01:46:48
+  updated_at: 2007-08-06 01:46:48
+two:
+  id: 2
+  checklist_definition: checklist_definition_one
+  from_tier: 1
+  promoted: false
+  created_at: 2007-08-06 01:46:48
+  updated_at: 2007-08-06 01:46:48

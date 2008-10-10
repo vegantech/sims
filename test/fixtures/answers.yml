@@ -1,0 +1,14 @@
+one:
+  id: 1
+  answer_definition_id: 1
+  checklist_id: 1
+  text: MyText
+  created_at: 2007-08-06 01:49:39
+  updated_at: 2007-08-06 01:49:39
+two:
+  id: 2
+  answer_definition_id: 1
+  checklist_id: 1
+  text: MyText
+  created_at: 2007-08-06 01:49:39
+  updated_at: 2007-08-06 01:49:39

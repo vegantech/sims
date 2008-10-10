@@ -35,4 +35,19 @@ class Test::Unit::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  #
+  # Asserts that an object is valid.
+  # Accepts a hash of options:
+  # +:message+::        The message to display if the object is invalid.  Default is to display the invalid object's class name along with its value in YAML.
+  #
+  # =Examples
+  # assert_validity employee
+  # assert_validity employee, :message => "This employee is not valid: #{employee.full_name}"
+  #
+  def assert_validity(obj, options ={})
+    message = "#{options[:message]}#{obj.class.to_s.titleize} was invalid: \n#{obj.errors.to_yaml}"
+    assert obj.valid?, message
+  end
+
+
 end

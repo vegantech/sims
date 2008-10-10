@@ -1,7 +1,8 @@
 class ElementDefinition < ActiveRecord::Base
   acts_as_list :scope => :question_definition
 
-  has_many :answer_definitions, :dependent => :destroy, :order => "rank ASC"
+  has_many :answer_definitions, :dependent => :destroy, :order => "position ASC"
+  has_many :answers, :through => :answer_definitions
   acts_as_reportable if defined? Ruport
 
   belongs_to :question_definition

@@ -4,7 +4,7 @@ class QuestionDefinition < ActiveRecord::Base
 
   belongs_to :checklist_definition
 
-  has_many :element_definitions, :dependent => :destroy, :order => "rank ASC"
+  has_many :element_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :answer_definitions, :through=> :element_definitions
   acts_as_reportable if defined? Ruport
 
