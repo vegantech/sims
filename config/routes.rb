@@ -23,6 +23,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :countries
 
+  map.namespace :checklist_builder do |checklist_builder|
+    checklist_builder.resources :checklists,  :member => { :preview => :get, :move => :post, :new_from_this => :post }
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

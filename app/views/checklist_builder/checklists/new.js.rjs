@@ -1,0 +1,6 @@
+page << if_not_visible("new_checklist_definition")
+page.insert_content "new_checklist_definition", :partial => "rjs_new_form", :locals => { :checklist_definition => @checklist_definition }
+page.change_link "add_checklist_definition_link", "Reset Add Checklist Form"
+page << "}else{"
+page.update_content "new_checklist_definition", :partial => "rjs_new_form", :locals => { :checklist_definition => @checklist_definition }
+page << "}"

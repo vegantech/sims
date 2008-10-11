@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district
-    @district=District.find(current_district_id)
+    @@district ||= District.first || District.create!
   end
 
 end

@@ -1,0 +1,56 @@
+<h1>Showing Checklist Definition <%= checklist_definition.id %></h1>
+  <table>
+    <tr class="cycle_odd_lvl1">
+      <td colspan="2">Active?</td>
+      <td colspan="2">
+        <%- if checklist_definition.active? -%>
+          Yes
+        <%- else -%>
+          No
+        <%- end -%>
+      </td>
+    </tr>
+    <tr class="cycle_even_lvl1">
+      <td colspan="2">Text:</td>
+      <td colspan="2"><%=h checklist_definition.text %></td>
+    </tr>
+    <tr class="cycle_odd_lvl1"> 
+      <td colspan="2">Directions:</td>
+      <td colspan="2"><%=h checklist_definition.directions %></td>
+    </tr>
+    <tr class="cycle_even_lvl1"> 
+      <td colspan="2">Creation Date:</td>
+      <td colspan="2"><%=h checklist_definition.created_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr class="cycle_odd_lvl1"> 
+      <td colspan="2">Date of Last Update:</td>
+      <td colspan="2"><%=h checklist_definition.updated_at.to_date.to_s(:long) %></td>
+    </tr>
+  <tr>
+      <td colspan="4">
+        <%= link_to 'Preview', preview_checklist_builder_checklist_path(checklist_definition) %> |
+        <%= link_to_remote content_tag(:span, "Edit", :id =>dom_id(checklist_definition,:edit_link)), 
+                           :url => edit_checklist_builder_checklist_path(checklist_definition),
+                           :loading => "Element.show('#{dom_id(checklist_definition,:spinner)}')",
+                           :complete => "Element.hide('#{dom_id(checklist_definition,:spinner)}')",
+                           :method => :get %> |
+        <%= link_to 'Back', checklist_builder_checklists_path %> |
+        <%= link_to_remote content_tag(:span, "Add Question", :id => dom_id(checklist_definition,:add_question_definition_link)), 
+                           :url => new_question_definition_path(checklist_definition),
+                           :loading => "Element.show('#{dom_id checklist_definition,:spinner }')",
+                           :complete => "Element.hide('#{dom_id checklist_definition,:spinner }')",
+                           :method => :get %> |
+                           <%= link_to_remote content_tag(:span, "Show Question Definitions", :id => "#{checklist_definition}view_question_definitions_toggle"),
+                           :url => question_definitions_path(checklist_definition),
+                           :loading => "Element.show('#{checklist_definition}spinner)'",
+                           :complete => "Element.hide('#{checklist_definition}spinner)'",
+                           :method => :get %>
+                           <%= image_tag "spinner.gif", :id => "#{dom_id(checklist_definition,:spinner)}", :style => "display:none" %>
+      </td>
+    </tr>
+  </table>
+  <%div_for(checklist_definition,:preview ,:style=>"display:none"){} %>
+  <%div_for( checklist_definition, :edit, :style=>"display:none") {} %>
+  <%div_for(checklist_definition,:new_question_definition_notice ,:style=>"display:none"){} %>
+  <%div_for(checklist_definition,:new_question_definition ,:style=>"display:none"){} %>
+  <%content_tag_for(:ul, checklist_definition, :question_definitions, :style=>"display:none") {} %>

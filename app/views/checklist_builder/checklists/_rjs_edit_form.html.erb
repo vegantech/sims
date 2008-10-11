@@ -1,0 +1,16 @@
+<% content_tag_for( :a,checklist_definition, :edit_errors_anchor, :name=>dom_id(checklist_definition,:edit_errors_anchor)) do 
+  div_for(checklist_definition,:edit_errors,:style=>"display:none") {}
+end
+
+%>
+
+<%- remote_form_for :checklist_definition, :url => checklist_builder_checklist_path(checklist_definition), :html => { :method => :put } do |f| -%>
+  <%= render :partial => 'form', :locals => { :f => f, :checklist_definition => checklist_definition } %>
+  <p>
+    <%= submit_tag "Update" %> | 
+    <%= link_to_function "Cancel", nil do |page|
+      page.remove_content dom_id(checklist_definition,:edit)
+      page.change_link dom_id(checklist_definition,:edit_link), "Edit"
+    end %>
+  </p>
+<%- end -%>

@@ -16,10 +16,7 @@ class ChecklistDefinition < ActiveRecord::Base
     checklist_definition.question_definitions.each do |question_definition|
       new_checklist_definition.question_definitions << QuestionDefinition.new_from_existing(question_definition)
     end
-    checklist_definition.minimum_scores.each do |minimum_score|
-      new_checklist_definition.minimum_scores << MinimumScore.new_from_existing(minimum_score)
-    end
-    new_checklist_definition
+   new_checklist_definition
   end
 
   def save_all!
@@ -39,6 +36,11 @@ class ChecklistDefinition < ActiveRecord::Base
     :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
     :joins=>"and question_definitions.checklist_definition_id=#{id}")
   end
+
+  def checklist_definition_id
+    id
+  end
+
   protected
 
   def before_save
