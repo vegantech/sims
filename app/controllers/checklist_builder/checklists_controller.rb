@@ -75,7 +75,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         format.js
       else
         format.html { render :action => "edit" }
-        format.js { render :action=> "edit"}
+        format.js 
       end
     end
   end
