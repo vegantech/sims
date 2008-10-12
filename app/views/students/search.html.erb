@@ -1,7 +1,6 @@
-<% form_tag({:action => 'index'}, {:method => 'get', :name => "select_students_form"}) do %>
+<% form_tag({}, {:name => "select_students_form"}) do %>
   <div id='table'>
     <%= select(:students,:grade,@grades) %>
   </div>
   <%= submit_tag "Search for Students", :name => 'search' %>
 <% end %>
-

@@ -4,18 +4,15 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    #use search criteria when implemented
-    # user interface not admin
-    enrollments = School.find(session[:school_id]).enrollments(:include=>:students)
-		params[:students] ||= {}
-		selected_grade = params[:students][:grade]
-		if selected_grade and selected_grade != '*'
-			enrollments = enrollments.select{|e| e.grade == selected_grade}
-		end
+		# enrollments = School.find(session[:school_id]).enrollments(:include=>:students)
+		# params[:students] ||= {}
+		# selected_grade = params[:students][:grade]
+		# if selected_grade and selected_grade != '*'
+		# enrollments = enrollments.select{|e| e.grade == selected_grade}
+		# end
 
-		# puts "#{params.inspect}"
-    @students = enrollments
-		# puts "@students: #{@students.inspect}"
+		# @students = enrollments
+		@students = Enrollment.search(session[:search])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -39,12 +36,16 @@ class StudentsController < ApplicationController
   
   def search
     school = School.find(session[:school_id])
-		# if request.get?
+		if request.get?
 			@grades = school.enrollments.collect(&:grade).uniq
 			@grades.unshift("*")
-		# else
-			# redirect_to students_url
-		# end
+		else
+			# puts params.inspect
+			selected_grade = params['students']['grade']
+			session[:search] ||= {}
+			session[:search][:grade] = selected_grade
+			redirect_to students_url
+		end
   end
 
   # GET /students/1
