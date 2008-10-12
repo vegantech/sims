@@ -1,0 +1,24 @@
+<h1>Listing element_definitions</h1>
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Text</th>
+    <th>Created at</th>
+    <th>Updated at</th>
+    <th>Kind</th>
+  </tr>
+<%- for element_definition in @element_definitions -%>
+  <tr>
+    <td><%=h element_definition.position %></td>
+    <td><%=h element_definition.text %></td>
+    <td><%=h element_definition.created_at.to_date.to_s(:long) %></td>
+    <td><%=h element_definition.updated_at.to_date.to_s(:long) %></td>
+    <td><%=h element_definition.kind %></td>
+    <td><%= link_to 'Show', checklist_builder_element_path(@checklist_definition, @question_definition, element_definition) %></td>
+    <td><%= link_to 'Edit', edit_checklist_builder_element_path(@checklist_definition, @question_definition, element_definition) %></td>
+    <td><%= link_to 'Destroy', checklist_builder_element_path(@checklist_definition, @question_definition, element_definition), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<%- end -%>
+</table>
+<br />
+<%= link_to 'New element_definition', new_checklist_builder_element_path %>

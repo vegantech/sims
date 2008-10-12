@@ -9,7 +9,46 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081009180131) do
+ActiveRecord::Schema.define(:version => 20081009224110) do
+
+  create_table "answer_definitions", :force => true do |t|
+    t.integer  "element_definition_id"
+    t.text     "text"
+    t.string   "value"
+    t.integer  "position"
+    t.boolean  "autoset_others"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "answers", :force => true do |t|
+    t.integer  "checklist_id"
+    t.integer  "answer_definition_id"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "checklist_definitions", :force => true do |t|
+    t.text     "text"
+    t.text     "directions"
+    t.boolean  "active"
+    t.integer  "district_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "checklists", :force => true do |t|
+    t.integer  "checklist_definition_id"
+    t.integer  "from_tier"
+    t.integer  "student_id"
+    t.boolean  "promoted"
+    t.integer  "user_id"
+    t.boolean  "is_draft",                :default => true
+    t.integer  "district_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "countries", :force => true do |t|
     t.string   "name"
@@ -23,6 +62,15 @@ ActiveRecord::Schema.define(:version => 20081009180131) do
     t.string   "abbrev"
     t.integer  "state_dpi_num"
     t.integer  "state_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "element_definitions", :force => true do |t|
+    t.integer  "question_definition_id"
+    t.text     "text"
+    t.string   "kind"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -48,6 +96,25 @@ ActiveRecord::Schema.define(:version => 20081009180131) do
 
   create_table "frequencies", :force => true do |t|
     t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "question_definitions", :force => true do |t|
+    t.integer  "checklist_definition_id"
+    t.text     "text"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommendations", :force => true do |t|
+    t.integer  "progress"
+    t.integer  "recommendation"
+    t.integer  "checklist_id"
+    t.integer  "user_id"
+    t.text     "reason"
+    t.boolean  "should_advance"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

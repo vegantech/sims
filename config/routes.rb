@@ -25,7 +25,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace :checklist_builder do |checklist_builder|
     checklist_builder.resources :checklists,  :member => { :preview => :get, :new_from_this => :post } do |checklist|
-      checklist.resources :questions, :member => {:move=> :post},:name_prefix=>"checklist_builder_"
+      checklist.resources :questions, :member => {:move=> :post},:name_prefix=>"checklist_builder_" do |question|
+        question.resources :elements, :member => {:move=> :post},:name_prefix=>"checklist_builder_" do |element|
+          element.resources :answers, :name_prefix=>"checklist_builder_"
+        end
+      end
     end
   end
 

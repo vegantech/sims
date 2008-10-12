@@ -1,0 +1,8 @@
+if @element_definition.valid?
+  page.update_content dom_id(@element_definition), :partial => "element_definition_2", :locals => {:element_definition=>@element_definition}
+else
+  page.insert_or_update_error_content dom_id(@element_definition,"edit_errors"), error_messages_for("element_definition")
+  page.redirect_to "##{dom_id(@element_definition,'edit_errors_anchor')}"
+end
+
+

@@ -1,0 +1,10 @@
+<h1>Editing Element Definition <%= @element_definition.position %> for Question Definition <%= @question_definition.position %></h1>
+<%= error_messages_for :element_definition %>
+<%- form_for :element_definition, :url => checklist_builder_element_path(@checklist_definition, @question_definition, @element_definition), :html => { :method => :put } do |f| -%>
+  <%= render :partial => 'form', :locals => { :f => f, :element_definition => @element_definition } %>
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<%- end -%>
+<%= link_to 'Show', checklist_builder_elements_path(@checklist_definition, @question_definition, @element_definition) %> |
+<%= link_to 'Back', checklist_builder_checklists_path(@checklist_definition) %>

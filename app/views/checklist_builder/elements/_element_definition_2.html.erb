@@ -1,0 +1,52 @@
+<h3>Element Definition <%=h element_definition.position %></h3>
+<span style="float:left">
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
+                     :url => move_checklist_builder_element_path(:id => element_definition, :direction => "up") %><br />
+  <%= link_to_remote image_tag("arrow-down.gif"), 
+                     :url => move_checklist_builder_element_path(:id => element_definition, :direction => "down") %>
+</span>
+<table>
+  <tr class="cycle_odd_lvl3">
+    <td>Text:</td>
+    <td><%=h element_definition.text %></td>
+  </tr>
+  <tr class="cycle_even_lvl3"> 
+    <td>Element Type:</td>
+    <td><%=h ElementDefinition.kinds_of_elements[element_definition.kind.to_sym] %></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <%= link_to_remote content_tag(:span, "Show Details", :id => dom_id(element_definition, "show_link")), 
+                         :url => checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition), 
+                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
+                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
+                         :method => :get %> |
+      <%= link_to_remote content_tag(:span, "Edit", :id => dom_id(element_definition, "edit_link")), 
+                         :url => edit_checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
+                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
+                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
+                         :method => :get %> |
+      <%= link_to_remote 'Delete', 
+                         :url => checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
+                         :confirm => 'Are you sure?  This cannot be undone.', 
+                         :method => :delete %> |
+      <%= link_to_remote content_tag(:span, "Add Answer", :id => dom_id(element_definition, "add_answer_definition_link")), 
+                         :url => new_checklist_builder_answer_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
+                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
+                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
+                         :method => :get %> |
+      <%= link_to_remote content_tag(:span, "Show Answer Definitions", :id => dom_id(element_definition, "view_answer_definitions_toggle")),
+                         :url => checklist_builder_answers_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
+                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
+                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
+                         :method => :get %>
+      <%= image_tag "spinner.gif", :id => dom_id(element_definition, "spinner"), :style => "display:none;" %>
+    </td>
+  </tr>
+</table>
+<div id="<%= dom_id(element_definition, "details") %>" style="display:none"></div>
+<div id="<%= dom_id(element_definition, "edit") %>" style="display:none"></div>
+<div id="<%= dom_id(element_definition, "new_answer_definition_notice") %>" style="display:none"></div>
+<div id="<%= dom_id(element_definition, "new_answer_definition") %>" style="display:none"></div>
+<ul id="<%= dom_id(element_definition, "answer_definitions") %>" style="display:none">
+</ul>

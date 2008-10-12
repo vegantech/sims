@@ -27,12 +27,12 @@
                          :confirm => 'Are you sure?  This cannot be undone.', 
                          :method => :delete %> |
       <%= link_to_remote content_tag(:span, "Add Element", :id => dom_id(question_definition,"add_element_definition_link")),
-                         :url => new_element_definition_path(question_definition.checklist_definition, question_definition),
+                         :url => new_checklist_builder_element_path(question_definition.checklist_definition, question_definition),
                          :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
                          :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %> |
       <%= link_to_remote content_tag(:span, "Show Element Definitions", :id => dom_id(question_definition,"view_element_definitions_toggle")),
-                         :url => element_definitions_path(question_definition.checklist_definition, question_definition),
+                         :url => checklist_builder_elements_path(question_definition.checklist_definition, question_definition),
                          :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
                          :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %>
