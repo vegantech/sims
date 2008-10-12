@@ -36,14 +36,14 @@
                            :method => :get %> |
         <%= link_to 'Back', checklist_builder_checklists_path %> |
         <%= link_to_remote content_tag(:span, "Add Question", :id => dom_id(checklist_definition,:add_question_definition_link)), 
-                           :url => new_question_definition_path(checklist_definition),
+                           :url => new_checklist_builder_question_path(checklist_definition),
                            :loading => "Element.show('#{dom_id checklist_definition,:spinner }')",
                            :complete => "Element.hide('#{dom_id checklist_definition,:spinner }')",
                            :method => :get %> |
-                           <%= link_to_remote content_tag(:span, "Show Question Definitions", :id => "#{checklist_definition}view_question_definitions_toggle"),
-                           :url => question_definitions_path(checklist_definition),
-                           :loading => "Element.show('#{checklist_definition}spinner)'",
-                           :complete => "Element.hide('#{checklist_definition}spinner)'",
+                           <%= link_to_remote content_tag(:span, "Show Question Definitions", :id => dom_id(checklist_definition,:view_question_definitions_toggle)),
+                           :url => checklist_builder_questions_path(checklist_definition),
+                           :loading => "Element.show('#{dom_id checklist_definition, :spinner}')",
+                           :complete => "Element.hide('#{dom_id checklist_definition, :spinner}')",
                            :method => :get %>
                            <%= image_tag "spinner.gif", :id => "#{dom_id(checklist_definition,:spinner)}", :style => "display:none" %>
       </td>

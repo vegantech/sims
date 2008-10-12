@@ -1,0 +1,24 @@
+<h1>Listing question_definitions</h1>
+<table>
+  <tr>
+    <th>Checklist definition</th>
+    <th>Created at</th>
+    <th>Updated at</th>
+    <th>Text</th>
+    <th>Rank</th>
+  </tr>
+<%- for question_definition in @question_definitions -%>
+  <tr>
+    <td><%=h question_definition.checklist_definition_id %></td>
+    <td><%=h question_definition.created_at.to_date.to_s(:long) %></td>
+    <td><%=h question_definition.updated_at.to_date.to_s(:long) %></td>
+    <td><%=h question_definition.text %></td>
+    <td><%=h question_definition.rank %></td>
+    <td><%= link_to 'Show', question_definition_path(@checklist_definition, question_definition) %></td>
+    <td><%= link_to 'Edit', edit_question_definition_path(@checklist_definition, question_definition) %></td>
+    <td><%= link_to 'Destroy', question_definition_path(@checklist_definition, question_definition), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<%- end -%>
+</table>
+<br />
+<%= link_to 'New question_definition', new_question_definition_path %>

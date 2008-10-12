@@ -1,0 +1,27 @@
+<h1>Showing Question Definition <%= @question_definition.rank %> for Checklist Definition <%= @checklist_definition.checklist_definition_id %></h1>
+<p>     
+  <table>
+    <tr class="cycle_odd_lvl2">
+      <td colspan="2">Rank:</td>
+      <td colspan="2"><%=h @question_definition.rank %></td>
+    </tr>
+    <tr class="cycle_even_lvl2"> 
+      <td colspan="2">Text:</td>
+      <td colspan="2"><%=h @question_definition.text %></td>
+    </tr>
+    <tr class="cycle_odd_lvl2"> 
+      <td colspan="2">Creation Date:</td>
+      <td colspan="2"><%=h @question_definition.created_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr class="cycle_even_lvl2"> 
+      <td colspan="2">Date of Last Update:</td>
+      <td colspan="2"><%=h @question_definition.updated_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <%= link_to 'Edit', edit_question_definition_path(@checklist_definition, @question_definition) %> |
+        <%= link_to 'Back', checklist_definition_path(@checklist_definition) %>
+      </td>
+    </tr>
+  </table>
+</p>

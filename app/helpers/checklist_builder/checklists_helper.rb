@@ -1,15 +1,5 @@
 module ChecklistBuilder::ChecklistsHelper
 
-  def new_question_definition_path(e)
-    ""
-  end
-
-  def question_definitions_path(e)
-  end
-
-
-
-
   BLIND_DOWN_TIME = 0.25
   BLIND_UP_TIME = 0.25
  def yes_or_no(bool)
