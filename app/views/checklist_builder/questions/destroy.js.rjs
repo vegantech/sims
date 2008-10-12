@@ -1,0 +1,2 @@
+page.remove_content dom_id(@question_definition)
+page.update_content dom_id(@question_definition.checklist_definition,"question_definitions"), :partial => "question_definition", :collection => @question_definition.sibling_definitions

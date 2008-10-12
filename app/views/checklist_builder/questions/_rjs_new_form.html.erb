@@ -1,0 +1,13 @@
+<a name="<%= dom_id(checklist_definition,"new_question_definition_errors_anchor") %>">
+  <div id="<%= dom_id(checklist_definition,"new_question_definition_errors") %>" style="display:none"></div>
+</a>
+<%- remote_form_for :question_definition, :url => checklist_builder_questions_path do |f| -%>
+  <%= render :partial => 'form', :locals => { :f => f, :question_definition => question_definition } %>
+  <p>
+    <%= submit_tag "Create" %> |
+    <%= link_to_function "Cancel", nil do |page|
+      page.remove_content dom_id(checklist_definition,"new_question_definition")
+      page.change_link dom_id(checklist_definition,"add_question_definition_link"), "Add Question"
+    end %>
+  </p>
+<%- end -%>

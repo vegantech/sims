@@ -1,0 +1,9 @@
+<h1>New Checklist Definition</h1>
+<%= error_messages_for :checklist_definition %>
+<%- form_for :checklist_definition, :url => checklist_builder_checklists_path do |f| -%>
+  <%= render :partial => 'form', :locals => { :f => f, :checklist_definition => @checklist_definition } %>
+  <p>
+    <%= submit_tag "Create" %>
+  </p>
+<%- end -%>
+<p><%= link_to 'Back', checklist_builder_checklists_path %></p>

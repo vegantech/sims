@@ -1,0 +1,16 @@
+<h1>Managing Checklists</h1>
+<p>Manage Checklist by deleting, adding, and editing as desired.</p>
+<h1>Listing All Checklist Definitions</h1>
+<div id="checklist_definitions">
+  <%= render :partial => 'checklist_definition', :collection => @checklist_definitions %>
+</div>
+<p>
+  <%= link_to_remote content_tag(:span, "Add New Checklist Definition", :id => "add_checklist_definition_link"), 
+                     :url => new_checklist_builder_checklist_path,
+                     :loading => "Element.show('spinner')",
+                     :complete => "Element.hide('spinner')",
+                     :method => :get %>
+  <%= image_tag "spinner.gif", :id => "spinner", :style => "display:none;" %>
+</p>
+<div id="new_checklist_definition_notice" style="display:none"></div>
+<div id="new_checklist_definition" style="display:none"></div>

@@ -1,0 +1,40 @@
+<% div_for(checklist_definition) do %>
+  <table>
+    <tr class="cycle_odd_lvl1">
+      <td colspan="2">Checklist Definition <%= checklist_definition.id %></td>
+    </tr>
+    <tr class="cycle_even_lvl1">
+      <td>Active?</td>
+      <td>
+        <%- if checklist_definition.active? -%>
+          Yes
+        <%- else -%>
+          No
+        <%- end -%>
+      </td>
+    </tr>
+    <tr class="cycle_odd_lvl1">
+      <td>Text:</td>
+      <td><%=h checklist_definition.text %></td>
+    </tr>
+    <tr class="cycle_even_lvl1"> 
+      <td>Directions:</td>
+      <td><%=h checklist_definition.directions %></td>
+    </tr>
+    <tr class="cycle_odd_lvl1"> 
+      <td>Creation Date:</td>
+      <td><%=h checklist_definition.created_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr class="cycle_even_lvl1"> 
+      <td>Date of Last Update:</td>
+      <td><%=h checklist_definition.updated_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr class="cycle_odd_lvl1">
+      <td colspan="2">
+        <%= link_to 'Show and Edit', checklist_builder_checklist_path(checklist_definition) %> |
+        <%= link_to_remote 'Delete', :url => checklist_builder_checklist_path(checklist_definition), :confirm => 'Are you sure?  This cannot be undone.', :method => :delete unless checklist_definition.checklists.count>0 %> |
+        <%= link_to 'New Checklist Based Upon This', new_from_this_checklist_builder_checklist_path(checklist_definition), :method => :post %>
+      </td>
+    </tr>
+  </table>
+<% end %>
