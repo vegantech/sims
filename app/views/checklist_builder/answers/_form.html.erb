@@ -1,0 +1,10 @@
+<p>
+  Text: <%=markdown_note %><br />
+  <%= f.text_area :text %>
+</p>
+<p>
+  Scoring Value: (Required) <%= f.select :value, (0..10).to_a, :selected => answer_definition.value.to_i %>
+</p>
+<p> Automatically set other answers in question to same.  (Useful for N/A)
+<%=f.check_box :autoset_others %>
+</p>

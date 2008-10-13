@@ -1,0 +1,14 @@
+<table>
+  <tr class="cycle_odd_lvl4">
+    <td>Creation Date:</td>
+    <td><%= answer_definition.created_at.to_date.to_s(:long) %></td>
+  </tr>
+  <tr class="cycle_even_lvl4"> 
+    <td>Date of Last Update:</td>
+    <td><%= answer_definition.updated_at.to_date.to_s(:long) %></td>
+  </tr>
+  <tr class="cycle_odd_lvl4"> 
+    <td>Autoset others?</td>
+    <td><%= answer_definition.autoset_others? %></td>
+  </tr>
+</table>

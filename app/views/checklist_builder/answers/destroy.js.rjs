@@ -1,0 +1,2 @@
+page.remove_content dom_id(@answer_definition)
+page.update_content dom_id(@answer_definition.element_definition,"answer_definitions"), :partial => "answer_definition", :collection => @answer_definition.sibling_definitions

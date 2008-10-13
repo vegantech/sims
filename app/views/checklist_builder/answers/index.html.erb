@@ -1,0 +1,26 @@
+<h1>Listing answer_definitions</h1>
+<table>
+  <tr>
+    <th>Element definition</th>
+    <th>Text</th>
+    <th>Value</th>
+    <th>Rank</th>
+    <th>Created at</th>
+    <th>Updated at</th>
+  </tr>
+<%- for answer_definition in @answer_definitions -%>
+  <tr>
+    <td><%=h answer_definition.element_definition_id %></td>
+    <td><%=h answer_definition.text %></td>
+    <td><%=h answer_definition.value %></td>
+    <td><%=h answer_definition.position %></td>
+    <td><%=h answer_definition.created_at.to_date.to_s(:long) %></td>
+    <td><%=h answer_definition.updated_at.to_date.to_s(:long) %></td>
+    <td><%= link_to 'Show', checklist_builder_answer_path(@checklist_definition, @question_definition, @element_definition, answer_definition) %></td>
+    <td><%= link_to 'Edit', edit_checklist_builder_answer_path(@checklist_definition, @question_definition, @element_definition, answer_definition) %></td>
+    <td><%= link_to 'Destroy', checklist_builder_answer_path(@checklist_definition, @question_definition, @element_definition, answer_definition), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<%- end -%>
+</table>
+<br />
+<%= link_to 'New answer_definition', new_checklist_builder_answer_path %>

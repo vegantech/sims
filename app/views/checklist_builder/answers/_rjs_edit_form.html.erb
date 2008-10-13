@@ -1,0 +1,13 @@
+<a name="<%= dom_id(answer_definition,"edit_errors_anchor") %>">
+  <div id="<%= dom_id(answer_definition,"edit_errors") %>" style="display:none"></div>
+</a>
+<%- remote_form_for :answer_definition, :url => checklist_builder_answer_path(answer_definition.checklist_definition, answer_definition.question_definition, answer_definition.element_definition, answer_definition), :html => { :method => :put } do |f| -%>
+  <%= render :partial => 'form', :locals => { :f => f, :answer_definition => answer_definition } %>
+  <p>
+    <%= submit_tag "Update" %> |
+    <%= link_to_function "Cancel", nil do |page|
+      page.remove_content dom_id(answer_definition,"edit")
+      page.change_link dom_id(answer_definition,"edit_link"), "Edit"
+    end %>
+  </p>
+<%- end -%>

@@ -1,0 +1,31 @@
+<h1>Showing Answer Definition <%= @answer_definition.position %> for Element Definition <%= @element_definition.position %></h1>
+<p>     
+  <table>
+    <tr>
+      <td colspan="2">Rank:</td>
+      <td colspan="2"><%=h @answer_definition.position %></td>
+    </tr>
+    <tr> 
+      <td colspan="2">Text:</td>
+      <td colspan="2"><%=h @answer_definition.text %></td>
+    </tr>
+    <tr> 
+      <td colspan="2">Scoring Value:</td>
+      <td colspan="2"><%=h @answer_definition.value %></td>
+    </tr>
+    <tr> 
+      <td colspan="2">Creation Date:</td>
+      <td colspan="2"><%=h @answer_definition.created_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr> 
+      <td colspan="2">Date of Last Update:</td>
+      <td colspan="2"><%=h @answer_definition.updated_at.to_date.to_s(:long) %></td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <%= link_to 'Edit', edit_checklist_builder_answer_path(@checklist_definition, @question_definition, @element_definition, @answer_definition) %> |
+        <%= link_to 'Back', checklist_builder_checklist_path(@checklist_definition) %>
+      </td>
+    </tr>
+  </table>
+</p>
