@@ -1,0 +1,11 @@
+<%
+@title1="Checklist to Address Culturally Responsive Practices: Part 2" 
+@subtitle1="Summarize progress and make recommendations"
+@title2= "Progress and Recommendations for #{@checklist.student.fullname}"
+%>
+<%- form_for [@checklist,@recommendation]  do |f| -%>
+  <%=render :partial=>f%>
+   <%= submit_tag "Submit" %>
+ 
+<%- end -%>
+<br clear="left"/>

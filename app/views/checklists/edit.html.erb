@@ -1,9 +1,8 @@
 <%= render :partial =>"breadcrumbs_and_banners" %>
 <div id="checklist">
-  <%- form_tag({},{:name=>"checklist_form"}) do -%>
-    <%= render :partial => "form", 
+  <%- form_for(@checklist) do |f| -%>
+    <%= render :partial => f, 
     :locals => { :checklist => @checklist ,:edit=>true} %>
-    <%= hidden_field_tag "student_id", @checklist.student_id %>
     <p>
     <%= submit_tag "Submit and Make Recommendation" %>
     <%= submit_tag "Save Draft", :name=>:save_draft %>

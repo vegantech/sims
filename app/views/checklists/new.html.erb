@@ -1,6 +1,6 @@
 <%= render :partial =>"breadcrumbs_and_banners" %>
 <div id="checklist">
-  <%- form_for(@checklist,:name=>"checklist_form") do |f| -%>
+  <%- form_for(@checklist) do |f| -%>
     <%= render :partial => f %>
     <p>
     <%= submit_tag "Submit and Make Recommendation" %>

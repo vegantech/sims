@@ -16,7 +16,7 @@ module ChecklistsHelper
       #      answer = checklist.previous_answer_for(element_definition)
       element_definition.answer_definitions.each do |answer_definition|
         #        if answer and answer.answer_definition_id == answer_definition.answer_definition_id
-        checked= checklist.answers.collect(&:id).include?(answer_definition.id)
+        checked= checklist.answers.collect(&:answer_definition_id).include?(answer_definition.id)
         concat(capture(answer_definition,checked,&block),block.binding)
       end
     end

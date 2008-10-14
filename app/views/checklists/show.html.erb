@@ -3,11 +3,10 @@
   <p>Completed by <%= @checklist.teacher.fullname %> on 
   <%= @checklist.updated_at.to_s(:chatty) %> </p>
   
-  <%- form_tag  do -%>
-    <%= render :partial => "form", 
-    :locals => { :checklist => @checklist, :view=>true } %>
-  <%=text_field_tag "test",'Recommendation'%>
+  <%- form_for @checklist do |f| -%>
+    <%= render :partial => f, 
+    :locals => { :view=>true } %>
     <%- end -%>
     <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>@checklist.recommendation} if @checklist.recommendation%>
-<%=link_to "Back", :action=>"student_profile",:controller=>"student_profile"%>
+<%=link_to "Back", @checklist.student%>
 </div>

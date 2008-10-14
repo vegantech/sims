@@ -82,23 +82,6 @@ class ChecklistsController < ApplicationController
     end
   end
 
-  # PUT /checklists/1
-  # PUT /checklists/1.xml
-  def update
-    @checklist = Checklist.find(params[:id])
-
-    respond_to do |format|
-      if @checklist.update_attributes(params[:checklist])
-        flash[:notice] = 'Checklist was successfully updated.'
-        format.html { redirect_to(@checklist) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @checklist.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /checklists/1
   # DELETE /checklists/1.xml
   def destroy

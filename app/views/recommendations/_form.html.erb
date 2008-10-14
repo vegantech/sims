@@ -1,0 +1,35 @@
+<%= error_messages_for :recommendation %>
+  <h3>Student's Progress</h3>
+  <p>
+    Indicate the student's progress below:<br />
+    <%= form.radio_button  "progress", "0" %> The student has not made progress.<br />
+    <%= form.radio_button  "progress", "1" %> The student is making progress.
+  </p>
+  <h3>Recommendation</h3>
+  <p>
+    Select your recommendation from the list below:<br />
+    <%= form.radio_button "recommendation",  "0" %> No longer requires intervention.<br />
+    <%= form.radio_button "recommendation",  "1" %> Continue with the same interventions and monitor progress.<br />
+    <%= form.radio_button "recommendation",  "3" %> Choose new interventions from the current level and continue to monitor progress.<br />
+    <%- if @checklist.student.max_tier < 3 -%>
+      <%= form.radio_button "recommendation", "4" %> Choose new interventions from the next level and continue to monitor progress.<br />
+    <%- else -%>
+      <%= form.radio_button "recommendation", "5",:onclick=>"Element.show('elig_criteria')" %> The student has not made progress, multiple attempts at interventions have been tried and there is reason to suspect an impairment.<br />
+<div id = "elig_criteria" style="display:none">
+<ul>    
+<%		
+elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
+ "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Speech_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
+  "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
+elig_crit.each do |elig_file| %>
+<li><%=link_to_with_icon elig_file,"#{request.relative_url_root}/files/#{elig_file}" , suffix=" criteria"%></li>
+<%end%>
+</ul>
+	<%=form.check_box :request_referral%> Based on early intervening services, the completion of the checklist, screening results (where appropriate) and a review of the eligibility criteria, the team feels there is reason to suspect an impairment.  Submit a referral to special education. 
+	</div>
+
+	<%- end -%> </p><p>
+	<b> Describe the evidence (e.g., intervention summary report for student, information from family, student work, observation checklists, attendance or achievement data, etc.) that support these conclusions and recommendations.
+</b>
+	<div> <%= form.text_area  :reason, :size => "60x4" , :style=>"margin-left:3em;"%> </div><br/ >
+  </p>

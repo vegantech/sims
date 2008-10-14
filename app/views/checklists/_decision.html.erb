@@ -4,7 +4,7 @@
 <ul <%=highlight_if_wrong_element(checklist,question_definition,element_definition) -%>>
   <%- element_definition.answer_definitions.each do |answer_definition| -%>
   <li>
-    <%= radio_button_tag "element_definition[#{element_definition.element_definition_id}]", answer_definition.answer_definition_id %> <%= markdown_with_span(answer_definition.text) %>
+    <%= radio_button_tag "element_definition[#{element_definition.element_definition_id}]", answer_definition.id %> <%= markdown_with_span(answer_definition.text) %>
   </li>
   <%- end -%>
 </ul>
