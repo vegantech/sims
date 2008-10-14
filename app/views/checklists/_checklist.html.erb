@@ -1,0 +1,12 @@
+<ul>
+  <li>Checklist completed by <%= checklist.teacher.fullname %> on <%= checklist.updated_at.to_s %>
+  <br /> 
+  Status: <%=checklist.status%>
+ 
+  <%=link_to :view, checklist %> <%=link_to :edit, edit_checklist_url(checklist) if checklist.editable?%> 
+  <%=link_to "Make Recommendation", new_checklist_recommendation_url(checklist) if checklist.needs_recommendation%> 
+  <%=link_to "Delete Checklist",checklist,{:confirm=>"Are you sure you want to delete this checklist?", :method=>:delete} if checklist.deletable %>
+ 
+ <%= link_to "Edit", edit_checklist_url(checklist) if checklist.fake_edit == true %>
+</li>
+</ul>

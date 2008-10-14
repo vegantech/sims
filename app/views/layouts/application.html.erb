@@ -12,6 +12,6 @@
   <body>
     <p style="color: green"><%= flash[:notice] %></p>
     <%= yield %>
-    <%= javascript_include_tag 'prototype', 'effects','overlib', :cache => true %>
+    <%= javascript_include_tag 'prototype', 'effects','overlib', 'application', :cache => true %>
   </body>
 </html>

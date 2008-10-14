@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :checklists, :has_many=>:recommendations
+
   map.resources :student_comments
 
   map.resources :ignore_flags

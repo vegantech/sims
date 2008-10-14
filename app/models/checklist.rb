@@ -64,10 +64,28 @@ class Checklist < ActiveRecord::Base
        STATUS[:unknown] #unreachable for now
      end
    end
+
+   def self.new_from_teacher(teacher,import_previous_answers=false, score=false)
+     checklist=Checklist.new(:teacher=>teacher)
+     return nil unless checklist.student
+     checklist.checklist_definition=checklist.student.checklist_definition
+     checklist.from_tier=checklist.student.max_tier
+     checklist.district_id=checklist.student.district_id
+     if import_previous_answers or score
+       c=checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id,
+      :order=>"created_at DESC")
+       c.answers.each {|e| checklist.answers.build e.attributes} if c and import_previous_answers
+       c.score_checklist  if c and score and c.show_score?(false)
+       checklist.score_results = c.score_results if c and score
+      end
+     checklist
+   end
+
  
    def self.new_from_student_and_teacher(student, teacher, 
                                         import_previous_answers = false,
                                         score = false)
+     #fixme deprecate this
     returning checklist = Checklist.new(:student => student, :teacher=> teacher ) do
       checklist.checklist_definition = student.checklist_definition
       checklist.from_tier = student.max_tier
@@ -86,8 +104,10 @@ class Checklist < ActiveRecord::Base
   end
     
   def self.new_from_params_and_teacher(params, teacher)
+
     params[:element_definition] ||=[]
-    returning checklist = Checklist.new_from_student_and_teacher(Student.find(params[:student_id]), teacher) do
+    returning checklist = Checklist.new_from_teacher(teacher) do
+      checklist.is_draft=!!params[:save_draft]
       params[:element_definition].each do |element_definition_id, answer|
         element_definition = ElementDefinition.find(element_definition_id)
         if ['scale','decision'].include?(element_definition.kind)

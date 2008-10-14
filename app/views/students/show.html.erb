@@ -45,6 +45,14 @@ Student Profile for <%= @student.fullname %>
   <%=render_with_empty :partial=>"student_comments/comment", :collection=> @student.comments, :empty => content_tag(:p,"No notes have been submitted for this student. Click the 'Add Note' link above to add a note for this student.")  
 %>
 
+  <h2>Checklists</h2>
+  <%= link_to "Complete a Checklist for this Student", new_checklist_url %>
+  <%cks = @student.checklists.group_by(&:from_tier).each do |g,ck| %>
+    <h4><%= Tier.tiers[g -1].title%></h4>
+    <%= render :partial => 'checklists/checklist', :collection => ck %>
+  <%end%>
+
+
   
 
 

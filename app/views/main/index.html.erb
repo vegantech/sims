@@ -6,6 +6,7 @@
 <% if session[:user_id] %>
   <%= render :partial => 'login/logout' %>
   <%= link_to 'School Selection', schools_url %> 
+  <%= link_to 'Checklist Builder', checklist_builder_checklists_url %>
 <% else %>
   <%=render :partial => 'login/login' %>
 <% end %>
