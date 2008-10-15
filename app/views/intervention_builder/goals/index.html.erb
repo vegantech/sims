@@ -1,0 +1,20 @@
+<h1>Listing goal_definitions</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th> </th>
+    <th> </th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Updated On</th>
+  </tr>
+</thrad>
+<tbody id ="goal_definition_list">
+<%= render :partial => 'goal_definition', :collection => @goal_definitions %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New goal_definition', new_intervention_builder_goal_path %>

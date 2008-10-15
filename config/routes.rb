@@ -35,6 +35,12 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
+  map.namespace :intervention_builder do |intervention_builder|
+    intervention_builder.resources :goals, :member=>{:disable => :put, :move=>:put} do |goal|
+      goal.resources :objectives, :name_prefix=>"intervention_builder_"
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

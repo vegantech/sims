@@ -1,2 +1,0 @@
-module ChecklistBuilder::QuestionsHelper
-end

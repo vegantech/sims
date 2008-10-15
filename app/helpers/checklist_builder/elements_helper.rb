@@ -1,2 +1,0 @@
-module ChecklistBuilder::ElementsHelper
-end

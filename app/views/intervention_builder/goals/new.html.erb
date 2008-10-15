@@ -1,0 +1,8 @@
+<h1>New goal_definition</h1>
+
+<%= error_messages_for :goal_definition %>
+
+<% form_for(@goal_definition, :url=>intervention_builder_goals_path) do |f| %>
+<%= render :partial => f, :locals=>{:submit_text=>"Create"} %>
+<% end %>
+<%= link_to 'Back', intervention_builder_goals_path %>

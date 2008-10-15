@@ -1,0 +1,10 @@
+<h1>Editing goal_definition</h1>
+
+<%= error_messages_for :goal_definition %>
+
+<% form_for(@goal_definition, :url=>intervention_builder_goal_path(@goal_definition), :html=>{:method=>:put}) do |f| %>
+<%= render :partial => f, :locals=>{:submit_text=>"Update"} %>
+<% end %>
+
+<%= link_to 'Show', intervention_builder_goal_path(@goal_definition) %> |
+<%= link_to 'Back', intervention_builder_goals_path %>
