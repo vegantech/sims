@@ -1,0 +1,24 @@
+
+<h1>Listing Objective Definitions</h1>
+<%= render :partial=>"intervention_builder/goals/summary" %>
+
+<table>
+  <thead>
+  <tr>
+    <th> </th>
+    <th> </th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Updated On</th>
+  </tr>
+  </thead>
+
+  <tbody id="objective_definition_list">  
+<%= render :partial => 'objective_definition', :collection => @objective_definitions %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New objective_definition', new_intervention_builder_objective_path %> <br />
+<%= link_to 'Back to Goal Definitions', intervention_builder_goals_path %>

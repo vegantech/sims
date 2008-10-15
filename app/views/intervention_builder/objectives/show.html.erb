@@ -1,0 +1,28 @@
+<%= render :partial=>"intervention_builder/goals/summary" %>
+
+<p>
+  <b>Title:</b>
+  <%=h @objective_definition.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @objective_definition.description %>
+</p>
+<p>
+  <b>Updated On:</b>
+  <%=h @objective_definition.updated_at %>
+</p>
+
+
+<%=list_links_and_attachments_with_delete(@objective_definition)%>
+
+
+
+<%= link_to_add_attachment(@objective_definition)%>|
+<%= link_to_add_link(@objective_definition)%>|
+
+<%= link_to 'Edit', edit_intervention_builder_objective_path(@goal_definition,@objective_definition) %> |
+<%= link_to 'Back', intervention_builder_objectives_path %> |<%= link_to 'see Categories', intervention_builder_categories_path(@goal_definition,@objective_definition)%>
+
+

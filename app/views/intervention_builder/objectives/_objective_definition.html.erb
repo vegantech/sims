@@ -1,0 +1,17 @@
+<%content_tag_for :tr, objective_definition do %>
+  <td align="left"><%= move_up_down_buttons objective_definition %> </td>
+  <td align="center">
+    <%= link_to 'Show', intervention_builder_objective_path(@goal_definition,objective_definition) %><br />
+    <%= link_to 'Edit', edit_intervention_builder_objective_path(@goal_definition,objective_definition) %><br />
+
+    
+    <%= link_to 'Disable', disable_intervention_builder_objective_path(@goal_definition,objective_definition), :confirm => 'Are you sure? This is similar to deletion, except any existing interventions will retain their info. ', :method => :put %>  <br />    
+
+
+    <%= link_to 'Destroy', intervention_builder_objective_path(@goal_definition,objective_definition), :confirm => 'Are you sure?', :method => :delete %><br />
+    <%= link_to 'See Categories', intervention_builder_categories_path(@goal_definition,objective_definition)%>
+</td>
+  <td><%=h objective_definition.title %></td>
+  <td><%=h objective_definition.description %></td>
+  <td><%=h objective_definition.updated_at %></td>
+<% end %>
