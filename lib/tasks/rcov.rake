@@ -20,7 +20,7 @@ begin
           t.output_dir = "test/coverage/#{target}"
           t.verbose = true
           t.rcov_opts.clear
-          t.rcov_opts << '--rails --aggregate coverage.data --text-report --sort'
+          t.rcov_opts << '--rails --aggregate coverage.data --text-report --sort coverage'
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end
       end
@@ -40,7 +40,7 @@ begin
           # t.spec_files = FileList['spec/**/*_spec.rb']
           t.rcov = true
           t.rcov_dir="test/coverage/#{target}"
-          t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort"
+          t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort coverage"
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end
 
