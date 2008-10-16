@@ -12,7 +12,7 @@ RCOV_OPTS=""
   end
   
   def default_rcov_params_for_integration
-    ' -x "\/Library\/","spec\/","stories\/", "gems\/","' +"#{ENV['GEM_HOME']}" + '"'
+    ' -x "\/Library\/","spec\/","stories\/","' +"#{ENV['GEM_HOME']}" + '"'
   end
 
   def specs_corresponding_to_unit
