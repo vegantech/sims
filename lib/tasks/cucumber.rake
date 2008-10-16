@@ -17,5 +17,5 @@ Cucumber::Rake::Task.new(:features_with_rcov) do |t|
   t.rcov_opts << send("default_rcov_params_for_#{target}")
 
 end
-task :features_with_rcov => ['db:test:prepare','build_rcov_gem_binaries']
+task :features_with_rcov => ['db:test:prepare']
 
