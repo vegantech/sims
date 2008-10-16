@@ -1,4 +1,4 @@
-submodule "vendor/plugins/webrat"]
+[submodule "vendor/plugins/webrat"]
 	path = vendor/plugins/webrat
 	url = git://github.com/brynary/webrat.git
 [submodule "vendor/plugins/rspec"]
