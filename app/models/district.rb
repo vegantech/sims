@@ -3,4 +3,5 @@ class District < ActiveRecord::Base
   has_many :users
   has_many :checklist_definitions
   has_many :goal_definitions, :order=>:position
+  has_many :probe_definitions
 end
