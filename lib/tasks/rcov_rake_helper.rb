@@ -3,16 +3,16 @@ RCOV_OPTS=""
   require File.expand_path("vendor/plugins/rspec/lib/spec/rake/spectask")
 
   def default_rcov_params_for_unit   
-    '-i "app\/reports" -x "app\/controllers","\/Library\/","spec\/","stories\/"'
+    '-i "app\/reports" -x "app\/controllers","\/Library\/","spec\/","stories\/", "gems"'
 
   end  
   
   def default_rcov_params_for_functional   
-    ' -x  "app\/reports","app\/models","app\/helpers","lib/","\/Library\/","spec\/","stories\/"'
+    ' -x  "app\/reports","app\/models","app\/helpers","lib/","\/Library\/","spec\/","stories\/", "gems\/"'
   end
   
   def default_rcov_params_for_integration
-    ' -x "\/Library\/","spec\/","stories\/"'
+    ' -x "\/Library\/","spec\/","stories\/", "gems\/"'
   end
 
   def specs_corresponding_to_unit
