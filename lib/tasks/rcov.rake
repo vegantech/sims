@@ -20,7 +20,7 @@ begin
           t.output_dir = "test/coverage/#{target}"
           t.verbose = true
           t.rcov_opts.clear
-          t.rcov_opts << '--rails --aggregate coverage.data --text-report --sort coverage'
+          t.rcov_opts << '--rails --aggregate coverage.data'
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end
       end
