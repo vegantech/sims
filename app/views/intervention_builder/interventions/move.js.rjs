@@ -1,0 +1,4 @@
+page.replace_html( 'intervention_definition_list',
+:partial => "intervention_definition",
+:collection => @intervention_definitions)
+page.safe_highlight dom_id(@intervention_definition)

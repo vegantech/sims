@@ -1,0 +1,31 @@
+<h1>Listing intervention_definitions</h1>
+<%= render :partial=>"intervention_builder/categories/summary" %>
+
+<table>
+  <thead>
+  <tr>
+    
+    <th>Order</th>
+    <th> </th>
+    <th>Business Key</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Custom</th>
+    <th>Tier</th>
+    <th>Rec Probe Intro</th>
+    <th>Time length</th>
+    <th>Frequency</th>
+    <th>Created by</th>
+    <th>Updated on</th>
+  </tr>
+  </thead>
+  <tbody id="intervention_definition_list">
+<%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New intervention_definition', new_intervention_builder_intervention_path %>
+<%= link_to 'Back to Category', intervention_builder_category_path(@goal_definition,@objective_definition,@intervention_cluster) %>
+

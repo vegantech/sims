@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081015204141) do
+ActiveRecord::Schema.define(:version => 20081016021828) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -120,6 +120,25 @@ ActiveRecord::Schema.define(:version => 20081015204141) do
     t.datetime "updated_at"
   end
 
+  create_table "intervention_definitions", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.boolean  "custom",                  :default => false
+    t.integer  "intervention_cluster_id"
+    t.integer  "tier_id"
+    t.integer  "time_length_id"
+    t.integer  "time_length_num",         :default => 1
+    t.integer  "frequency_id"
+    t.integer  "frequency_multiplier",    :default => 1
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.boolean  "disabled",                :default => false
+    t.integer  "position"
+    t.string   "rec_mon_preface"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -188,6 +207,13 @@ ActiveRecord::Schema.define(:version => 20081015204141) do
     t.integer  "id_district"
     t.integer  "id_state"
     t.integer  "id_country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "time_lengths", :force => true do |t|
+    t.string   "title"
+    t.integer  "days"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

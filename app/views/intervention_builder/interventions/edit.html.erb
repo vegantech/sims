@@ -1,0 +1,17 @@
+<h1>Editing intervention_definition</h1>
+<p>Changing this may impact existing interventions. </p>
+<%= render :partial=>"intervention_builder/categories/summary" %>
+
+<%= error_messages_for :intervention_definition %>
+
+<% form_for(:intervention_definition, :url => intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition), :html => { :method => :put }) do |f| %>
+
+
+  <p>
+    <b>Goal-Objective-Cluster</b><br />
+    <%= f.collection_select(:intervention_cluster_id, @intervention_clusters,:id,:summary_with_parent_tables) %>
+  </p>
+<%= render :partial => f,:locals=>{:submit_name=>"Update"} %>
+<% end %>
+<%= link_to 'Show', intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition) %> |
+<%= link_to 'Back', intervention_builder_interventions_path(@goal_definition,@objective_definition,@intervention_cluster) %>

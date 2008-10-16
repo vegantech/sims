@@ -1,0 +1,70 @@
+<%= render :partial=>"intervention_builder/categories/summary" %>
+
+<p>
+  <b>Title:</b>
+  <%=h @intervention_definition.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @intervention_definition.description %>
+</p>
+
+<p>
+  <b>Custom Intervention:</b>
+  <%=h @intervention_definition.custom %>
+</p>
+
+<p>
+  <b>Tier:</b>
+  <%=h @intervention_definition.tier.title %>
+</p>
+
+<p>
+  <b>Recommended Monitor Preface:</b>
+  <%=h @intervention_definition.rec_mon_preface %>
+
+</p>
+
+<p>
+  <b>Time length:</b>
+  <%=h pluralize(@intervention_definition.time_length_num, @intervention_definition.time_length.title) %>
+</p>
+
+<p>
+  <b>Frequency:</b>
+  <%=h pluralize(@intervention_definition.frequency_multiplier, "time") +" "+ @intervention_definition.frequency.title %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%=h @intervention_definition.user %>
+</p>
+
+<p>
+  <b>Updated on:</b>
+  <%=h @intervention_definition.updated_at.to_date.to_s(:long) %>
+</p>
+
+<table>
+<caption>Recommended Progress Monitors
+</caption>
+<tbody id="recommended_monitors_list">
+<%= render :partial => '/recommended_monitors/recommended_monitor', :collection => @intervention_definition.recommended_monitors %>
+</tbody>
+</table>
+
+<%=list_links_and_attachments_with_delete(@intervention_definition)%>
+
+
+<%= link_to_add_attachment(@intervention_definition)%>|
+<%= link_to_add_link(@intervention_definition)%>|
+
+
+ 
+
+<%= link_to 'Edit', edit_intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition) %> |
+<%= link_to 'Back', intervention_builder_interventions_path %> |
+<%= link_to 'Recommend Probes', url_for(:controller=>"recommended_monitors",:action=>"assign",:id=>@intervention_definition) %> |
+
+<%= link_to 'New intervention_definition', new_intervention_builder_intervention_path %>

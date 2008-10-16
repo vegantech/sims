@@ -6,4 +6,8 @@ class Tier
     'Tier'
   end
 
+  def self.find(*args)
+    Tier.new
+  end
+
 end

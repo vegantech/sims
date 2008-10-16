@@ -1,0 +1,39 @@
+  <p>
+    <b>Title</b><br />
+    <%= form.text_area :title %>
+  </p>
+
+  <p>
+    <b>Description</b><br />
+    <%= form.text_area :description %>
+  </p>
+
+    <%= form.hidden_field :custom %>
+
+  <p>
+    <b>Tier</b><br />
+    <%= form.collection_select(:tier_id, Tier.tiers, :id, :title) %>
+  </p>
+
+  <p>
+    <b>Preface for choosing recommended monitor</b><br />
+    <%= form.text_field :rec_mon_preface %>
+  </p>
+
+  <p>
+    <b>Time length</b><br />
+   <%= form.text_field :time_length_num %>
+   <%= form.collection_select(:time_length_id,TimeLength.TimeLengths,:id,:title) %>
+  </p>
+
+
+  <p>
+    <b>Frequency</b><br />
+    <%=form.text_field :frequency_multiplier%> Time(s) 
+    <%=form.collection_select(:frequency_id,Frequency.Frequencies,:id,:title) %>  
+  </p>
+
+
+  <p>
+    <%= submit_tag submit_name %>
+  </p>
