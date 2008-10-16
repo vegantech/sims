@@ -42,8 +42,12 @@ class StudentsController < ApplicationController
 		else
 			# puts params.inspect
 			selected_grade = params['students']['grade']
+			selected_last_name = params['students']['last_name']
+
 			session[:search] ||= {}
 			session[:search][:grade] = selected_grade
+			session[:search][:last_name] = selected_last_name
+
 			redirect_to students_url
 		end
   end

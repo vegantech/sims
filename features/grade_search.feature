@@ -3,7 +3,7 @@ Feature: Search Page
   A SIMS user
   Should be able to find students using search criteria
   
-  Scenario: Search by *
+  Scenario: Search by grade *
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
@@ -12,7 +12,8 @@ Feature: Search Page
 		And I press "Choose School"
 		# And I am on the "search" page
 
-    When I select "*" from "students_grade"
+    # When I select "*" from "students_grade"
+    When I select "*" from "Grade"
 		And I press "Search for Students"
 
 		Then I should see "2 students selected"

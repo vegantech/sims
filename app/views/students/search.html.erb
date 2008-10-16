@@ -1,6 +1,10 @@
 <% form_tag({}, {:name => "select_students_form"}) do %>
   <div id='table'>
-    <%= select(:students,:grade,@grades) %>
+		<label for="students_grade">Grade</label>
+    <%= select(:students,:grade,@grades) %><br/>
+
+		<label for="students_last_name">Last Name</label>
+		<%= text_field(:students, :last_name) %>
   </div>
   <%= submit_tag "Search for Students", :name => 'search' %>
 <% end %>
