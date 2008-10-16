@@ -1,3 +1,4 @@
+  
 module RCov
   # A task that can verify that the RCov coverage doesn't
   # drop below a certain threshold. It should be run after

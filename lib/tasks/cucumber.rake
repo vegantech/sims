@@ -1,3 +1,4 @@
+require File.dirname(__FILE__)+ '/rcov_rake_helper'
 $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
 $:.unshift (RAILS_ROOT + '/vendor/gems/rcov-0.8.1.3.0/lib')
 

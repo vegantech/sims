@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081016021828) do
+ActiveRecord::Schema.define(:version => 20081016153827) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -145,6 +145,29 @@ ActiveRecord::Schema.define(:version => 20081016021828) do
     t.integer  "goal_definition_id"
     t.integer  "position"
     t.boolean  "disabled"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "probe_definition_benchmarks", :force => true do |t|
+    t.integer  "probe_definition_id"
+    t.integer  "benchmark"
+    t.integer  "district_id"
+    t.integer  "grade_level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "probe_definitions", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.integer  "user_id"
+    t.integer  "district_id"
+    t.boolean  "active",        :default => true
+    t.integer  "maximum_score"
+    t.integer  "minimum_score"
+    t.integer  "school_id"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
