@@ -1,9 +1,4 @@
 RCOV_OPTS=""
-  $:.unshift (RAILS_ROOT + '/vendor/gems/rcov-0.8.1.3.0/lib')
-  $:.unshift 'vendor/gems/term-ansicolor-1.0.3/lib'
-
-  ENV['PATH']='.:' + ENV['PATH']
-
   require 'rcov/rcovtask'
   require File.expand_path("vendor/plugins/rspec/lib/spec/rake/spectask")
 

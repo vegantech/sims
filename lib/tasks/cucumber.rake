@@ -1,11 +1,7 @@
 $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
-$:.unshift (RAILS_ROOT + '/vendor/gems/rcov-0.8.1.3.0/lib')
-
-ENV['PATH']='.:' + ENV['PATH']
 
 require 'cucumber/rake/task'
 require File.dirname(__FILE__)+ '/rcov_rake_helper'
-#load File.dirname(__FILE__)+ '/rcov.rake'
 Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "--format pretty"
 end
@@ -21,5 +17,5 @@ Cucumber::Rake::Task.new(:features_with_rcov) do |t|
   t.rcov_opts << send("default_rcov_params_for_#{target}")
 
 end
-task :features_with_rcov => ['db:test:prepare','build_rcov_gem_binaries']
+task :features_with_rcov => ['db:test:prepare']
 
