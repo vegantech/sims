@@ -11,7 +11,7 @@ class ProbeDefinition < ActiveRecord::Base
   
   def validate
     #TODO this can be refactored out using rails 2.x changes
-    if minimum_score!= nil && maximum_score!=nil && minimum_score >= maximum_score
+    if minimum_score!= nil && maximum_score!=nil && minimum_score > maximum_score
       errors.add(:minimum_score, "must be less than the maximum score.")
     end
   end
