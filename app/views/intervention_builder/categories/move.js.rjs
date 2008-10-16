@@ -1,0 +1,4 @@
+page.replace_html( 'intervention_cluster_list',
+:partial => "intervention_cluster",
+:collection => @intervention_clusters)
+page.safe_highlight dom_id(@intervention_cluster)

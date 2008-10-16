@@ -1,0 +1,21 @@
+<%= render :partial=>"intervention_builder/objectives/summary" %>
+<p>
+  <b>Title:</b>
+  <%=h @intervention_cluster.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @intervention_cluster.description.to_s %>
+</p>
+
+
+<p>
+  <b>Updated On:</b>
+  <%=h @intervention_cluster.updated_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_intervention_builder_category_path(@goal_definition,@objective_definition,@intervention_cluster) %> |
+<%= link_to 'Back', intervention_builder_categories_path(@goal_definition,@objective_definition) %> |
+<%= link_to 'see Intervention Definitions', intervention_builder_interventions_path(@goal_definition,@objective_definition,@intervention_cluster)%>

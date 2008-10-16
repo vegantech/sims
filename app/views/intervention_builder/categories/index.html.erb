@@ -1,0 +1,23 @@
+<h1>Listing Categories</h1>
+<%= render :partial=>"intervention_builder/objectives/summary" %>
+
+<table>
+<thead>
+  <tr>
+    <th> </th>
+    <th> </th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Updated On</th>
+  </tr>
+</thead>
+  
+<tbody id="intervention_cluster_list">
+<%= render :partial => 'intervention_cluster', :collection => @intervention_clusters %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New category', new_intervention_builder_category_path(@goal_definition,@objective_definition) %>
+<%= link_to 'Back to Objective Definitions', intervention_builder_objectives_path(@goal_definition)%>
