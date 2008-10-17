@@ -1,6 +1,7 @@
 class ProbeDefinition < ActiveRecord::Base
   belongs_to :district
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent=>:destroy
+  has_many :intervention_definitions, :foreign_key=>:id #FIXME
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active','district_id']
   validates_numericality_of :maximum_score, :allow_nil=> true

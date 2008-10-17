@@ -3,7 +3,7 @@ class CreateProbeDefinitionBenchmarks < ActiveRecord::Migration
     create_table :probe_definition_benchmarks do |t|
       t.belongs_to :probe_definition
       t.integer :benchmark
-      t.integer :grade_level
+      t.string :grade_level
 
       t.timestamps
     end

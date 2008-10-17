@@ -1,8 +1,7 @@
 class ProbeDefinitionBenchmark < ActiveRecord::Base
   belongs_to :probe_definition
   validates_presence_of :benchmark, :grade_level
-  validates_numericality_of :grade_level
-  validates_numericality_of :benchmark#, :greater_than_or_equal #!@~!probe_definition.mininum_score!@~!
+  validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
 
 

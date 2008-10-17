@@ -1,0 +1,29 @@
+<% for column in ProbeDefinition.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @probe_definition.send(column.name) %>
+</p>
+<%end %>
+
+ <% @probe_definition.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
+  <p>  
+  <b>Benchmark:</b> <%= probe_definition_benchmark.benchmark %> 
+   
+   <b>at grade level:</b> <%= probe_definition_benchmark.grade_level %>
+   </p>
+  <% end %>
+  <p><b>Intervention Definitions to which this progress monitor is recommended:</b></p>
+  <ul>
+  <% @probe_definition.intervention_definitions.each do | intervention_definition | %>
+  <li> 
+  <%= content_tag :b, intervention_definition.title %> <br />
+  <%=intervention_definition.intervention_cluster.objective_definition.title%> -> 
+  <%=intervention_definition.intervention_cluster.title%>  <br />
+  <%=intervention_definition.tier.title%>   <br />
+  <%=intervention_definition.description %>  
+</li>
+  
+  <% end %>
+  </ul>
+  <%=list_links_and_attachments_with_delete(@probe_definition)%>
+<%= link_to_add_attachment(@probe_definition)%>
+<%= link_to_add_link(@probe_definition)%>

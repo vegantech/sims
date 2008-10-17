@@ -1,0 +1,9 @@
+<h1>New Progress Monitor</h1>
+<% form_for(@probe_definition, :url=>intervention_builder_probes_path) do |f| %>
+  <%= render :partial => f %>
+  <%= submit_tag 'Create' %>
+<% end %>
+</p>
+<p>
+<%= link_to 'Back to List of Progress Monitors', intervention_builder_probes_path %>
+</p>

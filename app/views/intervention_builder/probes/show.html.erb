@@ -1,0 +1,6 @@
+<h1>Progress Monitor Details for <%= @probe_definition.title %></h1>
+<%= render :partial=>"show" %>
+<p>
+<%= link_to 'Edit Progress Monitor', edit_intervention_builder_probe_path(@probe_definition) %>
+  <%= link_to 'Back to List of Progress Monitors', intervention_builder_probes_path %>
+</p>
