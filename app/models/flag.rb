@@ -19,7 +19,4 @@ class Flag < ActiveRecord::Base
   def summary
     "#{reason}- by #{user.fullname} on #{created_at}"
   end
-
-
-
 end
