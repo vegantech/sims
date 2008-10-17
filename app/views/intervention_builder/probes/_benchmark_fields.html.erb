@@ -1,0 +1,19 @@
+<div id="probe_definition_benchmark_<%= index %>">
+  <% fields_for "probe_definition_benchmarks[#{index}]", probe_definition_benchmark do |field| %>
+  <%= error_messages_for 'probe_definition_benchmark'%>
+  <table width="98%">
+      <tr>
+        <td width="15%"><label for="probe_definition_benchmark">Benchmark</label></td>
+        <td><%= field.text_field :benchmark, 'size'=>5  %></td>
+ 
+        <td><label for="probe_definition_grade_level">Grade level</label></td>
+        <td><%= field.select :grade_level, District::GRADES, {:include_blank=>true}  %></td>
+        <td><%= link_to_remote 'remove', :url => { :action => 'remove_benchmark', 
+          :index => index} %></td>
+      </tr>
+    </table>
+  <% end %>
+  <p>
+  
+  </p>
+</div>
