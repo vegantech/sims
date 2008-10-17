@@ -80,5 +80,16 @@ class InterventionBuilder::ProbesController < ApplicationController
     redirect_to intervention_builder_probes_url
 
   end
+
+  def rec_mon
+    @probe_definition=current_district.probe_definitions.find(params[:id])
+  
+    if request.post? and params[:commit]
+      flash[:notice=] = "Changes saved for #{@probe_definition.title}" if @probe_definition.intervention_definition_ids=params[:int_defs]
+      redirect_to intervention_builder_probes_url and return        
+    end
+    @recommended_monitors = @probe_definition.recommended_monitors.collect(&    :intervention_definition_id)
+    @goal_definitions=current_district.goal_definitions
+  end
   
 end

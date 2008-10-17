@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081016052131) do
+ActiveRecord::Schema.define(:version => 20081017032021) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -149,6 +149,14 @@ ActiveRecord::Schema.define(:version => 20081016052131) do
     t.datetime "updated_at"
   end
 
+  create_table "probe_definition_benchmarks", :force => true do |t|
+    t.integer  "probe_definition_id"
+    t.integer  "benchmark"
+    t.string   "grade_level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "probe_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -178,6 +186,15 @@ ActiveRecord::Schema.define(:version => 20081016052131) do
     t.integer  "user_id"
     t.text     "reason"
     t.boolean  "should_advance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommended_monitors", :force => true do |t|
+    t.integer  "intervention_definition_id"
+    t.integer  "probe_definition_id"
+    t.string   "note"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
