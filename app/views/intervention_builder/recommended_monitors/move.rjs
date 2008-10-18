@@ -1,0 +1,4 @@
+page.replace_html( 'recommended_monitors_list',
+:partial => "recommended_monitor",
+:collection => @recommended_monitors)
+page.safe_highlight dom_id(@recommended_monitor)

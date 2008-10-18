@@ -1,0 +1,7 @@
+<% if recommended_monitor.probe_definition %>
+  <%content_tag_for :tr, recommended_monitor do -%>
+    <td><%=move_up_down_buttons recommended_monitor -%></td>
+  <td><%=h recommended_monitor.probe_definition.title %></td>
+<% end %>
+<% end %>
+
