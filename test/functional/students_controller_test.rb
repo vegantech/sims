@@ -9,7 +9,8 @@ class StudentsControllerTest < ActionController::TestCase
   end
 
   def test_should_get_new
-    get :new
+
+    get :new,{},{:school_id=>schools(:alpha).id}
     assert_response :success
   end
 
