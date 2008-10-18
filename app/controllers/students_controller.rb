@@ -12,7 +12,7 @@ class StudentsController < ApplicationController
 		# end
 
 		# @students = enrollments
-		@students = Enrollment.search(session[:search])
+		@students = current_school.enrollments.search(session[:search])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,9 +35,8 @@ class StudentsController < ApplicationController
   end
   
   def search
-    school = School.find(session[:school_id])
 		if request.get?
-			@grades = school.enrollments.collect(&:grade).uniq
+			@grades = current_school.enrollments.collect(&:grade).uniq
 			@grades.unshift("*")
 		else
 			# puts params.inspect
@@ -55,7 +54,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.xml
   def show
-    @student = Student.find(params[:id])
+    @student = current_school.students.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -66,7 +65,7 @@ class StudentsController < ApplicationController
   # GET /students/new
   # GET /students/new.xml
   def new
-    @student = Student.new
+    @student = current_school.students.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -76,13 +75,13 @@ class StudentsController < ApplicationController
 
   # GET /students/1/edit
   def edit
-    @student = Student.find(params[:id])
+    @student = current_schools.students.find(params[:id])
   end
 
   # POST /students
   # POST /students.xml
   def create
-    @student = Student.new(params[:student])
+    @student = current_schools.students.build(params[:student])
 
     respond_to do |format|
       if @student.save
@@ -99,7 +98,7 @@ class StudentsController < ApplicationController
   # PUT /students/1
   # PUT /students/1.xml
   def update
-    @student = Student.find(params[:id])
+    @student = current_school.students.find(params[:id])
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
@@ -116,7 +115,7 @@ class StudentsController < ApplicationController
   # DELETE /students/1
   # DELETE /students/1.xml
   def destroy
-    @student = Student.find(params[:id])
+    @student = current_school.students.find(params[:id])
     @student.destroy
 
     respond_to do |format|
