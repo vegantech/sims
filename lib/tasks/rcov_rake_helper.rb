@@ -1,7 +1,10 @@
-RCOV_OPTS=""
+begin
   require 'rcov/rcovtask'
   require File.expand_path("vendor/plugins/rspec/lib/spec/rake/spectask")
 
+rescue LoadError
+  #allow rake to continue to function is rcov gem is not installed
+end
   def default_rcov_params_for_unit   
     '-i "app\/reports" -x "app\/controllers","\/Library\/","spec\/","stories\/","'+ "#{ENV['GEM_HOME']}" + '"'
 
@@ -34,3 +37,4 @@ RCOV_OPTS=""
   end
  
 
+RCOV_OPTS=""

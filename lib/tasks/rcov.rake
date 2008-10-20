@@ -2,7 +2,7 @@ begin
   require File.dirname(__FILE__)+ '/rcov_rake_helper'
    
   
-
+if defined? Rcov
   namespace :test do
     namespace :coverage do
       desc "Delete aggregate coverage data: requires rcov gem"
@@ -26,7 +26,6 @@ begin
       end
     end
   end
- 
   namespace :spec do
     namespace :rcov do
 
@@ -61,7 +60,7 @@ begin
    # Rake::Task["test:coverage:integration"].invoke
   end
                             
-
+end
 rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
 end
