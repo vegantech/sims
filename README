@@ -1,1 +1,8 @@
-test ok
+SIMS- open source
+Track Student Interventions
+
+see deployment for information on how to deploy.    This will be centrally hosted, but you're welcome to set up your own instance and help contribute code.
+
+
+Note: There are some required gems for testing.  To see them set the RAILS_ENV to test:
+rake  gems RAILS_ENV=test

@@ -20,3 +20,13 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
+
+
+#Test requirements
+config.gem 'spicycode-rcov', :lib => 'rcov', :version => "= 0.8.1.3 "
+config.gem 'hpricot'
+config.gem 'treetop'
+config.gem 'term-ansicolor', :lib => "term/ansicolor"
+
+
