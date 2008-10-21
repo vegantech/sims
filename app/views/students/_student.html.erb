@@ -14,6 +14,12 @@
 </p>
 
 <p>
+  <b>Date of Birth:</b>
+  <%=h @student.birthdate %>
+</p>
+
+
+<p>
   <b>Id district:</b>
   <%=h @student.id_district %>
 </p>
@@ -28,6 +34,8 @@
   <%=h @student.id_country %>
 </p>
 
+<p>
+  <b>Enrollments:</b>
+  <%=h @student.enrollments.first.grade %> (Should iterate through enrollments and show the current ones.)
+  </p>
 
-<%= link_to 'Edit', edit_student_path(@student) %> |
-<%= link_to 'Back', students_path %>
