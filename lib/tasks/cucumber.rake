@@ -4,7 +4,7 @@ require 'cucumber/rake/task'
 require File.dirname(__FILE__)+ '/rcov_rake_helper'
 
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "--format progress"
+  #t.cucumber_opts = "--format progress"
 end
 task :features => 'db:test:prepare'
 
@@ -12,9 +12,10 @@ task :features => 'db:test:prepare'
 Cucumber::Rake::Task.new(:features_with_rcov) do |t|
   
   target = "integration"
+  t.cucumber_opts = "--format progress"
   t.rcov = true
   t.rcov_opts << "-o test/coverage/#{target}"
-  t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort coverage"
+  t.rcov_opts << "--rails --aggregate coverage.data"
   t.rcov_opts << send("default_rcov_params_for_#{target}")
 
 end
