@@ -2,6 +2,8 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include HoptoadNotifier::Catcher
+
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
     :current_student_id, :current_student
