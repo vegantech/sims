@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081017032021) do
+ActiveRecord::Schema.define(:version => 20081021223133) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -139,6 +139,24 @@ ActiveRecord::Schema.define(:version => 20081017032021) do
     t.datetime "updated_at"
   end
 
+  create_table "interventions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "student_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "intervention_definition_id"
+    t.integer  "frequency_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "time_length_id"
+    t.integer  "time_length_number"
+    t.boolean  "active",                     :default => true
+    t.integer  "ended_by_id"
+    t.date     "ended_at"
+    t.integer  "district_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -240,6 +258,7 @@ ActiveRecord::Schema.define(:version => 20081017032021) do
     t.integer  "id_country"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "birthdate"
   end
 
   create_table "time_lengths", :force => true do |t|
