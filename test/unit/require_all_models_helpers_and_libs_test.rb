@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RequireAllModelsHelpersandLibs < ActiveSupport::TestCase
+class RequireAllModelsHelpersandLibsTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   
 

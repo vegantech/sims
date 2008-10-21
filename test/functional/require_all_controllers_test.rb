@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RequireAllControllers < ActiveSupport::TestCase
+class RequireAllControllersTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   
 
