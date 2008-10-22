@@ -7,6 +7,8 @@
   <%= render :partial => 'login/logout' %>
   <%= link_to 'School Selection', schools_url %> 
   <%= link_to 'Checklist Builder', checklist_builder_checklists_url %>
+  <%= link_to 'Intervention Builder', intervention_builder_goals_url %>
+  <%= link_to 'Probe Builder', intervention_builder_probes_url %>
 <% else %>
   <%=render :partial => 'login/login' %>
 <% end %>

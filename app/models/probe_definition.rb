@@ -20,7 +20,7 @@ class ProbeDefinition < ActiveRecord::Base
   end
 
   def probes
-    probe_definition_benchmarks
+   recommended_monitors 
   end
 
 
@@ -30,6 +30,8 @@ class ProbeDefinition < ActiveRecord::Base
 
     my_hash = ActiveSupport::OrderedHash.new()
 
+    my_hash[:unassigned_probe_definitions]={:clusters=>{}}
+    my_hash[:unassigned_probe_definitions][:clusters][:none]={:probes=>[]}
     probes.each do |probe|
       if probe.intervention_definitions.any?
         probe.intervention_definitions.each do |id|
@@ -41,8 +43,6 @@ class ProbeDefinition < ActiveRecord::Base
         end
           
       else
-        my_hash[:unassigned_probe_definitions]={:clusters=>{}}
-        my_hash[:unassigned_probe_definitions][:clusters][:none]={:probes=>[]}
         my_hash[:unassigned_probe_definitions][:clusters][:none][:probes] << probe
       end
     end

@@ -1,0 +1,24 @@
+<% content_tag_for :li, probe_definition do %>
+  <b> 
+    <%=' (Deactivated)' unless probe_definition.active? %> 
+    <%=probe_definition.title %>
+</b> <br />
+   <%=probe_definition.description %> <br/ >
+  
+
+  <% for column in ProbeDefinition.content_columns.reject{|c| %w(title description created_at).include?c.name}  %>
+    
+      <%=h probe_definition.send(column.name) %>
+    
+  <% end %>
+ <br /> 
+    <%= link_to 'Display', intervention_builder_probe_path(probe_definition)  %>
+        <%= link_to 'Edit', edit_intervention_builder_probe_path(probe_definition)  %>  
+        <%=link_to 'Recommend Int Defs', url_for(:controller=>"intervention_builder/recommended_monitors",:action=>"assign_interventions_to_probe",:id=>probe_definition) %>  <br />
+    <%= link_to (probe_definition.active? ? 'Deactivate' : 'Reactivate'), disable_intervention_builder_probe_path(probe_definition) , 
+      :confirm => 'Are you sure?', :method => :put %>
+    <%= link_to 'Delete', intervention_builder_probe_path(probe_definition),
+      :confirm => 'Are you sure?  This will permanently remove this probe definition', :method => :delete unless probe_definition.probes.count >0 %>
+  
+<% end %>
+
