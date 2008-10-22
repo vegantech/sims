@@ -2,11 +2,6 @@ require 'test_helper'
 
 class RequireEverythingTest < ActionController::IntegrationTest
   # fixtures :your, :models
-
-  #Require everything in lib
-  Dir.glob(RAILS_ROOT+"/lib/**/*.rb").each do |lib|
-    require lib.split("lib/").last
-  end
  
   #require every rb in app
   Dir.glob(RAILS_ROOT+"/app/**/*.rb").each do |rb|
