@@ -1,0 +1,19 @@
+<h1>New tier</h1>
+
+<% form_for(@tier) do |f| %>
+  <%= f.error_messages %>
+
+ <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', tiers_path %>
