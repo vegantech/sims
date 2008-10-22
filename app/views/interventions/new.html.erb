@@ -2,9 +2,14 @@
 
 <% form_for(@intervention) do |f| %>
   <%=render :partial =>f %>
+  <% if @intervention.selected_ids %>
+    <%= f.label :apply_to_all, "Apply to all selected students" %>
+    <%= f.check_box :apply_to_all %>
+  <% end %>
  <p>
     <%= f.submit "Create" %>
   </p>
+
 <% end %>
 
 <%= link_to 'Back', interventions_path %>

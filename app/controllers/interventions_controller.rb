@@ -90,7 +90,9 @@ class InterventionsController < ApplicationController
 
   protected
   def values_from_session
-    { :user_id => session[:user_id] }
+    { :user_id => session[:user_id],
+      :selected_ids => selected_students_ids
+    }
   end
 
   def build_from_session_and_params
