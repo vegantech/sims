@@ -1,1 +1,2 @@
-page.replace_html "definitions", :partial=>"interventions/definitions/select"
+page.remove "intervention"
+page.replace "definitions", :partial=>"interventions/definitions/select"

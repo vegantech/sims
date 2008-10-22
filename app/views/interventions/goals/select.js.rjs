@@ -1,1 +1,4 @@
-page.replace_html "objectives", :partial=>"interventions/objectives/select"
+page.remove "intervention"
+page.remove "definitions"
+page.remove "categories"
+page.replace "objectives", :partial=>"interventions/objectives/select"

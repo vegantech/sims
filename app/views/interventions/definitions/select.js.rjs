@@ -1,1 +1,1 @@
-page.replace_html "intervention", :partial=>"interventions/intervention"
+page.replace "intervention", :partial=>"interventions/intervention"

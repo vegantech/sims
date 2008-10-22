@@ -2,9 +2,9 @@
 <% if @intervention_definitions %>
   <% remote_form_for :intervention_definition, :url => select_interventions_definitions_path(@goal_definition,@objective_definition,@intervention_cluster) do |f| %>
     <%= f.collection_select(:id, @intervention_definitions,:id,:title,{},{:onchange=>"form.onsubmit()"}) %>
-    <%= content_tag :noscript, submit_tag("Choose Goal") %>
     <%= submit_tag("Choose Intervention") %>
   <% end %>
 
 <% end %>
 </div>
+<%= render :partial =>'interventions/intervention' %>
