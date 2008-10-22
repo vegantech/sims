@@ -1,5 +1,10 @@
 <h1>New intervention</h1>
 
+<%= render :partial =>'interventions/goals/select' %>
+<%= render :partial=>'interventions/objectives/select' %>
+<%= render :partial=>'interventions/categories/select' %>
+<%= render :partial=>'interventions/definitions/select' %>
+
 <% form_for(@intervention) do |f| %>
   <%=render :partial =>f %>
   <% if @intervention.selected_ids %>

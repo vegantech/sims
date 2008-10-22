@@ -26,6 +26,21 @@ class Intervention < ActiveRecord::Base
     int
   end
 
+
+  def goal_definition
+    objective_definition.goal_definition
+  end
+
+  def objective_definition
+    intervention_cluster.objective_definition
+  end
+
+  def intervention_cluster
+    intervention_definition.intervention_cluster
+  end
+
+
+
   protected
   def create_other_students
     #TODO tests
