@@ -4,7 +4,7 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :tier
   belongs_to :user
-  belongs_to :schoolA
+  belongs_to :school
   has_many :recommended_monitors, :order => :position
   has_many :probe_definitions, :through => :recommended_monitors
   

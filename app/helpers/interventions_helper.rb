@@ -1,0 +1,2 @@
+module InterventionsHelper
+end

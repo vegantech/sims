@@ -18,4 +18,11 @@ class District < ActiveRecord::Base
     InterventionDefinition.find(id,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>self.id})
   end
 
+  def search_intervention_by
+    #FIXME some districts may not use goals or objectives
+    #so they should be able to choose which to search by on the 
+    #student search screen
+    objective_definitions
+  end
+
 end

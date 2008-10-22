@@ -1,0 +1,5 @@
+<% form_for :goal_definition, :url=>select_interventions_goals_path do |f| %>
+  <%= f.collection_select(:id, @goal_definitions,:id,:title) %>
+  <%= content_tag :noscript, submit_tag("Choose Goal") %>
+  <%= submit_tag("Choose Goal") %>
+<% end %>
