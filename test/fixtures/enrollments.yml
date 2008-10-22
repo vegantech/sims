@@ -1,9 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
+alpha_first:
   school: alpha
   student: alpha_first_grader 
   grade: 01
+
+alpha_third:
+  school: alpha
+  student: alpha_third_grader 
+  grade: 03
+
+
+
 
 two:
   school: 

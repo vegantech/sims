@@ -23,4 +23,9 @@ alpha_first_grader:
   first_name: Alpha_First
   birthdate: "2003-05-05"
 
+alpha_third_grader:
+  district: wi_mmsd
+  last_name: Grader
+  first_name: Alpha_Third
+  birthdate: "2003-07-15"
 

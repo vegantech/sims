@@ -1,0 +1,52 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+poor_attendance:
+  title: Poor Attendance
+  description: Student is often absent
+  objective_definition: attendance
+  position: 1
+
+tardiness:
+  title: Tardiness
+  description: Student if often late
+  objective_definition: attendance
+  position: 2
+
+disruptive:
+  title: Distuptive Behavior
+  description: Student interferes with learning of other students
+  objective_definition: classroom_behavior
+  position: 1
+
+inattentiveness:
+  title: Inattentiveness
+  description: Student does not pay attention, may sleep during class
+  objective_definition: classroom_behavior
+  position: 2
+
+
+arithmatic:
+  title: Arithmatic problems
+  description: Problem with numbers
+  position: 1
+  objective_definition: math
+
+algebra:
+  title: Algebra difficulty
+  description: Algebra
+  objective_definition: math
+  position: 2
+
+spelling:
+  title: Spelling problems
+  description: Problem with spelling
+  position: 1
+  objective_definition: language_arts
+
+
+reading:
+  title: Reading problems
+  description: Problem with reading
+  position: 2
+  objective_definition: language_arts
+

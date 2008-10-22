@@ -1,0 +1,112 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ask_student_about_poor_attendance: &defaults
+  title: Ask Student
+  description: Ask student why they are not coming to class
+  intervention_cluster: poor_attendance
+  tier: broad
+  time_length: day
+  time_length_num: 1
+  frequency_multiplier: 1
+  frequency: daily
+  position: 1
+
+contact_parents_about_attendance:
+  title: Contact parents
+  description: Contact parents
+  position: 2
+  <<: *defaults
+
+tardiness_one:
+  title: Tardiness one
+  description: tardiness one
+  intervention_cluster: tardiness
+  <<: *defaults
+
+tardiness_two:
+  title: Tardiness two
+  description: tardiness two
+  intervention_cluster: tardiness
+  position: 2
+  <<: *defaults
+
+disruptive_one:
+  title: Disruptive one
+  description: Disruptive one
+  intervention_cluster: disruptive
+  <<: *defaults
+
+disruptive_two:
+  title: Disruptive two
+  description: Disruptive two
+  intervention_cluster: disruptive
+  position: 2
+  <<: *defaults
+
+inattentiveness_one:
+  title: Inattentiveness one
+  description: Inattentiveness one
+  intervention_cluster: inattentiveness
+  <<: *defaults
+
+inattentiveness_two:
+  title: Inattentiveness two
+  description: Inattentiveness two
+  intervention_cluster: inattentiveness
+  position: 2
+  <<: *defaults
+
+arithmatic_one:
+  title: Arithmatic one
+  description: Arithmatic one
+  intervention_cluster: arithmatic
+  <<: *defaults
+
+arithmatic_two:
+  title: Arithmatic two
+  description: Arithmatic two
+  intervention_cluster: arithmatic
+  position: 2
+  <<: *defaults
+
+
+spelling_one:
+  title: Spelling one
+  description: Spelling one
+  intervention_cluster: spelling
+  <<: *defaults
+
+spelling_two:
+  title: Spelling two
+  description: Spelling two
+  intervention_cluster: spelling
+  position: 2
+  <<: *defaults
+
+
+algebra_one:
+  title: Algebra one
+  description: Algebra one
+  intervention_cluster: algebra
+  <<: *defaults
+
+algebra_two:
+  title: Algebra two
+  description: Algebra two
+  intervention_cluster: algebra
+  position: 2
+  <<: *defaults
+
+
+reading_one:
+  title: Reading one
+  description: Reading one
+  intervention_cluster: reading
+  <<: *defaults
+
+reading_two:
+  title: Reading two
+  description: Reading two
+  intervention_cluster: reading
+  position: 2
+  <<: *defaults
