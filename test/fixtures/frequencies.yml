@@ -1,7 +1,16 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  title: MyString
+daily:
+  title: Daily
 
-two:
-  title: MyString
+weekly:
+  title: Weekly
+
+biweekly: 
+  title: Bi-Weekly
+
+monthly: 
+  title: Monthly
+
+as_needed:
+  title: As Needed
