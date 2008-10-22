@@ -27,9 +27,10 @@ class InterventionsController < ApplicationController
     #For now we aren't using ajax.  I'm not sure what to do here.   
     #The next step would be to include them on the page
     #then enable ajax
-    redirect_to interventions_goals_url and return unless params[:intervention]
-    @intervention= build_from_session_and_params
-
+    #
+    #redirect_to interventions_goals_url and return unless params[:intervention]
+    
+    @intervention= build_from_session_and_params  #may only be appropriate in html with dropdowns
     respond_to do |format|
       format.html { populate_dropdowns }# new.html.erb
       format.xml  { render :xml => @intervention }
@@ -96,19 +97,26 @@ class InterventionsController < ApplicationController
   end
 
   def build_from_session_and_params
+    params[:intervention] ||={}
     @intervention = current_student.interventions.build_and_initialize(params[:intervention].merge(values_from_session))
   end
 
+  #FIXME these should somehow be extracted
+  #if there's only one item, add the next level down (I'll deal with that later) 
   def populate_dropdowns
-    @goal_definitions=current_district.goal_definitions #not for js
-    @goal_definition=@goal_definitions.find(@intervention.goal_definition.id)
-    @objective_definitions=@goal_definition.objective_definitions
-    @objective_definition = @objective_definitions.find(@intervention.objective_definition.id)
-    @intervention_clusters = @objective_definition.intervention_clusters
-    @intervention_cluster = @intervention_clusters.find(@intervention.intervention_cluster.id)
-    @intervention_definitions = @intervention_cluster.intervention_definitions
-    @intervention_definition = @intervention_definitions.find(@intervention.intervention_definition.id)
+    @goal_definitions=current_district.goal_definitions
+    if @intervention.intervention_definition
+      @goal_definition=@goal_definitions.find(@intervention.goal_definition.id)
+      @objective_definitions=@goal_definition.objective_definitions
+      @objective_definition = @objective_definitions.find(@intervention.objective_definition.id)
+      @intervention_clusters = @objective_definition.intervention_clusters
+      @intervention_cluster = @intervention_clusters.find(@intervention.intervention_cluster.id)
+      @intervention_definitions = @intervention_cluster.intervention_definitions
+      @intervention_definition = @intervention_definitions.find(@intervention.intervention_definition.id)
+      
+    end
 
 
   end
+
 end

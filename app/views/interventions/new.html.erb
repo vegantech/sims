@@ -1,20 +1,6 @@
 <h1>New intervention</h1>
 
 <%= render :partial =>'interventions/goals/select' %>
-<%= render :partial=>'interventions/objectives/select' %>
-<%= render :partial=>'interventions/categories/select' %>
-<%= render :partial=>'interventions/definitions/select' %>
+<%= render :partial =>'interventions/intervention' %>
 
-<% form_for(@intervention) do |f| %>
-  <%=render :partial =>f %>
-  <% if @intervention.selected_ids %>
-    <%= f.label :apply_to_all, "Apply to all selected students" %>
-    <%= f.check_box :apply_to_all %>
-  <% end %>
- <p>
-    <%= f.submit "Create" %>
-  </p>
 
-<% end %>
-
-<%= link_to 'Back', interventions_path %>

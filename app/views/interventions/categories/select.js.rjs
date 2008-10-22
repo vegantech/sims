@@ -1,0 +1,1 @@
+page.replace_html "definitions", :partial=>"interventions/definitions/select"
