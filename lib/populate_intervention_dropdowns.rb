@@ -27,5 +27,9 @@ protected
 
   end
 
+  def populate_objectives
+    @goal_definition= current_district.goal_definitions.find(params[:goal_definition][:id])
+    @objective_definitions = @goal_definition.objective_definitions
+  end
 
 end
