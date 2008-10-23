@@ -1,14 +1,8 @@
 <h1>Splash Page</h1>
-<p>Find me in app/views/main/index.html.erb</p>
-
-<%=flash[:notice] %>
 
 <% if session[:user_id] %>
-  <%= render :partial => 'login/logout' %>
-  <%= link_to 'School Selection', schools_url %> 
-  <%= link_to 'Checklist Builder', checklist_builder_checklists_url %>
-  <%= link_to 'Intervention Builder', intervention_builder_goals_url %>
-  <%= link_to 'Probe Builder', intervention_builder_probes_url %>
+  <p>Welcome to SIMS.
+  You can use the menu at the left to navigate.  In most cases you will want to select a school.</p>
 <% else %>
   <%=render :partial => 'login/login' %>
 <% end %>
