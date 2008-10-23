@@ -4,7 +4,10 @@
     <%= select(:students,:grade,@grades) %><br/>
 
 		<label for="students_last_name">Last Name</label>
-		<%= text_field(:students, :last_name) %>
+		<%= text_field(:students, :last_name) %><br/>
+
+		Select Student(s) by
+		<%= radio_button_tag(:search_type, :list_all, :checked => true) %><label for="search_type_list_all">List all students</label><br />
   </div>
   <%= submit_tag "Search for Students", :name => 'search' %>
 <% end %>
