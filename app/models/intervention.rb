@@ -6,6 +6,9 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name =>:user
 
+  validates_numericality_of :time_length_number, :frequency_multiplier
+  
+
   after_create :create_other_students
   attr_accessor :selected_ids, :apply_to_all
 

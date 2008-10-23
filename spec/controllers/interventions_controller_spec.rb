@@ -49,7 +49,6 @@ describe InterventionsController do
 
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
-      pending "edit not yet implemented" 
       mock_intervention.should_receive(:find).with("37").and_return(mock_intervention)
       get :edit, :id => "37"
       assigns[:intervention].should equal(mock_intervention)
@@ -101,22 +100,21 @@ describe InterventionsController do
     describe "with valid params" do
 
       it "should update the requested intervention" do
-        pending "update not yet implemented"
         mock_intervention.should_receive(:find).with("37").and_return(mock_intervention)
         mock_intervention.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :intervention => {:these => 'params'}
       end
 
       it "should expose the requested intervention as @intervention" do
-        pending "update not yet implemented"
         mock_intervention.stub!(:find).and_return(mock_intervention(:update_attributes => true))
+        mock_intervention.should_receive(:update_attributes).and_return(true)
         put :update, :id => "1"
         assigns(:intervention).should equal(mock_intervention)
       end
 
       it "should redirect to the intervention" do
-        pending "update not yet implemented"
         mock_intervention.stub!(:find).and_return(mock_intervention(:update_attributes => true))
+        mock_intervention.should_receive(:update_attributes).and_return(true)
         put :update, :id => "1"
         response.should redirect_to(intervention_url(mock_intervention))
       end
@@ -126,22 +124,21 @@ describe InterventionsController do
     describe "with invalid params" do
 
       it "should update the requested intervention" do
-        pending "update not yet implemented"
         mock_intervention.should_receive(:find).with("37").and_return(mock_intervention)
         mock_intervention.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :intervention => {:these => 'params'}
       end
 
       it "should expose the intervention as @intervention" do
-        pending "update not yet implemented"
         mock_intervention.stub!(:find).and_return(mock_intervention(:update_attributes => false))
+        mock_intervention.should_receive(:update_attributes).and_return(false)
         put :update, :id => "1"
         assigns(:intervention).should equal(mock_intervention)
       end
 
       it "should re-render the 'edit' template" do
-        pending "update not yet implemented"
         mock_intervention.stub!(:find).and_return(mock_intervention(:update_attributes => false))
+        mock_intervention.should_receive(:update_attributes).and_return(false)
         put :update, :id => "1"
         response.should render_template('edit')
       end
