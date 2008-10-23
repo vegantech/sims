@@ -36,7 +36,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.save
         flash[:notice] = 'Intervention was successfully created.'
-        format.html { redirect_to(@intervention.student) }
+        format.html { redirect_to(current_student) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
         format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
@@ -53,7 +53,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(@intervention) }
+        format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -69,7 +69,16 @@ class InterventionsController < ApplicationController
     @intervention.destroy
 
     respond_to do |format|
-      format.html { redirect_to(interventions_url) }
+      format.html { redirect_to(current_student) }
+      format.xml  { head :ok }
+    end
+  end
+
+  def end
+    @intervention = current_student.interventions.find(params[:id])
+    @intervention.end(current_user.id)
+     respond_to do |format|
+      format.html { redirect_to(current_student) }
       format.xml  { head :ok }
     end
   end

@@ -59,7 +59,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions
+  map.resources :interventions, :member=>{:end=>:put}
 
   # The priority is based upon order of creation: first created -> highest priority.
 

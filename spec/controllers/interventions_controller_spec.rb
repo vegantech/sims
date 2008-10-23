@@ -62,14 +62,12 @@ describe InterventionsController do
       
       it "should expose a newly created intervention as @intervention" do
         mock_intervention.should_receive(:save).and_return(true)
-        mock_intervention.should_receive(:student).and_return(mock_student)
         post :create, :intervention => {:these => 'params'}
         assigns(:intervention).should equal(mock_intervention)
       end
 
       it "should redirect to the student profile" do
         mock_intervention.should_receive(:save).and_return(true)
-        mock_intervention.should_receive(:student).and_return(mock_student)
         post :create, :intervention => {}
         response.should redirect_to(student_url(mock_student))
       end
@@ -116,7 +114,7 @@ describe InterventionsController do
         mock_intervention.stub!(:find).and_return(mock_intervention(:update_attributes => true))
         mock_intervention.should_receive(:update_attributes).and_return(true)
         put :update, :id => "1"
-        response.should redirect_to(intervention_url(mock_intervention))
+        response.should redirect_to(student_url(mock_student))
       end
 
     end
@@ -149,20 +147,37 @@ describe InterventionsController do
 
   describe "responding to DELETE destroy" do
     it "should destroy the requested intervention" do
-      pending "destroy not yet implemented"
       mock_intervention.should_receive(:find).with("37").and_return(mock_intervention)
       mock_intervention.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
   
     it "should redirect to the interventions list" do
-      pending "destroy not yet implemented"
       mock_intervention.stub!(:find).and_return(mock_intervention(:destroy => true))
       mock_intervention.should_receive(:destroy)
       delete :destroy, :id => "1"
-      response.should redirect_to(interventions_url)
+      response.should redirect_to(student_url(mock_student))
     end
 
   end
+
+  describe "responding to UPDATE end" do
+    it "should end the requested intervention" do
+      mock_intervention.should_receive(:find).with("37").and_return(mock_intervention)
+      controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
+      mock_intervention.should_receive(:end).with(1)
+      put :end, :id => "37"
+    end
+  
+    it "should redirect to the interventions list" do
+      mock_intervention.stub!(:find).and_return(mock_intervention)
+      controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
+      mock_intervention.should_receive(:end).with(1)
+      put :end, :id => "37"
+      response.should redirect_to(student_url(mock_student))
+    end
+
+  end
+
 
 end
