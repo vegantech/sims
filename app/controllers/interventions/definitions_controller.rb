@@ -1,4 +1,5 @@
 class Interventions::DefinitionsController < ApplicationController
+  include PopulateInterventionDropdowns
   def index
     @goal_definition=current_district.goal_definitions.find(params[:goal_id])
     @objective_definitions=@goal_definition.objective_definitions
@@ -23,22 +24,6 @@ class Interventions::DefinitionsController < ApplicationController
       }
     end
   end
-
-
-  protected
-  #FIXME, this isn't DRY,  repeated from interventions controller
-  def values_from_session
-    { :user_id => session[:user_id],
-      :selected_ids => selected_students_ids
-    }
-  end
-
-  def build_from_session_and_params
-    params[:intervention] ||={}
-    @intervention = current_student.interventions.build_and_initialize(params[:intervention].merge(values_from_session))
-  end
-
-
 
 end
 

@@ -1,4 +1,5 @@
 class Interventions::GoalsController < ApplicationController
+  include PopulateInterventionDropdowns
   def show
     id = params[:goal_definition] ? params[:goal_definition][:id] : params[:id]
     @goal_definition = current_district.goal_definitions.find(id)

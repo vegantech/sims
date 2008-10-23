@@ -1,4 +1,5 @@
 class Interventions::ObjectivesController < ApplicationController
+  include PopulateInterventionDropdowns
   def show
   end
 
