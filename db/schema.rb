@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081016052131) do
+ActiveRecord::Schema.define(:version => 20081022000218) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -139,12 +139,37 @@ ActiveRecord::Schema.define(:version => 20081016052131) do
     t.datetime "updated_at"
   end
 
+  create_table "interventions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "student_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "intervention_definition_id"
+    t.integer  "frequency_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "time_length_id"
+    t.integer  "time_length_number"
+    t.boolean  "active",                     :default => true
+    t.integer  "ended_by_id"
+    t.date     "ended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
     t.integer  "goal_definition_id"
     t.integer  "position"
     t.boolean  "disabled"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "probe_definition_benchmarks", :force => true do |t|
+    t.integer  "probe_definition_id"
+    t.integer  "benchmark"
+    t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -178,6 +203,15 @@ ActiveRecord::Schema.define(:version => 20081016052131) do
     t.integer  "user_id"
     t.text     "reason"
     t.boolean  "should_advance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommended_monitors", :force => true do |t|
+    t.integer  "intervention_definition_id"
+    t.integer  "probe_definition_id"
+    t.string   "note"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -221,6 +255,15 @@ ActiveRecord::Schema.define(:version => 20081016052131) do
     t.integer  "id_district"
     t.integer  "id_state"
     t.integer  "id_country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "birthdate"
+  end
+
+  create_table "tiers", :force => true do |t|
+    t.integer  "district_id"
+    t.string   "title"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

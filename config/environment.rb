@@ -26,11 +26,6 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
 
-  config.gem 'spicycode-rcov', :lib => 'rcov', :version => "= 0.8.1.3 "
-  config.gem 'hpricot'
-  config.gem 'treetop'
-  config.gem 'term-ansicolor', :lib => "term/ansicolor"
-
  # need to upgrade rubygems
   # config.gem 'hpricot'
   # config.gem 'treetop'

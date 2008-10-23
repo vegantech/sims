@@ -1,0 +1,3 @@
+page.remove "intervention"
+page.remove "definitions"
+page.replace "categories", :partial=>"interventions/categories/select"

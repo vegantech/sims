@@ -1,0 +1,27 @@
+# == Schema Information
+# Schema version: 183
+#
+# Table name: question_definitions
+#
+#  question_definition_id  :integer       not null, primary key
+#  checklist_definition_id :integer       
+#  created_at              :datetime      
+#  updated_at              :datetime      
+#  text                    :text          
+#  position                    :integer       
+#  district_id             :integer       
+#
+
+question_definition_one:
+  checklist_definition: checklist_definition_one
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+  text: First Question Group
+  position: 1
+  
+question_definition_two:
+  checklist_definition: checklist_definition_one
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+  text: Second Question Group
+  position: 2

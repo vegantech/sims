@@ -123,11 +123,11 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
 
   def move_path(item, direction)
-#    unless action_name=="show"
+    unless action_name=="show"
       move_intervention_builder_intervention_path(:id=>item,:direction=>direction)
- #   else
-     # url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
-  #  end
+    else
+      url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
+    end
   end
   
 

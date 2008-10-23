@@ -2,7 +2,7 @@ begin
   require File.dirname(__FILE__)+ '/rcov_rake_helper'
    
   
-
+if defined? Rcov
   namespace :test do
     namespace :coverage do
       desc "Delete aggregate coverage data: requires rcov gem"
@@ -26,10 +26,9 @@ begin
       end
     end
   end
- 
   namespace :spec do
+    #run the unit tests before the specs and show coverage
     namespace :rcov do
-
       %w[unit functional integration].each do |target|
 
         desc  "coverage for test:#{target} and corresponding specs/stories-"+ send('specs_corresponding_to_'+target).to_s
@@ -50,18 +49,14 @@ begin
   desc 'run all Test:Unit tests, specs, and stories and generate coverage reports'
   task(:coverage_all) do
     Rake::Task["spec:rcov:unit"].invoke
-    Rake::Task["test:coverage:unit"].invoke
     remove_coverage_data
    Rake::Task["spec:rcov:functional"].invoke
-    Rake::Task["test:coverage:functional"].invoke
     remove_coverage_data
     Rake::Task["features_with_rcov"].invoke
-    
     Rake::Task["spec:rcov:integration"].invoke
-   # Rake::Task["test:coverage:integration"].invoke
   end
                             
-
+end
 rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
 end

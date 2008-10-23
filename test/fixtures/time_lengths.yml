@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+day:
+  title: Day
+  days: 1
+
+week:
+  title: Week
+  days: 7
+
+month:
+  title: Month
+  days: 30
+
+quarter:
+  title: Quarter
+  days: 45
+
+semester:
+  title: Semester
+  days: 90
+
+year:
+  title: Year
+  days: 180
+

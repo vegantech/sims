@@ -50,7 +50,7 @@
 <caption>Recommended Progress Monitors
 </caption>
 <tbody id="recommended_monitors_list">
-<%= render :partial => '/recommended_monitors/recommended_monitor', :collection => @intervention_definition.recommended_monitors %>
+<%= render :partial => 'intervention_builder/recommended_monitors/recommended_monitor', :collection => @intervention_definition.recommended_monitors %>
 </tbody>
 </table>
 
@@ -65,6 +65,6 @@
 
 <%= link_to 'Edit', edit_intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition) %> |
 <%= link_to 'Back', intervention_builder_interventions_path %> |
-<%= link_to 'Recommend Probes', url_for(:controller=>"recommended_monitors",:action=>"assign",:id=>@intervention_definition) %> |
+<%= link_to 'Recommend Probes', :action=>"assign_probes_to_intervention",:controller=>'intervention_builder/recommended_monitors/',:id=>@intervention_definition %> |
 
 <%= link_to 'New intervention_definition', new_intervention_builder_intervention_path %>

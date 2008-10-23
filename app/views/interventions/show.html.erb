@@ -1,0 +1,68 @@
+<p>
+  <b>User:</b>
+  <%=h @intervention.user %>
+</p>
+
+<p>
+  <b>Student:</b>
+  <%=h @intervention.student %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%=h @intervention.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%=h @intervention.end_date %>
+</p>
+
+<p>
+  <b>Intervention definition:</b>
+  <%=h @intervention.intervention_definition %>
+</p>
+
+<p>
+  <b>Frequency:</b>
+  <%=h @intervention.frequency %>
+</p>
+
+<p>
+  <b>Frequency multiplier:</b>
+  <%=h @intervention.frequency_multiplier %>
+</p>
+
+<p>
+  <b>Time length:</b>
+  <%=h @intervention.time_length %>
+</p>
+
+<p>
+  <b>Time length number:</b>
+  <%=h @intervention.time_length_number %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%=h @intervention.active %>
+</p>
+
+<p>
+  <b>Ended by:</b>
+  <%=h @intervention.ended_by %>
+</p>
+
+<p>
+  <b>Ended at:</b>
+  <%=h @intervention.ended_at %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @intervention.district %>
+</p>
+
+
+<%= link_to 'Edit', edit_intervention_path(@intervention) %> |
+<%= link_to 'Back', interventions_path %>

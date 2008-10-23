@@ -1,7 +1,9 @@
 class ProbeDefinition < ActiveRecord::Base
   belongs_to :district
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent=>:destroy
-  has_many :intervention_definitions, :foreign_key=>:id #FIXME
+  has_many :recommended_monitors
+  has_many :intervention_definitions,:through => :recommended_monitors
+
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active','district_id']
   validates_numericality_of :maximum_score, :allow_nil=> true
@@ -18,20 +20,31 @@ class ProbeDefinition < ActiveRecord::Base
   end
 
   def probes
-    probe_definition_benchmarks
+   recommended_monitors 
   end
 
 
   def self.group_by_cluster_and_objective
     #This will work better
     probes=find(:all,:order =>:position)
-    my_hash = ActiveSupport::OrderedHash.new()
-    my_hash[:unassigned_probe_definitions]={:clusters=>{}}
-    my_hash[:unassigned_probe_definitions][:clusters][:none] = {}
-    my_hash[:unassigned_probe_definitions][:clusters][:none]={:probes=>[]}
 
+    my_hash = ActiveSupport::OrderedHash.new()
+
+    my_hash[:unassigned_probe_definitions]={:clusters=>{}}
+    my_hash[:unassigned_probe_definitions][:clusters][:none]={:probes=>[]}
     probes.each do |probe|
-      my_hash[:unassigned_probe_definitions][:clusters][:none][:probes] << probe
+      if probe.intervention_definitions.any?
+        probe.intervention_definitions.each do |id|
+          ic=id.intervention_cluster
+          od=ic.objective_definition
+          my_hash[od.title] ||= {:clusters=>{}}
+          my_hash[od.title][:clusters][ic.title] ||={:probes=>[]}
+          my_hash[od.title][:clusters][ic.title][:probes] |= [probe]
+        end
+          
+      else
+        my_hash[:unassigned_probe_definitions][:clusters][:none][:probes] << probe
+      end
     end
 
     

@@ -1,0 +1,2 @@
+page.remove "intervention"
+page.replace "definitions", :partial=>"interventions/definitions/select"

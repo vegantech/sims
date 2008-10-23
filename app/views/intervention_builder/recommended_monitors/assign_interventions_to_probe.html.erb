@@ -1,0 +1,23 @@
+<h1> Probe Definition Title: <%=@probe_definition.title%> </h1><br />
+
+<% form_tag do %>
+<div class="standardForm">
+
+<% @goal_definitions.each do |g| %>
+<% g.objective_definitions.each do |o| %>
+<%=content_tag :h2, o.title %>
+<% o.intervention_clusters.each do |ic| %>
+<%=content_tag :h4, ic.title %>
+<% @int_defs=ic.intervention_definitions %>
+
+        <% @int_defs.each do |int_def| %>
+         <%=check_box_tag("int_defs[]", int_def.id,@probe_definition.intervention_definitions.include?(int_def)) %>
+		 
+         <%= int_def.title %><br />
+        <% end %>
+<% end %>
+<% end %>
+<% end %>
+<%= submit_tag%>
+<%end%>
+</div>

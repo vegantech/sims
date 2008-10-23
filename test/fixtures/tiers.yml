@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+targeted:
+  district: wi_mmsd
+  title: Targeted
+  position: 2
+
+broad:
+  district: wi_mmsd
+  title: Broad
+  position: 1

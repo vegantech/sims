@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+alpha_first_attendance:
+  user: oneschool 
+  student: alpha_first_grader 
+  start_date: 2008-10-18
+  end_date: 2008-10-18
+  intervention_definition: contact_parents_about_attendance
+  frequency: weekly
+  frequency_multiplier: 2
+  time_length: month
+  time_length_number: 3
+  active: true
+

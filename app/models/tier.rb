@@ -1,13 +1,4 @@
-class Tier
-  def self.tiers
-    [Tier.new] * 3
-  end
-  def title
-    'Tier'
-  end
-
-  def self.find(*args)
-    Tier.new
-  end
-
+class Tier < ActiveRecord::Base
+  belongs_to :district
+  TIERS=Tier.find(:all,:order=>"position")
 end

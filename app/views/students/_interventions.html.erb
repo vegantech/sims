@@ -1,0 +1,13 @@
+<h2> Intervention Summary </h2>
+
+
+<% content_tag :ul do %>
+<%=render_with_empty :partial => 'intervention', :collection => @student.interventions ,:empty=>'' %>
+<% end %>
+
+<% content_tag :ul do %>
+  <%=content_tag :li, link_to("Assign New Intervention", new_intervention_path)%>
+<% end %>
+
+
+

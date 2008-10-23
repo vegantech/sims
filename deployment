@@ -1,0 +1,43 @@
+To deploy the sims-open demo (assumes you have apache/mod_rails configured already and rails and sqlite3 installed on the server):
+sudo gem install capistrano
+
+Modify the depoy.rb file to use your own servers and deploy_to location
+(see http://capify.org for more information on capistrano)
+
+I'm installing it in /www my server which shawn can write to.   If you're doing something else,
+you probably want to change use_sudo to true.   If you installed ruby enterprise edition, you will also want to put that in your path.  Otherwise change the default_environment line in the deploy.rb to suit your needs.
+
+
+Now run
+cap deploy:setup
+cap deploy:check
+cap deploy:cold
+
+
+
+To deploy the updates run cap deploy:cold again
+
+Note:  The database will be reset every time you deploy a new version.   This will change once it is meaningful to persist data
+
+
+
+Here's my apache config
+
+
+ <VirtualHost *>
+
+    Options FollowSymLinks
+      ServerName sims-open.vegantech.com
+      ServerAlias *.sims-open.vegantech.com
+      DocumentRoot /www/sims-open/current/public
+
+
+<Directory "/www/sims-open/current/public">
+   Options FollowSymLinks
+   AllowOverride None
+   Order allow,deny
+   Allow from all
+</Directory>
+   </VirtualHost>
+
+

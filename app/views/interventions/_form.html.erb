@@ -1,0 +1,27 @@
+ <%= form.error_messages %>
+ <p>
+    <%= form.label :start_date %><br />
+    <%= form.date_select :start_date %>
+  </p>
+  <p>
+    <%= form.label :end_date %><br />
+    <%= form.date_select :end_date %>
+  </p>
+    <%= form.hidden_field :intervention_definition_id %>
+  <p>
+    <%= form.label :frequency %><br />
+    <%= form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>
+  </p>
+  <p>
+    <%= form.label :frequency_multiplier %><br />
+    <%= form.text_field :frequency_multiplier %>
+  </p>
+  <p>
+    <%= form.label :time_length %><br />
+    <%= form.collection_select(:time_length_id, TimeLength::TIMELENGTHS,:id,:title) %>
+  </p>
+  <p>
+    <%= form.label :time_length_number %><br />
+    <%= form.text_field :time_length_number %>
+  </p>
+

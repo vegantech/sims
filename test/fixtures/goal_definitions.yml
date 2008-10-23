@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+behavior:
+  title: Behavior
+  description: Attendance, Classroom misbehavior
+  district: wi_mmsd
+  position: 1
+
+learning:
+  title: Learning
+  description: Subject/Course related
+  district: wi_mmsd
+  position: 2

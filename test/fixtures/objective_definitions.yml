@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+attendance:
+  title: Attendance
+  description: Attendance
+  goal_definition: behavior
+  position: 1
+
+classroom_behavior:
+  title: Classroom Behavior
+  description: Disruption in classroom
+  goal_definition: behavior
+  position: 2
+
+math:
+  title: Math
+  description: Math
+  goal_definition: learning
+  position: 1
+
+language_arts:
+  title: Language Arts
+  description: Language Arts
+  goal_definition: learning
+  position: 2

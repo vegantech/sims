@@ -1,56 +1,14 @@
 Student Profile for <%= @student.fullname %>
-  <span id='studentflags'> <%= status_display(@student) %></span>
-  <div id="customflag">
-    <%= render :partial=>"custom_flags/list",:locals=>{:student=>@student} %>
-  </div>
-  <%= selected_navigation %>
+<%= render :partial => 'flags'%>
+<%= selected_navigation %>
 
-<p>
-  <b>District:</b>
-  <%=h @student.district %>
-</p>
+<%= render :partial =>'student'%>
 
-<p>
-  <b>Last name:</b>
-  <%=h @student.last_name %>
-</p>
+<%= render :partial => 'team_notes' %>
 
-<p>
-  <b>First name:</b>
-  <%=h @student.first_name %>
-</p>
+<%= render :partial => 'interventions' %>
 
-<p>
-  <b>Id district:</b>
-  <%=h @student.id_district %>
-</p>
-
-<p>
-  <b>Id state:</b>
-  <%=h @student.id_state %>
-</p>
-
-<p>
-  <b>Id country:</b>
-  <%=h @student.id_country %>
-</p>
-
-<p>
-  <b>Enrollments:</b>
-  <%=h @student.enrollments.first.grade %> (Should iterate through enrollments and show the current ones.)
-  </p>
-
-  <h2>Team Notes</h2>
-  <%=link_to 'Add Note', new_student_comment_path %> <br />
-  <%=render_with_empty :partial=>"student_comments/comment", :collection=> @student.comments, :empty => content_tag(:p,"No notes have been submitted for this student. Click the 'Add Note' link above to add a note for this student.")  
-%>
-
-  <h2>Checklists</h2>
-  <%= link_to "Complete a Checklist for this Student", new_checklist_url %>
-  <%cks = @student.checklists.group_by(&:from_tier).each do |g,ck| %>
-    <h4><%= Tier.tiers[g -1].title%></h4>
-    <%= render :partial => 'checklists/checklist', :collection => ck %>
-  <%end%>
+<%= render :partial => 'checklists' %>
 
 
   

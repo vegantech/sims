@@ -80,5 +80,5 @@ class InterventionBuilder::ProbesController < ApplicationController
     redirect_to intervention_builder_probes_url
 
   end
-  
+ 
 end

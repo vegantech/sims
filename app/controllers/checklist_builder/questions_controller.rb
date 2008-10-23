@@ -37,7 +37,7 @@ class ChecklistBuilder::QuestionsController < ApplicationController
   end
 
   def create
-    @question_definition = @checklist_definition.question_definitions.build (params[:question_definition])
+    @question_definition = @checklist_definition.question_definitions.build(params[:question_definition])
 
     respond_to do |format|
       if @question_definition.save

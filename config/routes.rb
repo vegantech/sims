@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :tiers
+
+
   map.resources :checklists, :has_many=>:recommendations
 
   map.resources :student_comments
@@ -45,6 +48,18 @@ ActionController::Routing::Routes.draw do |map|
       end
     end
   end
+  
+  map.namespace :interventions do |intervention|
+    intervention.resources :goals, :collection=>{:select=>:post} do |goal|
+      goal.resources :objectives, :collection => {:select=> :post},:name_prefix=>"interventions_" do |objective|
+        objective.resources :categories, :collection => {:select=> :post},:name_prefix=>"interventions_" do |category|
+          category.resources :definitions, :collection => {:select => :post}, :name_prefix=>"interventions_"
+        end
+      end
+    end
+  end
+
+  map.resources :interventions
 
   # The priority is based upon order of creation: first created -> highest priority.
 
