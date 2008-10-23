@@ -1,12 +1,12 @@
 checklist_definition_one:
   district: wi_mmsd
-  active: false
+  active: true
   text: The first of many
   directions: Fill it out please.
 
 checklist_definition_two:
   district: wi_mmsd
-  active: true
+  active: false
   text: The second of many
   directions: Fill it out please.
 
