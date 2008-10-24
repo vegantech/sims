@@ -1,16 +1,15 @@
 class SchoolsController < ApplicationController
   def index
-    @schools = User.find(session[:user_id]).schools
+    @schools = current_user.authorized_schools
   end
 
   def select
+    @school=current_user.authorized_schools.find(params["school"]["id"])
+
     #add school to session
     school_id = params["school"]["id"]
-    session[:school_id] = school_id
-		session[:search] ||= {}
-		session[:search][:school_id] = school_id
-
-    flash[:notice] = School.find(session[:school_id]).name + ' Selected' 
+    session[:school_id] = @school.id
+    flash[:notice] = @school.name + ' Selected' 
     redirect_to :controller=>'students', :action=>'search'
   end
 end

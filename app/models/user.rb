@@ -5,6 +5,15 @@ class User < ActiveRecord::Base
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
 
+
+  def authorized_schools
+    if false #special access
+    else
+      schools
+    end
+
+  end
+
   def self.authenticate(username, password)
 		@user = self.find_by_username(username)
        

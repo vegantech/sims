@@ -10,7 +10,15 @@ alpha_third:
   student: alpha_third_grader 
   grade: 03
 
+bravo_smith:
+  school: bravo
+  student: bravo_first_smith 
+  grade: 01
 
+bravo_jones:
+  school: bravo
+  student: bravo_first_jones 
+  grade: 01
 
 
 one:
