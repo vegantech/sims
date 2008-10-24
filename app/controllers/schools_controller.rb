@@ -5,11 +5,10 @@ class SchoolsController < ApplicationController
 
   def select
     @school=current_user.authorized_schools.find(params["school"]["id"])
-
+    
     #add school to session
-    school_id = params["school"]["id"]
     session[:school_id] = @school.id
     flash[:notice] = @school.name + ' Selected' 
-    redirect_to :controller=>'students', :action=>'search'
+    redirect_to search_students_url
   end
 end

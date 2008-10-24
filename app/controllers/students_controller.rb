@@ -4,15 +4,7 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-		# enrollments = School.find(session[:school_id]).enrollments(:include=>:students)
-		# params[:students] ||= {}
-		# selected_grade = params[:students][:grade]
-		# if selected_grade and selected_grade != '*'
-		# enrollments = enrollments.select{|e| e.grade == selected_grade}
-		# end
-
-		# @students = enrollments
-		@students = current_school.enrollments.search(session[:search])
+    @students = current_school.enrollments.search(session[:search])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,24 +27,24 @@ class StudentsController < ApplicationController
   end
   
   def search
-		if request.get?
-			@grades = current_school.enrollments.collect(&:grade).uniq
-			@grades.unshift("*")
-		else
-			# puts params.inspect
-			selected_grade = params['students']['grade']
-			selected_last_name = params['students']['last_name']
-			search_type = params['search_type']
-			intervention_types = params['flagged_intervention_types']
+    if request.get?
+      @grades = current_school.enrollments.collect(&:grade).uniq
+      @grades.unshift("*")
+    else
+      # puts params.inspect
+      selected_grade = params['students']['grade']
+      selected_last_name = params['students']['last_name']
+      search_type = params['search_type']
+      intervention_types = params['flagged_intervention_types']
 
-			session[:search] ||= {}
-			session[:search][:grade] = selected_grade
-			session[:search][:last_name] = selected_last_name
-			session[:search][:search_type] = search_type
-			session[:search][:flagged_intervention_types] = intervention_types
+      session[:search] ||= {}
+      session[:search][:grade] = selected_grade
+      session[:search][:last_name] = selected_last_name
+      session[:search][:search_type] = search_type
+      session[:search][:flagged_intervention_types] = intervention_types
 
-			redirect_to students_url
-		end
+      redirect_to students_url
+    end
   end
 
   # GET /students/1
