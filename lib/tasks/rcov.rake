@@ -3,15 +3,19 @@ begin
    
   
 if defined? Rcov
+  
   namespace :test do
     namespace :coverage do
       desc "Delete aggregate coverage data: requires rcov gem"
       task(:clean) { remove_coverage_data }
+
+      task(:unit) {puts "Test:unit tests disabled use rspec"}
+      task(:functional) {puts "test:unit functional tests disabled use rspec"}
     end
     desc 'Aggregate code coverage for unit, functional and integration tests  and corresponding specs :requires rcov gem'
     task :coverage => ["test:coverage:clean","db:test:prepare","coverage_all"]
     
-    %w[unit functional integration].each do |target|
+    %w[integration].each do |target|
       namespace :coverage do
         Rcov::RcovTask.new(target => ["test:coverage:clean","db:test:prepare" ]) do |t|
           t.libs << "test"
@@ -24,6 +28,7 @@ if defined? Rcov
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end
       end
+
     end
   end
   namespace :spec do

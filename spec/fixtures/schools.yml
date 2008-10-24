@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  id_district: 1
+  id_state: 1
+  id_country: 1
+  district: one
+
+two:
+  name: MyString
+  id_district: 1
+  id_state: 1
+  id_country: 1
+  district: one
+
+alpha:
+  name: Alpha Elementary
+  district:  wi_mmsd
+
+bravo:
+  name: bravo Elementary
+  district:  wi_mmsd

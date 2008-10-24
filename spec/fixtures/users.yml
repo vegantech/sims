@@ -1,0 +1,30 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  username: MyString
+  passwordhash: 
+  first_name: MyString
+  last_name: MyString
+  district: wi_mmsd
+
+two:
+  username: MyString
+  passwordhash: 
+  first_name: MyString
+  last_name: MyString
+
+oneschool:
+  username: oneschool
+  first_name: "1First."
+  last_name: "oneschool"
+  passwordhash: <%= User.encrypted_password("oneschool") %>
+  district: wi_mmsd
+  schools: alpha
+
+twoschools:
+  username: twoschools
+  first_name: "2Second."
+  last_name: "twoschools"
+  passwordhash: <%= User.encrypted_password("twoschools") %>
+  district: wi_mmsd
+  schools: alpha, bravo

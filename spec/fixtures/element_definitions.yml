@@ -1,0 +1,26 @@
+element_definition_one:
+  id: 1
+  question_definition: question_definition_one
+  text: Where do you want to go today?
+  position: 1
+  kind: scale
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+element_definition_two:
+  id: 2
+  question_definition:  question_definition_one
+  text: Are you sure?
+  position: 2
+  kind: scale
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+element_definition_three:
+  id: 3
+  question_definition:  question_definition_one
+  text: What method of travel?
+  position: 3
+  kind: scale
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>

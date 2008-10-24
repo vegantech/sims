@@ -1,6 +1,7 @@
-require 'test_helper'
+require 'test/unit'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class RequireAllModelsHelpersandLibsTest < ActiveSupport::TestCase
+class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
   # Replace this with your real tests.
   
 

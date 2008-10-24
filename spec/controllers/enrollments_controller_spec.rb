@@ -1,6 +1,8 @@
-require 'test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'test/unit'
 
 class EnrollmentsControllerTest < ActionController::TestCase
+  fixtures :enrollments
   def test_should_get_index
     get :index
     assert_response :success

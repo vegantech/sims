@@ -1,6 +1,9 @@
-require 'test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'test/unit'
+
 
 class UserTest < ActiveSupport::TestCase
+  fixtures :users
   def test_user_authenticate
     user = User.authenticate("oneschool", "oneschool")
     assert_equal "oneschool", user.username

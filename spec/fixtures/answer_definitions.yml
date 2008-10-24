@@ -1,0 +1,80 @@
+answer_definition_one:
+  id: 1
+  element_definition_id: 1
+  text: 'Zoo'
+  value: 1
+  position: 1
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_two:
+  id: 2
+  element_definition_id: 1
+  text: 'Mars'
+  value: 0
+  position: 2
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_three:
+  id: 3
+  element_definition_id: 1
+  text: 'Japan'
+  value: 0
+  position: 3
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_four:
+  id: 4
+  element_definition_id: 2
+  text: 'Yes'
+  value: 1
+  position: 1
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_five:
+  id: 5
+  element_definition_id: 2
+  text: 'No'
+  value: 0
+  position: 2
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_six:
+  id: 6
+  element_definition_id: 2
+  text: 'Comments'
+  value: Type your comments here...
+  position: 3
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_seven:
+  id: 7
+  element_definition_id: 3
+  text: 'Plane'
+  value: 1
+  position: 1
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_eight:
+  id: 8
+  element_definition_id: 3
+  text: 'Train'
+  value: 0
+  position: 2
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+answer_definition_nine:
+  id: 9
+  element_definition_id: 3
+  text: 'Automobile'
+  value: 0
+  position: 3
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
