@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  description: MyText
+  user: 
+  district: 
+  active: false
+  maximum_score: 1
+  minimum_score: 1
+  school: 
+  position: 1
+
+two:
+  title: MyString
+  description: MyText
+  user: 
+  district: 
+  active: false
+  maximum_score: 1
+  minimum_score: 1
+  school: 
+  position: 1

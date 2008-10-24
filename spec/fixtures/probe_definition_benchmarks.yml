@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  probe_definition: 
+  benchmark: 1
+  district: 
+  grade_level: 1
+
+two:
+  probe_definition: 
+  benchmark: 1
+  district: 
+  grade_level: 1

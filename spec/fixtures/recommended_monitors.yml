@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  intervention_definition: 
+  probe_definition: 
+  note: MyString
+  position: 1
+
+two:
+  intervention_definition: 
+  probe_definition: 
+  note: MyString
+  position: 1
