@@ -45,6 +45,23 @@ class Student < ActiveRecord::Base
 
   end
 
+  def self.find_flagged_students(flagtypes=[])
+    flagtype=Array(flagtypes)
+    stitypes=[]
+    custom=flagtype.reject!{|v| v =="custom"}
+    ignore=flagtype.reject!{|v| v == "ignored"}
+    flagtype.reject!{|v| !Flag::TYPES.keys.include?(v)}
+
+    flagtype=Flag::FLAGTYPES.keys if flagtype.blank?
+
+    stitypes << "CustomFlag" if custom
+    stitypes << "IgnoreFlag" if ignore
 
 
+    if stitypes.any?
+      find(:all,:include=>:flags,:conditions=>["type in (?) and flagtype in (?)",stitypes,flagtype])
+    else
+      find(:all,:include=>:flags,:joins=>"left outer join flags as ig on ig.flagtype=flags.flagtype and ig.type='IgnoreFlag' and ig.person_id=flags.person_id",:conditions=>["ig.flagtype is null and flags.flagtype in (?)",flagtype])
+    end
+  end
 end

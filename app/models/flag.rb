@@ -15,7 +15,7 @@ class Flag < ActiveRecord::Base
   belongs_to :user
   belongs_to :district
   validates_presence_of :category, :reason
-  validates_inclusion_of :category, :in=> FLAGTYPES.keys
+  validates_inclusion_of :category, :in => FLAGTYPES.keys
   acts_as_reportable if defined? Ruport
 
   def summary

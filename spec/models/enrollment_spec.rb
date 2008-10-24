@@ -17,7 +17,7 @@ describe Enrollment do
 				school = School.new
 				school.should_receive(:enrollments).with(:include => :students).and_return(enrollments)
 				School.should_receive(:find).with(7).and_return(school)
-				search_results = Enrollment.search({:school_id => 7})
+				search_results = Enrollment.search({:school_id => 7, :search_type => 'list_all'})
 				search_results.should == enrollments
 			end
 		end
@@ -33,7 +33,7 @@ describe Enrollment do
 
 				School.should_receive(:find).with(8).and_return(school)
 
-				search_results = Enrollment.search({:school_id => 8, :grade => '3'})
+				search_results = Enrollment.search({:school_id => 8, :grade => '3', :search_type => 'list_all'})
 				search_results.should == [enrollment3]
 			end
 		end
@@ -51,7 +51,7 @@ describe Enrollment do
 
 				School.should_receive(:find).with(8).and_return(school)
 
-				search_results = Enrollment.search({:school_id => 8, :last_name => 'Beau'})
+				search_results = Enrollment.search({:school_id => 8, :last_name => 'Beau', :search_type => 'list_all'})
 
 				search_results.should == [enrollment2, enrollment3]
 			end
@@ -69,7 +69,7 @@ describe Enrollment do
 
 				School.should_receive(:find).with(8).and_return(school)
 
-				search_results = Enrollment.search({:school_id => 8, :last_name => 'son'})
+				search_results = Enrollment.search({:school_id => 8, :last_name => 'son', :search_type => 'list_all'})
 
 				search_results.should == [enrollment3]
 			end

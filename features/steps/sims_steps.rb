@@ -12,7 +12,12 @@ Given /I am on the "(.*)" page/ do |page_name|
 	go_to_page page_name
 end
 
-Given /student "(.*)" "(.*)" in grade (\d+) at "(.*)"/ do |first, last, student_grade, school_name|
+Given /student "(.*)" "(.*)" in grade (\d+) at "(.*)" with "(.*)" flag$/ do |first, last, student_grade, school_name, flag_type|
+	school = School.find_by_name(school_name)
+	create_student first, last, student_grade, school, flag_type
+end
+
+Given /student "(.*)" "(.*)" in grade (\d+) at "(.*)"$/ do |first, last, student_grade, school_name|
 	school = School.find_by_name(school_name)
 	create_student first, last, student_grade, school
 end
