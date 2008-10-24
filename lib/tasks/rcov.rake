@@ -24,7 +24,7 @@ if defined? Rcov
           t.output_dir = "test/coverage/#{target}"
           t.verbose = true
           t.rcov_opts.clear
-          t.rcov_opts << '--rails --aggregate coverage.data'
+          t.rcov_opts << '--rails --aggregate coverage.data --text-report --sort coverage'
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end
       end
@@ -58,7 +58,8 @@ if defined? Rcov
    Rake::Task["spec:rcov:functional"].invoke
     remove_coverage_data
     Rake::Task["features_with_rcov"].invoke
-    Rake::Task["spec:rcov:integration"].invoke
+    Rake::Task["test:unit:integration"].invoke
+    #using cucumber instead of rspec stories
   end
                             
 end
