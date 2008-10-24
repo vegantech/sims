@@ -6,7 +6,7 @@ module CustomFlagsHelper
       "onmouseout" => "return nd();") + " "
   end
 
-  def status_display(student, change=nil)
+  def status_display(student, change = nil)
     str = ''
 
     student.flags.current.each do |flagtype,flags|
@@ -30,7 +30,7 @@ module CustomFlagsHelper
 
   def flag_checkbox(flagtype)
     f = Flag::TYPES[flagtype.to_s]
-    check_box_tag("flagged_intervention_type[]", flagtype, false,:id=>"flag_#{flagtype}", :onclick=>"searchByFlag()") +
+    check_box_tag("flagged_intervention_types[]", flagtype, false,:id=>"flag_#{flagtype}", :onclick=>"searchByFlag()") +
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 

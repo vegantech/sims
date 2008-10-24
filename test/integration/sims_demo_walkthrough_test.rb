@@ -1,8 +1,6 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 # This is a representation of a yet to be created SIMS DEMONSTRATION SCRIPT or webcast
-
-
 class SimsDemoWalkthroughTest < ActionController::IntegrationTest
    ONESCHOOL = {
     :username=>"oneschool",
@@ -33,9 +31,6 @@ class SimsDemoWalkthroughTest < ActionController::IntegrationTest
     oneschool.sees "Student 2 of 2"
   end
 
-
-
-
   def regular_user
     open_session do |user|
       def user.logs_in(user)
@@ -49,11 +44,11 @@ class SimsDemoWalkthroughTest < ActionController::IntegrationTest
       def user.chooses_school
         post_via_redirect "/schools/select", :school=>{:id=>School.first.id}
       end
-      
+
       def user.searches_all_students
-        post_via_redirect "/students/search", :students=>{:grade=>"*"}
+        post_via_redirect "/students/search", :students=>{:grade=>"*"}, :search_type => 'list_all'
       end
-  
+
       def user.selects_all_students
         post_via_redirect "/students/select", "id"=>[students(:alpha_first_grader).id,students(:alpha_third_grader).id]
       end
@@ -61,7 +56,6 @@ class SimsDemoWalkthroughTest < ActionController::IntegrationTest
       def user.chooses_other_student
         get "/students/#{students(:alpha_third_grader).id}"
       end
-
 
       def user.sees(mystring)
         assert_match /#{mystring}/, response.body
@@ -77,19 +71,4 @@ class SimsDemoWalkthroughTest < ActionController::IntegrationTest
       end
     end
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
-
-
