@@ -4,8 +4,8 @@ describe InterventionsController do
   before :each do 
     controller.should_receive(:current_student).any_number_of_times.and_return(mock_student(:interventions => mock_intervention))
     #build_from_session_and_params and populate_dropdowns are unit tested
-    controller.stubs(:build_from_session_and_params).returns(mock_intervention(:student=>mock_student))
-    controller.stubs(:populate_dropdowns)
+    controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(mock_intervention(:student=>mock_student))
+    controller.should_receive(:populate_dropdowns).any_number_of_times
   end
 
   def mock_student(stubs ={})
