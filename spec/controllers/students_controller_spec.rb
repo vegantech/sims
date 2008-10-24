@@ -4,12 +4,14 @@ require 'test/unit'
 describe StudentsController do
   it_should_behave_like "an authenticated controller"
 
-  fixtures :schools,:students
-  def test_should_get_index
-    #FIXME move this to rspec and add rest of tests
-    get :index, {}, {:school_id=>schools(:alpha).id}
-    assert_response :success
-    assert_not_nil assigns(:students)
+  it 'should get index' do
+    enrollments=mock_enrollment(:search=>true)
+    school=mock_school(:enrollments=>enrollments)
+    controller.should_receive(:current_school).and_return(school)
+    get :index
+    response.should be_success
+    assigns(:students).should == true
+
   end
 
 end
