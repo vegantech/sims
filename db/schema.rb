@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081022000218) do
+ActiveRecord::Schema.define(:version => 20081024061734) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -169,8 +169,7 @@ ActiveRecord::Schema.define(:version => 20081022000218) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.integer  "district_id"
-    t.integer  "grade_level"
+    t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -230,6 +229,17 @@ ActiveRecord::Schema.define(:version => 20081022000218) do
   create_table "schools_users", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "school_id"
+  end
+
+  create_table "special_user_groups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "district_id"
+    t.integer  "school_id"
+    t.string   "grade"
+    t.string   "type"
+    t.boolean  "is_principal", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "states", :force => true do |t|

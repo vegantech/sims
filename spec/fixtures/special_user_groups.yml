@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user: 
+  district: 
+  school: 
+  grade: MyString
+  type: MyString
+  is_principal: false
+
+two:
+  user: 
+  district: 
+  school: 
+  grade: MyString
+  type: MyString
+  is_principal: false
