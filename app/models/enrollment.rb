@@ -26,7 +26,8 @@ class Enrollment < ActiveRecord::Base
       enrollments=enrollments.select{|e| e.student.flags.any?}
       # only include enrollments for students who have at least one of the intervention types.
       
-      #this doesn't work yet.
+      #this doesn't work yet and returns an error if no flag options are selected.
+      #It is also incorrectly named?
 
       #enrollments = enrollments.select do |e|
       #  flags = e.student.flags.current.first
