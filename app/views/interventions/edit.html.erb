@@ -1,11 +1,11 @@
 <h1>Editing intervention</h1>
 
 <% form_for(@intervention) do |f| %>
-  <%=render(:partial=>f)
+  <%=render(:partial=>f) %>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
 <%= link_to 'Show', @intervention %> |
-<%= link_to 'Back', interventions_path %>
+<%= link_to 'Back', @intervention.student %>

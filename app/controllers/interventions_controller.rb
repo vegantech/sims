@@ -1,16 +1,5 @@
 class InterventionsController < ApplicationController
   include PopulateInterventionDropdowns
-  # GET /interventions
-  # GET /interventions.xml
-  def index
-    @interventions = Intervention.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @interventions }
-    end
-  end
-
   # GET /interventions/1
   # GET /interventions/1.xml
   def show
@@ -25,12 +14,7 @@ class InterventionsController < ApplicationController
   # GET /interventions/new
   # GET /interventions/new.xml
   def new
-    #For now we aren't using ajax.  I'm not sure what to do here.   
-    #The next step would be to include them on the page
-    #then enable ajax
-    #
-    #redirect_to interventions_goals_url and return unless params[:intervention]
-    
+   
     @intervention= build_from_session_and_params  #may only be appropriate in html with dropdowns
     respond_to do |format|
       format.html { populate_dropdowns }# new.html.erb
@@ -52,10 +36,10 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.save
         flash[:notice] = 'Intervention was successfully created.'
-        format.html { redirect_to(@intervention.student) }
+        format.html { redirect_to(current_student) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
         format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
       end
     end
@@ -69,7 +53,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(@intervention) }
+        format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -85,7 +69,16 @@ class InterventionsController < ApplicationController
     @intervention.destroy
 
     respond_to do |format|
-      format.html { redirect_to(interventions_url) }
+      format.html { redirect_to(current_student) }
+      format.xml  { head :ok }
+    end
+  end
+
+  def end
+    @intervention = current_student.interventions.find(params[:id])
+    @intervention.end(current_user.id)
+     respond_to do |format|
+      format.html { redirect_to(current_student) }
       format.xml  { head :ok }
     end
   end

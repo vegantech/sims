@@ -1,11 +1,11 @@
 <p>
   <b>User:</b>
-  <%=h @intervention.user %>
+  <%=h @intervention.user.fullname %>
 </p>
 
 <p>
   <b>Student:</b>
-  <%=h @intervention.student %>
+  <%=h @intervention.student.fullname %>
 </p>
 
 <p>
@@ -20,12 +20,12 @@
 
 <p>
   <b>Intervention definition:</b>
-  <%=h @intervention.intervention_definition %>
+  <%=h @intervention.intervention_definition.title %>
 </p>
 
 <p>
   <b>Frequency:</b>
-  <%=h @intervention.frequency %>
+  <%=h @intervention.frequency.title %>
 </p>
 
 <p>
@@ -35,7 +35,7 @@
 
 <p>
   <b>Time length:</b>
-  <%=h @intervention.time_length %>
+  <%=h @intervention.time_length.title %>
 </p>
 
 <p>
@@ -43,26 +43,22 @@
   <%=h @intervention.time_length_number %>
 </p>
 
-<p>
-  <b>Active:</b>
-  <%=h @intervention.active %>
-</p>
+<%unless @intervention.active? %>
+  <p>
+    <b>Ended by:</b>
+    <%=h @intervention.ended_by.fullname %>
+  </p>
 
-<p>
-  <b>Ended by:</b>
-  <%=h @intervention.ended_by %>
-</p>
+  <p>
+    <b>Ended at:</b>
+    <%=h @intervention.ended_at %>
+  </p>
 
-<p>
-  <b>Ended at:</b>
-  <%=h @intervention.ended_at %>
-</p>
-
-<p>
-  <b>District:</b>
-  <%=h @intervention.district %>
-</p>
-
+<% end %>
 
 <%= link_to 'Edit', edit_intervention_path(@intervention) %> |
-<%= link_to 'Back', interventions_path %>
+<%= link_to 'Delete', intervention_path(@intervention), :method=>:delete,:confirm=>"Are you sure you want to delete this intervention?" %> |
+<% if @intervention.active? %>
+  <%= link_to 'End', end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> |
+<% end %>
+<%= link_to 'Back', @intervention.student %>

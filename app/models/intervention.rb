@@ -4,7 +4,10 @@ class Intervention < ActiveRecord::Base
   belongs_to :intervention_definition
   belongs_to :frequency
   belongs_to :time_length
-  belongs_to :ended_by, :class_name =>:user
+  belongs_to :ended_by, :class_name =>"User"
+
+  validates_numericality_of :time_length_number, :frequency_multiplier
+  
 
   after_create :create_other_students
   attr_accessor :selected_ids, :apply_to_all
@@ -37,6 +40,13 @@ class Intervention < ActiveRecord::Base
 
   def intervention_cluster
     intervention_definition.intervention_cluster
+  end
+
+  def end(ended_by)
+    self.ended_by_id=ended_by
+    self.active=false
+    self.ended_at=Date.today
+    self.save!
   end
 
 
