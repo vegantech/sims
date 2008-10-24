@@ -14,10 +14,8 @@ class InterventionsController < ApplicationController
   # GET /interventions/new
   # GET /interventions/new.xml
   def new
-   
-    @intervention= build_from_session_and_params  #may only be appropriate in html with dropdowns
     respond_to do |format|
-      format.html { populate_dropdowns }# new.html.erb
+      format.html { populate_goals }# new.html.erb
       format.xml  { render :xml => @intervention }
     end
   end

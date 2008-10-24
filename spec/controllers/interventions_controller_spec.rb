@@ -5,7 +5,7 @@ describe InterventionsController do
     controller.should_receive(:current_student).any_number_of_times.and_return(mock_student(:interventions => mock_intervention))
     #build_from_session_and_params and populate_dropdowns are unit tested
     controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(mock_intervention(:student=>mock_student))
-    controller.should_receive(:populate_dropdowns).any_number_of_times
+    controller.should_receive(:populate_goals).any_number_of_times
   end
 
   def mock_student(stubs ={})
@@ -41,6 +41,7 @@ describe InterventionsController do
   describe "responding to GET new" do
   
     it "should expose a new intervention as @intervention" do
+      pending 'it should only be exposed if the intervention definition is already chosen'
       get :new
       assigns[:intervention].should equal(mock_intervention)
     end

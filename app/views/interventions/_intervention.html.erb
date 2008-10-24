@@ -1,5 +1,5 @@
 <div id="intervention">
-<% if @intervention_definition %>
+<% if @intervention %>
 <% form_for(@intervention) do |f| %>
   <%=render :partial =>'interventions/form',:locals=>{:form=>f} %>
   <% if @intervention.selected_ids %>

@@ -8,7 +8,8 @@ class Interventions::DefinitionsController < ApplicationController
   
   def select
     respond_to do |format|
-      format.html {redirect_to new_intervention_url(:intervention=>{:intervention_definition_id=>1})}
+      format.html {redirect_to new_intervention_url(:goal_id=>params[:goal_id],:objective_id=>params[:objective_id],
+                                                    :category_id=>params[:category_id],:definition_id=>params[:intervention_definition][:id])}
       format.js {
         populate_intervention
      }

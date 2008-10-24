@@ -20,7 +20,7 @@ describe Interventions::DefinitionsController do
   describe "GET 'select'" do
     it "should redirect to new intervention screen" do
       get 'select',:goal_id=>1,:objective_id=>1,:category_id=>1,:intervention_definition=>{:id=>1}
-      response.should redirect_to(new_intervention_url(:intervention=>{:intervention_definition_id=>1}))
+      response.should redirect_to(new_intervention_url(:category_id=>1,:definition_id=>1,:goal_id=>1,:objective_id=>1))
     end
   end
 
