@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-$:.unshift(File.dirname(__FILE__) + '/../lib/') unless $:.include?(File.dirname(__FILE__) + '/../lib/')
-$:.unshift(File.dirname(__FILE__) + '/../../../gems/term-ansicolor-1.0.3/lib')
-require 'cucumber/cli'
-Cucumber::CLI.execute
