@@ -1,7 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'test/unit'
 
-class StatesControllerTest < ActionController::TestCase
+describe StatesController do
+  it_should_behave_like "an authenticated controller"
   fixtures :states
   def test_should_get_index
     get :index

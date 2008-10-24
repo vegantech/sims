@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InterventionsController do
+  it_should_behave_like "an authenticated controller"
   before :each do 
     controller.should_receive(:current_student).any_number_of_times.and_return(mock_student(:interventions => mock_intervention))
     #build_from_session_and_params and populate_dropdowns are unit tested

@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe IgnoreFlagsController do
+  it_should_behave_like "an authenticated controller"
 
   def mock_ignore_flag(stubs={})
     @mock_ignore_flag ||= mock_model(IgnoreFlag, stubs)

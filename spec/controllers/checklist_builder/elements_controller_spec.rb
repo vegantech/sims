@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe ChecklistBuilder::ElementsController do
+  it_should_behave_like "an authenticated controller"
 
   #Delete these examples and add some real ones
   it "should use ChecklistBuilder::ElementsController" do

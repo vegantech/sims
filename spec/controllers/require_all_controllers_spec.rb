@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'test/unit'
 
+#Converting this to a spec didn't work
 class RequireAllControllersTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   

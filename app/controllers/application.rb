@@ -16,6 +16,8 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
   #
+  #
+  before_filter :authenticate
 
   
   private
@@ -58,6 +60,15 @@ class ApplicationController < ActionController::Base
 
   def current_district
     @@district ||= District.first || District.create!
+  end
+
+  def authenticate
+    unless current_user_id
+      flash[:notice] = "You must be logged in to reach that page"
+      redirect_to root_url
+      return false
+    end
+    true
   end
 
 end

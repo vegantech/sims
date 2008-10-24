@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe TiersController do
+  it_should_behave_like "an authenticated controller"
 
   def mock_tier(stubs={})
     @mock_tier ||= mock_model(Tier, stubs)

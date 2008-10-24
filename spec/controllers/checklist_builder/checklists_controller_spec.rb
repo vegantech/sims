@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe ChecklistBuilder::ChecklistsController do
+  it_should_behave_like "an authenticated controller"
 
   integrate_views
   #Delete this example and add some real ones

@@ -45,4 +45,15 @@ Spec::Runner.configure do |config|
   # == Notes
   # 
   # For more information take a look at Spec::Example::Configuration and Spec::Runner
+
+  describe "an authenticated controller", :shared => true do
+    before(:each) do
+      controller.should_receive(:authenticate).any_number_of_times.and_return(true)
+      controller.class.before_filters.should include(:authenticate) 
+    end
+
+  end
+
+
+
 end
