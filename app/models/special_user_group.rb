@@ -7,4 +7,12 @@ class SpecialUserGroup < ActiveRecord::Base
   #temporary list of types for now there's also a grade field
   TYPES=%w(all_students_in_district, all_schools_in_district, all_students_in_school)
 
+  named_scope :all_schools_in_district ,:conditions=>{:type=>"AllSchoolsInDistrict"}
+
+
+end
+
+class AllSchoolsInDistrict < SpecialUserGroup
+
+
 end

@@ -21,3 +21,7 @@ alpha:
 bravo:
   name: bravo Elementary
   district:  wi_mmsd
+
+other:
+  name: Other Middle
+  district: wi_mmsd

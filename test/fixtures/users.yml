@@ -28,3 +28,11 @@ twoschools:
   passwordhash: <%= User.encrypted_password("twoschools") %>
   district: wi_mmsd
   schools: alpha, bravo
+
+allschools:
+  username: allschools
+  first_name: "All"
+  last_name: "Schools"
+  passwordhash: <%= User.encrypted_password("allschools") %>
+  district: wi_mmsd
+ 

@@ -1,13 +1,15 @@
 class User < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :schools
+  has_many :special_user_groups
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
 
 
   def authorized_schools
-    if false #special access
+    if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
+      district.schools
     else
       schools
     end
