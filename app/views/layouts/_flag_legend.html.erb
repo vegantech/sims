@@ -1,0 +1,61 @@
+<% display_flag_legend? do %>
+<h1>
+  Icon Legend
+</h1>
+<div class="newsGroup">
+  
+  <table cellspacing="3" cellpadding="3">
+    <tr>
+      <td><%= image_tag("A.gif") %></td>
+      <td>
+        Attendance: 
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("B.gif") %></td>
+      <td>
+       Behavior: 
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("M.gif") %></td>
+      <td>
+        Math: 
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("LA.gif") %></td>
+      <td>
+      Language Arts:  
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("green-dot.gif") %></td>
+      <td>
+        Active: One or more interventions currently implemented. 
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("gray-dot.gif") %></td>
+      <td>
+        Ended: Previous interventions are not active.
+      </td>
+    </tr>
+	<tr>
+      <td><%= image_tag("I.gif") %></td>
+      <td>
+        Ignored: One or more flags are ignored. 
+      </td>
+    </tr>
+	<tr>
+      <td><%= image_tag("C.gif") %></td>
+      <td>
+        Custom: One or more flags have been added by a user of SIMS to indicate a need for intervention that is not reflected in the data.
+
+      </td>
+    </tr>
+	<tr><td colspan="2">Hover over the flag icon to see specific student data.</td></tr>
+  </table>
+  
+</div>
+<% end %>

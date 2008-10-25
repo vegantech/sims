@@ -13,4 +13,9 @@ module ApplicationHelper
     end
   end
 
+  def display_flag_legend?(&block)
+    yield if controller.controller_name=="students"
+  end
+     
+
 end

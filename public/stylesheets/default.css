@@ -17,14 +17,14 @@ body {
 
 #left_column{
   float: left;
-  width: 10%;
+  width: 20%;
   margin-left: 1%;
   display: inline;
 }
 
 #main{
   float: left;
-  width: 80%;
+  width: 75%;
   margin-left: 3%;
 }
 
