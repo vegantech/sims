@@ -33,8 +33,6 @@ module ApplicationHelper
     ext_match = /\.\w+$/
     ext = name.match ext_match
     file = name.split(ext_match).first.humanize + suffix
-    adp=ActiveRecord::Base.configurations[RAILS_ENV]['adapter']
-    url="#" if   (adp == "sqlilte3" ||adp  == "mysql") and (url.to_s.match(/\/files_int\//) || url.to_s.match(/oldweb.madison.k12.wi.us\/m/))
     icon= "icon_#{ext[0][1..-1]}.gif"
     blank={}
     blank[:target]="_blank" unless url=="#"
