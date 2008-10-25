@@ -14,6 +14,8 @@ class Intervention < ActiveRecord::Base
 
 
   named_scope :active,:conditions=>{:active=>true}
+  named_scope :inactive,:conditions=>{:active=>false}
+  
   def self.build_and_initialize(*args)
     int=self.new(*args)
     int.start_date ||=Time.now
@@ -31,6 +33,11 @@ class Intervention < ActiveRecord::Base
     int
   end
 
+
+
+  def title
+    intervention_definition.title
+  end
 
   def goal_definition
     objective_definition.goal_definition
