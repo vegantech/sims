@@ -19,7 +19,7 @@ function searchByFlag() {
 }
 
 function selectStudents(){
-    selected_boxes = document.select_students_form.elements["studentID[]"];
+    selected_boxes = document.select_students_form.elements["id[]"];
     for (x = 0; x < selected_boxes.length; x++){
       selected_boxes[x].checked = true;
     }
@@ -29,7 +29,7 @@ function selectStudents(){
 }
 
 function unselectStudents(){
-    selected_boxes = document.select_students_form.elements["studentID[]"];
+    selected_boxes = document.select_students_form.elements["id[]"];
     for (x = 0; x < selected_boxes.length; x++){
       selected_boxes[x].checked = false;
     }
