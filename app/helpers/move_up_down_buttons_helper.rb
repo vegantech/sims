@@ -1,4 +1,4 @@
-module InterventionBuilder::GoalsHelper
+module MoveUpDownButtonsHelper
   def move_up_down_buttons obj
     a=move_button(:up, obj) + "<br />" + move_button(:down, obj)
   end

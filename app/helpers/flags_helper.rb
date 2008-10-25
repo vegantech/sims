@@ -1,5 +1,5 @@
-module CustomFlagsHelper
-  # These will go in system flags when it is created
+module FlagsHelper
+  # Since all helpers are loaded, I'll just group them by convenience
 
   def displayflag(image,popup,flagtype, student)
     image_tag(image,"onmouseover" => "return overlib('#{popup}');",
@@ -34,4 +34,8 @@ module CustomFlagsHelper
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 
+  def display_flag_legend?(&block)
+    yield if controller.controller_name=="students"
+  end
+ 
 end

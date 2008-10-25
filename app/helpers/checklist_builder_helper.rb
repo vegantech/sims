@@ -1,4 +1,4 @@
-module ChecklistBuilder::ChecklistsHelper
+module ChecklistBuilderHelper
 
   BLIND_DOWN_TIME = 0.25
   BLIND_UP_TIME = 0.25
