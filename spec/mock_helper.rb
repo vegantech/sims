@@ -10,3 +10,7 @@ def mock_school stubs ={}
   mock_model(School, stubs)
 end
 
+def mock_intervention stubs = {}
+  mock_model(Intervention,stubs)
+end
+

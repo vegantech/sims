@@ -20,4 +20,8 @@ module StudentsHelper
         
     end
   end
+
+  def active_intervention_select
+    ""
+  end
 end

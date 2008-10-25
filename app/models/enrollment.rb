@@ -34,6 +34,10 @@ class Enrollment < ActiveRecord::Base
       #  # puts "Found flags: #{flags.class.name}, #{flags.inspect}"
       #  flags and flags.find{|k,v| intervention_types.include?(k)}
       #end
+    when 'active_intervention'
+      enrollments=enrollments.select{|e| e.student.interventions.active.any?}
+    when 'no_intervention'
+      enrollments=enrollments.reject{|e| e.student.interventions.active.any?}
     else
       raise 'Unrecognized search_type'
     end

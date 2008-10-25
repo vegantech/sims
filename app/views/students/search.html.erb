@@ -9,6 +9,8 @@
 		Select Student(s) by
 		<%= radio_button_tag(:search_type, :list_all, :checked => true) %><label for="search_type_list_all">List all students</label><br />
 		<%= radio_button_tag(:search_type, :flagged_intervention) %><label for="search_type_flagged_intervention">List only students flagged for intervention</label><%= flag_select %><br />
+		<%= radio_button_tag(:search_type, :active_intervention) %><label for="search_type_active_intervention">List only students in an active intervention</label><%= active_intervention_select %><br />
+		<%= radio_button_tag(:search_type, :no_intervention) %><label for="search_type_no_intervention">List only students not in an active intervention</label>
   </div>
   <%= submit_tag "Search for Students", :name => 'search' %>
 <% end %>

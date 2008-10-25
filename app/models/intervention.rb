@@ -12,6 +12,8 @@ class Intervention < ActiveRecord::Base
   after_create :create_other_students
   attr_accessor :selected_ids, :apply_to_all
 
+
+  named_scope :active,:conditions=>{:active=>true}
   def self.build_and_initialize(*args)
     int=self.new(*args)
     int.start_date ||=Time.now

@@ -15,8 +15,8 @@ describe Enrollment do
         enrollments = '7 students'
         Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
         Enrollment.search(:search_type => 'list_all').should == enrollments
+      end
     end
-  end
 
     describe 'passed list_all with grade' do
       it 'should return students from that grade' do
@@ -29,7 +29,7 @@ describe Enrollment do
       end
     end
 
-    describe 'passed school_id and partial last name' do
+    describe 'passed partial last name' do
       it 'should return all students whose last name starts with a match' do
         enrollment1 = mock_enrollment :student => mock_student(:last_name => 'Aagard')
         enrollment2 = mock_enrollment :student => mock_student(:last_name => 'Beauregard')
@@ -42,9 +42,7 @@ describe Enrollment do
 
         search_results.should == [enrollment2, enrollment3]
       end
-  end
-
-    describe 'passed school_id and partial last name' do
+      
       it 'should only match beginnings of last names' do
         enrollment1 = mock_enrollment :student => mock_student(:last_name => 'Anderson')
         enrollment2 = mock_enrollment :student => mock_student(:last_name => 'Beausonmeister')
@@ -56,7 +54,40 @@ describe Enrollment do
 
         search_results.should == [enrollment3]
       end
+ 
     end
 
+    describe 'passed not in intervention' do
+      it 'should only return students that are not in an intervention' do
+        enrollment1 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[]))
+        enrollment2 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[1,2,3]))
+        enrollment3 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[]))
+        enrollments = [enrollment1, enrollment2, enrollment3]
+        Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
+        search_results = Enrollment.search(:search_type => 'no_intervention')
+        search_results.should == [enrollment1,enrollment3]
+
+       
+      end
+
+    end
+  
+    describe 'passed in active intervention' do
+      it 'should only return students that are in an active intervention' do
+        enrollment1 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active=>[]))
+        enrollment2 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active=>[1,2,3]))
+        enrollment3 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[]))
+        enrollments = [enrollment1, enrollment2, enrollment3]
+        Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
+        search_results = Enrollment.search(:search_type => 'active_intervention')
+        search_results.should == [enrollment2]
+
+         
+      end
+
+    end
+
+  
   end
+
 end
