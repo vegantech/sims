@@ -36,6 +36,12 @@ class Enrollment < ActiveRecord::Base
       #end
     when 'active_intervention'
       enrollments=enrollments.select{|e| e.student.interventions.active.any?}
+      if search_hash[:intervention_group_types]
+        enrollments = enrollments.select do |e|
+          e.student.interventions.any?{|i| search_hash[:intervention_group_types].include?(i.send(search_hash[:intervention_group].tableize.singularize).id.to_s)}
+        end
+      end
+
     when 'no_intervention'
       enrollments=enrollments.reject{|e| e.student.interventions.active.any?}
     else

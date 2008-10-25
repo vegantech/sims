@@ -42,7 +42,8 @@ class StudentsController < ApplicationController
       session[:search][:last_name] = selected_last_name
       session[:search][:search_type] = search_type
       session[:search][:flagged_intervention_types] = intervention_types
-
+      session[:search][:intervention_group_types] = params['intervention_group_types']
+      session[:search][:intervention_group] = current_district.search_intervention_by.class_name if params['intervention_group_types']
       redirect_to students_url
     end
   end
