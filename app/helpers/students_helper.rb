@@ -21,7 +21,15 @@ module StudentsHelper
     end
   end
 
-  def active_intervention_select
-    ""
+
+  def intervention_group_checkbox(grp)
+    check_box_tag("intervention_group_types[]",grp.title,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") + 
+      label_tag(dom_id(grp), grp.title)
+
   end
+
+  def active_intervention_select
+    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}
+  end
+
 end
