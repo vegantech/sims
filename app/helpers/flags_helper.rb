@@ -7,7 +7,7 @@ module FlagsHelper
   end
 
   def status_display(student, change = nil)
-    str = ''
+    str = intervention_status(student)
 
     student.flags.current.each do |flagtype,flags|
       popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
@@ -36,6 +36,24 @@ module FlagsHelper
 
   def display_flag_legend?(&block)
     yield if controller.controller_name=="students"
+  end
+
+  def intervention_status(student)
+    str = ''
+    if student.interventions.active.any?
+      popup =  student.interventions.active.collect(&:title).join('<br />')
+      str += image_tag("green-dot.gif",
+        "onmouseover" => "return overlib('#{popup}');",
+        "onmouseout" => "return nd();") + " "
+    end
+    
+    if student.interventions.inactive.any?
+      popup =  student.interventions.inactive.collect(&:title).join('<br />')
+      str += image_tag("gray-dot.gif",
+        "onmouseover" => "return overlib('#{popup}');",
+        "onmouseout" => "return nd();") + " "
+    end
+  str
   end
  
 end
