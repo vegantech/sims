@@ -58,7 +58,7 @@ if defined? Rcov
    Rake::Task["spec:rcov:functional"].invoke
     remove_coverage_data
     Rake::Task["features_with_rcov"].invoke
-    Rake::Task["test:unit:integration"].invoke
+    Rake::Task["test:coverage:integration"].invoke
     #using cucumber instead of rspec stories
   end
                             
