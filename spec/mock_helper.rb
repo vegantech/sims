@@ -14,3 +14,7 @@ def mock_intervention stubs = {}
   mock_model(Intervention,stubs)
 end
 
+def mock_district stubs ={}
+  mock_model(District, stubs)
+end
+
