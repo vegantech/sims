@@ -2,7 +2,7 @@
 
   <%= link_to "Complete a Checklist for this Student", new_checklist_url %>
   <%cks = @student.checklists.group_by(&:from_tier).each do |g,ck| %>
-    <h4><%= @student.tier.title%></h4>
+    <h4><%= Tier.first.title%></h4>
     <%= render :partial => 'checklists/checklist', :collection => ck %>
   <%end%>
 

@@ -1,10 +1,26 @@
 class Recommendation < ActiveRecord::Base
- validates_presence_of :progress, :message => "is not indicated"
-  validates_presence_of :recommendation, :message => "is not indicated"
-  validates_presence_of :reason, :if=>lambda{|r| [4,5].include?(r.recommendation.to_i)}
   belongs_to :checklist
+  validates_presence_of :recommendation, :message => "is not indicated"
+  validates_presence_of :reason, :if=>lambda{|r| RECOMMENDATION[r.recommendation][:promote]}
   validates_presence_of :checklist_id
+  validates_presence_of :other, :if => lambda{|r| RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral
+  attr_accessor :other
+
+  RECOMMENDATION={
+    0=>{:text=>"The student made progress and no longer requires intervention."},
+    2 =>{:text=>"The student is making progress; choose new interventions from the next level to accelerate progress or address additional needs; continue to monitor progress.",:promote=>true},
+    3=>{:text => "The student has not made progress.  Choose new interventions from the current level and continue to monitor progress."},
+    4 => {:text => "The student has not made progress.  Choose new interventions from the next level and continue to monitor progress.",:promote=>true},
+    5 => {:text => "The student has not made progress and multiple attempts at intervention have been tried.  Make a referral to special education.",:promote=>true,
+          :show_elig => true},
+    6 => {:text => "Other", :require_other => true ,:promote=>true}
+  
+  }
+
+  
+
+
 
   def set_reason_from_previous!
     st_list=Checklist::STATUS
@@ -21,18 +37,12 @@ class Recommendation < ActiveRecord::Base
 
   protected
 
-  def validate
-    unless errors.on :recommendation
-      errors.add(:other, "must be filled out when selected") if recommendation == 6
-    end
-  end
-
   def request_referral
     @request_referral ||= (should_advance && recommendation == 5)
   end
 
   def before_save
-    if errors.empty? and [4,5].include? recommendation.to_i
+    if errors.empty? and RECOMMENDATION[recommendation][:promote]
       self.should_advance=true
       self.should_advance = request_referral if recommendation.to_i==5
     end
