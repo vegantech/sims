@@ -169,8 +169,7 @@ ActiveRecord::Schema.define(:version => 20081024061734) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.integer  "district_id"
-    t.integer  "grade_level"
+    t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

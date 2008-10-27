@@ -99,17 +99,17 @@ describe Enrollment do
         end
       end
 
-      describe 'and no flagged interventions were selected' do
-        it 'should return no enrollments' do
+      describe 'and no optional flagged interventions were selected' do
+        it 'should return all the flagged enrollments' do
           e1 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['attendance', 'attendance_flag']]))
           e2 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['math', 'math_flag']]))
           e3 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['suspension', 'suspension_flag']]))
-          e4 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [[]]))
+          e4 = mock_enrollment :student => mock_student(:flags => mock_array(:current => []))
           enrollments = [e1, e2, e3, e4]
           Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
     
           search_results = Enrollment.search(:search_type => 'flagged_intervention', :flagged_intervention_types => [])
-          search_results.should == []
+          search_results.should == [e1,e2,e3]
         end
       end
     end

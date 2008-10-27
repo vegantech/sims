@@ -24,12 +24,12 @@ class Enrollment < ActiveRecord::Base
     when 'flagged_intervention'  
       # only include enrollments for students who have at least one of the intervention types.
       intervention_types = search_hash[:flagged_intervention_types]
-      if intervention_types # needs a different name?
-        enrollments = enrollments.select do |e|
-          e.student.flags.current.find{|flag_name, flags_array| intervention_types.include?(flag_name)}
-        end
+      if intervention_types.blank? # needs a different name?
+        enrollments = enrollments.select{|e| e.student.flags.current.any?}
       else
-        enrollments = []
+         enrollments = enrollments.select do |e|
+           e.student.flags.current.find{|flag_name, flags_array| intervention_types.include?(flag_name)}
+        end
       end
     when 'active_intervention'
       enrollments = enrollments.select{|e| e.student.interventions.active.any?}
