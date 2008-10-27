@@ -31,20 +31,24 @@ class StudentsController < ApplicationController
       @grades = current_school.enrollments.collect(&:grade).uniq
       @grades.unshift("*")
     else
-      # puts params.inspect
-      selected_grade = params['students']['grade']
-      selected_last_name = params['students']['last_name']
-      search_type = params['search_type']
-      intervention_types = params['flagged_intervention_types']
+      if params['students']
+        selected_grade = params['students']['grade']
+        selected_last_name = params['students']['last_name']
+        search_type = params['search_type']
+        intervention_types = params['flagged_intervention_types']
 
-      session[:search] ||= {}
-      session[:search][:grade] = selected_grade
-      session[:search][:last_name] = selected_last_name
-      session[:search][:search_type] = search_type
-      session[:search][:flagged_intervention_types] = intervention_types
-      session[:search][:intervention_group_types] = params['intervention_group_types']
-      session[:search][:intervention_group] = current_district.search_intervention_by.class_name if params['intervention_group_types']
-      redirect_to students_url
+        session[:search] ||= {}
+        session[:search][:grade] = selected_grade
+        session[:search][:last_name] = selected_last_name
+        session[:search][:search_type] = search_type
+        session[:search][:flagged_intervention_types] = intervention_types
+        session[:search][:intervention_group_types] = params['intervention_group_types']
+        session[:search][:intervention_group] = current_district.search_intervention_by.class_name if params['intervention_group_types']
+        redirect_to students_url
+      else
+        flash[:notice] = 'Missing search criteria'
+        redirect_to :action => :search
+      end
     end
   end
 

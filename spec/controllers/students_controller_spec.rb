@@ -50,6 +50,25 @@ describe StudentsController do
     end
 
     describe 'POST' do
+      describe 'without search criteria' do
+        it 'should set error message and redraw search screen' do
+          post :search
+          flash[:notice].should == 'Missing search criteria'
+          response.should redirect_to(:action => :search)
+        end
+      end
+
+      describe 'with search criteria' do
+        it 'should capture search criteria in session and redirect to students_url' do
+          post :search, 'students' => {'grade' => '1', 'last_name' => 'Buckley'},
+            'flagged_intervention_types' => ['attendance', 'math'], 'search_type' => 'Search Type'
+
+          response.should redirect_to(students_url)
+
+          session[:search].should == {:flagged_intervention_types=>['attendance', 'math'],
+            :last_name=>'Buckley', :intervention_group_types=>nil, :grade=>'1', :search_type=>'Search Type'}
+        end
+      end
     end
   end
 
