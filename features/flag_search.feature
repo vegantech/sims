@@ -69,7 +69,7 @@ Feature: Search By Intervention Flags
     When I press "Search for Students"
 
     Then I should see "3 students selected"
-    And I should not see "Partridge, Adam"
+    And I should see "Partridge, Adam"
     And I should not see "Dudley, Andy"
-		And I should not see "Acomb, Craig"
-		And I should not see "Flag, Different"
+    And I should see "Acomb, Craig"
+    And I should see "Flag, Different"
