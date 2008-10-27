@@ -72,4 +72,19 @@ describe StudentsController do
     end
   end
 
+  describe 'GET show' do
+    it 'should set @student, and render show template' do
+      student = mock_student()
+      students = mock_model(String, :find => student)
+      school = mock_school(:students => students)
+      School.should_receive(:find).with(school.id).and_return(school)
+
+      get :show, {:id => student.id}, :school_id => school.id, :selected_students => ["#{student.id}"]
+
+      response.should_not redirect_to(students_url)
+      response.should render_template('show')
+      assigns[:student].should == student
+    end
+  end
+
 end

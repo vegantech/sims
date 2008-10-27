@@ -65,7 +65,7 @@ class StudentsController < ApplicationController
 
   private
   def enforce_session_selections
-    return true unless params[:id] 
+    return true unless params[:id]
 		# raise "I'm here" if selected_students_ids.nil?
     if selected_students_ids and selected_students_ids.include?(params[:id])
       session[:selected_student]=params[:id]
