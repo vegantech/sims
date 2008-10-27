@@ -17,4 +17,3 @@ end
 def mock_district stubs ={}
   mock_model(District, stubs)
 end
-
