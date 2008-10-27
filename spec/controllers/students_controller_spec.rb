@@ -73,17 +73,30 @@ describe StudentsController do
   end
 
   describe 'GET show' do
-    it 'should set @student, and render show template' do
-      student = mock_student()
-      students = mock_model(String, :find => student)
-      school = mock_school(:students => students)
-      School.should_receive(:find).with(school.id).and_return(school)
+    before(:all) do
+    end
 
-      get :show, {:id => student.id}, :school_id => school.id, :selected_students => ["#{student.id}"]
+    describe 'with selected student' do
+      it 'should set @student, and render show template' do
+        student = mock_student()
+        students = mock_model(String, :find => student)
+        school = mock_school(:students => students)
+        School.should_receive(:find).with(school.id).and_return(school)
 
-      response.should_not redirect_to(students_url)
-      response.should render_template('show')
-      assigns[:student].should == student
+        get :show, {:id => student.id}, :school_id => school.id, :selected_students => ["#{student.id}"]
+
+        response.should_not redirect_to(students_url)
+        response.should render_template('show')
+        assigns[:student].should == student
+      end
+    end
+
+    describe 'without selected student' do
+      it 'should flunk enforce_session_selections' do
+        get :show, {:id => 999}
+        flash[:notice].should == 'Student not selected'
+        response.should redirect_to(students_url)
+      end
     end
   end
 
