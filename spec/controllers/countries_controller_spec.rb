@@ -47,7 +47,7 @@ describe CountriesController do
   end
 
   it 'should render edit if updating invalid country' do
-    Country.should_receive(:new).and_return(mock_country(:update_attributes=>false))
+    Country.should_receive(:find).and_return(mock_country(:update_attributes=>false))
     post :update
     response.should be_success
     response.should render_template("edit")

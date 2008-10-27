@@ -46,11 +46,11 @@ describe DistrictsController do
     assert_redirected_to district_path(assigns(:district))
   end
 
-  it 'should render new if creating invalid district' do
-    District.should_receive(:new).and_return(mock_district(:save=>false))
-    post :create
+  it 'should render edit if updating invalid district' do
+    District.should_receive(:find).and_return(mock_district(:update_attributes=>false))
+    post :update
     response.should be_success
-    response.should render_template("new")
+    response.should render_template("edit")
   end
 
 
