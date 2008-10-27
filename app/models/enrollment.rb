@@ -2,7 +2,7 @@ class Enrollment < ActiveRecord::Base
   belongs_to :student
   belongs_to :school
 
-  def self.search(search_hash={})
+  def self.search(search_hash = {})
     enrollments = find(:all,:include => :student) #expected to already be scoped through school
 
     if search_hash[:grade] and search_hash[:grade] != '*'
@@ -23,19 +23,20 @@ class Enrollment < ActiveRecord::Base
     when 'list_all'
     when 'flagged_intervention'
       intervention_types = search_hash[:flagged_intervention_types]
-      enrollments=enrollments.select{|e| e.student.flags.any?}
-      # only include enrollments for students who have at least one of the intervention types.
-      
-      #this doesn't work yet and returns an error if no flag options are selected.
-      #It is also incorrectly named?
+      if intervention_types # needs a different name?
+        enrollments = enrollments.select{|e| e.student.flags.any?}
+        # only include enrollments for students who have at least one of the intervention types.
 
-      #enrollments = enrollments.select do |e|
-      #  flags = e.student.flags.current.first
-      #  # puts "Found flags: #{flags.class.name}, #{flags.inspect}"
-      #  flags and flags.find{|k,v| intervention_types.include?(k)}
-      #end
+        enrollments = enrollments.select do |e|
+         flags = e.student.flags.current.first
+         # puts "Found flags: #{flags.class.name}, #{flags.inspect}"
+         flags and flags.find{|k,v| intervention_types.include?(k)}
+        end
+      else
+        enrollments = []
+      end
     when 'active_intervention'
-      enrollments=enrollments.select{|e| e.student.interventions.active.any?}
+      enrollments = enrollments.select{|e| e.student.interventions.active.any?}
       if search_hash[:intervention_group_types]
         enrollments = enrollments.select do |e|
           e.student.interventions.any?{|i| search_hash[:intervention_group_types].include?(i.send(search_hash[:intervention_group].tableize.singularize).id.to_s)}

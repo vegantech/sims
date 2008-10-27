@@ -37,8 +37,9 @@ Feature: Search By Intervention Flags
   Scenario: List  students flagged for intervention A or M
     Given school "Ridgewood"
     And student "Adam" "Partridge" in grade 2 at "Ridgewood" with "attendance" flag
-    And student "Andy" "Dudley" in grade 3 at "Glenn Stephens"
+    And student "Andy" "Dudley" in grade 3 at "Ridgewood"
     And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
+		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
     And I am on the "school selection" page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
@@ -52,3 +53,23 @@ Feature: Search By Intervention Flags
     And I should see "Partridge, Adam"
     And I should not see "Dudley, Andy"
 		And I should see "Acomb, Craig"
+		And I should not see "Flag, Different"
+
+  Scenario: User does not select intervention flags
+    Given school "Ridgewood"
+    And student "Adam" "Partridge" in grade 2 at "Ridgewood" with "attendance" flag
+    And student "Andy" "Dudley" in grade 3 at "Ridgewood"
+    And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
+		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
+    And I am on the "school selection" page
+    And I select "Ridgewood" from "school_id"
+    And I press "Choose School"
+    And I choose "List only students flagged for intervention"
+
+    When I press "Search for Students"
+
+    Then I should see "0 students selected"
+    And I should not see "Partridge, Adam"
+    And I should not see "Dudley, Andy"
+		And I should not see "Acomb, Craig"
+		And I should not see "Flag, Different"
