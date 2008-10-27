@@ -21,16 +21,12 @@ class Enrollment < ActiveRecord::Base
 
     case search_hash[:search_type]
     when 'list_all'
-    when 'flagged_intervention'
+    when 'flagged_intervention'  
+      # only include enrollments for students who have at least one of the intervention types.
       intervention_types = search_hash[:flagged_intervention_types]
       if intervention_types # needs a different name?
-        enrollments = enrollments.select{|e| e.student.flags.any?}
-        # only include enrollments for students who have at least one of the intervention types.
-
         enrollments = enrollments.select do |e|
-         flags = e.student.flags.current.first
-         # puts "Found flags: #{flags.class.name}, #{flags.inspect}"
-         flags and flags.find{|k,v| intervention_types.include?(k)}
+          e.student.flags.current.find{|flag_name, flags_array| intervention_types.include?(flag_name)}
         end
       else
         enrollments = []

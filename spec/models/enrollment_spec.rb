@@ -85,18 +85,18 @@ describe Enrollment do
       end
     end
 
-    # describe 'passed flagged_intervention' do
-    #   it 'should return students with any of the selected flagged interventions' do
-    #     e1 = mock_enrollment :student => mock_student(:flags => [])
-    #     e2 = mock_enrollment :student => mock_student(:flags => [])
-    #     e3 = mock_enrollment :student => mock_student(:flags => [])
-    #     enrollments = [e1, e2, e3]
-    #     Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
-    # 
-    #     search_results = Enrollment.search(:search_type => 'flagged_intervention')
-    #     search_results.should == [e1, e3]
-    #   end
-    # end
+    describe 'passed flagged_intervention' do
+      it 'should return students with any of the selected flagged interventions' do
+        e1 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['attendance', 'attendance_flag']]))
+        e2 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['math', 'math_flag']]))
+        e3 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['suspension', 'suspension_flag']]))
+        enrollments = [e1, e2, e3]
+        Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
+    
+        search_results = Enrollment.search(:search_type => 'flagged_intervention', :flagged_intervention_types => ['attendance', 'suspension'])
+        search_results.should == [e1, e3]
+      end
+    end
 
   end
 
