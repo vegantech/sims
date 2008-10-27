@@ -175,7 +175,7 @@ describe ChecklistsController do
     it "should destroy the requested checklist" do
       checklist=mock_checklist
       student=mock_student(:checklists=>mock_array(:find=>checklist))
-      controller.should_receive(:current_student).twice.and_return(mock_student)
+      controller.should_receive(:current_student).twice.and_return(student)
       checklist.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
@@ -183,10 +183,10 @@ describe ChecklistsController do
     it "should redirect to the checklists list" do
       checklist=mock_checklist
       student=mock_student(:checklists=>mock_array(:find=>checklist))
-      controller.should_receive(:current_student).twice.and_return(mock_student)
+      controller.should_receive(:current_student).twice.and_return(student)
       checklist.should_receive(:destroy)
       delete :destroy, :id => "37"
-      response.should redirect_to(students_url(mock_student))
+      response.should redirect_to(student_url(student))
     end
 
   end
