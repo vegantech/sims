@@ -83,6 +83,42 @@ describe Enrollment do
         search_results = Enrollment.search(:search_type => 'active_intervention')
         search_results.should == [enrollment2]
       end
+
+      it 'should return students in an active intervention when no checkboxes selected' do
+        enrollment1 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active=>[]))
+        enrollment2 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active=>[1,2,3]))
+        enrollment3 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[]))
+        enrollments = [enrollment1, enrollment2, enrollment3]
+        Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
+
+        search_results = Enrollment.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
+                                           :intervention_group_types=>[])
+        search_results.should == [enrollment2]
+ 
+      end
+
+      it 'should return students in an active intervention with any of the selected checkboxes' do
+        intervention1=mock_intervention()
+        intervention1.should_receive(:objective_definition).and_return(mock_objective_definition(:id=>1))
+        intervention2=mock_intervention()
+        intervention2.should_receive(:objective_definition).and_return(mock_objective_definition(:id=>2))
+        intervention3=mock_intervention()
+        intervention3.should_receive(:objective_definition).and_return(mock_objective_definition(:id=>3))
+
+
+        enrollment1 = mock_enrollment :student => mock_student(:interventions => mock_array(:active=>[intervention1] ))
+        enrollment2 = mock_enrollment :student => mock_student(:interventions => mock_array(:active=>[intervention2]))
+        enrollment3 = mock_enrollment :student => mock_student(:interventions => mock_array(:active =>[intervention3]))
+        enrollment4 = mock_enrollment :student => mock_student(:interventions => mock_intervention(:active =>[]))
+        enrollments = [enrollment1, enrollment2, enrollment3, enrollment4]
+        Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
+
+        search_results = Enrollment.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
+                                           :intervention_group_types=>["1","3"])
+        search_results.should == [enrollment1,enrollment3]
+ 
+      end
+ 
     end
 
     describe 'passed flagged_intervention' do

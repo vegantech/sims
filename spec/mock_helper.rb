@@ -25,3 +25,8 @@ end
 def mock_district stubs ={}
   mock_model(District, stubs)
 end
+
+def mock_objective_definition stubs ={}
+  mock_model(ObjectiveDefinition, stubs)
+
+end
