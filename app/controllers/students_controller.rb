@@ -14,18 +14,18 @@ class StudentsController < ApplicationController
 
   def select
     # add selected students to session redirect to show
-    
-    #need to make sure user has access to these
-    session[:selected_students]=params[:id]
+
+    # need to make sure user has access to these
+    session[:selected_students] = params[:id]
     if session[:selected_students].blank?
-      flash[:notice]='No students selected'
+      flash[:notice] = 'No students selected'
       redirect_to students_url
     else
-      session[:selected_student]=session[:selected_students].first
+      session[:selected_student] = session[:selected_students].first
       redirect_to student_url(session[:selected_student])
     end
   end
-  
+
   def search
     if request.get?
       @grades = current_school.enrollments.collect(&:grade).uniq
