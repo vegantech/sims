@@ -10,7 +10,6 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should get index' do
-  pending
     get :index
     response.should be_success
   end
@@ -36,6 +35,14 @@ describe ChecklistBuilder::ChecklistsController do
     assigns(:checklist_definition).should ==(a)
   end
 
+   it 'should create_checklist_definition on post create' do
+     pending
+    old_count = ChecklistDefinition.count
+    post :create, 
+         :checklist_definition => { :directions => "Fill all of these out please" }
+    response.should redirect_to(checklist_builder_checklist_path(assigns(:checklist_definition)))
+    ChecklistDefinition.count should ==  old_count+1
+  end
  
     
 
@@ -46,15 +53,7 @@ end
 
 =begin
  
-  def test_should_create_checklist_definition
-    old_count = ChecklistDefinition.count
-    post :create, 
-         :checklist_definition => { :directions => "Fill all of these out please" }
-    assert_equal old_count+1, ChecklistDefinition.count
-    
-    assert_redirected_to checklist_definition_path(assigns(:checklist_definition))
-  end
-  
+ 
   def test_should_update_checklist_definition
     put :update, :id => 2, 
                  :checklist_definition => { :text => "Something new" }
