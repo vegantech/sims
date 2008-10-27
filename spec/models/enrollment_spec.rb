@@ -86,15 +86,31 @@ describe Enrollment do
     end
 
     describe 'passed flagged_intervention' do
-      it 'should return students with any of the selected flagged interventions' do
-        e1 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['attendance', 'attendance_flag']]))
-        e2 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['math', 'math_flag']]))
-        e3 = mock_enrollment :student => mock_student(:flags => mock_flag(:current => [['suspension', 'suspension_flag']]))
-        enrollments = [e1, e2, e3]
-        Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
+      describe 'and some flagged interventions were selected' do
+        it 'should return students with any of the selected flagged interventions' do
+          e1 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['attendance', 'attendance_flag']]))
+          e2 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['math', 'math_flag']]))
+          e3 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['suspension', 'suspension_flag']]))
+          enrollments = [e1, e2, e3]
+          Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
     
-        search_results = Enrollment.search(:search_type => 'flagged_intervention', :flagged_intervention_types => ['attendance', 'suspension'])
-        search_results.should == [e1, e3]
+          search_results = Enrollment.search(:search_type => 'flagged_intervention', :flagged_intervention_types => ['attendance', 'suspension'])
+          search_results.should == [e1, e3]
+        end
+      end
+
+      describe 'and no flagged interventions were selected' do
+        it 'should return no enrollments' do
+          e1 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['attendance', 'attendance_flag']]))
+          e2 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['math', 'math_flag']]))
+          e3 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [['suspension', 'suspension_flag']]))
+          e4 = mock_enrollment :student => mock_student(:flags => mock_array(:current => [[]]))
+          enrollments = [e1, e2, e3, e4]
+          Enrollment.should_receive(:find).with(:all, :include => :student).and_return(enrollments)
+    
+          search_results = Enrollment.search(:search_type => 'flagged_intervention', :flagged_intervention_types => [])
+          search_results.should == []
+        end
       end
     end
 

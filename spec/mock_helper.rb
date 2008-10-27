@@ -1,3 +1,7 @@
+def mock_array stubs = {}
+  mock_model(Array, stubs)
+end
+
 def mock_enrollment stubs = {}
   mock_model(Enrollment, stubs)
 end
