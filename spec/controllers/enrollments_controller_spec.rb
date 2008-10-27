@@ -4,7 +4,7 @@ require 'test/unit'
 describe  EnrollmentsController do
   it_should_behave_like "an authenticated controller"
   fixtures :enrollments
-  def test_should_get_index
+  it 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:enrollments)
@@ -23,6 +23,13 @@ describe  EnrollmentsController do
     assert_redirected_to enrollment_path(assigns(:enrollment))
   end
 
+  it 'should render new if creating invalid enrollment' do
+    Enrollment.should_receive(:new).and_return(mock_enrollment(:save=>false))
+    post :create
+    response.should be_success
+    response.should render_template("new")
+  end
+
   def test_should_show_enrollment
     get :show, :id => enrollments(:one).id
     assert_response :success
@@ -37,6 +44,14 @@ describe  EnrollmentsController do
     put :update, :id => enrollments(:one).id, :enrollment => { }
     assert_redirected_to enrollment_path(assigns(:enrollment))
   end
+
+  it 'should render edit if updating invalid enrollment' do
+    Enrollment.should_receive(:find).and_return(mock_enrollment(:update_attributes=>false))
+    post :update
+    response.should be_success
+    response.should render_template("edit")
+  end
+
 
   def test_should_destroy_enrollment
     assert_difference('Enrollment.count', -1) do

@@ -22,6 +22,14 @@ describe DistrictsController do
 
     assert_redirected_to district_path(assigns(:district))
   end
+  
+  it 'should render new if creating invalid district' do
+    District.should_receive(:new).and_return(mock_district(:save=>false))
+    post :create
+    response.should be_success
+    response.should render_template("new")
+  end
+
 
   def test_should_show_district
     get :show, :id => districts(:one).id
@@ -37,6 +45,14 @@ describe DistrictsController do
     put :update, :id => districts(:one).id, :district => { }
     assert_redirected_to district_path(assigns(:district))
   end
+
+  it 'should render new if creating invalid district' do
+    District.should_receive(:new).and_return(mock_district(:save=>false))
+    post :create
+    response.should be_success
+    response.should render_template("new")
+  end
+
 
   def test_should_destroy_district
     assert_difference('District.count', -1) do

@@ -22,6 +22,13 @@ describe StatesController do
 
     assert_redirected_to state_path(assigns(:state))
   end
+  it 'should render new if creating invalid state' do
+    State.should_receive(:new).and_return(mock_state(:save=>false))
+    post :create
+    response.should be_success
+    response.should render_template("new")
+  end
+
 
   def test_should_show_state
     get :show, :id => states(:one).id
@@ -37,6 +44,14 @@ describe StatesController do
     put :update, :id => states(:one).id, :state => { }
     assert_redirected_to state_path(assigns(:state))
   end
+
+  it 'should render edit if updating invalid state' do
+    State.should_receive(:find).and_return(mock_state(:update_attributes=>false))
+    post :update
+    response.should be_success
+    response.should render_template("edit")
+  end
+
 
   def test_should_destroy_state
     assert_difference('State.count', -1) do

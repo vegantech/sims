@@ -28,5 +28,13 @@ end
 
 def mock_objective_definition stubs ={}
   mock_model(ObjectiveDefinition, stubs)
-
 end
+
+def mock_state stubs={}
+  mock_model(State,stubs)
+end
+
+def mock_country stubs={}
+  mock_model(Country,stubs)
+end
+
