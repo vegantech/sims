@@ -34,4 +34,23 @@ describe StudentsController do
     end
   end
 
+  describe 'search' do
+    describe 'GET' do
+      it 'should set @grades and render search template' do
+        e1 = mock_enrollment(:grade => '1')
+        e2 = mock_enrollment(:grade => '2')
+        school = mock_school(:enrollments => [e1, e2])
+        School.should_receive(:find).with(school.id).and_return(school)
+
+        get :search, {}, :school_id => school.id
+
+        assigns[:grades].should == ['*', '1', '2']
+        response.should render_template('search')
+      end
+    end
+
+    describe 'POST' do
+    end
+  end
+
 end

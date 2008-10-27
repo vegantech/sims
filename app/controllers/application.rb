@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @school=School.find(current_school_id)
+    @school = School.find(current_school_id)
   end
 
   def current_district_id
