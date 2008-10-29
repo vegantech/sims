@@ -3,6 +3,7 @@ class ProbeDefinition < ActiveRecord::Base
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent=>:destroy
   has_many :recommended_monitors
   has_many :intervention_definitions,:through => :recommended_monitors
+  has_many :intervention_probe_assignments
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active','district_id']
@@ -20,7 +21,7 @@ class ProbeDefinition < ActiveRecord::Base
   end
 
   def probes
-   recommended_monitors 
+    intervention_probe_assignments
   end
 
 

@@ -6,6 +6,21 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name =>"User"
 
+  has_many :intervention_probe_assignments do 
+    def prepare_all
+      ipas=find(:all)
+      prepared=[]
+      proxy_owner.intervention_definition.recommended_monitors.each do |rec_mon|
+        if d=ipas.detect{|ipa| ipa.probe_definition_id== rec_mon.probe_definition_id}
+          prepared << d
+        else
+          prepared << proxy_owner.intervention_probe_assignments.build(:probe_definition_id=>rec_mon.probe_definition_id)
+        end
+      end
+      prepared
+    end
+  end
+
   validates_numericality_of :time_length_number, :frequency_multiplier
   
 

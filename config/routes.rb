@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :tiers
 
 
@@ -59,7 +60,9 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions, :member=>{:end=>:put}
+  map.resources :interventions, :member=>{:end=>:put} do |intervention|
+    intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments"
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
 

@@ -1,0 +1,23 @@
+
+<% form_for(@intervention, :url=>intervention_probe_assignments_url(@intervention)) do |f| %>
+  <%= f.error_messages %>
+
+    <% @intervention_probe_assignments.each do |intervention_probe_assignment| %>
+      <p>
+      <% fields_for(intervention_probe_assignment) do |ipa|  %>
+        <%= ipa.check_box :enabled %> 
+        <%= intervention_probe_assignment.probe_definition.title %> <br>
+        <%= ipa.label :frequency_multiplier %> 
+        <%= ipa.text_field :frequency_multiplier %>
+        <%= ipa.label :first_date %>
+        <%= ipa.date_select :first_date %>
+        <%= ipa.label :end_date %>
+        <%= ipa.date_select :end_date %>
+        </p>
+      <% end %>
+    <% end %>
+    <%= f.submit "Create" %>
+<% end %>
+
+<%= link_to 'Back', @intervention %>
+
