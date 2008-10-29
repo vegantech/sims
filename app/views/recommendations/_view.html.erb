@@ -1,5 +1,5 @@
 <br/>
 
 <%- form_for :recommendation, recommendation  do |f| -%>
-  <%=render :partial=>"recommendations/form", :locals=>{:form=>f}%>
+  <%=render :partial=>"recommendations/form", :locals=>{:form=>f, :recommendation=>recommendation}%>
 	  <%- end -%>

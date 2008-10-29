@@ -4,7 +4,7 @@
 @title2= "Progress and Recommendations for #{@checklist.student.fullname}"
 %>
 <%- form_for [@checklist,@recommendation]  do |f| -%>
-  <%=render :partial=>f%>
+  <%=render :partial=>f, :locals=>{:recommendation=>@recommendation}%>
    <%= submit_tag "Submit" %>
  
 <%- end -%>

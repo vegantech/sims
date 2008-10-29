@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  district: wi_mmsd
+  active: true
+  text: MyText
+  checklist_definition: checklist_definition_one
+  score_options: 1
+

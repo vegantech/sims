@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  district: 
+  active: false
+  text: MyText
+  checklist_definition: 
+  score_options: 1
+
+two:
+  district: 
+  active: false
+  text: MyText
+  checklist_definition: 
+  score_options: 1
