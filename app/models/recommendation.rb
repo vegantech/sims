@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: recommendations
+#
+#  id                           :integer         not null, primary key
+#  progress                     :integer
+#  recommendation               :integer
+#  checklist_id                 :integer
+#  user_id                      :integer
+#  reason                       :text
+#  should_advance               :boolean
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#  recommendation_definition_id :integer
+#
+
 class Recommendation < ActiveRecord::Base
   belongs_to :checklist
   belongs_to :recommendation_definition

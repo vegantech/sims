@@ -1,15 +1,14 @@
 # == Schema Information
-# Schema version: 183
+# Schema version: 20081030035908
 #
 # Table name: question_definitions
 #
-#  question_definition_id  :integer       not null, primary key
-#  checklist_definition_id :integer       
-#  created_at              :datetime      
-#  updated_at              :datetime      
-#  text                    :text          
-#  position                    :integer       
-#  district_id             :integer       
+#  id                      :integer         not null, primary key
+#  checklist_definition_id :integer
+#  text                    :text
+#  position                :integer
+#  created_at              :datetime
+#  updated_at              :datetime
 #
 
 question_definition_one:

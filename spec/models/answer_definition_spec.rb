@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: answer_definitions
+#
+#  id                    :integer         not null, primary key
+#  element_definition_id :integer
+#  text                  :text
+#  value                 :string(255)
+#  position              :integer
+#  autoset_others        :boolean
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AnswerDefinition do

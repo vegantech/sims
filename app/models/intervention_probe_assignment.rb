@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: intervention_probe_assignments
+#
+#  id                   :integer         not null, primary key
+#  intervention_id      :integer
+#  probe_definition_id  :integer
+#  frequency_multiplier :integer
+#  frequency_id         :integer
+#  first_date           :datetime
+#  end_date             :datetime
+#  enabled              :boolean
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :intervention
   belongs_to :probe_definition

@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: districts
+#
+#  id            :integer         not null, primary key
+#  name          :string(255)
+#  abbrev        :string(255)
+#  state_dpi_num :integer
+#  state_id      :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe District do

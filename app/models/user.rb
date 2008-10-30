@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: users
+#
+#  id           :integer         not null, primary key
+#  username     :string(255)
+#  passwordhash :binary
+#  first_name   :string(255)
+#  last_name    :string(255)
+#  district_id  :integer
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class User < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :schools

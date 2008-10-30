@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: states
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  abbrev     :string(255)
+#  country_id :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 state_wi:

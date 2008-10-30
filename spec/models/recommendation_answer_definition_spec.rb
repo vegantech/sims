@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: recommendation_answer_definitions
+#
+#  id                           :integer         not null, primary key
+#  recommendation_definition_id :integer
+#  position                     :integer
+#  text                         :text
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe RecommendationAnswerDefinition do

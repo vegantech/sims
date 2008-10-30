@@ -1,3 +1,15 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: time_lengths
+#
+#  id         :integer         not null, primary key
+#  title      :string(255)
+#  days       :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe TimeLength do

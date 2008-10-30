@@ -1,3 +1,25 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: interventions
+#
+#  id                         :integer         not null, primary key
+#  user_id                    :integer
+#  student_id                 :integer
+#  start_date                 :date
+#  end_date                   :date
+#  intervention_definition_id :integer
+#  frequency_id               :integer
+#  frequency_multiplier       :integer
+#  time_length_id             :integer
+#  time_length_number         :integer
+#  active                     :boolean         default(TRUE)
+#  ended_by_id                :integer
+#  ended_at                   :date
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 alpha_first_attendance:

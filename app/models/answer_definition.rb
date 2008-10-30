@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: answer_definitions
+#
+#  id                    :integer         not null, primary key
+#  element_definition_id :integer
+#  text                  :text
+#  value                 :string(255)
+#  position              :integer
+#  autoset_others        :boolean
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
 class AnswerDefinition < ActiveRecord::Base
   acts_as_list :scope => :element_definition
 

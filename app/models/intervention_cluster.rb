@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: intervention_clusters
+#
+#  id                      :integer         not null, primary key
+#  title                   :string(255)
+#  description             :text
+#  objective_definition_id :integer
+#  position                :integer
+#  disabled                :boolean
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class InterventionCluster < ActiveRecord::Base
   belongs_to :objective_definition
   has_many :intervention_definitions, :order=>:position

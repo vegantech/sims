@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: goal_definitions
+#
+#  id          :integer         not null, primary key
+#  title       :string(255)
+#  description :text
+#  district_id :integer
+#  position    :integer
+#  disabled    :boolean
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class GoalDefinition < ActiveRecord::Base
   belongs_to :district
   has_many :objective_definitions, :order =>:position

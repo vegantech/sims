@@ -1,3 +1,27 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: intervention_definitions
+#
+#  id                      :integer         not null, primary key
+#  title                   :string(255)
+#  description             :text
+#  custom                  :boolean
+#  intervention_cluster_id :integer
+#  tier_id                 :integer
+#  time_length_id          :integer
+#  time_length_num         :integer         default(1)
+#  frequency_id            :integer
+#  frequency_multiplier    :integer         default(1)
+#  user_id                 :integer
+#  school_id               :integer
+#  disabled                :boolean
+#  position                :integer
+#  rec_mon_preface         :string(255)
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class InterventionDefinition < ActiveRecord::Base
   belongs_to :intervention_cluster
   belongs_to :frequency

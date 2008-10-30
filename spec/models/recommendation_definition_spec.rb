@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: recommendation_definitions
+#
+#  id                      :integer         not null, primary key
+#  district_id             :integer
+#  active                  :boolean
+#  text                    :text
+#  checklist_definition_id :integer
+#  score_options           :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe RecommendationDefinition do

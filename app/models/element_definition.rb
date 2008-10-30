@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: element_definitions
+#
+#  id                     :integer         not null, primary key
+#  question_definition_id :integer
+#  text                   :text
+#  kind                   :string(255)
+#  position               :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#
+
 class ElementDefinition < ActiveRecord::Base
   acts_as_list :scope => :question_definition
 

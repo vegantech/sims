@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: question_definitions
+#
+#  id                      :integer         not null, primary key
+#  checklist_definition_id :integer
+#  text                    :text
+#  position                :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class QuestionDefinition < ActiveRecord::Base
 
   acts_as_list :scope => :checklist_definition

@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: element_definitions
+#
+#  id                     :integer         not null, primary key
+#  question_definition_id :integer
+#  text                   :text
+#  kind                   :string(255)
+#  position               :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ElementDefinition do

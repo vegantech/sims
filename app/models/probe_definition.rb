@@ -1,3 +1,22 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: probe_definitions
+#
+#  id            :integer         not null, primary key
+#  title         :string(255)
+#  description   :text
+#  user_id       :integer
+#  district_id   :integer
+#  active        :boolean         default(TRUE)
+#  maximum_score :integer
+#  minimum_score :integer
+#  school_id     :integer
+#  position      :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 class ProbeDefinition < ActiveRecord::Base
   belongs_to :district
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent=>:destroy

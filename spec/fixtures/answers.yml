@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: answers
+#
+#  id                   :integer         not null, primary key
+#  checklist_id         :integer
+#  answer_definition_id :integer
+#  text                 :text
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 one:
   id: 1
   answer_definition_id: 1

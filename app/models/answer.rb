@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: answers
+#
+#  id                   :integer         not null, primary key
+#  checklist_id         :integer
+#  answer_definition_id :integer
+#  text                 :text
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 class Answer < ActiveRecord::Base
   belongs_to :checklist
   belongs_to :answer_definition

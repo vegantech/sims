@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: recommendations
+#
+#  id                           :integer         not null, primary key
+#  progress                     :integer
+#  recommendation               :integer
+#  checklist_id                 :integer
+#  user_id                      :integer
+#  reason                       :text
+#  should_advance               :boolean
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#  recommendation_definition_id :integer
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Recommendation do

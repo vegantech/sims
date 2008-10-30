@@ -1,3 +1,19 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: flags
+#
+#  id          :integer         not null, primary key
+#  category    :string(255)
+#  user_id     :integer
+#  district_id :integer
+#  student_id  :integer
+#  reason      :text
+#  type        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class Flag < ActiveRecord::Base
 	ORDERED_TYPE_KEYS = %w{attendance languagearts math suspension ignored custom}
 

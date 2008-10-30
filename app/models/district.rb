@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: districts
+#
+#  id            :integer         not null, primary key
+#  name          :string(255)
+#  abbrev        :string(255)
+#  state_dpi_num :integer
+#  state_id      :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 class District < ActiveRecord::Base
   belongs_to :state
   has_many :users

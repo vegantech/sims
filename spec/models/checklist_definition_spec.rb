@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: checklist_definitions
+#
+#  id          :integer         not null, primary key
+#  text        :text
+#  directions  :text
+#  active      :boolean
+#  district_id :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ChecklistDefinition do

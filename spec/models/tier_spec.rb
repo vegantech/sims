@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: tiers
+#
+#  id          :integer         not null, primary key
+#  district_id :integer
+#  title       :string(255)
+#  position    :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Tier do

@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: checklists
+#
+#  id                      :integer         not null, primary key
+#  checklist_definition_id :integer
+#  from_tier               :integer
+#  student_id              :integer
+#  promoted                :boolean
+#  user_id                 :integer
+#  is_draft                :boolean         default(TRUE)
+#  district_id             :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class Checklist < ActiveRecord::Base
   has_many :answers, :dependent => :destroy 
   belongs_to :checklist_definition, :include=>{:question_definitions=>{:element_definitions=>:answer_definitions}}

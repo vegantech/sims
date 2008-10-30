@@ -1,3 +1,19 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: special_user_groups
+#
+#  id           :integer         not null, primary key
+#  user_id      :integer
+#  district_id  :integer
+#  school_id    :integer
+#  grade        :string(255)
+#  type         :string(255)
+#  is_principal :boolean
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SpecialUserGroup do

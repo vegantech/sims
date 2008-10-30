@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: enrollments
+#
+#  id         :integer         not null, primary key
+#  school_id  :integer
+#  student_id :integer
+#  grade      :string(16)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Enrollment < ActiveRecord::Base
   belongs_to :student
   belongs_to :school

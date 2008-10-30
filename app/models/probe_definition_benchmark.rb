@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: probe_definition_benchmarks
+#
+#  id                  :integer         not null, primary key
+#  probe_definition_id :integer
+#  benchmark           :integer
+#  district_id         :integer
+#  grade_level         :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 class ProbeDefinitionBenchmark < ActiveRecord::Base
   belongs_to :probe_definition
   validates_presence_of :benchmark, :grade_level

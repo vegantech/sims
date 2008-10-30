@@ -1,3 +1,21 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: students
+#
+#  id          :integer         not null, primary key
+#  district_id :integer
+#  last_name   :string(255)
+#  first_name  :string(255)
+#  number      :string(255)
+#  id_district :integer
+#  id_state    :integer
+#  id_country  :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#  birthdate   :date
+#
+
 class Student < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :groups
