@@ -1,0 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user: oneschool
+  group: oneschool_homeroom
+  is_principal: false
+

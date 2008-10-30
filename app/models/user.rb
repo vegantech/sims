@@ -2,6 +2,18 @@ class User < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :schools
   has_many :special_user_groups
+  has_many :user_group_assignments
+  has_many :groups, :through=> :user_group_assignments
+
+
+  def authorized_groups
+    #TODO combine special user groups and user_group_assignments
+  end
+
+  def authorized_students
+    #TODO combine special user groups and students through groups
+
+  end
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
