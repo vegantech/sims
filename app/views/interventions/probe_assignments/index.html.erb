@@ -1,18 +1,19 @@
 
-<% form_tag( :url=>intervention_probe_assignments_url(@intervention),:method=>:post) do |f| %>
+<% form_tag() do |f| %>
 
     <% @intervention_probe_assignments.each do |intervention_probe_assignment| %>
       <p>
-      <% fields_for(intervention_probe_assignment) do |ipa|  %>
-      <%= ipa.error_messages %>
-        <%= ipa.check_box :enabled %> 
-        <%= intervention_probe_assignment.probe_definition.title %> <br>
-        <%= ipa.label :frequency_multiplier %> 
-        <%= ipa.text_field :frequency_multiplier %>
+      <% fields_for("intervention_probe_assignments[]",intervention_probe_assignment) do |ipa|  %>
+        <%= ipa.error_messages %>
+        <%= check_box_tag "intervention_probe_assignments[#{intervention_probe_assignment.id.to_s}][enabled]", true, intervention_probe_assignment.enabled   %>
+        <%= label_tag "intervention_probe_assignments[#{intervention_probe_assignment.id.to_s}][enabled]", intervention_probe_assignment.probe_definition.title %> <br>
+        <label for="<%=intervention_probe_assignment.probe_definition%>">Frequency Multiplier</label>
+        <%= ipa.text_field :frequency_multiplier, :id=>intervention_probe_assignment.probe_definition %>
         <%= ipa.label :first_date %>
-        <%= ipa.date_select :first_date %>
+        <%= ipa.date_select :first_date, {:index=>intervention_probe_assignment.id.to_s} %>
         <%= ipa.label :end_date %>
-        <%= ipa.date_select :end_date %>
+        <%= ipa.date_select :end_date, {:index=>intervention_probe_assignment.id.to_s} %>
+        <%= ipa.hidden_field :probe_definition_id %>
         </p>
       <% end %>
     <% end %>
