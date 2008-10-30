@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081028021951) do
+ActiveRecord::Schema.define(:version => 20081030035908) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(:version => 20081028021951) do
     t.datetime "updated_at"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string   "title"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups_students", :id => false, :force => true do |t|
+    t.integer "student_id"
+    t.integer "group_id"
+  end
+
   create_table "intervention_clusters", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -139,6 +151,18 @@ ActiveRecord::Schema.define(:version => 20081028021951) do
     t.datetime "updated_at"
   end
 
+  create_table "intervention_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "enabled",              :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "interventions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "student_id"
@@ -152,6 +176,18 @@ ActiveRecord::Schema.define(:version => 20081028021951) do
     t.boolean  "active",                     :default => true
     t.integer  "ended_by_id"
     t.date     "ended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -309,6 +345,14 @@ ActiveRecord::Schema.define(:version => 20081028021951) do
   create_table "time_lengths", :force => true do |t|
     t.string   "title"
     t.integer  "days"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_group_assignments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

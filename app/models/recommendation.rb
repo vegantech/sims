@@ -7,7 +7,7 @@ class Recommendation < ActiveRecord::Base
 
   validates_presence_of :recommendation, :message => "is not indicated"
   validates_presence_of :reason, :if=>lambda{|r| r.recommendation && RECOMMENDATION[r.recommendation][:promote]}
-  validates_presence_of :checklist_id
+#  validates_presence_of :checklist_id, 
   validates_presence_of :other, :if => lambda{|r| r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral
   attr_accessor :other
@@ -58,7 +58,7 @@ class Recommendation < ActiveRecord::Base
   protected
 
   def after_initialize
-    self.recommendation_definition ||= checklist.checklist_definition.recommendation_definition
+    self.recommendation_definition ||= checklist.checklist_definition.recommendation_definition if checklist
   end
 
   def request_referral
