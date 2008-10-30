@@ -41,6 +41,7 @@ describe StudentsController do
         e2 = mock_enrollment(:grade => '2')
         school = mock_school(:enrollments => [e1, e2])
         School.should_receive(:find).with(school.id).and_return(school)
+        school.should_receive(:groups).and_return([])
 
         get :search, {}, :school_id => school.id
 

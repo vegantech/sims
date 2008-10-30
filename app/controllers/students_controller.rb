@@ -30,6 +30,9 @@ class StudentsController < ApplicationController
     if request.get?
       @grades = current_school.enrollments.collect(&:grade).uniq
       @grades.unshift("*")
+
+      student_groups
+      group_users
     else
       if params['students']
         selected_grade = params['students']['grade']
@@ -74,6 +77,16 @@ class StudentsController < ApplicationController
       flash[:notice]='Student not selected'
       redirect_to students_url and return false
     end
+  end
+
+  def student_groups
+    @groups=current_school.groups
+  end
+
+  def group_users
+    #TODO this is just a placeholder
+
+    @users=@groups.collect(&:users).uniq.first || []
   end
 
 end

@@ -2,6 +2,12 @@
   <div id='table'>
 		<label for="students_grade">Grade</label>
     <%= select(:students,:grade,@grades) %><br/>
+		<label for="students_group">Group Member</label>
+                <%= collection_select(:students,:user_id,@users,:id,:fullname) %><br/>
+		<label for="students_group">Student Group</label>
+                <%= collection_select(:students,:group_id,@groups,:id,:title) %><br/>
+
+
 
 		<label for="students_last_name">Last Name</label>
 		<%= text_field(:students, :last_name) %><br/>
