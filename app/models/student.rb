@@ -1,5 +1,6 @@
 class Student < ActiveRecord::Base
   belongs_to :district
+  has_and_belongs_to_many :groups
   has_many :checklists
   has_many :enrollments
   has_many :schools, :through=>:enrollments

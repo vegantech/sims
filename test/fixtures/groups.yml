@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+oneschool_homeroom:
+  title: Homeroom-- Oneschool
+  school: alpha
+  students: alpha_first_grader
+
+other_homeroom:
+  title: Homeroom where oneschool is not a member
+  school: alpha
+  students: alpha_third_grader
