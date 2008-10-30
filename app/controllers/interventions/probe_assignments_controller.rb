@@ -11,17 +11,17 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   end
 
   def create
-    raise "FAIL"
-#    @intervention_probe_assignment = InterventionProbeAssignment.new(param[:intervention_probe_assignment])
-#
-#    respond_to do |format|
-#      if @intervention_probe_assignment.save
-#        flash[:notice] = 'InterventionProbeAssignment was successfully created.'
-#        format.html { redirect_to(intervention_probe_assignment_url(@intervention,@intervention_probe_assignment)) }
-#      else
-#        format.html { render :action => "new" }
-#      end
-#    end
+    @intervention_probe_assignments = @intervention.intervention_probe_assignments.prepare_all(params[:intervention_probe_assignments])
+
+    respond_to do |format|
+      if @intervention_probe_assignments.all?(&:valid?)
+        @intervention_probe_assignments.each(&:save)
+        flash[:notice] = 'Intervention Probe Assignment were successfully updated.'
+        format.html { redirect_to(@intervention.student) }
+      else
+        format.html { render :action => "index" }
+      end
+    end
   end
 
   protected

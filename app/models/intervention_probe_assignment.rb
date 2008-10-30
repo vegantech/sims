@@ -24,4 +24,8 @@ class InterventionProbeAssignment < ActiveRecord::Base
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end
 
+  def after_initialize
+    self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
+  end
+
 end

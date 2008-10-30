@@ -7,15 +7,26 @@ class Intervention < ActiveRecord::Base
   belongs_to :ended_by, :class_name =>"User"
 
   has_many :intervention_probe_assignments do 
-    def prepare_all
+    def prepare_all(passed_params={})
       ipas=find(:all)
       prepared=[]
       proxy_owner.intervention_definition.recommended_monitors.each do |rec_mon|
         if d=ipas.detect{|ipa| ipa.probe_definition_id== rec_mon.probe_definition_id}
-          prepared << d
         else
-          prepared << proxy_owner.intervention_probe_assignments.build(:probe_definition_id=>rec_mon.probe_definition_id)
+          d= proxy_owner.intervention_probe_assignments.build(:probe_definition_id=>rec_mon.probe_definition_id)
         end
+      
+        if passed_params.respond_to?(:values)
+          params=passed_params.values
+        else
+          params=passed_params
+        end
+        if p=params.detect{|param_ipa|  !param_ipa.nil? and
+          d.probe_definition_id == param_ipa["probe_definition_id"].to_i}
+          d.attributes=p
+          d.enabled=p[:enabled]
+        end
+        prepared << d
       end
       prepared
     end
