@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  recommendation_definition:  one
+  position: 1
+  text: Describe the evidence (e.g., intervention summary report for student, information from family, student work, observation checklists, attendance or achievement data, etc.) that support these conclusions and recommendations. 
+
+two:
+  recommendation_definition:  one
+  position: 2
+  text: Test question 2 
+
+

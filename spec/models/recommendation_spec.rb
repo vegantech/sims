@@ -6,12 +6,14 @@ describe Recommendation do
       :progress => "1",
       :recommendation => "1",
       :reason => "value for reason",
-      :should_advance => false
+      :should_advance => false,
+      :recommendation_definition=>RecommendationDefinition.new
     }
   end
 
   it "should create a new instance given valid attributes" do
-    pending 'No unit test either, need to test this in isolation from checklist'
-    Recommendation.create!(@valid_attributes)
+    checklist=Checklist.new
+    checklist.should_receive(:score_checklist).and_return(true)
+    Recommendation.create!(@valid_attributes.merge(:checklist=>checklist))
   end
 end

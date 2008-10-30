@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  recommendation_definition: 
+  position: 1
+  text: MyText
+
+two:
+  recommendation_definition: 
+  position: 1
+  text: MyText

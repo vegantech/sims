@@ -1,5 +1,6 @@
 class ChecklistDefinition < ActiveRecord::Base
   belongs_to :district
+  has_one :recommendation_definition
   has_many :question_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :element_definitions, :through =>:question_definitions
   has_many :checklists
