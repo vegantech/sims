@@ -1,33 +1,37 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::ProbeAssignmentsController do
+  it_should_behave_like "an authenticated controller"
 
   def mock_intervention_probe_assignments(stubs={})
     @mock_intervention_probe_assignments ||= mock_model(InterventionProbeAssignments, stubs)
   end
+
+  def params
+    {:intervention_id=>1}
+  end
   
+  before do
+    @student=mock_student
+    @intervention=mock_intervention
+    @student.stub_association!(:interventions,:find=>@intervention)
+    controller.should_receive(:current_student).and_return(@student)
+  end
+
+  it 'should load_intervention' do
+   controller.should_receive(:params).and_return(params)
+   controller.send(:load_intervention).should ==(@intervention)
+  end
+
   describe "responding to GET index" do
 
-    it "should expose all intervention_probe_assignments as @intervention_probe_assignments" do
-      pending
-      InterventionProbeAssignments.should_receive(:find).with(:all).and_return([mock_intervention_probe_assignments])
-      get :index
-      assigns[:intervention_probe_assignments].should == [mock_intervention_probe_assignments]
+    it "should expose all intervention_probe_assignment as @intervention_probe_assignments" do
+      @intervention.stub_association!(:intervention_probe_assignments,:prepare_all=>[1,2,3])
+      get :index, :intervention_id=>1
+      assigns[:intervention_probe_assignments].should == [1,2,3]
+      assigns[:intervention].should == @intervention
+      response.should be_success
     end
-
-    describe "with mime type of xml" do
-  
-      it "should render all intervention_probe_assignments as xml" do
-      pending
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        InterventionProbeAssignments.should_receive(:find).with(:all).and_return(intervention_probe_assignments = mock("Array of InterventionProbeAssignments"))
-        intervention_probe_assignments.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
-
   end
 
   describe "responding to POST create" do
@@ -35,6 +39,7 @@ describe Interventions::ProbeAssignmentsController do
     describe "with valid params" do
       
       it "should expose a newly created intervention_probe_assignments as @intervention_probe_assignments" do
+
         pending
         InterventionProbeAssignments.should_receive(:new).with({'these' => 'params'}).and_return(mock_intervention_probe_assignments(:save => true))
         post :create, :intervention_probe_assignments => {:these => 'params'}

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081024061734) do
+ActiveRecord::Schema.define(:version => 20081029193601) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -139,6 +139,18 @@ ActiveRecord::Schema.define(:version => 20081024061734) do
     t.datetime "updated_at"
   end
 
+  create_table "intervention_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "enabled",              :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "interventions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "student_id"
@@ -152,6 +164,18 @@ ActiveRecord::Schema.define(:version => 20081024061734) do
     t.boolean  "active",                     :default => true
     t.integer  "ended_by_id"
     t.date     "ended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -196,6 +220,32 @@ ActiveRecord::Schema.define(:version => 20081024061734) do
     t.datetime "updated_at"
   end
 
+  create_table "recommendation_answer_definitions", :force => true do |t|
+    t.integer  "recommendation_definition_id"
+    t.integer  "position"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommendation_answers", :force => true do |t|
+    t.integer  "recommendation_id"
+    t.integer  "recommendation_answer_definition_id"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommendation_definitions", :force => true do |t|
+    t.integer  "district_id"
+    t.boolean  "active"
+    t.text     "text"
+    t.integer  "checklist_definition_id"
+    t.integer  "score_options"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "recommendations", :force => true do |t|
     t.integer  "progress"
     t.integer  "recommendation"
@@ -205,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20081024061734) do
     t.boolean  "should_advance"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "recommendation_definition_id"
   end
 
   create_table "recommended_monitors", :force => true do |t|
