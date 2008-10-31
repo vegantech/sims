@@ -1,9 +1,0 @@
-== 0.1.7 (Not yet released as gem)
-
-Bla bla
-
-* Fix a bug in Webrat selects (Tim Glen)
-
-== 0.1.6
-
-First gem release!
