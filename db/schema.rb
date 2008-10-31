@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081030035908) do
+ActiveRecord::Schema.define(:version => 20081031153415) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -180,6 +180,18 @@ ActiveRecord::Schema.define(:version => 20081030035908) do
     t.datetime "updated_at"
   end
 
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -193,8 +205,7 @@ ActiveRecord::Schema.define(:version => 20081030035908) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.integer  "district_id"
-    t.integer  "grade_level"
+    t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -209,6 +220,16 @@ ActiveRecord::Schema.define(:version => 20081030035908) do
     t.integer  "minimum_score"
     t.integer  "school_id"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "probes", :force => true do |t|
+    t.datetime "administered_at"
+    t.integer  "score"
+    t.string   "assessment_type"
+    t.integer  "district_id"
+    t.integer  "intervention_probe_assignmnet_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

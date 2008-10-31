@@ -1,0 +1,28 @@
+<p>
+  <b>Administered at:</b>
+  <%=h @probe.administered_at %>
+</p>
+
+<p>
+  <b>Score:</b>
+  <%=h @probe.score %>
+</p>
+
+<p>
+  <b>Assessment type:</b>
+  <%=h @probe.assessment_type %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @probe.district %>
+</p>
+
+<p>
+  <b>Intervention probe assignmnet:</b>
+  <%=h @probe.intervention_probe_assignmnet %>
+</p>
+
+
+<%= link_to 'Edit', edit_probe_path(@probe) %> |
+<%= link_to 'Back', probes_path %>

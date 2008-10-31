@@ -1,0 +1,28 @@
+<h1>Listing probes</h1>
+
+<table>
+  <tr>
+    <th>Administered at</th>
+    <th>Score</th>
+    <th>Assessment type</th>
+    <th>District</th>
+    <th>Intervention probe assignmnet</th>
+  </tr>
+
+<% for probe in @probes %>
+  <tr>
+    <td><%=h probe.administered_at %></td>
+    <td><%=h probe.score %></td>
+    <td><%=h probe.assessment_type %></td>
+    <td><%=h probe.district %></td>
+    <td><%=h probe.intervention_probe_assignmnet %></td>
+    <td><%= link_to 'Show', probe %></td>
+    <td><%= link_to 'Edit', edit_probe_path(probe) %></td>
+    <td><%= link_to 'Destroy', probe, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New probe', new_probe_path %>

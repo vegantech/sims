@@ -1,0 +1,32 @@
+<h1>Editing probe</h1>
+
+<% form_for(@probe) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :administered_at %><br />
+    <%= f.datetime_select :administered_at %>
+  </p>
+  <p>
+    <%= f.label :score %><br />
+    <%= f.text_field :score %>
+  </p>
+  <p>
+    <%= f.label :assessment_type %><br />
+    <%= f.text_field :assessment_type %>
+  </p>
+  <p>
+    <%= f.label :district %><br />
+    <%= f.text_field :district %>
+  </p>
+  <p>
+    <%= f.label :intervention_probe_assignmnet %><br />
+    <%= f.text_field :intervention_probe_assignmnet %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @probe %> |
+<%= link_to 'Back', probes_path %>
