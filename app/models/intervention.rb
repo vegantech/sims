@@ -82,23 +82,11 @@ class Intervention < ActiveRecord::Base
     int
   end
 
+  delegate :title, :intervention_cluster, :to => :intervention_definition
+  delegate :objective_definition, :to => :intervention_cluster
+  delegate :goal_definition, :to =>:objective_definition
 
 
-  def title
-    intervention_definition.title
-  end
-
-  def goal_definition
-    objective_definition.goal_definition
-  end
-
-  def objective_definition
-    intervention_cluster.objective_definition
-  end
-
-  def intervention_cluster
-    intervention_definition.intervention_cluster
-  end
 
   def end(ended_by)
     self.ended_by_id=ended_by
@@ -125,9 +113,6 @@ class Intervention < ActiveRecord::Base
     true
 
   end
-
-
-
 
 
 

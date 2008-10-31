@@ -13,13 +13,16 @@
 #
 
 class ElementDefinition < ActiveRecord::Base
-  acts_as_list :scope => :question_definition
+  belongs_to :question_definition
 
   has_many :answer_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :answers, :through => :answer_definitions
-  acts_as_reportable if defined? Ruport
 
-  belongs_to :question_definition
+  delegate :checklist_definition, :to => :question_definition
+
+  acts_as_reportable if defined? Ruport
+  acts_as_list :scope => :question_definition
+
 
   validates_presence_of :question_definition_id, :text, :kind
 
@@ -32,10 +35,6 @@ class ElementDefinition < ActiveRecord::Base
 
   def self.kinds_of_elements
     KINDS_OF_ELEMENTS
-  end
-
-  def checklist_definition
-    question_definition.checklist_definition
   end
 
   def sibling_definitions
