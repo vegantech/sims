@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :probes
 
   map.resources :groups
 
@@ -65,7 +64,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :interventions, :member=>{:end=>:put} do |intervention|
-    intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments"
+    intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments" do |probe_assignment|
+      probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>""
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

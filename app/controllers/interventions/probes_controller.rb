@@ -1,4 +1,5 @@
-class ProbesController < ApplicationController
+class Interventions::ProbesController < ApplicationController
+  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   # GET /probes
   # GET /probes.xml
   def index
