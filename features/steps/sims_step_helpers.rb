@@ -63,6 +63,7 @@ def create_student first_name, last_name, grade, school, flag_type = nil
 			:type => 'system',
 			:user => @default_user)
 	end
+  s
 end
 
 private

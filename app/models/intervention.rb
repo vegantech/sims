@@ -39,6 +39,7 @@ class Intervention < ActiveRecord::Base
         end
       
         if passed_params.respond_to?(:values)
+          #TODO look into possible issue where some are new and some aren't
           params=passed_params.values
         else
           params=passed_params
