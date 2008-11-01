@@ -11,51 +11,7 @@ describe CustomFlagsController do
     @mock_student ||= mock_model(Student,stubs)
   end
   
-  describe "responding to GET index" do
-
-    it "should expose all custom_flags as @custom_flags" do
-      CustomFlag.should_receive(:find).with(:all).and_return([mock_custom_flag])
-      get :index
-      assigns[:custom_flags].should == [mock_custom_flag]
-    end
-
-    describe "with mime type of xml" do
-  
-      it "should render all custom_flags as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        CustomFlag.should_receive(:find).with(:all).and_return(custom_flags = mock("Array of CustomFlags"))
-        custom_flags.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
-
-  end
-
-  describe "responding to GET show" do
-
-    it "should expose the requested custom_flag as @custom_flag" do
-      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag)
-      get :show, :id => "37"
-      assigns[:custom_flag].should equal(mock_custom_flag)
-    end
-    
-    describe "with mime type of xml" do
-
-      it "should render the requested custom_flag as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag)
-        mock_custom_flag.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
-  end
-
-  describe "responding to GET new" do
+ describe "responding to GET new" do
   
     it "should expose a new custom_flag as @custom_flag" do
       CustomFlag.should_receive(:new).and_return(mock_custom_flag)
@@ -64,17 +20,6 @@ describe CustomFlagsController do
     end
 
   end
-
-  describe "responding to GET edit" do
-  
-    it "should expose the requested custom_flag as @custom_flag" do
-      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag)
-      get :edit, :id => "37"
-      assigns[:custom_flag].should equal(mock_custom_flag)
-    end
-
-  end
-
   describe "responding to POST create" do
 
     describe "with valid params" do
@@ -111,54 +56,6 @@ describe CustomFlagsController do
       
     end
     
-  end
-
-  describe "responding to PUT udpate" do
-
-    describe "with valid params" do
-
-      it "should update the requested custom_flag" do
-        CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag)
-        mock_custom_flag.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :custom_flag => {:these => 'params'}
-      end
-
-      it "should expose the requested custom_flag as @custom_flag" do
-        CustomFlag.stub!(:find).and_return(mock_custom_flag(:update_attributes => true))
-        put :update, :id => "1"
-        assigns(:custom_flag).should equal(mock_custom_flag)
-      end
-
-      it "should redirect to the custom_flag" do
-        CustomFlag.stub!(:find).and_return(mock_custom_flag(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(custom_flag_url(mock_custom_flag))
-      end
-
-    end
-    
-    describe "with invalid params" do
-
-      it "should update the requested custom_flag" do
-        CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag)
-        mock_custom_flag.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :custom_flag => {:these => 'params'}
-      end
-
-      it "should expose the custom_flag as @custom_flag" do
-        CustomFlag.stub!(:find).and_return(mock_custom_flag(:update_attributes => false))
-        put :update, :id => "1"
-        assigns(:custom_flag).should equal(mock_custom_flag)
-      end
-
-      it "should re-render the 'edit' template" do
-        CustomFlag.stub!(:find).and_return(mock_custom_flag(:update_attributes => false))
-        put :update, :id => "1"
-        response.should render_template('edit')
-      end
-
-    end
-
   end
 
   describe "responding to DELETE destroy" do
