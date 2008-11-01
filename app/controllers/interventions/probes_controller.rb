@@ -1,86 +1,77 @@
 class Interventions::ProbesController < ApplicationController
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  # GET /probes
-  # GET /probes.xml
+  before_filter :load_intervention,:load_intervention_probe_assignment
+  
   def index
-    @probes = Probe.find(:all)
+    @probes = @intervention_probe_assignment.probes
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @probes }
     end
   end
 
-  # GET /probes/1
-  # GET /probes/1.xml
   def show
-    @probe = Probe.find(params[:id])
+    @probe = @intervention_probe_assignment.probes.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @probe }
     end
   end
 
-  # GET /probes/new
-  # GET /probes/new.xml
   def new
-    @probe = Probe.new
+    @probe = @intervention_probe_assignment.probes.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @probe }
     end
   end
 
-  # GET /probes/1/edit
   def edit
-    @probe = Probe.find(params[:id])
+    @probe = @intervention_probe_assignment.probes.find(params[:id])
   end
 
-  # POST /probes
-  # POST /probes.xml
   def create
-    @probe = Probe.new(params[:probe])
+    @probe = @intervention_probe_assignment.probes.new
 
     respond_to do |format|
       if @probe.save
         flash[:notice] = 'Probe was successfully created.'
-        format.html { redirect_to(@probe) }
-        format.xml  { render :xml => @probe, :status => :created, :location => @probe }
+        format.html { redirect_to(probe_url(@intervention,@intervention_probe_assignment,@probe)) }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @probe.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /probes/1
-  # PUT /probes/1.xml
   def update
-    @probe = Probe.find(params[:id])
+    @probe = @intervention_probe_assignment.probes.find(params[:id])
 
     respond_to do |format|
       if @probe.update_attributes(params[:probe])
         flash[:notice] = 'Probe was successfully updated.'
-        format.html { redirect_to(@probe) }
-        format.xml  { head :ok }
+        format.html { redirect_to(probe_url(@intervention,@intervention_probe_assignment,@probe)) }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @probe.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /probes/1
-  # DELETE /probes/1.xml
   def destroy
-    @probe = Probe.find(params[:id])
+    @probe = @intervention_probe_assignment.probes.find(params[:id])
     @probe.destroy
 
     respond_to do |format|
-      format.html { redirect_to(probes_url) }
-      format.xml  { head :ok }
+      format.html { redirect_to(probes_url(@intervention,@intervention_probe_assignment)) }
     end
   end
+
+
+  protected
+  def load_intervention
+    @intervention=current_student.interventions.find(params[:intervention_id])
+  end
+
+  def load_intervention_probe_assignment
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(params[:intervention_probe_assignment_id])
+  end
+
 end
