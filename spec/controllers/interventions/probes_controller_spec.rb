@@ -11,7 +11,7 @@ describe Interventions::ProbesController do
                                    :find=>@intervention_probe_assignment)
     student.stub_association!(:interventions,:find=>@intervention)
 
-    controller.should_receive(:current_student).at_least_once.and_return(student)
+    controller.stub!(:current_student).and_return(student)
 
   end
 
