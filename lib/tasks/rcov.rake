@@ -11,26 +11,12 @@ if defined? Rcov
 
       task(:unit) {puts "Test:unit tests disabled use rspec"}
       task(:functional) {puts "test:unit functional tests disabled use rspec"}
+      task(:integration) {puts "test:unit integration tests disabled use cucumber"}
     end
     desc 'Aggregate code coverage for unit, functional and integration tests  and corresponding specs :requires rcov gem'
     task :coverage => ["test:coverage:clean","db:test:prepare","coverage_all"]
     
-    %w[integration].each do |target|
-      namespace :coverage do
-        Rcov::RcovTask.new(target => ["test:coverage:clean","db:test:prepare" ]) do |t|
-          t.libs << "test"
-          t.test_files = FileList["test/#{target}/*_test.rb"] +
-          FileList["test/#{target}/*/*_test.rb"]
-          t.output_dir = "test/coverage/#{target}"
-          t.verbose = true
-          t.rcov_opts.clear
-          t.rcov_opts << '--rails --aggregate coverage.data --text-report --sort coverage'
-          t.rcov_opts << send("default_rcov_params_for_#{target}")
-        end
-      end
-
-    end
-  end
+ end
   namespace :spec do
     #run the unit tests before the specs and show coverage
     namespace :rcov do

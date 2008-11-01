@@ -59,5 +59,26 @@ end
 
 Given /^require everything$/ do
   #only called once
+  require_everything_in_app
 end
+
+Given /^load demo data$/ do
+  fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
+  Fixtures.create_fixtures(fixtures_dir, File.basename("users.yml", '.*'))
+  Fixtures.create_fixtures(fixtures_dir, File.basename("schools.yml", '.*'))
+  Fixtures.create_fixtures(fixtures_dir, File.basename("students.yml", '.*'))
+  Fixtures.create_fixtures(fixtures_dir, File.basename("enrollments.yml", '.*'))
+  raise "fixture failure" if User.count ==0
+
+end
+
+Then "^I Display Body$" do
+  puts response.body
+end
+
+When /^I should click js "all"$/ do 
+  checks("student_310913251")
+  checks("student_22766020")
+end
+
 

@@ -1,9 +1,10 @@
 <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
   <td style="padding-right: 20px;">
-    <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>enrolled_student.student) %>
+    <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
   </td>
+
   <td style="padding-right: 20px;">
-    <%= enrolled_student.student.last_name %>, <%= enrolled_student.student.first_name %>
+    <%= label_tag(dom_id(enrolled_student.student),"#{enrolled_student.student.last_name}, #{enrolled_student.student.first_name}") %>
   </td>
   <td style="padding-right: 20px;">
     <%= enrolled_student.student.number %>
