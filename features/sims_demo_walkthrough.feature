@@ -24,4 +24,17 @@ Feature: Sims Demo Walkthrough
     And I select "Math" from "Category"
     Then I press "Save Custom Flag"
     Then I should see "Math- \ntest reason from cucumber"
+    #can't remove yet, doesn't work without javascript
+    Then I follow "Assign New Intervention"
+    Then I select "Learning" from "goal_definition_id"
+    Then I press "Choose Goal"
+    Then I select "Math" from "objective_definition_id"
+    Then I press "Choose Objective"
+    Then I select "Algebra difficulty" from "intervention_cluster_id"
+    Then I press "Choose Category"
+    Then I select "Algebra two" from "intervention_definition_id"
+    Then I press "Choose Intervention"
+    #change some options here?
+    Then I press "Create"
+    
 

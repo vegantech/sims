@@ -64,11 +64,12 @@ end
 
 Given /^load demo data$/ do
   fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
-  Fixtures.create_fixtures(fixtures_dir, File.basename("users.yml", '.*'))
-  Fixtures.create_fixtures(fixtures_dir, File.basename("schools.yml", '.*'))
-  Fixtures.create_fixtures(fixtures_dir, File.basename("students.yml", '.*'))
-  Fixtures.create_fixtures(fixtures_dir, File.basename("enrollments.yml", '.*'))
-  raise "fixture failure" if User.count ==0
+  fixtures=%w{users schools students enrollments districts 
+  goal_definitions objective_definitions intervention_clusters intervention_definitions 
+  tiers frequencies time_lengths}
+  fixtures.each do |f|
+    Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
+  end
 
 end
 
