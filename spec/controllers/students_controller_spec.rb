@@ -37,12 +37,12 @@ describe StudentsController do
   describe 'search' do
     describe 'GET' do
       it 'should set @grades and render search template' do
-        pending
         e1 = mock_enrollment(:grade => '1')
         e2 = mock_enrollment(:grade => '2')
         school = mock_school(:enrollments => [e1, e2])
         School.should_receive(:find).with(school.id).and_return(school)
-        school.should_receive(:groups).and_return([])
+        controller.should_receive(:group_users).and_return([])
+        controller.should_receive(:student_groups).and_return([])
 
         get :search, {}, :school_id => school.id
 
