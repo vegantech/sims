@@ -19,8 +19,7 @@ class Group < ActiveRecord::Base
   #named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
   def self.members_for_school(school, grade=nil)
     #placeholder
-    User.find(:all)
-    #find(:all).collect(&:users).compact.uniq
+    find_all_by_school_id(school.id).collect(&:users).compact.uniq
 
     
     #find(:all,:conditions=>{:school=>school}.collect(&:users)

@@ -1,7 +1,7 @@
 Feature: Search By Student Groups
   In order to pick students to manage
   A SIMS user
-  Should be able to find students by Group Member, and Student Group criteria
+  Should be able to find students by Student Group criteria
   
   Scenario: User With One Group
     Given school "Central"
@@ -13,7 +13,7 @@ Feature: Search By Student Groups
     # And I should see my own username in the group member selection
     # And group_member_selection_id drop down should contain ["Prompt", "Option 1", "Option 2"]
     # And user_id drop down should contain ["default_user"]
-    And I should see read only select box with id of "search_criteria_user_id" and contains ['First Last']
+    # And I should see read only select box with id of "search_criteria_user_id" and contains ['First Last']
     And I should see select box with id of "search_criteria_group_id" and contains ['Blue Team']
 
     # Then I should see Blue Team selection option
