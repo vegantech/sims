@@ -23,9 +23,9 @@ describe LoginController do
 
   describe "responding to GET login" do
     it "should be successful" do
-      pending
-      #should receive current_district
       get :login
+      assert session[:user_id] == nil
+      response.should be_success
     end
 
     
@@ -33,17 +33,22 @@ describe LoginController do
 
   describe "responding to POST login with valid credentials" do
     it "should be successful" do
-      pending
-      post :login
-
+      user=mock_user(:new_record=>false,:id=>999)
+      User.should_receive(:authenticate).with('user','pass').and_return(user)
+      post :login ,:username=>'user',:password=>'pass'
+      session[:user_id].should == 999
+      response.should redirect_to("/")
     end
   
   end
 
   describe "responding to POST login with invalid credentials" do
      it "should render the login" do
-      pending
+      User.should_receive(:authenticate).and_return(false)
       post :login
+      session[:user_id].should == nil
+      flash[:notice].should == "Authentication Failure"
+      response.should redirect_to("/")
     end
   
   end
