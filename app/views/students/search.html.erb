@@ -1,22 +1,22 @@
 <% form_tag({}, {:name => "student_search_form"}) do %>
   <div id='table'>
-		<label for="students_grade">Grade</label>
-    <%= select(:students,:grade,@grades) %><br/>
-		<label for="students_group">Group Member</label>
-                <%= collection_select(:students,:user_id,@users,:id,:fullname) %><br/>
-		<label for="students_group">Student Group</label>
-                <%= collection_select(:students,:group_id,@groups,:id,:title) %><br/>
+		<label for="search_criteria_grade">Grade</label>
+    <%= select(:search_criteria,:grade,@grades) %><br/>
+		<label for="search_criteria_user_id">Group Member</label>
+                <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname,{}, {:readonly=>(@users.size==1)}) %><br/>
+		<label for="search_criteria_group_id">Student Group</label>
+                <%= collection_select(:search_criteria,:group_id,@groups,:id,:title) %><br/>
 
 
 
-		<label for="students_last_name">Last Name</label>
-		<%= text_field(:students, :last_name) %><br/>
+		<label for="search_criteria_last_name">Last Name</label>
+		<%= text_field(:search_criteria, :last_name) %><br/>
 
 		Select Student(s) by
-		<%= radio_button_tag(:search_type, :list_all, :checked => true) %><label for="search_type_list_all">List all students</label><br />
-		<%= radio_button_tag(:search_type, :flagged_intervention) %><label for="search_type_flagged_intervention">List only students flagged for intervention</label><%= flag_select %><br />
-		<%= radio_button_tag(:search_type, :active_intervention) %><label for="search_type_active_intervention">List only students in an active intervention</label><%= active_intervention_select %><br />
-		<%= radio_button_tag(:search_type, :no_intervention) %><label for="search_type_no_intervention">List only students not in an active intervention</label>
+		<%= radio_button_tag('search_criteria[search_type]', :list_all, :checked => true) %><label for="search_criteria_search_type_list_all">List all students</label><br />
+		<%= radio_button_tag('search_criteria[search_type]', :flagged_intervention) %><label for="search_criteria_search_type_flagged_intervention">List only students flagged for intervention</label><%= flag_select  %><br />
+		<%= radio_button_tag('search_criteria[search_type]', :active_intervention) %><label for="search_criteria_search_type_active_intervention">List only students in an active intervention</label><%= active_intervention_select %><br />
+		<%= radio_button_tag('search_criteria[search_type]', :no_intervention) %><label for="search_criteria_search_type_no_intervention">List only students not in an active intervention</label>
   </div>
   <%= submit_tag "Search for Students", :name => 'search' %>
 <% end %>

@@ -34,19 +34,11 @@ class StudentsController < ApplicationController
       student_groups
       group_users
     else
-      if params['students']
-        selected_grade = params['students']['grade']
-        selected_last_name = params['students']['last_name']
-        search_type = params['search_type']
-        intervention_types = params['flagged_intervention_types']
-
-        session[:search] ||= {}
-        session[:search][:grade] = selected_grade
-        session[:search][:last_name] = selected_last_name
-        session[:search][:search_type] = search_type
-        session[:search][:flagged_intervention_types] = intervention_types
-        session[:search][:intervention_group_types] = params['intervention_group_types']
-        session[:search][:intervention_group] = current_district.search_intervention_by.class_name if params['intervention_group_types']
+      if params['search_criteria']
+        session[:search] = params['search_criteria'] ||{}
+        session[:search]['flagged_intervention_types'] = params['flagged_intervention_types']
+        session[:search]['intervention_group_types'] = params['intervention_group_types']
+        session[:search][:intervention_group] = current_district.search_intervention_by.class_name if session[:search][:intervention_group_types]
         redirect_to students_url
       else
         flash[:notice] = 'Missing search criteria'
@@ -85,8 +77,8 @@ class StudentsController < ApplicationController
 
   def group_users
     #TODO this is just a placeholder
-
-    @users=@groups.collect(&:users).uniq.first || []
+    @users=current_school.users
+    #@groups.collect(&:users).uniq.first || []
   end
 
 end

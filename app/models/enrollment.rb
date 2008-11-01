@@ -16,6 +16,7 @@ class Enrollment < ActiveRecord::Base
   belongs_to :school
 
   def self.search(search_hash = {})
+    search_hash.symbolize_keys!
     enrollments = find(:all,:include => :student) #expected to already be scoped through school
 
     if search_hash[:grade] and search_hash[:grade] != '*'

@@ -7,7 +7,7 @@ Feature: Search By Intervention Flags
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
-		And I am on the "school selection" page
+		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
 		And I choose "List all students"
@@ -22,7 +22,7 @@ Feature: Search By Intervention Flags
 		Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
-		And I am on the "school selection" page
+		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
@@ -40,7 +40,7 @@ Feature: Search By Intervention Flags
     And student "Andy" "Dudley" in grade 3 at "Ridgewood"
     And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
-    And I am on the "school selection" page
+    And I am on the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
     And I choose "List only students flagged for intervention"
@@ -61,7 +61,7 @@ Feature: Search By Intervention Flags
     And student "Andy" "Dudley" in grade 3 at "Ridgewood"
     And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
-    And I am on the "school selection" page
+    And I am on the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
     And I choose "List only students flagged for intervention"

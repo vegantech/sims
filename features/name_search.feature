@@ -7,10 +7,10 @@ Feature: Search By Student Last Name
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens"
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
-		And I am on the "school selection" page
+		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
-		# And I am on the "search" page
+		# And I am on the search page
 
 		When I fill in "Last Name" with "Aagard"
 		And I press "Search for Students"

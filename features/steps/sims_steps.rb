@@ -8,8 +8,13 @@ When /^I go to (.*)$/ do |page_name|
 	go_to_page page_name
 end
 
-Given /^I am on the "(.*)" page$/ do |page_name|
+When /^I am on (.*)$/ do |page_name|
 	go_to_page page_name
+end
+
+Given /^I have access to (.*)$/ do |group_title|
+  group = Group.find_by_title(group_title)
+  UserGroupAssignment.create!(:user => default_user, :group => group)
 end
 
 Given /^student "(.*)" "(.*)" in grade (\d+) at "(.*)" with "(.*)" flag$/ do |first, last, student_grade, school_name, flag_type|
@@ -26,6 +31,15 @@ Given /^school "(.*)"$/ do |school_name|
 	create_school school_name
 end
 
+Then /^I should see read only select box with id of "(.*)" and contains (.*)$/ do |id, options|
+  verify_select_box id, options, true
+end
+
+Then /^I should see select box with id of "(.*)" and contains (.*)$/ do |id, options|
+  verify_select_box id, options
+end
+
+# remove this soon...
 Then /^I should see select box with "(.*)" and "(.*)"$/ do |option_1, option_2|
 	response.should have_tag('select') do
 		with_tag('option', :text => option_1)

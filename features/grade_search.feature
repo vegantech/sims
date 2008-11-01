@@ -7,10 +7,10 @@ Feature: Search Page
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
-		And I am on the "school selection" page
+		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
-		# And I am on the "search" page
+		# And I am on the search page
 
     # When I select "*" from "students_grade"
     When I select "*" from "Grade"
@@ -24,12 +24,12 @@ Feature: Search Page
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
-		And I am on the "school selection" page
+		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
-		# And I am on the "search" page
+		# And I am on the search page
 
-    When I select "1" from "students_grade"
+    When I select "1" from "Grade"
 		And I press "Search for Students"
 
 		Then I should see "1 student selected"

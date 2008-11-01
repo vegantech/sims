@@ -18,6 +18,15 @@ def go_to_page page_name
 	end
 end
 
+def verify_select_box id, options, read_only = false
+  options=Array(eval(options))
+  response.should have_tag("select[id=#{id}]#{'[readonly]' if read_only}") do
+    options.each do |option|
+      with_tag('option', :text=>option)
+    end
+  end
+end
+
 def log_in
 	@default_user ||= create_user 'default_user', 'd3f4ult'
 	create_school 'Glenn Stephens'
