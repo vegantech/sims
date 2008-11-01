@@ -21,7 +21,7 @@ Feature: Search By Student Groups
     And I select "Blue Team" from "Student Group"
     And I press "Search for Students"
     And I should see "Floyd, Blue"
-    # And I should not see "Fred, Red"
+    And I should not see "Fred, Red"
 
 # Scenarios -- group member
 # 

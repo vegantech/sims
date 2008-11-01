@@ -17,6 +17,16 @@ describe Enrollment do
 
   describe 'search class method' do
 
+    describe 'with student group' do 
+      it 'should return only students in that group' do
+        enrollment1 = mock_enrollment :grade => '1'
+        enrollment2 = mock_enrollment :grade => '2'
+        enrollment3 = mock_enrollment :grade => '3'
+        Enrollment.search(:search_type => 'list_all', :group_id=>1)
+      end
+
+    end
+
     describe 'passed no search criteria' do
       it 'should raise an exception' do
         lambda {Enrollment.search}.should raise_error
@@ -34,13 +44,13 @@ describe Enrollment do
 
     describe 'passed list_all with grade' do
       it 'should return students from that grade' do
-        enrollment1 = mock_enrollment :grade => '1'
-        enrollment2 = mock_enrollment :grade => '2'
-        enrollment3 = mock_enrollment :grade => '3'
+        enrollment1 = mock_enrollment :student => mock_student(:group_ids=>[1])
+        enrollment2 = mock_enrollment :student => mock_student(:group_ids=>[2])
+        enrollment3 = mock_enrollment :student => mock_student(:group_ids=>[1])
         enrollments = [enrollment1, enrollment2, enrollment3]
         Enrollment.should_receive(:find).with(:all,:include=>:student).and_return(enrollments)
 
-        Enrollment.search(:grade => '3', :search_type => 'list_all').should == [enrollment3]
+        Enrollment.search(:group_id => '1', :search_type => 'list_all').should == [enrollment1,enrollment3]
       end
     end
 

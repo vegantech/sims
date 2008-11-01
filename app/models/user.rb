@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
   def authorized_groups
     #TODO combine special user groups and user_group_assignments
+    groups
   end
 
   def authorized_students
