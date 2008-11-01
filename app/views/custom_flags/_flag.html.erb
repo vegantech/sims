@@ -1,5 +1,5 @@
 <li>
-<%=Flag::TYPES[flag.category][:humanize]%>- 
+<%=Flag::TYPES[flag.category][:humanize]-%>- 
 <%= flag.reason %> by <%= flag.user.fullname %> on
 <%= flag.created_at.to_s %>
 <%= link_to_remote_degrades "Remove", :url=> flag, :method=>:delete %>
