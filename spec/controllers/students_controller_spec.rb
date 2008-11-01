@@ -36,12 +36,26 @@ describe StudentsController do
 
   describe 'search' do
     describe 'GET' do
+      before do
+        @user=mock_user
+        @users=[1,2,3]
+        @user.stub_association!(:authorized_groups,:members_for_school=>@users)
+        controller.should_receive(:current_user).and_return(@user)
+      end
+
+      it 'should set users in group_users' do
+        #controller.should_receive(:params).and_return(params)
+       controller.should_receive(:current_school) 
+       controller.send(:group_users).should ==(@users)
+      end
+
+      
       it 'should set @grades and render search template' do
         e1 = mock_enrollment(:grade => '1')
         e2 = mock_enrollment(:grade => '2')
         school = mock_school(:enrollments => [e1, e2])
+        
         School.should_receive(:find).with(school.id).and_return(school)
-        controller.should_receive(:group_users).and_return([])
         controller.should_receive(:student_groups).and_return([])
 
         get :search, {}, :school_id => school.id
@@ -102,4 +116,6 @@ describe StudentsController do
     end
   end
 
+  #controller.should_receive(:group_users).and_return([])
+  #     controller.should_receive(:student_groups).and_return([])
 end

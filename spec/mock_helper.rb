@@ -38,6 +38,10 @@ def mock_country stubs={}
   mock_model(Country,stubs)
 end
 
+def mock_user stubs={}
+  mock_model(User,stubs)
+end
+
 module Spec
   module Mocks
     module Methods

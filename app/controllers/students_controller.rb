@@ -31,8 +31,8 @@ class StudentsController < ApplicationController
       @grades = current_school.enrollments.collect(&:grade).uniq
       @grades.unshift("*")
 
-      student_groups
       group_users
+      student_groups
     else
       if params['search_criteria']
         session[:search] = params['search_criteria'] ||{}
@@ -76,8 +76,8 @@ class StudentsController < ApplicationController
   end
 
   def group_users
-    #TODO this is just a placeholder
-    @users=current_school.users
+    #TODO 
+    @users=current_user.authorized_groups.members_for_school(current_school) #,grade
     #@groups.collect(&:users).uniq.first || []
   end
 
