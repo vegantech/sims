@@ -24,6 +24,16 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     end
   end
 
+  def disable_all
+    @intervention.intervention_probe_assignments.each(&:disable)
+    flash[:notice] = "All assigned monitors have been unassigned"
+
+    respond_to do |format|
+      format.html {redirect_to(@intervention)}
+    end
+
+  end
+
   protected
   def load_intervention
     @intervention ||=current_student.interventions.find(params[:intervention_id])

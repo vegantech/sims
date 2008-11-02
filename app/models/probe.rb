@@ -10,6 +10,8 @@ class Probe < ActiveRecord::Base
   validates_presence_of :score
   validates_numericality_of :score
   validate :score_in_range
+  named_scope :for_graph,:order=>"administered_at DESC, id DESC", :limit=>8
+
   
   def calculate_score
 

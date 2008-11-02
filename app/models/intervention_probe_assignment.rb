@@ -27,13 +27,15 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   validate :last_date_must_be_after_first_date
 
+  named_scope :active, :conditions => {:enabled=>true}
+
 
   def self.disable(ipas)
     Array(ipas).each(&:disable)
   end
 
   def disable
-    update_attributes(:disabled=>true)
+    update_attributes(:enabled=>false)
   end
 
 

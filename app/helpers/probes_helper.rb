@@ -5,39 +5,37 @@ module ProbesHelper
 
 
   
- def set_up_graph(intervention_probe_assignment)
+ def probe_graph(intervention_probe_assignment,count)
 
     benchmark_data=Array.new
     grades_as_ints = Array.new
     data = Array.new
     
-    student_grade = intervention_probe_definition.intervention.student.grade
-    student_grade_as_int = Student.convert_grade_level_to_integer(student_grade)
-    probe_definition = intervention_probe_definition.probe_definition
+    student_grade = intervention_probe_assignment.intervention.student.enrollments.first.grade
+    probe_definition = intervention_probe_assignment.probe_definition
     
-    benchmark_data = 
-      ProbeDefinitionBenchmark.find_benchmark_data(student_grade_as_int, 
-      intervention_probe_definition.probe_definition)
+    benchmark_data = [nil,nil]
+ 
+    #     ProbeDefinitionBenchmark.find_benchmark_data(student_grade, 
+ #     intervention_probe_assignment.probe_definition)
     benchmark_grade_level = benchmark_data[0]
     benchmark_score = benchmark_data[1]
     
-    probesCollection = intervention_probe_definition.probes_for_graph
+    probesCollection = intervention_probe_assignment.probes.for_graph
     
     probesCollection=probesCollection.reverse
-    count = 0
-    probesCollection.each do |probe|
+    probesCollection.each_with_index do |probe,index|
       classes= %w[one two three four five six seven eight nine ten]
-      date = probe.date_probe_administered.strftime("%m/%d/%y")
-      data << [classes[count], date, 
-        probe.intervention_probe_definition.probe_definition.title, 
+      date = probe.administered_at.strftime("%m/%d/%y")
+      data << [classes[index], date, 
+        probe_definition.title, 
         benchmark_grade_level, benchmark_score, 
-        probe.intervention_probe_definition.probe_definition.maximum_score, 
-        probe.intervention_probe_definition.probe_definition.minimum_score, 
+        probe_definition.maximum_score, 
+        probe_definition.minimum_score, 
         probe.score ]
-      count = count + 1  
   
     end
-  data
+  sims_bar_graph(count,data)
 end
 
   
