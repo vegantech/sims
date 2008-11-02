@@ -55,7 +55,7 @@ class Checklist < ActiveRecord::Base
      if is_draft? then
        @deletable=true
        STATUS[:draft]
-     elsif recommendation.blank? and !is_draft?
+     elsif recommendation.blank? and !is_draft? and checklist_definition.recommendation_definition
        @deletable=true
        @needs_recommendation=true
        STATUS[:missing_rec]

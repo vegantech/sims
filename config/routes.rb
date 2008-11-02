@@ -6,7 +6,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tiers
 
 
-  map.resources :checklists, :has_many=>:recommendations
+  map.resources :checklists
+  map.resources :recommendations
 
   map.resources :student_comments
 

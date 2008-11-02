@@ -20,6 +20,7 @@ class Student < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :groups
   has_many :checklists
+  has_many :recommendations
   has_many :enrollments
   has_many :schools, :through=>:enrollments
   has_many :comments, :class_name=>"StudentComment"

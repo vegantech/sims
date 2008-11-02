@@ -18,8 +18,11 @@
 class Recommendation < ActiveRecord::Base
   belongs_to :checklist
   belongs_to :recommendation_definition
+  belongs_to :user
+  belongs_to :student
+  belongs_to :tier
+  belongs_to :district
   has_many :recommendation_answers
-
 
 
   validates_presence_of :recommendation, :message => "is not indicated"
@@ -61,7 +64,7 @@ class Recommendation < ActiveRecord::Base
 
   def set_reason_from_previous!
     st_list=Checklist::STATUS
-    st=checklist.previous_checklist.status unless checklist.previous_checklist.blank?
+    st=checklist.previous_checklist.status unless checklist.blank? or checklist.previous_checklist.blank?
 
     if st && [st_list[:cannot_refer],
       st_list[:ineligable_to_refer],
@@ -75,7 +78,14 @@ class Recommendation < ActiveRecord::Base
   protected
 
   def after_initialize
-    self.recommendation_definition ||= checklist.checklist_definition.recommendation_definition if checklist
+    if checklist
+      self.recommendation_definition ||= checklist.checklist_definition.recommendation_definition if checklist
+      self.district_id ||= checklist.district_id 
+      self.student_id ||= checklist.student_id
+      self.tier_id ||= checklist.from_tier
+    else
+      self.recommendation_definition=RecommendationDefinition.find_by_active(true)
+    end
   end
 
   def request_referral
