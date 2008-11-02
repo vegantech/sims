@@ -19,6 +19,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :intervention
   belongs_to :probe_definition
   belongs_to :frequency
+  has_many :probes
 
   RECOMMENDED_FREQUENCY=2
 

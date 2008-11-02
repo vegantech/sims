@@ -25,8 +25,8 @@ class Probe < ActiveRecord::Base
   def score_in_range
     unless score.blank? || self.probe_definition.blank?||  self.probe_definition.maximum_score.blank? ||
        self.probe_definition.minimum_score.blank?
-      unless  (self.probe_definition.minimum..self.probe_definition.maximum_score).include?(score)
-      errors.add(:score, "must be between the minimum(#{self.probe_definition.maximum_score})
+      unless  (self.probe_definition.minimum_score..self.probe_definition.maximum_score).include?(score)
+      errors.add(:score, "must be between the minimum(#{self.probe_definition.minimum_score})
               and the maximum (#{self.probe_definition.maximum_score})")
       end
     end

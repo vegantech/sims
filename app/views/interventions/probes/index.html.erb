@@ -1,28 +1,23 @@
-<h1>Listing probes</h1>
+<h1>Progress Monitoring Details for <%= @intervention.student.fullname %></h1>
 
-<table>
-  <tr>
-    <th>Administered at</th>
-    <th>Score</th>
-    <th>Assessment type</th>
-    <th>District</th>
-    <th>Intervention probe assignmnet</th>
-  </tr>
+  <% @intervention.intervention_probe_assignments.each do | intervention_probe_assignment | %>
+     <%= content_tag :h3,intervention_probe_assignment.probe_definition.title %>
+     Description:
+      <%= intervention_probe_assignment.probe_definition.description %>
+      <%=list_links_and_attachments(intervention_probe_assignment.probe_definition)%>
+      
+      <p>      Benchmarks
+      <%= render_with_empty :partial=>"benchmark", :collection=>intervention_probe_assignment.probe_definition.probe_definition_benchmarks, 
+        :empty => "No benchmarks are available for this progress monitor." %>
+      </p>
+    
+      Student Scores
+    
+      <%= render :partial=>"probe", :collection=>intervention_probe_assignment.probes %>
+    
+    <% if @intervention.active? %>
+      <%= link_to 'Enter New Score', new_probe_url(@intervention,intervention_probe_assignment) %>
+    <% end %>
+    <% end %>
 
-<% for probe in @probes %>
-  <tr>
-    <td><%=h probe.administered_at %></td>
-    <td><%=h probe.score %></td>
-    <td><%=h probe.assessment_type %></td>
-    <td><%=h probe.district %></td>
-    <td><%=h probe.intervention_probe_assignmnet %></td>
-    <td><%= link_to 'Show', probe %></td>
-    <td><%= link_to 'Edit', edit_probe_path(probe) %></td>
-    <td><%= link_to 'Destroy', probe, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
-
-<%= link_to 'New probe', new_probe_path %>

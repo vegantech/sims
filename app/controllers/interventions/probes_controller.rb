@@ -1,19 +1,10 @@
 class Interventions::ProbesController < ApplicationController
-  before_filter :load_intervention,:load_intervention_probe_assignment
+  before_filter :load_intervention,:load_intervention_probe_assignment, :except=>:index
   
   def index
-    @probes = @intervention_probe_assignment.probes
-
+    @intervention=current_student.interventions.find(params[:intervention_id],:include=>{:intervention_probe_assignments=>[:probe_definition,:probes]})
     respond_to do |format|
       format.html # index.html.erb
-    end
-  end
-
-  def show
-    @probe = @intervention_probe_assignment.probes.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
     end
   end
 
@@ -30,12 +21,12 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def create
-    @probe = @intervention_probe_assignment.probes.new
+    @probe = @intervention_probe_assignment.probes.new(params[:probe])
 
     respond_to do |format|
       if @probe.save
-        flash[:notice] = 'Probe was successfully created.'
-        format.html { redirect_to(probe_url(@intervention,@intervention_probe_assignment,@probe)) }
+        flash[:notice] = 'Score was successfully created.'
+        format.html { redirect_to(@intervention) }
       else
         format.html { render :action => "new" }
       end
@@ -48,7 +39,7 @@ class Interventions::ProbesController < ApplicationController
     respond_to do |format|
       if @probe.update_attributes(params[:probe])
         flash[:notice] = 'Probe was successfully updated.'
-        format.html { redirect_to(probe_url(@intervention,@intervention_probe_assignment,@probe)) }
+        format.html { redirect_to(@intervention) }
       else
         format.html { render :action => "edit" }
       end
@@ -71,7 +62,7 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def load_intervention_probe_assignment
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(params[:intervention_probe_assignment_id])
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(params[:probe_assignment_id])
   end
 
 end
