@@ -26,7 +26,6 @@ class Recommendation < ActiveRecord::Base
 
 
   validates_presence_of :recommendation, :message => "is not indicated"
-  validates_presence_of :reason, :if=>lambda{|r| r.recommendation && RECOMMENDATION[r.recommendation][:promote]}
 #  validates_presence_of :checklist_id, 
   validates_presence_of :other, :if => lambda{|r| r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral
@@ -106,6 +105,7 @@ class Recommendation < ActiveRecord::Base
   end
 
   def validate_for_tier_escalation
+    return true unless checklist
     checklist.score_checklist
     checklist.promoted=checklist.score_results.blank?
     checklist.save
