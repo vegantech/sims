@@ -69,11 +69,11 @@ class ChecklistsController < ApplicationController
       if @checklist.all_valid?
         @checklist.save_all!
         flash[:notice] = 'Checklist was successfully created.'
-        if @checklist.is_draft? || !@checklist.checklist_definition.recommendation_definition
+        unless @checklist.needs_recommendation? 
           format.html { redirect_to(current_student) }
           format.xml  { render :xml => @checklist, :status => :created, :location => @checklist }
         else
-          format.html {redirect_to new_checklist_recommendation_url(@checklist)}
+          format.html {redirect_to new_recommendation_url(:checklist_id=>@checklist.id)}
         end
       else
         format.html { render :action => "new" }

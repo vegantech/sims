@@ -60,8 +60,17 @@ class Student < ActiveRecord::Base
   end
 
   def max_tier
-    puts "FIXME this should probably be stored instead of calculated on the fly"
-    2
+    
+    unless recommendations.blank?
+
+      district.tiers.first
+      #FIXME, should only be promoted 
+#      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
+    else
+      district.tiers.first
+    end
+
+
 
   end
 

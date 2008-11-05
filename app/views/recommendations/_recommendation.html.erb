@@ -1,0 +1,9 @@
+  <li>Recommendation completed by <%= recommendation.user.fullname %> on <%= recommendation.updated_at.to_s %>
+  <br /> 
+  Status: <%=recommendation.status%>
+ 
+  <%=link_to :view, recommendation.checklist ? recommendation.checklist : recommendation %>
+  <%=link_to :edit, edit_recommendation_url(recommendation) if recommendation.draft?%> 
+  <%=link_to "Delete Recommendation",recommendation,{:confirm=>"Are you sure you want to delete this recommendation?", :method=>:delete} if recommendation.draft? %>
+ 
+</li>

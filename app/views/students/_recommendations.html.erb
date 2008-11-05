@@ -1,2 +1,7 @@
 <h2>Conclusions and Recommendations for Changing Tiers </h2>
-<%=link_to "Complete Conclusion and Recommendation", new_recommendation_url %>
+  <% @student.recommendations.group_by(&:tier).each do |g,r| %>
+    <%= content_tag :h4, g.inspect %>
+    <ul><%= render :partial => 'recommendations/recommendation', :collection=> r %></ul>
+  <% end %>
+
+<%=link_to "Complete Conclusion and Recommendation", new_recommendation_url unless @student.checklist_definition.recommendation_definition%>

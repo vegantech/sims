@@ -25,9 +25,9 @@ class Recommendation < ActiveRecord::Base
   has_many :recommendation_answers
 
 
-  validates_presence_of :recommendation, :message => "is not indicated"
+  validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id, 
-  validates_presence_of :other, :if => lambda{|r| r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
+  validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral
   attr_accessor :other
 
@@ -42,6 +42,40 @@ class Recommendation < ActiveRecord::Base
   
   }
 
+  STATUS={ 
+          :unknown => "UNKNOWN_STATUS",
+          :draft => "Draft, make changes to recommendation and submit",
+          :can_refer => "Referred to Special Ed",
+          :cannot_refer => "Criteria not met (need 3 or above on all questions) for referral.",
+          :ineligable_to_refer=> "Impairment Suspected, but eligibility not met.",
+          :nonadvancing => "Recommendation submitted, continue working at same tier",
+          :passed =>  "Recommendation submitted, met criteria to move to next tier",
+          :failing_score => "Checklist submitted, did not meet criteria to move to next tier.",
+          :optional_checklist => "Optional Checklist Completed"
+        }  
+
+
+
+  def status
+    if draft?
+      STATUS[:draft]
+    elsif promoted? and RECOMMENDATION[recommendation][:show_elig]
+      STATUS[:can_refer]
+    elsif promoted? 
+      STATUS[:passed]
+    elsif !promoted? and RECOMMENDATION[recommendation][:show_elig]
+      checklist.fake_edit= checklist == student.checklists.last
+      (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer] 
+    elsif !promoted? and RECOMMENDATION[recommendation][:promote]
+      checklist.fake_edit = checklist == student.checklists.last
+      STATUS[:failing_score]
+    elsif !promoted? and !RECOMMENDATION[recommendation][:promote]
+      STATUS[:nonadvancing]
+    else
+      return STATUS[:unknown]
+    end
+
+  end
   
 
   def answers
@@ -53,9 +87,12 @@ class Recommendation < ActiveRecord::Base
 
   def answers=(hsh={})
     hsh.each do |h|
-      a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id] } ||
+      h=h.last if h.is_a?Array and h.size==2
+      h.symbolize_keys!
+      a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
         recommendation_answers.build(h)
       a.text=h[:text]
+      a.draft=self.draft
     end
   end
 
@@ -84,6 +121,7 @@ class Recommendation < ActiveRecord::Base
       self.tier_id ||= checklist.from_tier
     else
       self.recommendation_definition=RecommendationDefinition.find_by_active(true)
+      self.tier_id ||= self.student.max_tier if student
     end
   end
 
@@ -92,18 +130,18 @@ class Recommendation < ActiveRecord::Base
   end
 
   def before_save
-    if errors.empty? and RECOMMENDATION[recommendation][:promote]
-      self.should_advance=true
-      self.should_advance = request_referral if recommendation.to_i==5
+    if draft?
+      promoted=false
+      return true
+    elsif errors.empty? and recommendation and RECOMMENDATION[recommendation][:promote]
+      if checklist 
+        promoted=validate_for_tier_escalation
+      else
+        promoted=true
+      end
     end
   end
-
-  def after_save
-    if self.should_advance?
-      validate_for_tier_escalation
-    end
-  end
-
+          
   def validate_for_tier_escalation
     return true unless checklist
     checklist.score_checklist

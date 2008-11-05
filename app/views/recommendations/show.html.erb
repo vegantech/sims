@@ -1,0 +1,6 @@
+<div id="Recommendation">
+  <p>Completed by <%= @recommendation.user.fullname %> on 
+  <%= @recommendation.updated_at.to_s(:chatty) %> </p>
+   <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>@recommendation}%>
+<%=link_to "Back", @recommendation.student%>
+</div>

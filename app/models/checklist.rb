@@ -21,6 +21,7 @@ class Checklist < ActiveRecord::Base
   belongs_to :student
   belongs_to :teacher, :class_name => "User", :foreign_key=>:user_id  #explicitly needed for validation
   belongs_to :district
+  belongs_to :tier, :foreign_key=>:from_tier
   has_one :recommendation,:dependent => :destroy
   validate :cannot_pass_if_draft
   validates_presence_of :student_id, :user_id, :from_tier
@@ -39,6 +40,7 @@ class Checklist < ActiveRecord::Base
           :nonadvancing => "Checklist submitted, continue working at same tier",
           :passed =>  "Checklist submitted, met criteria to move to next tier",
           :failing_score => "Checklist submitted, did not meet criteria to move to next tier.",
+          :optional_checklist => "Optional Checklist Completed"
         }  
 
 #  has_many :answers_with_includes, :class_name => "Answer", 
@@ -54,35 +56,20 @@ class Checklist < ActiveRecord::Base
   end
 
    def status
+     @deletable=true
      if is_draft? then
-       @deletable=true
        STATUS[:draft]
-     elsif recommendation.blank? and !is_draft? and checklist_definition.recommendation_definition
-       @deletable=true
+     elsif needs_recommendation?
        @needs_recommendation=true
        STATUS[:missing_rec]
-     elsif recommendation and recommendation.recommendation == 5
-       if recommendation.request_referral 
-         if promoted then
-           STATUS[:can_refer]
-         else
-           @fake_edit = @fake_edit=='LAST'
-           STATUS[:cannot_refer]
-         end
-       else
-         STATUS[:ineligable_to_refer]
-       end
-     elsif recommendation and !recommendation.should_advance?
-       STATUS[:nonadvancing]
-     elsif promoted
-       STATUS[:passed] % from_tier
-     elsif recommendation and recommendation.should_advance? 
-       @fake_edit = @fake_edit == 'LAST'
-       STATUS[:failing_score]
+     elsif recommendation_definition.blank?
+       STATUS[:optional_checklist]
      else
-       STATUS[:unknown] #unreachable for now
+       @deletable=false
+       recommendation.status
      end
    end
+
 
    def self.new_from_teacher(teacher,import_previous_answers=false, score=false)
      checklist=Checklist.new(:teacher=>teacher)
@@ -145,7 +132,6 @@ class Checklist < ActiveRecord::Base
   
   
   def score_checklist
-#    return false unless recommendation and recommendation.should_advance?
     @score_results=Hash.new{|h,k| h[k]={}}
     #for demo purpose, answering the second question will pass the checklist
     if student and student.last_name=="Flag" and student.first_name="Every" and answers.find_by_answer_definition_id(6) then
@@ -228,7 +214,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def editable?
-    @editable ||= self.is_draft? || self.recommendation.blank?
+    @editable ||= self.is_draft? || self.recommendation.blank? || student.checklists.last == self
   end
 
 
@@ -250,7 +236,10 @@ class Checklist < ActiveRecord::Base
     @previous_checklist = Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now]) if @previous_checklist.nil? 
     @previous_checklist
   end
-  
+ 
+  def needs_recommendation?
+    recommendation.blank?  && recommendation_definition && !is_draft?
+  end
 private
   
   def valid_list?(list)
@@ -263,7 +252,7 @@ private
 
   def cannot_pass_unless_recommended
     
-    errors.add(:recommendation, "Must have recommendation") if  promoted and  (recommendation.blank? or  !recommendation.should_advance?) 
+    errors.add(:recommendation, "Must have recommendation") if  promoted and  needs_recommendation? 
   end
 
   def self.clear_checklist_definition_cache
