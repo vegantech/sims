@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081031153415) do
+ActiveRecord::Schema.define(:version => 20081105034534) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20081031153415) do
     t.integer  "district_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "recommendation_definition_id"
   end
 
   create_table "checklists", :force => true do |t|
@@ -278,6 +279,11 @@ ActiveRecord::Schema.define(:version => 20081031153415) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "recommendation_definition_id"
+    t.boolean  "draft",                        :default => false
+    t.integer  "district_id"
+    t.integer  "tier_id"
+    t.integer  "student_id"
+    t.boolean  "promoted",                     :default => false
   end
 
   create_table "recommended_monitors", :force => true do |t|

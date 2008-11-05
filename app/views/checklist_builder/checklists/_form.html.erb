@@ -8,4 +8,8 @@
 <p>
   Directions: (Required) <%=markdown_note %><br />
   <%= f.text_area :directions %>
-</p>
+  </p>
+
+  Assigned Recommendation (Blank will mean the checklist is optional: <br />
+  <%= f.collection_select(:recommendation_definition_id, @checklist_definition.district.recommendation_definitions,:id,:text, :include_blank=>true) %>
+

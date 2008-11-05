@@ -24,6 +24,8 @@ class Checklist < ActiveRecord::Base
   has_one :recommendation,:dependent => :destroy
   validate :cannot_pass_if_draft
   validates_presence_of :student_id, :user_id, :from_tier
+
+  delegate :recommendation_definition, :to=>:checklist_definition
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
 

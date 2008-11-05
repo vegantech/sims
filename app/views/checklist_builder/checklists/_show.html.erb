@@ -26,6 +26,10 @@
       <td colspan="2">Date of Last Update:</td>
       <td colspan="2"><%=h checklist_definition.updated_at.to_date.to_s(:long) %></td>
     </tr>
+    <tr class="cycle_odd_lvl1"> 
+      <td>Recommendation:</td>
+      <td><%=h checklist_definition.recommendation_definition ? checklist_definition.recommendation_definition.text : "Checklist is optional" %></td>
+    </tr>
   <tr>
       <td colspan="4">
         <%= link_to 'Preview', preview_checklist_builder_checklist_path(checklist_definition) %> |
