@@ -6,7 +6,6 @@ class RecommendationsController < ApplicationController
     else
       @recommendation = current_student.recommendations.build
     end
-    @recommendation.set_reason_from_previous!
   end
 
   def show

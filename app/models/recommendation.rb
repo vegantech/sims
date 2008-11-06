@@ -98,19 +98,6 @@ class Recommendation < ActiveRecord::Base
 
 
 
-  def set_reason_from_previous!
-    st_list=Checklist::STATUS
-    st=checklist.previous_checklist.status unless checklist.blank? or checklist.previous_checklist.blank?
-
-    if st && [st_list[:cannot_refer],
-      st_list[:ineligable_to_refer],
-      st_list[:failing_score]].include?(st)
-      self.reason ||= checklist.previous_checklist.recommendation.reason
-    end
-    self.reason
-  end
-
-
   protected
 
   def after_initialize
