@@ -8,7 +8,7 @@ Feature: Search By Student Groups
     And group "Blue Team" for school "Central" with student "Blue Floyd"
     And group "Red Team" for school "Central" with student "Red Fred"
     And I have access to "Blue Team"
-    When I am on search page
+    And I am on search page
 
     # And I should see my own username in the group member selection
     # And group_member_selection_id drop down should contain ["Prompt", "Option 1", "Option 2"]
@@ -18,15 +18,25 @@ Feature: Search By Student Groups
 
     # Then I should see Blue Team selection option
     # And I should not see Red team selection option
-    And I select "Blue Team" from "Student Group"
+    When I select "Blue Team" from "Student Group"
     And I press "Search for Students"
-    And I should see "Floyd, Blue"
+
+    Then I should see "Floyd, Blue"
     And I should not see "Fred, Red"
   
 
-#  Scenario
-  # Students should be filtered by selected group
-
+  Scenario User With Two Groups Picks One
+    Given school "West High"
+    And group "Orange Team" for school "West High" with student "Alfie Orange"
+    And group "Maroon Team" for school "West High" with student "Harold Yerbie"
+    And I have access to "Orange Team"
+    And I have access to "Maroon Team"
+    And I am on search page
+    And I should see select box with id of "search_criteria_group_id" and contains ['Orange Team', 'Maroon Team']
+    When I select "Orange Team" from "Student Group"
+    And I press "Search for Students"
+    Then I should see "Orange, Alfie"
+    And I should not see "Yerbie, Harold"
 
 #test student group dropdown
 # no groups available to user (flash message)
