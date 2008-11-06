@@ -23,7 +23,7 @@ def calculate_score(params)
   elsif assessment_type == 'update'
     # This is may return the current probe, I'm not yet sure what the purpose is,  I just combined a few lines to produce the identical result
     previous_probe = intervention_probe_assignment.probes.last
-    questions=previous_probe.probe_question
+    questions=previous_probe.probe_questions
     self.score=previous_probe.score
   else
     raise "unknown assessment type"
@@ -46,6 +46,12 @@ def calculate_score(params)
 
 
   protected
+  def before_save
+    self.administered_at = Time.now  if self.administered_at.blank?
+  end
+
+
+
   def score_in_range
     unless score.blank? || self.probe_definition.blank?||  self.probe_definition.maximum_score.blank? ||
        self.probe_definition.minimum_score.blank?

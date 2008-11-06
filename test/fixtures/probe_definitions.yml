@@ -17,3 +17,22 @@ fact_interview_b:
   minimum_score: 0
   position: 2
   district: wi_mmsd
+
+reading_probe:
+  title: Reader Level
+  description: Determine Reader Level using generic method.
+  active: true
+  maximum_score: 25
+  minimum_score: 0
+  position: 3
+  district: wi_mmsd
+
+unassigned_probe:
+  title: Unassigned Probe
+  description: "Demonstrate a progress monitor that isn't assigned to any intervention definition"
+  active: true
+  position: 4
+  district: wi_mmsd
+
+
+

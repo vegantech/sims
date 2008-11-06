@@ -63,6 +63,7 @@ class Interventions::ProbesController < ApplicationController
   def update_assessment
     @probe = @intervention_probe_assignment.probes.new(:assessment_type=>:update)
     @questions = @intervention_probe_assignment.probes.last.probe_questions unless @intervention_probe_assignment.probes.blank?
+    render :action=>"new_assessment"
   end
 
   def save_assessment
