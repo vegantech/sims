@@ -7,6 +7,8 @@ Feature: Search By Intervention Flags
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+    And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister"]
+    And I have access to "My Group"
 		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
@@ -22,6 +24,8 @@ Feature: Search By Intervention Flags
 		Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+		And group "Whatta Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
+		And I have access to "Whatta Group"
 		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"
@@ -40,6 +44,8 @@ Feature: Search By Intervention Flags
     And student "Andy" "Dudley" in grade 3 at "Ridgewood"
     And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
+		And group "Some Kinda Group" for school "Ridgewood" with students ['Adam Partridge', 'Andy Dudley', 'Craig Acomb', 'Different Flag']
+		And I have access to "Some Kinda Group"
     And I am on the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
@@ -61,6 +67,8 @@ Feature: Search By Intervention Flags
     And student "Andy" "Dudley" in grade 3 at "Ridgewood"
     And student "Craig" "Acomb" in grade 4 at "Ridgewood" with "math" flag
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
+		And group "Some Kinda Group" for school "Ridgewood" with students ['Adam Partridge', 'Andy Dudley', 'Craig Acomb', 'Different Flag']
+		And I have access to "Some Kinda Group"
     And I am on the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"

@@ -1,5 +1,6 @@
 require File.dirname(__FILE__)+'/sims_step_helpers'
 require File.dirname(__FILE__)+'/require_everything'
+
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
 	create_user user_name, password
 end
@@ -12,8 +13,9 @@ When /^I am on (.*)$/ do |page_name|
 	go_to_page page_name
 end
 
-Given /^I have access to (.*)$/ do |group_title|
+Given /^I have access to "(.*)"$/ do |group_title|
   group = Group.find_by_title(group_title)
+  raise "Missing group: '#{group_title}'" if group.nil?
   UserGroupAssignment.create!(:user => default_user, :group => group)
 end
 
@@ -27,13 +29,19 @@ Given /^student "(.*)" "(.*)" in grade (\d+) at "(.*)"$/ do |first, last, studen
 	create_student first, last, student_grade, school
 end
 
+# # use this if you want the default user to belong to a group for the school
+# Given /^accessible school "(.*)"$/ do |school_name|
+#   s = create_school school_name
+#   group = Group.create!(:title => "Default Group for #{school_name}", :school => s)
+#   UserGroupAssignment.create!(:user => default_user, :group => group)
+# end
+
 Given /^school "(.*)"$/ do |school_name|
 	create_school school_name
 end
 
 Then /^I should see read only select box with id of "(.*)" and contains (.*)$/ do |id, options|
-
-    puts response.body
+    # puts response.body
   verify_select_box id, options, true
 end
 
@@ -50,12 +58,29 @@ Then /^I should see select box with "(.*)" and "(.*)"$/ do |option_1, option_2|
    end
 end
 
-Given /group "(.*)" for school "(.*)" with student "(.*)"/ do |group_title, school_name, student_name|
+Given /group "(.*)" for school "([^\"]*)"$/ do |group_title, school_name|
+  school = School.find_by_name(school_name)
+  group = Group.create!(:title => group_title, :school => school)
+end
+
+Given /group "(.*)" for school "(.*)" with student "(.*)"$/ do |group_title, school_name, student_name|
   school = School.find_by_name(school_name)
   group = Group.create!(:title => group_title, :school => school)
   first,last=student_name.split(" ")
   student = create_student(first,last, '1', school)
   group.students << student
+end
+
+Given /group "(.*)" for school "(.*)" with students (.*)$/ do |group_title, school_name, students_array|
+  school = School.find_by_name(school_name)
+  group = Group.create!(:title => group_title, :school => school)
+
+  students = Array(eval(students_array))
+  students.each do |student_name|
+    first, last = student_name.split(" ")
+    student = find_student(first, last) || create_student(first,last, '1', school)
+    group.students << student
+  end
 end
 
 Given /^require everything$/ do
@@ -65,9 +90,11 @@ end
 
 Given /^load demo data$/ do
   fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
+
   fixtures=%w{users schools students enrollments districts 
-  goal_definitions objective_definitions intervention_clusters intervention_definitions 
-  tiers frequencies time_lengths}
+    goal_definitions objective_definitions intervention_clusters intervention_definitions 
+    tiers frequencies time_lengths groups user_group_assignments}
+
   fixtures.each do |f|
     Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end
@@ -82,5 +109,3 @@ When /^I should click js "all"$/ do
   checks("student_310913251")
   checks("student_22766020")
 end
-
-

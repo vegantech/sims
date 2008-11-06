@@ -7,6 +7,8 @@ Feature: Search By Student Last Name
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens"
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
+		And I have access to "My Group"
 		And I am on the school selection page
 		And I select "Glenn Stephens" from "school_id"
 		And I press "Choose School"

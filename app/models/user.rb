@@ -68,4 +68,9 @@ class User < ActiveRecord::Base
 	def fullname_last_first
 		last_name.to_s + ', ' + first_name.to_s
 	end
+
+  def has_group_for_school school
+    has_group = groups.collect{|g| g.school}.include? school
+    has_group
+  end
 end
