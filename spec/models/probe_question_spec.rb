@@ -5,8 +5,6 @@ describe ProbeQuestion do
     @valid_attributes = {
       :number => "1",
       :operator => "value for operator",
-      :question_text => "value for question_text",
-      :question_code => "value for question_code",
       :first_digit => "1",
       :second_digit => "1"
     }
