@@ -22,6 +22,20 @@ Feature: Search By Student Groups
     And I press "Search for Students"
     And I should see "Floyd, Blue"
     And I should not see "Fred, Red"
+  
+
+#  Scenario
+  # Students should be filtered by selected group
+
+
+#test student group dropdown
+# no groups available to user (flash message)
+# all (2 exist) groups available to user (show * + 2 options in dropdown)
+# 1 group available to user (user with one group above)
+# 2 groups available to user (choose)
+
+
+
 
 # Scenarios -- group member
 # 
@@ -48,5 +62,14 @@ Feature: Search By Student Groups
 # 
 # student groups
 #     * should be all groups available to member and only present if student groups has more than one
+
+
+other scenario all students by grade in school
+  should be empty or * if only explicit group available
+  otherwise explicit groups (with *)
+
+
+
+
 
 

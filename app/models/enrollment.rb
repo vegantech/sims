@@ -27,7 +27,7 @@ class Enrollment < ActiveRecord::Base
       enrollments = enrollments.select{|e| e.student.last_name =~ /^#{search_hash[:last_name]}/i}
     end
 
-    unless search_hash[:group_id].blank?
+    unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
       enrollments = enrollments.select{|e| e.student.group_ids.include?(search_hash[:group_id].to_i)}
     end
 
