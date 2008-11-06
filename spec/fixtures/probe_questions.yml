@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  probe_definition: 
+  number: 1
+  operator: MyString
+  question_text: MyText
+  question_code: MyString
+  first_digit: 1
+  second_digit: 1
+
+two:
+  probe_definition: 
+  number: 1
+  operator: MyString
+  question_text: MyText
+  question_code: MyString
+  first_digit: 1
+  second_digit: 1

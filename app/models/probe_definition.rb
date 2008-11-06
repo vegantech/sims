@@ -23,6 +23,7 @@ class ProbeDefinition < ActiveRecord::Base
   has_many :recommended_monitors
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
+  has_many :probe_questions  
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active','district_id']

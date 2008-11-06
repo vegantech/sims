@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081105034534) do
+ActiveRecord::Schema.define(:version => 20081106035506) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -225,6 +225,18 @@ ActiveRecord::Schema.define(:version => 20081105034534) do
     t.datetime "updated_at"
   end
 
+  create_table "probe_questions", :force => true do |t|
+    t.integer  "probe_definition_id"
+    t.integer  "number"
+    t.string   "operator"
+    t.text     "question_text"
+    t.string   "question_code"
+    t.integer  "first_digit"
+    t.integer  "second_digit"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "probes", :force => true do |t|
     t.datetime "administered_at"
     t.integer  "score"
@@ -233,6 +245,11 @@ ActiveRecord::Schema.define(:version => 20081105034534) do
     t.integer  "intervention_probe_assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "probes_probe_questions", :id => false, :force => true do |t|
+    t.integer "probe_id"
+    t.integer "probe_question_id"
   end
 
   create_table "question_definitions", :force => true do |t|

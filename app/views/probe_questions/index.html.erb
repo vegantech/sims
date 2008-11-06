@@ -1,0 +1,32 @@
+<h1>Listing probe_questions</h1>
+
+<table>
+  <tr>
+    <th>Probe definition</th>
+    <th>Number</th>
+    <th>Operator</th>
+    <th>Question text</th>
+    <th>Question code</th>
+    <th>First digit</th>
+    <th>Second digit</th>
+  </tr>
+
+<% for probe_question in @probe_questions %>
+  <tr>
+    <td><%=h probe_question.probe_definition %></td>
+    <td><%=h probe_question.number %></td>
+    <td><%=h probe_question.operator %></td>
+    <td><%=h probe_question.question_text %></td>
+    <td><%=h probe_question.question_code %></td>
+    <td><%=h probe_question.first_digit %></td>
+    <td><%=h probe_question.second_digit %></td>
+    <td><%= link_to 'Show', probe_question %></td>
+    <td><%= link_to 'Edit', edit_probe_question_path(probe_question) %></td>
+    <td><%= link_to 'Destroy', probe_question, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New probe_question', new_probe_question_path %>

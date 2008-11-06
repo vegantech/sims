@@ -1,0 +1,40 @@
+<h1>Editing probe_question</h1>
+
+<% form_for(@probe_question) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :probe_definition %><br />
+    <%= f.text_field :probe_definition %>
+  </p>
+  <p>
+    <%= f.label :number %><br />
+    <%= f.text_field :number %>
+  </p>
+  <p>
+    <%= f.label :operator %><br />
+    <%= f.text_field :operator %>
+  </p>
+  <p>
+    <%= f.label :question_text %><br />
+    <%= f.text_area :question_text %>
+  </p>
+  <p>
+    <%= f.label :question_code %><br />
+    <%= f.text_field :question_code %>
+  </p>
+  <p>
+    <%= f.label :first_digit %><br />
+    <%= f.text_field :first_digit %>
+  </p>
+  <p>
+    <%= f.label :second_digit %><br />
+    <%= f.text_field :second_digit %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @probe_question %> |
+<%= link_to 'Back', probe_questions_path %>
