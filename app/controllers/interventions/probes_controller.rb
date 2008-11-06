@@ -1,4 +1,4 @@
-cplass Interventions::ProbesController < ApplicationController
+class Interventions::ProbesController < ApplicationController
   before_filter :load_intervention,:load_intervention_probe_assignment, :except=>:index
   
   def index
@@ -108,7 +108,6 @@ cplass Interventions::ProbesController < ApplicationController
          if diffQuestions.include?(question)
            flash["answer_#{question.number}"] = question.first_digit + question.second_digit
          end
-       end
+      end
   end
-
 end
