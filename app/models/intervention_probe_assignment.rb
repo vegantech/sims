@@ -21,6 +21,8 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :frequency
   has_many :probes
 
+  delegate :title, :to => :probe_definition
+
   RECOMMENDED_FREQUENCY=2
 
   validates_date :first_date, :end_date

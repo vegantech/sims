@@ -10,34 +10,33 @@ class Probe < ActiveRecord::Base
   validates_numericality_of :score
   validate :score_in_range
   named_scope :for_graph,:order=>"administered_at DESC, id DESC", :limit=>8
+  attr_accessor :assessment_type
 
 
 
 def calculate_score(params)
-  probe_definition = ProbeDefinition.find(params[:probe])
-  assessment_type = params[:assessment]
-  score = 0
+  self.score=0
 
   if assessment_type == 'baseline'
-    questions = probe_definition.probe_question_definitions
+    questions = probe_definition.probe_questions
 
   elsif assessment_type == 'update'
     # This is may return the current probe, I'm not yet sure what the purpose is,  I just combined a few lines to produce the identical result
-    previous_probe = intervention_probe_assignment.probes_for_graph.find(:first)
-    questions=previous_probe.probe_questions
-    score=previous_probe.score
+    previous_probe = intervention_probe_assignment.probes.last
+    questions=previous_probe.probe_question
+    self.score=previous_probe.score
+  else
+    raise "unknown assessment type"
   end
 
   questions.each do |question|
     if (params["first_number_#{question.number}"].to_s.empty? && params["second_number_#{question.number}"].to_s.empty? && (params["counts_everything_#{question.number}"]!='Counts everything' && params["shows_both_#{question.number}"]!='Shows both sets' && params["more_respond_#{question.number}"]!='More than 3-4 seconds to respond' && params["no_response_#{question.number}"]!='No response') && params["answer_#{question.number}"].to_i == question.first_digit+question.second_digit)
-      score = score + 1
+      self.score = self.score + 1
     else
-      probe_question_definitions << question
+      probe_questions << question
       # self.probe_updates.create(:probe_question_definition_id => question.probe_question_definition_id, :probe_id => self.probe_id )
     end
   end
-
-  score
   end
 
 

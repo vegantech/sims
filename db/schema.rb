@@ -235,19 +235,18 @@ ActiveRecord::Schema.define(:version => 20081106035506) do
     t.datetime "updated_at"
   end
 
+  create_table "probe_questions_probes", :id => false, :force => true do |t|
+    t.integer "probe_id"
+    t.integer "probe_question_id"
+  end
+
   create_table "probes", :force => true do |t|
     t.datetime "administered_at"
     t.integer  "score"
-    t.string   "assessment_type"
     t.integer  "district_id"
     t.integer  "intervention_probe_assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "probes_probe_questions", :id => false, :force => true do |t|
-    t.integer "probe_id"
-    t.integer "probe_question_id"
   end
 
   create_table "question_definitions", :force => true do |t|

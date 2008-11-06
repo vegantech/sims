@@ -1,0 +1,38 @@
+<div class="layoutBox">
+<%= image_tag("logo_vert_small_bw.gif") %>
+<div style="font-size:medium;page-break-after: always;"><span style="font-size:large;">SIMS Progress Monitoring Report</span>
+  <h1></h1>
+  <table>
+    <tr>
+      <td>Student:</td>
+      <td><%= @intervention.student.fullname %></td>
+    </tr>
+    <tr>
+      <td>Intervention:</td>
+      <td><%= @intervention.title %></td>
+    </tr>
+    <tr>
+      <td>Progress monitor:</td>
+      <td><%= @intervention_probe_assignment.title %>
+</td>
+    </tr>
+    <tr>
+      <td>Administered on:</td>
+      <td><%= Date.today.to_s(:long)  %></td>
+    </tr>
+  </table>
+
+
+<p>
+The results of the progress monitor you just administered are displayed below.  Click "Print" to print this report.  Otherwise, click "Continue without printing."  Once you continue or click the back button or refresh this page, the results of individual equations will be lost.
+</p>
+<p>
+<%= link_to_function "Print", "window.print()" %>
+<%= link_to "Continue", @intervention, {:confirm=>"Are you sure?"} %>
+</p>
+
+
+<%= render(:partial=>"results_table") %>
+
+</div>
+</div>
