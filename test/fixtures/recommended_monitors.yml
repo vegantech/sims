@@ -1,0 +1,47 @@
+# == Schema Information
+# Schema version: 20081030035908
+#
+# Table name: recommended_monitors
+#
+#  id                         :integer         not null, primary key
+#  intervention_definition_id :integer
+#  probe_definition_id        :integer
+#  note                       :string(255)
+#  position                   :integer
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  intervention_definition:  arithmatic_one
+  probe_definition: fact_interview_a
+  position: 1
+
+two:
+  intervention_definition: arithmatic_two 
+  probe_definition: fact_interview_a
+  position: 1
+
+three:
+  intervention_definition:  arithmatic_one
+  probe_definition: fact_interview_b
+  position: 2
+
+four:
+  intervention_definition: arithmatic_two
+  probe_definition: fact_interview_b
+  position: 2
+
+
+five:
+  intervention_definition:  reading_one
+  probe_definition: reading_probe
+  position: 1
+
+six:
+  intervention_definition: reading_two
+  probe_definition: reading_probe 
+  position: 1
+
