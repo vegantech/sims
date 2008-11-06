@@ -64,12 +64,6 @@ Feature: Search By Student Groups
 #     * should be all groups available to member and only present if student groups has more than one
 
 
-other scenario all students by grade in school
-  should be empty or * if only explicit group available
-  otherwise explicit groups (with *)
-
-
-
-
-
-
+# other scenario all students by grade in school
+#   should be empty or * if only explicit group available
+#   otherwise explicit groups (with *)
