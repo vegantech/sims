@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081106035506) do
+ActiveRecord::Schema.define(:version => 20081106215957) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -181,6 +181,18 @@ ActiveRecord::Schema.define(:version => 20081106035506) do
     t.datetime "updated_at"
   end
 
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -243,6 +255,15 @@ ActiveRecord::Schema.define(:version => 20081106035506) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "railmail_deliveries", :force => true do |t|
+    t.string   "recipients", :limit => 1024
+    t.string   "from"
+    t.string   "subject",    :limit => 1024
+    t.datetime "sent_at"
+    t.datetime "read_at"
+    t.string   "raw",        :limit => 10485760
   end
 
   create_table "recommendation_answer_definitions", :force => true do |t|
