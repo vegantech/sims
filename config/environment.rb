@@ -70,5 +70,5 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
-  config.actionmailer.deliverymethod = :railmail 
+  config.action_mailer.delivery_method = :railmail 
 end
