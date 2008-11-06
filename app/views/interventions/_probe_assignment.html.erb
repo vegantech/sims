@@ -3,6 +3,14 @@ Progress Monitor
 <%= probe_assignment.probe_definition.title %>
 <%=list_links_and_attachments(probe_assignment.probe_definition)%>  
 
+<% if @intervention.active? %>
+  <%= display_assessment_links(probe_assignment) %>
+
+
+  <%= link_to  "Enter scores for previously administered assessment", new_probe_path(@intervention,probe_assignment) %> <br />
+<% end %>
+<%= link_to "Details/Individual Scores", probes_path(@intervention,probe_assignment) %> <br />
+
 <% unless probe_assignment.probes.blank? %>
 
 <%= link_to_function("Hide Graph", nil, :id => "more_link_#{probe_assignment_counter}") do |page|

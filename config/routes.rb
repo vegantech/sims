@@ -68,7 +68,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :interventions, :member=>{:end=>:put} do |intervention|
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put} do |probe_assignment|
-      probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>""
+      probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>"", :collection=>{:new_assessment=>:get, :update_assessment=>:get}
     end
   end
 

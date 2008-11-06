@@ -196,8 +196,17 @@ end
   def scale_graph_value(data_value, data_max, max)
     ((data_value.to_f.abs / data_max.to_f) * max).round
   end
-  
-  
+ 
+  def display_assessment_links(probe_assignment)
+    s=''
+    if !probe_assignment.probe_definition.probe_questions.blank?
+      s= link_to("Administer Assessment", new_assessment_probes_path(@intervention,probe_assignment)) + '<br />' 
+      if !probe_assignment.probes.blank? and !probe_assignment.probes.last.probe_questions.blank?
+        s+=link_to( "Update Assessment", update_assessment_probes_path(@intervention,probe_assignment)) + '<br />'
+      end
+    end
+    s
+  end
 
 
 

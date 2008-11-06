@@ -1,10 +1,10 @@
 <p>
 <h1 id="progress_monitor">Progress Monitoring</h1>
   <% if @intervention.active? %>
-	<ul>
-        <li><%= link_to "Assign Progress Monitor", intervention_probe_assignments_path(@intervention) %></li>
-        <li><%= link_to "End Progress Monitoring", disable_all_intervention_probe_assignments_path(@intervention), :method=>:put%></li>
-	  </ul>
+    <ul>
+      <li><%= link_to "Assign Progress Monitor", intervention_probe_assignments_path(@intervention) %></li>
+      <li><%= link_to "End Progress Monitoring", disable_all_intervention_probe_assignments_path(@intervention), :method=>:put%></li>
+    </ul>
   <% end %>
   </p>
 

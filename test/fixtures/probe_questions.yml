@@ -1,0 +1,700 @@
+probe_question_definition_00012: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 1
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 2
+  operator: +
+probe_question_definition_00033: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 5
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 23
+  operator: +
+probe_question_definition_00054: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 2
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 44
+  operator: +
+probe_question_definition_00075: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 6
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 25
+  operator: +
+probe_question_definition_00096: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 8
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 46
+  operator: +
+probe_question_definition_00013: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 4
+  second_digit: 2
+  probe_definition: fact_interview_b
+  number: 3
+  operator: +
+probe_question_definition_00034: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 2
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 24
+  operator: +
+probe_question_definition_00055: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 6
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 45
+  operator: +
+probe_question_definition_00076: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 7
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 26
+  operator: +
+probe_question_definition_00097: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 6
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 47
+  operator: +
+probe_question_definition_00014: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 4
+  operator: +
+probe_question_definition_00035: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 7
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 25
+  operator: +
+probe_question_definition_00056: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 2
+  second_digit: 7
+  probe_definition: fact_interview_a
+  number: 46
+  operator: +
+probe_question_definition_00077: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 2
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 27
+  operator: +
+probe_question_definition_00098: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 7
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 48
+  operator: +
+probe_question_definition_00015: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 3
+  second_digit: 2
+  probe_definition: fact_interview_b
+  number: 5
+  operator: +
+probe_question_definition_00036: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 0
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 26
+  operator: +
+probe_question_definition_00057: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 3
+  second_digit: 7
+  probe_definition: fact_interview_a
+  number: 47
+  operator: +
+probe_question_definition_00078: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 7
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 28
+  operator: +
+probe_question_definition_00099: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 9
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 49
+  operator: +
+probe_question_definition_00016: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 6
+  operator: +
+probe_question_definition_00037: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 4
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 27
+  operator: +
+probe_question_definition_00080: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 5
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 30
+  operator: +
+probe_question_definition_00058: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 1
+  second_digit: 9
+  probe_definition: fact_interview_a
+  number: 48
+  operator: +
+probe_question_definition_00079: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 9
+  second_digit: 3
+  probe_definition: fact_interview_b
+  number: 29
+  operator: +
+probe_question_definition_00017: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 4
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 7
+  operator: +
+probe_question_definition_00060: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 10
+  second_digit: 0
+  probe_definition: fact_interview_a
+  number: 50
+  operator: +
+probe_question_definition_00038: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 6
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 28
+  operator: +
+probe_question_definition_00081: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 6
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 31
+  operator: +
+probe_question_definition_00059: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 4
+  second_digit: 6
+  probe_definition: fact_interview_a
+  number: 49
+  operator: +
+probe_question_definition_00040: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 2
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 30
+  operator: +
+probe_question_definition_00018: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 8
+  operator: +
+probe_question_definition_00039: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 8
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 29
+  operator: +
+probe_question_definition_00061: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 2
+  second_digit: 3
+  probe_definition: fact_interview_b
+  number: 11
+  operator: +
+probe_question_definition_00082: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 3
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 32
+  operator: +
+probe_question_definition_00062: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 3
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 12
+  operator: +
+probe_question_definition_00083: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 3
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 33
+  operator: +
+probe_question_definition_00020: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 10
+  operator: +
+probe_question_definition_00019: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 3
+  second_digit: 3
+  probe_definition: fact_interview_b
+  number: 9
+  operator: +
+probe_question_definition_00041: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 5
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 31
+  operator: +
+probe_question_definition_00084: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 8
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 34
+  operator: +
+probe_question_definition_00021: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 1
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 11
+  operator: +
+probe_question_definition_00042: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 2
+  second_digit: 8
+  probe_definition: fact_interview_a
+  number: 32
+  operator: +
+probe_question_definition_00063: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 0
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 13
+  operator: +
+probe_question_definition_00100: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 5
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 50
+  operator: +
+probe_question_definition_00001: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 1
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 1
+  operator: +
+probe_question_definition_00022: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 3
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 12
+  operator: +
+probe_question_definition_00043: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 5
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 33
+  operator: +
+probe_question_definition_00064: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 3
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 14
+  operator: +
+probe_question_definition_00085: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 7
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 35
+  operator: +
+probe_question_definition_00002: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 5
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 2
+  operator: +
+probe_question_definition_00023: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 1
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 13
+  operator: +
+probe_question_definition_00044: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 3
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 34
+  operator: +
+probe_question_definition_00065: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 3
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 15
+  operator: +
+probe_question_definition_00086: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 8
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 36
+  operator: +
+probe_question_definition_00003: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 3
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 3
+  operator: +
+probe_question_definition_00024: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 1
+  second_digit: 7
+  probe_definition: fact_interview_a
+  number: 14
+  operator: +
+probe_question_definition_00045: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 0
+  second_digit: 9
+  probe_definition: fact_interview_a
+  number: 35
+  operator: +
+probe_question_definition_00066: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 5
+  second_digit: 3
+  probe_definition: fact_interview_b
+  number: 16
+  operator: +
+probe_question_definition_00087: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 7
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 37
+  operator: +
+probe_question_definition_00004: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 8
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 4
+  operator: +
+probe_question_definition_00025: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 4
+  second_digit: 4
+  probe_definition: fact_interview_a
+  number: 15
+  operator: +
+probe_question_definition_00046: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 6
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 36
+  operator: +
+probe_question_definition_00067: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 4
+  second_digit: 3
+  probe_definition: fact_interview_b
+  number: 17
+  operator: +
+probe_question_definition_00088: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 6
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 38
+  operator: 
+probe_question_definition_00090: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 8
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 40
+  operator: +
+probe_question_definition_00068: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 4
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 18
+  operator: +
+probe_question_definition_00005: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 5
+  operator: +
+probe_question_definition_00026: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 1
+  second_digit: 8
+  probe_definition: fact_interview_a
+  number: 16
+  operator: +
+probe_question_definition_00047: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 4
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 37
+  operator: +
+probe_question_definition_00089: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 9
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 39
+  operator: +
+probe_question_definition_00070: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 1
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 20
+  operator: +
+probe_question_definition_00048: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 3
+  second_digit: 6
+  probe_definition: fact_interview_a
+  number: 38
+  operator: 
+probe_question_definition_00006: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 7
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 6
+  operator: +
+probe_question_definition_00027: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 1
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 17
+  operator: +
+probe_question_definition_00069: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 6
+  second_digit: 4
+  probe_definition: fact_interview_b
+  number: 19
+  operator: +
+probe_question_definition_00091: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 5
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 41
+  operator: +
+probe_question_definition_00092: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 5
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 42
+  operator: +
+probe_question_definition_00049: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 6
+  second_digit: 0
+  probe_definition: fact_interview_a
+  number: 39
+  operator: +
+probe_question_definition_00050: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 4
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 40
+  operator: +
+probe_question_definition_00007: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 6
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 7
+  operator: +
+probe_question_definition_00028: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 1
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 18
+  operator: +
+probe_question_definition_00071: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 4
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 21
+  operator: +
+probe_question_definition_00030: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 9
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 20
+  operator: +
+probe_question_definition_00072: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 5
+  second_digit: 5
+  probe_definition: fact_interview_b
+  number: 22
+  operator: +
+probe_question_definition_00029: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 1
+  second_digit: 6
+  probe_definition: fact_interview_a
+  number: 19
+  operator: +
+probe_question_definition_00051: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 3
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 41
+  operator: +
+probe_question_definition_00008: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 2
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 8
+  operator: +
+probe_question_definition_00093: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 8
+  second_digit: 6
+  probe_definition: fact_interview_b
+  number: 43
+  operator: +
+probe_question_definition_00094: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 9
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 44
+  operator: +
+probe_question_definition_00031: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 3
+  second_digit: 2
+  probe_definition: fact_interview_a
+  number: 21
+  operator: +
+probe_question_definition_00009: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 4
+  second_digit: 1
+  probe_definition: fact_interview_a
+  number: 9
+  operator: +
+probe_question_definition_00010: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 5
+  second_digit: 5
+  probe_definition: fact_interview_a
+  number: 10
+  operator: +
+probe_question_definition_00052: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 7
+  second_digit: 3
+  probe_definition: fact_interview_a
+  number: 42
+  operator: +
+probe_question_definition_00073: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 3
+  second_digit: 7
+  probe_definition: fact_interview_b
+  number: 23
+  operator: +
+probe_question_definition_00074: 
+  updated_at: 2007-10-21 21:16:32 -07:00
+  first_digit: 2
+  second_digit: 8
+  probe_definition: fact_interview_b
+  number: 24
+  operator: +
+probe_question_definition_00053: 
+  updated_at: 2007-10-21 21:16:31 -07:00
+  first_digit: 2
+  second_digit: 6
+  probe_definition: fact_interview_a
+  number: 43
+  operator: +
+probe_question_definition_00011: 
+  updated_at: 2007-10-21 21:16:29 -07:00
+  first_digit: 5
+  second_digit: 1
+  probe_definition: fact_interview_b
+  number: 1
+  operator: +
+probe_question_definition_00032: 
+  updated_at: 2007-10-21 21:16:30 -07:00
+  first_digit: 4
+  second_digit: 0
+  probe_definition: fact_interview_a
+  number: 22
+  operator: +
+probe_question_definition_00095: 
+  updated_at: 2007-10-21 21:16:33 -07:00
+  first_digit: 4
+  second_digit: 9
+  probe_definition: fact_interview_b
+  number: 45
+  operator: +

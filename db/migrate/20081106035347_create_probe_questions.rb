@@ -4,8 +4,6 @@ class CreateProbeQuestions < ActiveRecord::Migration
       t.belongs_to :probe_definition
       t.integer :number
       t.string :operator
-      t.text :question_text
-      t.string :question_code
       t.integer :first_digit
       t.integer :second_digit
 

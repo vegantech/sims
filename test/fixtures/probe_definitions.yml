@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+fact_interview_a:
+  title: Fact Interview A
+  description: "Assesses a student's sense of number relationships and thinking strategies for sums within and to 10."
+  active: true
+  maximum_score: 50
+  minimum_score: 0
+  position: 1
+  district: wi_mmsd
+
+fact_interview_b:
+  title: Fact Interview B
+  description: "Assesses a student's sense of number relationships and thinking strategies for sums within and to 20."
+  active: true
+  maximum_score: 50
+  minimum_score: 0
+  position: 2
+  district: wi_mmsd
