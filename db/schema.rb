@@ -181,18 +181,6 @@ ActiveRecord::Schema.define(:version => 20081106215957) do
     t.datetime "updated_at"
   end
 
-  create_table "interventions_probe_assignments", :force => true do |t|
-    t.integer  "intervention_id"
-    t.integer  "probe_definition_id"
-    t.integer  "frequency_multiplier"
-    t.integer  "frequency_id"
-    t.datetime "first_date"
-    t.datetime "end_date"
-    t.boolean  "disabled",             :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -206,7 +194,8 @@ ActiveRecord::Schema.define(:version => 20081106215957) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.string   "grade_level"
+    t.integer  "district_id"
+    t.integer  "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
