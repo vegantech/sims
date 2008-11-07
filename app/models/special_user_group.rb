@@ -27,6 +27,10 @@ class SpecialUserGroup < ActiveRecord::Base
   named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["type=? or type = ? and grade is null and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", args.first]}}
 
 
+  def self.all_students_in_school?(school)
+    !! find(:first,:conditions=>["type=? or type = ? and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", school.id])
+  end
+
 end
 
 class AllSchoolsInDistrict < SpecialUserGroup

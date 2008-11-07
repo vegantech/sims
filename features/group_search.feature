@@ -13,7 +13,7 @@ Feature: Search By Student Groups
     # And I should see my own username in the group member selection
     # And group_member_selection_id drop down should contain ["Prompt", "Option 1", "Option 2"]
     # And user_id drop down should contain ["default_user"]
-    # And I should see read only select box with id of "search_criteria_user_id" and contains ['First Last']
+    # And I should see select box with id of "search_criteria_user_id" and contains ['First Last']
     And I should see select box with id of "search_criteria_group_id" and contains ['Blue Team']
 
     # Then I should see Blue Team selection option
@@ -31,18 +31,20 @@ Feature: Search By Student Groups
     And I have access to "Orange Team"
     And I have access to "Maroon Team"
     And I am on search page
-    And I should see select box with id of "search_criteria_group_id" and contains ['Orange Team', 'Maroon Team']
+    And I should see select box with id of "search_criteria_group_id" and contains ['Filter by Group','Orange Team', 'Maroon Team']
     When I select "Orange Team" from "Student Group"
     And I press "Search for Students"
     Then I should see "Orange, Alfie"
     And I should not see "Yerbie, Harold"
 
 #test student group dropdown
-# all (2 exist) groups available to user (show * + 2 options in dropdown)
-# 1 group available to user (user with one group above)
-# 2 groups available to user (choose) show * as well
+# 0 all (2 exist) groups available to user (show * + 2 options in dropdown)   should be able to see ungrouped
+# 1 group available to user (user with one group above) should not beable to see ungrouped   readonly
+# 2 groups available to user (choose) show * as well should not be able t osee ungrouped, but should be able to pick all their groups 
 
 
+#general policy dropdowns, don't allow users to choose if they have no choice, or the choices have no difference
+# 
 
 
 # Scenarios -- group member

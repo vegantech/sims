@@ -92,8 +92,7 @@ class User < ActiveRecord::Base
 		last_name.to_s + ', ' + first_name.to_s
 	end
 
-  def has_group_for_school school
-    has_group = groups.collect{|g| g.school}.include? school
-    has_group
+  def has_group_for_school? school
+   !!( special_user_groups.all_students_in_school?(school) ||  groups.find_by_school_id(school.id) )
   end
 end

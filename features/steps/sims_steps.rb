@@ -40,11 +40,6 @@ Given /^school "(.*)"$/ do |school_name|
 	create_school school_name
 end
 
-Then /^I should see read only select box with id of "(.*)" and contains (.*)$/ do |id, options|
-    # puts response.body
-  verify_select_box id, options, true
-end
-
 Then /^I should see select box with id of "(.*)" and contains (.*)$/ do |id, options|
   verify_select_box id, options
 end
