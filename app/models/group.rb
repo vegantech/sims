@@ -18,11 +18,8 @@ class Group < ActiveRecord::Base
 
   #named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
   def self.members
-    #placeholder
+    #TODO tested, but it is ugly and should be refactored
     find(:all).collect(&:users).flatten.compact.uniq
-
-    
-    #find(:all,:conditions=>{:school=>school}.collect(&:users)
   end
 
 end
