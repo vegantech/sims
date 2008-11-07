@@ -10,9 +10,6 @@
 [submodule "vendor/plugins/cucumber"]
 	path = vendor/plugins/cucumber
 	url = git://github.com/aslakhellesoy/cucumber.git
-[submodule "vendor/plugins/railmail"]
-	path = vendor/plugins/railmail
-	url = git://github.com/theoooo/railmail2.git
 [submodule "vendor/plugins/will_paginate"]
 	path = vendor/plugins/will_paginate
 	url = git://github.com/mislav/will_paginate.git
