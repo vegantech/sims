@@ -20,20 +20,27 @@ class User < ActiveRecord::Base
   has_many :user_group_assignments
   has_many :groups, :through=> :user_group_assignments
 
-
-  def authorized_groups
-    #TODO combine special user groups and user_group_assignments
-    groups
-  end
-
-  def authorized_students
-    #TODO combine special user groups and students through groups
-
-  end
-
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
 
+  def authorized_groups_for_school(school)
+    if special_user_groups.all_students_in_school?(school)
+      school.groups
+    else
+      groups
+    end
+  end
+
+  def authorized_enrollments_for_school(school)
+    if special_user_groups.all_students_in_school?(school)
+      school.enrollments
+   else
+      grades=special_user_groups.grades_for_school(school)
+      student_ids = groups.find_all_by_school_id(school).collect(&:student_ids).flatten.uniq
+      school.enrollments.by_student_ids_or_grades(student_ids,grades)
+    end
+
+  end
 
   def authorized_schools
     if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)

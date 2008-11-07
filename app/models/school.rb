@@ -23,12 +23,12 @@ class School < ActiveRecord::Base
 
 
   def grades_by_user(user)
-    school_grades = enrollments.find(:all,:select=>"distinct grade").collect(&:grade)  #call this self.grades in enrollments
+    school_grades = enrollments.grades
     if user.special_user_groups.all_students_in_school?(self)
       return school_grades
     end
     
-    grades=user.special_user_groups.find_all_by_type("all_students_in_school", :conditions=>"grade is not null").collect(&:grade).uniq  #clean this up,   probably method in special user group
+    grades=user.special_user_groups.grades_for_school(self)
 
     (school_grades - grades).each do |grade|
       grades << grade if enrollments.student_in_this_grade_belonging_to_user?(grade,user)

@@ -31,6 +31,10 @@ class SpecialUserGroup < ActiveRecord::Base
     !! find(:first,:conditions=>["type=? or type = ? and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", school.id])
   end
 
+  
+  def self.grades_for_school(school)
+    find_all_by_type("all_students_in_school",:select=>"distinct grade", :conditions=>["grade is not null and school_id = ?", school.id]).collect(&:grade).uniq
+  end
 end
 
 class AllSchoolsInDistrict < SpecialUserGroup

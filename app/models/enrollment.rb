@@ -14,6 +14,8 @@
 class Enrollment < ActiveRecord::Base
   belongs_to :student
   belongs_to :school
+  named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["student_id in (?) or grade in (?)", Array(student_ids),Array(grades)]}}
+
 
   def self.search(search_hash = {})
     search_hash.symbolize_keys!
@@ -73,5 +75,9 @@ class Enrollment < ActiveRecord::Base
       e.student.group_ids & user.group_ids
     end
       
+  end
+
+  def self.grades
+     find(:all,:select=>"distinct grade").collect(&:grade)
   end
 end

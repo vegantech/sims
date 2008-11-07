@@ -4,7 +4,7 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    @students = current_school.enrollments.search(session[:search])
+    @students = current_user.authorized_enrollments_for_school(current_school).search(session[:search])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,16 +14,21 @@ class StudentsController < ApplicationController
 
   def select
     # add selected students to session redirect to show
-
-    # need to make sure user has access to these
-    session[:selected_students] = params[:id]
-    if session[:selected_students].blank?
+    
+    @students = current_user.authorized_enrollments_for_school(current_school).search(session[:search])
+    student_ids = @students.collect {|s| s.student.id.to_s}
+    if params[:id].blank?
       flash[:notice] = 'No students selected'
-      redirect_to students_url
-    else
+    elsif student_ids.to_set.subset?(params[:id].to_set)
+      session[:selected_students] = params[:id]
       session[:selected_student] = session[:selected_students].first
-      redirect_to student_url(session[:selected_student])
+      redirect_to student_url(session[:selected_student]) and return
+    else
+      flash[:notice] = 'Unauthorized Student selected'
     end
+    session[:selected_students]= nil
+    session[:selected_student]= nil
+    render :action=>"index" 
   end
 
   def search
@@ -72,14 +77,14 @@ class StudentsController < ApplicationController
   end
 
   def student_groups
-    @groups=current_user.groups.find_all_by_school_id current_school
+    @groups=current_user.authorized_groups_for_school(current_school)
     @groups.unshift(Group.new(:id=>"*",:title=>"Filter by Group")) if @groups.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end
 
   def group_users
     #TODO 
-    @users=current_user.authorized_groups.members_for_school(current_school) #,grade
-    #@groups.collect(&:users).uniq.first || []
+    @users=current_user.authorized_groups_for_school(current_school).members
+    @users.unshift(Group.new(:id=>"*",:title=>"Filter by Group Member")) if @users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end
 
 end

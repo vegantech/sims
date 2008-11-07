@@ -6,30 +6,42 @@ describe StudentsController do
   it 'should get index' do
     enrollments = mock_enrollment(:search => true)
     school = mock_school(:enrollments => enrollments)
-    controller.should_receive(:current_school).and_return(school)
+    @user=mock_user(:authorized_enrollments_for_school=>enrollments)
+    controller.should_receive(:current_user).at_least(:once).and_return(@user)
+    controller.should_receive(:current_school).at_least(:once).and_return(school)
     get :index
     response.should be_success
     assigns(:students).should == true
   end
 
   describe 'select' do
+      before do
+        enrollment1=mock_enrollment(:student=>mock_student(:id=>"5"))
+        enrollment2=mock_enrollment(:student=>mock_student(:id=>"16"))
+
+        enrollments = mock_enrollment(:search => [enrollment1,enrollment2])
+        school = mock_school(:enrollments => enrollments)
+        controller.should_receive(:current_school).at_least(:once).and_return(school)
+        @user=mock_user(:authorized_enrollments_for_school=>enrollments)
+        controller.should_receive(:current_user).at_least(:once).and_return(@user)
+      end
     describe 'without selected_students' do
-      it 'should put error in flash, and redirect to students_url' do
+      it 'should put error in flash, and rerender to students_url' do
         get :select
 
         session[:selected_students].should be_nil
         flash[:notice].should == 'No students selected'
-        response.should redirect_to(students_url)
+        response.should render_template("index")
       end
     end
 
     describe 'with selected_students' do
       it 'should set selected_students and selected_student and go to show page' do
-        get :select, :id => [5, 16]
+        get :select, :id => ["5", "16"]
  
-        session[:selected_students].should == [5, 16]
-        session[:selected_student].should == 5
-        response.should redirect_to(student_url(5))
+        session[:selected_students].should == ["5", "16"]
+        session[:selected_student].should == "5"
+        response.should redirect_to(student_url("5"))
       end
     end
   end
@@ -39,7 +51,7 @@ describe StudentsController do
       before do
         @user=mock_user
         @users=[1,2,3]
-        @user.stub_association!(:authorized_groups,:members_for_school=>@users)
+        @user.stub_association!(:authorized_groups_for_school,:members=>@users)
         controller.should_receive(:current_user).at_least(:once).and_return(@user)
       end
 
@@ -90,8 +102,6 @@ describe StudentsController do
   end
 
   describe 'GET show' do
-    before(:all) do
-    end
 
     describe 'with selected student' do
       it 'should set @student, and render show template' do
