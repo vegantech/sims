@@ -23,6 +23,12 @@ alpha_third:
   student: alpha_third_grader 
   grade: 03
 
+alpha_first_ungrouped:
+  school: alpha
+  student: another_first_grader_not_in_group
+  grade: 01
+
+
 bravo_smith:
   school: bravo
   student: bravo_first_smith 
