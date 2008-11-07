@@ -72,7 +72,7 @@ class StudentsController < ApplicationController
   end
 
   def student_groups
-    @groups=current_school.groups
+    @groups=current_user.groups.find_all_by_school_id current_school
   end
 
   def group_users

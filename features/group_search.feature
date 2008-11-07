@@ -40,7 +40,7 @@ Feature: Search By Student Groups
 #test student group dropdown
 # all (2 exist) groups available to user (show * + 2 options in dropdown)
 # 1 group available to user (user with one group above)
-# 2 groups available to user (choose)
+# 2 groups available to user (choose) show * as well
 
 
 

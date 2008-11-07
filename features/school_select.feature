@@ -9,7 +9,7 @@ Feature: School Selection
 
     When I go to the school selection page
 
-		Then I should see select box with "Glenn Stephens" and "Velma Hamilton"
+		Then I should see select box with id of "school_id" and contains ["Glenn Stephens", "Velma Hamilton"]
 
 	Scenario: Select Orchard Ridge
 		Given school "Orchard Ridge"

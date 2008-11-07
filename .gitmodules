@@ -16,3 +16,6 @@
 [submodule "vendor/plugins/will_paginate"]
 	path = vendor/plugins/will_paginate
 	url = git://github.com/mislav/will_paginate.git
+[submodule "vendor/plugins/html_matchers"]
+	path = vendor/plugins/html_matchers
+	url = git://github.com/bendycode/html_matchers.git
