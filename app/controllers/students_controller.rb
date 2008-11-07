@@ -82,7 +82,6 @@ class StudentsController < ApplicationController
   end
 
   def group_users
-    #TODO 
     @users=current_user.authorized_groups_for_school(current_school).members
     @users.unshift(Group.new(:id=>"*",:title=>"Filter by Group Member")) if @users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end

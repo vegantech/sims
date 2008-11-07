@@ -13,10 +13,13 @@ When /^I am on (.*)$/ do |page_name|
 	go_to_page page_name
 end
 
-Given /^I have access to "(.*)"$/ do |group_title|
-  group = Group.find_by_title(group_title)
-  raise "Missing group: '#{group_title}'" if group.nil?
-  UserGroupAssignment.create!(:user => default_user, :group => group)
+Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
+  grant_access user_name, group_array
+end
+
+# TODO: combine with above method...
+Given /^I have access to (.*)$/ do |group_array|
+  grant_access 'default_user', group_array
 end
 
 Given /^student "(.*)" "(.*)" in grade (\d+) at "(.*)" with "(.*)" flag$/ do |first, last, student_grade, school_name, flag_type|

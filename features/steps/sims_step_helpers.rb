@@ -24,7 +24,7 @@ def verify_select_box id, options
 end
 
 def log_in
-	@default_user ||= create_user 'default_user', 'd3f4ult'
+	default_user
 	create_school 'Glenn Stephens'
 	visits '/'
 	fills_in 'Login', :with => 'default_user'
@@ -33,12 +33,17 @@ def log_in
 	response.should_not have_text(/Authentication Failure/)
 end
 
-def create_user user_name, password
+
+def find_or_create_user user_name
+  User.find_by_username(user_name) || create_user(user_name)
+end
+
+def create_user user_name, password=''
 	encrypted_password = Digest::SHA1.hexdigest(password.downcase)
 	  
-	@default_user = User.create! :username => user_name,
-		:first_name => 'First',
-		:last_name => 'Last',
+	user=User.create! :username => user_name,
+		:first_name => user_name.split("_").first || 'First',
+		:last_name => user_name.split("_").last || 'Last',
 		:passwordhash => encrypted_password
 end
 
@@ -47,6 +52,16 @@ def create_school school_name
 	s = found || School.create!(:name => school_name)
 	default_user.schools << s unless default_user.schools.include?(s)
 	s
+end
+
+def grant_access user_name, group_array
+  user = find_or_create_user user_name
+  groups = Array(eval(group_array))
+  groups.each do |group_title|
+    group = Group.find_by_title(group_title)
+    raise "Missing group: '#{group_title}'" if group.nil?
+    UserGroupAssignment.create!(:user => user, :group => group)
+  end
 end
 
 def find_student first_name, last_name
