@@ -1,0 +1,6 @@
+page.replace "delivery_#{@delivery.id}", :partial => 'delivery', :locals => { :delivery => @delivery, :active => true }
+
+page << <<-EOS
+  wire_delivery('delivery_#{@delivery.id}', 'delivery_#{@delivery.id}_summary');
+  wire_resender($$('#delivery_#{@delivery.id} .resend_link').first());
+EOS

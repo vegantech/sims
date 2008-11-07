@@ -1,0 +1,6 @@
+page.insert_html :top, 'resend_form', :partial => 'resend'
+page['resend_notice'].visual_effect :highlight
+page['resend'].visual_effect :fade, :duration => 0.5, :delay => 2.0
+page.delay 2.5 do
+  page.remove 'resend_notice'
+end

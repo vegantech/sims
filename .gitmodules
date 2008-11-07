@@ -16,6 +16,3 @@
 [submodule "vendor/plugins/html_matchers"]
 	path = vendor/plugins/html_matchers
 	url = git://github.com/bendycode/html_matchers.git
-[submodule "vendor/plugins/railmail"]
-	path = vendor/plugins/railmail
-	url = git://github.com/vegantech/railmail2.git

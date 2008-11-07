@@ -1,0 +1,379 @@
+<div id="resend" class="initially_hidden">
+	<div class="translucent_bg"></div>
+	<% form_remote_tag :url => {:action => 'resend' }, :html => {:id => 'resend_form'} do %>
+		<h2>Resend This Message?</h2>
+		<input type="hidden" name="id" id="resend_delivery" value="" />
+		<p>
+			You may change the address that this mail is sent to using the textbox below
+		</p>
+		<fieldset>
+			<input type="text" name="to" id="resend_to" value="" />
+		</fieldset>
+		<fieldset id="footer_bar">
+			<input type="submit" id="cancel_resend" value="cancel" />
+			<input type="submit" id="do_resend" value="resend" />
+		</fieldset>
+	<% end %>
+</div>
+
+<ul id="menu">
+	<li><a href="#" id="collapse_all">collapse all</a></li>
+	<li><a href="#" id="expand_new">expand new</a></li>
+</ul>
+<% if @deliveries.total_pages > 1 %>
+<div id="pager_box">
+	<ul id="pager">
+	  <% @deliveries.total_pages.times {|i| page = i+1 %>
+	    <%= "<li#{" class='current'" if page == @deliveries.current_page}>" + (link_to page, {:page => page }) + "</li>"%>
+	  <% } %>
+	</ul>
+</div>
+<% end %>
+<br class="clear" />
+<table id="deliveries">
+	<thead>
+		<tr>
+			<th id="from_header">from</th>
+			<th id="to_header">to</th>
+			<th id="subject_header">subject</th>
+			<th id="sent_header">sent at</th>
+		</tr>
+	</thead>
+	<%= render :partial => 'delivery', :collection => @deliveries, :locals => {:active => false}%>
+</table>
+
+<% content_for 'js' do %>
+		var default_range = null;
+		var active_range = null;
+		
+		var anchor =  function(href) {	return href.split('#',2)[1]; }
+	
+		var wire_delivery = function(delivery, summary) {
+			$$('#' + delivery + ' tr.summary').each(function(e){
+				e.inactive_clicker = function() {
+					e.onclick = e.active_clicker;
+/*					$(delivery + '_details').show();*/
+					Effect.SlideDown(delivery + '_details', {duration: 0.6});
+					$(delivery).addClassName('active');
+					if(Element.hasClassName(delivery, 'new')) {
+						$$('#' + delivery + ' form.reader').first().onsubmit();
+					}
+					return false;
+				}
+				
+				e.active_clicker = function() {
+					e.onclick = e.inactive_clicker;
+					Effect.SlideUp(delivery + '_details', {duration: 0.6});
+					$(delivery).removeClassName('active');
+/*					$(delivery + '_details').hide();*/
+					return false;
+				}
+				
+				if(Element.hasClassName(delivery, 'active')) {
+					e.onclick = e.active_clicker;
+				} else {
+					e.onclick = e.inactive_clicker;
+				}
+			});
+		};
+		
+	var collapse_all = function() {
+		$$('tbody.active tr.summary').each(function(el) {
+			el.active_clicker();
+		}); 
+		return false;
+	};
+	
+	var expand_new = function() {
+		$$('tbody.new tr.summary').each(function(el) {
+			el.inactive_clicker();
+		}); 
+		return false;
+	};
+	
+	var cancel_resend = function() {
+		Effect.Fade('resend', {duration: 0.5});
+		return false;
+	};
+	
+	var do_resend = function() {
+		$('cancel_resend').disabled = true;
+		$('do_resend').disabled = true;
+		
+		return true;
+	};
+	
+	var enable_resender = function(d_id) {
+		$('cancel_resend').disabled = false;
+		$('do_resend').disabled = false;
+		$('resend_delivery').value = d_id;
+	};
+	
+	
+	var resender = function(link) {
+		return function() {
+			enable_resender(anchor(link.href));
+			Effect.Appear('resend', {duration: 0.5});
+			$('resend').scrollTo();
+			return false;
+		}
+	};
+	
+	var wire_resender = function(el) {
+		el.onclick = resender(el);
+	};
+		
+	Event.observe(window, 'load', function() {
+		$('collapse_all').onclick = collapse_all;
+		$('expand_new').onclick = expand_new;
+		$('cancel_resend').onclick = cancel_resend;
+		$('do_resend').onclick = do_resend;
+		
+		$$('div.details').each(function(el){
+			el.hide();
+		});
+		
+		$$('tbody.delivery').each(function(el){
+			summary = $$('#' + el.id + ' tr.summary').first();
+			wire_delivery(el.id, summary.id);
+		});
+		
+		$$('.resend_link').each(wire_resender);
+		
+		$$('.initially_hidden').each(function(el){ el.removeClassName('initially_hidden'); el.hide(); });
+	});
+	
+
+<% end %>
+
+<% content_for 'css' do %>
+	body *
+	{
+		margin: 0;
+		padding: 0;
+	}
+	
+	tr.summary td
+	{
+		cursor: pointer;
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+	}
+	
+	#resend
+	{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+	}
+	
+	#resend div.translucent_bg
+	{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		opacity: 0.7;
+		-moz-opacity: 0.7;
+		filter:alpha(opacity=70);
+		background: #555;
+		z-index: 1;
+	}
+	
+	#resend form
+	{
+		position: relative;
+		margin: auto;
+		width: 500px;
+		height: 200px;
+		background: #DDD;
+		opacity: 1;
+		-moz-opacity: 1;
+		filter:alpha(opacity=100);
+		z-index: 1;
+		border: solid 2px black;
+	}
+	
+	#resend fieldset
+	{
+		border: none;
+	}
+	
+	#footer_bar
+	{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 35px;
+	}
+	#resend_to
+	{
+		width: 80%;
+		margin: 2em;
+		border: solid 2px black;
+		padding: 0.3em;
+	}
+	
+	#footer_bar input
+	{
+		margin: 0 2em;
+		width: 150px;
+	}
+	
+	#resend_notice
+	{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		font-size: 24pt;
+		line-height: 170px;
+		font-weight: bolder;
+		z-index: 3;
+		background: #fff;
+	}
+	
+	#deliveries
+	{
+		width: 100%;
+		padding: 1em;
+		border-collapse: collapse;
+		border-bottom: solid 1px black;
+	}
+	
+	#deliveries th
+	{
+		text-align: left;
+		font-size: 12pt;
+		border-bottom: solid 1px black;
+	}
+	
+	#deliveries td
+	{
+		font-size: 9pt;
+	}
+	
+	br.clear 
+	{
+		clear: both;
+	}
+	
+	ul.delivery_operations 
+	{
+		font-size: smaller;
+	}
+	
+	ul.delivery_operations li
+	{
+		display: inline;
+		float: left;
+		margin-left: 1.0em;
+	}
+	
+	tbody.delivery {
+		border-bottom: solid 1px #888;
+	}
+	
+	tbody.new {
+		font-weight: bolder;
+	}
+	
+	tbody.active
+	{
+		
+	}
+	
+	tbody.odd {
+		background: #fff;
+	}
+	
+	div.delivery_body
+	{
+		padding-left: 2em;
+		margin-left: 1em;
+		border-left: solid 2px #888;
+	}
+	
+	#from_header {
+		width: 15%;
+	}
+	
+	#to_header {
+		width: 30%;
+	}
+	
+	#sent_header {
+		width: 13%;
+	}
+	
+	#subject_header {
+		width: 42%;
+	}
+	
+	#menu {
+		padding: 0;
+		margin: 0;
+	}
+	
+	#menu li{
+		float: left;
+		display: inline;
+		padding: 0.3em;
+	}
+	
+	#pager_box {
+		padding: 0;
+		margin: 0;
+		float: right;
+		font-size: smaller;
+	}
+	
+	#pager {
+		padding: 0 1.5em;
+		text-align:center;
+		list-style-type: none;
+		margin: 0 auto;
+	}
+	
+	#pager li {
+		text-align:center;
+		font-size: 8pt;
+		float: left;
+		padding: 0.3em;
+		margin: 0.2em;
+		border: solid 1px black;
+		height: 12px;
+		width: 12px;
+		line-height: 12px;
+	}
+	
+	#pager li.current
+	{
+		background: #888;
+		color: #fff;
+	}
+	
+	#pager a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		text-decoration: none;
+		color: black;
+	}
+	
+	#date_ranges {
+		list-style-type: none;
+		text-align: center;
+		font-size: xx-small;
+		padding: 0 1em;
+	}
+	
+	br.clear {
+		clear:both;
+	}
+	
+	.initially_hidden
+	{
+		display: none;
+	}
+<% end %>
+

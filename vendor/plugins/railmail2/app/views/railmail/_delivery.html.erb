@@ -1,0 +1,35 @@
+<tbody class="delivery <%="odd" if delivery_counter.odd?%>  <%="active" if active%> <%="new" if delivery.new?%>" id="delivery_<%=delivery.id%>">
+	<tr id="delivery_<%=delivery.id%>_summary" class="summary">
+		<td><%=delivery.from.join ', '%></td>
+		<td><%=delivery.recipients.join ', '%></td>
+		<td><%=delivery.subject%></td>
+		<td><%=delivery.sent_at.strftime('%x %X')%></td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="details" id="delivery_<%=delivery.id%>_details">
+				<div><ul class="delivery_operations">
+					<li><a href="#<%=delivery.id%>" class="resend_link">resend</a></li>
+					<li><%= link_to "view raw", {:action => "raw", :id => delivery}, :target => "_blank" %></li>
+					<% if delivery.raw.multipart?%>
+					<li>view part:
+							<%=
+								delivery.raw.parts.map do |p|
+									link_to h(p.content_type), {:action => 'part', :id => delivery, :part => p.content_type}, :target => "_blank"
+								end.join ' | '
+							%>
+					</li>
+					<% end %>
+				</ul><br class="clear" />
+				
+				<div class="delivery_body">
+				<%=delivery_body delivery%>
+				</div>
+					
+				<% form_remote_tag(:url => {:action => 'read'}, :html =>{:class => 'reader'}) do %>
+				<%=hidden_field_tag 'id', delivery.id, :id => nil%>
+				<% end %></div>
+			</div>
+		</td>
+	</tr>
+</tbody>
