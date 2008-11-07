@@ -47,19 +47,19 @@ describe User do
     User.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
-  describe 'has_group_for_school' do
+  describe 'has_group_for_school?' do
     it 'should recognize when true' do
       u = users(:oneschool)
       school = schools(:alpha)
       group = Group.create!(:school => school)
       UserGroupAssignment.create!(:group => group, :user => u)
-      u.has_group_for_school(school).should be_true
+      u.has_group_for_school?(school).should be_true
     end
 
     it 'should recognize when false' do
       u = users(:oneschool)
       school = schools(:alpha)
-      u.has_group_for_school(school).should be_false
+      u.has_group_for_school?(school).should be_false
     end
   end
 

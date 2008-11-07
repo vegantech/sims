@@ -40,22 +40,8 @@ Given /^school "(.*)"$/ do |school_name|
 	create_school school_name
 end
 
-Then /^I should see read only select box with id of "(.*)" and contains (.*)$/ do |id, options|
-    # puts response.body
-  verify_select_box id, options, true
-end
-
 Then /^I should see select box with id of "(.*)" and contains (.*)$/ do |id, options|
   verify_select_box id, options
-end
-
-# remove this soon...
-Then /^I should see select box with "(.*)" and "(.*)"$/ do |option_1, option_2|
-  # response.should have_drop_down('the_id', ['Prompt', option_1, option_2])
-   response.should have_tag('select') do
-     with_tag('option', :text => option_1)
-     with_tag('option', :text => option_2)
-   end
 end
 
 Given /group "(.*)" for school "([^\"]*)"$/ do |group_title, school_name|

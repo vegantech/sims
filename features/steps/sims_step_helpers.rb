@@ -18,13 +18,9 @@ def go_to_page page_name
 	end
 end
 
-def verify_select_box id, options, read_only = false
+def verify_select_box id, options
   options=Array(eval(options))
-  response.should have_tag("select[id=#{id}]#{'[readonly]' if read_only}") do
-    options.each do |option|
-      with_tag('option', :text=>option)
-    end
-  end
+	response.should have_dropdown(id, options)
 end
 
 def log_in

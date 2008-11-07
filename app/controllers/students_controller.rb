@@ -28,8 +28,8 @@ class StudentsController < ApplicationController
 
   def search
     if request.get?
-      @grades = current_user.grades_by_school(current_school)
-      @grades.unshift("*")
+      @grades = current_school.grades_by_user(current_user)
+      @grades.unshift("*") if @grades.size >1
 
       group_users
       student_groups
@@ -72,7 +72,8 @@ class StudentsController < ApplicationController
   end
 
   def student_groups
-    @groups=current_school.groups
+    @groups=current_user.groups.find_all_by_school_id current_school
+    @groups.unshift(Group.new(:id=>"*",:title=>"Filter by Group")) if @groups.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end
 
   def group_users
