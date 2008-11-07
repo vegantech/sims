@@ -65,4 +65,13 @@ class Enrollment < ActiveRecord::Base
 
     enrollments
   end
+
+
+  def self.student_in_this_grade_belonging_to_user?(grade,user)
+    enrollments=find_all_by_grade(grade)
+    enrollments.any? do |e|
+      e.student.group_ids & user.group_ids
+    end
+      
+  end
 end
