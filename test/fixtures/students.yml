@@ -47,6 +47,14 @@ alpha_third_grader:
   first_name: Alpha_Third
   birthdate: "2001-07-15"
 
+another_first_grader_not_in_group:
+  district: wi_mmsd
+  last_name: Ungrouped
+  first_name: Alpha_First
+  birthdate: "2003-07-15"
+
+
+
 bravo_first_smith:
   district: wi_mmsd
   last_name: Smith

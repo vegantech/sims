@@ -53,18 +53,17 @@ def create_school school_name
 	s
 end
 
+def find_student first_name, last_name
+  Student.find(:first, :conditions => {:first_name => first_name, :last_name => last_name})
+end
+
 def create_student first_name, last_name, grade, school, flag_type = nil
 	s = Student.create! :first_name => first_name, :last_name => last_name
 	# :grade => grade
 	enrollment = Enrollment.create! :grade => grade, :school => school
 	s.enrollments << enrollment
 	s.save!
-	# t.string   "category"
-	#   t.integer  "user_id"
-	#   t.integer  "district_id"
-	#   t.integer  "student_id"
-	#   t.text     "reason"
-	#   t.string   "type"
+
 	if flag_type
 		f = Flag.create!(:student => s,
 			:category => flag_type,

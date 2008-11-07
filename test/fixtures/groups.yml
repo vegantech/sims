@@ -15,9 +15,9 @@
 oneschool_homeroom:
   title: Homeroom-- Oneschool
   school: alpha
-  students: alpha_first_grader
+  students: alpha_first_grader, alpha_third_grader
 
 other_homeroom:
   title: Homeroom where oneschool is not a member
   school: alpha
-  students: alpha_third_grader
+#  students: alpha_third_grader

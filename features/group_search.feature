@@ -2,7 +2,7 @@ Feature: Search By Student Groups
   In order to pick students to manage
   A SIMS user
   Should be able to find students by Student Group criteria
-  
+
   Scenario: User With One Group
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd"
@@ -23,7 +23,6 @@ Feature: Search By Student Groups
 
     Then I should see "Floyd, Blue"
     And I should not see "Fred, Red"
-  
 
   Scenario User With Two Groups Picks One
     Given school "West High"
@@ -39,7 +38,6 @@ Feature: Search By Student Groups
     And I should not see "Yerbie, Harold"
 
 #test student group dropdown
-# no groups available to user (flash message)
 # all (2 exist) groups available to user (show * + 2 options in dropdown)
 # 1 group available to user (user with one group above)
 # 2 groups available to user (choose)
