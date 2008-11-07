@@ -41,8 +41,31 @@ class User < ActiveRecord::Base
     else
       schools
     end
+  end
+
+  def grades_by_school(school)
+    #first cut, it's slow
+    grades=[]
+   
+    #temporary workaround
+    return school.enrollments.collect(&:grade).uniq
+    #all students
+    unless special_user_groups.all_students_in_school(school).blank? #should also include all in district)
+      return school.enrollments.collect(&:grade).uniq
+    end
+    #all students in grade
+    grades=special_user_groups.find_all_by_type("all_students_in_school", :conditions=>"grade is not null").collect(&:grade).uniq
+    grades = school.enrollments.find_all_by_grade(grades).collect(&:grade)
+
+    #get groups for remaining students in school exclude grades already in list
+    #doesn't quite work yet
+    groups.each do |group|
+      grades << group.students.find(:all,:include=>:enrollments,:conditions=>["enrollments.grade not in (?) and enrollments.school_id = ?",grades,school]).collect{|s| s.enrollments.first.grade}.uniq
+    end
+
 
   end
+
 
   def self.authenticate(username, password)
 		@user = self.find_by_username(username)

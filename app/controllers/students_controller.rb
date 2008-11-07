@@ -28,7 +28,7 @@ class StudentsController < ApplicationController
 
   def search
     if request.get?
-      @grades = current_school.enrollments.collect(&:grade).uniq
+      @grades = current_user.grades_by_school(current_school)
       @grades.unshift("*")
 
       group_users

@@ -24,6 +24,7 @@ class SpecialUserGroup < ActiveRecord::Base
   TYPES=%w(all_students_in_district, all_schools_in_district, all_students_in_school)
 
   named_scope :all_schools_in_district ,:conditions=>{:type=>"AllSchoolsInDistrict"}
+  named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["type=? or type = ? and grade is null and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", args.first]}}
 
 
 end
