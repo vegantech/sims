@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   end
 
   def grades_by_school(school)
-    #first cut, it's slow
+    #first cut, it's slow and probably goes in enrollments (grades by school and user   or at least parts of it)
     grades=[]
    
     #temporary workaround

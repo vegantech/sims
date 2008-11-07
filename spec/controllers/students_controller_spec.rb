@@ -26,7 +26,7 @@ describe StudentsController do
     describe 'with selected_students' do
       it 'should set selected_students and selected_student and go to show page' do
         get :select, :id => [5, 16]
-
+ 
         session[:selected_students].should == [5, 16]
         session[:selected_student].should == 5
         response.should redirect_to(student_url(5))
@@ -40,7 +40,7 @@ describe StudentsController do
         @user=mock_user
         @users=[1,2,3]
         @user.stub_association!(:authorized_groups,:members_for_school=>@users)
-        controller.should_receive(:current_user).and_return(@user)
+        controller.should_receive(:current_user).at_least(:once).and_return(@user)
       end
 
       it 'should set users in group_users' do
@@ -56,6 +56,7 @@ describe StudentsController do
         school = mock_school(:enrollments => [e1, e2])
         
         School.should_receive(:find).with(school.id).and_return(school)
+        @user.should_receive(:grades_by_school).with(school).and_return(['1','2'])
         controller.should_receive(:student_groups).and_return([])
 
         get :search, {}, :school_id => school.id
