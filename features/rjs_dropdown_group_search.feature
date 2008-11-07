@@ -6,14 +6,14 @@ Feature: Search By Student Groups
   Scenario: User With Two Groups  changes grade
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
-    And group "Red Team" for school "Central" with student "Red Fred"  in grade "3"
+    And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
     And I have access to ["Blue Team","Red Team"]
-#    And "Other Guy" has access to ["Blue Team"]
+    And "Other_Guy" has access to ["Blue Team"]
     And I am on search page
 
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
-   # And I should see select box with id of "search_criteria_user_id" and contains ["Me", "Other Guy"]
-  #  And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","default user", "Other Guy"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     And there is javascript code that will do rjs for grade that updates search_criteria_user_id and search_criteria_group_id
     
@@ -31,15 +31,15 @@ Feature: Search By Student Groups
   Scenario: User with two groups, changes member
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
-    And group "Red Team" for school "Central" with student "Red Fred"  in grade "3"
+    And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
     And I have access to ["Blue Team","Red Team"]
-#    And "Other Guy" has access to ["Blue Team"]
+    And "Other_Guy" has access to ["Blue Team"]
     And I am on search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","default user", "Other Guy"]
 
- #   And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
-#    And I should see select box with id of "search_criteria_user_id" and contains ["Me", "Other Guy"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     And there is javascript code that will do rjs for search_criteria_user_id that updates search_criteria_group_id
     

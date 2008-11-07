@@ -52,11 +52,20 @@ Given /group "(.*)" for school "([^\"]*)"$/ do |group_title, school_name|
   group = Group.create!(:title => group_title, :school => school)
 end
 
-Given /group "(.*)" for school "(.*)" with student "(.*)"$/ do |group_title, school_name, student_name|
+Given /group "(.*)" for school "(.*)" with student "([^\"]*)"$/ do |group_title, school_name, student_name|
   school = School.find_by_name(school_name)
   group = Group.create!(:title => group_title, :school => school)
   first,last=student_name.split(" ")
   student = create_student(first,last, '1', school)
+  group.students << student
+end
+
+# TODO: extract helper
+Given /group "(.*)" for school "(.*)" with student "([^\"]*)" in grade "(.*)"$/ do |group_title, school_name, student_name, grade|
+  school = School.find_by_name(school_name)
+  group = Group.create!(:title => group_title, :school => school)
+  first,last=student_name.split(" ")
+  student = create_student(first,last, grade, school)
   group.students << student
 end
 
