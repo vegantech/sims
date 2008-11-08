@@ -119,7 +119,12 @@ class StudentsController < ApplicationController
      if grade == "*"
       group_users
     else
-      group_users[1..1]
+      group_users.select do |group_user|
+        #group has a student in the grade
+        group_user.groups.any? do |group|
+          group.students.find(:first,:include=>:enrollments,:conditions=>["enrollments.grade=?",grade])
+        end
+      end
     end
   end
 
@@ -127,12 +132,17 @@ class StudentsController < ApplicationController
     if grade == "*"
       groups
     else
-      groups[-1..-1]
+      student_groups.select do |group|
+        group.students.find(:first,:include=>:enrollments,:conditions=>["enrollments.grade=?",grade])
+      end
     end
   end
 
-  def filter_groups_by_user(user, groups=student_groups)
-      groups[-1..-1]
+  def filter_groups_by_user(user_id, groups=student_groups)
+    result = groups.select do |group|
+      group.users.exists?(user_id.to_i)
+    end
+    result
   end
 
 end

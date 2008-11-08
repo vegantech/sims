@@ -27,23 +27,25 @@ Feature: Search By Student Groups
 
 
 
-  Scenario: User with two groups, changes member
+  Scenario: User with two groups, changes member  grade 3
     Given school "Central"
-    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
-    And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
+    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "3"
+    And group "Red Team" for school "Central" with student "Red Fred" in grade "1"
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
     And I am on search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","default user", "Other Guy"]
-    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "3", "1"]
 
     And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]
-    
+  
+    And I select "3" from "search_criteria_grade"
+    #and I ignore the rjs call 
     When I select "Other Guy" from "search_criteria_user_id"
     And xhr "search_criteria_user_id" updates ["search_criteria_group_id"]  
-    Then I should verify rjs has options ["Red Team"]
+    Then I should verify rjs has options ["Blue Team"]
 
 
 
