@@ -68,18 +68,8 @@ class StudentsController < ApplicationController
 
   def grade_search
     grade=params[:grade]
-
-    @groups=student_groups
-    @users=group_users
-    
-    if grade == "*"
-      #we're done
-    else
-      #@users.filter_by_grade
-      @users=@users[1..1]
-      #@groups.filter_by_grade
-      @groups=@groups[-1..-1]
-    end
+    @users=filter_members_by_grade(grade)
+    @groups=filter_groups_by_grade(grade)
 
   end
  
@@ -87,14 +77,11 @@ class StudentsController < ApplicationController
     grade=params[:grade]
     user=params[:user]
 
-    @groups=student_groups
-    if grade == "*" and user.blank?
-      #we're done
-    elsif grade != "*" and user.blank?
-      # do same thing as grade search, but just the group piece
+    if user.blank?
+      @groups=filter_groups_by_grade(grade)
     else
       #filter by grade and user
-      @groups=@groups[-1..-1]
+      @groups=filter_groups_by_grade(grade)[-1..-1]
     end
 
     
@@ -125,6 +112,22 @@ class StudentsController < ApplicationController
     users=current_user.authorized_groups_for_school(current_school).members
     users.unshift(User.new(:id=>"*",:first_name=>"Filter",:last_name=>"by Group Member")) if users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
     users
+  end
+
+  def filter_members_by_grade(grade)
+     if grade == "*"
+      group_users
+    else
+      group_users[1..1]
+    end
+  end
+
+  def filter_groups_by_grade(grade)
+    if grade == "*"
+      student_groups
+    else
+      student_groups[-1..-1]
+    end
   end
 
 end

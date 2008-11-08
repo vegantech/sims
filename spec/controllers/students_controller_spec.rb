@@ -138,21 +138,36 @@ describe StudentsController do
   describe 'grade_search' do
     describe 'passed *' do
       it 'should assign same value for @groups as student_groups and @users as group_users' do
-        controller.should_receive(:student_groups).and_return([1,2,3,4])
-        controller.should_receive(:group_users).and_return([5,6,7,8])
+        controller.should_receive(:filter_groups_by_grade).and_return([1,2,3,4])
+        controller.should_receive(:filter_members_by_grade).and_return([5,6,7,8])
         post :grade_search, :grade=>"*"
-
         assigns(:users).should == [5,6,7,8]
         assigns(:groups).should == [1,2,3,4]
         
       end
+    end
+    
+    describe 'passed 01' do
+      it 'should call filter student groups by grade and assign @groups and @users accordingly' do
+        groups=['g1-1',2,'g1-3',4]
+        users=[5,'g1-6',7,'g1-8']
+        controller.should_receive(:filter_groups_by_grade).with('01').and_return(['g1-1','g1-3'])
+        controller.should_receive(:filter_members_by_grade).with('01').and_return(['g1-6','g1-8'])
+
+        post :grade_search, :grade=>"01"
+        assigns(:groups).should == ['g1-1','g1-3']
+        assigns(:users).should == ['g1-6','g1-8']
+
+
+      end
+
     end
   end
 
   describe 'member_search' do
     describe 'passed * for grade and "" for user' do
       it 'should assign same value for @groups as student groups' do
-        controller.should_receive(:student_groups).and_return([1,2,3,4])
+        controller.should_receive(:filter_groups_by_grade).with('*').and_return([1,2,3,4])
         post :member_search, :grade=>"*", :user=>""
         assigns(:groups).should == [1,2,3,4]
       end
