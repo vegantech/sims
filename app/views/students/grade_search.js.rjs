@@ -1,0 +1,3 @@
+page.replace_html 'search_criteria_user_id',  options_from_collection_for_select(@users, :id, :fullname)
+page.replace_html 'search_criteria_group_id',  options_from_collection_for_select(@groups, :id, :title)
+
