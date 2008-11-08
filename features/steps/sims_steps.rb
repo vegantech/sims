@@ -107,3 +107,34 @@ When /^I should click js "all"$/ do
   checks("student_310913251")
   checks("student_22766020")
 end
+
+# Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
+Given /^I should see javascript code that will do xhr for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
+  response.body.should match(/Form.Element.EventObserver\('#{observed_field}'/)
+end
+
+# When /^xhr "search_criteria_user_id" updates ["search_criteria_group_id"]
+When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
+  user=User.find_by_username("default_user")
+  other_guy=User.find_by_username("Other_Guy")
+  school=School.find_by_name("Central")
+ 
+  if observed_field == "search_criteria_grade"
+    xml_http_request  :post, "/students/grade_search/", {:grade=>3}, {:user_id => user.id, :school_id=>school.id}
+  elsif observed_field == "search_criteria_user_id"
+    xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id}, {:user_id => user.id, :school_id=>school.id}
+  else
+    flunk response.body
+  end
+    
+  Array(eval(target_fields)).each do |target_field|
+    response.body.should match(/Element.update\("#{target_field}"/)
+  end
+  #  response.should hav_text /"<option value=\"996332878\">default user</option>");"/
+  
+end
+
+Then /^I should verify rjs has options (.*)$/ do |options|
+  response.should have_options(Array(eval(options)))
+end
+

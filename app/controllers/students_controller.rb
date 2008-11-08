@@ -63,6 +63,34 @@ class StudentsController < ApplicationController
     end
   end
 
+
+  #RJS methods for search page
+
+  def grade_search
+    grade=params[:grade]
+    #@groups  #student groups, but filter by grade
+    #@users   #group users but filter by grade?
+
+    group_users
+    @users=@users[1..1]
+
+    student_groups
+    @groups=@groups[-1..-1]
+
+  end
+ 
+  def member_search
+    grade=params[:grade]
+    user=params[:user]
+
+    student_groups
+    @groups=@groups[-1..-1]
+
+    
+  end
+
+ 
+
   private
   def enforce_session_selections
     return true unless params[:id]

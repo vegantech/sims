@@ -2,8 +2,15 @@
   <div id='table'>
 		<label for="search_criteria_grade">Grade</label>
     <%= select(:search_criteria,:grade,@grades) %><br/>
+    <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade'%>
+
+
 		<label for="search_criteria_user_id">Group Member</label>
                 <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname ) %><br/>
+
+    <%= observe_field 'search_criteria_user_id', :url => member_search_students_path, :with=>'user'   #TODO needs grade too
+%>
+
 		<label for="search_criteria_group_id">Student Group</label>
                 <%= collection_select(:search_criteria,:group_id,@groups,:id,:title) %><br/>
 
