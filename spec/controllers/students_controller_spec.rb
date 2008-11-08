@@ -149,15 +149,12 @@ describe StudentsController do
     
     describe 'passed 01' do
       it 'should call filter student groups by grade and assign @groups and @users accordingly' do
-        groups=['g1-1',2,'g1-3',4]
-        users=[5,'g1-6',7,'g1-8']
         controller.should_receive(:filter_groups_by_grade).with('01').and_return(['g1-1','g1-3'])
         controller.should_receive(:filter_members_by_grade).with('01').and_return(['g1-6','g1-8'])
 
         post :grade_search, :grade=>"01"
         assigns(:groups).should == ['g1-1','g1-3']
         assigns(:users).should == ['g1-6','g1-8']
-
 
       end
 
@@ -172,6 +169,27 @@ describe StudentsController do
         assigns(:groups).should == [1,2,3,4]
       end
     end
+
+    describe 'passed blank for user and 01 for grade' do
+      it 'should call filter student groups by grade and assign @groups accordingly' do
+        controller.should_receive(:filter_groups_by_grade).with('01').and_return([1,2,4])
+        post :member_search, :grade=>"01", :user=>""
+        assigns(:groups).should == [1,2,4]
+
+      end
+
+    end
+
+    describe 'passed 5 for user and 01 for grade' do
+      it 'should filter by both grade and user' do
+        controller.should_receive(:filter_groups_by_grade).with('01').and_return([1,2,4])
+        controller.should_receive(:filter_groups_by_user).with('5',[1,2,4]).and_return([2])
+        post :member_search, :grade=>"01", :user=>"5"
+        assigns(:groups).should == [2]
+      end
+      
+    end
+    
   end
     
 

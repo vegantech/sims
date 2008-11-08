@@ -81,7 +81,8 @@ class StudentsController < ApplicationController
       @groups=filter_groups_by_grade(grade)
     else
       #filter by grade and user
-      @groups=filter_groups_by_grade(grade)[-1..-1]
+      groups=filter_groups_by_grade(grade)
+      @groups=filter_groups_by_user(user,groups)
     end
 
     
@@ -122,12 +123,16 @@ class StudentsController < ApplicationController
     end
   end
 
-  def filter_groups_by_grade(grade)
+  def filter_groups_by_grade(grade, groups=student_groups)
     if grade == "*"
-      student_groups
+      groups
     else
-      student_groups[-1..-1]
+      groups[-1..-1]
     end
+  end
+
+  def filter_groups_by_user(user, groups=student_groups)
+      groups[-1..-1]
   end
 
 end
