@@ -36,8 +36,8 @@ class StudentsController < ApplicationController
       @grades = current_school.grades_by_user(current_user)
       @grades.unshift("*") if @grades.size >1
 
-      group_users
-      student_groups
+      @users=group_users
+      @groups=student_groups
     else
       if params['search_criteria']
         session[:search] = params['search_criteria'] ||{}
@@ -68,14 +68,18 @@ class StudentsController < ApplicationController
 
   def grade_search
     grade=params[:grade]
-    #@groups  #student groups, but filter by grade
-    #@users   #group users but filter by grade?
 
-    group_users
-    @users=@users[1..1]
-
-    student_groups
-    @groups=@groups[-1..-1]
+    @groups=student_groups
+    @users=group_users
+    
+    if grade == "*"
+      #we're done
+    else
+      #@users.filter_by_grade
+      @users=@users[1..1]
+      #@groups.filter_by_grade
+      @groups=@groups[-1..-1]
+    end
 
   end
  
@@ -83,8 +87,15 @@ class StudentsController < ApplicationController
     grade=params[:grade]
     user=params[:user]
 
-    student_groups
-    @groups=@groups[-1..-1]
+    @groups=student_groups
+    if grade == "*" and user.blank?
+      #we're done
+    elsif grade != "*" and user.blank?
+      # do same thing as grade search, but just the group piece
+    else
+      #filter by grade and user
+      @groups=@groups[-1..-1]
+    end
 
     
   end
@@ -105,13 +116,13 @@ class StudentsController < ApplicationController
   end
 
   def student_groups
-    @groups=current_user.authorized_groups_for_school(current_school)
-    @groups.unshift(Group.new(:id=>"*",:title=>"Filter by Group")) if @groups.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
+    groups=current_user.authorized_groups_for_school(current_school)
+    groups.unshift(Group.new(:id=>"*",:title=>"Filter by Group")) if @groups.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end
 
   def group_users
-    @users=current_user.authorized_groups_for_school(current_school).members
-    @users.unshift(User.new(:id=>"*",:first_name=>"Filter",:last_name=>"by Group Member")) if @users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
+    users=current_user.authorized_groups_for_school(current_school).members
+    users.unshift(User.new(:id=>"*",:first_name=>"Filter",:last_name=>"by Group Member")) if @users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
   end
 
 end

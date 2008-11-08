@@ -46,34 +46,42 @@ describe StudentsController do
     end
   end
 
-  describe 'search' do
-    describe 'GET' do
-      before do
-        @user=mock_user
-        @users=[1,2,3]
-        @user.stub_association!(:authorized_groups_for_school,:members=>@users)
-        controller.should_receive(:current_user).at_least(:once).and_return(@user)
-      end
-
-      it 'should set users in group_users' do
+  describe 'private methods' do
+    it 'should test the private methods' do
+      pending
+    end
+    it 'should set users in group_users' do
+      pending
         #controller.should_receive(:params).and_return(params)
        controller.should_receive(:current_school) 
        controller.send(:group_users).should ==(@users)
       end
+    it 'should set groups in student_groups' do
+      pending
 
-      
+    end
+
+
+  end
+    
+
+  describe 'search' do
+    describe 'GET' do
+          
       it 'should set @grades and render search template' do
-        e1 = mock_enrollment(:grade => '1')
-        e2 = mock_enrollment(:grade => '2')
-        school = mock_school(:enrollments => [e1, e2])
-        
-        School.should_receive(:find).with(school.id).and_return(school)
-        school.should_receive(:grades_by_user).with(@user).and_return(['1','2'])
-        controller.should_receive(:student_groups).and_return([])
+        user=mock_user
+        school=mock_school
+        school.should_receive(:grades_by_user).with(user).and_return ['1','2']
+        controller.should_receive(:current_user).and_return(user)
+        controller.should_receive(:current_school).and_return(school)
+        controller.should_receive(:group_users).and_return(['m1','m2'])
+        controller.should_receive(:student_groups).and_return(['g1'])
 
-        get :search, {}, :school_id => school.id
+        get :search
 
         assigns[:grades].should == ['*', '1', '2']
+        assigns[:users].should == ['m1', 'm2']
+        assigns[:groups].should == ['g1']
         response.should render_template('search')
       end
     end
@@ -126,6 +134,31 @@ describe StudentsController do
       end
     end
   end
+
+  describe 'grade_search' do
+    describe 'passed *' do
+      it 'should assign same value for @groups as student_groups and @users as group_users' do
+        controller.should_receive(:student_groups).and_return([1,2,3,4])
+        controller.should_receive(:group_users).and_return([5,6,7,8])
+        post :grade_search, :grade=>"*"
+
+        assigns(:users).should == [5,6,7,8]
+        assigns(:groups).should == [1,2,3,4]
+        
+      end
+    end
+  end
+
+  describe 'member_search' do
+    describe 'passed * for grade and "" for user' do
+      it 'should assign same value for @groups as student groups' do
+        controller.should_receive(:student_groups).and_return([1,2,3,4])
+        post :member_search, :grade=>"*", :user=>""
+        assigns(:groups).should == [1,2,3,4]
+      end
+    end
+  end
+    
 
   #controller.should_receive(:group_users).and_return([])
   #     controller.should_receive(:student_groups).and_return([])
