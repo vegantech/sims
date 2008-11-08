@@ -17,6 +17,7 @@ checklist_definition_one:
   active: true
   text: The first of many
   directions: Fill it out please.
+  recommendation_definition: one
 
 checklist_definition_two:
   district: wi_mmsd

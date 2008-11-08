@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def authorized_schools
+    #TODO make all students in school implicit
     if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
       district.schools
     else

@@ -28,6 +28,17 @@ alpha_first_ungrouped:
   student: another_first_grader_not_in_group
   grade: 01
 
+alpha_ungrouped_third:
+  school: alpha
+  student: ungrouped_third_grader
+  grade: 03
+
+alpha_ungrouped_sixth:
+  school: alpha
+  student: ungrouped_sixth_grader
+  grade: 06
+
+
 
 bravo_smith:
   school: bravo
@@ -44,3 +55,4 @@ one:
   school: 
   student: 
   grade: MyString
+

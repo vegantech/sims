@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :probe_questions
 
 
+  map.logout '/logout',:controller=>'login',:action=>'logout'
   map.resources :groups
 
 

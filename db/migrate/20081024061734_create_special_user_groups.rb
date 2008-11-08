@@ -4,8 +4,9 @@ class CreateSpecialUserGroups < ActiveRecord::Migration
       t.belongs_to :user
       t.belongs_to :district
       t.belongs_to :school
+      t.integer :grouptype
       t.string :grade
-      t.string :type
+      t.string :integer
       t.boolean :is_principal, :default=>false
 
       t.timestamps

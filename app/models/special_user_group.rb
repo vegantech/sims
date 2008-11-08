@@ -8,7 +8,7 @@
 #  district_id  :integer
 #  school_id    :integer
 #  grade        :string(255)
-#  type         :string(255)
+#  grouptype         :string(255)
 #  is_principal :boolean
 #  created_at   :datetime
 #  updated_at   :datetime
@@ -19,25 +19,24 @@ class SpecialUserGroup < ActiveRecord::Base
   belongs_to :district
   belongs_to :school
 
-  #other fields, grade, type, is_principal
-  #temporary list of types for now there's also a grade field
-  TYPES=%w(all_students_in_district, all_schools_in_district, all_students_in_school)
+  #other fields, grade, grouptype, is_principal
+  #temporary list of grouptypes for now there's also a grade field
+  ALL_SCHOOLS_IN_DISTRICT=1  #not going to fully implement this yet
+  ALL_STUDENTS_IN_DISTRICT =2
+  ALL_STUDENTS_IN_SCHOOL = 3
 
-  named_scope :all_schools_in_district ,:conditions=>{:type=>"AllSchoolsInDistrict"}
-  named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["type=? or type = ? and grade is null and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", args.first]}}
+
+  named_scope :all_schools_in_district ,:conditions=>{:grouptype=>ALL_SCHOOLS_IN_DISTRICT}
+  named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first]}}
 
 
   def self.all_students_in_school?(school)
-    !! find(:first,:conditions=>["type=? or type = ? and school_id = ?","AllSchoolsInDistrict","AllStudentsInSchool", school.id])
+    all_students_in_school.count > 0
   end
 
   
   def self.grades_for_school(school)
-    find_all_by_type("all_students_in_school",:select=>"distinct grade", :conditions=>["grade is not null and school_id = ?", school.id]).collect(&:grade).uniq
+    find_all_by_grouptype_and_school_id(ALL_STUDENTS_IN_SCHOOL,school,:select=>"distinct grade", :conditions=>"grade is not null").collect(&:grade).uniq
   end
 end
 
-class AllSchoolsInDistrict < SpecialUserGroup
-
-
-end

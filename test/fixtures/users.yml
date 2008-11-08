@@ -44,10 +44,29 @@ twoschools:
   district: wi_mmsd
   schools: alpha, bravo
 
-allschools:
-  username: allschools
+allstudents:
+  username: allstudents
   first_name: "All"
-  last_name: "Schools"
-  passwordhash: <%= User.encrypted_password("allschools") %>
+  last_name: "Students"
+  passwordhash: <%= User.encrypted_password("allstudents") %>
   district: wi_mmsd
- 
+
+
+alphaprin:
+  username: alphaprin
+  first_name: "Principal"
+  last_name: "Alpha Elementary"
+  passwordhash: <%= User.encrypted_password("alphaprin") %>
+  district: wi_mmsd
+  schools: alpha
+
+
+alphagradethree:
+  username: alphagradethree
+  first_name: "Grade 3"
+  last_name: "Alpha Elementary"
+  passwordhash: <%= User.encrypted_password("alphagradethree") %>
+  district: wi_mmsd
+  schools: alpha
+
+
