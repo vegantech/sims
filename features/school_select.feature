@@ -20,9 +20,8 @@ Feature: School Selection
 
 		When I select "Orchard Ridge" from "school_id"
 		And I press "Choose School"
+                And I should see "User doesn't have access to any students at Orchard Ridge"
 
-		Then I should see "Orchard Ridge Selected"
-		And I should not see "Ridge View"
 
 	Scenario: Select Ridge View
 		Given school "Orchard Ridge"
@@ -34,8 +33,7 @@ Feature: School Selection
 		When I select "Ridge View" from "school_id"
 		And I press "Choose School"
 
-		Then I should see "Ridge View Selected"
-		And I should not see "Orchard Ridge"
+                And I should see "User doesn't have access to any students at Ridge View"
 
   Scenario: User With No Groups Sees Flash Message
     Given school "East High"
@@ -46,5 +44,5 @@ Feature: School Selection
 		When I select "East High" from "school_id"
 		And I press "Choose School"
 
-    Then I should see "User doesn't have access to any groups at East High"
+    Then I should see "User doesn't have access to any students at East High"
     And I should see "Choose School"
