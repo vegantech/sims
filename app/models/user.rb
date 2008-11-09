@@ -143,7 +143,4 @@ class User < ActiveRecord::Base
 		last_name.to_s + ', ' + first_name.to_s
 	end
 
-  def has_group_for_school? school
-   !!( special_schools.find_by_id(school.id) ||  groups.find_by_school_id(school.id) ||(special_user_groups.all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school.id) ))
-  end
 end
