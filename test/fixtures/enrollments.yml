@@ -38,6 +38,12 @@ alpha_ungrouped_sixth:
   student: ungrouped_sixth_grader
   grade: 06
 
+alpha_other_third:
+  school: alpha
+  student: alpha_other_third_grader
+  grade: 03
+
+
 
 
 bravo_smith:

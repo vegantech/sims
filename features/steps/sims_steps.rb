@@ -106,8 +106,10 @@ Then "^I Display Body$" do
 end
 
 When /^I should click js "all"$/ do 
-  checks("student_310913251")
-  checks("student_22766020")
+  doc=Hpricot(response.body)
+  doc.search("//input[@name='id[]']").each do |elem|
+    checks(elem[:id])
+  end
 end
 
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do

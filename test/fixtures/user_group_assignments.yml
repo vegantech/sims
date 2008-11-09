@@ -18,3 +18,13 @@ one:
   group: oneschool_homeroom
   is_principal: false
 
+
+two:
+  user: twoschools
+  group: bravo_one
+  is_principal: false
+
+three:
+  user: twoschools
+  group: other_homeroom
+  is_principal: false

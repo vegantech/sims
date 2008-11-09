@@ -71,3 +71,19 @@ alphagradethree:
   <<: *DEFAULTS
 
 
+noschools:
+  first_name: No
+  last_name: schools
+  passwordhash: <%= User.encrypted_password("noschools") %>
+  district: wi_mmsd
+  <<: *DEFAULTS
+
+nogroups:
+  first_name: No
+  last_name: groups
+  passwordhash: <%= User.encrypted_password("nogroups") %>
+  district: wi_mmsd
+  schools: alpha
+  <<: *DEFAULTS
+
+

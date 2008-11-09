@@ -13,11 +13,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 oneschool_homeroom:
-  title: Homeroom-- Oneschool
+  title: Homeroom- Oneschool
   school: alpha
   students: alpha_first_grader, alpha_third_grader
 
 other_homeroom:
   title: Homeroom where oneschool is not a member
   school: alpha
-#  students: alpha_third_grader
+  students: alpha_other_third_grader
+
+bravo_one:
+  title: Group for Bravo Elementary
+  school: bravo
+  students: bravo_first_smith,  bravo_first_jones
+

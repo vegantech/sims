@@ -48,11 +48,13 @@ Feature: Sims Demo Walkthrough
     And I should see "Alpha Elementary"
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom-- Oneschool", "Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool","2Second. twoschools"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom- Oneschool", "Homeroom where oneschool is not a member"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
+
+    
 
   Scenario alphagradethree
     Given load demo data 
@@ -78,12 +80,57 @@ Feature: Sims Demo Walkthrough
     And I should see select box with id of "school_id" and contains ["Alpha Elementary", "Bravo Elementary"]
     And I should see "Alpha Elementary"
     And I should see "Bravo Elementary"
+    Then I press "Choose School"
+    And I should see select box with id of "search_criteria_grade" and contains ["3"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["2Second. twoschools"]
+#    And I should see select box with id of "search_criteria_group_id" and contains ["Homeroom where oneschool is not a member"]
+    Then I follow "School Selection"
     And I select "Bravo Elementary" from "school_id"
     Then I press "Choose School"
-#no groups yet
-#    And I Display Body   #no 
+    Then I should see "Bravo"
+    Then I press "Search for Students"
+    And I should see "Jones, Bravo_First"
+    And I should see "Smith, Bravo_First"
 
-#
+  Scenario nouser
+    When I go to the home page
+    And I fill in "Login" with "invalid_user"
+    And I press "Login"
+    Then I should see "Authentication Failure"
+    And I fill in "Login" with "oneschool"
+    And I fill in "Password" with "wrong"
+    And I press "Login"
+    Then I should see "Authentication Failure"
+     
+    
+  Scenario noschools
+    Given load demo data 
+    And I go to the home page
+    And I fill in "Login" with "noschools"
+    And I fill in "Password" with "noschools"
+    Then I press "Login"
+    Then I follow "School Selection"
+    Then I should see "No schools available"
+    And I should see "Splash Page"
+    And I follow "Logout"
+    And I should see "Logged Out"
+    And I should see "Splash Page"
+    
+
+ 
+
+  Scenario nogroups
+    Given load demo data 
+    And I go to the home page
+    And I fill in "Login" with "nogroups"
+    And I fill in "Password" with "nogroups"
+    Then I press "Login"
+    Then I follow "School Selection"
+    And I should see "Alpha Elementary"
+    Then I press "Choose School"
+    And I should see "User doesn't have access to any students at Alpha Elementary"
+    And I should see "Choose School"
+    
 
 
   Scenario allstudents
@@ -97,8 +144,8 @@ Feature: Sims Demo Walkthrough
     And I should see "Bravo Elementary"
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom-- Oneschool", "Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool", "2Second. twoschools"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom- Oneschool", "Homeroom where oneschool is not a member"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
