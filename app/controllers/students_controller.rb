@@ -5,6 +5,7 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     @students = current_user.authorized_enrollments_for_school(current_school).search(session[:search])
+#    @students = student_search
 
     respond_to do |format|
       format.html # index.html.erb
@@ -106,15 +107,11 @@ class StudentsController < ApplicationController
 
   ### TODO move all of these into the models
   def student_groups
-    groups=current_user.authorized_groups_for_school(current_school)
-    groups.unshift(Group.new(:id=>"*",:title=>"Filter by Group")) if groups.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
-    groups
+    current_user.authorized_groups_for_school_with_prompt(current_school)
   end
 
   def group_users
-    users=current_user.authorized_groups_for_school(current_school).members
-    users.unshift(User.new(:id=>"*",:first_name=>"Filter",:last_name=>"by Group Member")) if users.size > 1 or current_user.special_user_groups.all_students_in_school?(current_school)
-    users
+    current_user.authorized_members_for_school_with_prompt(current_school)
   end
 
   def filter_members_by_grade(grade)
@@ -145,6 +142,10 @@ class StudentsController < ApplicationController
       group.users.exists?(user_id.to_i)
     end
     result
+  end
+
+  def student_search
+    current_user.authorized_enrollments_for_school(current_school).search(session[:search])
   end
 
 end

@@ -1,7 +1,7 @@
 Feature: Sims Demo Walkthrough
   In order to show a demo works
   
-  Scenario: Run Demo
+  Scenario: Run Demo with oneschool
     Given load demo data 
     And I go to the home page
     And I fill in "Login" with "oneschool"
@@ -36,5 +36,25 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Intervention"
     #change some options here?
     Then I press "Create"
+
+  Scenario: Alphaprin
+    Given load demo data 
+    And I go to the home page
+    And I fill in "Login" with "alphaprin"
+    And I fill in "Password" with "alphaprin"
+    Then I press "Login"
+    And I should see "Logout"
+    Then I follow "School Selection"
+    And I should see "Alpha Elementary"
+    Then I press "Choose School"
+    Then I press "Search for Students"
+    And I should see "Grader, Alpha_First"
+    And I should see "Grader, Alpha_Third"
+    And I should click js "all"
+    Then I press "select for problem solving"
+    And I should see "Student 1 of 2"
+    Then I follow ">>"
+    And I should see "Student 2 of 2"
+        
     
 

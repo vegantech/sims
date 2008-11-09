@@ -58,7 +58,6 @@ alphaprin:
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
   district: wi_mmsd
-  schools: alpha
 
 
 alphagradethree:

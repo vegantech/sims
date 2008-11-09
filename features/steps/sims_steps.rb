@@ -91,7 +91,8 @@ Given /^load demo data$/ do
 
   fixtures=%w{users schools students enrollments districts 
     goal_definitions objective_definitions intervention_clusters intervention_definitions 
-    tiers frequencies time_lengths groups user_group_assignments}
+    tiers frequencies time_lengths groups user_group_assignments
+    special_user_groups}
 
   fixtures.each do |f|
     Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))

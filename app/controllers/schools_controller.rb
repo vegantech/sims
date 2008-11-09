@@ -4,7 +4,7 @@ class SchoolsController < ApplicationController
   end
 
   def select
-    @school = current_user.authorized_schools.find(params["school"]["id"])
+    @school = current_user.authorized_schools(params["school"]["id"])
 
     if current_user.has_group_for_school?(@school)
       # add school to session

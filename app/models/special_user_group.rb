@@ -26,7 +26,7 @@ class SpecialUserGroup < ActiveRecord::Base
   ALL_STUDENTS_IN_SCHOOL = 3
 
 
-  named_scope :all_schools_in_district ,:conditions=>{:grouptype=>ALL_SCHOOLS_IN_DISTRICT}
+  named_scope :all_schools_in_district ,:conditions=>{:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT]}
   named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first]}}
 
 
@@ -34,6 +34,9 @@ class SpecialUserGroup < ActiveRecord::Base
     all_students_in_school.count > 0
   end
 
+  def self.schools
+    find(:all).collect(&:school).compact.flatten.uniq
+  end
   
   def self.grades_for_school(school)
     find_all_by_grouptype_and_school_id(ALL_STUDENTS_IN_SCHOOL,school,:select=>"distinct grade", :conditions=>"grade is not null").collect(&:grade).uniq

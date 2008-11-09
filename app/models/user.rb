@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   belongs_to :district
   has_and_belongs_to_many :schools
   has_many :special_user_groups
+  has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
   has_many :groups, :through=> :user_group_assignments
 
@@ -31,6 +32,51 @@ class User < ActiveRecord::Base
     end
   end
 
+  def filtered_groups_by_school(school,opts={})
+  #opts can be grade and prompt
+  #default prompt is "*-Filter by Group"
+  #the - separates id and prompt
+
+  end
+
+  def filtered_members_by_school(school,opts={})
+  #opts can be grade, user_id and prompt
+  #default prompt is "*-Filter by Group"
+  #the - separates id and prompt
+  #blank grade defaults to *
+  #blank user defaults to *
+
+
+
+
+
+  end
+
+  def authorized_groups_for_school_with_prompt(school, prompt = "*-Filter by Group")
+    groups=authorized_groups_for_school(school)
+    prompt_id,prompt_text=prompt.split("-",2)
+    groups.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if groups.size > 1 or special_user_groups.all_students_in_school?(school)
+    @groups=groups
+  end
+
+  def authorized_members_for_school_with_prompt(school, prompt = "*-Filter by Group Member")
+    users= if @groups
+      @groups.members
+    else
+      authorized_groups_for_school(school).members
+    end
+
+    prompt_id,prompt_text=prompt.split("-",2)
+    prompt_first,prompt_last=prompt_text.split(" ",2)
+    users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
+    users
+
+  
+  end
+
+
+
+
   def authorized_enrollments_for_school(school)
     if special_user_groups.all_students_in_school?(school)
       school.enrollments
@@ -42,12 +88,19 @@ class User < ActiveRecord::Base
 
   end
 
-  def authorized_schools
-    #TODO make all students in school implicit
-    if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
-      district.schools
+  def authorized_schools(school_id=nil)
+    if school_id
+      schools.find_by_id(school_id) || 
+        special_schools.find_by_id(school_id) ||
+        (special_user_groups_all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school_id))
     else
-      schools
+
+    #TODO make all students in school implicit
+      if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
+        district.schools
+      else
+        schools | special_user_groups.schools
+      end
     end
   end
 
@@ -77,6 +130,6 @@ class User < ActiveRecord::Base
 	end
 
   def has_group_for_school? school
-   !!( special_user_groups.all_students_in_school?(school) ||  groups.find_by_school_id(school.id) )
+   !!( special_schools.find_by_id(school.id) ||  groups.find_by_school_id(school.id) )
   end
 end
