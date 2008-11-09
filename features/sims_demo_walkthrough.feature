@@ -63,13 +63,42 @@ Feature: Sims Demo Walkthrough
     Then I follow "School Selection"
     And I should see "Alpha Elementary"
     Then I press "Choose School"
-#    And I should see select box with id of "search_criteria_grade" and contains ["3"]
-#    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool"]
-#    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom-- Oneschool", "Homeroom where oneschool is not a member"]
-#    Then I press "Search for Students"
-#    And I should see "Grader, Alpha_First"
-#    And I should see "Grader, Alpha_Third"
+    And I should see select box with id of "search_criteria_grade" and contains ["3"]
+    Then I press "Search for Students"
+    And I should not see "Grader, Alpha_First"
+    And I should see "Grader, Alpha_Third"
 
-       
-    
+  Scenario twoschools
+    Given load demo data 
+    And I go to the home page
+    And I fill in "Login" with "twoschools"
+    And I fill in "Password" with "twoschools"
+    Then I press "Login"
+    Then I follow "School Selection"
+    And I should see select box with id of "school_id" and contains ["Alpha Elementary", "Bravo Elementary"]
+    And I should see "Alpha Elementary"
+    And I should see "Bravo Elementary"
+    And I select "Bravo Elementary" from "school_id"
+    Then I press "Choose School"
+#no groups yet
+#    And I Display Body   #no 
 
+#
+
+
+  Scenario allstudents
+    Given load demo data 
+    And I go to the home page
+    And I fill in "Login" with "allstudents"
+    And I fill in "Password" with "allstudents"
+    Then I press "Login"
+    Then I follow "School Selection"
+    And I should see "Alpha Elementary"
+    And I should see "Bravo Elementary"
+    Then I press "Choose School"
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom-- Oneschool", "Homeroom where oneschool is not a member"]
+    Then I press "Search for Students"
+    And I should see "Grader, Alpha_First"
+    And I should see "Grader, Alpha_Third"

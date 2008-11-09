@@ -70,9 +70,10 @@ class Enrollment < ActiveRecord::Base
 
 
   def self.student_in_this_grade_belonging_to_user?(grade,user)
+    #TODO this is probably incredibly slow
     enrollments=find_all_by_grade(grade)
     enrollments.any? do |e|
-      e.student.group_ids & user.group_ids
+      user.authorized_enrollments_for_school(e.school).include?(e)
     end
       
   end

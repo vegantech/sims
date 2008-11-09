@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
     if school_id
       schools.find_by_id(school_id) || 
         special_schools.find_by_id(school_id) ||
-        (special_user_groups_all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school_id))
+        (special_user_groups.all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school_id))
     else
 
     #TODO make all students in school implicit
@@ -144,6 +144,6 @@ class User < ActiveRecord::Base
 	end
 
   def has_group_for_school? school
-   !!( special_schools.find_by_id(school.id) ||  groups.find_by_school_id(school.id) )
+   !!( special_schools.find_by_id(school.id) ||  groups.find_by_school_id(school.id) ||(special_user_groups.all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school.id) ))
   end
 end

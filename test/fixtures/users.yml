@@ -68,7 +68,6 @@ alphagradethree:
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphagradethree") %>
   district: wi_mmsd
-  schools: alpha
   <<: *DEFAULTS
 
 

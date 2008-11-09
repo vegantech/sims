@@ -27,10 +27,8 @@ class School < ActiveRecord::Base
     if user.special_user_groups.all_students_in_school?(self)
       grades= school_grades
     else
-      #don't think all grades by user works yet.
-      grades=user.special_user_groups.grades_for_school(self)
-
-      (school_grades - grades).each do |grade|
+      grades=[]
+      school_grades.each do |grade|
         grades << grade if enrollments.student_in_this_grade_belonging_to_user?(grade,user)
       end
     end
