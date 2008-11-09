@@ -94,6 +94,7 @@ Given /^load demo data$/ do
     tiers frequencies time_lengths groups user_group_assignments
     special_user_groups}
 
+  Fixtures.reset_cache
   fixtures.each do |f|
     Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end

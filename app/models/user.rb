@@ -83,7 +83,6 @@ class User < ActiveRecord::Base
       end
     end
 
-    
     prompt_id,prompt_text=opts["prompt"].split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)

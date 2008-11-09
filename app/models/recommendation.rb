@@ -67,7 +67,7 @@ class Recommendation < ActiveRecord::Base
       checklist.fake_edit= checklist == student.checklists.last
       (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer] 
     elsif !promoted? and RECOMMENDATION[recommendation][:promote]
-      checklist.fake_edit = checklist == student.checklists.last
+      checklist.fake_edit = checklist == student.checklists.last if checklist
       STATUS[:failing_score]
     elsif !promoted? and !RECOMMENDATION[recommendation][:promote]
       STATUS[:nonadvancing]

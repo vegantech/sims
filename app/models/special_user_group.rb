@@ -31,7 +31,7 @@ class SpecialUserGroup < ActiveRecord::Base
 
 
   def self.all_students_in_school?(school)
-    all_students_in_school.count > 0
+    all_students_in_school(school).count > 0
   end
 
   def self.schools
