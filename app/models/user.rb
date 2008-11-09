@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   #default prompt is "*-Filter by Group"
   #the - separates id and prompt
    
-    opts.reverse_merge!(:prompt=>"*-Filter by Group",
+    opts.symbolize_keys!.reverse_merge!(:prompt=>"*-Filter by Group",
                         :grade=>"*"
                         )
 
@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   #blank grade defaults to *
   #blank user defaults to *
 
-    opts.reverse_merge!(:prompt=>"*-Filter by Group Member",
+    opts.symbolize_keys!.reverse_merge!(:prompt=>"*-Filter by Group Member",
                         :grade=>"*")
 
     users=authorized_groups_for_school(school).members
