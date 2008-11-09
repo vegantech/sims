@@ -83,7 +83,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["3"]
     And I should see select box with id of "search_criteria_user_id" and contains ["2Second. twoschools"]
-#    And I should see select box with id of "search_criteria_group_id" and contains ["Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Homeroom where oneschool is not a member"]
     Then I follow "School Selection"
     And I select "Bravo Elementary" from "school_id"
     Then I press "Choose School"

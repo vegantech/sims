@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
     if special_user_groups.all_students_in_school?(school)
       school.groups
     else
-      groups
+      groups.by_school(school)
     end
   end
 

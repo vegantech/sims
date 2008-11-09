@@ -16,7 +16,7 @@ class Group < ActiveRecord::Base
   has_many :user_group_assignments
   has_many :users, :through=>:user_group_assignments
 
-  #named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
+  named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
   def self.members
     #TODO tested, but it is ugly and should be refactored
     find(:all).collect(&:users).flatten.compact.uniq
