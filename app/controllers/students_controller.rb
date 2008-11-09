@@ -4,8 +4,7 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    @students = current_user.authorized_enrollments_for_school(current_school).search(session[:search])
-#    @students = student_search
+    @students = student_search
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +15,7 @@ class StudentsController < ApplicationController
   def select
     # add selected students to session redirect to show
     
-    @students = current_user.authorized_enrollments_for_school(current_school).search(session[:search])
+    @students = student_search
     student_ids = @students.collect {|s| s.student.id.to_s}
     if params[:id].blank?
       flash[:notice] = 'No students selected'

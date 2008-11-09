@@ -4,29 +4,16 @@ describe StudentsController do
   it_should_behave_like "an authenticated controller"
 
   it 'should get index' do
-    enrollments = mock_enrollment(:search => true)
-    school = mock_school(:enrollments => enrollments)
-    @user=mock_user(:authorized_enrollments_for_school=>enrollments)
-    controller.should_receive(:current_user).at_least(:once).and_return(@user)
-    controller.should_receive(:current_school).at_least(:once).and_return(school)
+    controller.should_receive(:student_search).and_return(['a','b','c'])
     get :index
     response.should be_success
-    assigns(:students).should == true
+    assigns(:students).should == ['a','b','c']
   end
 
   describe 'select' do
-      before do
-        enrollment1=mock_enrollment(:student=>mock_student(:id=>"5"))
-        enrollment2=mock_enrollment(:student=>mock_student(:id=>"16"))
-
-        enrollments = mock_enrollment(:search => [enrollment1,enrollment2])
-        school = mock_school(:enrollments => enrollments)
-        controller.should_receive(:current_school).at_least(:once).and_return(school)
-        @user=mock_user(:authorized_enrollments_for_school=>enrollments)
-        controller.should_receive(:current_user).at_least(:once).and_return(@user)
-      end
-    describe 'without selected_students' do
-      it 'should put error in flash, and rerender to students_url' do
+   describe 'without selected_students' do
+      it 'should put error in flash, and rerender students index' do
+        controller.should_receive(:student_search).and_return([])
         get :select
 
         session[:selected_students].should be_nil
@@ -34,13 +21,50 @@ describe StudentsController do
         response.should render_template("index")
       end
     end
+    describe 'with unauthorized student chosen' do
+      before do
+        e1=mock_enrollment
+        e2=mock_enrollment
+        e1.stub_association!(:student,:id=>5)
+        e2.stub_association!(:student,:id=>6)
+
+        controller.should_receive(:student_search).and_return([e1,e2])
+        get :select, :id=>[1,5,6]
+
+      end
+      it 'should put error in flash' do
+        flash[:notice].should == 'Unauthorized Student selected'
+      end
+
+      it 'should clear the selected students from the session' do
+        session[:selected_students].should be_nil
+        session[:selected_student].should be_nil
+      end
+
+      it 'should rerender the index template for students' do
+        response.should render_template("index")
+      end
+
+
+    end
 
     describe 'with selected_students' do
-      it 'should set selected_students and selected_student and go to show page' do
+       before do
+        e1=mock_enrollment
+        e2=mock_enrollment
+        e1.stub_association!(:student,:id=>"5")
+        e2.stub_association!(:student,:id=>"16")
+        controller.should_receive(:student_search).and_return([e1,e2])
         get :select, :id => ["5", "16"]
- 
+
+       end
+      
+       it 'should set selected_students and selected_student' do
         session[:selected_students].should == ["5", "16"]
         session[:selected_student].should == "5"
+      end
+      
+       it 'should redirect to first student' do
         response.should redirect_to(student_url("5"))
       end
     end
@@ -59,6 +83,16 @@ describe StudentsController do
     it 'should set groups in student_groups' do
       pending
 
+    end
+
+    it 'should perform student search' do
+      pending
+    enrollments = mock_enrollment(:search => true)
+    school = mock_school(:enrollments => enrollments)
+    @user=mock_user(:authorized_enrollments_for_school=>enrollments)
+    controller.should_receive(:current_user).at_least(:once).and_return(@user)
+    controller.should_receive(:current_school).at_least(:once).and_return(school)
+ 
     end
 
 
