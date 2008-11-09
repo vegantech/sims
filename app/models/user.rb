@@ -36,27 +36,28 @@ class User < ActiveRecord::Base
   #opts can be grade and prompt
   #default prompt is "*-Filter by Group"
   #the - separates id and prompt
-   
-    opts.symbolize_keys!.reverse_merge!(:prompt=>"*-Filter by Group",
-                        :grade=>"*"
+    
+    opts.stringify_keys!
+    opts.reverse_merge!("prompt"=>"*-Filter by Group",
+                        "grade"=>"*"
                         )
 
     grps=authorized_groups_for_school(school)
 
-    unless opts[:grade] =="*"
+    unless opts["grade"] =="*"
       grps = grps.select do |u_group|
-        u_group.students.exist?(:conditions=>["enrollments.grade=?",opts[:grade]],:include=>:enrollments)
+        u_group.students.find(:first,:conditions=>["enrollments.grade=?",opts["grade"]],:include=>:enrollments)
       end
     end
 
-    unless opts[:user].blank?
+    unless opts["user"].blank?
       grps = grps.select do |u_group|
-        u_group.users.exists?(opts[:user].to_i)
+        u_group.users.exists?(opts["user"].to_i)
       end
     end
 
     
-    prompt_id,prompt_text=opts[:prompt].split("-",2)
+    prompt_id,prompt_text=opts["prompt"].split("-",2)
     grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if grps.size > 1 or special_user_groups.all_students_in_school?(school)
     @groups=grps
 
@@ -69,20 +70,21 @@ class User < ActiveRecord::Base
   #blank grade defaults to *
   #blank user defaults to *
 
-    opts.symbolize_keys!.reverse_merge!(:prompt=>"*-Filter by Group Member",
-                        :grade=>"*")
+    opts.stringify_keys!
+    opts.reverse_merge!("prompt"=>"*-Filter by Group Member",
+                        "grade"=>"*")
 
     users=authorized_groups_for_school(school).members
-    unless opts[:grade]  == "*"
+    unless opts["grade"]  == "*"
       users=users.select do |group_user|
         group_user.groups.any? do |u_group|
-          u_group.students.exist?(:conditions=>["enrollments.grade=?",opts[:grade]],:include=>:enrollments)
+          u_group.students.find(:first,:conditions=>["enrollments.grade=?",opts["grade"]],:include=>:enrollments)
         end
       end
     end
 
     
-    prompt_id,prompt_text=opts[:prompt].split("-",2)
+    prompt_id,prompt_text=opts["prompt"].split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
 
