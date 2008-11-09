@@ -36,6 +36,29 @@ class User < ActiveRecord::Base
   #opts can be grade and prompt
   #default prompt is "*-Filter by Group"
   #the - separates id and prompt
+   
+    opts.reverse_merge!(:prompt=>"*-Filter by Group",
+                        :grade=>"*"
+                        )
+
+    grps=authorized_groups_for_school(school)
+
+    unless opts[:grade] =="*"
+      grps = grps.select do |u_group|
+        u_group.students.exist?(:conditions=>["enrollments.grade=?",opts[:grade]],:include=>:enrollments)
+      end
+    end
+
+    unless opts[:user].blank?
+      grps = grps.select do |u_group|
+        u_group.users.exists?(opts[:user].to_i)
+      end
+    end
+
+    
+    prompt_id,prompt_text=opts[:prompt].split("-",2)
+    grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if grps.size > 1 or special_user_groups.all_students_in_school?(school)
+    @groups=grps
 
   end
 
@@ -46,35 +69,25 @@ class User < ActiveRecord::Base
   #blank grade defaults to *
   #blank user defaults to *
 
+    opts.reverse_merge!(:prompt=>"*-Filter by Group Member",
+                        :grade=>"*")
 
-
-
-
-  end
-
-  def authorized_groups_for_school_with_prompt(school, prompt = "*-Filter by Group")
-    groups=authorized_groups_for_school(school)
-    prompt_id,prompt_text=prompt.split("-",2)
-    groups.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if groups.size > 1 or special_user_groups.all_students_in_school?(school)
-    @groups=groups
-  end
-
-  def authorized_members_for_school_with_prompt(school, prompt = "*-Filter by Group Member")
-    users= if @groups
-      @groups.members
-    else
-      authorized_groups_for_school(school).members
+    users=authorized_groups_for_school(school).members
+    unless opts[:grade]  == "*"
+      users=users.select do |group_user|
+        group_user.groups.any? do |u_group|
+          u_group.students.exist?(:conditions=>["enrollments.grade=?",opts[:grade]],:include=>:enrollments)
+        end
+      end
     end
 
-    prompt_id,prompt_text=prompt.split("-",2)
+    
+    prompt_id,prompt_text=opts[:prompt].split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
+
     users
-
-  
   end
-
-
 
 
   def authorized_enrollments_for_school(school)

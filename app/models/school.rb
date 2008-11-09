@@ -25,17 +25,17 @@ class School < ActiveRecord::Base
   def grades_by_user(user)
     school_grades = enrollments.grades
     if user.special_user_groups.all_students_in_school?(self)
-      return school_grades
-    end
-    
-    grades=user.special_user_groups.grades_for_school(self)
+      grades= school_grades
+    else
+      grades=user.special_user_groups.grades_for_school(self)
 
-    (school_grades - grades).each do |grade|
-      grades << grade if enrollments.student_in_this_grade_belonging_to_user?(grade,user)
+      (school_grades - grades).each do |grade|
+        grades << grade if enrollments.student_in_this_grade_belonging_to_user?(grade,user)
+      end
     end
+
+    grades.unshift("*") if grades.size >1
     grades
-
-
   end
 
 

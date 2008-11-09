@@ -15,57 +15,60 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
+DEFAULTS: &DEFAULTS
+  username: $LABEL
+
 one:
-  username: MyString
   passwordhash: 
   first_name: MyString
   last_name: MyString
   district: wi_mmsd
+  <<: *DEFAULTS
 
 two:
-  username: MyString
   passwordhash: 
   first_name: MyString
   last_name: MyString
+  <<: *DEFAULTS
 
 oneschool:
-  username: oneschool
   first_name: "1First."
   last_name: "oneschool"
   passwordhash: <%= User.encrypted_password("oneschool") %>
   district: wi_mmsd
   schools: alpha
+  <<: *DEFAULTS
 
 twoschools:
-  username: twoschools
   first_name: "2Second."
   last_name: "twoschools"
   passwordhash: <%= User.encrypted_password("twoschools") %>
   district: wi_mmsd
   schools: alpha, bravo
+  <<: *DEFAULTS
 
 allstudents:
-  username: allstudents
   first_name: "All"
   last_name: "Students"
   passwordhash: <%= User.encrypted_password("allstudents") %>
   district: wi_mmsd
+  <<: *DEFAULTS
 
 
 alphaprin:
-  username: alphaprin
   first_name: "Principal"
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
   district: wi_mmsd
+  <<: *DEFAULTS
 
 
 alphagradethree:
-  username: alphagradethree
   first_name: "Grade 3"
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphagradethree") %>
   district: wi_mmsd
   schools: alpha
+  <<: *DEFAULTS
 
 

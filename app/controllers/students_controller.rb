@@ -34,10 +34,8 @@ class StudentsController < ApplicationController
   def search
     if request.get?
       @grades = current_school.grades_by_user(current_user)
-      @grades.unshift("*") if @grades.size >1
-
-      @users=group_users
-      @groups=student_groups
+      @groups=current_user.filtered_groups_by_school(current_school)
+      @users=current_user.filtered_members_by_school(current_school)
     else
       if params['search_criteria']
         session[:search] = params['search_criteria'] ||{}
@@ -67,25 +65,13 @@ class StudentsController < ApplicationController
   #RJS methods for search page
 
   def grade_search
-    grade=params[:grade]
-    @users=filter_members_by_grade(grade)
-    @groups=filter_groups_by_grade(grade)
+    @users=current_user.filtered_members_by_school(current_school,params)
+    @groups=current_user.filtered_groups_by_school(current_school,params)
 
   end
  
   def member_search
-    grade=params[:grade]
-    user=params[:user]
-
-    if user.blank?
-      @groups=filter_groups_by_grade(grade)
-    else
-      #filter by grade and user
-      groups=filter_groups_by_grade(grade)
-      @groups=filter_groups_by_user(user,groups)
-    end
-
-    
+    @groups=current_user.filtered_groups_by_school(current_school,params)
   end
 
  
@@ -103,45 +89,6 @@ class StudentsController < ApplicationController
     end
   end
 
-
-  ### TODO move all of these into the models
-  def student_groups
-    current_user.authorized_groups_for_school_with_prompt(current_school)
-  end
-
-  def group_users
-    current_user.authorized_members_for_school_with_prompt(current_school)
-  end
-
-  def filter_members_by_grade(grade)
-     if grade == "*"
-      group_users
-    else
-      group_users.select do |group_user|
-        #group has a student in the grade
-        group_user.groups.any? do |group|
-          group.students.find(:first,:include=>:enrollments,:conditions=>["enrollments.grade=?",grade])
-        end
-      end
-    end
-  end
-
-  def filter_groups_by_grade(grade, groups=student_groups)
-    if grade == "*"
-      groups
-    else
-      student_groups.select do |group|
-        group.students.find(:first,:include=>:enrollments,:conditions=>["enrollments.grade=?",grade])
-      end
-    end
-  end
-
-  def filter_groups_by_user(user_id, groups=student_groups)
-    result = groups.select do |group|
-      group.users.exists?(user_id.to_i)
-    end
-    result
-  end
 
   def student_search
     current_user.authorized_enrollments_for_school(current_school).search(session[:search])
