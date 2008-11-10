@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081106215957) do
+ActiveRecord::Schema.define(:version => 20081110181227) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -148,6 +148,14 @@ ActiveRecord::Schema.define(:version => 20081106215957) do
     t.boolean  "disabled",                :default => false
     t.integer  "position"
     t.string   "rec_mon_preface"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "intervention_participants", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "user_id"
+    t.integer  "role",            :default => 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end

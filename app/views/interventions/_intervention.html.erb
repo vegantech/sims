@@ -4,8 +4,10 @@
   <%=render :partial =>'interventions/form',:locals=>{:form=>f} %>
   <% if @intervention.selected_ids %>
     <%= f.label :apply_to_all, "Apply to all selected students" %>
-    <%= f.check_box :apply_to_all %>
+    <%= f.check_box :apply_to_all %> <br />
   <% end %>
+  <%= f.label :auto_implementer, "Make yourself implementer for this intervention" %>
+  <%= f.check_box :auto_implementer  %> <br />
  <p>
     <%= f.submit "Create" %>
   </p>

@@ -27,6 +27,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name =>"User"
+  has_many :intervention_participants
 
   has_many :intervention_probe_assignments do 
     def prepare_all(passed_params={})
@@ -58,8 +59,10 @@ class Intervention < ActiveRecord::Base
   validates_numericality_of :time_length_number, :frequency_multiplier
   
 
-  after_create :create_other_students
-  attr_accessor :selected_ids, :apply_to_all
+  before_create :assign_implementer
+  after_create :create_other_students, :send_emails
+
+  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally
 
 
   named_scope :active,:conditions=>{:active=>true}
@@ -107,12 +110,30 @@ class Intervention < ActiveRecord::Base
       student_ids=self.selected_ids
       student_ids.delete(self.student_id.to_s)
       student_ids.each do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false))
+        Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false,:auto_implementer=>self.auto_implementer,:called_internallt=>true))
       end
     end
     true
 
   end
+
+  def assign_implementer
+    if self.auto_implementer == "1"
+      intervention_participants.implementer.build(:user=>self.user)
+    end
+    true
+  end
+
+  def send_creation_emails
+    #PENDING
+    unless self.called_internally
+    end
+
+    true
+
+  end
+
+
 
 
 
