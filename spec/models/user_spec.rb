@@ -47,4 +47,39 @@ describe User do
     User.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
+  describe 'authorized_groups_for_school' do
+    it 'should have some specs for this method' do
+      pending
+    end
+  end
+  
+  describe 'filtered_groups_by_school' do
+    it 'should have some specs for this method' do
+      pending
+    end
+  end
+ 
+  describe 'filtered_members_by_school' do
+    it 'should have some specs for this method' do
+      pending
+    end
+  end
+
+  describe 'authorized enrollments for school' do
+    it 'should have some specs for this method' do
+      pending
+    end
+  end
+
+  describe 'authorized schools' do
+    it 'should have some specs for this method' do
+      pending
+    end
+  end
+
+
+
+
+
+
 end
