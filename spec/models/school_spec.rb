@@ -29,21 +29,13 @@ describe School do
     it 'should return subset of grades in the school where there is at least one student that the user has access to' do
 
       school=School.create!
-      school.enrollments= [Enrollment.new(:grade=>2),Enrollment.new(:grade=>1),Enrollment.new(:grade=>4),Enrollment.new(:grade=>3)]
+      school.enrollments= [e1=Enrollment.new(:grade=>2),Enrollment.new(:grade=>1),e2=Enrollment.new(:grade=>4),Enrollment.new(:grade=>3)]
       user=mock_user
       user.stub_association!(:special_user_groups, :all_students_in_school? =>  false)
-
-      %w{2 4}.each do |g|
-        Enrollment.should_receive(:student_in_this_grade_belonging_to_user?).with(g,user).and_return(true)
-      end
-
-      %w{1 3}.each do |g|
-         Enrollment.should_receive(:student_in_this_grade_belonging_to_user?).with(g,user).and_return(false)
-      end
+      user.stub!(:authorized_enrollments_for_school=>[e1,e2])
 
 
-
-    school.grades_by_user(user).should == ['*','2','4']
+      school.grades_by_user(user).should == ['*','2','4']
 
 
     end

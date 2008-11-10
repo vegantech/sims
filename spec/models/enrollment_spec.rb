@@ -177,12 +177,26 @@ describe Enrollment do
   end
 
   describe 'student_in_this_grade_belonging_to_user?' do
+    
+    it 'should return false if there are no enrollments in the grade' do
+      Enrollment.student_belonging_to_user?(User.new).should == false
+
+    end
     it 'should return true if the grade contains a student belonging to that user' do 
-      pending
+      school=School.new
+      e=Enrollment.create!(:grade=>'1',:school=>school)
+      user=User.new
+      user.should_receive(:authorized_enrollments_for_school).and_return([e])
+    
+      Enrollment.student_belonging_to_user?(user).should == true
     end
 
     it 'should return false if the grade does not contain a student belonging to that user' do
-      pending
+      school=School.new
+      e=Enrollment.create!(:grade=>'1',:school=>school)
+      user=User.new
+      user.should_receive(:authorized_enrollments_for_school).and_return([])
+      Enrollment.student_belonging_to_user?(user).should == false
     end
   end
 

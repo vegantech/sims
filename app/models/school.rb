@@ -29,7 +29,7 @@ class School < ActiveRecord::Base
     else
       grades=[]
       school_grades.each do |grade|
-        grades << grade if enrollments.student_in_this_grade_belonging_to_user?(grade,user)
+        grades << grade if enrollments.by_student_ids_or_grades(nil,grade).student_belonging_to_user?(user)
       end
     end
 
