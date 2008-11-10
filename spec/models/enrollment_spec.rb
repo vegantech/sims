@@ -18,11 +18,12 @@ describe Enrollment do
   describe 'search class method' do
 
     describe 'with student group' do 
-      it 'should return only students in that group' do
+      it 'should return only students in that grade' do
         enrollment1 = mock_enrollment :grade => '1'
         enrollment2 = mock_enrollment :grade => '2'
         enrollment3 = mock_enrollment :grade => '3'
-        Enrollment.search(:search_type => 'list_all', :group_id=>1)
+        Enrollment.should_receive(:find).with(:all,:include=>:student).and_return([enrollment1,enrollment2,enrollment3])
+        Enrollment.search(:search_type => 'list_all', :grade=>'2').should == [enrollment2]
       end
 
     end
@@ -42,8 +43,8 @@ describe Enrollment do
       end
     end
 
-    describe 'passed list_all with grade' do
-      it 'should return students from that grade' do
+    describe 'passed list_all with group' do
+      it 'should return students from that group' do
         enrollment1 = mock_enrollment :student => mock_student(:group_ids=>[1])
         enrollment2 = mock_enrollment :student => mock_student(:group_ids=>[2])
         enrollment3 = mock_enrollment :student => mock_student(:group_ids=>[1])
@@ -174,5 +175,16 @@ describe Enrollment do
     end
 
   end
+
+  describe 'student_in_this_grade_belonging_to_user?' do
+    it 'should return true if the grade contains a student belonging to that user' do 
+      pending
+    end
+
+    it 'should return false if the grade does not contain a student belonging to that user' do
+      pending
+    end
+  end
+
 
 end
