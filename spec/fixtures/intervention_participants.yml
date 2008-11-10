@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  intervention: 
+  user: 
+  role: 1
+
+two:
+  intervention: 
+  user: 
+  role: 1

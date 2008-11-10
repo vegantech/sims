@@ -1,0 +1,24 @@
+<h1>Editing intervention_participant</h1>
+
+<% form_for(@intervention_participant) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :intervention %><br />
+    <%= f.text_field :intervention %>
+  </p>
+  <p>
+    <%= f.label :user %><br />
+    <%= f.text_field :user %>
+  </p>
+  <p>
+    <%= f.label :role %><br />
+    <%= f.text_field :role %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @intervention_participant %> |
+<%= link_to 'Back', intervention_participants_path %>
