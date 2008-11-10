@@ -33,6 +33,7 @@ class School < ActiveRecord::Base
       end
     end
 
+    grades.sort!
     grades.unshift("*") if grades.size >1
     grades
   end
