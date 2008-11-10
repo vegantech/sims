@@ -110,7 +110,7 @@ class Intervention < ActiveRecord::Base
       student_ids=self.selected_ids
       student_ids.delete(self.student_id.to_s)
       student_ids.each do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false,:auto_implementer=>self.auto_implementer,:called_internallt=>true))
+        Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false,:auto_implementer=>self.auto_implementer,:called_internally=>true))
       end
     end
     true
@@ -127,6 +127,7 @@ class Intervention < ActiveRecord::Base
   def send_creation_emails
     #PENDING
     unless self.called_internally
+      Notifications.deliver_intervention_starting
     end
 
     true
