@@ -12,7 +12,7 @@ class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
  
   #require every rb in app
   Dir.glob(RAILS_ROOT+"/app/models/**/*.rb").each do |rb|
-    require rb.split("app/").last unless rb.include?"models/notifications.rb"
+    require rb.split("app/").last 
   end
   
   Dir.glob(RAILS_ROOT+"/app/helpers/**/*.rb").each do |rb|
