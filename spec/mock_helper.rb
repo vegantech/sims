@@ -1,45 +1,20 @@
-def mock_array stubs = {}
-  mock_model(Array, stubs)
-end
 
-def mock_enrollment stubs = {}
-  mock_model(Enrollment, stubs)
-end
+module Spec
+  module Rails
+    module Mocks
 
-def mock_flag stubs = {}
-  mock_model(Flag, stubs)
-end
+      def method_missing(method,*args,&blk)
+        method_name = method.to_s.split('_',2)
+        if method_name.first =~ /^mock_/ and defined?(method_name.camelize)
+          class_name = method.to_s.split('_',2).last
+          mock_model(class_name.camelize.constantize,*args)
+        else
+          super(method,*args,&blk)
+        end
+      end
 
-def mock_student stubs = {}
-  mock_model(Student, stubs)
-end
-
-def mock_school stubs ={}
-  mock_model(School, stubs)
-end
-
-def mock_intervention stubs = {}
-  mock_model(Intervention,stubs)
-end
-
-def mock_district stubs ={}
-  mock_model(District, stubs)
-end
-
-def mock_objective_definition stubs ={}
-  mock_model(ObjectiveDefinition, stubs)
-end
-
-def mock_state stubs={}
-  mock_model(State,stubs)
-end
-
-def mock_country stubs={}
-  mock_model(Country,stubs)
-end
-
-def mock_user stubs={}
-  mock_model(User,stubs)
+   end
+  end
 end
 
 module Spec
