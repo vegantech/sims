@@ -60,7 +60,7 @@ class Intervention < ActiveRecord::Base
   
 
   before_create :assign_implementer
-  after_create :create_other_students, :send_emails
+  after_create :create_other_students, :send_creation_emails
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally
 
