@@ -5,7 +5,7 @@ module Spec
 
       def method_missing(method,*args,&blk)
         method_name = method.to_s.split('_',2)
-        if method_name.first =~ /^mock_/ and defined?(method_name.camelize)
+        if method_name.first == 'mock' and defined?(method_name.last.camelize)
           class_name = method.to_s.split('_',2).last
           mock_model(class_name.camelize.constantize,*args)
         else
