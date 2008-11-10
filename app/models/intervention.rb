@@ -126,8 +126,8 @@ class Intervention < ActiveRecord::Base
 
   def send_creation_emails
     #PENDING
-    unless self.called_internally
-      Notifications.deliver_intervention_starting
+    unless self.called_internally or ENV["RAILS_ENV"]=='test'
+      Notifications.deliver_intervention_starting 
     end
 
     true
