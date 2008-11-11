@@ -1,1 +1,26 @@
-Intervention_Starting
+<%= d = DateTime.now.strftime("%B %d, %Y") %>
+
+Hello, <%=@participants.collect(&:fullname).uniq.join(",")%>:
+
+The following intervention is scheduled to begin on <%= @interventions.first.start_date %>:
+
+Intervention: <%= @interventions.first.title %>
+Students:     <%= @interventions.collect{|i| link_to(i.student.fullname,'')}.join(",") %>
+
+Team:
+  <% @participants.sort_by(&:role).each do |p| %>
+  <%=p.role_title %>  <%= p.fullname %>
+<% end %>
+
+
+<% if @interventions.first.intervention_probe_assignments.active.any? %>
+  The following progress monitor has been automatically assigned:  <%=@interventions.first.probe_definitions.titles  %>.
+<% else %>
+  Please assign a progress monitor to each intervention.
+<% end %>
+
+
+Please login to SIMS to view intervention details and enter student's progress monitoring data by clicking on one of the students above.
+
+
+Thank you.

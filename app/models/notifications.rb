@@ -3,7 +3,7 @@ class Notifications < ActionMailer::Base
 
   def principal_override_request(sent_at = Time.now)
     subject    'Notifications#principal_override_request'
-    recipients ''
+    @recipients ''
     from       ''
     sent_on    sent_at
     
@@ -12,25 +12,27 @@ class Notifications < ActionMailer::Base
 
   def principal_override_response(sent_at = Time.now)
     subject    'Notifications#principal_override_response'
-    recipients ''
+    @recipients ''
     from       ''
     sent_on    sent_at
     
     body       :greeting => 'Hi,'
   end
 
-  def intervention_starting(sent_at = Time.now)
-    subject    'Notifications#intervention_starting'
-    recipients ''
-    from       ''
-    sent_on    sent_at
+  def intervention_starting(interventions)
+    interventions=Array(interventions)
+    participants=interventions.first.participants_with_author
+    @recipients = participants.collect(&:email).uniq.join(',')
+    subject    'Student Intervention Starting'
+    from       'SIMS <b723176@madison.k12.wi.us>'
+    sent_on    Time.now
     
-    body       :greeting => 'Hi,'
+    body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end
 
   def intervention_ending_reminder(sent_at = Time.now)
     subject    'Notifications#intervention_ending_reminder'
-    recipients ''
+    @recipients ''
     from       ''
     sent_on    sent_at
     
@@ -39,7 +41,7 @@ class Notifications < ActionMailer::Base
 
   def intervention_reminder(sent_at = Time.now)
     subject    'Notifications#intervention_reminder'
-    recipients ''
+    @recipients ''
     from       ''
     sent_on    sent_at
     
@@ -48,7 +50,7 @@ class Notifications < ActionMailer::Base
 
   def intervention_participant_added(sent_at = Time.now)
     subject    'Notifications#intervention_participant_added'
-    recipients ''
+    @recipients ''
     from       ''
     sent_on    sent_at
     

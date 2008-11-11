@@ -99,6 +99,11 @@ class Intervention < ActiveRecord::Base
   end
 
 
+ def participants_with_author
+   intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
+
+ end
+
 
   protected
   def create_other_students
@@ -109,7 +114,7 @@ class Intervention < ActiveRecord::Base
     if self.apply_to_all =="1"
       student_ids=self.selected_ids
       student_ids.delete(self.student_id.to_s)
-      student_ids.each do |student_id|
+      @interventions=student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false,:auto_implementer=>self.auto_implementer,:called_internally=>true))
       end
     end
@@ -126,8 +131,8 @@ class Intervention < ActiveRecord::Base
 
   def send_creation_emails
     #PENDING
-    unless self.called_internally or ENV["RAILS_ENV"]=='test'
-      Notifications.deliver_intervention_starting 
+    unless self.called_internally 
+      Notifications.deliver_intervention_starting(@interventions | Array(self))
     end
 
     true

@@ -143,4 +143,8 @@ class User < ActiveRecord::Base
 		last_name.to_s + ', ' + first_name.to_s
 	end
 
+        def email
+          "#{self.username}@sims.vegantech.com"
+        end
+
 end
