@@ -94,4 +94,14 @@ class Student < ActiveRecord::Base
       find(:all,:include=>:flags,:joins=>"left outer join flags as ig on ig.flagtype=flags.flagtype and ig.type='IgnoreFlag' and ig.person_id=flags.person_id",:conditions=>["ig.flagtype is null and flags.flagtype in (?)",flagtype])
     end
   end
+
+
+
+  def principals
+    #Find principals for student 
+    #TODO combine groups and special groups and get their principals
+
+    [User.find_by_username('alphaprin')]
+  end
+
 end

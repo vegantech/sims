@@ -10,13 +10,13 @@ class Notifications < ActionMailer::Base
   end
 
 
-  def principal_override_request(sent_at = Time.now)
-    subject    'Notifications#principal_override_request'
-    recipients ''
-    from       ''
-    sent_on    sent_at
+  def principal_override_request(override)
+    subject    '[SIMS] Principal Override Request'
+    recipients override.student.principals.collect(&:email).join(',')
+    from       'SIMS <b723176@madison.k12.wi.us>'
+    sent_on    Time.now
     
-    body       :greeting => 'Hi,'
+    body       :override=>override
   end
 
   def principal_override_response(sent_at = Time.now)
@@ -33,7 +33,7 @@ class Notifications < ActionMailer::Base
     participants=interventions.first.participants_with_author
 
     recipients  participants.collect(&:email).uniq.join(',')
-    subject    'Student Intervention Starting'
+    subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <b723176@madison.k12.wi.us>'
     sent_on    Time.now
     

@@ -13,11 +13,18 @@ class PrincipalOverride < ActiveRecord::Base
   REJECTED_SEEN = 3
 
   validates_presence_of :teacher_request, :message => "reason must be provided"
+  after_create :email_principals
+
+  protected
 
   def after_initialize
     self.start_tier = student.max_tier if start_tier.blank?
 
+  end
 
+
+  def email_principals
+    Notifications.deliver_principal_override_request(self)
   end
 
 

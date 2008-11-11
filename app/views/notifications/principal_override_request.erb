@@ -1,3 +1,13 @@
-Notifications#principal_override_request
+<%= d = DateTime.now.strftime("%B %d, %Y") %>
 
-Find me in app/views/notifications/principal_override_request.erb
+Hello, <%=@override.student.principals.collect(&:fullname).uniq.join(",")%>:
+
+<%=@override.teacher.fullname %> has requested a principal override for <%=@override.student.fullname %>.
+
+The current tier is: <%=@override.start_tier.title %>.
+
+The reason for this request is: <%= @override.teacher_request %>.
+
+Please login to <%=link_to 'SIMS', root_url %> to accept or reject this override request.
+
+Thank you.
