@@ -1,0 +1,18 @@
+<p>
+  <b>Intervention:</b>
+  <%=h @intervention_participant.intervention %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @intervention_participant.user %>
+</p>
+
+<p>
+  <b>Role:</b>
+  <%=h @intervention_participant.role %>
+</p>
+
+
+<%= link_to 'Edit', edit_intervention_participant_path(@intervention_participant) %> |
+<%= link_to 'Back', intervention_participants_path %>
