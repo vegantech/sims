@@ -22,7 +22,7 @@ describe ApplicationController do
   describe 'authorize' do
     
     it 'should return true if authorized' do
-      controller.should_receive(:action_group_for).and_return("read")
+      controller.should_receive(:action_group_for_current_action).and_return("read")
       user=mock_user
       controller.should_receive(:current_user).and_return(user)
       user.should_receive(:authorized_for?).with('application','read').and_return(true)
@@ -31,7 +31,7 @@ describe ApplicationController do
     end
 
     it 'should redirect and set a flash message if not authorized' do
-      controller.should_receive(:action_group_for).and_return("read")
+      controller.should_receive(:action_group_for_current_action).and_return("read")
       user=mock_user
       controller.should_receive(:current_user).and_return(user)
       user.should_receive(:authorized_for?).with('application','read').and_return(false)
@@ -45,16 +45,23 @@ describe ApplicationController do
     end
   end
 
-  describe 'action_group_for' do
-    it 'should return read or write for the default restful actions' do
-      pending
-      #action_group_for(action_name)
+  describe 'action_group_for_current_action' do
+    it 'should return write for create' do
+      controller.stub!(:action_name=>"create")
+      controller.send(:action_group_for_current_action).should == "write"
     end
-    
-    
+
+    it 'should return read for index' do
+      controller.stub!(:action_name=>"index")
+      controller.send(:action_group_for_current_action).should == "read"
+    end
+      
+      
+    it 'should return nil for search' do
+      controller.stub!(:action_name=>"search")
+      controller.send(:action_group_for_current_action).should be_nil
+    end
+
   end
-
-
-
 
 end

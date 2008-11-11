@@ -74,19 +74,24 @@ class ApplicationController < ActionController::Base
   def authorize
 
     controller=self.class.controller_path  #may need to change this
-    action_group=action_group_for(action_name)
+    action_group=action_group_for_current_action
     unless current_user.authorized_for?(controller,action_group)
       flash[:notice] = "You are not authorized to access that page"
       redirect_to root_url
       return false
     end
     true
-
   end
 
-  def action_group_for(n)
-    #put in the defaults here,   override this and call super in individual controllers
-    "read"
+  def action_group_for_current_action
+    if ['create', 'update', 'delete', 'new', 'edit'].include?(action_name)
+      'write'
+    elsif ['index', 'show'].include?(action_name)
+      #put in the defaults here,   override this and call super in individual controllers
+      "read"
+    else
+      nil
+    end
   end
 
 
