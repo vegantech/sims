@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: users
 #
@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   has_many :groups, :through=> :user_group_assignments
   has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
   has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
+  has_and_belongs_to_many :roles
 
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name

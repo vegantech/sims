@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: recommendations
 #
@@ -13,6 +13,11 @@
 #  created_at                   :datetime
 #  updated_at                   :datetime
 #  recommendation_definition_id :integer
+#  draft                        :boolean
+#  district_id                  :integer
+#  tier_id                      :integer
+#  student_id                   :integer
+#  promoted                     :boolean
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

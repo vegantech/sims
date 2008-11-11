@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: users
 #
@@ -11,6 +11,7 @@
 #  district_id  :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 

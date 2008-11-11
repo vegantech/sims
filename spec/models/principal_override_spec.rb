@@ -1,3 +1,21 @@
+# == Schema Information
+# Schema version: 20081111204313
+#
+# Table name: principal_overrides
+#
+#  id                 :integer         not null, primary key
+#  teacher_id         :integer
+#  student_id         :integer
+#  principal_id       :integer
+#  status             :integer
+#  start_tier_id      :integer
+#  end_tier_id        :integer
+#  principal_response :string(1024)
+#  teacher_request    :string(1024)
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PrincipalOverride do

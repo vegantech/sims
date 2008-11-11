@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081111204313
+#
+# Table name: probe_questions
+#
+#  id                  :integer         not null, primary key
+#  probe_definition_id :integer
+#  number              :integer
+#  operator            :string(255)
+#  first_digit         :integer
+#  second_digit        :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ProbeQuestion do

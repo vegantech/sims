@@ -1,15 +1,16 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: checklist_definitions
 #
-#  id          :integer         not null, primary key
-#  text        :text
-#  directions  :text
-#  active      :boolean
-#  district_id :integer
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id                           :integer         not null, primary key
+#  text                         :text
+#  directions                   :text
+#  active                       :boolean
+#  district_id                  :integer
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#  recommendation_definition_id :integer
 #
 
 class ChecklistDefinition < ActiveRecord::Base
