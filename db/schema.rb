@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081111204313) do
+ActiveRecord::Schema.define(:version => 20081111212240) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -325,6 +325,15 @@ ActiveRecord::Schema.define(:version => 20081111204313) do
     t.integer  "probe_definition_id"
     t.string   "note"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rights", :force => true do |t|
+    t.string   "controller"
+    t.boolean  "read"
+    t.boolean  "write"
+    t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
