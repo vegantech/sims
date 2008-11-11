@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081110181227) do
+ActiveRecord::Schema.define(:version => 20081111051647) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -207,6 +207,19 @@ ActiveRecord::Schema.define(:version => 20081110181227) do
     t.integer  "goal_definition_id"
     t.integer  "position"
     t.boolean  "disabled"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "principal_overrides", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "student_id"
+    t.integer  "principal_id"
+    t.integer  "status"
+    t.integer  "start_tier_id"
+    t.integer  "end_tier_id"
+    t.string   "principal_response", :limit => 1024
+    t.string   "teacher_request",    :limit => 1024
     t.datetime "created_at"
     t.datetime "updated_at"
   end

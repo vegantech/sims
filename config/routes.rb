@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :principal_overrides
+
 
   map.resources :probe_questions
 
