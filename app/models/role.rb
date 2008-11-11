@@ -18,7 +18,7 @@ class Role < ActiveRecord::Base
   belongs_to :district
   belongs_to :state
   belongs_to :country
-  has_many :rights
+  has_many :rights, :dependent=>:destroy
   has_and_belongs_to_many :users
 
   acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this

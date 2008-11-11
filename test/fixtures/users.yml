@@ -86,4 +86,16 @@ nogroups:
   schools: alpha
   <<: *DEFAULTS
 
+district_admin:
+  first_name: Default
+  last_name: District_Admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  district: wi_mmsd
+  <<: *DEFAULTS
 
+
+district_content_builder:
+  first_name: District
+  last_name: Content Builder
+  district: wi_mmsd
+  passwordhash: <%= User.encrypted_password("district_content_builder") %>
