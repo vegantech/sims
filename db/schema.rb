@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081111051647) do
+ActiveRecord::Schema.define(:version => 20081111203122) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -189,18 +189,6 @@ ActiveRecord::Schema.define(:version => 20081111051647) do
     t.datetime "updated_at"
   end
 
-  create_table "interventions_probe_assignments", :force => true do |t|
-    t.integer  "intervention_id"
-    t.integer  "probe_definition_id"
-    t.integer  "frequency_multiplier"
-    t.integer  "frequency_id"
-    t.datetime "first_date"
-    t.datetime "end_date"
-    t.boolean  "disabled",             :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -227,7 +215,8 @@ ActiveRecord::Schema.define(:version => 20081111051647) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.string   "grade_level"
+    t.integer  "district_id"
+    t.integer  "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -264,8 +253,9 @@ ActiveRecord::Schema.define(:version => 20081111051647) do
   create_table "probes", :force => true do |t|
     t.datetime "administered_at"
     t.integer  "score"
+    t.string   "assessment_type"
     t.integer  "district_id"
-    t.integer  "intervention_probe_assignment_id"
+    t.integer  "intervention_probe_assignmnet_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -339,6 +329,17 @@ ActiveRecord::Schema.define(:version => 20081111051647) do
     t.datetime "updated_at"
   end
 
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.integer  "district_id"
+    t.integer  "state_id"
+    t.integer  "country_id"
+    t.boolean  "system",      :default => false
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "id_district"
@@ -358,9 +359,8 @@ ActiveRecord::Schema.define(:version => 20081111051647) do
     t.integer  "user_id"
     t.integer  "district_id"
     t.integer  "school_id"
-    t.integer  "grouptype"
     t.string   "grade"
-    t.string   "integer"
+    t.string   "type"
     t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"

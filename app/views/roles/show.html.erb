@@ -1,0 +1,33 @@
+<p>
+  <b>Name:</b>
+  <%=h @role.name %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @role.district %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%=h @role.state %>
+</p>
+
+<p>
+  <b>Country:</b>
+  <%=h @role.country %>
+</p>
+
+<p>
+  <b>System:</b>
+  <%=h @role.system %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%=h @role.position %>
+</p>
+
+
+<%= link_to 'Edit', edit_role_path(@role) %> |
+<%= link_to 'Back', roles_path %>
