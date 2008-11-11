@@ -32,8 +32,13 @@ describe Intervention do
       :time_length_id => 1 ,
       :time_length_number => "1",
       :active => true,
+      :user=> User.new,
+      :intervention_definition => InterventionDefinition.new,
+      :student => Student.new
     }
   end
+
+  
 
   it "should create a new instance given valid attributes" do
     Intervention.create!(@valid_attributes)

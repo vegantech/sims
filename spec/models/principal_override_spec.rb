@@ -4,7 +4,8 @@ describe PrincipalOverride do
   before(:each) do
     @valid_attributes = {
       :status => "1",
-      :teacher_request => "value for fufillment_reason"
+      :teacher_request => "value for fufillment_reason",
+      :student=>mock_student(:max_tier=>Tier.new(:title=>"TIER 1"))
     }
   end
 
