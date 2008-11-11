@@ -1,12 +1,10 @@
 class AllControllers
-
-   private
+  #TODO Spec this
   def self.names
     #generate dynamically
     ["students","interventions"]
   end
-
-  public
   NAMES=self.names
+
 
 end

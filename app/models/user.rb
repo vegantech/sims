@@ -147,8 +147,19 @@ class User < ActiveRecord::Base
 		last_name.to_s + ', ' + first_name.to_s
 	end
 
-        def email
-          "#{self.username}@sims.vegantech.com"
-        end
+  def email
+    "#{self.username}@sims.vegantech.com"
+  end
+
+  def authorized_for?(controller,action_group)
+    return true
+    if action_group == "read"
+      rights.read.find_by_controller(controller)
+    elsif action_group == "write"
+      rights.write.find_by_controller(controller)
+    else
+      return false
+    end
+  end
 
 end

@@ -215,8 +215,7 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
   create_table "probe_definition_benchmarks", :force => true do |t|
     t.integer  "probe_definition_id"
     t.integer  "benchmark"
-    t.integer  "district_id"
-    t.integer  "grade_level"
+    t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -253,9 +252,8 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
   create_table "probes", :force => true do |t|
     t.datetime "administered_at"
     t.integer  "score"
-    t.string   "assessment_type"
     t.integer  "district_id"
-    t.integer  "intervention_probe_assignmnet_id"
+    t.integer  "intervention_probe_assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -373,8 +371,9 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
     t.integer  "user_id"
     t.integer  "district_id"
     t.integer  "school_id"
+    t.integer  "grouptype"
     t.string   "grade"
-    t.string   "type"
+    t.string   "integer"
     t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"

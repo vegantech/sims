@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   #
   #
-  before_filter :authenticate
+  before_filter :authenticate, :authorize
 
   
   private
@@ -70,5 +70,25 @@ class ApplicationController < ActionController::Base
     end
     true
   end
+
+  def authorize
+    return true
+
+    controller=self.class.controller_path  #may need to change this
+    action_group=action_group_for(action_name)
+    unless current_user.authorized_for?(controller,action_group)
+      flash[:notice] = "You are not authorized to access that page"
+      redirect_to root_url
+      return false
+    end
+    true
+
+  end
+
+  def action_group_for(n)
+    #put in the defaults here,   override this and call super in individual controllers
+    "read"
+  end
+
 
 end
