@@ -1,5 +1,14 @@
 class Notifications < ActionMailer::Base
-  
+  if RAILS_ENV == 'production'
+
+   default_url_options[:host] = 'sims-open.vegantech.com'
+   default_url_options[:port] = 80
+  else
+
+    default_url_options[:host] = 'localhost'
+    default_url_options[:port] = 3000
+  end
+
 
   def principal_override_request(sent_at = Time.now)
     subject    'Notifications#principal_override_request'

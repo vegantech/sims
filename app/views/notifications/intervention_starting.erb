@@ -5,7 +5,7 @@ Hello, <%=@participants.collect(&:fullname).uniq.join(",")%>:
 The following intervention is scheduled to begin on <%= @interventions.first.start_date %>:
 
 Intervention: <%= @interventions.first.title %>
-Students:     <%= @interventions.collect{|i| link_to(i.student.fullname,'')}.join(",") %>
+Students:     <%= @interventions.collect{|i| link_to(i.student.fullname,intervention_url(i))}.join(",") %>
 
 Team:
   <% @participants.sort_by(&:role).each do |p| %>
