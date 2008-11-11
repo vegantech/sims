@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PrincipalOverridesController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   def mock_principal_override(stubs={})
     @mock_principal_override ||= mock_model(PrincipalOverride, stubs)

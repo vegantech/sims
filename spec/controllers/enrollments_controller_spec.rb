@@ -3,6 +3,7 @@ require 'test/unit'
 
 describe  EnrollmentsController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
   fixtures :enrollments
   it 'should get index' do
     get :index

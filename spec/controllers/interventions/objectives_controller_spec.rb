@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::ObjectivesController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   #Delete these examples and add some real ones
   it "should use Interventions::ObjectivesController" do

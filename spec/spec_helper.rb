@@ -55,5 +55,14 @@ Spec::Runner.configure do |config|
   end
 
 
+  describe "an authorized controller", :shared => true do
+    before(:each) do
+      controller.should_receive(:authorize).any_number_of_times.and_return(true)
+      controller.class.before_filters.should include(:authorize)
+    end
+
+  end
+
+
 
 end

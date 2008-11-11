@@ -3,6 +3,7 @@ require 'test/unit'
 
 describe StatesController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
   fixtures :states
   def test_should_get_index
     get :index

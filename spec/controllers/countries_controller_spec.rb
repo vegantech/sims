@@ -3,6 +3,7 @@ require 'test/unit'
 
 describe CountriesController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
   fixtures :countries
   def test_should_get_index
     get :index

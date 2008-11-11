@@ -72,7 +72,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    return true
 
     controller=self.class.controller_path  #may need to change this
     action_group=action_group_for(action_name)

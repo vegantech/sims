@@ -1,5 +1,5 @@
 class LoginController < ApplicationController
-  skip_before_filter :authenticate
+  skip_before_filter :authenticate, :authorize
   def login
     @user=User.new(:username=>params[:username])
     if request.get?

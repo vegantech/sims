@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentCommentsController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   def mock_student_comment(stubs={})
     @mock_student_comment ||= mock_model(StudentComment, stubs)
