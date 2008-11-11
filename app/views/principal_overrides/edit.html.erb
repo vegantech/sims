@@ -1,0 +1,40 @@
+<h1>Editing principal_override</h1>
+
+<% form_for(@principal_override) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :teacher %><br />
+    <%= f.text_field :teacher %>
+  </p>
+  <p>
+    <%= f.label :student %><br />
+    <%= f.text_field :student %>
+  </p>
+  <p>
+    <%= f.label :principal %><br />
+    <%= f.text_field :principal %>
+  </p>
+  <p>
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.label :start_tier %><br />
+    <%= f.text_field :start_tier %>
+  </p>
+  <p>
+    <%= f.label :end_tier %><br />
+    <%= f.text_field :end_tier %>
+  </p>
+  <p>
+    <%= f.label :fufillment_reason %><br />
+    <%= f.text_field :fufillment_reason %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @principal_override %> |
+<%= link_to 'Back', principal_overrides_path %>

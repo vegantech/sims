@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  teacher: 
+  student: 
+  principal: 
+  status: 1
+  start_tier: 
+  end_tier: 
+  fufillment_reason: MyString
+
+two:
+  teacher: 
+  student: 
+  principal: 
+  status: 1
+  start_tier: 
+  end_tier: 
+  fufillment_reason: MyString

@@ -4,4 +4,11 @@
     <ul><%= render :partial => 'recommendations/recommendation', :collection=> r %></ul>
   <% end %>
 
-<%=link_to "Complete Conclusion and Recommendation", new_recommendation_url unless @student.checklist_definition.recommendation_definition%>
+  <%=link_to "Complete Conclusion and Recommendation", new_recommendation_url unless @student.checklist_definition.recommendation_definition%> <br />
+
+  <span id="override_out">
+    <%= link_to_remote_degrades("Request Principal Override to unlock next tier", :url=>new_principal_override_url) %>
+  </span>
+  <div id="override" style="display:none">
+  </div>
+

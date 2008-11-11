@@ -1,0 +1,38 @@
+<p>
+  <b>Teacher:</b>
+  <%=h @principal_override.teacher %>
+</p>
+
+<p>
+  <b>Student:</b>
+  <%=h @principal_override.student %>
+</p>
+
+<p>
+  <b>Principal:</b>
+  <%=h @principal_override.principal %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @principal_override.status %>
+</p>
+
+<p>
+  <b>Start tier:</b>
+  <%=h @principal_override.start_tier %>
+</p>
+
+<p>
+  <b>End tier:</b>
+  <%=h @principal_override.end_tier %>
+</p>
+
+<p>
+  <b>Fufillment reason:</b>
+  <%=h @principal_override.fufillment_reason %>
+</p>
+
+
+<%= link_to 'Edit', edit_principal_override_path(@principal_override) %> |
+<%= link_to 'Back', principal_overrides_path %>

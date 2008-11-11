@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
   has_many :groups, :through=> :user_group_assignments
+  has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
+  has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
+
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id

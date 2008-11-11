@@ -1,0 +1,16 @@
+<% form_remote_for(:principal_override,:url=>principal_overrides_path) do |f| %>
+  <%= f.error_messages %>
+  
+    <%= f.label :start_tier, "Current Tier:" %>
+    <%= @principal_override.start_tier.title %>
+  </p>
+  <p>
+  <%= f.label :teacher_request, "Reason for Request" %> <br />
+    <%= f.text_area :teacher_request, :rows=>6, :cols=>50%>
+  </p>
+  <p>
+    <%= f.submit "Submit Request" %>
+  </p>
+<% end %>
+
+<%= link_to 'Cancel', @principal_override.student %>
