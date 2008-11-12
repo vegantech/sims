@@ -153,13 +153,7 @@ class User < ActiveRecord::Base
   end
 
   def authorized_for?(controller,action_group)
-    if action_group == "read"
-      rights.read.find_by_controller(controller)
-    elsif action_group == "write"
-      rights.write.find_by_controller(controller)
-    else
-      return false
-    end
+    roles.has_controller_and_action_group?(controller,action_group)
   end
 
 end

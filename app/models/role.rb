@@ -25,6 +25,11 @@ class Role < ActiveRecord::Base
 
   validate :belongs_to_exactly_one
 
+  def self.has_controller_and_action_group?(controller,action_group)
+    return false unless %w{ read write }.include?(action_group)
+    find(:all).any?{|r| r.rights.find_by_controller(controller,:conditions=>["#{action_group}=?",true])}
+  end
+
   private
 
   def belongs_to_exactly_one

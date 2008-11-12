@@ -6,10 +6,4 @@ class Right < ActiveRecord::Base
   
   validates_inclusion_of :controller, :in => AllControllers::NAMES
 
-  named_scope :read, :conditions => {:read => true}
-  named_scope :write, :conditions => {:write => true}
-  
-
-  
-
 end
