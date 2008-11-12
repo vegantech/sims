@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
   has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
   has_and_belongs_to_many :roles
+  has_many :rights, :through => :roles
 
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
@@ -152,7 +153,6 @@ class User < ActiveRecord::Base
   end
 
   def authorized_for?(controller,action_group)
-    return true
     if action_group == "read"
       rights.read.find_by_controller(controller)
     elsif action_group == "write"

@@ -79,6 +79,40 @@ describe User do
   end
 
 
+  describe 'authorized_ for' do 
+    it 'should return false if unknown action_group_type' do
+      User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
+    end
+
+    it 'should call check for read rights when group is read' do
+      user=User.new
+      rights=[mock_right]
+      
+      Right.should_receive(:read).and_return(rights)
+      rights.should_receive(:find_by_controller).with('test_controller').and_return(true)
+      user.rights = rights
+
+      user.authorized_for?('test_controller','read').should == true
+      
+      
+    end
+
+    it 'should call check for write rights when group is write' do
+      user=User.new
+      rights=[mock_right]
+      
+      Right.should_receive(:write).and_return(rights)
+      rights.should_receive(:find_by_controller).with('test_controller').and_return(true)
+      user.rights = rights
+
+      user.authorized_for?('test_controller','write').should == true
+ 
+    end
+    
+  end
+
+
+
 
 
 
