@@ -85,27 +85,16 @@ describe User do
     end
 
     it 'should call check for read rights when group is read' do
-      user=User.new
-      rights=[mock_right]
-      
-      Right.should_receive(:read).and_return(rights)
-      rights.should_receive(:find_by_controller).with('test_controller').and_return(true)
-      user.rights = rights
-
-      user.authorized_for?('test_controller','read').should == true
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read').and_return(true)
+      User.new.authorized_for?('test_controller','read').should == true
       
       
     end
 
     it 'should call check for write rights when group is write' do
-      user=User.new
-      rights=[mock_right]
       
-      Right.should_receive(:write).and_return(rights)
-      rights.should_receive(:find_by_controller).with('test_controller').and_return(true)
-      user.rights = rights
-
-      user.authorized_for?('test_controller','write').should == true
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write').and_return(true)
+      User.new.authorized_for?('test_controller','write').should == true
  
     end
     

@@ -37,4 +37,18 @@ describe Role do
     Role.new(@valid_attributes.merge(:country_id =>1, :system =>false)).should be_valid
     
   end
+         
+
+  describe 'has_controller_and_action_group?' do
+    it 'should return nothing when there are no matching controllers and something when there is' do
+      r= Role.create!(@valid_attributes.merge(:district_id=>1))
+      r.rights.create!(:controller=>'students',:read=>true)
+      Role.has_controller_and_action_group?('puppies', 'read').should == false
+      Role.has_controller_and_action_group?('students', 'read').should == true
+      Role.has_controller_and_action_group?('students', 'write').should == false
+      Role.has_controller_and_action_group?('students', 'unknown').should == false
+    end
+      
+
+  end
 end
