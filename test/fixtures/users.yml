@@ -17,6 +17,7 @@
 
 DEFAULTS: &DEFAULTS
   username: $LABEL
+  roles: regular_user
 
 one:
   passwordhash: 

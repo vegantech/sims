@@ -13,16 +13,4 @@ class SchoolsController < ApplicationController
   end
 
 
-
-
-  private
-  def action_group_for_current_action
-    if %w{select}.include?(action_name)
-      'read'
-    else
-      super
-    end
-  end
-
-
 end

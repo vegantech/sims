@@ -97,7 +97,7 @@ class StudentsController < ApplicationController
   end
 
   def action_group_for_current_action
-    if %w{grade_search member_search search select}.include?(action_name)
+    if %w{grade_search member_search search}.include?(action_name)
       'read'
     else
       super
