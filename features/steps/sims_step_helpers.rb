@@ -89,4 +89,20 @@ private
 
 def default_user
 	@default_user ||= create_user 'default_user', 'd3f4ult'
+  default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
+  Right.create!(:role => default_role, :controller => 'students', :read => true)
+  Right.create!(:role => default_role, :controller => 'schools', :read => true)
+
+
+
+
+
+
+
+
+
+
+
+  #put other stuff above this
+  @default_user
 end

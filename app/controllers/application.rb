@@ -76,7 +76,10 @@ class ApplicationController < ActionController::Base
     controller=self.class.controller_path  #may need to change this
     action_group=action_group_for_current_action
     unless current_user.authorized_for?(controller,action_group)
-      flash[:notice] = "You are not authorized to access that page"
+      #log this
+      puts "controller is #{controller} action_name is #{action_name} action_group is #{action_group}"
+      
+      flash[:notice] =  "You are not authorized to access that page"
       redirect_to root_url
       return false
     end

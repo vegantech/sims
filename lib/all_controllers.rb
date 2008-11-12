@@ -2,7 +2,7 @@ class AllControllers
   #TODO Spec this
   def self.names
     #generate dynamically
-    ["students","interventions"]
+    ["interventions","schools","students"]
   end
   NAMES=self.names
 
