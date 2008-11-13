@@ -51,12 +51,12 @@ class Student < ActiveRecord::Base
 
 
   def latest_checklist
-    checklists.find(:first ,:order => "created_at ASC")
+    checklists.find(:first ,:order => "created_at DESC")
   end
 
   def checklist_definition
     puts "FIXME once a checklist is assigned to a student, they'll never get the new one"
-    return district.checklist_definitions.active_checklist_definition if checklists.empty?
+    return district.checklist_definitions.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
     latest_checklist.checklist_definition_cache
   end
 
