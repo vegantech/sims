@@ -27,7 +27,7 @@ class ChecklistsController < ApplicationController
   # GET /checklists/new.xml
   def new
     @checklist = current_student.checklists.new_from_teacher(current_user,import_previous_answers=true,score=true)
-    if @checklist.previous_checklist and (@checklist.previous_checklist.is_draft? or @checklist.previous_checklist.recommendation.blank?)
+    if @checklist.previous_checklist and (@checklist.previous_checklist.is_draft? or @checklist.previous_checklist.needs_recommendation?)
       flash[:notice]="Please submit/edit or delete the already started checklist first"
       redirect_to current_student
       return

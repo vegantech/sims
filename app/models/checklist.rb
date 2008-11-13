@@ -26,7 +26,7 @@ class Checklist < ActiveRecord::Base
   validate :cannot_pass_if_draft
   validates_presence_of :student_id, :user_id, :from_tier
 
-  delegate :recommendation_definition, :to=>:checklist_definition
+  delegate :recommendation_definition_id, :to=>:checklist_definition
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
 
@@ -62,7 +62,7 @@ class Checklist < ActiveRecord::Base
      elsif needs_recommendation?
        @needs_recommendation=true
        STATUS[:missing_rec]
-     elsif recommendation_definition.blank?
+     elsif recommendation_definition_id.blank?
        STATUS[:optional_checklist]
      else
        @deletable=false
@@ -238,7 +238,7 @@ class Checklist < ActiveRecord::Base
   end
  
   def needs_recommendation?
-    recommendation.blank?  && recommendation_definition && !is_draft?
+    recommendation.blank?  && recommendation_definition_id && !is_draft?
   end
 private
   
