@@ -92,7 +92,9 @@ Given /^load demo data$/ do
   fixtures=%w{users schools students enrollments districts 
     goal_definitions objective_definitions intervention_clusters intervention_definitions 
     tiers frequencies time_lengths groups user_group_assignments
-    special_user_groups}
+    special_user_groups
+    roles rights
+  }
 
   Fixtures.reset_cache
   fixtures.each do |f|

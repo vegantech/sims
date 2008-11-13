@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::ProbeAssignmentsController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   def mock_intervention_probe_assignments(stubs={})
     @mock_intervention_probe_assignments ||= mock_model(InterventionProbeAssignments, stubs)

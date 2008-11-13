@@ -96,4 +96,15 @@ class StudentsController < ApplicationController
     current_user.authorized_enrollments_for_school(current_school).search(session[:search])
   end
 
+  def action_group_for_current_action
+    if %w{grade_search member_search search}.include?(action_name)
+      'read'
+    else
+      super
+    end
+  end
+
+
+
+
 end

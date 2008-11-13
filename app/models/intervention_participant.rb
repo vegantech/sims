@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081111204313
+#
+# Table name: intervention_participants
+#
+#  id              :integer         not null, primary key
+#  intervention_id :integer
+#  user_id         :integer
+#  role            :integer         default(1)
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 class InterventionParticipant < ActiveRecord::Base
   belongs_to :user
   belongs_to :intervention

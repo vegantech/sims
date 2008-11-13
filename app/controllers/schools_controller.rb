@@ -11,4 +11,6 @@ class SchoolsController < ApplicationController
     flash[:notice] = @school.name + ' Selected' 
     redirect_to search_students_url
   end
+
+
 end

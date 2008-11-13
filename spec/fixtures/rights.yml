@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  controller: MyString
+  read: false
+  write: false
+  role: 
+
+two:
+  controller: MyString
+  read: false
+  write: false
+  role: 

@@ -15,7 +15,7 @@ class RecommendationsController < ApplicationController
 
   def create
     params[:recommendation][:draft]=!!params[:draft]
-    params[:recommendation][:user_id]=current_user.id
+    params[:recommendation][:user_id]=current_user[:id]
     if params[:checklist_id]
       @checklist = current_student.checklists.find(params[:checklist_id])
       @recommendation = @checklist.build_recommendation(params[:recommendation])

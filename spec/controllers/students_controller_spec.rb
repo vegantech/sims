@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentsController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   it 'should get index' do
     controller.should_receive(:student_search).and_return(['a','b','c'])

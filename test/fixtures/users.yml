@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: users
 #
@@ -17,6 +17,7 @@
 
 DEFAULTS: &DEFAULTS
   username: $LABEL
+  roles: regular_user
 
 one:
   passwordhash: 
@@ -86,4 +87,16 @@ nogroups:
   schools: alpha
   <<: *DEFAULTS
 
+district_admin:
+  first_name: Default
+  last_name: District_Admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  district: wi_mmsd
+  <<: *DEFAULTS
 
+
+district_content_builder:
+  first_name: District
+  last_name: Content Builder
+  district: wi_mmsd
+  passwordhash: <%= User.encrypted_password("district_content_builder") %>

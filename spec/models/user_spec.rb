@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081030035908
+# Schema version: 20081111204313
 #
 # Table name: users
 #
@@ -11,6 +11,7 @@
 #  district_id  :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
@@ -76,6 +77,29 @@ describe User do
       pending
     end
   end
+
+
+  describe 'authorized_ for' do 
+    it 'should return false if unknown action_group_type' do
+      User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
+    end
+
+    it 'should call check for read rights when group is read' do
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read').and_return(true)
+      User.new.authorized_for?('test_controller','read').should == true
+      
+      
+    end
+
+    it 'should call check for write rights when group is write' do
+      
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write').and_return(true)
+      User.new.authorized_for?('test_controller','write').should == true
+ 
+    end
+    
+  end
+
 
 
 

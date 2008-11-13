@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20081111204313
+#
+# Table name: probe_questions
+#
+#  id                  :integer         not null, primary key
+#  probe_definition_id :integer
+#  number              :integer
+#  operator            :string(255)
+#  first_digit         :integer
+#  second_digit        :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 probe_question_definition_00012: 
   updated_at: 2007-10-21 21:16:29 -07:00
   first_digit: 1

@@ -3,6 +3,7 @@ require 'test/unit'
 
 describe DistrictsController do
   it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
   fixtures :districts
   def test_should_get_index
     get :index
