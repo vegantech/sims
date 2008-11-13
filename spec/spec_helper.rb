@@ -57,8 +57,16 @@ Spec::Runner.configure do |config|
 
   describe "an authorized controller", :shared => true do
     before(:each) do
-      controller.should_receive(:authorize).any_number_of_times.and_return(true)
-      controller.class.before_filters.should include(:authorize)
+     controller.should_receive(:authorize).any_number_of_times.and_return(true)
+     controller.class.before_filters.should include(:authorize)
+    end
+
+    it 'should have all actions in action_groups (read or write for now.)' do
+      controller.class.public_instance_methods(false).all? do |public_action|
+        controller.stub!(:action_name => public_action.to_s)
+        controller.send(:action_group_for_current_action).should_not be_nil
+      end
+ 
     end
 
   end

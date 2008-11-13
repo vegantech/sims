@@ -100,3 +100,4 @@ district_content_builder:
   last_name: Content Builder
   district: wi_mmsd
   passwordhash: <%= User.encrypted_password("district_content_builder") %>
+  roles: district_builder

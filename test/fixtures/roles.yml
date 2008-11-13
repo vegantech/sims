@@ -21,3 +21,11 @@ regular_user:
   district: wi_mmsd
   position: 1
 
+district_builder:
+  name: $LABEL
+  district: wi_mmsd
+  position: 2
+
+
+
+

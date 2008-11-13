@@ -43,3 +43,100 @@ regular_interventions_definitions:
   read: true
   write: true
 
+regular_principal_overrides:
+  controller: 'principal_overrides'
+  role: regular_user
+  read: true
+  write: true
+
+regular_checklists:
+  controller: 'checklists'
+  role: regular_user
+  read: true
+  write: true
+
+regular_recommendations:
+  controller: 'recommendations'
+  role: regular_user
+  read: true
+  write: true
+
+regular_student_comments:
+  controller: 'student_comments'
+  role: regular_user
+  read: true
+  write: true
+
+regular_probes:
+  controller: 'interventions/probes'
+  role: regular_user
+  read: true
+  write: true
+
+regular_probe_assignments:
+  controller: 'interventions/probe_assignments'
+  role: regular_user
+  read: true
+  write: true
+
+district_builder_answers:
+  role: district_builder
+  controller: 'checklist_builder/answers'
+  read: true
+  write: true
+
+district_builder_checklists:
+  role: district_builder
+  controller: 'checklist_builder/checklists'
+  read: true
+  write: true
+
+district_builder_elements:
+  role: district_builder
+  controller: 'checklist_builder/elements'
+  read: true
+  write: true
+
+district_builder_questions:
+  role: district_builder
+  controller: 'checklist_builder/questions'
+  read: true
+  write: true
+
+
+district_builder_categories:
+  role: district_builder
+  controller: 'intervention_builder/categories'
+  read: true
+  write: true
+
+district_builder_goals:
+  role: district_builder
+  controller: 'intervention_builder/goals'
+  read: true
+  write: true
+
+district_builder_interventions:
+  role: district_builder
+  controller: 'intervention_builder/interventions'
+  read: true
+  write: true
+
+district_builder_objectives:
+  role: district_builder
+  controller: 'intervention_builder/objectives'
+  read: true
+  write: true
+
+district_builder_probes:
+  role: district_builder
+  controller: 'intervention_builder/probes'
+  read: true
+  write: true
+
+district_builder_objectives:
+  role: district_builder
+  controller: 'intervention_builder/recommended_monitors'
+  read: true
+  write: true
+
