@@ -220,7 +220,7 @@ class Checklist < ActiveRecord::Base
 
   def show_score?(check_previous=true)
     @show_score=false
-    if !promoted and recommendation and recommendation.should_advance?
+    if !promoted and recommendation and recommendation.should_advance
       @show_score=true
       
     elsif check_previous

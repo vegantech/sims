@@ -22,7 +22,7 @@ class Recommendation < ActiveRecord::Base
   belongs_to :student
   belongs_to :tier
   belongs_to :district
-  has_many :recommendation_answers
+  has_many :recommendation_answers, :dependent => :destroy
 
 
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
@@ -116,15 +116,19 @@ class Recommendation < ActiveRecord::Base
     @request_referral ||= (should_advance && recommendation == 5)
   end
 
+  def should_advance
+     RECOMMENDATION[recommendation][:promote] unless recommendation.blank? or self.draft?
+  end
+
   def before_save
     if draft?
-      promoted=false
+      self.promoted=false
       return true
     elsif errors.empty? and recommendation and RECOMMENDATION[recommendation][:promote]
       if checklist 
-        promoted=validate_for_tier_escalation
+        self.promoted=validate_for_tier_escalation
       else
-        promoted=true
+        self.promoted=true
       end
     end
   end
