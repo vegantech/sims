@@ -1,10 +1,9 @@
 class AllControllers
-  #TODO Spec this
   def self.names
-    #generate dynamically
-    ["custom_flags","interventions","roles","schools","students"]
+    Dir.chdir(File.dirname(__FILE__)+'/../app/controllers') do
+      Dir['**/*_controller.rb'].sort.map{|f| f.sub(/_controller.rb$/, '')}
+    end
   end
-  NAMES=self.names
 
-
+  NAMES = self.names
 end
