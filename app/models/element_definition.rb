@@ -25,13 +25,17 @@ class ElementDefinition < ActiveRecord::Base
 
 
   validates_presence_of :question_definition_id, :text, :kind
+  validates_uniqueness_of :kind, :scope => :question_defintion_id, :if => lambda{|e| e.kind.to_sym == :applicable} 
+  
+  validate :applicable_element_must_be_first_and_unique
 
 
   KINDS_OF_ELEMENTS = {  #:mcsa => "Multiple-Choice, Single Answer",
     :scale => "Scale",
     :sa => "Short Answer",
     :comment => "Comment",
-  :decision => "Decision" }
+  :decision => "Decision" ,
+  :applicable => "Applicable Choice"}
 
   def self.kinds_of_elements
     KINDS_OF_ELEMENTS
