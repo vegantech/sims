@@ -1,8 +1,17 @@
-require File.dirname(__FILE__)+'/sims_step_helpers'
+require File.dirname(__FILE__)+'/step_helpers'
 require File.dirname(__FILE__)+'/require_everything'
 
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
 	create_user user_name, password
+end
+
+Given /^I am a district admin$/ do
+  default_user
+  log_in
+  role = Role.create!(:name => "District Admin", :district_id => 1)
+  role.rights.create!(:controller=>"roles", :read=>true, :write=>true)
+  default_user.roles=[role]
+  
 end
 
 When /^I go to (.*)$/ do |page_name|
@@ -144,3 +153,6 @@ Then /^I should verify rjs has options (.*)$/ do |options|
   response.should have_options(Array(eval(options)))
 end
 
+Given /^I enter URL "(.*)"$/ do |url|
+  visits url
+end

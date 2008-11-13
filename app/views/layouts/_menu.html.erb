@@ -6,6 +6,9 @@
     <li><%= link_to 'Intervention Builder', intervention_builder_goals_url %></li>
     <li><%= link_to 'Probe Builder', intervention_builder_probes_url %></li>
     <li><%= link_to 'SIMS Virtual Outbox',{:controller=>'railmail'}, {:target=>:blank} %></li>
+<% if false %>
+    <li><%= link_to 'Role Management',roles_url %> </li>
+<% end %>
   <% else %>
     <li>Please login.</li>
     <li>For this demo, use oneschool as the username and password</li>

@@ -12,6 +12,8 @@ def go_to_page page_name
 		when 'search'
 			clicks_button 'Choose School'
 		when 'school selection'
+    when 'new role'
+
 		else
 			raise "Can't find mapping from \"#{page_name}\" to a path"
 		end

@@ -7,27 +7,17 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
-  <p>
-    <%= f.label :district %><br />
-    <%= f.text_field :district %>
-  </p>
-  <p>
-    <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </p>
-  <p>
-    <%= f.label :country %><br />
-    <%= f.text_field :country %>
-  </p>
-  <p>
-    <%= f.label :system %><br />
-    <%= f.check_box :system %>
-  </p>
-  <p>
-    <%= f.label :position %><br />
-    <%= f.text_field :position %>
-  </p>
-  <p>
+
+
+  <% f.object.rights.each do |right| %>
+  <% f.fields_for(right) do |right_field|%>
+    <%= right.controller %> <%= right_field.label :read %> <%=right_field.check_box :read %> <%=right_field.label :write %> <%=right_field.check_box :write %>
+  <% end %>
+  <% end %>
+
+
+
+ <p>
     <%= f.submit "Create" %>
   </p>
 <% end %>

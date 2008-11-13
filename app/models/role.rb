@@ -30,7 +30,17 @@ class Role < ActiveRecord::Base
     find(:all).any?{|r| r.rights.find_by_controller(controller,:conditions=>["#{action_group}=?",true])}
   end
 
+
+
   private
+
+  def after_initialize
+      puts "In after initialize"
+    unless rights.any?
+      self.rights.build(:controller=>"students")
+    end
+
+  end
 
   def belongs_to_exactly_one
     num_parents = [district_id, state_id, country_id, system].inject(0){|sum,val| sum += (val ? 1 : 0) }
