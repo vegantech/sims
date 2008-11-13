@@ -25,7 +25,7 @@ class ElementDefinition < ActiveRecord::Base
 
 
   validates_presence_of :question_definition_id, :text, :kind
-  validates_uniqueness_of :kind, :scope => :question_defintion_id, :if => lambda{|e| e.kind.to_s.to_sym == :applicable} 
+  validates_uniqueness_of :kind, :scope => :question_defintion_id, :if => lambda{|e| !e.kind.blank? && e.to_sym == :applicable} 
   
 
 
