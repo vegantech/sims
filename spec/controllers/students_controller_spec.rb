@@ -22,6 +22,7 @@ describe StudentsController do
         response.should render_template("index")
       end
     end
+
     describe 'with unauthorized student chosen' do
       before do
         e1=mock_enrollment
@@ -46,18 +47,16 @@ describe StudentsController do
         response.should render_template("index")
       end
 
-
     end
 
     describe 'with selected_students' do
        before do
-        e1=mock_enrollment
-        e2=mock_enrollment
-        e1.stub_association!(:student,:id=>"5")
-        e2.stub_association!(:student,:id=>"16")
+        e1 = mock_enrollment
+        e2 = mock_enrollment
+        e1.stub_association!(:student,:id => "5")
+        e2.stub_association!(:student,:id => "16")
         controller.should_receive(:student_search).and_return([e1,e2])
         get :select, :id => ["5", "16"]
-
        end
       
        it 'should set selected_students and selected_student' do
@@ -69,6 +68,24 @@ describe StudentsController do
         response.should redirect_to(student_url("5"))
       end
     end
+
+    # This tests ticket #94
+    describe 'without selecting all possible authorized students' do
+      it 'should set selected_students and selected_student' do
+        e1 = mock_enrollment
+        e2 = mock_enrollment
+        e3 = mock_enrollment
+        e1.stub_association!(:student, :id => "5")
+        e2.stub_association!(:student, :id => "16")
+        e3.stub_association!(:student, :id => '37')
+        controller.should_receive(:student_search).and_return([e1,e2,e3])
+
+        get :select, :id => ["5", "16"]
+        flash[:notice].should_not == 'Unauthorized Student selected'
+        session[:selected_students].should == ["5", "16"]
+        session[:selected_student].should == "5"
+      end
+    end
   end
 
   describe 'private methods' do
@@ -77,14 +94,13 @@ describe StudentsController do
     end
     it 'should perform student search' do
       pending
-    enrollments = mock_enrollment(:search => true)
-    school = mock_school(:enrollments => enrollments)
-    @user=mock_user(:authorized_enrollments_for_school=>enrollments)
-    controller.should_receive(:current_user).at_least(:once).and_return(@user)
-    controller.should_receive(:current_school).at_least(:once).and_return(school)
- 
-    end
 
+      enrollments = mock_enrollment(:search => true)
+      school = mock_school(:enrollments => enrollments)
+      @user=mock_user(:authorized_enrollments_for_school=>enrollments)
+      controller.should_receive(:current_user).at_least(:once).and_return(@user)
+      controller.should_receive(:current_school).at_least(:once).and_return(school)
+    end
 
   end
     
@@ -100,7 +116,6 @@ describe StudentsController do
         school.should_receive(:grades_by_user).with(user).and_return ['*','1','2']
         user.should_receive(:filtered_groups_by_school).with(school).and_return ['g1']
         user.should_receive(:filtered_members_by_school).with(school).and_return ['m1','m2']
-        
 
         get :search
 

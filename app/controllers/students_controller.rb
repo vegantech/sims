@@ -13,13 +13,15 @@ class StudentsController < ApplicationController
   end
 
   def select
-    # add selected students to session redirect to show
+    # add selected students to session, then redirect to show
     
     @students = student_search
-    student_ids = @students.collect {|s| s.student.id.to_s}
+    authorized_student_ids = @students.collect {|s| s.student.id.to_s}
+
     if params[:id].blank?
       flash[:notice] = 'No students selected'
-    elsif student_ids.to_set.subset?(params[:id].to_set)
+    # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
+    elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
       session[:selected_students] = params[:id]
       session[:selected_student] = session[:selected_students].first
       redirect_to student_url(session[:selected_student]) and return
