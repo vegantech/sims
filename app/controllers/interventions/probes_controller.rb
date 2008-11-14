@@ -1,5 +1,7 @@
 class Interventions::ProbesController < ApplicationController
   before_filter :load_intervention,:load_intervention_probe_assignment, :except=>:index
+
+  additional_write_actions [:new_assessment, :update_assessment, :save_assessment]
   
   def index
     @intervention=current_student.interventions.find(params[:intervention_id],:include=>{:intervention_probe_assignments=>[:probe_definition,:probes]})

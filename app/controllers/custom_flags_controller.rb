@@ -46,11 +46,11 @@ class CustomFlagsController < ApplicationController
     end
   end
 
+  private
   def enforce_session_selections
     #doesn't work.
     params[:student_id] = current_student_id
     params[:user_id] = current_user_id
   end
-
 
 end

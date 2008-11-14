@@ -85,15 +85,34 @@ class ApplicationController < ActionController::Base
     true
   end
 
+  
+  DEFAULT_READ_ACTIONS = ['index', 'select', 'show', 'preview']
+  DEFAULT_WRITE_ACTIONS =  ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'end', 'save_assessment','create_assessment', 'new_from_this', 'update_assessment', 'new_assessment']
+  @@read_actions = Hash.new(DEFAULT_READ_ACTIONS)
+  @@write_actions =Hash.new(DEFAULT_WRITE_ACTIONS)
   def action_group_for_current_action
-    if ['create', 'update', 'delete', 'new', 'edit'].include?(action_name)
+    
+    if @@write_actions[self.class.object_id].include?(action_name)
       'write'
-    elsif ['index', 'select', 'show'].include?(action_name)
+    elsif @@read_actions[self.class.object_id].include?(action_name)
       #put in the defaults here,   override this and call super in individual controllers
       "read"
     else
       nil
     end
   end
+
+  def self.show_read_actions
+    puts "read actions are: #{@@read_actions.inspect}."
+  end
+ 
+  def self.additional_read_actions(*args)
+     @@read_actions[self.object_id] = DEFAULT_READ_ACTIONS | Array(args).flatten.map(&:to_s)
+  end
+
+  def self.additional_write_actions(*args)
+     @@write_actions[self.object_id] = DEFAULT_WRITE_ACTIONS | Array(args).flatten.map(&:to_s)
+  end
+
 
 end

@@ -1,6 +1,7 @@
 class Interventions::ProbeAssignmentsController < ApplicationController
 
   before_filter :load_intervention
+  additional_write_actions  'disable_all'
   
   def index
     @intervention_probe_assignments = @intervention.intervention_probe_assignments.prepare_all
@@ -38,4 +39,5 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   def load_intervention
     @intervention ||=current_student.interventions.find(params[:intervention_id])
   end
+
 end

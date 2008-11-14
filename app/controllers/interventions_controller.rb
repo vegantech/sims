@@ -1,4 +1,10 @@
 class InterventionsController < ApplicationController
+    puts "class_name #{self.name}  -- write_actions #{@@write_actions[self.name].inspect}"
+  additional_write_actions 'end'
+    puts "class_name #{self.name}  -- write_actions #{@@write_actions[self.name].inspect}"
+
+
+
   include PopulateInterventionDropdowns
   # GET /interventions/1
   # GET /interventions/1.xml
@@ -80,5 +86,5 @@ class InterventionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
+  
 end

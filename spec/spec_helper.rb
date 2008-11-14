@@ -62,9 +62,10 @@ Spec::Runner.configure do |config|
     end
 
     it 'should have all actions in action_groups (read or write for now.)' do
-      controller.class.public_instance_methods(false).all? do |public_action|
+      controller.class.public_instance_methods(false).each do |public_action|
         controller.stub!(:action_name => public_action.to_s)
-        controller.send(:action_group_for_current_action).should_not be_nil
+        # controller.send(:action_group_for_current_action).should_not be_nil
+        flunk public_action.to_s if  controller.send(:action_group_for_current_action).blank?
       end
  
     end

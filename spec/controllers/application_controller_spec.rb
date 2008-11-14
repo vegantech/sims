@@ -58,7 +58,7 @@ describe ApplicationController do
       
       
     it 'should return nil for search' do
-      controller.stub!(:action_name=>"search")
+      controller.stub!(:action_name=>"kesds3search")
       controller.send(:action_group_for_current_action).should be_nil
     end
 

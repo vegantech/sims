@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
 	before_filter :enforce_session_selections, :except => [:index, :select, :search, :new, :create]
+  additional_read_actions %w{grade_search member_search search}
 
   # GET /students
   # GET /students.xml
@@ -97,15 +98,6 @@ class StudentsController < ApplicationController
   def student_search
     current_user.authorized_enrollments_for_school(current_school).search(session[:search])
   end
-
-  def action_group_for_current_action
-    if %w{grade_search member_search search}.include?(action_name)
-      'read'
-    else
-      super
-    end
-  end
-
 
 
 

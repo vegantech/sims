@@ -16,7 +16,7 @@ describe Interventions::ProbeAssignmentsController do
     @student=mock_student
     @intervention=mock_intervention
     @student.stub_association!(:interventions,:find=>@intervention)
-    controller.should_receive(:current_student).and_return(@student)
+    controller.stub!(:current_student=>@student)
   end
 
   it 'should load_intervention' do
