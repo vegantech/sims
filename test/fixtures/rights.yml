@@ -140,3 +140,19 @@ district_builder_objectives:
   read: true
   write: true
 
+
+regular_railmail:
+  role: regular_user
+  controller: 'railmail'
+  read: true
+  write: true
+
+
+
+district_builder_railmail:
+  role: district_builder
+  controller: 'railmail'
+  read: true
+  write: true
+
+
