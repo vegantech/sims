@@ -1,7 +1,5 @@
 class InterventionsController < ApplicationController
-    puts "class_name #{self.name}  -- write_actions #{@@write_actions[self.name].inspect}"
   additional_write_actions 'end'
-    puts "class_name #{self.name}  -- write_actions #{@@write_actions[self.name].inspect}"
 
 
 

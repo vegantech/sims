@@ -86,15 +86,15 @@ class ApplicationController < ActionController::Base
   end
 
   
-  DEFAULT_READ_ACTIONS = ['index', 'select', 'show', 'preview']
-  DEFAULT_WRITE_ACTIONS =  ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'end', 'save_assessment','create_assessment', 'new_from_this', 'update_assessment', 'new_assessment']
-  @@read_actions = Hash.new(DEFAULT_READ_ACTIONS)
-  @@write_actions =Hash.new(DEFAULT_WRITE_ACTIONS)
+  class_inheritable_array :read_actions,:write_actions
+  self.read_actions = ['index', 'select', 'show', 'preview']
+  self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all']
+  
+  
   def action_group_for_current_action
-    
-    if @@write_actions[self.class.object_id].include?(action_name)
+    if self.class.write_actions.include?(action_name)
       'write'
-    elsif @@read_actions[self.class.object_id].include?(action_name)
+    elsif self.class.read_actions.include?(action_name)
       #put in the defaults here,   override this and call super in individual controllers
       "read"
     else
@@ -107,11 +107,11 @@ class ApplicationController < ActionController::Base
   end
  
   def self.additional_read_actions(*args)
-     @@read_actions[self.object_id] = DEFAULT_READ_ACTIONS | Array(args).flatten.map(&:to_s)
+     self.read_actions = Array(args).flatten.map(&:to_s)
   end
 
   def self.additional_write_actions(*args)
-     @@write_actions[self.object_id] = DEFAULT_WRITE_ACTIONS | Array(args).flatten.map(&:to_s)
+     self.write_actions= Array(args).flatten.map(&:to_s)
   end
 
 
