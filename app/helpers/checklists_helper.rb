@@ -83,9 +83,9 @@ module ChecklistsHelper
     opts={}
     opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
     form.radio_button(:recommendation, k,opts) +
-      form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ?form.text_field(:other) : "")
+      form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ?form.text_field(:other) : "") if form.object.show_button?(k)
   end
-  a.join("<br />\n")
+  a.compact.join("<br />\n")
 
   #
  end

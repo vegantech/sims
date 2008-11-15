@@ -102,6 +102,11 @@ class Recommendation < ActiveRecord::Base
   end
 
 
+  def show_button?(k)
+    v=RECOMMENDATION[k]
+    !v[:readonly] || self.recommendation == k
+  end
+
 
   protected
 
