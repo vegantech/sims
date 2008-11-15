@@ -4,7 +4,7 @@
     <%= render :partial => f, 
     :locals => { :checklist => @checklist ,:edit=>true} %>
     <p>
-    <%= submit_tag "Submit and Make Recommendation" %>
+    <%= submit_tag "Submit#{' and Make Recommendation' if @checklist.checklist_definition.recommendation_definition}" %>
     <%= submit_tag "Save Draft", :name=>:save_draft %>
     </p>
     <%- end -%>
