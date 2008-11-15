@@ -54,8 +54,8 @@ class Recommendation < ActiveRecord::Base
           :cannot_refer => "Criteria not met (need 3 or above on all questions) for referral.",
           :ineligable_to_refer=> "Impairment Suspected, but eligibility not met.",
           :nonadvancing => "Recommendation submitted, continue working at same tier",
-          :passed =>  "Recommendation submitted, met criteria to move to next tier",
-          :failing_score => "Checklist submitted, did not meet criteria to move to next tier.",
+          :passed =>  "Recommendation submitted, next tier is available",
+          :failing_score => "Submitted, did not meet criteria to move to next tier.",
           :optional_checklist => "Optional Checklist Completed"
         }  
 
