@@ -1,1 +1,2 @@
 page.replace_html(:override,flash[:notice])
+page.replace('principal_override_request_sidebar', render_cell(:principal_overrides,:user_requests, :user=>@user))
