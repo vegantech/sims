@@ -2,22 +2,11 @@ class PrincipalOverridesController < ApplicationController
   # GET /principal_overrides
   # GET /principal_overrides.xml
   def index
-    @principal_overrides = PrincipalOverride.find(:all)
+    @principal_overrides = current_user.grouped_principal_overrides
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @principal_overrides }
-    end
-  end
-
-  # GET /principal_overrides/1
-  # GET /principal_overrides/1.xml
-  def show
-    @principal_override = PrincipalOverride.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @principal_override }
     end
   end
 
@@ -34,6 +23,7 @@ class PrincipalOverridesController < ApplicationController
   end
 
   # GET /principal_overrides/1/edit
+  # Principal response
   def edit
     @principal_override = PrincipalOverride.find(params[:id])
   end
@@ -77,10 +67,11 @@ class PrincipalOverridesController < ApplicationController
   # DELETE /principal_overrides/1
   # DELETE /principal_overrides/1.xml
   def destroy
-    @principal_override = PrincipalOverride.find(params[:id])
+    @principal_override = current_user.principal_override_requests.find(params[:id])
     @principal_override.destroy
 
     respond_to do |format|
+      format.js   {}
       format.html { redirect_to(principal_overrides_url) }
       format.xml  { head :ok }
     end

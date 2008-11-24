@@ -1,6 +1,7 @@
 class PrincipalOverridesCell < Cell::Base
   def user_requests
-    @requests=@opts[:user].principal_override_requests.count if @opts[:user]
+    user=@opts[:user] || User.find_by_id(session[:user_id])
+    @requests=user.principal_override_requests.count if user
     nil
   end
   def principal_responses
@@ -8,4 +9,6 @@ class PrincipalOverridesCell < Cell::Base
     @responses=0
     nil
   end
+
+
 end

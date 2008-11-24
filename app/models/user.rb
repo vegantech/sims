@@ -156,4 +156,15 @@ class User < ActiveRecord::Base
     roles.has_controller_and_action_group?(controller,action_group)
   end
 
+  def grouped_principal_overrides
+    overrides={}
+    overrides[:user_requests]=principal_override_requests
+
+    overrides
+  end
+
+  def to_s
+    fullname
+  end
+
 end
