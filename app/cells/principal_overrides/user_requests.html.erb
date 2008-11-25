@@ -1,3 +1,5 @@
 <div id='principal_override_request_sidebar'>
+<% if @requests.to_i >0 %>
   <%=link_to(pluralize(@requests,'Override Request'), principal_overrides_path)%>
+<% end %>
 </div>

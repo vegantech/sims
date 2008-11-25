@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :roles
 
-  map.resources :principal_overrides
+  map.resources :principal_overrides, :member => {:undo=> :put}
 
 
   map.resources :probe_questions

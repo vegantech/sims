@@ -1,1 +1,0 @@
-page.delete(dom_id(@principal_override))

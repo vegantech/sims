@@ -1,18 +1,7 @@
-<h1>Your Override Requests</h1>
-<div id="override_requests">
-  <%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:user_requests],:actions=>[:delete]} %>
-</div>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:user_requests],:actions=>[:delete], :header=>"Your Override Requests"} %>
 
 
-<% if @principal_overrides[:pending_requests] %>
-  <h1>Pending Requests</h1>
-  <div id="pending_overrides">
-  </div>
-<% end %>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:pending_requests],:actions=>[:accept, :reject], :header=>"Pending Requests"} %>
 
-<% if @principal_overrides[:responses] %>
-  <h1>Responses</h1>
-  <div id="pending_overrides">
-  </div>
-<% end %>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:principal_responses],:actions=>[:undo], :header=>"Responses"} %>
 

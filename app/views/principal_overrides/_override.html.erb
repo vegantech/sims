@@ -2,11 +2,14 @@
   <td><%=h override.teacher %></td>
   <td><%=h override.student %></td>
   <td><%=h override.principal %></td>
-  <td><%=h override.status %></td>
+  <td><%=h override.status_text %></td>
   <td><%=h override.start_tier %></td>
   <td><%=h override.end_tier%></td>
   <td><%=h override.teacher_request %></td>
   <td><%=h override.principal_response %></td>
-  <td><%= link_to 'Edit', edit_principal_override_path(override) if actions.include?(:edit)%></td>
-  <td><%= link_to 'Delete', override, :confirm => 'Are you sure?', :method => :delete if actions.include?(:delete)%></td>
+  <%[:accept,:reject].each do |a| %>
+    <td><%= link_to a.to_s.capitalize, edit_principal_override_path(override, :response=>a) if actions.include?(a)%></td>
+  <% end %>
+  <td><%= link_to_remote_degrades 'Delete', :url=>override, :confirm => 'Are you sure?', :method => :delete if actions.include?(:delete)%></td>
+  <td><%= link_to 'Undo', undo_principal_override_path(override), :confirm => 'Are you sure?', :method => :put if actions.include?(:undo)%></td>
 <% end %>

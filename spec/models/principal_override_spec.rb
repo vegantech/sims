@@ -21,7 +21,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe PrincipalOverride do
   before(:each) do
     @valid_attributes = {
-      :status => "1",
+      :status => 0,
       :teacher_request => "value for fufillment_reason",
       :student=>mock_student(:max_tier=>Tier.new(:title=>"TIER 1"), :principals=>[User.new], :fullname => "Test Student"),
       :teacher=>User.new

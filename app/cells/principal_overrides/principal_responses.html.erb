@@ -1,0 +1,7 @@
+<% if @show%>
+<div id='principal_override_response_sidebar'>
+  <h2> Principal Overrides </h2>
+  <%=link_to(pluralize(@new_requests,'Pending Requests'), principal_overrides_path)%> <br />
+  <%=link_to(pluralize(@responses,'Your responses'), principal_overrides_path)%>
+</div>
+<% end %>

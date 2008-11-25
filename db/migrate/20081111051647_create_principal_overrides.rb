@@ -4,7 +4,7 @@ class CreatePrincipalOverrides < ActiveRecord::Migration
       t.belongs_to :teacher
       t.belongs_to :student
       t.belongs_to :principal
-      t.integer :status
+      t.integer :status, :default=>PrincipalOverride::NEW_REQUEST
       t.belongs_to :start_tier
       t.belongs_to :end_tier
       t.string :principal_response, :limit=>1024

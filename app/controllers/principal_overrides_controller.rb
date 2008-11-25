@@ -1,4 +1,6 @@
 class PrincipalOverridesController < ApplicationController
+  additional_write_actions :undo
+
   # GET /principal_overrides
   # GET /principal_overrides.xml
   def index
@@ -26,6 +28,7 @@ class PrincipalOverridesController < ApplicationController
   # Principal response
   def edit
     @principal_override = PrincipalOverride.find(params[:id])
+    @principal_override.setup_response_for_edit(params[:response])
   end
 
   # POST /principal_overrides
@@ -52,16 +55,28 @@ class PrincipalOverridesController < ApplicationController
   def update
     @principal_override = PrincipalOverride.find(params[:id])
 
+
     respond_to do |format|
-      if @principal_override.update_attributes(params[:principal_override])
+      if @principal_override.update_attributes(params[:principal_override].merge(:principal_id=>current_user_id))
         flash[:notice] = 'PrincipalOverride was successfully updated.'
-        format.html { redirect_to(@principal_override) }
+        format.html { redirect_to(principal_overrides_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @principal_override.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  
+  def undo
+    @principal_override=current_user.principal_override_responses.find(params[:id])
+    @principal_override.undo!
+    respond_to do |format|
+      format.js {render(:update) { |page| page.redirect_to(principal_overrides_url) }}
+      format.html {redirect_to principal_overrides_url}
+    end
+
   end
 
   # DELETE /principal_overrides/1
