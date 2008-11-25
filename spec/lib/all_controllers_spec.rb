@@ -14,7 +14,7 @@ describe AllControllers do
         checklists countries custom_flags districts enrollments frequencies groups ignore_flags
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
-        interventions/categories interventions/definitions interventions/goals interventions/objectives interventions/participants 
+        interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
         interventions/probe_assignments interventions/probes
         interventions login main principal_overrides probe_questions recommendations roles schools states student_comments students
         tiers users
