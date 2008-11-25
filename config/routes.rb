@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :roles
 
   map.resources :principal_overrides, :member => {:undo=> :put}
@@ -73,6 +74,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :interventions, :member=>{:end=>:put} do |intervention|
+    intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put} do |probe_assignment|
       probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>"", 
