@@ -1,4 +1,4 @@
-<% form_remote_for(:principal_override,:url=>@principal_override, :html => { :method => :put }) do |f| %>
+<% form_for(:principal_override,:url=>@principal_override, :html => { :method => :put }) do |f| %>
   <%= f.error_messages %>
   
     <%= f.label :start_tier, "Current Tier:" %>

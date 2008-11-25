@@ -63,6 +63,7 @@ class PrincipalOverride < ActiveRecord::Base
     self.principal_response=nil
     self.end_tier=nil
     self.status=NEW_REQUEST
+    self.action="undo"
     self.save!
 
   end
@@ -79,17 +80,27 @@ class PrincipalOverride < ActiveRecord::Base
     Notifications.deliver_principal_override_request(self)
   end
 
-  def before_validate_on_update
+  def before_validation_on_update
     #TODO make sure the principal is actually a principal for this student
+    #Refactor this
+    @send_email=true
     case self.action
     when 'accept':
       self.status=APPROVED_NOT_SEEN
     when 'reject':
       self.status=REJECTED_NOT_SEEN
+    when 'undo'
+      @send_email=false
     else
+      @send_email=false
       self.status=-1
     end
+    true
 
+  end
+
+  def after_update
+    Notifications.deliver_principal_override_response(self) if @send_email
   end
 
 
