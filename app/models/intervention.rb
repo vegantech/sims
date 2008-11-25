@@ -60,9 +60,10 @@ class Intervention < ActiveRecord::Base
   
 
   before_create :assign_implementer
-  after_create :create_other_students, :send_creation_emails
+  after_create :autoassign_probe,:create_other_students, :send_creation_emails
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally
+  attr_reader :autoassign_message
 
 
   named_scope :active,:conditions=>{:active=>true}
@@ -125,6 +126,20 @@ class Intervention < ActiveRecord::Base
   def assign_implementer
     if self.auto_implementer == "1"
       intervention_participants.implementer.build(:user=>self.user)
+    end
+    true
+  end
+
+  def autoassign_probe
+    rec_mon_count = intervention_definition.recommended_monitors.count
+    case rec_mon_count
+    when 0
+      @autoassign_message = 'No Monitors Available for this intervention.'
+    when 1
+      p=intervention_probe_assignments.active.create!(:probe_definition_id=>intervention_definition.recommended_monitors.first.probe_definition_id,:end_date=>self.end_date,:first_date=>self.start_date, :enabled=>true)
+      @autoassign_message = "#{p.title} has been automatically assigned."
+    else
+      @autoassign_message = 'Please assign a progress monitor.'
     end
     true
   end

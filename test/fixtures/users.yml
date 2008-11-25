@@ -95,9 +95,10 @@ district_admin:
   <<: *DEFAULTS
 
 
-district_content_builder:
+content_builder:
   first_name: District
   last_name: Content Builder
   district: wi_mmsd
-  passwordhash: <%= User.encrypted_password("district_content_builder") %>
+  passwordhash: <%= User.encrypted_password("content_builder") %>
+  username: content_builder
   roles: district_builder

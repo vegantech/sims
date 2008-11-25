@@ -37,7 +37,7 @@ class InterventionsController < ApplicationController
 
     respond_to do |format|
       if @intervention.save
-        flash[:notice] = 'Intervention was successfully created.'
+        flash[:notice] = 'Intervention was successfully created. '+ @intervention.autoassign_message
         format.html { redirect_to(current_student) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
