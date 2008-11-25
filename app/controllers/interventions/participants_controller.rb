@@ -3,7 +3,8 @@ class Interventions::ParticipantsController < ApplicationController
   # GET /intervention_participants/new
   # GET /intervention_participants/new.xml
   def new
-    @intervention_participant = InterventionParticipant.new
+    @intervention_participant = @intervention.intervention_participants.build
+    @users=current_school.users
 
     respond_to do |format|
       format.html # new.html.erb
@@ -11,15 +12,10 @@ class Interventions::ParticipantsController < ApplicationController
     end
   end
 
-  # GET /intervention_participants/1/edit
-  def edit
-    @intervention_participant = InterventionParticipant.find(params[:id])
-  end
-
-  # POST /intervention_participants
+    # POST /intervention_participants
   # POST /intervention_participants.xml
   def create
-    @intervention_participant = InterventionParticipant.new(params[:intervention_participant])
+    @intervention_participant = @intervention.intervention_participants.build(params[:intervention_participant])
 
     respond_to do |format|
       if @intervention_participant.save
@@ -36,24 +32,21 @@ class Interventions::ParticipantsController < ApplicationController
   # PUT /intervention_participants/1
   # PUT /intervention_participants/1.xml
   def update
-    @intervention_participant = InterventionParticipant.find(params[:id])
+    #change the role
+    @intervention_participant = @intervention.intervention_participants.find(params[:id])
+
+    @intervention_participant.toggle_role!
+    flash[:notice] = @intervention_participant.fullname + "is now a" + @intervention_participant.role_title
 
     respond_to do |format|
-      if @intervention_participant.update_attributes(params[:intervention_participant])
-        flash[:notice] = 'InterventionParticipant was successfully updated.'
         format.html { redirect_to(@intervention) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @intervention_participant.errors, :status => :unprocessable_entity }
       end
-    end
   end
 
   # DELETE /intervention_participants/1
   # DELETE /intervention_participants/1.xml
   def destroy
-    @intervention_participant = InterventionParticipant.find(params[:id])
+    @intervention_participant = @intervention.intervention_participants.find(params[:id])
     @intervention_participant.destroy
 
     respond_to do |format|

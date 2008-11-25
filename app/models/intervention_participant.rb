@@ -30,4 +30,14 @@ class InterventionParticipant < ActiveRecord::Base
     ROLES[role] 
   end
 
+  def toggle_role!
+    if self.role == IMPLEMENTER
+      self.role = PARTICIPANT
+    else
+      self.role = IMPLEMENTER
+    end
+    save!
+
+  end
+
 end
