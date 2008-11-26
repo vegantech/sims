@@ -18,6 +18,9 @@ class InterventionsController < ApplicationController
   # GET /interventions/new
   # GET /interventions/new.xml
   def new
+    flash[:custom_intervention] = params[:custom_intervention]
+    flash.keep(:custom_intervention)
+
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
       format.xml  { render :xml => @intervention }

@@ -8,16 +8,31 @@ def go_to_page page_name
 		# flunk response.body
 		clicks_link 'School Selection'
 
-		case page_name.sub(/^the /i, '').sub(/ page$/i, '')
+		page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
+
+		case page_name
 		when 'search'
 			clicks_button 'Choose School'
 		when 'school selection'
     when 'new role'
-
+    when 'student profile'
+      # search
+      selects("Default School")
+      clicks_button "Choose School"
+      clicks_button "Search for Students"
+      click_all_name_id_brackets
+      clicks_button "select for problem solving"
 		else
 			raise "Can't find mapping from \"#{page_name}\" to a path"
 		end
 	end
+end
+
+def click_all_name_id_brackets
+  doc=Hpricot(response.body)
+  doc.search("//input[@name='id[]']").each do |elem|
+    checks(elem[:id])
+  end
 end
 
 def verify_select_box id, options
@@ -53,7 +68,8 @@ def create_school school_name
 	found = School.find_by_name(school_name)
 	s = found || School.create!(:name => school_name)
 	default_user.schools << s unless default_user.schools.include?(s)
-	s
+	@school||=s
+  s
 end
 
 def grant_access user_name, group_array
@@ -87,6 +103,42 @@ def create_student first_name, last_name, grade, school, flag_type = nil
   s
 end
 
+def create_default_user
+  #TODO Possibly refactor this out  change access
+  default_user
+end
+
+def create_default_school
+  @school||=create_school "Default School"
+end
+
+def create_default_student
+  @student ||= create_student "Common", "Last", "04", @school
+  g=Group.create!(:title=>"Default Group")
+  g.students << @student
+  g.save!
+  @default_user.groups << g
+  @default_user.save!
+ 
+  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id)
+  District.destroy_all
+  @district=District.create!(:name=>"Default District", :students =>[@student])
+
+  @student
+end
+
+def create_default_intervention_pieces
+  g1=@district.goal_definitions.create!(:title=>"Some Goal",:description=>"whatever")
+  @district.goal_definitions.create!(:title=>"Goal 1",:description=>"whatever")
+  o1=g1.objective_definitions.create!(:title=>"Some Objective",:description=>"whatever")
+  g1.objective_definitions.create!(:title=>"Other Objective",:description=>"whatever")
+  c1=o1.intervention_clusters.create!(:title=>"Some Category",:description=>"whatever")
+  o1.intervention_clusters.create!(:title=>"Other Category",:description=>"whatever")
+  d1=c1.intervention_definitions.make!(:title=>"Other Definition")
+  
+
+end
+
 private
 
 def default_user
@@ -95,14 +147,9 @@ def default_user
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
 
-
-
-
-
-
-
-
-
+  ["interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives"].each do |c|
+    default_role.rights.create!(:controller=>c, :read=> true, :write => true)
+  end
 
 
   #put other stuff above this

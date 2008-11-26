@@ -37,6 +37,7 @@ class StudentsController < ApplicationController
   def search
     if request.get?
       @grades = current_school.grades_by_user(current_user)
+      
       flash[:notice] = "User doesn't have access to any students at #{current_school.name}" and redirect_to schools_url and return if @grades.blank?
  
       @groups=current_user.filtered_groups_by_school(current_school)

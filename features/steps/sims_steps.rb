@@ -1,6 +1,13 @@
 require File.dirname(__FILE__)+'/step_helpers'
 require File.dirname(__FILE__)+'/require_everything'
 
+Given /^common data$/i do
+  create_default_user
+  create_default_school
+  create_default_student
+  create_default_intervention_pieces
+end
+
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
 	create_user user_name, password
 end
@@ -117,10 +124,7 @@ Then "^I Display Body$" do
 end
 
 When /^I should click js "all"$/ do 
-  doc=Hpricot(response.body)
-  doc.search("//input[@name='id[]']").each do |elem|
-    checks(elem[:id])
-  end
+  click_all_name_id_brackets
 end
 
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do

@@ -61,6 +61,12 @@ class InterventionDefinition < ActiveRecord::Base
   def ancestor_ids
     [objective_definition.goal_definition_id,objective_definition.id,intervention_cluster_id,id]
   end
+
+  # TODO: Where does this really want to live?  Look into factory girl or object daddy
+  def self.make!(opts={})
+    opts.reverse_merge!(:title=>"Title", :description =>"Description", :time_length_id=>1, :time_length_num=>1, :frequency_id =>1, :frequency_multiplier =>1)
+    self.create!(opts)
+  end
 end
 
 
