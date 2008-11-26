@@ -1,0 +1,3 @@
+page.remove(dom_id(@principal_override))
+page.replace('principal_override_request_sidebar', render_cell(:principal_overrides,:user_requests, :user=>@user))
+

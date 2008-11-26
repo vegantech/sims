@@ -1,0 +1,24 @@
+<% form_for(:principal_override,:url=>@principal_override, :html => { :method => :put }) do |f| %>
+  <%= f.error_messages %>
+  
+    <%= f.label :start_tier, "Current Tier:" %>
+    <%= @principal_override.start_tier.title %>
+    <%= f.hidden_field :action %>
+  </p>
+  <p>
+  <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this  Request" %> <br />
+    <%= f.text_area :principal_response, :rows=>6, :cols=>50%>
+    </p>
+    <% if @principal_override.action == "accept" %>
+      <p>
+      <%= f.label :end_tier %>
+      <%= f.collection_select(:end_tier_id, Tier::TIERS, :id, :title) %>
+      </p>
+    <% end %>
+
+  <p>
+    <%= f.submit @principal_override.action.capitalize %>
+  </p>
+<% end %>
+
+<%= link_to 'Cancel', principal_overrides_url %>

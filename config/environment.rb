@@ -9,6 +9,8 @@ RAILS_GEM_VERSION = '2.1.1' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require File.join(RAILS_ROOT, '/vendor/plugins/cells/boot')
+
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081111212240) do
+ActiveRecord::Schema.define(:version => 20081125030310) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -133,6 +133,14 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
     t.datetime "updated_at"
   end
 
+  create_table "intervention_comments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.text     "comment"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -189,6 +197,18 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
     t.datetime "updated_at"
   end
 
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -203,7 +223,7 @@ ActiveRecord::Schema.define(:version => 20081111212240) do
     t.integer  "teacher_id"
     t.integer  "student_id"
     t.integer  "principal_id"
-    t.integer  "status"
+    t.integer  "status",                             :default => 0
     t.integer  "start_tier_id"
     t.integer  "end_tier_id"
     t.string   "principal_response", :limit => 1024

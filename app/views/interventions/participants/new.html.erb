@@ -3,21 +3,17 @@
 <% form_for(@intervention_participant) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :intervention %><br />
-    <%= f.text_field :intervention %>
-  </p>
-  <p>
+ <p>
     <%= f.label :user %><br />
-    <%= f.text_field :user %>
+    <%= f.collection_select(:user_id,@users,:id,:fullname) %>
   </p>
   <p>
     <%= f.label :role %><br />
-    <%= f.text_field :role %>
+    <%= f.select(:role, InterventionParticipant::ROLES[0..-2]) %>
   </p>
   <p>
-    <%= f.submit "Create" %>
+    <%= f.submit "Add Participant" %>
   </p>
 <% end %>
 
-<%= link_to 'Back', intervention_participants_path %>
+<%= link_to 'Back', intervention_path(@intervention) %>

@@ -156,4 +156,24 @@ class User < ActiveRecord::Base
     roles.has_controller_and_action_group?(controller,action_group)
   end
 
+  def grouped_principal_overrides
+    overrides={}
+    overrides[:user_requests]=principal_override_requests
+    if principal?
+      overrides[:principal_responses] = principal_override_responses
+      overrides[:pending_requests]=PrincipalOverride.pending_for_principal(self)
+    end
+
+    overrides
+  end
+
+  def to_s
+    fullname
+  end
+
+  def principal?
+    user_group_assignments.principal.first || special_user_groups.principal.first
+
+  end
+
 end

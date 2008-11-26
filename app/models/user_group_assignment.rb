@@ -14,4 +14,6 @@
 class UserGroupAssignment < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
+
+  named_scope :principal,:conditions=>{:is_principal=>true}
 end

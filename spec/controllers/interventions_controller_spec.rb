@@ -72,12 +72,14 @@ describe InterventionsController do
       
       it "should expose a newly created intervention as @intervention" do
         mock_intervention.should_receive(:save).and_return(true)
+        mock_intervention.should_receive(:autoassign_message).and_return('')
         post :create, :intervention => {:these => 'params'}
         assigns(:intervention).should equal(mock_intervention)
       end
 
       it "should redirect to the student profile" do
         mock_intervention.should_receive(:save).and_return(true)
+        mock_intervention.should_receive(:autoassign_message).and_return('')
         post :create, :intervention => {}
         response.should redirect_to(student_url(mock_student))
       end

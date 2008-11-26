@@ -1,3 +1,14 @@
-Notifications#principal_override_response
+<%= d = DateTime.now.strftime("%B %d, %Y") %>
 
-Find me in app/views/notifications/principal_override_response.erb
+Hello, <%=@override.teacher%>:
+
+<%=@override.principal %> has <%=@override.action%>ed your principal override request for <%=@override.student %>.
+
+The current tier is: <%=@override.end_tier %>.
+
+The reason for this request is: <%= @override.teacher_request %>.
+The principal's response is: <%= @override.principal_response %>.
+
+Please login to <%=link_to 'SIMS', root_url %> to view the details of your requests.
+
+Thank you.

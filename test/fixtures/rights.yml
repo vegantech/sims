@@ -43,6 +43,13 @@ regular_interventions_definitions:
   read: true
   write: true
 
+regular_interventions_participants:
+  controller: 'interventions/participants'
+  role: regular_user
+  read: true
+  write: true
+
+
 regular_principal_overrides:
   controller: 'principal_overrides'
   role: regular_user

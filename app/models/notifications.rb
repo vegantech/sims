@@ -19,13 +19,13 @@ class Notifications < ActionMailer::Base
     body       :override=>override
   end
 
-  def principal_override_response(sent_at = Time.now)
-    subject    'Notifications#principal_override_response'
-    recipients ''
-    from       ''
-    sent_on    sent_at
+  def principal_override_response(override)
+    subject    "[SIMS] Principal Override #{override.action.capitalize}ed"
+    recipients override.teacher.email
+    from       'SIMS <b723176@madison.k12.wi.us>'
+    sent_on    Time.now
     
-    body       :greeting => 'Hi,'
+    body       :override => override
   end
 
   def intervention_starting(interventions)

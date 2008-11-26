@@ -1,32 +1,7 @@
-<h1>Listing principal_overrides</h1>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:user_requests],:actions=>[:delete], :header=>"Your Override Requests"} %>
 
-<table>
-  <tr>
-    <th>Teacher</th>
-    <th>Student</th>
-    <th>Principal</th>
-    <th>Status</th>
-    <th>Start tier</th>
-    <th>End tier</th>
-    <th>Fufillment reason</th>
-  </tr>
 
-<% for principal_override in @principal_overrides %>
-  <tr>
-    <td><%=h principal_override.teacher %></td>
-    <td><%=h principal_override.student %></td>
-    <td><%=h principal_override.principal %></td>
-    <td><%=h principal_override.status %></td>
-    <td><%=h principal_override.start_tier %></td>
-    <td><%=h principal_override.end_tier %></td>
-    <td><%=h principal_override.fufillment_reason %></td>
-    <td><%= link_to 'Show', principal_override %></td>
-    <td><%= link_to 'Edit', edit_principal_override_path(principal_override) %></td>
-    <td><%= link_to 'Destroy', principal_override, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:pending_requests],:actions=>[:accept, :reject], :header=>"Pending Requests"} %>
 
-<br />
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:principal_responses],:actions=>[:undo], :header=>"Responses"} %>
 
-<%= link_to 'New principal_override', new_principal_override_path %>

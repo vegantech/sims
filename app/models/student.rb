@@ -104,4 +104,8 @@ class Student < ActiveRecord::Base
     [User.find_by_username('alphaprin')]
   end
 
+  def to_s
+    fullname
+  end
+
 end

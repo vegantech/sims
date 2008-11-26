@@ -37,6 +37,13 @@ Feature: Sims Demo Walkthrough
     #change some options here?
     Then I press "Create"
 
+    #principal overrides
+    Then I follow "Request Principal Override to unlock next tier"
+    And I Fill in "Reason for Request" with "My Demo Test Reason"
+    And I press "Submit Request"
+    Then I should see "PrincipalOverride was successfully created and sent"
+    And I should see "Principal Override Requests"
+
   Scenario: Alphaprin
     Given load demo data 
     And I go to the home page
