@@ -1,5 +1,4 @@
  <%= form.error_messages %>
-Flash[:custom_intervention] is <%= flash[:custom_intervention] %>
  <p>
     <%= form.label :start_date %><br />
     <%= form.date_select :start_date %>
@@ -11,7 +10,7 @@ Flash[:custom_intervention] is <%= flash[:custom_intervention] %>
     <%= form.hidden_field :intervention_definition_id %>
   <p>
     <%= form.label :frequency %><br />
-    <%= form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>
+    <%= form.collection_select(:frequency_id,Frequency.all,:id,:title) %>
   </p>
   <p>
     <%= form.label :frequency_multiplier %><br />
@@ -19,7 +18,7 @@ Flash[:custom_intervention] is <%= flash[:custom_intervention] %>
   </p>
   <p>
     <%= form.label :time_length %><br />
-    <%= form.collection_select(:time_length_id, TimeLength::TIMELENGTHS,:id,:title) %>
+    <%= form.collection_select(:time_length_id, TimeLength.all,:id,:title) %>
   </p>
   <p>
     <%= form.label :time_length_number %><br />

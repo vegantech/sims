@@ -22,6 +22,8 @@ Feature: Create Custom Intervention
 
     And I fill in "Title" with "Custom Intervention Name"
     And I fill in "Description" with "Custom Description"
+    And I fill in "Frequency multiplier" with "2"
+    And I fill in "Time length number" with "3"
     And I select "Some Tier" from "Tier"
 
     # and anything else that isn't already there or derivable Intervention definition gets created

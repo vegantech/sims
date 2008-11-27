@@ -33,7 +33,7 @@ describe Intervention do
       :time_length_number => "1",
       :active => true,
       :user=> User.new,
-      :intervention_definition => InterventionDefinition.new,
+      :intervention_definition => InterventionDefinition.make!,
       :student => Student.new
     }
   end

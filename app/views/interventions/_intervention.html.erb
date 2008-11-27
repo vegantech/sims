@@ -1,6 +1,7 @@
 <div id="intervention">
 <% if @intervention %>
 <% form_for(@intervention) do |f| %>
+  <%=render :partial => 'interventions/custom', :locals=>{:form=>f} %>
   <%=render :partial =>'interventions/form',:locals=>{:form=>f} %>
   <% if @intervention.selected_ids %>
     <%= f.label :apply_to_all, "Apply to all selected students" %>

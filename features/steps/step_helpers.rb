@@ -135,6 +135,11 @@ def create_default_intervention_pieces
   c1=o1.intervention_clusters.create!(:title=>"Some Category",:description=>"whatever")
   o1.intervention_clusters.create!(:title=>"Other Category",:description=>"whatever")
   d1=c1.intervention_definitions.make!(:title=>"Other Definition")
+  TimeLength.destroy_all
+  TimeLength.create!(:title=>"Default",:days=>90)
+  Frequency.create!(:title=>"Default")
+  @district.tiers.create!(:title=>"Default")
+  @district.tiers.create!(:title=>"Some Tier")
   
 
 end
@@ -147,7 +152,7 @@ def default_user
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
 
-  ["interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives"].each do |c|
+  ["interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives", "interventions/definitions"].each do |c|
     default_role.rights.create!(:controller=>c, :read=> true, :write => true)
   end
 

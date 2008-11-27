@@ -57,20 +57,43 @@ class Intervention < ActiveRecord::Base
   end
 
   validates_numericality_of :time_length_number, :frequency_multiplier
+  validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
   
 
   before_create :assign_implementer
   after_create :autoassign_probe,:create_other_students, :send_creation_emails
 
-  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally
+  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id
   attr_reader :autoassign_message
 
 
   named_scope :active,:conditions=>{:active=>true}
   named_scope :inactive,:conditions=>{:active=>false}
   
-  def self.build_and_initialize(*args)
-    int=self.new(*args)
+  def self.build_and_initialize(args)
+    #TODO Refactor
+
+    if k=args["intervention_definition"] and !k.is_a?(InterventionDefinition)
+      int_def_args = (args.delete("intervention_definition"))
+    end
+    
+
+    int=self.new(args)
+    int.build_intervention_definition(int_def_args) if int_def_args
+    
+
+    
+    if int.intervention_definition.new_record? 
+      #This represents a custom intervention, passing in a new intervention definition as a param
+      int.intervention_definition.school_id = int.school_id
+      int.intervention_definition.custom = true
+      int.intervention_definition.user_id = int.user_id
+      int.intervention_definition.time_length = int.time_length
+      int.intervention_definition.time_length_num = int.time_length_number
+      int.intervention_definition.frequency = int.frequency
+      int.intervention_definition.frequency_multiplier = int.frequency_multiplier
+    end
+            
     int.start_date ||=Time.now
     if int.intervention_definition
       int.frequency ||= int.intervention_definition.frequency
@@ -78,7 +101,8 @@ class Intervention < ActiveRecord::Base
       int.time_length ||= int.intervention_definition.time_length
       int.time_length_number ||= int.intervention_definition.time_length_num
     end
-    int.time_length ||=TimeLength::TIMELENGTHS.first
+    int.time_length ||= TimeLength.first
+    
     int.time_length_number ||= 1
     int.end_date ||= (int.start_date + (int.time_length_number*int.time_length.days).days)
     int.selected_ids=nil if int.selected_ids.size == 1
