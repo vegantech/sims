@@ -23,6 +23,7 @@ class District < ActiveRecord::Base
   has_many :objective_definitions, :through => :goal_definitions
   has_many :tiers
   has_many :schools
+  has_many :students
 
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
 

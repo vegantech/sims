@@ -25,7 +25,7 @@ describe "Populate Intervention Dropdowns Module" do
 
   
   it 'should produce a subset of the session' do
-    values_from_session.should ==({:user_id => 1, :selected_ids => [1,2]})
+    values_from_session.should ==({:user_id => 1, :selected_ids => [1,2], :school_id=>nil})
   end
 
   it 'should build intervention from session and params' do

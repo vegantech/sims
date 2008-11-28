@@ -48,6 +48,13 @@ describe InterventionsController do
       response.should be_success
     end
 
+    it "should assign a @custom_intervention instance variable if the custom intervention param is there" do
+      controller.should_receive(:populate_goals)
+      get :new, :custom_intervention=>true
+      response.should be_success
+      flash[:custom_intervention].should == true
+
+    end
   end
 
   describe "responding to GET edit" do

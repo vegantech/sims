@@ -7,6 +7,7 @@
 
 <% content_tag :ul do %>
   <%=content_tag :li, link_to("Assign New Intervention", new_intervention_path)%>
+  <%=content_tag :li, link_to("New Custom Intervention", new_intervention_path(:custom_intervention=>true))%>
 <% end %>
 
 

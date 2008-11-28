@@ -10,7 +10,7 @@
     <%= form.hidden_field :intervention_definition_id %>
   <p>
     <%= form.label :frequency %><br />
-    <%= form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>
+    <%= form.collection_select(:frequency_id,Frequency.all,:id,:title) %>
   </p>
   <p>
     <%= form.label :frequency_multiplier %><br />
@@ -18,7 +18,7 @@
   </p>
   <p>
     <%= form.label :time_length %><br />
-    <%= form.collection_select(:time_length_id, TimeLength::TIMELENGTHS,:id,:title) %>
+    <%= form.collection_select(:time_length_id, TimeLength.all,:id,:title) %>
   </p>
   <p>
     <%= form.label :time_length_number %><br />
