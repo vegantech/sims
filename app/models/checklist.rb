@@ -132,6 +132,9 @@ class Checklist < ActiveRecord::Base
   
   
   def score_checklist
+    :applicable
+
+
     @score_results=Hash.new{|h,k| h[k]={}}
     #for demo purpose, answering the second question will pass the checklist
     if student and student.last_name=="Flag" and student.first_name="Every" and answers.find_by_answer_definition_id(6) then
@@ -139,12 +142,18 @@ class Checklist < ActiveRecord::Base
       return true
       end
     
+    inapplicable_questions=[]
     # all 1-8 must be answered, all 9 must have some content common to all tiers
       checklist_definition_cache.element_definitions.each do |element|
+          
           if element.kind=="scale" and !element_definitions_for_answers.include?(element) then
             @score_results[element.question_definition][element] = "A value must be picked"
           elsif element.kind=="sa" and !element_definitions_for_answers.include?(element) then
             @score_results[element.question_definition][element]= "Text must be entered"
+          elsif element.kind == "applicable"
+            ad=element.answer_definitions.find_by_value(0).id
+            @score_results[element.question_definition][element] = "A value must be picked" if !element_definitions_for_answers.include?(element)
+            inapplicable_questions << element.queston_definition  if answers.collect(&:answer_definition_id).include?(ad)
           end #if
         end # do
 
@@ -165,6 +174,10 @@ class Checklist < ActiveRecord::Base
             "Need to score 3 or better" if answer.answer_definition.value < "3" and answer.answer_definition.element_definition.kind=="scale"
         end #do
     end # case
+
+    inapplicable_questions.each do |iq|
+#      @score_results[iq]=nil
+    end
     self.promoted = @score_results.blank?
   end #method
   

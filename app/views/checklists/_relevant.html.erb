@@ -1,0 +1,12 @@
+<ol style="list-style-type: upper-alpha">
+  <%- relevant.answer_definitions.each do |answer_definition| -%>
+    <li>
+  <%= radio_button_tag "element_definition[#{relevant.id}]", answer_definition.id %>
+  <label for="<%="element_definition_#{relevant.id}_#{answer_definition.id}"%>"> 
+    <%= markdown_with_span(answer_definition.text) %>
+  </label>
+  </li>
+  <%- end -%>
+</ol>
+
+
