@@ -1,0 +1,13 @@
+<%@intervention_definition = @intervention.intervention_definition %>
+<%form.fields_for(@intervention_definition) do |int_def| %>
+  <%=# debug int_def
+ %>
+  <%=error_messages_for(:intervention_definition) %>
+  <%=int_def.label :title %> <br />
+  <%=int_def.text_field :title %> <br />
+  <%=int_def.label :description %> <br />
+  <%=int_def.text_area :description %> <br />
+  <%=int_def.hidden_field :intervention_cluster_id%>
+  <%=int_def.label :tier_id, "Tier"%> <br />
+  <%=int_def.collection_select(:tier_id, Tier.all, :id, :title)%>
+<% end %>
