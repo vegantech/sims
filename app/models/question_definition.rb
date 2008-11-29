@@ -21,7 +21,7 @@ class QuestionDefinition < ActiveRecord::Base
   has_many :answer_definitions, :through=> :element_definitions
   acts_as_reportable if defined? Ruport
 
-  validates_presence_of :text, :checklist_definition_id
+  validates_presence_of :text, :checklist_definition
 
   def sibling_definitions
     checklist_definition.question_definitions

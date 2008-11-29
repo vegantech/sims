@@ -3,19 +3,4 @@
 <h3><%= @checklist.text %></h3>
 <em>Directions:</em>
 <p><%= @checklist.directions %></p>
-<%- @checklist.question_definitions.each do |question_definition| -%>
- 
-  <h4>Question <%= question_definition.position %></h4>
-  <p>
-    <a href="#<%= dom_id(question_definition,'link') %>" class="questionLink" name="<%= dom_id(question_definition,'link') %>">
-<span <%=highlight_if_wrong_question(@checklist,question_definition)%>><%= question_definition.text %></span>
-</a>
-  </p>
-  <div class="questionDiv" <%='style="display:none"' unless view %>>
-    <p>
-    <%- question_definition.element_definitions.each do |element_definition| -%>
-    <%= render :partial => "checklists/#{element_definition.kind}", :locals => { :element_definition => element_definition, :question_definition=> question_definition, :view=>view ,:edit=>edit }%>
-      <% end %>
-    </p>
-  </div>
-  <%- end -%>
+  <%= render :partial => 'checklists/question_definition', :collection=>@checklist.question_definitions, :locals=>{:view=>view,:edit=>edit} %>

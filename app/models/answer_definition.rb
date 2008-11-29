@@ -23,7 +23,7 @@ class AnswerDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
 
-  validates_presence_of :element_definition_id, :value
+  validates_presence_of  :value
 
   def sibling_definitions
     element_definition.answer_definitions

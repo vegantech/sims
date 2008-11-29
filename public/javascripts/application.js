@@ -163,7 +163,7 @@ var Checklist = {
     })
   },
   scrollToQuestion:function(e) {
-    e.element.previous('h4').scrollTo()
+    e.element.previous('p').scrollTo()
   }
 }
 
