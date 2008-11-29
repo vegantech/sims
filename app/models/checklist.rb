@@ -116,7 +116,7 @@ class Checklist < ActiveRecord::Base
       checklist.is_draft=!!params[:save_draft]
       params[:element_definition].each do |element_definition_id, answer|
         element_definition = ElementDefinition.find(element_definition_id)
-        if ['scale','decision'].include?(element_definition.kind)
+        if ['scale','decision','applicable'].include?(element_definition.kind)
           checklist.answers.build({:checklist => checklist,
                                     :answer_definition_id => answer.to_i})
         elsif ['comment','sa'].include?(element_definition.kind)
@@ -132,7 +132,6 @@ class Checklist < ActiveRecord::Base
   
   
   def score_checklist
-    :applicable
 
 
     @score_results=Hash.new{|h,k| h[k]={}}
@@ -153,7 +152,7 @@ class Checklist < ActiveRecord::Base
           elsif element.kind == "applicable"
             ad=element.answer_definitions.find_by_value(0).id
             @score_results[element.question_definition][element] = "A value must be picked" if !element_definitions_for_answers.include?(element)
-            inapplicable_questions << element.queston_definition  if answers.collect(&:answer_definition_id).include?(ad)
+            inapplicable_questions << element.question_definition  if answers.collect(&:answer_definition_id).include?(ad)
           end #if
         end # do
 
@@ -176,7 +175,7 @@ class Checklist < ActiveRecord::Base
     end # case
 
     inapplicable_questions.each do |iq|
-#      @score_results[iq]=nil
+      @score_results.delete(iq)
     end
     self.promoted = @score_results.blank?
   end #method
