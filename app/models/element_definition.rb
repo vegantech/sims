@@ -25,9 +25,9 @@ class ElementDefinition < ActiveRecord::Base
 
 
   validates_presence_of :question_definition_id, :text, :kind
-  validates_uniqueness_of :kind, :scope => :question_defintion_id, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable} 
-  
+  validates_uniqueness_of :kind, :scope => :question_definition_id, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable} 
 
+  after_create :move_to_top, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable}
 
   KINDS_OF_ELEMENTS = {  #:mcsa => "Multiple-Choice, Single Answer",
     :scale => "Scale",
@@ -58,6 +58,8 @@ class ElementDefinition < ActiveRecord::Base
       errors.add(:kind, "must have a one of the following kinds: #{ElementDefinition.kinds_of_elements.keys.to_sentence}")
     end
   end
+
+  
 
 end
 

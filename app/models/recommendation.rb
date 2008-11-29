@@ -141,6 +141,7 @@ class Recommendation < ActiveRecord::Base
         self.promoted=true
       end
     end
+    true
   end
           
   def validate_for_tier_escalation
@@ -148,6 +149,7 @@ class Recommendation < ActiveRecord::Base
     checklist.score_checklist
     checklist.promoted=checklist.score_results.blank?
     checklist.save
+    checklist.promoted
   end
 
 end

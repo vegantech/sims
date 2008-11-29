@@ -32,10 +32,6 @@ describe AnswerDefinition do
 
 
 
-  it 'should require element_definition_id' do
-    AnswerDefinition.new(@valid_attributes.merge(:element_definition_id=>nil)).should_not be_valid
- end
-
   it 'should require value' do
     AnswerDefinition.new(@valid_attributes.merge(:value=>nil)).should_not be_valid
   end
