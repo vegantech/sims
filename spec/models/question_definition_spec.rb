@@ -31,8 +31,5 @@ describe QuestionDefinition do
     QuestionDefinition.new(@valid_attributes.merge(:text=>nil)).should_not be_valid
   end
 
-  it 'should require checklist_definition_id' do
-    QuestionDefinition.new(@valid_attributes.merge(:checklist_definition_id=>nil)).should_not be_valid
-  end
 
 end
