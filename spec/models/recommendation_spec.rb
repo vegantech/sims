@@ -37,4 +37,12 @@ describe Recommendation do
 #    checklist.should_receive(:score_checklist).and_return(true)
     Recommendation.create!(@valid_attributes.merge(:checklist=>checklist))
   end
+
+
+  it "should show previous answers" do
+    pending "Use a factory"
+
+  end
+
+
 end

@@ -4,7 +4,7 @@
 @title2= "Progress and Recommendations for #{@recommendation.student.fullname}"
 %>
 <% form_for @recommendation  do |f| -%>
-  <%=render :partial=>f, :locals=>{:recommendation=>@recommendation}%>
+  <%=render :partial=>f, :locals=>{:recommendation=>@recommendation, :show_previous=>true}%>
    <%= submit_tag "Submit" %>
    <%= submit_tag "Save Draft", :name=>"draft" %>
  
