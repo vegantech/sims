@@ -41,6 +41,8 @@ describe Recommendation do
 
   it "should show previous answers" do
     pending "Use a factory"
+    #be sure to test with an existing rec to make sure newer ones don't appear
+    #and a new one to male sure all previous are there
 
   end
 
