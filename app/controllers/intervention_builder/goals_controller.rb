@@ -8,7 +8,6 @@ class InterventionBuilder::GoalsController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @goal_definitions.to_xml }
     end
   end
 
@@ -19,7 +18,6 @@ class InterventionBuilder::GoalsController < ApplicationController
 
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @goal_definition.to_xml }
     end
   end
 
@@ -42,10 +40,8 @@ class InterventionBuilder::GoalsController < ApplicationController
       if @goal_definition.save
         flash[:notice] = 'Goal Definition was successfully created.'
         format.html { redirect_to intervention_builder_goal_url(@goal_definition) }
-        format.xml  { head :created, :location => intervention_builder_goal_url(@goal_definition) }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @goal_definition.errors.to_xml }
       end
     end
   end
@@ -59,10 +55,8 @@ class InterventionBuilder::GoalsController < ApplicationController
       if @goal_definition.update_attributes(params[:goal_definition])
         flash[:notice] = 'Goal Definition was successfully updated.'
         format.html { redirect_to intervention_builder_goal_url(@goal_definition) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @goal_definition.errors.to_xml }
       end
     end
   end
@@ -79,7 +73,6 @@ class InterventionBuilder::GoalsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to intervention_builder_goals_url }
-      format.xml  { head :ok }
     end
   end
 
@@ -88,7 +81,6 @@ class InterventionBuilder::GoalsController < ApplicationController
     @goal_definition.disable!
     respond_to do |format|
       format.html { redirect_to intervention_builder_goals_url }
-      format.xml  { head :ok }
     end
   end
 
