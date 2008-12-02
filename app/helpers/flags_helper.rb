@@ -8,21 +8,31 @@ module FlagsHelper
 
   def status_display(student, change = nil)
     str = intervention_status(student)
+    str += current_flags(student)
+    str += custom_flags(student,change)
+  end
 
-    student.flags.current.each do |flagtype,flags|
+  def current_flags(student)
+    s=student.flags.current.collect do |flagtype,flags|
       popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
-      str += displayflag(Flag::FLAGTYPES[flagtype][:icon],popup, flagtype, student)      
     end
+    s.join(" ")
+  end
 
+  def custom_flags(student,change=nil)
     if change.nil? && student.flags.any?
       popup="C: Custom Flags- #{student.flags.custom_summary}"
-      str += image_tag("C.gif",
+      image_tag("C.gif",
       "onmouseover" => "return overlib('#{popup}');",
       "onmouseout" => "return nd();")
+    else 
+      ""
     end
 
-    str
   end
+
+
+
 
   def flag_select
     Flag::ORDERED_TYPE_KEYS.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}
