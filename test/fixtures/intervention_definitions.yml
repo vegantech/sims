@@ -80,16 +80,16 @@ inattentiveness_two:
   position: 2
   <<: *defaults
 
-arithmatic_one:
-  title: Arithmatic one
-  description: Arithmatic one
-  intervention_cluster: arithmatic
+arithmetic_one:
+  title: Arithmetic one
+  description: Arithmetic one
+  intervention_cluster: arithmetic
   <<: *defaults
 
-arithmatic_two:
-  title: Arithmatic two
-  description: Arithmatic two
-  intervention_cluster: arithmatic
+arithmetic_two:
+  title: Arithmetic two
+  description: Arithmetic two
+  intervention_cluster: arithmetic
   position: 2
   <<: *defaults
 

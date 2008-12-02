@@ -1,4 +1,4 @@
-<h1>Administer "<%= @intervention_probe_assignment.title %>" to <%= @intervention.student.fullname %></h1>
+<h1>Administer "<%= @intervention_probe_assignment.title %>" to <%= @intervention.student %></h1>
 <div id="coding_help" style="display:none">
   <%= render :partial=>"coding_help" %>
   
@@ -32,14 +32,11 @@
     </tr>
   </table> 
   
-  <% index = 0 
-  
-%>
-  
-    <% calculate_number_of_question_groups(@questions).times do %>
-      <% final_count = index + 10 < @questions.size ? index + 10 : @questions.size %>
-      <h4>Equations <%= @questions[index].number %> through 
-        <%= @questions[final_count -1 ].number %> </h4>
+  <%questions=@probe.grouped_questions
+    last_question=questions.flatten.last
+    questions.each do |question_group|  %>
+      <h4>Equations <%= question_group.first.number %> through 
+        <%= last_question.number %> </h4>
         <p>
           <a href="#questionLink" class="questionLink" name="questionLink">
             <span>Show Equations</span>
@@ -47,16 +44,11 @@
         </p>
         <div class="questionDiv" style="display:none">
     
-          <% count = index; while count < final_count %>
-            <%= render :partial=>"interview_equation", 
-              :locals=>{:question=>@questions[count]} %>
+          <%= render :partial=>"question", :collection=>question_group  %>
     
-          <% count +=1 
-          end %>
+         <% end %>
 
         </div>
-
-    <% index += 10 %>
   <% end %>
   
 <p>

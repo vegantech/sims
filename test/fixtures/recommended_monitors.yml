@@ -15,22 +15,22 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  intervention_definition:  arithmatic_one
+  intervention_definition:  arithmetic_one
   probe_definition: fact_interview_a
   position: 1
 
 two:
-  intervention_definition: arithmatic_two 
+  intervention_definition: arithmetic_two 
   probe_definition: fact_interview_a
   position: 1
 
 three:
-  intervention_definition:  arithmatic_one
+  intervention_definition:  arithmetic_one
   probe_definition: fact_interview_b
   position: 2
 
 four:
-  intervention_definition: arithmatic_two
+  intervention_definition: arithmetic_two
   probe_definition: fact_interview_b
   position: 2
 

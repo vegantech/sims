@@ -58,19 +58,18 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def new_assessment
-    @probe = @intervention_probe_assignment.probes.new(:assessment_type=>:baseline)
-    @questions = @probe.probe_definition.probe_questions
+    @probe = @intervention_probe_assignment.probes.build(:assessment_type=>:baseline)
   end
 
   def update_assessment
-    @probe = @intervention_probe_assignment.probes.new(:assessment_type=>:update)
-    @questions = @intervention_probe_assignment.probes.last.probe_questions unless @intervention_probe_assignment.probes.blank?
+    #Not put,  update is type of assessment in contrast to baseline/new
+    @probe = @intervention_probe_assignment.probes.build(:assessment_type=>:update)
     render :action=>"new_assessment"
   end
 
   def save_assessment
 
-    @probe = @intervention_probe_assignment.probes.new(params[:probe])
+    @probe = @intervention_probe_assignment.probes.build(params[:probe])
     @probe.calculate_score(params)
     @probe.save!
 

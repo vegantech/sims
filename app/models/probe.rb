@@ -21,6 +21,7 @@ class Probe < ActiveRecord::Base
   #delegate :something, :to=>'(something_else or return nil)' when optional
   delegate :probe_definition, :to => '(intervention_probe_assignment or return nil)'
 
+
   validates_presence_of :score
   validates_numericality_of :score
   validate :score_in_range
@@ -56,6 +57,17 @@ def calculate_score(params)
 
 
   QUESTIONS_PER_GROUP=10
+  def grouped_questions
+    @grouped_questions ||=
+    if assessment_type == 'baseline'
+      probe_definition.probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
+    elsif assessment_type =='update'
+      probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
+    else
+      raise 'UNKNOWN assessment type'
+    end
+
+  end
 
 
 

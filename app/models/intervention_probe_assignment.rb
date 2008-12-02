@@ -22,6 +22,8 @@ class InterventionProbeAssignment < ActiveRecord::Base
   has_many :probes
 
   delegate :title, :to => :probe_definition
+  delegate :student, :to => :intervention
+
 
   RECOMMENDED_FREQUENCY=2
 
@@ -40,6 +42,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
     update_attributes(:enabled=>false)
   end
 
+  def student_grade
+    #TODO delegate this
+    student.enrollments.first.grade
+  end
 
   protected
   def last_date_must_be_after_first_date

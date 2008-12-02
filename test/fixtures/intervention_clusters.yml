@@ -40,8 +40,8 @@ inattentiveness:
   position: 2
 
 
-arithmatic:
-  title: Arithmatic problems
+arithmetic:
+  title: Arithmetic problems
   description: Problem with numbers
   position: 1
   objective_definition: math

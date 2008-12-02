@@ -1,9 +1,4 @@
 module ProbesHelper
-  def calculate_number_of_question_groups(questions)
-    (questions.size.to_f/Probe::QUESTIONS_PER_GROUP).ceil
-  end
-
-
   
  def probe_graph(intervention_probe_assignment,count)
 
@@ -11,7 +6,7 @@ module ProbesHelper
     grades_as_ints = Array.new
     data = Array.new
     
-    student_grade = intervention_probe_assignment.intervention.student.enrollments.first.grade
+    student_grade = intervention_probe_assignment.student_grade
     probe_definition = intervention_probe_assignment.probe_definition
     
     benchmark_data = [nil,nil]
@@ -119,7 +114,6 @@ end
     
     data.each_with_index do |d, index|
       scaled_value = scale_graph_value(d.last, data_max, 80)
-      logger.info(scaled_value)
       bar_left = bar_offset + (bar_increment * index)
       label_left = bar_left - 10
       neg_bottom = (40 + scaled_min) - scaled_value
