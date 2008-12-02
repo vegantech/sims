@@ -108,6 +108,12 @@ def create_default_user
   default_user
 end
 
+def create_default_district
+  District.destroy_all
+  @district=District.create!(:name=>"Default District", :students =>[@student])
+
+end
+
 def create_default_school
   @school||=create_school "Default School"
 end
@@ -121,8 +127,6 @@ def create_default_student
   @default_user.save!
  
   @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id)
-  District.destroy_all
-  @district=District.create!(:name=>"Default District", :students =>[@student])
 
   @student
 end

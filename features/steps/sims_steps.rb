@@ -105,15 +105,8 @@ end
 Given /^load demo data$/ do
   fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
 
-  fixtures=%w{users schools students enrollments districts 
-    goal_definitions objective_definitions intervention_clusters intervention_definitions 
-    tiers frequencies time_lengths groups user_group_assignments
-    special_user_groups
-    roles rights
-  }
-
   Fixtures.reset_cache
-  fixtures.each do |f|
+  Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
     Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end
 
