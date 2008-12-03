@@ -6,6 +6,8 @@ Given /^common data$/i do
   @district=Factory(:district)
   @school=Factory(:school,:district=>@district, :name=>"Default School")
   @default_user = create_user
+  @default_user.district=@district
+  @default_user.save!
   create_default_student
   @student.district=@district
   @student.save!

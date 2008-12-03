@@ -1,5 +1,6 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
+require 'factory'
 
 class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
@@ -59,7 +60,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district
-    @@district ||= District.first || District.create!
+    @district ||= current_user.district || Factory(:district)
   end
 
   def authenticate
