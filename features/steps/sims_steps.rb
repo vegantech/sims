@@ -5,7 +5,7 @@ require File.dirname(__FILE__)+'/require_everything'
 Given /^common data$/i do
   @district=Factory(:district)
   @school=Factory(:school,:district=>@district)
-  @user = create_user
+  @default_user = create_user
   create_default_student
   create_default_intervention_pieces
 end

@@ -44,8 +44,8 @@ def log_in
 	default_user
 	create_school 'Glenn Stephens'
 	visits '/'
-	fills_in 'Login', :with => @user.username
-	fills_in 'Password', :with => @user.username
+	fills_in 'Login', :with => @default_user.username
+	fills_in 'Password', :with => @default_user.username
 	clicks_button 'Login'
 	response.should_not have_text(/Authentication Failure/)
 end
@@ -134,7 +134,7 @@ end
 private
 
 def default_user
-	@default_user ||= create_user 'default_user'
+  @default_user ||= create_user 'default_user'
   default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
