@@ -45,11 +45,6 @@ protected
   def populate_goals
     find_goal_definition
     @goal_definitions=current_district.goal_definitions #not for js
-    if @goal_definitions.blank? 
-      #TODO Why is this necessary?
-      @goal_definitions=GoalDefinition.find_all_by_district_id(current_district.id)
-      raise "#{GoalDefinition.all.inspect} #{current_district.inspect}" if @goal_definitions.blank?
-    end
     populate_objectives if @goal_definition
   end
 
