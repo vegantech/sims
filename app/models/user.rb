@@ -135,11 +135,11 @@ class User < ActiveRecord::Base
 		end
 	end
 
+
 	def self.encrypted_password(password)
 		Digest::SHA1.hexdigest(password.downcase)
 	end
-
-   
+  
 	def fullname 
 		first_name.to_s + ' ' + last_name.to_s
   end

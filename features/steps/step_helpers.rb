@@ -44,8 +44,8 @@ def log_in
 	default_user
 	create_school 'Glenn Stephens'
 	visits '/'
-	fills_in 'Login', :with => 'default_user'
-	fills_in 'Password', :with => 'd3f4ult'
+	fills_in 'Login', :with => @user.username
+	fills_in 'Password', :with => @user.username
 	clicks_button 'Login'
 	response.should_not have_text(/Authentication Failure/)
 end
@@ -55,18 +55,16 @@ def find_or_create_user user_name
   User.find_by_username(user_name) || create_user(user_name)
 end
 
-def create_user user_name, password=''
-	encrypted_password = Digest::SHA1.hexdigest(password.downcase)
-	  
-	user=User.create! :username => user_name,
-		:first_name => user_name.split("_").first || 'First',
-		:last_name => user_name.split("_").last || 'Last',
-		:passwordhash => encrypted_password
+def create_user user_name='first_last', password=user_name
+  @user=Factory :user, :username => user_name,
+    :first_name => user_name.split("_").first || 'First',
+    :last_name => user_name.split("_").last || 'Last',
+    :passwordhash => User.encrypted_password(password)
 end
 
 def create_school school_name
 	found = School.find_by_name(school_name)
-	s = found || School.create!(:name => school_name)
+	s = found || Factory(:school,:name => school_name)
 	default_user.schools << s unless default_user.schools.include?(s)
 	@school||=s
   s
@@ -103,21 +101,6 @@ def create_student first_name, last_name, grade, school, flag_type = nil
   s
 end
 
-def create_default_user
-  #TODO Possibly refactor this out  change access
-  default_user
-end
-
-def create_default_district
-  District.destroy_all
-  @district=District.create!(:name=>"Default District", :students =>[@student])
-
-end
-
-def create_default_school
-  @school||=create_school "Default School"
-end
-
 def create_default_student
   @student ||= create_student "Common", "Last", "04", @school
   g=Group.create!(:title=>"Default Group")
@@ -151,7 +134,7 @@ end
 private
 
 def default_user
-	@default_user ||= create_user 'default_user', 'd3f4ult'
+	@default_user ||= create_user 'default_user'
   default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)

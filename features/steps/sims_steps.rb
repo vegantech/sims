@@ -1,9 +1,11 @@
 require File.dirname(__FILE__)+'/step_helpers'
 require File.dirname(__FILE__)+'/require_everything'
 
+
 Given /^common data$/i do
-  create_default_user
-  create_default_school
+  @district=Factory(:district)
+  @school=Factory(:school,:district=>@district)
+  @user = create_user
   create_default_student
   create_default_intervention_pieces
 end

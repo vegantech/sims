@@ -15,10 +15,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe District do
-  before(:each) do
-    @valid_attributes = {
-    }
+
+  it 'should be valid' do
+    Factory.build(:district).should be_valid
   end
+
 
   it "grades should return GRADES constant" do
     District.new.grades.should == District::GRADES

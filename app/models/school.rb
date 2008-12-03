@@ -20,6 +20,8 @@ class School < ActiveRecord::Base
   has_many :groups
   has_and_belongs_to_many :users
 
+  validates_presence_of :name,:district
+
 
 
   def grades_by_user(user)

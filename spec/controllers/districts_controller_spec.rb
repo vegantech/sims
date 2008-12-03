@@ -18,7 +18,7 @@ describe DistrictsController do
 
   def test_should_create_district
     assert_difference('District.count') do
-      post :create, :district => { }
+      post :create, :district => Factory.attributes_for(:district)
     end
 
     assert_redirected_to district_path(assigns(:district))

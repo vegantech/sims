@@ -16,8 +16,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
-  fixtures :users, :schools
-
+  before do
+    @user = Factory(:user,:username=>"oneschool")
+  end
   describe 'authenticate' do
     it 'should find user with valid login and password' do
       u = User.authenticate('oneschool', 'oneschool')
@@ -35,8 +36,7 @@ describe User do
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
-      u = users(:oneschool)
-      u.passwordhash.should == User.encrypted_password('oneschool')
+      @user.passwordhash.should == User.encrypted_password('oneschool')
     end
   end
   

@@ -13,14 +13,7 @@ end
 
 Factory.define :user do |u|
   u.username {Factory.next(:username)}
-  u.passwordhash "password"
-  u.last_name "Last_Name"
-  u.first_name {|u| "First#{u.username}"}
-end
-
-Factory.define :user_with_default_roles do |u|
-  u.username {Factory.next(:username)}
-  u.passwordhash "password"
+  u.passwordhash {|u| User.encrypted_password(u.username)}
   u.last_name "Last_Name"
   u.first_name {|u| "First#{u.username}"}
 end
@@ -53,6 +46,16 @@ end
 
 Factory.define :answer_definition do |a|
   a.value 0
+end
+
+Factory.define :district do |d|
+  d.abbrev "test"
+  d.name "Test District"
+end
+
+Factory.define :school do |s|
+  s.name "Test School"
+  s.association :district
 end
 
 
