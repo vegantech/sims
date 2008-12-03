@@ -59,12 +59,12 @@ def calculate_score(params)
   QUESTIONS_PER_GROUP=10
   def grouped_questions
     @grouped_questions ||=
-    if assessment_type == 'baseline'
+    if assessment_type.to_s == "baseline"
       probe_definition.probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
-    elsif assessment_type =='update'
+    elsif assessment_type.to_s == "update"
       probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
     else
-      raise 'UNKNOWN assessment type'
+      raise "UNKNOWN assessment type #{assessment_type} #{@grouped_questions.inspect}"
     end
 
   end

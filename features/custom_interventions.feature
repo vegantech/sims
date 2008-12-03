@@ -10,7 +10,6 @@ Feature: Create Custom Intervention
     And I am on student profile page
     And I follow "New Custom Intervention"
 
-    And I Display Body
     # same as intervention
     And I select "Some Goal" from "goal_definition_id"
     And I press "Choose Goal"

@@ -30,20 +30,45 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Goal"
     Then I select "Math" from "objective_definition_id"
     Then I press "Choose Objective"
-    Then I select "Algebra difficulty" from "intervention_cluster_id"
+    Then I select "Arithmetic problems" from "intervention_cluster_id"
     Then I press "Choose Category"
-    Then I select "Algebra two" from "intervention_definition_id"
+    Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
     #change some options here?
     Then I press "Create"
+    Then I should see "Please assign a progress monitor"
 
     #principal overrides
     Then I follow "Request Principal Override to unlock next tier"
-    And I Fill in "Reason for Request" with "My Demo Test Reason"
+    And I fill in "Reason for Request" with "My Demo Test Reason"
     And I press "Submit Request"
     Then I should see "PrincipalOverride was successfully created and sent"
-    And I should see "Principal Override Requests"
+    And I should see "1 Override Request"
 
+
+
+    Then I follow "Assign Monitors"
+    Then I check "Fact Interview A"
+    Then I press "Create"
+    Then I follow "Show"
+    Then I follow "Add Participant"
+    Then I select "1First. oneschool" from "intervention_participant_user_id"
+    Then I press "Add Participant"
+    Then I follow "Enter scores for previously administered assessment"
+    Then I fill in "score" with "2"
+    Then I press "Enter Score"
+    Then I should see "Hide Graph"
+    And I should see "Score: 2"
+    Then I should follow "Administer Assessment"
+    And I fill in "answer_1" with "2"
+    And I press "Submit Without Printing"
+    And I should see "Score: 1"
+    Then I follow "Back"
+    
+    
+
+
+    
   Scenario: Alphaprin
     Given load demo data 
     And I go to the home page

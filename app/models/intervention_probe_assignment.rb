@@ -27,9 +27,9 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   RECOMMENDED_FREQUENCY=2
 
-  validates_date :first_date, :end_date
+#  validates_date :first_date, :end_date
 
-  validate :last_date_must_be_after_first_date
+#  validate :last_date_must_be_after_first_date
 
   named_scope :active, :conditions => {:enabled=>true}
 
