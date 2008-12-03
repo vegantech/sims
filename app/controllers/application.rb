@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user=User.find(current_user_id)
+    @user=User.find_by_id(current_user_id) || Factory.build(:user)
   end
 
   def selected_students_ids
