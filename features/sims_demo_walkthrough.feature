@@ -46,20 +46,24 @@ Feature: Sims Demo Walkthrough
     And I should see "1 Override Request"
 
 
-
     Then I follow "Assign Monitors"
     Then I check "Fact Interview A"
     Then I press "Create"
+ 
+
     Then I follow "Show"
-    Then I follow "Add Participant"
-    Then I select "1First. oneschool" from "intervention_participant_user_id"
-    Then I press "Add Participant"
     Then I follow "Enter scores for previously administered assessment"
     Then I fill in "score" with "2"
     Then I press "Enter Score"
     Then I should see "Hide Graph"
     And I should see "Score: 2"
-    Then I should follow "Administer Assessment"
+ 
+
+    Then I follow "Add Participant"
+    Then I select "2Second. twoschools" from "intervention_participant_user_id"
+    Then I press "Add Participant"
+    Then I follow "Administer Assessment"
+
     And I fill in "answer_1" with "2"
     And I press "Submit Without Printing"
     And I should see "Score: 1"

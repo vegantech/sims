@@ -15,6 +15,9 @@ module FlagsHelper
   def current_flags(student)
     s=student.flags.current.collect do |flagtype,flags|
       popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
+      image_tag(Flag::FLAGTYPES[flagtype][:icon], "onmouseover" => "return overlib('#{popup}');",
+                 "onmouseout" => "return nd();")
+
     end
     s.join(" ")
   end

@@ -23,6 +23,7 @@ class Interventions::ParticipantsController < ApplicationController
         format.html { redirect_to(@intervention) }
         format.xml  { render :xml => @intervention_participant, :status => :created, :location => @intervention_participant }
       else
+        @users=current_school.users
         format.html { render :action => "new" }
         format.xml  { render :xml => @intervention_participant.errors, :status => :unprocessable_entity }
       end
