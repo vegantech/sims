@@ -17,7 +17,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ChecklistDefinition do
   before(:each) do
-    @district = District.first || District.create!
+    @district = District.first || District.create!(:name=>"Test District", :abbrev=>"test")
     @valid_attributes = {
       :text => "value for text",
       :directions => "value for directions",
