@@ -62,7 +62,8 @@ def calculate_score(params)
     if assessment_type.to_s == "baseline"
       probe_definition.probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
     elsif assessment_type.to_s == "update"
-      probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
+      previous_probe = intervention_probe_assignment.probes.last
+      previous_probe.probe_questions.in_groups_of(QUESTIONS_PER_GROUP,false)
     else
       raise "UNKNOWN assessment type #{assessment_type} #{@grouped_questions.inspect}"
     end

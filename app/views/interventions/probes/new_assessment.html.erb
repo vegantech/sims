@@ -32,11 +32,9 @@
     </tr>
   </table> 
   
-  <%questions=@probe.grouped_questions
-    last_question=questions.flatten.last
-    questions.each do |question_group|  %>
+  <%@probe.grouped_questions.each do |question_group|  %>
       <h4>Equations <%= question_group.first.number %> through 
-        <%= last_question.number %> </h4>
+        <%= question_group.last.number %> </h4>
         <p>
           <a href="#questionLink" class="questionLink" name="questionLink">
             <span>Show Equations</span>
@@ -46,9 +44,9 @@
     
           <%= render :partial=>"question", :collection=>question_group  %>
     
+        </div>
          <% end %>
 
-        </div>
   
 <p>
 Sims saves the final score only, not the results of each individual equation.  If you would like to print the results of each individual equation, click "Submit And Print Results."  Otherwise, click "Submit Without Printing."  Once you submit without printing, the results of individual equations will be lost. 
