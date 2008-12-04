@@ -100,12 +100,33 @@ class Student < ActiveRecord::Base
   def principals
     #Find principals for student 
     #TODO combine groups and special groups and get their principals
+    principals = groups.collect(&:principals)
 
-    [User.find_by_username('alphaprin')]
+    principals |= special_group_principals
+    principals.flatten.uniq
+
   end
 
   def to_s
     fullname
+  end
+
+
+  def special_group_principals
+    grades=enrollments.collect(&:grade)
+    schools=enrollments.collect(&:school_id)
+    principals=[]
+
+    principals << district.special_user_groups.principal.all_students_in_district.collect(&:user)
+    schools.each do |school|
+      principals << district.special_user_groups.principal.all_students_in_school(school).collect(&:user)
+      principals << district.special_user_groups.principal.find_all_by_grouptype_and_grade(SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, grades).collect(&:user)
+    end
+
+    principals
+    
+
+
   end
 
 end

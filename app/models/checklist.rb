@@ -46,12 +46,12 @@ class Checklist < ActiveRecord::Base
 #  has_many :answers_with_includes, :class_name => "Answer", 
  # :include => {:answer_definition=>:element_definition}
  attr_accessor :score_results, :deletable, :needs_recommendation, :fake_edit
-  @@checklist_definition = {}
+  @checklist_definition = {}
   def checklist_definition_cache
     if @skip_cache then
       checklist_definition
     else
-      @@checklist_definition[self.checklist_definition_id] ||= checklist_definition
+      @checklist_definition[self.checklist_definition_id] ||= checklist_definition
     end
   end
 
@@ -271,6 +271,6 @@ private
     #We change datasets so this cache needs to be invalidated for integration
     #tests.   Im most cases they are run separately, however with autotest
     #this fails
-    @@checklist_definition = {}
+    @checklist_definition = {}
   end
 end

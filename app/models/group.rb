@@ -22,4 +22,10 @@ class Group < ActiveRecord::Base
     find(:all).collect(&:users).flatten.compact.uniq
   end
 
+  def principals
+   users.find(:all, :include=>:user_group_assignments, :conditions => ["user_group_assignments.is_principal = ?",true])
+
+    
+  end
+
 end

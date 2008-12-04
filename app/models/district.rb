@@ -24,6 +24,7 @@ class District < ActiveRecord::Base
   has_many :tiers
   has_many :schools
   has_many :students
+  has_many :special_user_groups
 
   validates_presence_of :abbrev,:name
 

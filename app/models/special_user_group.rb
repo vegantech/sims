@@ -29,7 +29,7 @@ class SpecialUserGroup < ActiveRecord::Base
   named_scope :principal,:conditions=>{:is_principal=>true}
   named_scope :all_schools_in_district ,:conditions=>{:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT]}
   named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first]}}
-
+  named_scope :all_students_in_district, :conditions =>{:grouptype=>ALL_STUDENTS_IN_DISTRICT}
 
   def self.all_students_in_school?(school)
     all_students_in_school(school).count > 0
