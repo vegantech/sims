@@ -22,7 +22,7 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should show checklist definition' do
-    d=District.first || District.create!
+    d=Factory(:district)
     controller.should_receive(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :show, :id=>a.id
@@ -31,7 +31,7 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should get edit' do
-    d=District.first || District.create!
+    d=Factory(:district)
     controller.should_receive(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :edit, :id=>a.id
