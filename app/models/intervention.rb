@@ -27,6 +27,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name =>"User"
+  has_many :comments, :class_name => "InterventionComment"
   has_many :intervention_participants
 
   has_many :intervention_probe_assignments do 

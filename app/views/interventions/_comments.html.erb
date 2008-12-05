@@ -1,0 +1,13 @@
+<p>
+<h1 id="intervention_comments">Comments</h1>
+  <%=content_tag :ul, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention.") %>
+  <% if @intervention.active? %>
+    <ul>
+      <li><%= link_to "Add comment", new_intervention_comment_path(@intervention) %></li>
+    </ul>
+  <% end %>
+  </p>
+
+
+
+

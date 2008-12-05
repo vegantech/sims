@@ -1,20 +1,9 @@
 class Interventions::CommentsController < ApplicationController
   before_filter :load_intervention
-  # GET /intervention_comments
-  # GET /intervention_comments.xml
-  def index
-    @intervention_comments = InterventionComment.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @intervention_comments }
-    end
-  end
-
-  # GET /intervention_comments/new
-  # GET /intervention_comments/new.xml
+  # GET /comments/new
+  # GET /comments/new.xml
   def new
-    @intervention_comment = InterventionComment.new
+    @intervention_comment = @intervention.comments.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -22,15 +11,15 @@ class Interventions::CommentsController < ApplicationController
     end
   end
 
-  # GET /intervention_comments/1/edit
+  # GET /comments/1/edit
   def edit
-    @intervention_comment = InterventionComment.find(params[:id])
+    @intervention_comment = @intervention.comments.find(params[:id])
   end
 
-  # POST /intervention_comments
-  # POST /intervention_comments.xml
+  # POST /comments
+  # POST /comments.xml
   def create
-    @intervention_comment = InterventionComment.new(params[:intervention_comment])
+    @intervention_comment = @intervention.comments.build(params[:intervention_comment].merge('user'=>current_user))
 
     respond_to do |format|
       if @intervention_comment.save
@@ -44,13 +33,13 @@ class Interventions::CommentsController < ApplicationController
     end
   end
 
-  # PUT /intervention_comments/1
-  # PUT /intervention_comments/1.xml
+  # PUT /comments/1
+  # PUT /comments/1.xml
   def update
-    @intervention_comment = InterventionComment.find(params[:id])
+    @intervention_comment = @intervention.comments.find(params[:id])
 
     respond_to do |format|
-      if @intervention_comment.update_attributes(params[:intervention_comment])
+      if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'
         format.html { redirect_to(@intervention) }
         format.xml  { head :ok }
@@ -61,10 +50,10 @@ class Interventions::CommentsController < ApplicationController
     end
   end
 
-  # DELETE /intervention_comments/1
-  # DELETE /intervention_comments/1.xml
+  # DELETE /comments/1
+  # DELETE /comments/1.xml
   def destroy
-    @intervention_comment = InterventionComment.find(params[:id])
+    @intervention_comment = @intervention.comments.find(params[:id])
     @intervention_comment.destroy
 
     respond_to do |format|

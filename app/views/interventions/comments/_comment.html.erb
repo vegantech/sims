@@ -1,0 +1,6 @@
+<li> 
+<%=h comment.comment %> by <%=h comment.user%> on <%= h comment.updated_at %>
+<%= link_to 'Edit', edit_intervention_comment_path(@intervention,comment) %>
+<%= link_to 'Delete', intervention_comment_path(@intervention,comment), :method=>:delete, :confirm => 'Are you sure?' %>
+</li>
+

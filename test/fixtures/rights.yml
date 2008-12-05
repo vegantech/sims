@@ -56,6 +56,13 @@ regular_interventions_categories:
   role: regular_user
   read: true
 
+regular_interventions_comments:
+  controller: 'interventions/comments'
+  role: regular_user
+  read: true
+  write: true
+
+
 regular_interventions_definitions:
   controller: 'interventions/definitions'
   role: regular_user

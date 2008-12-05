@@ -1,24 +1,11 @@
 <h1>Editing intervention_comment</h1>
 
-<% form_for(@intervention_comment) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :intervention %><br />
-    <%= f.text_field :intervention %>
-  </p>
-  <p>
-    <%= f.label :comment %><br />
-    <%= f.text_area :comment %>
-  </p>
-  <p>
-    <%= f.label :user %><br />
-    <%= f.text_field :user %>
-  </p>
+<% form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
+  <%= render :partial=>f %>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @intervention_comment %> |
-<%= link_to 'Back', intervention_comments_path %>
+<%= link_to 'Back', intervention_path(@intervention) %>
+
