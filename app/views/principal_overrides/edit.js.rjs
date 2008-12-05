@@ -1,0 +1,2 @@
+page.replace_html(dom_id(@principal_override,'pending_form'),:partial=>"rjs_edit")
+
