@@ -19,10 +19,11 @@
     </tr>
 <% unless @districts.blank? %>
     <tr>
-      <td><label for="password">District</label></td>
-      <td><%= collection_select(:district,:district_id, @districts, :district_id, :name) %></td>
+      <td><label for="district">District</label></td>
+      <td><%= collection_select(:district,:id, @districts, :id, :name) %></td>
     </tr>
-<% end %>
+  <% end %>
+
 
     <tr>
       <td colspan="2">

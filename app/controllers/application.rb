@@ -4,6 +4,8 @@ require 'factory'
 
 class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
+  #TODO replace this default district constant
+  DEFAULT_DISTRICT=District.find_by_abbrev("mmsd") || Factory.build(:district)
 
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
@@ -18,7 +20,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   #
   #
-  before_filter :authenticate, :authorize
+  before_filter :authenticate, :authorize#, :current_district
 
   
   private
@@ -56,15 +58,16 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district_id
-    nil
+    session[:current_district] ||get_district || DEFAULT_DISTRICT
   end
 
   def current_district
     @district ||= current_user.district || Factory(:district)
+    #@district ||= District.find_by_id(current_district_id) 
   end
 
   def authenticate
-    unless current_user_id
+    unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
       redirect_to root_url
       return false
@@ -115,5 +118,28 @@ class ApplicationController < ActionController::Base
      self.write_actions= Array(args).flatten.map(&:to_s)
   end
 
+
+  def get_district
+    if params[:district]
+      session[:current_district]=params[:district][:id]
+    else
+      g=self.request.subdomains
+      if g.pop == "sims" 
+        if g.blank?
+          session[:current_district]=nil
+          @districts=District.all
+        else
+          country=Country.find_by_abbrev(g.pop)
+          state=country.states.find_by_abbrev(g.pop) if country
+          session[:current_district]=state.districts.find_by_abbrev(g.pop).id if state
+        end
+      elsif defined? DEFAULT_DISTRICT
+        session[:current_district]=DEFAULT_DISTRICT.id
+      else
+        raise "No District"
+      end
+    end
+
+  end
 
 end

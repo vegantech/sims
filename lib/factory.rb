@@ -72,12 +72,3 @@ Factory.define :state do |s|
   s.abbrev {Factory.next(:abbrev)}
   s.name {|c| "#{c} State"}
 end
-
-
-
-
-
-
-
-  
-

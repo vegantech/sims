@@ -60,5 +60,9 @@ class District < ActiveRecord::Base
     admin? && state.admin?
   end
 
+  def to_s
+    self.name
+  end
+
 
 end

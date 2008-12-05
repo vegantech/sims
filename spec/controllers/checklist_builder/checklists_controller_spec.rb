@@ -17,13 +17,15 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should get new' do
+    d=Factory(:district)
+    controller.stub!(:current_district).and_return(d)
     get :new
     response.should be_success
   end
 
   it 'should show checklist definition' do
     d=Factory(:district)
-    controller.should_receive(:current_district).and_return(d)
+    controller.stub!(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :show, :id=>a.id
     response.should be_success
@@ -32,7 +34,7 @@ describe ChecklistBuilder::ChecklistsController do
 
   it 'should get edit' do
     d=Factory(:district)
-    controller.should_receive(:current_district).and_return(d)
+    controller.stub!(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :edit, :id=>a.id
     response.should be_success
