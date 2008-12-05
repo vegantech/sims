@@ -28,12 +28,10 @@ class TeamNotes
 
   def initialize(options={})
     @user=options[:user]
-    puts "A: user is: #{@user}"
   end
 
   def to_table
     return unless defined? Ruport
-    puts "B: comments are: #{@user.student_comments.inspect}"
 
     # rt = @user.student_comments.report_table(:all, :only => [:body])
     rt = StudentComment.report_table(:all,
@@ -43,8 +41,6 @@ class TeamNotes
     rt.replace_column('created_at', 'Date') do |r|
       r['created_at'].to_date.to_s(:report)
     end
-
-    puts "D: rt is: #{rt.inspect}"
 
     return rt if rt.column_names.blank?
 
@@ -59,5 +55,4 @@ class TeamNotes
     return @table if  @table.column_names.blank?
     Ruport::Data::Grouping(@table, :by => 'Student')
   end
-
 end
