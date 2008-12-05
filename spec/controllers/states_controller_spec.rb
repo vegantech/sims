@@ -18,7 +18,7 @@ describe StatesController do
 
   def test_should_create_state
     assert_difference('State.count') do
-      post :create, :state => { }
+      post :create, :state =>Factory.attributes_for(:state)
     end
 
     assert_redirected_to state_path(assigns(:state))

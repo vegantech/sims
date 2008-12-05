@@ -13,4 +13,14 @@
 
 class State < ActiveRecord::Base
   belongs_to :country
+  has_many :districts
+  named_scope :normal, :conditions=>{:admin=>false}
+  named_scope :admin, :conditions=>{:admin=>true}
+  
+  validates_uniqueness_of :admin, :scope=>:country_id, :if=>lambda{|s| s.admin?}  #only 1 admin state per country
+  validates_uniqueness_of :country_id,  :if=>lambda{|s| s.country && s.country.admin?}  #only 1 state per admin country
+  validates_presence_of :name,:abbrev
+  validates_uniqueness_of :name,:abbrev, :scope=>:country_id
+
+
 end

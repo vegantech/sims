@@ -16,6 +16,24 @@
 
 wi_mmsd:
   name: Madison Metropolitan School District
-  abbrev: MyString
+  abbrev: mmsd
   state: state_wi
   state_dpi_num: 3269
+
+wi_admin:
+  name: Wisconsin Administration
+  abbrev: admin
+  state: state_wi
+  admin: true
+
+admin_admin_admin:
+  name: System Administration District
+  abbrev: admin
+  state: admin_admin
+  admin: true
+
+us_admin_admin:
+  name: United States Administration District
+  abbrev: admin
+  state: us_admin
+  admin: true

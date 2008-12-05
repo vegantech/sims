@@ -4,11 +4,20 @@ Factory.sequence :username do |n|
   "user#{n}#{Time.now.to_i}"
 end
 
+Factory.sequence :abbrev do |a|
+  "test#{a}"
+end
+
 Factory.define :checklist do |c|
   c.association :student
   c.association :user
   c.association :tier
   c.association :checklist_definition
+end
+
+Factory.define :country do |c|
+  c.abbrev {Factory.next(:abbrev)}
+  c.name {|c| "#{c} Country"}
 end
 
 Factory.define :user do |u|
@@ -49,8 +58,8 @@ Factory.define :answer_definition do |a|
 end
 
 Factory.define :district do |d|
-  d.abbrev "test"
-  d.name "Test District"
+  d.abbrev {Factory.next(:abbrev)}
+  d.name {|c| "#{c.abbrev} District"}
 end
 
 Factory.define :school do |s|
@@ -58,6 +67,11 @@ Factory.define :school do |s|
   s.association :district
 end
 
+
+Factory.define :state do |s|
+  s.abbrev {Factory.next(:abbrev)}
+  s.name {|c| "#{c} State"}
+end
 
 
 

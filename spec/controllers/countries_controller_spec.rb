@@ -5,6 +5,7 @@ describe CountriesController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
   fixtures :countries
+
   def test_should_get_index
     get :index
     assert_response :success
@@ -18,7 +19,7 @@ describe CountriesController do
 
   def test_should_create_country
     assert_difference('Country.count') do
-      post :create, :country => { }
+      post :create, :country => Factory.attributes_for(:country) 
     end
 
     assert_redirected_to country_path(assigns(:country))

@@ -23,7 +23,14 @@ state_mi:
   name: Michigan
   abbrev: mi
 
-one:
+us_admin:
   country: country_us
-  name: one
-  abbrev: one
+  name: US Administration
+  abbrev: admin
+  admin: true
+
+admin_admin:
+  country: country_admin
+  name: System Administration State
+  abbrev: admin
+  admin: true

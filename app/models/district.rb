@@ -26,8 +26,15 @@ class District < ActiveRecord::Base
   has_many :students
   has_many :special_user_groups
 
-  validates_presence_of :abbrev,:name
+  named_scope :normal, :conditions=>{:admin=>false}
+  named_scope :admin, :conditions=>{:admin=>true}
 
+  delegate :country, :to => :state
+  
+  validates_presence_of :abbrev,:name
+  validates_uniqueness_of :abbrev,:name, :scope=>:state_id
+  validates_uniqueness_of :admin, :scope=>:state_id, :if=>lambda{|d| d.admin?}  #only 1 admin state per country
+  validates_uniqueness_of :state_id,  :if=>lambda{|d| d.state && d.state.admin?}  #only 1 district per admin state
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
 
   def grades
@@ -44,5 +51,14 @@ class District < ActiveRecord::Base
     #student search screen
     objective_definitions
   end
+
+  def system_admin?
+    country_admin? && country.admin?
+  end
+
+  def country_admin?
+    admin? && state.admin?
+  end
+
 
 end

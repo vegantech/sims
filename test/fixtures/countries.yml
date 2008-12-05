@@ -16,6 +16,7 @@ country_us:
   name: United States
   abbrev: us
 
-one:
-  name: MyString
-  abbrev: MyString
+country_admin:
+  name: System Administration Country
+  abbrev: admin
+  admin: true
