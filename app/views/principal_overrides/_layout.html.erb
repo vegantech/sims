@@ -1,6 +1,6 @@
 <% if show %>
 <%= content_tag :h1, header %> 
-  <div id="<%=header.sub(/ /,'_').tableize%>">
+  <div id="<%=header.gsub(/ /,'_').tableize%>">
     <table>
       <thead>
       <tr>
@@ -14,7 +14,7 @@
         <th>Response</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="<%="tbody_#{actions}"%>">
       <%= render :partial=>'override',:collection=>overrides, :locals=>{:actions=>actions} %>
     </tbody>
 
