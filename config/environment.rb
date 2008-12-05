@@ -28,8 +28,8 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
-  config.gem 'ruport', :version => '1.6.0'
-  config.gem 'acts_as_reportable', :version => '1.1.1', :lib => 'ruport/acts_as_reportable'
+  #  config.gem 'ruport', :version => '1.6.1'
+  #config.gem 'acts_as_reportable', :version => '1.1.0', :lib => 'ruport/acts_as_reportable'
 
  # need to upgrade rubygems
   # config.gem 'hpricot'
