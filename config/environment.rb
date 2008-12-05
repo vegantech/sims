@@ -28,6 +28,8 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
+  config.gem 'ruport', :version => '1.6.0'
+  config.gem 'acts_as_reportable', :version => '1.1.1', :lib => 'ruport/acts_as_reportable'
 
  # need to upgrade rubygems
   # config.gem 'hpricot'
@@ -74,4 +76,20 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
   config.action_mailer.delivery_method = :railmail 
+  
+  config.load_paths += %W( #{RAILS_ROOT}/app/reports )
 end
+
+ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(
+  :report => "%m/%d/%y"
+)
+
+# begin
+#   require 'ruport'
+# rescue LoadError
+#   puts "gem install ruport acts_as_reportable -y if you want to be able to see and view reports"
+# else
+#   if Dir.glob(Gem.dir+"/cache/acts_as_reportable*").empty?
+#     puts "missing acts_as_reportable, please install this gem via gem install acts_as_reportable -y   "
+#   end
+# end

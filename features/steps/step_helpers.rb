@@ -138,6 +138,7 @@ def default_user
   default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
+  Right.create!(:role => default_role, :controller => 'reports', :read => true)
 
   ["interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives", "interventions/definitions"].each do |c|
     default_role.rights.create!(:controller=>c, :read=> true, :write => true)

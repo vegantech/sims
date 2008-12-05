@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081111204313
+# Schema version: 20081125030310
 #
 # Table name: student_comments
 #
@@ -15,4 +15,6 @@ class StudentComment < ActiveRecord::Base
   belongs_to :student
   belongs_to :user
   validates_presence_of :body
+
+  acts_as_reportable if defined? Ruport
 end

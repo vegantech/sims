@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081125030310
+#
+# Table name: rights
+#
+#  id         :integer         not null, primary key
+#  controller :string(255)
+#  read       :boolean
+#  write      :boolean
+#  role_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 regular_students:
@@ -7,6 +21,11 @@ regular_students:
 
 regular_schools:
   controller: schools
+  role: regular_user
+  read: true
+
+regular_reports:
+  controller: reports
   role: regular_user
   read: true
 

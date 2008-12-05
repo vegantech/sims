@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081111204313
+# Schema version: 20081125030310
 #
 # Table name: students
 #
@@ -39,6 +39,8 @@ class Student < ActiveRecord::Base
       group_by(&:category)
     end
   end
+
+  acts_as_reportable if defined? Ruport
 
   #This is duplicated in user
   def fullname 

@@ -1,0 +1,11 @@
+<h2>Team Notes</h2>
+
+<% form_tag do |f| %><br/ >
+  <%= label_tag :date_month, 'For Date:' %><br/>
+  <%= select_date @today, :id => :date, :order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year %><br/><br/>
+
+  <%= label_tag :report_params_format, 'Format:' %><br/>
+  <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %><br/><br/>
+  <%= submit_tag "Generate Report", :name => 'generate' %>
+<% end %>
+<%= @report %>

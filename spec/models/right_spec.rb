@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081125030310
+#
+# Table name: rights
+#
+#  id         :integer         not null, primary key
+#  controller :string(255)
+#  read       :boolean
+#  write      :boolean
+#  role_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 

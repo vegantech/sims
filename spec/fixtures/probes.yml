@@ -1,14 +1,13 @@
 # == Schema Information
-# Schema version: 20081111204313
+# Schema version: 20081125030310
 #
 # Table name: probes
 #
 #  id                               :integer         not null, primary key
 #  administered_at                  :datetime
 #  score                            :integer
-#  assessment_type                  :string(255)
 #  district_id                      :integer
-#  intervention_probe_assignmnet_id :integer
+#  intervention_probe_assignment_id :integer
 #  created_at                       :datetime
 #  updated_at                       :datetime
 #

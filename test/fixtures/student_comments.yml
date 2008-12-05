@@ -1,0 +1,32 @@
+# == Schema Information
+# Schema version: 20081125030310
+#
+# Table name: student_comments
+#
+#  id         :integer         not null, primary key
+#  student_id :integer
+#  user_id    :integer
+#  body       :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+december_4th_command_one:
+  student: alpha_first_grader
+  user: oneschool
+  body: $LABEL
+
+december_4th_command_two:
+  student: alpha_first_grader
+  user: oneschool
+  body: $LABEL
+
+december_5th_command_one:
+  student: alpha_first_grader
+  user: oneschool
+  body: $LABEL
+
+december_5th_command_two:
+  student: alpha_first_grader
+  user: oneschool
+  body: $LABEL

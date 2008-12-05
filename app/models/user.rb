@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081111204313
+# Schema version: 20081125030310
 #
 # Table name: users
 #
@@ -24,10 +24,13 @@ class User < ActiveRecord::Base
   has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
   has_and_belongs_to_many :roles
   has_many :rights, :through => :roles
+  has_many :student_comments
 
 
   validates_presence_of :username, :passwordhash, :last_name, :first_name
   validates_uniqueness_of :username, :scope=>:district_id
+
+  acts_as_reportable if defined? Ruport
 
   def authorized_groups_for_school(school)
     if special_user_groups.all_students_in_school?(school)
@@ -38,9 +41,9 @@ class User < ActiveRecord::Base
   end
 
   def filtered_groups_by_school(school,opts={})
-  #opts can be grade and prompt
-  #default prompt is "*-Filter by Group"
-  #the - separates id and prompt
+    #opts can be grade and prompt
+    #default prompt is "*-Filter by Group"
+    #the - separates id and prompt
     
     opts.stringify_keys!
     opts.reverse_merge!("prompt"=>"*-Filter by Group",

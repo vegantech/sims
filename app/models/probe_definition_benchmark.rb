@@ -1,13 +1,12 @@
 # == Schema Information
-# Schema version: 20081111204313
+# Schema version: 20081125030310
 #
 # Table name: probe_definition_benchmarks
 #
 #  id                  :integer         not null, primary key
 #  probe_definition_id :integer
 #  benchmark           :integer
-#  district_id         :integer
-#  grade_level         :integer
+#  grade_level         :string(255)
 #  created_at          :datetime
 #  updated_at          :datetime
 #
