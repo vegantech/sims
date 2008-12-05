@@ -1,0 +1,67 @@
+--- !ruby/object:Gem::Specification 
+name: acts_as_reportable
+version: !ruby/object:Gem::Version 
+  version: 1.1.0
+platform: ruby
+authors: 
+- Michael Milner
+autorequire: 
+bindir: bin
+cert_chain: 
+date: 2008-03-31 00:00:00 -07:00
+default_executable: 
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: ruport
+  type: :runtime
+  version_requirement: 
+  version_requirements: !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        version: 1.6.0
+    version: 
+description: acts_as_reportable provides ActiveRecord support for Ruby Reports
+email: mikem836@gmail.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- lib/ruport
+- lib/ruport/acts_as_reportable.rb
+- test/helpers.rb
+- test/acts_as_reportable_test.rb
+- Rakefile
+has_rdoc: true
+homepage: http://rubyreports.org
+post_install_message: 
+rdoc_options: 
+- --title
+- Ruport Documentation
+require_paths: 
+- bin
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">"
+    - !ruby/object:Gem::Version 
+      version: 0.0.0
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: ruport
+rubygems_version: 1.2.0
+signing_key: 
+specification_version: 1
+summary: ActiveRecord support for Ruby Reports
+test_files: 
+- test/acts_as_reportable_test.rb
