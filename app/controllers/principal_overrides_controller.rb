@@ -59,9 +59,11 @@ class PrincipalOverridesController < ApplicationController
     respond_to do |format|
       if @principal_override.update_attributes(params[:principal_override].merge(:principal_id=>current_user_id))
         flash[:notice] = 'PrincipalOverride was successfully updated.'
+        format.js {}
         format.html { redirect_to(principal_overrides_url) }
         format.xml  { head :ok }
       else
+        format.js { render :action => "edit" }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @principal_override.errors, :status => :unprocessable_entity }
       end
@@ -73,7 +75,7 @@ class PrincipalOverridesController < ApplicationController
     @principal_override=current_user.principal_override_responses.find(params[:id])
     @principal_override.undo!
     respond_to do |format|
-      format.js {render(:update) { |page| page.redirect_to(principal_overrides_url) }}
+      format.js {}
       format.html {redirect_to principal_overrides_url}
     end
 

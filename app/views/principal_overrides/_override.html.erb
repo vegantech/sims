@@ -1,4 +1,4 @@
-<% content_tag_for :tr, override do %>
+<% content_tag_for :tr, override,actions do %>
   <td><%=h override.teacher %></td>
   <td><%=h override.student %></td>
   <td><%=h override.principal %></td>
@@ -8,8 +8,10 @@
   <td><%=h override.teacher_request %></td>
   <td><%=h override.principal_response %></td>
   <%[:accept,:reject].each do |a| %>
-    <td><%= link_to a.to_s.capitalize, edit_principal_override_path(override, :response=>a) if actions.include?(a)%></td>
+    <td><%= link_to_remote_degrades a.to_s.capitalize, :url=>edit_principal_override_path(override, :response=>a), :method=>:get if actions.include?(a)%></td>
   <% end %>
   <td><%= link_to_remote_degrades 'Delete', :url=>override, :confirm => 'Are you sure?', :method => :delete if actions.include?(:delete)%></td>
-  <td><%= link_to 'Undo', undo_principal_override_path(override), :confirm => 'Are you sure?', :method => :put if actions.include?(:undo)%></td>
+  <td><%= link_to_remote_degrades 'Undo', :url=>undo_principal_override_path(override), :confirm => 'Are you sure?', :method => :put if actions.include?(:undo)%></td>
 <% end %>
+<% content_tag_for :tr, override, 'pending_form' do end if actions.include?(:accept) %>
+

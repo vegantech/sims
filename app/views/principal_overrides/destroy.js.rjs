@@ -1,3 +1,16 @@
-page.remove(dom_id(@principal_override))
-page.replace('principal_override_request_sidebar', render_cell(:principal_overrides,:user_requests, :user=>@user))
+page.select('#'+dom_id(@principal_override,"delete")).each do |value|
+  value.remove
+end
 
+page.select('#'+dom_id(@principal_override,"acceptreject")).each do |value|
+  value.remove
+end
+
+page.select('#'+dom_id(@principal_override,"undo")).each do |value|
+  value.remove
+end
+
+
+
+page.replace('principal_override_request_sidebar', render_cell(:principal_overrides,:user_requests, :user=>@user))
+page.replace('principal_override_response_sidebar', render_cell(:principal_overrides,:principal_responses, :user=>@user))

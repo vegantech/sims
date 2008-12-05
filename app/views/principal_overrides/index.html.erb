@@ -1,7 +1,8 @@
-<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:user_requests],:actions=>[:delete], :header=>"Your Override Requests"} %>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:user_requests],:actions=>[:delete], :header=>"Your Override Requests", :show=>true} %>
 
+<%principal=  @principal_overrides[:pending_requests] || @principal_overrides[:principal_responses]%>
 
-<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:pending_requests],:actions=>[:accept, :reject], :header=>"Pending Requests"} %>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:pending_requests],:actions=>[:accept, :reject], :header=>"Pending Requests", :show =>principal} %>
 
-<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:principal_responses],:actions=>[:undo], :header=>"Responses"} %>
+<%= render :partial => 'layout', :locals=>{:overrides=> @principal_overrides[:principal_responses],:actions=>[:undo], :header=>"Responses", :show=>principal} %>
 

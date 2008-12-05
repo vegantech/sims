@@ -1,19 +1,24 @@
-<% unless overrides.blank? %>
-  <%= content_tag :h1, header %> 
-  <div id="<%=header.tableize%>">
-  <table>
-    <tr>
-      <th>Teacher</th>
-      <th>Student</th>
-      <th>Principal</th>
-      <th>Status</th>
-      <th>Start tier</th>
-      <th>End tier</th>
-      <th>Request</th>
-      <th>Response</th>
-    </tr>
-    <%= render :partial=>'override',:collection=>overrides, :locals=>{:actions=>actions} %>
+<% if show %>
+<%= content_tag :h1, header %> 
+  <div id="<%=header.gsub(/ /,'_').tableize%>">
+    <table>
+      <thead>
+      <tr>
+        <th>Teacher</th>
+        <th>Student</th>
+        <th>Principal</th>
+        <th>Status</th>
+        <th>Start tier</th>
+        <th>End tier</th>
+        <th>Request</th>
+        <th>Response</th>
+      </tr>
+    </thead>
+    <tbody id="<%="tbody_#{actions}"%>">
+      <%= render :partial=>'override',:collection=>overrides, :locals=>{:actions=>actions} %>
+    </tbody>
+
   </table>
 
-  </div>
+</div>
 <% end %>
