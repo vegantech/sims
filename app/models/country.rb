@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081125030310
+# Schema version: 20081205205925
 #
 # Table name: countries
 #
@@ -8,6 +8,7 @@
 #  abbrev     :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  admin      :boolean
 #
 
 class Country < ActiveRecord::Base

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081125030310
+# Schema version: 20081205205925
 #
 # Table name: states
 #
@@ -9,6 +9,7 @@
 #  country_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  admin      :boolean
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

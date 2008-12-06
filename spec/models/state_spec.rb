@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20081205205925
+#
+# Table name: states
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  abbrev     :string(255)
+#  country_id :integer
+#  created_at :datetime
+#  updated_at :datetime
+#  admin      :boolean
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe State do

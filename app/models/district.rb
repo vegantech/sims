@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081125030310
+# Schema version: 20081205205925
 #
 # Table name: districts
 #
@@ -10,6 +10,7 @@
 #  state_id      :integer
 #  created_at    :datetime
 #  updated_at    :datetime
+#  admin         :boolean
 #
 
 class District < ActiveRecord::Base

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081125030310
+# Schema version: 20081205205925
 #
 # Table name: principal_overrides
 #
@@ -7,7 +7,7 @@
 #  teacher_id         :integer
 #  student_id         :integer
 #  principal_id       :integer
-#  status             :integer
+#  status             :integer         default(0)
 #  start_tier_id      :integer
 #  end_tier_id        :integer
 #  principal_response :string(1024)

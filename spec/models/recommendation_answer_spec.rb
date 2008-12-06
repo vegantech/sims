@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081125030310
+# Schema version: 20081205205925
 #
 # Table name: recommendation_answers
 #
