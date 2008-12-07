@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   #
   before_filter :authenticate, :authorize#, :current_district
 
+  SUBDOMAIN_MATCH=/(sims)|(sims-demo)/
   
   private
   def current_user_id
@@ -65,6 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
+    subdomains
     unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
       redirect_to root_url
@@ -117,23 +119,24 @@ class ApplicationController < ActionController::Base
   end
 
 
-  def get_district
-    if params[:district]
-      session[:district_id]=params[:district][:id]
-    else
+  def subdomains
       g=self.request.subdomains
-      if g.pop == "sims" 
-        if g.blank?
-          session[:current_district]=nil
-        else
-          country=Country.find_by_abbrev(g.pop)
-          state=country.states.find_by_abbrev(g.pop) if country
-          session[:district_id]=state.districts.find_by_abbrev(g.pop).id if state
+      return if g.blank? or  !g.pop.match(SUBDOMAIN_MATCH)
+      return if g.blank? 
+        @country ||= Country.find_by_abbrev(g.pop)
+        if @country
+          @countries=[]
+          @state ||= @country.states.find_by_abbrev(g.pop)
         end
-      else
-        nil
-      end
-    end
+        if @state
+          @states=[]
+          district = @state.districts.find_by_abbrev(g.pop) 
+        end
+        if district
+          redirect_to logout_url and return if current_district and current_district.abbrev != district.abbrev
+          @districts =[]
+        end
+          @district = district
 
   end
 

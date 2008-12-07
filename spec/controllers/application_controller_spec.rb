@@ -4,6 +4,12 @@ describe ApplicationController do
   def flash
     @flash ||= {}
   end
+
+  before do
+    req=mock_object(:subdomains=>[])
+    controller.stub!(:request).and_return(req)
+  end
+
   it 'should authenticate' do
     controller.should_receive(:current_user_id).and_return(true)
     controller.send(:authenticate).should == true
