@@ -3,6 +3,7 @@ require File.dirname(__FILE__)+'/require_everything'
 
 
 Given /^common data$/i do
+  Country.destroy_all
   @district=Factory(:district)
   @school=Factory(:school,:district=>@district, :name=>"Default School")
   @default_user = create_user
@@ -15,6 +16,7 @@ Given /^common data$/i do
 end
 
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
+        Country.destroy_all
 	create_user user_name, password
 end
 
