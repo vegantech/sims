@@ -5,7 +5,6 @@ require 'factory'
 class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
   #TODO replace this default district constant
-  DEFAULT_DISTRICT=District.find_by_abbrev("mmsd") || Factory.build(:district)
 
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
@@ -142,4 +141,8 @@ class ApplicationController < ActionController::Base
 
   end
 
+  private
+  def default_district
+    @default_district ||=District.find_by_abbrev("mmsd") || Factory.build(:district)
+  end
 end
