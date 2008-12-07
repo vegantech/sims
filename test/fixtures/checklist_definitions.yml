@@ -14,20 +14,20 @@
 #
 
 checklist_definition_one:
-  district: wi_mmsd
+  district: wi_test
   active: true
   text: The first of many
   directions: Fill it out please.
   recommendation_definition: one
 
 checklist_definition_two:
-  district: wi_mmsd
+  district: wi_test
   active: false
   text: The second of many
   directions: Fill it out please.
 
 checklist_definition_three:
-  district: wi_mmsd
+  district: wi_test
   active: false
   text: The third of many
   directions: Fill it out please.

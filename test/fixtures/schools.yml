@@ -31,12 +31,12 @@ two:
 
 alpha:
   name: Alpha Elementary
-  district:  wi_mmsd
+  district:  wi_test
 
 bravo:
   name: Bravo Elementary
-  district:  wi_mmsd
+  district:  wi_test
 
 other:
   name: Other Middle
-  district: wi_mmsd
+  district: wi_test

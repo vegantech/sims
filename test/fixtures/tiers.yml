@@ -14,11 +14,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 targeted:
-  district: wi_mmsd
+  district: wi_test
   title: Targeted
   position: 2
 
 broad:
-  district: wi_mmsd
+  district: wi_test
   title: Broad
   position: 1

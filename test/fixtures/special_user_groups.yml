@@ -18,12 +18,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 allstudents:
   user: allstudents
-  district: wi_mmsd
+  district: wi_test
   grouptype: <%=SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT%>
 
 alpha_elem_prin:
   user: alphaprin
-  district: wi_mmsd
+  district: wi_test
   grouptype: <%=SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL%>
   school: alpha
   is_principal: true
@@ -31,7 +31,7 @@ alpha_elem_prin:
 
 alpha_three:
   user: alphagradethree
-  district: wi_mmsd
+  district: wi_test
   grouptype: <%=SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL%>
   school: alpha
   grade: "3"

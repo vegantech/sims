@@ -19,7 +19,7 @@
 one:
   category: attendance
   user: oneschool
-  district: wi_mmsd
+  district: wi_test
   student: alpha_first_grader
   reason: Poor Attendance
   type: CustomFlag

@@ -36,38 +36,38 @@ two:
   id_country: 1
 
 alpha_first_grader:
-  district: wi_mmsd
+  district: wi_test
   last_name: Grader
   first_name: Alpha_First
   birthdate: "2003-05-05"
 
 alpha_third_grader:
-  district: wi_mmsd
+  district: wi_test
   last_name: Grader
   first_name: Alpha_Third
   birthdate: "2001-07-15"
 
 alpha_other_third_grader:
-  district: wi_mmsd
+  district: wi_test
   last_name: Other Grader
   first_name: Alpha_Third
   birthdate: "2001-07-15"
 
 
 another_first_grader_not_in_group:
-  district: wi_mmsd
+  district: wi_test
   last_name: Ungrouped
   first_name: Alpha_First
   birthdate: "2003-07-15"
 
 ungrouped_third_grader:
-  district: wi_mmsd
+  district: wi_test
   last_name: Ungrouped
   first_name: Alpha_third
   birthdate: "2001-08-11"
 
 ungrouped_sixth_grader:
-  district: wi_mmsd
+  district: wi_test
   last_name: Ungrouped
   first_name: Alpha_Sixth
   birthdate: "2001-08-11"
@@ -75,13 +75,13 @@ ungrouped_sixth_grader:
 
 
 bravo_first_smith:
-  district: wi_mmsd
+  district: wi_test
   last_name: Smith
   first_name: Bravo_First
   birthdate: "2003-07-15"
 
 bravo_first_jones:
-  district: wi_mmsd
+  district: wi_test
   last_name: Jones
   first_name: Bravo_First
   birthdate: "2003-09-30"

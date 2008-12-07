@@ -18,11 +18,11 @@
 behavior:
   title: Behavior
   description: Attendance, Classroom misbehavior
-  district: wi_mmsd
+  district: wi_test
   position: 1
 
 learning:
   title: Learning
   description: Subject/Course related
-  district: wi_mmsd
+  district: wi_test
   position: 2

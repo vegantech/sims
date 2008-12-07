@@ -23,7 +23,7 @@ one:
   passwordhash: 
   first_name: MyString
   last_name: MyString
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 two:
@@ -36,7 +36,7 @@ oneschool:
   first_name: "1First."
   last_name: "oneschool"
   passwordhash: <%= User.encrypted_password("oneschool") %>
-  district: wi_mmsd
+  district: wi_test
   schools: alpha
   <<: *DEFAULTS
 
@@ -44,7 +44,7 @@ twoschools:
   first_name: "2Second."
   last_name: "twoschools"
   passwordhash: <%= User.encrypted_password("twoschools") %>
-  district: wi_mmsd
+  district: wi_test
   schools: alpha, bravo
   <<: *DEFAULTS
 
@@ -52,7 +52,7 @@ allstudents:
   first_name: "All"
   last_name: "Students"
   passwordhash: <%= User.encrypted_password("allstudents") %>
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 
@@ -60,7 +60,7 @@ alphaprin:
   first_name: "Principal"
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 
@@ -68,7 +68,7 @@ alphagradethree:
   first_name: "Grade 3"
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphagradethree") %>
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 
@@ -76,14 +76,14 @@ noschools:
   first_name: No
   last_name: schools
   passwordhash: <%= User.encrypted_password("noschools") %>
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 nogroups:
   first_name: No
   last_name: groups
   passwordhash: <%= User.encrypted_password("nogroups") %>
-  district: wi_mmsd
+  district: wi_test
   schools: alpha
   <<: *DEFAULTS
 
@@ -91,14 +91,14 @@ district_admin:
   first_name: Default
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  district: wi_mmsd
+  district: wi_test
   <<: *DEFAULTS
 
 
 content_builder:
   first_name: District
   last_name: Content Builder
-  district: wi_mmsd
+  district: wi_test
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
   roles: district_builder

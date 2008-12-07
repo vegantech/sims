@@ -26,7 +26,7 @@ fact_interview_a:
   maximum_score: 50
   minimum_score: 0
   position: 1
-  district: wi_mmsd
+  district: wi_test
 
 fact_interview_b:
   title: Fact Interview B
@@ -35,7 +35,7 @@ fact_interview_b:
   maximum_score: 50
   minimum_score: 0
   position: 2
-  district: wi_mmsd
+  district: wi_test
 
 reading_probe:
   title: Reader Level
@@ -44,14 +44,14 @@ reading_probe:
   maximum_score: 25
   minimum_score: 0
   position: 3
-  district: wi_mmsd
+  district: wi_test
 
 unassigned_probe:
   title: Unassigned Probe
   description: "Demonstrate a progress monitor that isn't assigned to any intervention definition"
   active: true
   position: 4
-  district: wi_mmsd
+  district: wi_test
 
 
 

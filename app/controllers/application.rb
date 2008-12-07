@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district_id
-    session[:current_district] ||get_district || DEFAULT_DISTRICT
+    session[:current_district] ||get_district || default_district
   end
 
   def current_district
@@ -143,6 +143,6 @@ class ApplicationController < ActionController::Base
 
   private
   def default_district
-    @default_district ||=District.find_by_abbrev("mmsd") || Factory.build(:district)
+    @default_district ||=District.find_by_abbrev("test") || Factory.build(:district)
   end
 end

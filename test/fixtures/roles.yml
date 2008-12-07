@@ -18,10 +18,10 @@
 
 regular_user:
   name: $LABEL
-  district: wi_mmsd
+  district: wi_test
   position: 1
 
 district_builder:
   name: $LABEL
-  district: wi_mmsd
+  district: wi_test
   position: 2

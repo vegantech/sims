@@ -16,7 +16,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  district: wi_mmsd
+  district: wi_test
   active: true
   text: MyText
   score_options: 1

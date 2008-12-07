@@ -21,6 +21,11 @@ wi_mmsd:
   state: state_wi
   state_dpi_num: 3269
 
+wi_test:
+  name: WI Test District
+  abbrev: test
+  state: state_wi
+
 wi_admin:
   name: Wisconsin Administration
   abbrev: admin
