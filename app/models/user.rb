@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   has_many :student_comments
 
 
-  validates_presence_of :username, :passwordhash, :last_name, :first_name
+  validates_presence_of :username, :passwordhash, :last_name, :first_name, :district
   validates_uniqueness_of :username, :scope=>:district_id
 
   acts_as_reportable if defined? Ruport

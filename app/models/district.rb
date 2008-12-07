@@ -32,7 +32,7 @@ class District < ActiveRecord::Base
 
   delegate :country, :to => :state
   
-  validates_presence_of :abbrev,:name
+  validates_presence_of :abbrev,:name, :state
   validates_uniqueness_of :abbrev,:name, :scope=>:state_id
   validates_uniqueness_of :admin, :scope=>:state_id, :if=>lambda{|d| d.admin?}  #only 1 admin state per country
   validates_uniqueness_of :state_id,  :if=>lambda{|d| d.state && d.state.admin?}  #only 1 district per admin state

@@ -1,0 +1,20 @@
+<div id="choose_country">
+  <% unless @countries.blank? %>
+    <% form_for @country , :url => {:controller=>"login", :action=>"choose_country"} do |f| %>
+      <label for="country">Country</label>
+      <%= f.collection_select(:id, @countries, :id, :name) %>
+      <%= submit_tag "Choose Country"%>
+    <% end %>
+  <% end %>
+</div>
+
+<div id="choose_state">
+  <% unless @states.blank? %>
+    <% form_for @state , :url => {:controller=>"login", :action=>"choose_state"} do |f| %>
+      <label for="state">State</label>
+      <%=f.collection_select(:id, @states, :id, :name) %>
+      <%= submit_tag "Choose State"%>
+    <% end %>
+  <% end %>
+</div>
+

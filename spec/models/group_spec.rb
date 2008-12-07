@@ -32,8 +32,9 @@ describe Group do
     g2=Group.create!(:title=>"Group 2")
     g3=Group.create!(:title=>"Group 3")
     g4=Group.create!(:title=>"Group 4")
-    u1=User.create!(:username=>"User 1", :first_name => 'First', :last_name => 'Last',:passwordhash=>'blank haha')
-    u2=User.create!(:username=>"User 2", :first_name => 'Second', :last_name => 'Penultimate',:passwordhash=>'not blank')
+    district=Factory(:district)
+    u1=Factory(:user, :district=>district)
+    u2=Factory(:user, :district=>district)
 
     g1.users << [u1]
     g2.users << [u2]

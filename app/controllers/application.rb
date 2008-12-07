@@ -57,12 +57,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district_id
-    session[:current_district] ||get_district || default_district
+    session[:district_id] 
   end
 
   def current_district
-    @district ||= current_user.district || Factory(:district)
-    #@district ||= District.find_by_id(current_district_id) 
+    @district ||= District.find_by_id(current_district_id) 
   end
 
   def authenticate
@@ -120,22 +119,19 @@ class ApplicationController < ActionController::Base
 
   def get_district
     if params[:district]
-      session[:current_district]=params[:district][:id]
+      session[:district_id]=params[:district][:id]
     else
       g=self.request.subdomains
       if g.pop == "sims" 
         if g.blank?
           session[:current_district]=nil
-          @districts=District.all
         else
           country=Country.find_by_abbrev(g.pop)
           state=country.states.find_by_abbrev(g.pop) if country
-          session[:current_district]=state.districts.find_by_abbrev(g.pop).id if state
+          session[:district_id]=state.districts.find_by_abbrev(g.pop).id if state
         end
-      elsif defined? DEFAULT_DISTRICT
-        session[:current_district]=DEFAULT_DISTRICT.id
       else
-        raise "No District"
+        nil
       end
     end
 

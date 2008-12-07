@@ -5,6 +5,7 @@ describe MainController do
   describe "responding to GET index" do
 
     it "should be successful and not call the before filter" do
+      controller.should_receive(:dropdowns)
       controller.should_not_receive(:authenticate)
       get :index
       response.should be_success

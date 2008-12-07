@@ -19,11 +19,6 @@ state_wi:
   name: Wisconsin
   abbrev: wi
 
-state_mi:
-  country: country_us
-  name: Michigan
-  abbrev: mi
-
 us_admin:
   country: country_us
   name: US Administration

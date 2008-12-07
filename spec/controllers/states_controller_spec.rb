@@ -17,6 +17,7 @@ describe StatesController do
   end
 
   def test_should_create_state
+    pending "should be scoped to country"
     assert_difference('State.count') do
       post :create, :state =>Factory.attributes_for(:state)
     end

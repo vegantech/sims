@@ -20,7 +20,7 @@ class State < ActiveRecord::Base
   
   validates_uniqueness_of :admin, :scope=>:country_id, :if=>lambda{|s| s.admin?}  #only 1 admin state per country
   validates_uniqueness_of :country_id,  :if=>lambda{|s| s.country && s.country.admin?}  #only 1 state per admin country
-  validates_presence_of :name,:abbrev
+  validates_presence_of :name,:abbrev, :country
   validates_uniqueness_of :name,:abbrev, :scope=>:country_id
 
 

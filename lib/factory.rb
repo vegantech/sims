@@ -25,6 +25,7 @@ Factory.define :user do |u|
   u.passwordhash {|u| User.encrypted_password(u.username)}
   u.last_name "Last_Name"
   u.first_name {|u| "First#{u.username}"}
+  u.association :district
 end
 
 Factory.define :checklist_definition do |c|
@@ -60,6 +61,7 @@ end
 Factory.define :district do |d|
   d.abbrev {Factory.next(:abbrev)}
   d.name {|c| "#{c.abbrev} District"}
+  d.association :state
 end
 
 Factory.define :school do |s|
@@ -71,4 +73,5 @@ end
 Factory.define :state do |s|
   s.abbrev {Factory.next(:abbrev)}
   s.name {|c| "#{c} State"}
+  s.association :country
 end

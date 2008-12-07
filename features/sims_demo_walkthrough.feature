@@ -129,6 +129,7 @@ Feature: Sims Demo Walkthrough
     And I should see "Smith, Bravo_First"
 
   Scenario nouser
+    Given load demo data 
     When I go to the home page
     And I fill in "Login" with "invalid_user"
     And I press "Login"

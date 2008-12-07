@@ -134,6 +134,7 @@ end
 private
 
 def default_user
+  Country.destroy_all unless @default_user
   @default_user ||= create_user 'default_user'
   default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)

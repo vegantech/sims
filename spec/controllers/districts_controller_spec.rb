@@ -17,6 +17,7 @@ describe DistrictsController do
   end
 
   def test_should_create_district
+    pending "This should be created within a state"
     assert_difference('District.count') do
       post :create, :district => Factory.attributes_for(:district)
     end
@@ -43,6 +44,7 @@ describe DistrictsController do
   end
 
   def test_should_update_district
+    pending "This should be created within a state"
     put :update, :id => districts(:one).id, :district => { }
     assert_redirected_to district_path(assigns(:district))
   end

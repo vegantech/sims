@@ -15,12 +15,6 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-wi_mmsd:
-  name: Madison Metropolitan School District
-  abbrev: mmsd
-  state: state_wi
-  state_dpi_num: 3269
-
 wi_test:
   name: WI Test District
   abbrev: test

@@ -1,11 +1,14 @@
 class LoginController < ApplicationController
+  include CountryStateDistrict
   skip_before_filter :authenticate, :authorize
   def login
+    dropdowns
     @user=User.new(:username=>params[:username])
+    
     if request.get?
       session[:user_id] = nil
     else
-      @user=User.authenticate(params[:username], params[:password]) || @user
+      @user=current_district.users.authenticate(params[:username], params[:password]) || @user
       session[:user_id] = @user.id
       flash[:notice] = 'Authentication Failure' if @user.new_record?
       redirect_to root_url and return
@@ -23,6 +26,21 @@ class LoginController < ApplicationController
   def index
     login
     render :action=>"login"
+  end
+
+  def choose_country
+    @country=Country.find(params[:country][:id])
+    @user=User.new
+    dropdowns
+    render :action=>"login"
+  end
+
+  def choose_state
+    @state=State.find(params[:state][:id])
+    @country=@state.country
+    @user=User.new
+    dropdowns
+    render :action => "login"
   end
 
  
