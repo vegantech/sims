@@ -21,7 +21,8 @@ describe Role do
     @valid_attributes = {
       :name => "value for name",
       :system => false,
-      :position => "1"
+      :position => "1",
+      :district_id =>1
     }
   end
 
@@ -29,15 +30,7 @@ describe Role do
     Role.create!(@valid_attributes.merge(:district_id=>1))
   end
 
-  it 'should belong only to one of: district, state, country or system' do
-    Role.new(@valid_attributes.merge(:district_id =>1, :state_id =>1)).should_not be_valid
-    Role.new(@valid_attributes.merge(:district_id =>1, :system=>true)).should_not be_valid
-    Role.new(@valid_attributes.merge(:state_id =>1, :country_id =>1)).should_not be_valid
-    Role.new(@valid_attributes.merge(:district_id =>1, :state_id =>1)).should_not be_valid
-    Role.new(@valid_attributes.merge(:country_id =>1, :system =>false)).should be_valid
-    
-  end
-         
+        
 
   describe 'has_controller_and_action_group?' do
     it 'should return nothing when there are no matching controllers and something when there is' do

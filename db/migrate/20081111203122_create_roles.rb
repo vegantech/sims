@@ -3,9 +3,6 @@ class CreateRoles < ActiveRecord::Migration
     create_table :roles do |t|
       t.string :name
       t.belongs_to :district
-      t.belongs_to :state
-      t.belongs_to :country
-      t.boolean :system, :default => false
       t.integer :position
 
       t.timestamps
