@@ -8,6 +8,7 @@ describe ApplicationController do
   before do
     req=mock_object(:subdomains=>[])
     controller.stub!(:request).and_return(req)
+    controller.stub!(:params).and_return(flash)
   end
 
   it 'should authenticate' do
