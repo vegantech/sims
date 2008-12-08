@@ -25,9 +25,7 @@ module CountryStateDistrict
     unless districts.size == 1
       @districts ||= districts
     end
-
     @district ||= districts.first
-    session[:district_id]=@district.id if @district
 
   end
 end

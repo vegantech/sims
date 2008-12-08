@@ -13,6 +13,7 @@
 
 class Country < ActiveRecord::Base
   has_many :states
+  has_many :news,:class_name=>"NewsItem"
 
   named_scope :normal, :conditions=>{:admin=>false}
   named_scope :admin, :conditions=>{:admin=>true}

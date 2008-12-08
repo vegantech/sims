@@ -26,6 +26,7 @@ class District < ActiveRecord::Base
   has_many :schools
   has_many :students
   has_many :special_user_groups
+  has_many :news,:class_name=>"NewsItem"
 
   named_scope :normal, :conditions=>{:admin=>false}
   named_scope :admin, :conditions=>{:admin=>true}
@@ -51,6 +52,16 @@ class District < ActiveRecord::Base
     #so they should be able to choose which to search by on the 
     #student search screen
     objective_definitions
+  end
+
+  def administers
+    if system_admin?
+      System
+    elsif country_admin?
+      country
+    elsif admin?
+      self
+    end
   end
 
   def system_admin?

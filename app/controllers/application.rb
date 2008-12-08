@@ -121,22 +121,24 @@ class ApplicationController < ActionController::Base
 
   def subdomains
       g=self.request.subdomains
-      return if g.blank? or  !g.pop.match(SUBDOMAIN_MATCH)
-      return if g.blank? 
-        @country ||= Country.find_by_abbrev(g.pop)
-        if @country
-          @countries=[]
-          @state ||= @country.states.find_by_abbrev(g.pop)
-        end
-        if @state
-          @states=[]
-          district = @state.districts.find_by_abbrev(g.pop) 
-        end
-        if district
-          redirect_to logout_url and return if current_district and current_district.abbrev != district.abbrev
-          @districts =[]
-        end
-          @district = district
+      if g.pop.to_s.match(SUBDOMAIN_MATCH)
+         params[:country_abbrev],params[:state_abbrev],params[:district_abbrev]=g.rev
+      end
+
+      @country ||= Country.find_by_abbrev(params[:country_abbrev])
+      if @country
+        @countries=[]
+        @state ||= @country.states.find_by_abbrev(params[:state_abbrev])
+      end
+      if @state
+        @states=[]
+        district = @state.districts.find_by_abbrev(params[:district_abbrev]) 
+      end
+      if district
+        redirect_to logout_url and return if current_district and current_district.abbrev != district.abbrev
+        @districts =[]
+        @district = district
+      end
 
   end
 

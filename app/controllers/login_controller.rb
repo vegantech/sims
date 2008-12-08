@@ -12,7 +12,11 @@ class LoginController < ApplicationController
         @user=current_district.users.authenticate(params[:username], params[:password]) || @user
       end
       session[:user_id] = @user.id
-      flash[:notice] = 'Authentication Failure' if @user.new_record?
+      if @user.new_record?
+        flash[:notice] = 'Authentication Failure' if @user.new_record?
+      else
+        session[:district_id]=@district.id
+      end
 
       if request.subdomains.size == 4 || request.subdomains.size == 0 || @user.new_record?
         redirect_to root_url and return
@@ -31,6 +35,8 @@ class LoginController < ApplicationController
   def logout
     oldflash = flash[:notice]
     reset_session
+    session[:user_id]=nil
+    session[:district_id]=nil
     flash[:notice] = "#{oldflash} Logged Out"
     redirect_to root_url
   end

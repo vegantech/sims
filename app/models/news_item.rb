@@ -4,5 +4,5 @@ class NewsItem < ActiveRecord::Base
   belongs_to :district
   belongs_to :school
 
-  named_scope :system, :conditins=>{:system=>true}
+  named_scope :system, :conditions=>{:system=>true}
 end

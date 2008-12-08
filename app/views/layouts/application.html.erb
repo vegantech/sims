@@ -18,11 +18,10 @@
       </div>
       <div id="left_column">
         <p>
-          Menu
+          <h2>Menu</h2>
           <%=render :partial=>"layouts/menu"%>
         </p>
-        <p>District Notes</p>
-        <p>System Notes</p>
+        <%= render :partial =>"layouts/news"%>
         <p><%= render :partial=>"layouts/flag_legend"%></p>
         <p><%= render_cell(:principal_overrides, :user_requests, :user=>@user)%></p>
         <p><%= render_cell(:principal_overrides, :principal_responses,:user=>@user)%></p>
