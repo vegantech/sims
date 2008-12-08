@@ -9,53 +9,10 @@ describe NewsItemsController do
     @mock_news_item ||= mock_model(NewsItem, stubs)
   end
   
-  describe "responding to GET index" do
-
-    it "should expose all news_items as @news_items" do
-      NewsItem.should_receive(:find).with(:all).and_return([mock_news_item])
-      get :index
-      assigns[:news_items].should == [mock_news_item]
-    end
-
-    describe "with mime type of xml" do
-  
-      it "should render all news_items as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        NewsItem.should_receive(:find).with(:all).and_return(news_items = mock("Array of NewsItems"))
-        news_items.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
-
-  end
-
-  describe "responding to GET show" do
-
-    it "should expose the requested news_item as @news_item" do
-      NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
-      get :show, :id => "37"
-      assigns[:news_item].should equal(mock_news_item)
-    end
-    
-    describe "with mime type of xml" do
-
-      it "should render the requested news_item as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
-        mock_news_item.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
-  end
-
   describe "responding to GET new" do
   
     it "should expose a new news_item as @news_item" do
+      pending
       NewsItem.should_receive(:new).and_return(mock_news_item)
       get :new
       assigns[:news_item].should equal(mock_news_item)
@@ -66,6 +23,7 @@ describe NewsItemsController do
   describe "responding to GET edit" do
   
     it "should expose the requested news_item as @news_item" do
+      pending
       NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
       get :edit, :id => "37"
       assigns[:news_item].should equal(mock_news_item)
@@ -78,12 +36,14 @@ describe NewsItemsController do
     describe "with valid params" do
       
       it "should expose a newly created news_item as @news_item" do
+      pending
         NewsItem.should_receive(:new).with({'these' => 'params'}).and_return(mock_news_item(:save => true))
         post :create, :news_item => {:these => 'params'}
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should redirect to the created news_item" do
+      pending
         NewsItem.stub!(:new).and_return(mock_news_item(:save => true))
         post :create, :news_item => {}
         response.should redirect_to(news_item_url(mock_news_item))
@@ -94,12 +54,14 @@ describe NewsItemsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved news_item as @news_item" do
+      pending
         NewsItem.stub!(:new).with({'these' => 'params'}).and_return(mock_news_item(:save => false))
         post :create, :news_item => {:these => 'params'}
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should re-render the 'new' template" do
+      pending
         NewsItem.stub!(:new).and_return(mock_news_item(:save => false))
         post :create, :news_item => {}
         response.should render_template('new')
@@ -114,18 +76,21 @@ describe NewsItemsController do
     describe "with valid params" do
 
       it "should update the requested news_item" do
+      pending
         NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
         mock_news_item.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 
       it "should expose the requested news_item as @news_item" do
+      pending
         NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => true))
         put :update, :id => "1"
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should redirect to the news_item" do
+      pending
         NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => true))
         put :update, :id => "1"
         response.should redirect_to(news_item_url(mock_news_item))
@@ -136,18 +101,21 @@ describe NewsItemsController do
     describe "with invalid params" do
 
       it "should update the requested news_item" do
+      pending
         NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
         mock_news_item.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 
       it "should expose the news_item as @news_item" do
+      pending
         NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => false))
         put :update, :id => "1"
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should re-render the 'edit' template" do
+      pending
         NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => false))
         put :update, :id => "1"
         response.should render_template('edit')
@@ -160,12 +128,14 @@ describe NewsItemsController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested news_item" do
+      pending
       NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
       mock_news_item.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
   
     it "should redirect to the news_items list" do
+      pending
       NewsItem.stub!(:find).and_return(mock_news_item(:destroy => true))
       delete :destroy, :id => "1"
       response.should redirect_to(news_items_url)
