@@ -25,3 +25,8 @@ district_builder:
   name: $LABEL
   district: wi_test
   position: 2
+
+system_admin:
+  name: $LABEL
+  district: admin_admin_admin
+  position: 1

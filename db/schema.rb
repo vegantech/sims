@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081205205925) do
+ActiveRecord::Schema.define(:version => 20081208201532) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -195,6 +195,29 @@ ActiveRecord::Schema.define(:version => 20081205205925) do
     t.boolean  "active",                     :default => true
     t.integer  "ended_by_id"
     t.date     "ended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "interventions_probe_assignments", :force => true do |t|
+    t.integer  "intervention_id"
+    t.integer  "probe_definition_id"
+    t.integer  "frequency_multiplier"
+    t.integer  "frequency_id"
+    t.datetime "first_date"
+    t.datetime "end_date"
+    t.boolean  "disabled",             :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "news_items", :force => true do |t|
+    t.text     "text"
+    t.boolean  "system"
+    t.integer  "district_id"
+    t.integer  "school_id"
+    t.integer  "state_id"
+    t.integer  "country_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

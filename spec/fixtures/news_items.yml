@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  text: MyText
+  system: false
+  district: 
+  school: 
+  state: 
+  country: 
+
+two:
+  text: MyText
+  system: false
+  district: 
+  school: 
+  state: 
+  country: 

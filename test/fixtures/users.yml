@@ -102,3 +102,13 @@ content_builder:
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
   roles: district_builder
+
+system_admin:
+  first_name: System
+  last_name: Adminsitrator
+  username: district_admin
+  district: admin_admin_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: system_admin
+  
+

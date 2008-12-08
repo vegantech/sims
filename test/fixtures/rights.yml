@@ -188,4 +188,8 @@ district_builder_railmail:
   read: true
   write: true
 
-
+system_admin_news:
+  role: system_admin
+  controller: 'news_items'
+  read: true
+  write: true

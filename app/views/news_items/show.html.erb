@@ -1,0 +1,33 @@
+<p>
+  <b>Text:</b>
+  <%=h @news_item.text %>
+</p>
+
+<p>
+  <b>System:</b>
+  <%=h @news_item.system %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @news_item.district %>
+</p>
+
+<p>
+  <b>School:</b>
+  <%=h @news_item.school %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%=h @news_item.state %>
+</p>
+
+<p>
+  <b>Country:</b>
+  <%=h @news_item.country %>
+</p>
+
+
+<%= link_to 'Edit', edit_news_item_path(@news_item) %> |
+<%= link_to 'Back', news_items_path %>

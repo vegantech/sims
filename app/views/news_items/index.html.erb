@@ -1,0 +1,30 @@
+<h1>Listing news_items</h1>
+
+<table>
+  <tr>
+    <th>Text</th>
+    <th>System</th>
+    <th>District</th>
+    <th>School</th>
+    <th>State</th>
+    <th>Country</th>
+  </tr>
+
+<% for news_item in @news_items %>
+  <tr>
+    <td><%=h news_item.text %></td>
+    <td><%=h news_item.system %></td>
+    <td><%=h news_item.district %></td>
+    <td><%=h news_item.school %></td>
+    <td><%=h news_item.state %></td>
+    <td><%=h news_item.country %></td>
+    <td><%= link_to 'Show', news_item %></td>
+    <td><%= link_to 'Edit', edit_news_item_path(news_item) %></td>
+    <td><%= link_to 'Destroy', news_item, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New news_item', new_news_item_path %>
