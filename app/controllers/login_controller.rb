@@ -8,7 +8,9 @@ class LoginController < ApplicationController
     if request.get?
       session[:user_id] = nil
     else
-      @user=current_district.users.authenticate(params[:username], params[:password]) || @user
+      if current_district
+        @user=current_district.users.authenticate(params[:username], params[:password]) || @user
+      end
       session[:user_id] = @user.id
       flash[:notice] = 'Authentication Failure' if @user.new_record?
 
@@ -50,7 +52,7 @@ class LoginController < ApplicationController
   def choose_state
     @state=State.find(params[:state][:id])
     @country=@state.country
-    if request.subdomains.last.match(SUBDOMAIN_MATCH) && @state
+    if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH) && @state
      state_and_country=[@state.abbrev]
       if request.subdomains.size == 1 then 
         state_and_country << @state.country.abbrev
