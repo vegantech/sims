@@ -20,7 +20,6 @@ describe Role do
   before(:each) do
     @valid_attributes = {
       :name => "value for name",
-      :system => false,
       :position => "1",
       :district_id =>1
     }
