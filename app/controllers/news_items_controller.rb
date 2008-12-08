@@ -1,26 +1,4 @@
 class NewsItemsController < ApplicationController
-  # GET /news_items
-  # GET /news_items.xml
-  def index
-    @news_items = NewsItem.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @news_items }
-    end
-  end
-
-  # GET /news_items/1
-  # GET /news_items/1.xml
-  def show
-    @news_item = NewsItem.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @news_item }
-    end
-  end
-
   # GET /news_items/new
   # GET /news_items/new.xml
   def new
@@ -40,12 +18,12 @@ class NewsItemsController < ApplicationController
   # POST /news_items
   # POST /news_items.xml
   def create
-    @news_item = NewsItem.new(params[:news_item])
+    @news_item = current_district.administers.news.build(params[:news_item])
 
     respond_to do |format|
       if @news_item.save
         flash[:notice] = 'NewsItem was successfully created.'
-        format.html { redirect_to(@news_item) }
+        format.html { redirect_to(root_url) }
         format.xml  { render :xml => @news_item, :status => :created, :location => @news_item }
       else
         format.html { render :action => "new" }
@@ -57,12 +35,12 @@ class NewsItemsController < ApplicationController
   # PUT /news_items/1
   # PUT /news_items/1.xml
   def update
-    @news_item = NewsItem.find(params[:id])
+    @news_item = current_district.administers.news.find(params[:id])
 
     respond_to do |format|
       if @news_item.update_attributes(params[:news_item])
         flash[:notice] = 'NewsItem was successfully updated.'
-        format.html { redirect_to(@news_item) }
+        format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -74,11 +52,11 @@ class NewsItemsController < ApplicationController
   # DELETE /news_items/1
   # DELETE /news_items/1.xml
   def destroy
-    @news_item = NewsItem.find(params[:id])
+    @news_item = current_district.administers.news.find(params[:id])
     @news_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to(news_items_url) }
+      format.html { redirect_to(root_url) }
       format.xml  { head :ok }
     end
   end

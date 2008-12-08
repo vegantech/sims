@@ -2,35 +2,14 @@
 
 <% form_for(@news_item) do |f| %>
   <%= f.error_messages %>
-
   <p>
     <%= f.label :text %><br />
     <%= f.text_area :text %>
   </p>
-  <p>
-    <%= f.label :system %><br />
-    <%= f.check_box :system %>
-  </p>
-  <p>
-    <%= f.label :district %><br />
-    <%= f.text_field :district %>
-  </p>
-  <p>
-    <%= f.label :school %><br />
-    <%= f.text_field :school %>
-  </p>
-  <p>
-    <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </p>
-  <p>
-    <%= f.label :country %><br />
-    <%= f.text_field :country %>
-  </p>
-  <p>
+ 
+ <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @news_item %> |
-<%= link_to 'Back', news_items_path %>
+<%= link_to 'Back', root_path %>

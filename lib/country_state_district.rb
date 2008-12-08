@@ -1,6 +1,7 @@
 module CountryStateDistrict
   def dropdowns
     subdomains
+    return if current_user_id
     countries=@countries ||Country.normal
 
     unless countries.size ==1
@@ -19,7 +20,7 @@ module CountryStateDistrict
 
     districts=@districts || @state.districts.normal
     if params[:district]
-      @district ||= District.find(params[:district][:id])
+      @district = District.find(params[:district][:id])
     end
 
     unless districts.size == 1

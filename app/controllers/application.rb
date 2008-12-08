@@ -124,6 +124,7 @@ class ApplicationController < ActionController::Base
       if g.pop.to_s.match(SUBDOMAIN_MATCH)
          params[:country_abbrev],params[:state_abbrev],params[:district_abbrev]=g.rev
       end
+      return unless params[:country_abbrev]
 
       @country ||= Country.find_by_abbrev(params[:country_abbrev])
       if @country
