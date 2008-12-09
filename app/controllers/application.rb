@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   #
   before_filter :authenticate, :authorize#, :current_district
 
-  SUBDOMAIN_MATCH=/(sims)|(sims-demo)/
+  SUBDOMAIN_MATCH=/(sims)|(sims-open)/
   
   private
   def current_user_id
