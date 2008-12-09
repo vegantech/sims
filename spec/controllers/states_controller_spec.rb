@@ -43,6 +43,7 @@ describe StatesController do
   end
 
   def test_should_update_state
+    pending
     put :update, :id => states(:one).id, :state => { }
     assert_redirected_to state_path(assigns(:state))
   end
