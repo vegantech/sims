@@ -65,9 +65,10 @@ describe LoginController do
   describe "responding to GET logout" do
      it "should reset the session and redirect to root" do
        controller.should_receive(:reset_session)
+       controller.should_receive(:dropdowns)
        get :logout
        flash[:notice].should == " Logged Out"
-       response.should redirect_to("/")
+       response.should render_template('login')
 
     end
   

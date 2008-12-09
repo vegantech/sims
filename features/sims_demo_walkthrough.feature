@@ -151,7 +151,7 @@ Feature: Sims Demo Walkthrough
     And I should see "Splash Page"
     And I follow "Logout"
     And I should see "Logged Out"
-    And I should see "Splash Page"
+    And I should see "Please Login"
     
 
  
