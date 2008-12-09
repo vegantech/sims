@@ -20,3 +20,6 @@ config.action_view.cache_template_loading            = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+    
+ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.sims-open.vegantech.com')
+

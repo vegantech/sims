@@ -24,7 +24,6 @@ class LoginController < ApplicationController
         district_state_and_country = [@district.abbrev]  if request.subdomains.size <4
         district_state_and_country << @district.state.abbrev  if request.subdomains.size <3
         district_state_and_country << @district.state.country.abbrev if request.subdomains.size < 2
-        ActionController::Base.session_options[:session_domain] = request.host.split(r.to_s).last #TODO this should go in env on deployment
         redirect_to "#{request.protocol}#{district_state_and_country.join(".")}.#{request.host_with_port}/"
       end
 
@@ -38,7 +37,8 @@ class LoginController < ApplicationController
     session[:user_id]=nil
     session[:district_id]=nil
     flash[:notice] = "#{oldflash} Logged Out"
-    redirect_to root_url
+    dropdowns
+    render :action=>:login #the redirect wasn't properly clearing the cookie via the reset_session
   end
 
   def index
