@@ -7,7 +7,7 @@
 #  teacher_id         :integer
 #  student_id         :integer
 #  principal_id       :integer
-#  status             :integer
+#  status             :integer         default(0)
 #  start_tier_id      :integer
 #  end_tier_id        :integer
 #  principal_response :string(1024)

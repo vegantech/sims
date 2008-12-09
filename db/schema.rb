@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(:version => 20081208201532) do
     t.integer  "teacher_id"
     t.integer  "student_id"
     t.integer  "principal_id"
-    t.integer  "status"
+    t.integer  "status",                             :default => 0
     t.integer  "start_tier_id"
     t.integer  "end_tier_id"
     t.string   "principal_response", :limit => 1024
@@ -360,9 +360,6 @@ ActiveRecord::Schema.define(:version => 20081208201532) do
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "district_id"
-    t.integer  "state_id"
-    t.integer  "country_id"
-    t.boolean  "system",      :default => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
