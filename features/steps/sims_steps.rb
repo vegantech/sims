@@ -3,7 +3,7 @@ require File.dirname(__FILE__)+'/require_everything'
 
 
 Given /^common data$/i do
-  Country.destroy_all
+  District.destroy_all and State.destroy_all and Country.destroy_all
   @district=Factory(:district)
   @school=Factory(:school,:district=>@district, :name=>"Default School")
   @default_user = create_user
