@@ -22,6 +22,7 @@ class Country < ActiveRecord::Base
   validates_presence_of :name,:abbrev
   validates_uniqueness_of :name,:abbrev
   before_destroy :make_sure_there_are_no_states
+  after_create :create_admin_state
 
 
   
@@ -35,5 +36,10 @@ class Country < ActiveRecord::Base
       false
     end
 
+  end
+
+
+  def create_admin_state
+    states.admin.create!(:name=>"Administration", :abbrev=>"admin", :admin=>true) if states.admin.blank?
   end
 end

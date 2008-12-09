@@ -22,7 +22,7 @@ describe CountriesController do
       post :create, :country => Factory.attributes_for(:country) 
     end
 
-    assert_redirected_to country_path(assigns(:country))
+    assert_redirected_to countries_url
   end
   
   it 'should render new if creating invalid country' do
