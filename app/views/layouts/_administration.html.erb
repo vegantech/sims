@@ -1,0 +1,3 @@
+<% if session[:user_id] && current_district && current_district.admin? %>
+  <%= render_cell(:administration, :system, :district=>current_district) %>
+<% end %>
