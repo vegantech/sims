@@ -193,3 +193,10 @@ news_admin:
   controller: 'news_items'
   read: true
   write: true
+
+country_admin:
+  role: country_admin
+  controller: 'countries'
+  read: true
+  write: true
+ 

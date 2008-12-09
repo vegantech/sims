@@ -21,5 +21,19 @@ class Country < ActiveRecord::Base
   validates_uniqueness_of :admin, :if=> lambda{|c| c.admin?}   #Only 1 admin country
   validates_presence_of :name,:abbrev
   validates_uniqueness_of :name,:abbrev
+  before_destroy :make_sure_there_are_no_states
+
+
   
+
+  private
+  def make_sure_there_are_no_states
+    if states.normal.blank?
+      states.destroy_all
+    else states.normal.blank?
+      errors.add_to_base("Have the country admin remove the states first.") 
+      false
+    end
+
+  end
 end
