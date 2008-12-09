@@ -92,6 +92,7 @@ district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_test
+  roles: regular_user, news_admin
   <<: *DEFAULTS
 
 
@@ -109,6 +110,22 @@ system_admin:
   username: district_admin
   district: admin_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: system_admin
+  roles: news_admin
+ 
+us_admin:
+  first_name: UnitedStates
+  last_name: Adminsitrator
+  username: district_admin
+  district: us_admin_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: news_admin
+ 
+wi_admin:
+  first_name: Wisconsin
+  last_name: Adminsitrator
+  username: district_admin
+  district: wi_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: news_admin
   
 

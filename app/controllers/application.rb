@@ -136,7 +136,7 @@ class ApplicationController < ActionController::Base
         district = @state.districts.find_by_abbrev(params[:district_abbrev]) 
       end
       if district
-        redirect_to logout_url and return if current_district and current_district.abbrev != district.abbrev
+        redirect_to logout_url and return if current_district and current_district != district
         @districts =[]
         @district = district
       end

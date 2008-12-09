@@ -60,6 +60,8 @@ class District < ActiveRecord::Base
     elsif country_admin?
       country
     elsif admin?
+      state
+    else
       self
     end
   end

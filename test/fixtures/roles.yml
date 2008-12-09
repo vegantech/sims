@@ -26,7 +26,6 @@ district_builder:
   district: wi_test
   position: 2
 
-system_admin:
+news_admin:
   name: $LABEL
-  district: admin_admin_admin
   position: 1
