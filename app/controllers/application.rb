@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
   def subdomains
       g=self.request.subdomains
       if g.pop.to_s.match(SUBDOMAIN_MATCH)
-         params[:country_abbrev],params[:state_abbrev],params[:district_abbrev]=g.rev
+         params[:country_abbrev],params[:state_abbrev],params[:district_abbrev]=g.reverse
       end
       return unless params[:country_abbrev]
 
