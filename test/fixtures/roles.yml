@@ -29,3 +29,7 @@ district_builder:
 news_admin:
   name: $LABEL
   position: 1
+
+country_admin:
+  name: $LABEL
+  position: 2

@@ -2,7 +2,7 @@ class CountriesController < ApplicationController
   # GET /countries
   # GET /countries.xml
   def index
-    @countries = Country.find(:all)
+    @countries = Country.normal
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,7 +45,7 @@ class CountriesController < ApplicationController
     respond_to do |format|
       if @country.save
         flash[:notice] = 'Country was successfully created.'
-        format.html { redirect_to(@country) }
+        format.html { redirect_to(countries_url) }
         format.xml  { render :xml => @country, :status => :created, :location => @country }
       else
         format.html { render :action => "new" }
@@ -76,6 +76,7 @@ class CountriesController < ApplicationController
   def destroy
     @country = Country.find(params[:id])
     @country.destroy
+    flash[:notice]=@country.errors[:base]
 
     respond_to do |format|
       format.html { redirect_to(countries_url) }
