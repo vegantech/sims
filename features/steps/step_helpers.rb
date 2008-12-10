@@ -131,10 +131,14 @@ def create_default_intervention_pieces
 
 end
 
+def clear_login_dropdowns
+  District.destroy_all and  State.destroy_all and Country.destroy_all 
+end
+
 private
 
 def default_user
-  District.destroy_all and  State.destroy_all and Country.destroy_all unless @default_user
+  clear_login_dropdowns unless @default_user
   @default_user ||= create_user 'default_user'
   default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)
