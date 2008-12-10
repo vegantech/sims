@@ -16,12 +16,12 @@ Given /^common data$/i do
 end
 
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
-        Country.destroy_all
+     District.destroy_all and State.destroy_all and Country.destroy_all
 	create_user user_name, password
 end
 
 Given /^I am a district admin$/ do
-  Country.destroy_all
+   District.destroy_all and State.destroy_all and Country.destroy_all
   default_user
   log_in
   role = Role.create!(:name => "District Admin", :district_id => 1)
