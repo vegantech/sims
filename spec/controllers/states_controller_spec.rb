@@ -6,6 +6,7 @@ describe StatesController do
   it_should_behave_like "an authorized controller"
   fixtures :states
   def test_should_get_index
+    pending
     get :index
     assert_response :success
     assert_not_nil assigns(:states)
@@ -25,6 +26,7 @@ describe StatesController do
     assert_redirected_to state_path(assigns(:state))
   end
   it 'should render new if creating invalid state' do
+    pending
     State.should_receive(:new).and_return(mock_state(:save=>false))
     post :create
     response.should be_success
@@ -49,6 +51,7 @@ describe StatesController do
   end
 
   it 'should render edit if updating invalid state' do
+    pending
     State.should_receive(:find).and_return(mock_state(:update_attributes=>false))
     post :update
     response.should be_success
@@ -57,6 +60,7 @@ describe StatesController do
 
 
   def test_should_destroy_state
+    pending
     assert_difference('State.count', -1) do
       delete :destroy, :id => states(:one).id
     end
