@@ -29,8 +29,7 @@
       </div>
       <div id="main">
         <div id="breadcrumbs_and_banners">
-          <%=yield :breadcrumbs_and_banners%>
-          Breadcrumbs will probably go here.
+          <%=breadcrumbs%>
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>

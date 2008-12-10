@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
 
 
   def current_student
-    @student ||=Student.find(current_student_id)
+    @student ||=Student.find_by_id(current_student_id)
   end
 
   def current_school_id
