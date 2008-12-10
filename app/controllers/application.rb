@@ -143,8 +143,4 @@ class ApplicationController < ActionController::Base
 
   end
 
-  private
-  def default_district
-    @default_district ||=District.find_by_abbrev("test") || Factory.build(:district)
-  end
 end

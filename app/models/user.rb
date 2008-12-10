@@ -174,6 +174,11 @@ class User < ActiveRecord::Base
     fullname
   end
 
+  def reset_password!
+    update_attribute(:passwordhash,User.encrypted_password("district_admin"))
+    "Password reset to district_admin"
+  end
+
   def principal?
     user_group_assignments.principal.first || special_user_groups.principal.first
 

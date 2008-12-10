@@ -1,4 +1,5 @@
 class DistrictsController < ApplicationController
+  additional_write_actions :reset_password, :recreate_admin
   # GET /districts
   # GET /districts.xml
   def index
@@ -84,4 +85,17 @@ class DistrictsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def reset_password
+    @district=District.find(params[:id])
+    flash[:notice]= @district.reset_admin_password!
+    redirect_to(districts_url)
+  end
+
+  def recreate_admin
+    @district=District.find(params[:id])
+    flash[:notice]= @district.recreate_admin!
+    redirect_to(districts_url)
+  end
+
 end

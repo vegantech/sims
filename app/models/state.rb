@@ -27,11 +27,14 @@ class State < ActiveRecord::Base
 
   before_destroy :make_sure_there_are_no_districts
   after_create :create_admin_district
-
+ 
   def to_s
     name
   end
 
+  def admin_district
+    districts.admin.first
+  end
 
   
 

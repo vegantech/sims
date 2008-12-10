@@ -1,4 +1,5 @@
 class CountriesController < ApplicationController
+  additional_write_actions :reset_password, :recreate_admin
   # GET /countries
   # GET /countries.xml
   def index
@@ -82,5 +83,17 @@ class CountriesController < ApplicationController
       format.html { redirect_to(countries_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def reset_password
+    @country=Country.find(params[:id])
+    flash[:notice]= @country.admin_district.reset_admin_password!
+    redirect_to(countries_url)
+  end
+
+  def recreate_admin
+    @country=Country.find(params[:id])
+    flash[:notice]= @country.admin_district.recreate_admin!
+    redirect_to(countries_url)
   end
 end

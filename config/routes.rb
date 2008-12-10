@@ -38,11 +38,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :frequencies
 
-  map.resources :districts
+  map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put }
 
-  map.resources :states
+  map.resources :states, :member => {:reset_password => :put, :recreate_admin => :put }
 
-  map.resources :countries
+  map.resources :countries, :member => {:reset_password => :put, :recreate_admin => :put }
 
   map.namespace :checklist_builder do |checklist_builder|
     checklist_builder.resources :checklists,  :member => { :preview => :get, :new_from_this => :post } do |checklist|

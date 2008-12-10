@@ -24,6 +24,8 @@ class Country < ActiveRecord::Base
   before_destroy :make_sure_there_are_no_states
   after_create :create_admin_state
 
+  delegate :admin_district, :to=> 'states.admin.first'
+
   def to_s
     name
   end

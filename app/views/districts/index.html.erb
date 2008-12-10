@@ -1,5 +1,6 @@
 <h1>Listing districts in <%=@state %></h1>
-
+<p> The country admin will edit their own state.   If the state admin forgets their password you can reset it here.   If the state admin account is unusable you can recreate it here.   </p>
+<table>
 <table>
   <tr>
     <th>Name</th>
@@ -11,6 +12,8 @@
     <td><%=h district.name %></td>
     <td><%=h district.abbrev %></td>
     <td><%= link_to 'Destroy', district, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Reset Admin Password', reset_password_district, :confirm => 'Are you sure?', :method => :put %></td>
+    <td><%= link_to 'Recreate Admin', recreate_admin_district, :confirm => 'Are you sure?  You probably just need to reset the password instead.', :method => :put %></td>
   </tr>
 <% end %>
 </table>
@@ -18,3 +21,6 @@
 <br />
 
 <%= link_to 'New district', new_district_path %>
+
+
+

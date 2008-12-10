@@ -38,7 +38,7 @@ describe Group do
 
     g1.users << [u1]
     g2.users << [u2]
-    g3.users << User.all
+#    g3.users << User.all
 
     Group.members.should == [u1,u2]
   

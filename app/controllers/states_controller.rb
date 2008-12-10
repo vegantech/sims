@@ -1,4 +1,5 @@
 class StatesController < ApplicationController
+  additional_write_actions :reset_password, :recreate_admin
   # GET /states
   # GET /states.xml
   def index
@@ -85,5 +86,17 @@ class StatesController < ApplicationController
       format.html { redirect_to(states_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def reset_password
+    @state=State.find(params[:id])
+    flash[:notice]= @state.admin_district.reset_admin_password!
+    redirect_to(states_url)
+  end
+
+  def recreate_admin
+    @state=State.find(params[:id])
+    flash[:notice]= @state.admin_district.recreate_admin!
+    redirect_to(states_url)
   end
 end

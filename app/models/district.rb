@@ -84,6 +84,22 @@ class District < ActiveRecord::Base
     self.name
   end
 
+  def reset_admin_password!
+    u=users.find_by_username("district_admin")
+    if u
+      u.reset_password!
+    else
+      "Could not find user, try recreating the admin user"
+    end
+  end
+
+  def recreate_admin!
+    u=users.find_by_username('district_admin')
+    u.destroy if u
+    create_admin_user
+    'district_admin recreated'
+  end
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?
@@ -105,8 +121,9 @@ private
   end
 
   def create_admin_user
-    if self[:id].nil? && users.blank?
-      u=Factory.build(:user,:username=>"district_admin", :first_name=>name, :last_name => "Administrator",:district_id=>self.id)
+    if users.blank?
+      u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
+      u.reset_password!
       u.roles=Role.find(:all,:conditions=>{:district_id=>nil, :name=>"district_admin"})
       u.save!
     end
