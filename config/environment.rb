@@ -29,7 +29,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
-  config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.0'
+  config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
 
  # need to upgrade rubygems
   # config.gem 'hpricot'

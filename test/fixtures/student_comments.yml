@@ -15,18 +15,22 @@ december_4th_command_one:
   student: alpha_first_grader
   user: oneschool
   body: $LABEL
+  created_at: 2008-12-04 01:49:39
 
 december_4th_command_two:
   student: alpha_first_grader
   user: oneschool
   body: $LABEL
+  created_at: 2008-12-04 01:49:39
 
 december_5th_command_one:
   student: alpha_first_grader
   user: oneschool
   body: $LABEL
+  created_at: 2008-12-05 01:49:39
 
 december_5th_command_two:
   student: alpha_first_grader
   user: oneschool
   body: $LABEL
+  created_at: 2008-12-05 01:49:39
