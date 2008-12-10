@@ -1,0 +1,11 @@
+<h1>New custom_probe</h1>
+
+<% form_for(@custom_probe) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', custom_probes_path %>

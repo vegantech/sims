@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :custom_probes
+
   map.resources :news_items
 
 
