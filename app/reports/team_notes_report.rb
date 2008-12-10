@@ -27,19 +27,26 @@ end
 class TeamNotes
 
   def initialize(options={})
-    @user=options[:user]
+    @user = options[:user]
+    @start_date = options[:start_date]
+    @end_date = options[:end_date]
+puts "initialize: start: #{@start_date}, end: #{@end_date}"
   end
 
   def to_table
     return unless defined? Ruport
 
     # rt = @user.student_comments.report_table(:all, :only => [:body])
+
     rt = StudentComment.report_table(:all,
+      :conditions => ["created_at between ? and ?", @start_date.beginning_of_day, @end_date.end_of_day],
       :include => {:student => {:only => [], :methods => :fullname}, :user => {:only => [], :methods => :username}},
       :only => [:body, :created_at])
 
-    rt.replace_column('created_at', 'Date') do |r|
-      r['created_at'].to_date.to_s(:report)
+    unless rt.empty?
+      rt.replace_column('created_at', 'Date') do |r|
+        r['created_at'].to_date.to_s(:report)
+      end
     end
 
     return rt if rt.column_names.blank?
