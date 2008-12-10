@@ -199,4 +199,11 @@ country_admin:
   controller: 'countries'
   read: true
   write: true
- 
+
+states_admin:
+  role: state_admin
+  controller: 'states'
+  read: true
+  write: true
+
+

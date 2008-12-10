@@ -33,3 +33,7 @@ news_admin:
 country_admin:
   name: $LABEL
   position: 2
+
+state_admin:
+  name: $LABEL
+  position: 2

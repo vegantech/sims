@@ -110,7 +110,7 @@ system_admin:
   username: district_admin
   district: admin_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: news_admin, country_admin
+  roles: news_admin, country_admin, state_admin
  
 us_admin:
   first_name: UnitedStates
@@ -118,7 +118,7 @@ us_admin:
   username: district_admin
   district: us_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: news_admin
+  roles: news_admin, country_admin, state_admin
  
 wi_admin:
   first_name: Wisconsin

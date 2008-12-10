@@ -25,4 +25,30 @@ class State < ActiveRecord::Base
   validates_uniqueness_of :name,:abbrev, :scope=>:country_id
 
 
+  before_destroy :make_sure_there_are_no_districts
+  after_create :create_admin_district
+
+  def to_s
+    name
+  end
+
+
+  
+
+private
+  def make_sure_there_are_no_districts
+    if districts.normal.blank?
+      districts.destroy_all
+    else districts.normal.blank?
+      errors.add_to_base("Have the state admin remove the districts first.") 
+      false
+    end
+
+  end
+
+  def create_admin_district
+    districts.create!(:name=>"Administration", :abbrev=>"admin", :admin=>true) if districts.admin.blank?
+  end
 end
+
+
