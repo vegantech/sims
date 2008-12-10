@@ -6,4 +6,5 @@ Feature: Team Notes
   Scenario: Show Team Notes
     Given I go to the school selection page
     When I follow "Team Notes"
-    Then I should see "For Date"
+    Then I should see "Start Date"
+    And I should see "End Date"
