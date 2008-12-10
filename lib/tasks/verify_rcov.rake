@@ -14,7 +14,10 @@ end
 
 
 remove_task :default
-task "default" => ["spec", "features"]
+#task "default" => ["spec", "features"]
+remove_task :test
+task "test" => ["spec", "features"]
+task "default" => ["test:coverage"]
 
 task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration] 
 task "test:coverage" => [:verify_rcov]
