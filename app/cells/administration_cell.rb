@@ -4,7 +4,8 @@ class AdministrationCell < Cell::Base
   end
 
   def country
-    nil
+    @district=@opts[:district]
+    @show=@district.country_admin?
   end
   def state
     nil

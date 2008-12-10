@@ -1,4 +1,6 @@
+<% unless current_district.blank? %>
 <%= render_cell(:news,:index, :parent=>current_district, :district=>current_district) %>
 <%= render_cell(:news,:index, :parent=>current_district.state,:district=>current_district) %>
 <%= render_cell(:news,:index, :parent=>current_district.country, :district=>current_district) %>
 <%= render_cell(:news,:index, :parent=>System, :district=>current_district) %>
+<% end %>

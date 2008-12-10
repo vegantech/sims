@@ -1,2 +1,4 @@
-<h1>Administration#country</h1>
-<p>Find me in app/cells/administration/country.html.erb</p>
+<% if @show %>
+  <h2>Country Administration</h2>
+  <p><%=link_to 'Manage States', states_url unless @district.system_admin?%> </p>
+<% end %>

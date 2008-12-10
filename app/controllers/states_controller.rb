@@ -2,7 +2,8 @@ class StatesController < ApplicationController
   # GET /states
   # GET /states.xml
   def index
-    @states = State.find(:all)
+    @country = current_district.country
+    @states = @country.states.normal
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,12 +41,12 @@ class StatesController < ApplicationController
   # POST /states
   # POST /states.xml
   def create
-    @state = State.new(params[:state])
+    @state = current_district.country.states.build(params[:state])
 
     respond_to do |format|
       if @state.save
         flash[:notice] = 'State was successfully created.'
-        format.html { redirect_to(@state) }
+        format.html { redirect_to(states_url) }
         format.xml  { render :xml => @state, :status => :created, :location => @state }
       else
         format.html { render :action => "new" }
@@ -57,7 +58,8 @@ class StatesController < ApplicationController
   # PUT /states/1
   # PUT /states/1.xml
   def update
-    @state = State.find(params[:id])
+    @state = @district.country.states.find(params[:id])
+    
 
     respond_to do |format|
       if @state.update_attributes(params[:state])
@@ -74,8 +76,10 @@ class StatesController < ApplicationController
   # DELETE /states/1
   # DELETE /states/1.xml
   def destroy
-    @state = State.find(params[:id])
+    @state = current_district.country.states.find(params[:id])
     @state.destroy
+    flash[:notice] = @state.errors[:base]
+
 
     respond_to do |format|
       format.html { redirect_to(states_url) }
