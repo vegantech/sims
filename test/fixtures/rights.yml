@@ -206,4 +206,9 @@ states_admin:
   read: true
   write: true
 
+districts_admin:
+  role: district_admin
+  controller: 'districts'
+  read: true
+  write: true
 

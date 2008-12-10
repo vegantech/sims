@@ -39,7 +39,8 @@ private
   def make_sure_there_are_no_districts
     if districts.normal.blank?
       districts.destroy_all
-    else districts.normal.blank?
+      news.destroy_all
+    else 
       errors.add_to_base("Have the state admin remove the districts first.") 
       false
     end

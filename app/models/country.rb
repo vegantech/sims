@@ -35,7 +35,8 @@ class Country < ActiveRecord::Base
   def make_sure_there_are_no_states
     if states.normal.blank?
       states.destroy_all
-    else states.normal.blank?
+      news.destroy_all
+    else 
       errors.add_to_base("Have the country admin remove the states first.") 
       false
     end

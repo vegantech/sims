@@ -2,7 +2,8 @@ class DistrictsController < ApplicationController
   # GET /districts
   # GET /districts.xml
   def index
-    @districts = District.find(:all)
+    @state = current_district.state
+    @districts = @state.districts.normal
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,12 +41,12 @@ class DistrictsController < ApplicationController
   # POST /districts
   # POST /districts.xml
   def create
-    @district = District.new(params[:district])
+    @district = current_district.state.districts.normal.build(params[:district])
 
     respond_to do |format|
       if @district.save
         flash[:notice] = 'District was successfully created.'
-        format.html { redirect_to(@district) }
+        format.html { redirect_to(districts_url)}
         format.xml  { render :xml => @district, :status => :created, :location => @district }
       else
         format.html { render :action => "new" }
@@ -74,8 +75,9 @@ class DistrictsController < ApplicationController
   # DELETE /districts/1
   # DELETE /districts/1.xml
   def destroy
-    @district = District.find(params[:id])
+    @district = current_district.state.districts.normal.find(params[:id])
     @district.destroy
+    flash[:notice] = @district.errors[:base]
 
     respond_to do |format|
       format.html { redirect_to(districts_url) }

@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district
-    @district ||= District.find_by_id(current_district_id) 
+    @current_district ||= District.find_by_id(current_district_id) 
   end
 
   def authenticate
@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
       if district
         redirect_to logout_url and return if current_district and current_district != district
         @districts =[]
-        @district = district
+        @current_district = district
       end
 
   end

@@ -16,7 +16,7 @@
           <td><label for="district">District</label></td>
           <td><%=collection_select(:district,:id, @districts, :id, :name) %></td>
           <% else  %>
-          <%=content_tag :td,hidden_field_tag("district[id]",@district.id) if @district%>
+          <%=content_tag :td,hidden_field_tag("district[id]",@current_district.id) if @current_district%>
         <% end %>
       </tr>
 

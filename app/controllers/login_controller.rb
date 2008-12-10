@@ -15,15 +15,15 @@ class LoginController < ApplicationController
       if @user.new_record?
         flash[:notice] = 'Authentication Failure' if @user.new_record?
       else
-        session[:district_id]=@district.id if @district
+        session[:district_id]=current_district.id if current_district
       end
 
       if request.subdomains.size == 4 || request.subdomains.size == 0 || @user.new_record?
         redirect_to root_url and return
       elsif r=request.subdomains.last.match(SUBDOMAIN_MATCH)
-        district_state_and_country = [@district.abbrev]  if request.subdomains.size <4
-        district_state_and_country << @district.state.abbrev  if request.subdomains.size <3
-        district_state_and_country << @district.state.country.abbrev if request.subdomains.size < 2
+        district_state_and_country = [current_district.abbrev]  if request.subdomains.size <4
+        district_state_and_country << current_district.state.abbrev  if request.subdomains.size <3
+        district_state_and_country << current_district.state.country.abbrev if request.subdomains.size < 2
         redirect_to "#{request.protocol}#{district_state_and_country.join(".")}.#{request.host_with_port}/"
       end
 

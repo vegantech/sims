@@ -20,13 +20,13 @@ module CountryStateDistrict
 
     districts=@districts || @state.districts.normal
     if params[:district]
-      @district = District.find(params[:district][:id])
+      @current_district = District.find(params[:district][:id])
     end
 
     unless districts.size == 1
       @districts ||= districts
     end
-    @district ||= districts.first
+    @current_district ||= districts.first
 
   end
 end

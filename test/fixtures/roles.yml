@@ -37,3 +37,9 @@ country_admin:
 state_admin:
   name: $LABEL
   position: 2
+
+district_admin:
+  name: $LABEL
+  position: 3
+
+

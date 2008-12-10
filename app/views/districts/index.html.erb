@@ -1,19 +1,15 @@
-<h1>Listing districts</h1>
+<h1>Listing districts in <%=@state %></h1>
 
 <table>
   <tr>
     <th>Name</th>
     <th>Abbrev</th>
-    <th>State</th>
   </tr>
 
 <% for district in @districts %>
   <tr>
     <td><%=h district.name %></td>
     <td><%=h district.abbrev %></td>
-    <td><%=h district.state %></td>
-    <td><%= link_to 'Show', district %></td>
-    <td><%= link_to 'Edit', edit_district_path(district) %></td>
     <td><%= link_to 'Destroy', district, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

@@ -7,9 +7,12 @@ class AdministrationCell < Cell::Base
     @district=@opts[:district]
     @show=@district.country_admin?
   end
+
   def state
-    nil
+    @district=@opts[:district]
+    @show=@district.admin?
   end
+
   def district
     nil
   end

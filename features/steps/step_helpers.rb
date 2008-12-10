@@ -132,7 +132,10 @@ def create_default_intervention_pieces
 end
 
 def clear_login_dropdowns
-  District.destroy_all and  State.destroy_all and Country.destroy_all 
+  #School.destroy_all
+  District.delete_all
+  State.destroy_all
+  Country.destroy_all 
 end
 
 private
