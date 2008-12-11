@@ -4,43 +4,46 @@ describe ChecklistBuilder::QuestionsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  #Delete these examples and add some real ones
-  it "should use ChecklistBuilder::QuestionsController" do
-    controller.should be_an_instance_of(ChecklistBuilder::QuestionsController)
-  end
+  before do
+    district=mock_district
+    @checklist_definition=mock_checklist_definition
+    controller.stub!(:current_district=>district)
+    district.stub_association!(:checklist_definitions,:find=>@checklist_definition)
+    @checklist_definition.stub!(:question_definitions => QuestionDefinition)
 
+  end
 
   describe "GET 'index'" do
     it "should be successful" do
-    pending
+      @checklist_definition.should_receive(:question_definitions).and_return([1,2,3])
       get 'index'
-      response.should be_success
+      assigns(:question_definitions).should == [1,2,3]
     end
   end
 
   describe "GET 'show'" do
     it "should be successful" do
-    pending
-      get 'show'
-      response.should be_success
+      QuestionDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'show', :id=>37
+      assigns(:question_definition).should == 'yes'
     end
   end
 
   describe "GET 'new'" do
     it "should be successful" do
-    pending
       get 'new'
-      response.should be_success
+      assigns(:question_definition).new_record?.should == true
     end
   end
 
   describe "GET 'edit'" do
     it "should be successful" do
-    pending
-      get 'edit'
-      response.should be_success
+      QuestionDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'edit', :id=>37
+      assigns(:question_definition).should == 'yes'
     end
   end
+
 
   describe "GET 'create'" do
     it "should be successful" do
@@ -74,3 +77,4 @@ describe ChecklistBuilder::QuestionsController do
     end
   end
 end
+
