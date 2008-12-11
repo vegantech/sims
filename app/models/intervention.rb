@@ -130,6 +130,11 @@ class Intervention < ActiveRecord::Base
 
  end
 
+ def build_custom_probe(opts={})
+   probe_definition=ProbeDefinition.new(opts)
+
+ end
+
 
   protected
   def create_other_students

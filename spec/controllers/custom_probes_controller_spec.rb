@@ -7,6 +7,7 @@ describe CustomProbesController do
   def mock_custom_probe(stubs={})
     @mock_custom_probe ||= mock_model(ProbeDefinition, stubs)
   end
+
   
   describe "responding to GET index" do
 
@@ -56,8 +57,9 @@ describe CustomProbesController do
   
     it "should expose a new custom_probe as @custom_probe" do
       ProbeDefinition.should_receive(:new).and_return(mock_custom_probe)
-      get :new
-      assigns[:custom_probe].should equal(mock_custom_probe)
+      Intervention.should_receive(:find).with("1").and_return(mock_intervention)
+      get :new, :intervention=>"1"
+      assigns[:probe_definition].should equal(mock_custom_probe)
     end
 
   end
@@ -73,19 +75,27 @@ describe CustomProbesController do
   end
 
   describe "responding to POST create" do
+    before do 
+      student=mock_student
+      controller.should_receive(:current_student).and_return(student)
+      student.should_receive(:interventions).and_return(Intervention)
+      @intervention=mock_intervention
+      Intervention.should_receive(:find).with("1").and_return(@intervention)
+      
+    end
 
     describe "with valid params" do
       
       it "should expose a newly created custom_probe as @custom_probe" do
-        ProbeDefinition.should_receive(:new).with({'these' => 'params'}).and_return(mock_custom_probe(:save => true))
-        post :create, :custom_probe => {:these => 'params'}
-        assigns(:custom_probe).should equal(mock_custom_probe)
+        @intervention.should_receive(:build_custom_probe).with({'these' => 'params'}).and_return(mock_custom_probe(:save => true))
+        post :create, :probe_definition => {:these => 'params'},:intervention=>"1"
+        assigns(:probe_definition).should equal(mock_custom_probe)
       end
 
       it "should redirect to the created custom_probe" do
-        ProbeDefinition.stub!(:new).and_return(mock_custom_probe(:save => true))
-        post :create, :custom_probe => {}
-        response.should redirect_to(custom_probe_url(mock_custom_probe))
+        @intervention.stub!(:build_custom_probe).and_return(mock_custom_probe(:save => true))
+        post :create, :probe_definition => {},:intervention=>"1"
+        response.should redirect_to(intervention_probe_assignments_url(@intervention))
       end
       
     end
@@ -93,14 +103,14 @@ describe CustomProbesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved custom_probe as @custom_probe" do
-        ProbeDefinition.stub!(:new).with({'these' => 'params'}).and_return(mock_custom_probe(:save => false))
-        post :create, :custom_probe => {:these => 'params'}
-        assigns(:custom_probe).should equal(mock_custom_probe)
+        @intervention.stub!(:build_custom_probe).with({'these' => 'params'}).and_return(mock_custom_probe(:save => false))
+        post :create, :probe_definition => {:these => 'params'}, :intervention => "1"
+        assigns(:probe_definition).should equal(mock_custom_probe)
       end
 
       it "should re-render the 'new' template" do
-        ProbeDefinition.stub!(:new).and_return(mock_custom_probe(:save => false))
-        post :create, :custom_probe => {}
+        @intervention.stub!(:build_custom_probe).and_return(mock_custom_probe(:save => false))
+        post :create, :probe_definition => {}, :intervention => "1"
         response.should render_template('new')
       end
       

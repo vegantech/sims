@@ -30,12 +30,12 @@
 <div id="benchmarks">
   <% @probe_definition.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
     
-  <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
+  <%= render :partial => 'benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
     
   <% end %>
   
   </div>
 <p>
-  <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => @probe_definition.probe_definition_benchmarks.size } %>
+  <%= render :partial => 'add_benchmark_link', :locals => { :index => @probe_definition.probe_definition_benchmarks.size } %>
 </p>
 

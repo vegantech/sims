@@ -24,11 +24,12 @@ class CustomProbesController < ApplicationController
   # GET /custom_probes/new
   # GET /custom_probes/new.xml
   def new
-    @custom_probe = ProbeDefinition.new
+    @probe_definition = ProbeDefinition.new
+    @intervention = Intervention.find(params[:intervention])
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @custom_probe }
+      format.xml  { render :xml => @probe_definition }
     end
   end
 
@@ -40,16 +41,17 @@ class CustomProbesController < ApplicationController
   # POST /custom_probes
   # POST /custom_probes.xml
   def create
-    @custom_probe = ProbeDefinition.new(params[:custom_probe])
+    @intervention = current_student.interventions.find(params[:intervention])
+    @probe_definition = @intervention.build_custom_probe(params[:probe_definition])
 
     respond_to do |format|
-      if @custom_probe.save
-        flash[:notice] = 'ProbeDefinition was successfully created.'
-        format.html { redirect_to(custom_probe_url(@custom_probe)) }
-        format.xml  { render :xml => @custom_probe, :status => :created, :location => @custom_probe }
+      if @probe_definition.save
+        flash[:notice] = 'Custom Probe Definition was successfully created.'
+        format.html { redirect_to(intervention_probe_assignments_url(@intervention)) }
+        format.xml  { render :xml => @probe_definition, :status => :created, :location => @probe_definition }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @custom_probe.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @probe_definition.errors, :status => :unprocessable_entity }
       end
     end
   end
