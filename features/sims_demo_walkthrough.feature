@@ -19,12 +19,16 @@ Feature: Sims Demo Walkthrough
     And I should see "Student 1 of 2"
     Then I follow "Next"
     And I should see "Student 2 of 2"
+
+    #custom flag
     Then I follow "Create Custom Flag"
     And I fill in "custom_flag_reason" with "test reason from cucumber"
     And I select "Math" from "Category"
     Then I press "Save Custom Flag"
     Then I should see "Math- \ntest reason from cucumber"
     #can't remove yet, doesn't work without javascript
+
+    #intervention
     Then I follow "Assign New Intervention"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
@@ -44,6 +48,14 @@ Feature: Sims Demo Walkthrough
     And I press "Submit Request"
     Then I should see "PrincipalOverride was successfully created and sent"
     And I should see "1 Override Request"
+
+    #empty checklist
+    Then I follow "Complete a Checklist for this Student"
+    Then I press "Submit and Make Recommendation"
+
+    #draft recommendation
+    Then I press "Save Draft"
+    
 
 
     Then I follow "Assign Monitors"

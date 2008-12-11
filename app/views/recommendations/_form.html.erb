@@ -12,7 +12,7 @@
     <div> <%= af.text_area  :text, :size => "60x4" , :style=>"margin-left:1em;", :id=>answer.recommendation_answer_definition%> </div><br />
     <%=af.hidden_field :recommendation_answer_definition_id %>
 
-    <%recommendation.previous_answers[answer.recommendation_answer_definition_id].each do |prev| %>
+    <%Array(recommendation.previous_answers[answer.recommendation_answer_definition_id]).each do |prev| %>
       <%=content_tag :p, "#{prev.text} by #{prev.recommendation.user} on #{prev.updated_at} " if defined?show_previous%>
 
     <% end %>

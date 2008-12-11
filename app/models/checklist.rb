@@ -26,6 +26,7 @@ class Checklist < ActiveRecord::Base
   validate :cannot_pass_if_draft
   validates_presence_of :student_id, :user_id, :from_tier
 
+  delegate :recommendation_definition, :to=>:checklist_definition
   delegate :recommendation_definition_id, :to=>:checklist_definition
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache

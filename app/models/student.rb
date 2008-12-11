@@ -40,6 +40,7 @@ class Student < ActiveRecord::Base
     end
   end
 
+  delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
   #This is duplicated in user
@@ -57,9 +58,8 @@ class Student < ActiveRecord::Base
   end
 
   def checklist_definition
-    puts "FIXME once a checklist is assigned to a student, they'll never get the new one"
     return district.checklist_definitions.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
-    latest_checklist.checklist_definition_cache
+    latest_checklist
   end
 
   def max_tier
