@@ -30,7 +30,6 @@ class TeamNotes
     @user = options[:user]
     @start_date = options[:start_date]
     @end_date = options[:end_date]
-puts "initialize: start: #{@start_date}, end: #{@end_date}"
   end
 
   def to_table

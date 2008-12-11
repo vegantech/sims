@@ -1,6 +1,6 @@
 <h2>Team Notes</h2>
 
-<% form_tag do |f| %><br/ >
+<% form_tag do %><br/ >
   <%= label_tag :start_date_month, 'Start Date:' %><br/>
   <%= select_date @start_date, :id => :start_date, :order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date' %><br/><br/>
 
