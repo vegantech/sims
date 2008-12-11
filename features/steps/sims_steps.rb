@@ -20,6 +20,11 @@ Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
   create_user user_name, password
 end
 
+Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
+  date = date_string.to_date
+  StudentComment.create!(:body => content, :created_at => date)
+end
+
 Given /^I am a district admin$/ do
   clear_login_dropdowns
   default_user
