@@ -3,42 +3,48 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe ChecklistBuilder::AnswersController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  
+  before do
+    district=mock_district
+    @checklist_definition=mock_checklist_definition
+    @question_definition=mock_question_definition
+    @element_definition=mock_element_definition
+    controller.stub!(:current_district=>district)
+    district.stub_association!(:checklist_definitions,:find=>@checklist_definition)
+    @checklist_definition.stub_association!(:question_definitions,:find=>@question_definition)
+    @question_definition.stub_association!(:element_definitions,:find=>@element_definition)
+    @element_definition.stub!(:answer_definitions=>AnswerDefinition)
 
-  #Delete these examples and add some real ones
-  it "should use ChecklistBuilder::AnswersController" do
-    controller.should be_an_instance_of(ChecklistBuilder::AnswersController)
   end
-
 
   describe "GET 'index'" do
     it "should be successful" do
-      pending
+      @element_definition.should_receive(:answer_definitions).and_return([1,2,3])
       get 'index'
-      response.should be_success
+      assigns(:answer_definitions).should == [1,2,3]
     end
   end
 
   describe "GET 'show'" do
     it "should be successful" do
-      pending
-      get 'show'
-      response.should be_success
+      AnswerDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'show', :id=>37
+      assigns(:answer_definition).should == 'yes'
     end
   end
 
   describe "GET 'new'" do
     it "should be successful" do
-      pending
       get 'new'
-      response.should be_success
+      assigns(:answer_definition).new_record?.should == true
     end
   end
 
   describe "GET 'edit'" do
     it "should be successful" do
-      pending
-      get 'edit'
-      response.should be_success
+      AnswerDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'edit', :id=>37
+      assigns(:answer_definition).should == 'yes'
     end
   end
 
