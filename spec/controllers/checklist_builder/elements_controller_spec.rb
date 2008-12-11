@@ -4,41 +4,46 @@ describe ChecklistBuilder::ElementsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  #Delete these examples and add some real ones
-  it "should use ChecklistBuilder::ElementsController" do
-    controller.should be_an_instance_of(ChecklistBuilder::ElementsController)
-  end
+  before do
+    district=mock_district
+    @checklist_definition=mock_checklist_definition
+    @question_definition=mock_question_definition
+    controller.stub!(:current_district=>district)
+    district.stub_association!(:checklist_definitions,:find=>@checklist_definition)
+    @checklist_definition.stub_association!(:question_definitions,:find=>@question_definition)
+    @question_definition.stub!(:element_definitions=>ElementDefinition)
 
+  end
 
   describe "GET 'index'" do
     it "should be successful" do
-    pending
+      @question_definition.should_receive(:element_definitions).and_return([1,2,3])
       get 'index'
-      response.should be_success
+      assigns(:element_definitions).should == [1,2,3]
     end
   end
 
   describe "GET 'show'" do
     it "should be successful" do
-    pending
-      get 'show'
-      response.should be_success
+      ElementDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'show', :id=>37
+      assigns(:element_definition).should == 'yes'
     end
   end
 
   describe "GET 'new'" do
     it "should be successful" do
-    pending
+      ElementDefinition.should_receive(:build).and_return('yes')
       get 'new'
-      response.should be_success
+      assigns(:element_definition).should == 'yes'
     end
   end
 
   describe "GET 'edit'" do
     it "should be successful" do
-    pending
-      get 'edit'
-      response.should be_success
+      ElementDefinition.should_receive(:find).with("37").and_return('yes')
+      get 'edit', :id=>37
+      assigns(:element_definition).should == 'yes'
     end
   end
 
@@ -74,3 +79,5 @@ describe ChecklistBuilder::ElementsController do
     end
   end
 end
+
+
