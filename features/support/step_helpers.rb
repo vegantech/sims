@@ -17,7 +17,7 @@ def go_to_page page_name
     when 'new role'
     when 'student profile'
       # search
-      select("Default School")
+      selects("Default School")
       click_button "Choose School"
       click_button "Search for Students"
       click_all_name_id_brackets

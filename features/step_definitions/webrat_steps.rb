@@ -14,7 +14,7 @@ When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
 end
 
 When /^I select "(.*)" from "(.*)"$/ do |value, field|
-  select(value, :from => field) 
+  selects(value, :from => field) 
 end
 
 # Use this step in conjunction with Rail's datetime_select helper. For example:
