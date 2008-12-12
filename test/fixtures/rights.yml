@@ -180,6 +180,11 @@ regular_railmail:
   read: true
   write: true
 
+regular_custom_probes:
+  role: regular_user
+  controller: 'custom_probes'
+  read: true
+  write: true
 
 
 district_builder_railmail:

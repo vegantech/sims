@@ -1,4 +1,5 @@
 
+<%= link_to 'Assign Custom Probe', new_custom_probe_path(:intervention=>@intervention) %>
 <% form_tag() do |f| %>
 
     <% @intervention_probe_assignments.each do |intervention_probe_assignment| %>
@@ -17,7 +18,7 @@
         </p>
       <% end %>
     <% end %>
-    <%= submit_tag "Create" %>
+    <%= submit_tag "Create" unless @intervention_probe_assignments.blank?%>
 <% end %>
 
 <%= link_to 'Back', @intervention %>
