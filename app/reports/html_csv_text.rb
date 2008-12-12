@@ -4,7 +4,7 @@ class HtmlTextCsv
   class HTML < Ruport::Formatter::HTML
     renders :html, :for => Class.nesting[2]
     build :header do
-      output << "Report Generated at #{Time.now}"
+      output << "Report Generated at #{Time.now.to_s(:long)}"
     end
 
     build :body do
@@ -15,7 +15,7 @@ class HtmlTextCsv
   class Text < Ruport::Formatter
     renders :text, :for => Class.nesting[2]
     build :header do
-      output << "Report Generated at #{Time.now}\n\n"
+      output << "Report Generated at #{Time.now.to_s(:long)}\n\n"
     end
 
     build :body do

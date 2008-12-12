@@ -20,7 +20,7 @@ class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
   end
 
   Dir.glob(RAILS_ROOT+"/app/reports/**/*.rb").each do |rb|
-    require rb.split("app/").last
+#    require rb.split("app/").last
   end
 
 

@@ -11,7 +11,7 @@ class TeamNotesReport < DefaultReport
     renders :pdf, :for => TeamNotesReport
 
     build :header do
-      add_text "Report Generated at #{Time.now}"
+      add_text "Report Generated at #{Time.now.to_s(:long)}"
     end
 
     build :body do
