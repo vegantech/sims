@@ -12,7 +12,7 @@ def go_to_page page_name
 
 		case page_name
 		when 'search'
-			clicks_button 'Choose School'
+			click_button 'Choose School'
 		when 'school selection'
     when 'new role'
     when 'student profile'
