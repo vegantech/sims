@@ -8,20 +8,7 @@ Feature: Create Custom Probes
     Given common data
 
     And I am on student profile page
-#    And I "Assign New Intervention"
-
-    And I follow "Assign New Intervention"
-
-    And I select "Some Goal" from "goal_definition_id"
-    And I press "Choose Goal"
-
-    And I select "Some Objective" from "objective_definition_id"
-    And I press "Choose Objective"
-
-    And I select "Some Category" from "intervention_cluster_id"
-    And I press "Choose Category"
-    And I press "Create"
-
+    Then I complete "Assign New Intervention"
 
     And I follow "Assign Monitors"
     And I follow "Assign Custom Probe"
@@ -36,6 +23,8 @@ Feature: Create Custom Probes
     
     Then I should see "Assign Custom Probe"
     Then the "Custom Probe Title1" checkbox should be checked
+    Then I follow "Back"
+    Then I follow "Back"
     Then I complete "Assign New Intervention"
     #It's assigned
     Then I should see "Custom Probe Title1 has been automatically assigned"

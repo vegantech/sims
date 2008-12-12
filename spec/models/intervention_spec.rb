@@ -38,7 +38,23 @@ describe Intervention do
     }
   end
 
-  
+
+  describe 'build_custom_probe' do
+    it 'should create a probe definition which gets assigned to this intervention and recommended to the intervention
+    definition when saved' do
+      i=Intervention.create!(@valid_attributes)
+      p=i.build_custom_probe(:title=>"test",:description=>"test")
+      p.save!
+      i.intervention_definition.probe_definitions.first.should == p
+      i.intervention_probe_assignments.first.probe_definition.should == p
+    end
+
+      
+
+
+
+
+  end
 
   it "should create a new instance given valid attributes" do
     Intervention.create!(@valid_attributes)
