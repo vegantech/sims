@@ -2,11 +2,11 @@ def go_to_page page_name
 	page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
 	if page_name == 'home'
-		visits '/'
+		visit '/'
 	else
 		log_in
 		# flunk response.body
-		clicks_link 'School Selection'
+		click_link 'School Selection'
 
 		page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
@@ -18,10 +18,10 @@ def go_to_page page_name
     when 'student profile'
       # search
       selects("Default School")
-      clicks_button "Choose School"
-      clicks_button "Search for Students"
+      click_button "Choose School"
+      click_button "Search for Students"
       click_all_name_id_brackets
-      clicks_button "select for problem solving"
+      click_button "select for problem solving"
 		else
 			raise "Can't find mapping from \"#{page_name}\" to a path"
 		end
@@ -31,7 +31,7 @@ end
 def click_all_name_id_brackets
   doc=Hpricot(response.body)
   doc.search("//input[@name='id[]']").each do |elem|
-    checks(elem[:id])
+    check(elem[:id])
   end
 end
 
@@ -43,10 +43,10 @@ end
 def log_in
 	default_user
 	create_school 'Glenn Stephens'
-	visits '/'
-	fills_in 'Login', :with => @default_user.username
-	fills_in 'Password', :with => @default_user.username
-	clicks_button 'Login'
+	visit '/'
+	fill_in 'Login', :with => @default_user.username
+	fill_in 'Password', :with => @default_user.username
+	click_button 'Login'
 	response.should_not have_text(/Authentication Failure/)
 end
 

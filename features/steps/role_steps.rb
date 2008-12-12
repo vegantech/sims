@@ -8,7 +8,7 @@ Given /there are (\d+) roles/ do |n|
 end
 
 When /I delete the first role/ do
-  visits roles_url
+  visit roles_url
   clicks_link "Destroy"
 end
 

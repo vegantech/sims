@@ -165,5 +165,5 @@ Then /^I should verify rjs has options (.*)$/ do |options|
 end
 
 Given /^I enter URL "(.*)"$/ do |url|
-  visits url
+  visit url
 end
