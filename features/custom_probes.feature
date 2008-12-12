@@ -25,7 +25,6 @@ Feature: Create Custom Probes
 
     And I follow "Assign Monitors"
     And I follow "Assign Custom Probe"
-    And I Display Body
     And I press "Create"
     Then I should see "Title can't be blank"
     
@@ -37,9 +36,10 @@ Feature: Create Custom Probes
     
     Then I should see "Assign Custom Probe"
     And I Display Body
+    And I am pending
     Then the "Custom Probe Title1" checkbox should be checked
-    #It's assigned
     Then I complete "Assign New Intervention"
+    #It's assigned
     Then I should see "Custom Probe Title1 has been automatically assigned"
 
     

@@ -9,7 +9,7 @@ end
 
 When /I delete the first role/ do
   visit roles_url
-  clicks_link "Destroy"
+  click_link "Destroy"
 end
 
 Then /there should be (\d+) roles left/ do |n|
