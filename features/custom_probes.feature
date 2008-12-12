@@ -35,8 +35,6 @@ Feature: Create Custom Probes
     And I press "Create"
     
     Then I should see "Assign Custom Probe"
-    And I Display Body
-    And I am pending
     Then the "Custom Probe Title1" checkbox should be checked
     Then I complete "Assign New Intervention"
     #It's assigned

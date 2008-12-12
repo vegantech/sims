@@ -132,6 +132,9 @@ class Intervention < ActiveRecord::Base
 
  def build_custom_probe(opts={})
    probe_definition=ProbeDefinition.new(opts)
+   probe_definition.intervention_definitions << self.intervention_definition
+   probe_definition.intervention_probe_assignments.build(:enabled=>true, :intervention=>self)
+   probe_definition
 
  end
 

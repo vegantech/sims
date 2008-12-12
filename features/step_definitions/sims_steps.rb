@@ -1,7 +1,3 @@
-require File.dirname(__FILE__)+'/step_helpers'
-require File.dirname(__FILE__)+'/require_everything'
-
-
 Given /^common data$/i do
   clear_login_dropdowns
   @district=Factory(:district)
