@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.namespace :district do |district|
+    district.resources :schools
+  end
+
   map.resources :custom_probes
 
   map.resources :news_items
