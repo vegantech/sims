@@ -1,5 +1,9 @@
 $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
 
+
+require 'rubygems'
+require 'webrat'
+require 'webrat/rails'
 require 'cucumber/rake/task'
 require File.dirname(__FILE__)+ '/rcov_rake_helper'
 
