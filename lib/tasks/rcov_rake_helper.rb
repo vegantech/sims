@@ -6,16 +6,16 @@ rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
 end
   def default_rcov_params_for_unit   
-    '-i "app\/reports" -x "app\/controllers","\/Library\/","spec\/","stories\/","'+ "#{ENV['GEM_HOME']}" + '"'
+    '-i "app\/reports" -x "app\/controllers","\/Applications\/","\/Library\/","spec\/","stories\/","'+ "#{ENV['GEM_HOME']}" + '"'
 
   end  
   
   def default_rcov_params_for_functional   
-    ' -x  "app\/reports","app\/models","app\/helpers","lib/","\/Library\/","spec\/","stories\/","' +"#{ENV['GEM_HOME']}" + '"'
+    ' -x  "app\/reports","app\/models","app\/helpers","lib/","\/Applications\/","\/Library\/","spec\/","stories\/","' +"#{ENV['GEM_HOME']}" + '"'
   end
   
   def default_rcov_params_for_integration
-    ' -x "features\/","\/Library\/","spec\/","stories\/","' +"#{ENV['GEM_HOME']}" + '"'
+    ' -x "features\/","\/Applications\/","\/Library\/","spec\/","stories\/","' +"#{ENV['GEM_HOME']}" + '"'
   end
 
   def specs_corresponding_to_unit

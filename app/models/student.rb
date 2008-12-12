@@ -63,18 +63,13 @@ class Student < ActiveRecord::Base
   end
 
   def max_tier
-    
     unless recommendations.blank?
-
       district.tiers.first
       #FIXME, should only be promoted 
 #      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
     else
       district.tiers.first
     end
-
-
-
   end
 
   def self.find_flagged_students(flagtypes=[])
@@ -89,15 +84,12 @@ class Student < ActiveRecord::Base
     stitypes << "CustomFlag" if custom
     stitypes << "IgnoreFlag" if ignore
 
-
     if stitypes.any?
       find(:all,:include=>:flags,:conditions=>["type in (?) and flagtype in (?)",stitypes,flagtype])
     else
       find(:all,:include=>:flags,:joins=>"left outer join flags as ig on ig.flagtype=flags.flagtype and ig.type='IgnoreFlag' and ig.person_id=flags.person_id",:conditions=>["ig.flagtype is null and flags.flagtype in (?)",flagtype])
     end
   end
-
-
 
   def principals
     #Find principals for student 
@@ -106,13 +98,11 @@ class Student < ActiveRecord::Base
 
     principals |= special_group_principals
     principals.flatten.uniq
-
   end
 
   def to_s
     fullname
   end
-
 
   def special_group_principals
     grades=enrollments.collect(&:grade)
@@ -126,9 +116,6 @@ class Student < ActiveRecord::Base
     end
 
     principals
-    
-
-
   end
 
 end
