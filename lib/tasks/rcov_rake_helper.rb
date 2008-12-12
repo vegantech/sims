@@ -19,7 +19,7 @@ end
   end
 
   def specs_corresponding_to_unit
-    %w( models helpers lib ).collect{|e| "spec/#{e}/**/*_spec.rb"}
+    %w( models helpers lib reports ).collect{|e| "spec/#{e}/**/*_spec.rb"}
   end
   
   def specs_corresponding_to_functional

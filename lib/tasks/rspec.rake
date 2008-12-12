@@ -43,7 +43,7 @@ namespace :spec do
     t.spec_files = FileList['vendor/plugins/**/spec/**/*_spec.rb'].exclude('vendor/plugins/rspec/*')
   end
 
-  [:models, :controllers, :views, :helpers, :lib].each do |sub|
+  [:models, :controllers, :views, :helpers, :lib, :reports].each do |sub|
     desc "Run the specs under spec/#{sub}"
     Spec::Rake::SpecTask.new(sub => spec_prereq) do |t|
       t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
