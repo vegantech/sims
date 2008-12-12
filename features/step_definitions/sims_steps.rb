@@ -122,7 +122,7 @@ Given /^load demo data$/ do
 
 end
 
-Then "^I Display Body$" do
+Then /^I Display Body$/i do
   puts response.body
 end
 
