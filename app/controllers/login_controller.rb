@@ -1,6 +1,7 @@
 class LoginController < ApplicationController
   include CountryStateDistrict
   skip_before_filter :authenticate, :authorize
+  layout 'main'
   def login
     dropdowns
     @user=User.new(:username=>params[:username])
