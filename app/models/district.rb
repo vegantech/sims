@@ -23,7 +23,7 @@ class District < ActiveRecord::Base
   has_many :recommended_monitors, :through => :probe_definitions
   has_many :objective_definitions, :through => :goal_definitions
   has_many :tiers
-  has_many :schools
+  has_many :schools, :order => :name
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"

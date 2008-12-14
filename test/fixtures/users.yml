@@ -92,7 +92,7 @@ district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_test
-  roles: regular_user, news_admin
+  roles: regular_user, news_admin, district_admin
   <<: *DEFAULTS
 
 

@@ -2,17 +2,25 @@
 
 <table>
   <tr>
+    <tH>Name</th>
+    <th>id_district</th>
+    <th>id_state</th>
+    <th>id_country</th>
   </tr>
 
-<% for schools in @schools %>
+<% for school in @schools %>
   <tr>
-    <td><%= link_to 'Show', schools %></td>
-    <td><%= link_to 'Edit', edit_schools_path(schools) %></td>
-    <td><%= link_to 'Destroy', schools, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= h school.name %></td>
+    <td><%= h school.id_district %></td>
+    <td><%= h school.id_state %></td>
+    <td><%= h school.id_country %></td>
+
+    <td><%= link_to 'Edit', edit_district_school_path(school) %></td>
+    <td><%= link_to 'Destroy', district_school_path(school), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New schools', new_schools_path %>
+<%= link_to 'New school', new_district_school_path %>

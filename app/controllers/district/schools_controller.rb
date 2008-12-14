@@ -10,17 +10,6 @@ class District::SchoolsController < ApplicationController
     end
   end
 
-  # GET /district_schools/1
-  # GET /district_schools/1.xml
-  def show
-    @school = current_district.schools.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @school }
-    end
-  end
-
   # GET /district_schools/new
   # GET /district_schools/new.xml
   def new
@@ -40,12 +29,12 @@ class District::SchoolsController < ApplicationController
   # POST /district_schools
   # POST /district_schools.xml
   def create
-    @school = current_district.schools.build(params[:schools])
+    @school = current_district.schools.build(params[:school])
 
     respond_to do |format|
       if @school.save
-        flash[:notice] = 'current_district.schools was successfully created.'
-        format.html { redirect_to(district_school_url(@school)) }
+        flash[:notice] = 'School was successfully created.'
+        format.html { redirect_to(district_schools_url) }
         format.xml  { render :xml => @school, :status => :created, :location => @school }
       else
         format.html { render :action => "new" }
@@ -60,9 +49,9 @@ class District::SchoolsController < ApplicationController
     @school = current_district.schools.find(params[:id])
 
     respond_to do |format|
-      if @school.update_attributes(params[:schools])
-        flash[:notice] = 'current_district.schools was successfully updated.'
-        format.html { redirect_to(district_school_url(@school)) }
+      if @school.update_attributes(params[:school])
+        flash[:notice] = 'School was successfully updated.'
+        format.html { redirect_to(district_schools_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

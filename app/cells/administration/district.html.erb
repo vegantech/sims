@@ -1,2 +1,4 @@
-<h1>Administration#district</h1>
-<p>Find me in app/cells/administration/district.html.erb</p>
+<% if @show %>
+  <h2><%=@district%> Administration</h2>
+  <p><%=link_to 'Add/Remove Schools', district_schools_url unless @district.admin?%> </p>
+<% end %>

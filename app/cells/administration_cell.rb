@@ -14,6 +14,11 @@ class AdministrationCell < Cell::Base
   end
 
   def district
-    nil
+    @district = @opts[:district]
+    @show = true
+
+  end
+
+  def school
   end
 end

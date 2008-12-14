@@ -3,3 +3,4 @@
   <%= render_cell(:administration, :country, :district=>current_district) %>
   <%= render_cell(:administration, :state, :district=>current_district) %>
 <% end %>
+  <%= render_cell(:administration, :district, :district=>current_district) if session[:user_id]%>

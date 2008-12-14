@@ -217,3 +217,8 @@ districts_admin:
   read: true
   write: true
 
+schools_admin:
+  role: district_admin
+  controller: 'district/schools'
+  read: true
+  write: true
