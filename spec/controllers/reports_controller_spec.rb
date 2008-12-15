@@ -24,7 +24,7 @@ describe ReportsController do
       describe 'with HTML format choice'
       it 'should return output of TeamNotesReport.render_html as report' do
         m = 'This is the HTML Team Notes Report Content'
-        TeamNotesReport.stubs(:render_html).returns(m)
+        TeamNotesReport.stubs!(:render_html).returns(m)
 
         post :team_notes, :start_date => {:month => 10, :day => 15, :year => 2008}, :end_date => {:month => 10, :day => 19, :year => 2008},
           "report_params"=>{"format"=>"html"}, "generate"=>"Generate Report"
@@ -43,7 +43,7 @@ describe ReportsController do
       describe 'and CSV format choice' do
         it 'returns output of TeamNotesReport.render_csv as report' do
           m = 'This is the CSV Team Notes Report Content'
-          TeamNotesReport.stubs(:render_csv).returns(m)
+          TeamNotesReport.stubs!(:render_csv).returns(m)
 
           post :team_notes, {:generate => "Do the report", :report_params => {:format => 'csv'}}, {:user_id => 1}
           assigns[:report].should equal(m)
@@ -57,7 +57,7 @@ describe ReportsController do
       describe 'and PDF format choice' do
         it 'returns output of TeamNotesReport.render_pdf as report' do
           m = 'This is the PDF Team Notes Report Content'
-          TeamNotesReport.stubs(:render_pdf).returns(m)
+          TeamNotesReport.stubs!(:render_pdf).returns(m)
 
           post :team_notes, {:generate => "Do the report", :report_params => {:format => 'pdf'}}, {:user_id => 1}
           assigns[:report].should equal(m)
