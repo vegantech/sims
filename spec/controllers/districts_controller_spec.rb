@@ -5,6 +5,12 @@ describe DistrictsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
   fixtures :districts
+
+  before do
+    @district=mock_district
+    controller.stub!(:current_district=>@district)
+  end
+
   def test_should_get_index
     pending
     get :index
@@ -35,24 +41,19 @@ describe DistrictsController do
   end
 
 
-  def test_should_show_district
-    get :show, :id => districts(:one).id
-    assert_response :success
-  end
-
   def test_should_get_edit
     get :edit, :id => districts(:one).id
     assert_response :success
   end
 
   def test_should_update_district
-    pending "This should be created within a state"
+    @district.should_receive(:update_attributes).and_return(true)
     put :update, :id => districts(:one).id, :district => { }
-    assert_redirected_to district_path(assigns(:district))
+    assert_redirected_to root_url
   end
 
   it 'should render edit if updating invalid district' do
-    District.should_receive(:find).and_return(mock_district(:update_attributes=>false))
+    @district.should_receive(:update_attributes).and_return(false)
     post :update
     response.should be_success
     response.should render_template("edit")

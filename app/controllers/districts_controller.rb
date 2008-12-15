@@ -12,17 +12,6 @@ class DistrictsController < ApplicationController
     end
   end
 
-  # GET /districts/1
-  # GET /districts/1.xml
-  def show
-    @district = District.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @district }
-    end
-  end
-
   # GET /districts/new
   # GET /districts/new.xml
   def new
@@ -36,7 +25,7 @@ class DistrictsController < ApplicationController
 
   # GET /districts/1/edit
   def edit
-    @district = District.find(params[:id])
+    @district = current_district
   end
 
   # POST /districts
@@ -59,12 +48,12 @@ class DistrictsController < ApplicationController
   # PUT /districts/1
   # PUT /districts/1.xml
   def update
-    @district = District.find(params[:id])
+    @district = current_district
 
     respond_to do |format|
       if @district.update_attributes(params[:district])
         flash[:notice] = 'District was successfully updated.'
-        format.html { redirect_to(@district) }
+        format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
