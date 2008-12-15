@@ -1,4 +1,7 @@
 <% if @show %>
   <h2><%=@district%> Administration</h2>
-  <p><%=link_to 'Add/Remove Schools', district_schools_url unless @district.admin?%> </p>
+  <ul>
+  <li><%=link_to 'Add/Remove Schools', district_schools_url unless @district.admin?%> </li>
+  <li><%=link_to 'Add/Remove Users', district_users_url %> </li>
+  </ul>
 <% end %>

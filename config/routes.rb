@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
+    district.resources :users
   end
 
   map.resources :custom_probes

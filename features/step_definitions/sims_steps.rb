@@ -28,6 +28,7 @@ Given /^I am a district admin$/ do
   role = Role.create!(:name => "District Admin", :district_id => 1)
   role.rights.create!(:controller=>"roles", :read=>true, :write=>true)
   role.rights.create!(:controller=>"district/schools", :read=>true, :write=>true)
+  role.rights.create!(:controller=>"district/users", :read=>true, :write=>true)
   default_user.roles=[role]
   
 end
