@@ -9,15 +9,15 @@ describe District::SchoolsController do
   end
  
   before do
-    district=mock_district
-    controller.stub!(:current_district=>district)
-    district.stub!(:schools=>School)
+    @district=mock_district
+    controller.stub!(:current_district=>@district)
+    @district.stub!(:schools=>School)
    end
 
  
   describe "responding to GET index" do
     it "should expose all district_schools as @schools" do
-      School.should_receive(:find).with(:all).and_return([mock_schools])
+      @district.should_receive(:schools).and_return([mock_schools])
       get :index
       assigns[:schools].should == [mock_schools]
     end
@@ -26,7 +26,7 @@ describe District::SchoolsController do
   
       it "should render all district_schools as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        School.should_receive(:find).with(:all).and_return(schools = mock("Array of School"))
+        @district.should_receive(:schools).and_return(schools = mock("Array of School"))
         schools.should_receive(:to_xml).and_return("generated XML")
         get :index
         response.body.should == "generated XML"

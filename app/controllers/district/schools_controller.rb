@@ -2,7 +2,7 @@ class District::SchoolsController < ApplicationController
   # GET /district_schools
   # GET /district_schools.xml
   def index
-    @schools = current_district.schools.find(:all)
+    @schools = current_district.schools
 
     respond_to do |format|
       format.html # index.html.erb

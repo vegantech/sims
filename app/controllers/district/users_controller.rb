@@ -2,22 +2,11 @@ class District::UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.find(:all)
+    @users = current_district.users
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }
-    end
-  end
-
-  # GET /users/1
-  # GET /users/1.xml
-  def show
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
     end
   end
 
@@ -34,13 +23,13 @@ class District::UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = current_district.users.find(params[:id])
   end
 
   # POST /users
   # POST /users.xml
   def create
-    @user = User.new(params[:user])
+    @user = current_district.users.build(params[:user])
 
     respond_to do |format|
       if @user.save
@@ -57,7 +46,7 @@ class District::UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
+    @user = current_district.users.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -74,7 +63,7 @@ class District::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
-    @user = User.find(params[:id])
+    @user = current_district.users.find(params[:id])
     @user.destroy
 
     respond_to do |format|
