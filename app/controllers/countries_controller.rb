@@ -11,17 +11,6 @@ class CountriesController < ApplicationController
     end
   end
 
-  # GET /countries/1
-  # GET /countries/1.xml
-  def show
-    @country = Country.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @country }
-    end
-  end
-
   # GET /countries/new
   # GET /countries/new.xml
   def new
@@ -35,7 +24,7 @@ class CountriesController < ApplicationController
 
   # GET /countries/1/edit
   def edit
-    @country = Country.find(params[:id])
+    @country = current_district.country
   end
 
   # POST /countries
@@ -58,12 +47,12 @@ class CountriesController < ApplicationController
   # PUT /countries/1
   # PUT /countries/1.xml
   def update
-    @country = Country.find(params[:id])
+    @country = current_district.country
 
     respond_to do |format|
       if @country.update_attributes(params[:country])
         flash[:notice] = 'Country was successfully updated.'
-        format.html { redirect_to(@country) }
+        format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
