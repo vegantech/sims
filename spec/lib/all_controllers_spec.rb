@@ -9,7 +9,7 @@ describe AllControllers do
     it 'should list all controller names' do
       # For now I'm testing this is strictly equal.
       # Once we trust it, we could use subset? instead to keep it from breaking ALL the time...
-      AllControllers.names.should == %w{
+      static_list = %w{
         checklist_builder/answers checklist_builder/checklists checklist_builder/elements checklist_builder/questions
         checklists countries custom_flags custom_probes district/schools district/users districts 
         enrollments frequencies groups ignore_flags
@@ -19,8 +19,9 @@ describe AllControllers do
         interventions/probe_assignments interventions/probes
         interventions login main news_items
         principal_overrides probe_questions recommendations reports roles schools states student_comments students
-        tiers users
+        tiers
       }
+      AllControllers.names.should ==  static_list
     end
   end
 end
