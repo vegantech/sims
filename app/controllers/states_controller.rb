@@ -12,17 +12,6 @@ class StatesController < ApplicationController
     end
   end
 
-  # GET /states/1
-  # GET /states/1.xml
-  def show
-    @state = State.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @state }
-    end
-  end
-
   # GET /states/new
   # GET /states/new.xml
   def new
@@ -36,7 +25,7 @@ class StatesController < ApplicationController
 
   # GET /states/1/edit
   def edit
-    @state = State.find(params[:id])
+    @state = current_district.state
   end
 
   # POST /states
@@ -59,13 +48,13 @@ class StatesController < ApplicationController
   # PUT /states/1
   # PUT /states/1.xml
   def update
-    @state = @district.country.states.find(params[:id])
+    @state = current_district.state
     
 
     respond_to do |format|
       if @state.update_attributes(params[:state])
         flash[:notice] = 'State was successfully updated.'
-        format.html { redirect_to(@state) }
+        format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

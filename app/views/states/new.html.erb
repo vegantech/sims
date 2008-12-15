@@ -1,16 +1,7 @@
 <h1>New state</h1>
 
 <% form_for(@state) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :abbrev %><br />
-    <%= f.text_field :abbrev %>
-  </p>
+  <%= render :partial => f %>
   <p>
     <%= f.submit "Create" %>
   </p>

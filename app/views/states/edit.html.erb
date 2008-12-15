@@ -1,24 +1,10 @@
 <h1>Editing state</h1>
 
 <% form_for(@state) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :abbrev %><br />
-    <%= f.text_field :abbrev %>
-  </p>
-  <p>
-    <%= f.label :country %><br />
-    <%= f.text_field :country %>
-  </p>
-  <p>
+  <%= render :partial => f %>
+    <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @state %> |
-<%= link_to 'Back', states_path %>
+<%= link_to 'Back', root_url %>

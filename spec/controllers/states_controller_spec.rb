@@ -5,6 +5,13 @@ describe StatesController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
   fixtures :states
+
+  before do
+    @state=mock_state
+    controller.stub_association!(:current_district, :state=>@state)
+
+  end
+
   def test_should_get_index
     pending
     get :index
@@ -34,25 +41,19 @@ describe StatesController do
   end
 
 
-  def test_should_show_state
-    get :show, :id => states(:one).id
-    assert_response :success
-  end
-
   def test_should_get_edit
     get :edit, :id => states(:one).id
     assert_response :success
   end
 
   def test_should_update_state
-    pending
+    @state.should_receive(:update_attributes).and_return(true)
     put :update, :id => states(:one).id, :state => { }
-    assert_redirected_to state_path(assigns(:state))
+    assert_redirected_to root_url
   end
 
   it 'should render edit if updating invalid state' do
-    pending
-    State.should_receive(:find).and_return(mock_state(:update_attributes=>false))
+    @state.should_receive(:update_attributes).and_return(false)
     post :update
     response.should be_success
     response.should render_template("edit")
