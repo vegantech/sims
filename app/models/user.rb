@@ -27,13 +27,15 @@ class User < ActiveRecord::Base
   has_many :student_comments
 
 
-  attr_accessor :password
+  attr_accessor :password,:all_students_in_district
 
   validates_presence_of :username, :last_name, :first_name, :district
   validates_presence_of :password, :on => :create
   validates_presence_of :passwordhash, :on => :update
   validates_uniqueness_of :username, :scope=>:district_id
   validates_confirmation_of :password
+
+  after_save :district_special_groups
 
   acts_as_reportable if defined? Ruport
 
@@ -197,7 +199,23 @@ class User < ActiveRecord::Base
 
   def principal?
     user_group_assignments.principal.first || special_user_groups.principal.first
+  end
+
+  def all_students_in_district
+    !! special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
 
   end
 
+protected
+  def district_special_groups
+    all_students = special_user_groups.all_students_in_district.find_by_district_id(self.district_id) || 
+        special_user_groups.build(:district_id=>self.district_id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
+
+    if @all_students_in_district == "1"
+      all_students.save
+    elsif @all_students_in_district == "0"
+      all_students.destroy
+    end
+
+  end
 end
