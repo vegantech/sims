@@ -29,20 +29,21 @@ describe Interventions::ParticipantsController do
   end
 
   describe "responding to POST create" do
+    
 
     describe "with valid params" do
       before :each do 
         @mock_intervention_participant.should_receive(:save).and_return(true)
+        @mock_intervention_participant.stub!(:role_title => "ROLE")
+        
       end
       
       it "should expose a newly created intervention_participant as @intervention_participant" do 
-        pending "Remove this after we refactor TODAY"
         post :create, :intervention_participant => {:these => 'params'}
         assigns(:intervention_participant).should equal(mock_intervention_participant)
       end
 
       it "should redirect to the created intervention_participant" do 
-        pending "Remove this after we refactor TODAY"
         post :create, :intervention_participant => {}
         response.should redirect_to(intervention_url(@intervention))
       end

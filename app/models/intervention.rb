@@ -138,6 +138,11 @@ class Intervention < ActiveRecord::Base
 
  end
 
+ def auto_implementer?
+   @auto_implementer == "1"
+ end
+   
+
 
   protected
   def create_other_students
@@ -158,7 +163,7 @@ class Intervention < ActiveRecord::Base
 
   def assign_implementer
     if self.auto_implementer == "1"
-      intervention_participants.implementer.build(:user=>self.user)
+      intervention_participants.implementer.build(:user=>self.user,:skip_email=>true)
     end
     true
   end

@@ -168,6 +168,11 @@ Given /^I enter URL "(.*)"$/ do |url|
   visit url
 end
 
+Given /^there are "(\d+)" emails$/ do |num_emails|
+  assert_emails num_emails.to_i
+end
+
+
 Given /^there is not an email containing "(.*)"$/ do |target_text|
   assert_no_emails
 

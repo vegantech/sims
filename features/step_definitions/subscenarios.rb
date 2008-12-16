@@ -7,6 +7,7 @@ Given /^I complete "Assign New Intervention"$/ do
   run_step "I press \"Choose Objective\""
   run_step "I select \"Some Category\" from \"intervention_cluster_id\""
   run_step "I press \"Choose Category\""
+  run_step "I check \"Make yourself implementer for this intervention\""
   run_step "I press \"Create\""
 end
 

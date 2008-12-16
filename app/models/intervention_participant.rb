@@ -16,8 +16,12 @@ class InterventionParticipant < ActiveRecord::Base
   belongs_to :intervention
 
   delegate :email,:fullname, :to=>:user
+  attr_writer :skip_email
 
+  after_create :send_new_participant_email
+  
   validates_uniqueness_of :user_id, :scope=>:intervention_id, :message=>"has already been assigned to this intervention"
+  validates_presence_of :user_id, :role, :intervention_id
 
   AUTHOR=-1
   IMPLEMENTER=0
@@ -48,6 +52,12 @@ class InterventionParticipant < ActiveRecord::Base
     RoleStruct.new(PARTICIPANT,ROLES[PARTICIPANT])
     ]
     
+  end
+
+  protected
+ 
+  def send_new_participant_email
+    Notifications.deliver_intervention_participant_added(self) unless @skip_email
   end
 
 end

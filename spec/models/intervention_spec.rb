@@ -23,26 +23,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Intervention do
-  before(:each) do
-    @valid_attributes = {
-      :start_date => Date.today,
-      :end_date => Date.today,
-      :frequency_id =>1 ,
-      :frequency_multiplier => "1",
-      :time_length_id => 1 ,
-      :time_length_number => "1",
-      :active => true,
-      :user=> User.new,
-      :intervention_definition => InterventionDefinition.make!,
-      :student => Student.new
-    }
-  end
 
 
   describe 'build_custom_probe' do
     it 'should create a probe definition which gets assigned to this intervention and recommended to the intervention
     definition when saved' do
-      i=Intervention.create!(@valid_attributes)
+      i=Factory(:intervention)
       p=i.build_custom_probe(:title=>"test",:description=>"test")
       p.save!
       i.intervention_definition.probe_definitions.first.should == p
@@ -57,11 +43,11 @@ describe Intervention do
   end
 
   it "should create a new instance given valid attributes" do
-    Intervention.create!(@valid_attributes)
+      i=Factory(:intervention)
   end
 
   it "should end an intervention" do
-    i=Intervention.create!(@valid_attributes)
+      i=Factory(:intervention)
     i=Intervention.find(:first)
     i.end(1)
     i.reload

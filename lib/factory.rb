@@ -55,6 +55,7 @@ Factory.define :element_definition do |e|
   e.association :answer_definitions, :factory => :answer_definition
 end
 
+
 Factory.define :answer_definition do |a|
   a.value 0
 end
@@ -70,9 +71,38 @@ Factory.define :school do |s|
   s.association :district
 end
 
-
 Factory.define :state do |s|
   s.abbrev {Factory.next(:abbrev)}
   s.name {|c| "#{c} State"}
   s.association :country
 end
+
+Factory.define :intervention_participant do |ip|
+  ip.association :user
+  ip.association :intervention
+  ip.role InterventionParticipant::PARTICIPANT
+end
+
+Factory.define :intervention do |i|
+  i.association :user
+  i.association :student
+  i.frequency_multiplier 1
+  i.time_length_number 1
+  i.association :intervention_definition
+end
+
+Factory.define :intervention_definition do |id|
+  id.title {Factory.next(:abbrev) + "TITLE"}
+  id.description {|i| i.title + "Description"}
+  id.association :time_length
+  id.association :frequency
+  id.time_length_num 1
+  id.frequency_multiplier 1
+end
+
+Factory.define :time_length do |tl|
+end
+
+Factory.define :frequency do |f|
+end
+  

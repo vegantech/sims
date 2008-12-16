@@ -121,7 +121,7 @@ def create_default_intervention_pieces
   g1.objective_definitions.create!(:title=>"Other Objective",:description=>"whatever")
   c1=o1.intervention_clusters.create!(:title=>"Some Category",:description=>"whatever")
   o1.intervention_clusters.create!(:title=>"Other Category",:description=>"whatever")
-  d1=c1.intervention_definitions.make!(:title=>"Other Definition")
+  d1=Factory(:intervention_definition,:title=>"Other Definition",:intervention_cluster => c1)
   TimeLength.destroy_all
   TimeLength.create!(:title=>"Default",:days=>90)
   Frequency.create!(:title=>"Default")
