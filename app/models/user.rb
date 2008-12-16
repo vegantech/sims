@@ -27,8 +27,13 @@ class User < ActiveRecord::Base
   has_many :student_comments
 
 
-  validates_presence_of :username, :passwordhash, :last_name, :first_name, :district
+  attr_accessor :password
+
+  validates_presence_of :username, :last_name, :first_name, :district
+  validates_presence_of :password, :on => :create
+  validates_presence_of :passwordhash, :on => :update
   validates_uniqueness_of :username, :scope=>:district_id
+  validates_confirmation_of :password
 
   acts_as_reportable if defined? Ruport
 
@@ -172,6 +177,17 @@ class User < ActiveRecord::Base
 
   def to_s
     fullname
+  end
+
+  def password=(pass)
+    if pass.blank?
+      @password_confirmation=@password=pass
+    else
+      @password = pass
+  #    salt = [Array.new(6){rand(256).chr}.join].pack("m").chomp
+   #   self.password_salt, self.password_hash = salt, Digest::SHA256.hexdigest(pass + salt)a
+      self.passwordhash = User.encrypted_password(pass)
+    end
   end
 
   def reset_password!

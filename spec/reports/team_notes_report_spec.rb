@@ -5,10 +5,8 @@ describe TeamNotesReport do
     # TODO: Figure out why this passes when run by itself, but fails with duplicated report body when run as part of the default rake task!
      it 'should generate correct text output' do
        student = Student.create!
-       district = mock_district
      
-       user = User.create!(:district => district, :username => 'some_user', :first_name => 'Some', :last_name => 'User',
-         :passwordhash => 'pword_hash')
+       user = Factory(:user, :username => 'some_user', :first_name => 'Some', :last_name => 'User')
      
        start_date = Date.new(2008, 12, 11)
        end_date = Date.new(2008, 12, 13)

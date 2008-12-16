@@ -13,24 +13,24 @@ Feature: User Maintenance
     And I go to the home page
     Then I follow "Add/Remove Users"
     Then I follow "New user"
-    Then I am pending
-    Then I fill in "Name" with "Cucumber Elementary"
+    Then I fill in "Username" with "cuke_user"
+    Then I fill in "First Name" with "Cuke"
+    Then I fill in "Last Name" with "User"
     Then I press "Create"
-    Then I should see "Cucumber Elementary"
-    Then I follow "New School"
-    Then I fill in "Name" with "Cucumber Elementary"
+    Then I should see "Password can't be blank"
+    Then I fill in "Password" with "cuke"
     Then I press "Create"
-    Then I should see "Name has already been taken"
-    Then I fill in "Name" with "Cucumber High"
+    Then I should see "Password doesn't match confirmation"
+    Then I fill in "Password Confirmation" with "cuke"
     Then I press "Create"
     Then I follow "Edit"
-    Then I fill in "Name" with "Cucumber High"
+    Then I fill in "Username" with "cuke_user"
     Then I press "Update"
-    Then I should see "Name has already been taken"
-    Then I fill in "Name" with "Cucumber Middle"
+    Then I follow "Edit"
+    Then I fill in "Username" with "unused_username_cuke"
     Then I press "Update"
-    Then I should see "Cucumber Middle"
-
+    Then I should see "unused_username_cuke"
+   
 
     
     

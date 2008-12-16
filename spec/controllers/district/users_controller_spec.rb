@@ -68,7 +68,7 @@ describe District::UsersController do
       it "should redirect to the created user" do
         User.stub!(:build).and_return(mock_user(:save => true))
         post :create, :user => {}
-        response.should redirect_to(user_url(mock_user))
+        response.should redirect_to(district_users_url)
       end
       
     end
@@ -110,7 +110,7 @@ describe District::UsersController do
       it "should redirect to the user" do
         User.stub!(:find).and_return(mock_user(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(user_url(mock_user))
+        response.should redirect_to(district_users_url)
       end
 
     end
@@ -150,7 +150,7 @@ describe District::UsersController do
     it "should redirect to the users list" do
       User.stub!(:find).and_return(mock_user(:destroy => true))
       delete :destroy, :id => "1"
-      response.should redirect_to(users_url)
+      response.should redirect_to(district_users_url)
     end
 
   end

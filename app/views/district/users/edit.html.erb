@@ -1,12 +1,12 @@
 <h1>Editing user</h1>
 
-<% form_for(@user) do |f| %>
-  <%= f.error_messages %>
-
+<% form_for(@user, :url=>district_user_path(@user),:method=>:put) do |f| %>
+  <%= render :partial => f %>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Back', district_users_path %>
+
+

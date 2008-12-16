@@ -22,7 +22,8 @@ end
 
 Factory.define :user do |u|
   u.username {Factory.next(:username)}
-  u.passwordhash {|u| User.encrypted_password(u.username)}
+  u.password {|u| u.username}
+  u.password_confirmation {|u| u.password}
   u.last_name "Last_Name"
   u.first_name {|u| "First#{u.username}"}
   u.association :district
