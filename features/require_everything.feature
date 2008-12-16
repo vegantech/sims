@@ -4,5 +4,5 @@ Feature: Require everything
   So that the percentage is not inflated by skipped files
   
   Scenario: require all
-    Given require everything
+    #Given require everything
 

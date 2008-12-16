@@ -1,6 +1,6 @@
 <%= d = DateTime.now.strftime("%B %d, %Y") %>
 
-Hello, <%=@participants.collect(&:fullname).uniq.join(",")%>:
+Hello, <%=@participant.fullname%>:
 
 The following intervention is scheduled to begin on <%= @interventions.first.start_date %>:
 
