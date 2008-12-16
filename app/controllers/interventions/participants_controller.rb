@@ -19,7 +19,11 @@ class Interventions::ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @intervention_participant.save
-        flash[:notice] = 'InterventionParticipant was successfully created.'
+        #TODO this makes more sense in the model if we move intervention participants to the intervention edit, we just would need some check to make sure we're
+        #not sending a duplicate email.   But it's easier to put it here for now.
+        #send email here
+        Notifications.deliver_intervention_participant_added(@intervention_participant)
+        flash[:notice] = "#{@intervention_participant.role_title} added."
         format.html { redirect_to(@intervention) }
         format.xml  { render :xml => @intervention_participant, :status => :created, :location => @intervention_participant }
       else

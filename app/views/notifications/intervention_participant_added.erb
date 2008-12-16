@@ -1,3 +1,22 @@
-Notifications#intervention_participant_added
+<%= d = DateTime.now.strftime("%B %d, %Y") %>
 
-Find me in app/views/notifications/intervention_participant_added.erb
+Hello, <%=@participants.collect(&:fullname).uniq.join(",")%>:
+
+The following intervention is scheduled to begin on <%= @interventions.first.start_date %>:
+
+Intervention: <%= @interventions.first.title %>
+Students:     <%= @interventions.collect{|i| link_to(i.student.fullname,intervention_url(i))}.join(",") %>
+
+Team:
+  <% @participants.sort_by(&:role).each do |p| %>
+  <%=p.role_title %>  <%= p.fullname %>
+<% end %>
+
+
+<%= @interventions.first.autoassign_message %>
+
+
+Please login to SIMS to view intervention details and enter student's progress monitoring data by clicking on one of the students above.
+
+
+Thank you.

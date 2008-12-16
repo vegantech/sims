@@ -148,7 +148,7 @@ def default_user
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
   Right.create!(:role => default_role, :controller => 'reports', :read => true)
 
-  ["custom_probes","interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives", "interventions/definitions", "interventions/probes","interventions/probe_assignments"].each do |c|
+  ["custom_probes","interventions", "interventions/goals", "interventions/objectives", "interventions/categories", "interventions/objectives", "interventions/definitions", "interventions/probes","interventions/probe_assignments", "interventions/participants"].each do |c|
     default_role.rights.create!(:controller=>c, :read=> true, :write => true)
   end
 

@@ -58,13 +58,12 @@ class Notifications < ActionMailer::Base
     body       :greeting => 'Hi,'
   end
 
-  def intervention_participant_added(sent_at = Time.now)
-    subject    'Notifications#intervention_participant_added'
-    recipients ''
-    from       ''
-    sent_on    sent_at
-    
-    body       :greeting => 'Hi,'
+  def intervention_participant_added(intervention_person)
+    subject    '[SIMS]  Student Intervention Starting'
+    from       'SIMS <b723176@madison.k12.wi.us>'
+    recipients intervention_person.user.email
+    sent_on    Time.now
+    body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author, :interventions=> [intervention_person.intervention]
   end
 
 end

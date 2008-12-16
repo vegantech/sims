@@ -26,6 +26,8 @@ class InterventionParticipant < ActiveRecord::Base
   ROLES=%w{Implementer Participant Author}
   named_scope :implementer, :conditions=>{:role=>IMPLEMENTER}
 
+  RoleStruct = Struct.new(:id, :name)
+
   def role_title
     ROLES[role] 
   end
@@ -38,6 +40,14 @@ class InterventionParticipant < ActiveRecord::Base
     end
     save!
 
+  end
+
+  def self.roles
+    [
+    RoleStruct.new(IMPLEMENTER,ROLES[IMPLEMENTER]),
+    RoleStruct.new(PARTICIPANT,ROLES[PARTICIPANT])
+    ]
+    
   end
 
 end

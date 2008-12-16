@@ -2,6 +2,8 @@ Given /^common data$/i do
   clear_login_dropdowns
   @district=Factory(:district)
   @school=Factory(:school,:district=>@district, :name=>"Default School")
+  @another_user = Factory(:user, :username => "cucumber_another", :district=>@district)
+  @another_user.schools << @school
   @default_user = create_user
   @default_user.district=@district
   @default_user.save!
@@ -164,4 +166,17 @@ end
 
 Given /^I enter URL "(.*)"$/ do |url|
   visit url
+end
+
+Given /^there is not an email containing "(.*)"$/ do |target_text|
+  assert_no_emails
+
+end
+
+Given /^there is an email containing "(.*)"$/ do |target_text|
+  #  assert_emails 2
+  # ActionMailer::Base.perform_deliveries = true
+  last_mail=ActionMailer::Base.deliveries.join("********")
+  last_mail.should match(/#{target_text}/)
+
 end

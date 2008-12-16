@@ -9,7 +9,7 @@
   </p>
   <p>
     <%= f.label :role %><br />
-    <%= f.select(:role, InterventionParticipant::ROLES[0..-2]) %>
+    <%= f.collection_select(:role, InterventionParticipant.roles,:id, :name )%>
   </p>
   <p>
     <%= f.submit "Add Participant" %>
