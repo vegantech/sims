@@ -169,7 +169,6 @@ Given /^I enter URL "(.*)"$/ do |url|
 end
 
 Given /^there are "(\d+)" emails$/ do |num_emails|
-  puts ActionMailer::Base.deliveries.join("******DIVIVISION*****")
   assert_emails num_emails.to_i
 end
 
