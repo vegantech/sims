@@ -1,6 +1,6 @@
 
 <%= link_to 'Assign Custom Probe', new_custom_probe_path(:intervention=>@intervention) %>
-<% form_tag() do |f| %>
+<% form_tag do  %>
 
     <% @intervention_probe_assignments.each do |intervention_probe_assignment| %>
       <p>
