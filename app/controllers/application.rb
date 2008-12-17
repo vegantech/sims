@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
     action_group = action_group_for_current_action
     unless current_user.authorized_for?(controller,action_group)
       #log this
-      puts "controller is #{controller} action_name is #{action_name} action_group is #{action_group}"
+      logger.info "Authorization Failure controller is #{controller} action_name is #{action_name} action_group is #{action_group}"
       
       flash[:notice] =  "You are not authorized to access that page"
       redirect_to root_url
