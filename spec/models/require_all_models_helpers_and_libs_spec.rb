@@ -12,25 +12,35 @@ class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
  
   #require every rb in app
   Dir.glob(RAILS_ROOT+"/app/models/**/*.rb").each do |rb|
-    require rb.split("app/").last 
+    e=rb.split("app/models/").last.split(".rb").first 
+    begin
+      e.classify.constantize
+    rescue
+      require e
+    end
   end
   
   Dir.glob(RAILS_ROOT+"/app/helpers/**/*.rb").each do |rb|
-    require rb.split("app/").last
+    e=rb.split("app/helpers/").last.split(".rb").first 
+    begin
+      e.classify.constantize
+    rescue
+      require e
+    end
   end
 
   Dir.glob(RAILS_ROOT+"/app/reports/**/*.rb").each do |rb|
-#    require rb.split("app/").last
+    e=rb.split("app/reports/").last.split(".rb").first 
+    begin
+      e.classify.constantize
+    rescue
+      require e
+    end
   end
-
-
-
-
-
 
   # Replace this with your real tests.
   def test_truth
-    puts "This just requires all ruby model, helper, lib, and report files in the project so they show up in code coverage"
+    #"This just requires all ruby model, helper, lib, and report files in the project so they show up in code coverage"
     assert true
   end
 end

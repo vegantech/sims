@@ -1,6 +1,6 @@
 # Customized default formatters for ruport. Each class renders text for the 
 # next immediate subclass(specified as Class.nesting[1])
-class HtmlTextCsv
+class HtmlCsvText
   class HTML < Ruport::Formatter::HTML
     renders :html, :for => Class.nesting[2]
     build :header do
