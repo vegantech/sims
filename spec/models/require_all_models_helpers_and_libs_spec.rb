@@ -8,7 +8,7 @@ class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
   def self.require_all_ruby_files target_dirs
     Array(target_dirs).each do |target_dir|
       Dir.glob("RAILS_ROOT/#{target_dir}/**/*.rb").each do |ruby_file|
-        e = ruby_file.split("app/reports/").last.split(".rb").first 
+        e = ruby_file.split("#{target_dir}/").last.split(".rb").first 
         begin
           # trigger the normal Rails mechanism to require files
           e.classify.constantize
