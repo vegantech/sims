@@ -4,7 +4,8 @@ Feature: Team Notes
   Should be able to view Team Notes report
   
   Scenario: Show Team Notes
-		Given team note "First Team Note" on "01/09/08"
+    Given common data
+		And team note "First Team Note" on "01/09/08"
 		And team note "Second Team Note" on "01/10/08"
 		And team note "Third Team Note" on "01/11/08"
 		And team note "Fourth Team Note" on "01/12/08"
@@ -21,3 +22,6 @@ Feature: Team Notes
     And I should see "Third Team Note"
     And I should not see "First Team Note"
     And I should not see "Fourth Team Note"
+    # TODO: Get this working...
+    # When I follow "Common Last"
+    # Then I should see "Student Profile for Common Last"

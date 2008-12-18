@@ -17,7 +17,7 @@ describe TeamNotesReport do
      
        report_body = TeamNotesReport.render_text(:user => user, :start_date => start_date, :end_date => end_date)
        
-       report_body.should == "Report Generated at December 12, 2008 00:00\n\n :\n\n+---------------------------------------+\n|   Date   | User Name |   Team Note    |\n+---------------------------------------+\n| 12/11/08 | some_user | First Comment  |\n| 12/13/08 | some_user | Second Comment |\n+---------------------------------------+\n\n"
+       report_body.should == "Report Generated at December 12, 2008 00:00\n\n<a href=\"/students/996332878\"> </a>:\n\n+---------------------------------------+\n|   Date   | User Name |   Team Note    |\n+---------------------------------------+\n| 12/11/08 | some_user | First Comment  |\n| 12/13/08 | some_user | Second Comment |\n+---------------------------------------+\n\n"
      end
   end
 end

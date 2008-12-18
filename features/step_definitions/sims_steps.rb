@@ -20,7 +20,7 @@ end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  StudentComment.create!(:body => content, :created_at => date)
+  StudentComment.create!(:student => @student, :body => content, :created_at => date)
 end
 
 Given /^I am a district admin$/ do

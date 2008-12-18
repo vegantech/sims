@@ -21,6 +21,12 @@ class TeamNotesReport < DefaultReport
     end
   end
 
+  # # I was considering going this route if I had to support links in HTML only...
+  # class HTML < Ruport::Formatter::HTML
+  #   renders :html, :for => TeamNotesReport
+  # 
+  #   output << render_grouping(data.to_grouping, options.to_hash.merge(:formatter => html_writer))
+  # end
 end
 
 
@@ -39,18 +45,22 @@ class TeamNotes
 
     rt = StudentComment.report_table(:all,
       :conditions => ["created_at between ? and ?", @start_date.beginning_of_day, @end_date.end_of_day],
-      :include => {:student => {:only => [], :methods => :fullname}, :user => {:only => [], :methods => :username}},
+      :include => {:student => {:only => [:id], :methods => :fullname}, :user => {:only => [], :methods => :username}},
       :only => [:body, :created_at])
 
     unless rt.empty?
       rt.replace_column('created_at', 'Date') do |r|
         r['created_at'].to_date.to_s(:report)
       end
+
+      rt.replace_column('student.fullname', 'Student') do |r|
+        "<a href=\"/students/#{r['student.id']}\">#{r['student.fullname']}</a>"
+      end
     end
 
     return rt if rt.column_names.blank?
 
-    rt.rename_columns('body' => 'Team Note', 'user.username' => 'User Name', 'student.fullname' => 'Student')
+    rt.rename_columns('body' => 'Team Note', 'user.username' => 'User Name')
 
     rt.reorder('Student', 'Date', 'User Name', 'Team Note')
     rt
