@@ -2,45 +2,23 @@ require 'test/unit'
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 class RequireAllModelsHelpersandLibsSpec < Test::Unit::TestCase
-  # Replace this with your real tests.
-  
 
-  #Require everything in lib
-  Dir.glob(RAILS_ROOT+"/lib/**/*.rb").each do |lib|
-    require lib.split("lib/").last
-  end
- 
-  #require every rb in app
-  Dir.glob(RAILS_ROOT+"/app/models/**/*.rb").each do |rb|
-    e=rb.split("app/models/").last.split(".rb").first 
-    begin
-      e.classify.constantize
-    rescue
-      require e
-    end
-  end
-  
-  Dir.glob(RAILS_ROOT+"/app/helpers/**/*.rb").each do |rb|
-    e=rb.split("app/helpers/").last.split(".rb").first 
-    begin
-      e.classify.constantize
-    rescue
-      require e
+  # Method to require all ruby classes when calculating code coverage.
+  # Call this to not leave untested files out of the code coverage percentages.
+  def self.require_all_ruby_files target_dirs
+    Array(target_dirs).each do |target_dir|
+      Dir.glob("RAILS_ROOT/#{target_dir}/**/*.rb").each do |ruby_file|
+        e = ruby_file.split("app/reports/").last.split(".rb").first 
+        begin
+          # trigger the normal Rails mechanism to require files
+          e.classify.constantize
+        rescue
+          # handle the few exceptions
+          require e
+        end
+      end
     end
   end
 
-  Dir.glob(RAILS_ROOT+"/app/reports/**/*.rb").each do |rb|
-    e=rb.split("app/reports/").last.split(".rb").first 
-    begin
-      e.classify.constantize
-    rescue
-      require e
-    end
-  end
-
-  # Replace this with your real tests.
-  def test_truth
-    #"This just requires all ruby model, helper, lib, and report files in the project so they show up in code coverage"
-    assert true
-  end
+  require_all_ruby_files(['/lib', '/app/models', '/app/helpers', '/app/reports'])
 end
