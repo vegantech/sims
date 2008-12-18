@@ -143,7 +143,7 @@ private
 def default_user
   clear_login_dropdowns unless @default_user
   @default_user ||= create_user 'default_user'
-  default_role = Role.create!(:name => 'Default Role', :district_id => 1, :users=>[@default_user])
+  default_role = Role.create!(:name => 'Default Role', :district_id => @default_user.district_id, :users=>[@default_user])
   Right.create!(:role => default_role, :controller => 'students', :read => true)
   Right.create!(:role => default_role, :controller => 'schools', :read => true)
   Right.create!(:role => default_role, :controller => 'reports', :read => true)

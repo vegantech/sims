@@ -13,7 +13,7 @@ class District::UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    @user = User.new
+    @user = current_district.users.build
 
     respond_to do |format|
       format.html # new.html.erb

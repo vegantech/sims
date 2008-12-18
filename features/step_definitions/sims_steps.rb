@@ -27,7 +27,7 @@ Given /^I am a district admin$/ do
   clear_login_dropdowns
   default_user
   log_in
-  role = Role.create!(:name => "District Admin", :district_id => 1)
+  role = Role.create!(:name => "District Admin")
   role.rights.create!(:controller=>"roles", :read=>true, :write=>true)
   role.rights.create!(:controller=>"district/schools", :read=>true, :write=>true)
   role.rights.create!(:controller=>"district/users", :read=>true, :write=>true)

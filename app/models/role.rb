@@ -17,12 +17,26 @@ class Role < ActiveRecord::Base
   has_and_belongs_to_many :users
 
   acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this
+  named_scope :system, :conditions => {:district_id => nil}
 
 
   def self.has_controller_and_action_group?(controller,action_group)
     return false unless %w{ read write }.include?(action_group)
     find(:all).any?{|r| r.rights.find_by_controller(controller,:conditions=>["#{action_group}=?",true])}
   end
+
+  def to_s
+    if system?  
+      "<b>#{name}</b>"
+    else
+      name
+    end
+  end
+
+  def system?
+    district_id.blank?
+  end
+
 
 
 

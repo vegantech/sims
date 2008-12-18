@@ -206,6 +206,10 @@ class User < ActiveRecord::Base
 
   end
 
+  def available_roles
+    district.roles
+  end
+
 protected
   def district_special_groups
     all_students = special_user_groups.all_students_in_district.find_by_district_id(self.district_id) || 

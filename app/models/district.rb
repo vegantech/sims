@@ -27,6 +27,8 @@ class District < ActiveRecord::Base
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
+  has_many :roles
+
 
 
   named_scope :normal, :conditions=>{:admin=>false}
@@ -98,6 +100,10 @@ class District < ActiveRecord::Base
     u.destroy if u
     create_admin_user
     'district_admin recreated'
+  end
+
+  def roles_with_system
+    roles + Role.system
   end
 
 private

@@ -24,6 +24,11 @@
     <%= form.text_field :last_name %>
   </p>
 
+  <% @user.available_roles.each do |role| %>
+    <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
+    <%=label_tag dom_id(role), role%>
+<% end %>
+    <%=hidden_field_tag "user[role_ids][]",""%>
 
   <p><%= form.label :all_students_in_district %>  <%= form.check_box :all_students_in_district %> </p>
 
