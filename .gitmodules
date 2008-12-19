@@ -13,3 +13,6 @@
 [submodule "vendor/plugins/html_matchers"]
 	path = vendor/plugins/html_matchers
 	url = git://github.com/bendycode/html_matchers.git
+[submodule "vendor/plugins/coveralls"]
+	path = vendor/plugins/coveralls
+	url = git://github.com/vegantech/coveralls.git

@@ -123,7 +123,7 @@ end
 
 Given /^require everything$/ do
   #only called once
-  require_everything_in_app
+  Coveralls.require_all_ruby_files ["/app"]
 end
 
 Given /^load demo data$/ do
