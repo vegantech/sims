@@ -18,7 +18,8 @@ class School < ActiveRecord::Base
   has_many :enrollments
   has_many :students, :through =>:enrollments
   has_many :groups
-  has_and_belongs_to_many :users
+  has_many :user_school_assignments
+  has_many :users, :through=> :user_school_assignments
 
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id

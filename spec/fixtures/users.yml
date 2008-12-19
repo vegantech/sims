@@ -15,31 +15,99 @@
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
+DEFAULTS: &DEFAULTS
+  username: $LABEL
+  roles: regular_user
+
 one:
-  username: MyString
   passwordhash: 
   first_name: MyString
   last_name: MyString
-  district: wi_mmsd
+  district: wi_test
+  <<: *DEFAULTS
 
 two:
-  username: MyString
   passwordhash: 
   first_name: MyString
   last_name: MyString
+  <<: *DEFAULTS
 
-oneschool:
-  username: oneschool
-  first_name: "1First."
-  last_name: "oneschool"
-  passwordhash: <%= User.encrypted_password("oneschool") %>
-  district: wi_mmsd
-  schools: alpha
+allstudents:
+  first_name: "All"
+  last_name: "Students"
+  passwordhash: <%= User.encrypted_password("allstudents") %>
+  district: wi_test
+  <<: *DEFAULTS
 
-twoschools:
-  username: twoschools
-  first_name: "2Second."
-  last_name: "twoschools"
-  passwordhash: <%= User.encrypted_password("twoschools") %>
-  district: wi_mmsd
-  schools: alpha, bravo
+
+alphaprin:
+  first_name: "Principal"
+  last_name: "Alpha Elementary"
+  passwordhash: <%= User.encrypted_password("alphaprin") %>
+  district: wi_test
+  <<: *DEFAULTS
+
+
+alphagradethree:
+  first_name: "Grade 3"
+  last_name: "Alpha Elementary"
+  passwordhash: <%= User.encrypted_password("alphagradethree") %>
+  district: wi_test
+  <<: *DEFAULTS
+
+
+  first_name: No
+  last_name: schools
+  passwordhash: <%= User.encrypted_password("noschools") %>
+  district: wi_test
+  <<: *DEFAULTS
+
+nogroups:
+  first_name: No
+  last_name: groups
+  passwordhash: <%= User.encrypted_password("nogroups") %>
+  district: wi_test
+  <<: *DEFAULTS
+
+district_admin:
+  first_name: Default
+  last_name: District_Admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  district: wi_test
+  roles: regular_user, news_admin, district_admin
+  <<: *DEFAULTS
+
+
+content_builder:
+  first_name: District
+  last_name: Content Builder
+  district: wi_test
+  passwordhash: <%= User.encrypted_password("content_builder") %>
+  username: content_builder
+  roles: district_builder
+
+system_admin:
+  first_name: System
+  last_name: Adminsitrator
+  username: district_admin
+  district: admin_admin_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: news_admin, country_admin, state_admin, district_admin
+ 
+us_admin:
+  first_name: UnitedStates
+  last_name: Adminsitrator
+  username: district_admin
+  district: us_admin_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: news_admin, country_admin, state_admin, district_admin
+ 
+wi_admin:
+  first_name: Wisconsin
+  last_name: Adminsitrator
+  username: district_admin
+  district: wi_admin
+  passwordhash: <%= User.encrypted_password("district_admin") %>
+  roles: news_admin, state_admin, district_admin
+  
+

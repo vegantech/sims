@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081208201532) do
+ActiveRecord::Schema.define(:version => 20081219194856) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -446,6 +446,14 @@ ActiveRecord::Schema.define(:version => 20081208201532) do
     t.integer  "user_id"
     t.integer  "group_id"
     t.boolean  "is_principal", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_school_assignments", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "user_id"
+    t.boolean  "admin",      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

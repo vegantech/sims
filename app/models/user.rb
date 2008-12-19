@@ -15,7 +15,8 @@
 
 class User < ActiveRecord::Base
   belongs_to :district
-  has_and_belongs_to_many :schools
+  has_many :user_school_assignments
+  has_many :schools, :through=>:user_school_assignments, :order => "name"
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
@@ -134,29 +135,30 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate(username, password)
-		@user = self.find_by_username(username)
-       
-		if @user
-			expected_password=encrypted_password(password)
-			if @user.passwordhash != expected_password
+    @user = self.find_by_username(username)
+    if @user
+      expected_password=encrypted_password(password)
+      if @user.passwordhash != expected_password
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
-			end
-			@user
-		end
-	end
-
-
-	def self.encrypted_password(password)
-		Digest::SHA1.hexdigest(password.downcase)
-	end
-  
-	def fullname 
-		first_name.to_s + ' ' + last_name.to_s
+      end
+      @user
+    end
   end
 
-	def fullname_last_first
-		last_name.to_s + ', ' + first_name.to_s
-	end
+
+  def self.encrypted_password(password)
+    Digest::SHA1.hexdigest(password.downcase)
+  end
+  
+	
+  def fullname 
+    first_name.to_s + ' ' + last_name.to_s
+  end
+
+	
+  def fullname_last_first
+    last_name.to_s + ', ' + first_name.to_s
+  end
 
   def email
     "#{self.username}@sims.vegantech.com"

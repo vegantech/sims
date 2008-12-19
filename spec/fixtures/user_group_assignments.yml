@@ -14,11 +14,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  user_id: 
-  group_id: 
-  is_principal: 
+  user: oneschool
+  group: oneschool_homeroom
+  is_principal: false
+
 
 two:
-  user_id: 
-  group_id: 
-  is_principal: 
+  user: twoschools
+  group: bravo_one
+  is_principal: false
+
+three:
+  user: twoschools
+  group: other_homeroom
+  is_principal: false

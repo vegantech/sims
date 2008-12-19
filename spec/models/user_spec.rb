@@ -19,6 +19,7 @@ describe User do
   before do
     @user = Factory(:user,:username=>"oneschool")
   end
+
   describe 'authenticate' do
     it 'should find user with valid login and password' do
       u = User.authenticate('oneschool', 'oneschool')

@@ -1,0 +1,28 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+oneschool_alpha:
+  school: alpha
+  user: oneschool
+  admin: false
+
+twoschools_alpha:
+  school: alpha
+  user: twoschools
+  admin: false
+
+twoschools_bravo: 
+  school: bravo
+  user: twoschools
+  admin: false
+
+nogroups_alpha:
+  school: alpha
+  user: nogroups
+  admin: false
+
+alphaprin_alpha:
+  school: alpha
+  user: alphaprin
+  admin: true
+
+

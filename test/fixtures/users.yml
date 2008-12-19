@@ -37,7 +37,6 @@ oneschool:
   last_name: "oneschool"
   passwordhash: <%= User.encrypted_password("oneschool") %>
   district: wi_test
-  schools: alpha
   <<: *DEFAULTS
 
 twoschools:
@@ -45,7 +44,6 @@ twoschools:
   last_name: "twoschools"
   passwordhash: <%= User.encrypted_password("twoschools") %>
   district: wi_test
-  schools: alpha, bravo
   <<: *DEFAULTS
 
 allstudents:
@@ -71,7 +69,6 @@ alphagradethree:
   district: wi_test
   <<: *DEFAULTS
 
-
 noschools:
   first_name: No
   last_name: schools
@@ -84,7 +81,6 @@ nogroups:
   last_name: groups
   passwordhash: <%= User.encrypted_password("nogroups") %>
   district: wi_test
-  schools: alpha
   <<: *DEFAULTS
 
 district_admin:
