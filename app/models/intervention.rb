@@ -58,6 +58,7 @@ class Intervention < ActiveRecord::Base
   end
 
   validates_numericality_of :time_length_number, :frequency_multiplier
+  validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
   
 

@@ -4,11 +4,22 @@ describe StudentsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  it 'should get index' do
-    controller.should_receive(:student_search).and_return(['a','b','c'])
-    get :index
-    response.should be_success
-    assigns(:students).should == ['a','b','c']
+  describe 'get index' do
+    it 'should get index when there is a current school and search criteria' do
+      controller.should_receive(:student_search).and_return(['a','b','c'])
+      controller.should_receive(:current_school_id).and_return(['a','b','c'])
+      get :index, {},{:search=>true}
+      response.should be_success
+      assigns(:students).should == ['a','b','c']
+    end
+
+    it 'should redirect to school selection if there is none selected' do
+      pending
+    end
+
+    it 'should redirect to search if there is no criteria' do
+      pending
+    end
   end
 
   describe 'select' do
@@ -153,23 +164,29 @@ describe StudentsController do
 
     describe 'with selected student' do
       it 'should set @student, and render show template' do
+        
         student = mock_student()
-        students = mock_model(String, :find => student)
-        school = mock_school(:students => students)
-        School.should_receive(:find).with(school.id).and_return(school)
-
-        get :show, {:id => student.id}, :school_id => school.id, :selected_students => ["#{student.id}"]
+        Student.should_receive(:find).with(student.id.to_s).and_return(student)
+        get :show, {:id => student.id}, :selected_students => ["#{student.id}"]
 
         response.should_not redirect_to(students_url)
         response.should render_template('show')
         assigns[:student].should == student
       end
-    end
+
+   end
 
     describe 'without selected student' do
-      it 'should flunk enforce_session_selections' do
+       it 'should set session if we have not set it yet, alternate entry with access' do
+        pending
+      end
+      it 'should flunk enforce_session_selections if user does not have access' do
+        controller.stub!(:current_user=>mock_user)
+        student=mock_student
+        student.stub_association!(:enrollments,"student_belonging_to_user?" => false)
+        Student.should_receive(:find).with("999").and_return(student)
         get :show, {:id => 999}
-        flash[:notice].should == 'Student not selected'
+        flash[:notice].should == 'You do not have access to that student'
         response.should redirect_to(students_url)
       end
     end

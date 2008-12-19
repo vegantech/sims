@@ -23,5 +23,5 @@ Feature: Team Notes
     And I should not see "First Team Note"
     And I should not see "Fourth Team Note"
     # TODO: Get this working...
-    # When I follow "Common Last"
-    # Then I should see "Student Profile for Common Last"
+    When I follow "Common Last"
+    Then I should see "Student Profile for Common Last"

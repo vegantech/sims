@@ -1,10 +1,12 @@
 class StudentsController < ApplicationController
-	before_filter :enforce_session_selections, :except => [:index, :select, :search, :new, :create]
+	before_filter :enforce_session_selections, :except => [:index, :select, :search]
   additional_read_actions %w{grade_search member_search search}
 
   # GET /students
   # GET /students.xml
   def index
+    flash[:notice]="Please Choose a school" and redirect_to schools_url  and return unless current_school_id
+    flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
     @students = student_search
 
     respond_to do |format|
@@ -59,7 +61,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.xml
   def show
-    @student = current_school.students.find(params[:id])
+    @student = Student.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,7 +92,15 @@ class StudentsController < ApplicationController
       session[:selected_student]=params[:id]
       return true
     else
-      flash[:notice]='Student not selected'
+      student=Student.find(params[:id])
+      if student.enrollments.student_belonging_to_user?(current_user)
+        session[:school_id] = (student.schools & current_user.schools).first
+        session[:selected_student]=params[:id]
+        session[:selected_students]=[params[:id]]
+        return true
+      end
+
+      flash[:notice]='You do not have access to that student'
       redirect_to students_url and return false
     end
   end
