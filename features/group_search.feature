@@ -25,9 +25,9 @@ Feature: Search By Student Groups
     And I should not see "Fred, Red"
 
   Scenario User With Two Groups Picks One
-    Given school "West High"
-    And group "Orange Team" for school "West High" with student "Alfie Orange"
-    And group "Maroon Team" for school "West High" with student "Harold Yerbie"
+    Given school "East High"
+    And group "Orange Team" for school "East High" with student "Alfie Orange"
+    And group "Maroon Team" for school "East High" with student "Harold Yerbie"
     And I have access to "Orange Team"
     And I have access to "Maroon Team"
     And I am on search page
