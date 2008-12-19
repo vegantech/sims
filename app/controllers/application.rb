@@ -69,6 +69,7 @@ class ApplicationController < ActionController::Base
     subdomains
     unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
+      session[:requested_url] = request.url
       redirect_to root_url
       return false
     end

@@ -1,11 +1,11 @@
 Given /^common data$/i do
+  @default_user = default_user
   clear_login_dropdowns
   @district=Factory(:district)
+  @default_user.district=@district
   @school=Factory(:school,:district=>@district, :name=>"Default School")
   @another_user = Factory(:user, :username => "cucumber_another", :district=>@district)
   @another_user.schools << @school
-  @default_user = create_user
-  @default_user.district=@district
   @default_user.save!
   create_default_student
   @student.district=@district
@@ -34,6 +34,16 @@ Given /^I am a district admin$/ do
   default_user.roles=[role]
   
 end
+
+Given /^I enter default student url$/ do
+  visit "/students/#{@student.id}"
+end
+
+
+Given /^I enter url "(.*)"$/ do |url|
+  visit url
+end
+
 
 When /^I go to (.*)$/ do |page_name|
 	go_to_page page_name
