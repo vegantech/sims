@@ -50,6 +50,7 @@ class UserSchoolAssignmentsController < ApplicationController
         format.html { redirect_to(@user_school_assignment) }
         format.xml  { render :xml => @user_school_assignment, :status => :created, :location => @user_school_assignment }
       else
+        @schools = current_district.schools
         format.js {render :action => "new"}
         format.html { render :action => "new" }
         format.xml  { render :xml => @user_school_assignment.errors, :status => :unprocessable_entity }

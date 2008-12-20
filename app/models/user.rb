@@ -212,6 +212,16 @@ class User < ActiveRecord::Base
     district.roles | System.roles
   end
 
+  def school_assignments=(sch)
+    sch = Array(sch)
+    sch.reject!(&:blank?)
+    usa = sch.collect do |s|
+      UserSchoolAssignment.new(s.merge(:user_id=>self.id))
+    end
+    self.user_school_assignments=usa
+  end
+
+
 protected
   def district_special_groups
     all_students = special_user_groups.all_students_in_district.find_by_district_id(self.district_id) || 
