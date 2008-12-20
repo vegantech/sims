@@ -18,7 +18,7 @@ class School < ActiveRecord::Base
   has_many :enrollments
   has_many :students, :through =>:enrollments
   has_many :groups
-  has_many :user_school_assignments
+  has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
 
   validates_presence_of :name,:district
@@ -40,6 +40,10 @@ class School < ActiveRecord::Base
     grades.sort!
     grades.unshift("*") if grades.size >1
     grades
+  end
+
+  def to_s
+    name
   end
 
 

@@ -3,4 +3,8 @@ class System
     NewsItem.system
   end
 
+  def self.roles
+    Role.system
+  end
+
 end

@@ -1,0 +1,3 @@
+page.select(dom_id(@user_school_assignment.school,"#assignment")).each {|item| item.remove}
+page.insert_html :bottom, 'user_school_assignments', :partial => '/district/users/user_school_assignment'
+page.replace_html 'new_user_school_assignment', :partial => '/district/users/new_user_school_assignment'

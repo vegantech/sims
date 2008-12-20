@@ -1,0 +1,12 @@
+<% div_for user_school_assignment.school,'assignment' do %>
+<% fields_for 'user_user_school_assignments[]',user_school_assignment do |school_fields| %>
+
+  <p><%=user_school_assignment.school%> <%= content_tag :b, 'admin' if user_school_assignment.admin?%>
+  <%=school_fields.hidden_field :id %>
+  <%=school_fields.hidden_field :school_id %>
+  <%=school_fields.hidden_field :user_id %>
+
+<% end %>
+<% end %>
+
+

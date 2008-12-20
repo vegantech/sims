@@ -24,12 +24,13 @@
     <%= form.text_field :last_name %>
   </p>
 
-  <% @user.available_roles.each do |role| %>
-    <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
-    <%=label_tag dom_id(role), role%>
-<% end %>
-    <%=hidden_field_tag "user[role_ids][]",""%>
+  <%= render :partial => 'roles' , :locals=>{:form=>form}%>
 
-  <p><%= form.label :all_students_in_district %>  <%= form.check_box :all_students_in_district %> </p>
+  <%= render :partial => 'district_groups', :locals=>{:form=>form} %>
 
+  <h2>Explicit School Assignments</h2>
+  (all students in district implies regular access to all schools)
+  <div id= "user_school_assignments">
+    <%=render :partial => 'user_school_assignment' ,:collection => @user.user_school_assignments ,:locals=>{:form =>form} %>
+  </div>
 

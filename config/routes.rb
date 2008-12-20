@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :user_school_assignments
+
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users

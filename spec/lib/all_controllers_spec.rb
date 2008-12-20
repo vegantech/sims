@@ -19,7 +19,7 @@ describe AllControllers do
         interventions/probe_assignments interventions/probes
         interventions login main news_items
         principal_overrides probe_questions recommendations reports roles schools states student_comments students
-        tiers
+        tiers user_school_assignments
       }
       AllControllers.names.should ==  static_list
     end

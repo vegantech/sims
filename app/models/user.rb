@@ -15,7 +15,7 @@
 
 class User < ActiveRecord::Base
   belongs_to :district
-  has_many :user_school_assignments
+  has_many :user_school_assignments, :dependent => :destroy
   has_many :schools, :through=>:user_school_assignments, :order => "name"
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
   end
 
   def available_roles
-    district.roles
+    district.roles | System.roles
   end
 
 protected
