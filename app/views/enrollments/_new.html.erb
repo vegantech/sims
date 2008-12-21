@@ -1,0 +1,13 @@
+<% remote_form_for(@enrollment) do |f| %>
+  <%= f.error_messages %>
+  <p> <%= f.label :school_id%>
+  <%= f.collection_select(:school_id,@schools, :id,:to_s) %>
+  <%= hidden_field_tag "enrollment[student_id]", "ignore_me" %>
+  </p>
+  <p> <%= f.label :grade %> <%=f.text_field :grade %> </p>
+  <p>
+  <%= f.submit "Add Enrollment" %> (Remember to hit the Create or Update button on the other form to save the record.)
+  
+  </p>
+<% end %>
+

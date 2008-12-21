@@ -1,0 +1,14 @@
+<% div_for enrollment do %>
+  <% fields_for "student[school_enrollments][]",enrollment ,:index=>nil do |obj_fields| %>
+
+  <p><%=enrollment.school%> -  Grade: <%= enrollment.grade%>
+  <%=obj_fields.hidden_field :school_id %>
+  <%=obj_fields.hidden_field :grade %>
+
+<% end %>
+<%= link_to_function "Remove" do |page|
+  page.remove(dom_id(enrollment))
+end %>
+<% end %>
+
+

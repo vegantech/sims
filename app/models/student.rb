@@ -129,8 +129,12 @@ class Student < ActiveRecord::Base
 
   def school_enrollments=(enrolled_schs)
     enrolled_schs = Array(enrolled_schs)
-    enrolled_sch.reject!(&:blank?)
-    self.enrollments = enrolled_sch.collect{|s| s.merge(:student_id=>self.id)}
+    enrolled_schs.reject!(&:blank?)
+
+    #This removes duplicates,  uniq doesn't work with an array of hashes (they're different objects with the same contents.)
+    enrolled_schs = enrolled_schs.inject([]) { |result,h| result << h unless result.include?(h); result }
+
+    self.enrollments = enrolled_schs.uniq.collect{|s| Enrollment.new(s.merge(:student_id=>self.id))}
   end
 
 end

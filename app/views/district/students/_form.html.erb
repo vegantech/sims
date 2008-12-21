@@ -26,4 +26,11 @@
 <p>
   <%= form.label :birthdate %><br />
   <%= form.date_select :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago%>
-</p>
+  </p>
+
+ <div id= "enrollments">
+   <%=render :partial => 'enrollments/enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
+   <%= hidden_field_tag "student[school_enrollments][]", nil %>
+ </div>
+
+

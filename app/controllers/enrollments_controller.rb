@@ -25,8 +25,10 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments/new.xml
   def new
     @enrollment = Enrollment.new
+    @schools=current_district.schools
 
     respond_to do |format|
+      format.js {}
       format.html # new.html.erb
       format.xml  { render :xml => @enrollment }
     end
@@ -43,11 +45,14 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.new(params[:enrollment])
 
     respond_to do |format|
-      if @enrollment.save
+      if @enrollment.valid?
         flash[:notice] = 'Enrollment was successfully created.'
+        format.js {}
         format.html { redirect_to(@enrollment) }
         format.xml  { render :xml => @enrollment, :status => :created, :location => @enrollment }
       else
+        @schools=current_district.schools
+        format.js {render :action=>"new"}
         format.html { render :action => "new" }
         format.xml  { render :xml => @enrollment.errors, :status => :unprocessable_entity }
       end

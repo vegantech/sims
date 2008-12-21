@@ -235,6 +235,13 @@ user_schools_admin:
   read: true
   write: true
 
+district_student_enrollments:
+  role: district_admin
+  controller: 'enrollments'
+  read: true
+  write: true
+
+
 users_admin:
   role: district_admin
   controller: 'district/users'
