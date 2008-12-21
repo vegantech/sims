@@ -1,13 +1,13 @@
 <% remote_form_for(@user_school_assignment) do |f| %>
   <%= f.error_messages %>
-  <p> <%= f.label :school_id, "School" %>
-  <%= f.collection_select(:school_id, @schools, :id, :name) %>
-  <%= f.hidden_field :user_id %>
+  <p> <%= f.label "#{@obj}_id",  @obj.capitalize %>
+  <%= f.collection_select("#{@obj}_id",  @objs, :id,:to_s) %>
   </p>
   <p> <%= f.label :admin %> <%=f.check_box :admin %> </p>
   <p>
-  <%= f.submit "Add School" %> (Remember to hit the Create or Update button on the outer form to save the record.)
+  <%= f.submit "Add #{@obj.capitalize}" %> (Remember to hit the Create or Update button on the other form to save the record.)
   
   </p>
+  <p> Be sure to give the user the corresponding roles. </p>
 <% end %>
 

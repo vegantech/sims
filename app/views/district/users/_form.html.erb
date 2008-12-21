@@ -31,7 +31,7 @@
   <h2>Explicit School Assignments</h2>
   (all students in district implies regular access to all schools)
   <div id= "user_school_assignments">
-    <%=render :partial => 'user_school_assignment' ,:collection => @user.user_school_assignments ,:locals=>{:form =>form} %>
+    <%=render :partial => 'user_school_assignments/assignment' ,:collection => @user.user_school_assignments ,:locals=>{:form =>form, :obj=>"school"} %>
     <%= hidden_field_tag "user[school_assignments][]", nil %>
   </div>
 

@@ -46,5 +46,15 @@ class School < ActiveRecord::Base
     name
   end
 
+  def user_assignments=(sch)
+    sch = Array(sch)
+    sch.reject!(&:blank?)
+    usa = sch.collect do |s|
+      UserSchoolAssignment.new(s.merge(:school_id=>self.id))
+    end
+    self.user_school_assignments=usa
+  end
+
+
 
 end

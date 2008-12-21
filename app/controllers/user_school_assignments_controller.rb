@@ -25,7 +25,14 @@ class UserSchoolAssignmentsController < ApplicationController
   # GET /user_school_assignments/new.xml
   def new
     @user_school_assignment = UserSchoolAssignment.new(params[:user_school_assignment])
-    @schools = current_district.schools
+    
+    if params[:obj]== "school"
+      @objs = current_district.schools
+      @obj = "school"
+    else
+      @objs = current_district.users
+      @obj = "user"
+    end
 
     respond_to do |format|
       format.js { }
@@ -43,18 +50,15 @@ class UserSchoolAssignmentsController < ApplicationController
   # POST /user_school_assignments.xml
   def create
     @user_school_assignment = UserSchoolAssignment.new(params[:user_school_assignment])
-
+    if @user_school_assignment.school_id.blank?
+      @obj="user"
+    else
+      @obj="school"
+    end
     respond_to do |format|
-      if @user_school_assignment.valid?
-        format.js {}
-        format.html { redirect_to(@user_school_assignment) }
-        format.xml  { render :xml => @user_school_assignment, :status => :created, :location => @user_school_assignment }
-      else
-        @schools = current_district.schools
-        format.js {render :action => "new"}
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user_school_assignment.errors, :status => :unprocessable_entity }
-      end
+      format.js {}
+      format.html { redirect_to(@user_school_assignment) }
+      format.xml  { render :xml => @user_school_assignment, :status => :created, :location => @user_school_assignment }
     end
   end
 
