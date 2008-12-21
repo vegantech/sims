@@ -59,6 +59,7 @@ alphaprin:
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
   district: wi_test
+  roles: regular_user, school_admin
   <<: *DEFAULTS
 
 

@@ -31,7 +31,7 @@ Feature: Search By Student Groups
     And I have access to "Orange Team"
     And I have access to "Maroon Team"
     And I am on search page
-    And I should see select box with id of "search_criteria_group_id" and contains ['Filter by Group','Orange Team', 'Maroon Team']
+    And I should see select box with id of "search_criteria_group_id" and contains ['Filter by Group','Maroon Team', 'Orange Team']
     When I select "Orange Team" from "Student Group"
     And I press "Search for Students"
     Then I should see "Orange, Alfie"

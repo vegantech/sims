@@ -1,17 +1,23 @@
 <h1>Listing groups</h1>
 
+<% form_tag groups_path, :method=>:get do %>
+  <%=label_tag :title, "title, Any part"%>
+  <%=text_field_tag :title %>
+  <%=submit_tag "Search by Title", :name=>nil %>
+<% end %>
+
+  <%= will_paginate @groups %>
 <table>
   <tr>
     <th>Title</th>
-    <th>School</th>
   </tr>
+
 
 <% for group in @groups %>
   <tr>
     <td><%=h group.title %></td>
-    <td><%=h group.school %></td>
     <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
+    <td><%= link_to 'rename', edit_group_path(group) %></td>
     <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

@@ -247,3 +247,10 @@ users_admin:
   controller: 'district/users'
   read: true
   write: true
+
+groups_admin:
+  role: school_admin
+  controller: groups
+  read: true
+  write: true
+

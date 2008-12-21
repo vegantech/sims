@@ -1,8 +1,8 @@
 class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
-  def index
-    @groups = Group.find(:all)
+ def index
+    @groups=current_school.groups.paged_by_title(params[:title],params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.xml
   def show
-    @group = Group.find(params[:id])
+    @group = current_school.groups.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,13 +34,13 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = Group.find(params[:id])
+    @group = current_school.groups.find(params[:id])
   end
 
   # POST /groups
   # POST /groups.xml
   def create
-    @group = Group.new(params[:group])
+    @group = current_school.groups.build(params[:group])
 
     respond_to do |format|
       if @group.save
@@ -57,7 +57,7 @@ class GroupsController < ApplicationController
   # PUT /groups/1
   # PUT /groups/1.xml
   def update
-    @group = Group.find(params[:id])
+    @group = current_school.groups.find(params[:id])
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
@@ -74,7 +74,7 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   # DELETE /groups/1.xml
   def destroy
-    @group = Group.find(params[:id])
+    @group = current_school.groups.find(params[:id])
     @group.destroy
 
     respond_to do |format|

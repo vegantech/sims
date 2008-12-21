@@ -13,14 +13,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Group do
-  before(:each) do
-    @valid_attributes = {
-      :title => "value for title",
-    }
-  end
-
+  
   it "should create a new instance given valid attributes" do
-    Group.create!(@valid_attributes)
+    Factory(:group)
   end
 
   it "shoulld return an array of users when members is called" do
@@ -28,10 +23,10 @@ describe Group do
     User.destroy_all
     Group.destroy_all
     
-    g1=Group.create!(:title=>"Group 1")
-    g2=Group.create!(:title=>"Group 2")
-    g3=Group.create!(:title=>"Group 3")
-    g4=Group.create!(:title=>"Group 4")
+    g1=Factory(:group,:title=>"Group 1")
+    g2=Factory(:group,:title=>"Group 2")
+    g3=Factory(:group,:title=>"Group 3")
+    g4=Factory(:group,:title=>"Group 4")
     district=Factory(:district)
     u1=Factory(:user, :district=>district)
     u2=Factory(:user, :district=>district)

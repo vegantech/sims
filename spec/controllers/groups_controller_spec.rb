@@ -8,11 +8,16 @@ describe GroupsController do
   def mock_group(stubs={})
     @mock_group ||= mock_model(Group, stubs)
   end
+
+  before do
+    @mock_school=mock_school(:groups=>Group)
+    controller.stub!(:current_school=>@mock_school)
+  end
   
   describe "responding to GET index" do
 
     it "should expose all groups as @groups" do
-      Group.should_receive(:find).with(:all).and_return([mock_group])
+      Group.should_receive(:paged_by_title).and_return([mock_group])
       get :index
       assigns[:groups].should == [mock_group]
     end
@@ -21,7 +26,7 @@ describe GroupsController do
   
       it "should render all groups as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        Group.should_receive(:find).with(:all).and_return(groups = mock("Array of Groups"))
+        Group.should_receive(:paged_by_title).and_return(groups = mock("Array of Groups"))
         groups.should_receive(:to_xml).and_return("generated XML")
         get :index
         response.body.should == "generated XML"
@@ -78,13 +83,13 @@ describe GroupsController do
     describe "with valid params" do
       
       it "should expose a newly created group as @group" do
-        Group.should_receive(:new).with({'these' => 'params'}).and_return(mock_group(:save => true))
+        Group.should_receive(:build).with({'these' => 'params'}).and_return(mock_group(:save => true))
         post :create, :group => {:these => 'params'}
         assigns(:group).should equal(mock_group)
       end
 
       it "should redirect to the created group" do
-        Group.stub!(:new).and_return(mock_group(:save => true))
+        Group.stub!(:build).and_return(mock_group(:save => true))
         post :create, :group => {}
         response.should redirect_to(group_url(mock_group))
       end
@@ -94,13 +99,13 @@ describe GroupsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved group as @group" do
-        Group.stub!(:new).with({'these' => 'params'}).and_return(mock_group(:save => false))
+        Group.stub!(:build).with({'these' => 'params'}).and_return(mock_group(:save => false))
         post :create, :group => {:these => 'params'}
         assigns(:group).should equal(mock_group)
       end
 
       it "should re-render the 'new' template" do
-        Group.stub!(:new).and_return(mock_group(:save => false))
+        Group.stub!(:build).and_return(mock_group(:save => false))
         post :create, :group => {}
         response.should render_template('new')
       end

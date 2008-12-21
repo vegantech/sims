@@ -17,7 +17,7 @@ class School < ActiveRecord::Base
   belongs_to :district
   has_many :enrollments
   has_many :students, :through =>:enrollments
-  has_many :groups
+  has_many :groups, :order => :title
   has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
 

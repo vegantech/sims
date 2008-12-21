@@ -20,5 +20,8 @@ class AdministrationCell < Cell::Base
   end
 
   def school
+    @school = @opts[:school]
+    @user = @opts[:user]
+    @show = @user.user_school_assignments.admin.find_by_school_id(@school)
   end
 end

@@ -101,7 +101,7 @@ end
 
 def create_default_student
   @student ||= create_student "Common", "Last", "04", @school
-  g=Group.create!(:title=>"Default Group")
+  g=Factory(:group,:title=>"Default Group", :school=>@school)
   g.students << @student
   g.save!
   @default_user.groups << g

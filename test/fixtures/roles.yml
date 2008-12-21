@@ -39,4 +39,6 @@ district_admin:
   name: $LABEL
   position: 3
 
-
+school_admin:
+  name: $LABEL
+  position: 4

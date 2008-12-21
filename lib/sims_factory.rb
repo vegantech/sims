@@ -41,6 +41,11 @@ Factory.define :enrollment do |e|
   e.association :school
 end
 
+Factory.define :group do |g|
+  g.title {Factory.next :abbrev}
+  g.association :school
+  end
+  
 
 
 Factory.define :tier do |t|

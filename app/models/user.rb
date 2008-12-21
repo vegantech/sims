@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
-  has_many :groups, :through=> :user_group_assignments
+  has_many :groups, :through=> :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
   has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
   has_and_belongs_to_many :roles
@@ -220,6 +220,14 @@ class User < ActiveRecord::Base
     end
     self.user_school_assignments=usa
   end
+  
+  def self.paged_by_last_name(last_name="", page="1")
+    paginate :per_page => 25, :page => page, 
+      :conditions=> ['last_name like ?', "%#{last_name}%"],
+      :order => 'last_name'
+  end
+
+
 
 
 protected
