@@ -9,24 +9,18 @@ describe District::StudentsController do
   end
   
   describe "responding to GET index" do
+    before do
+      district=mock_district
+      controller.stub!(:current_district=>district)
+      district.stub_association!(:students,:paginate_by_last_name=>@mock_students=[mock_student])
+    end
 
     it "should expose all district_students as @district_students" do
-      Student.should_receive(:find).with(:all).and_return([mock_student])
       get :index
-      assigns[:district_students].should == [mock_student]
+      assigns[:students].should == [mock_student]
     end
 
-    describe "with mime type of xml" do
-  
-      it "should render all district_students as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        Student.should_receive(:find).with(:all).and_return(students = mock("Array of District::Students"))
-        students.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
+   
 
   end
 

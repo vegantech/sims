@@ -104,6 +104,12 @@ class Student < ActiveRecord::Base
     fullname
   end
 
+  def self.paginate_by_last_name(last_name, page)
+    paginate :per_page => 25, :page => page, 
+      :conditions=> ['last_name like ?', "%#{last_name}%"],
+      :order => 'last_name'
+  end
+
   def special_group_principals
     grades=enrollments.collect(&:grade)
     schools=enrollments.collect(&:school_id)

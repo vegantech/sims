@@ -3,6 +3,7 @@
   <ul>
   <li><%=link_to 'Add/Remove Schools', district_schools_url unless @district.admin?%> </li>
   <li><%=link_to 'Add/Remove Users', district_users_url %> </li>
+  <li><%=link_to 'Add/Remove Students', district_students_url %> </li>
   <li><%=link_to 'Edit your district', edit_district_url(@district) %> </li>
   </ul>
 <% end %>

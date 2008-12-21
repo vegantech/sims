@@ -223,6 +223,12 @@ schools_admin:
   read: true
   write: true
 
+district_students_admin:
+  role: district_admin
+  controller: 'district/students'
+  read: true
+  write: true
+
 user_schools_admin:
   role: district_admin
   controller: 'user_school_assignments'

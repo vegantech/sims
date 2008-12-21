@@ -2,7 +2,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students
   # GET /district_students.xml
   def index
-    @district_students = Student.find(:all)
+    @students = current_district.students.paginate_by_last_name(params[:last_name],params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
