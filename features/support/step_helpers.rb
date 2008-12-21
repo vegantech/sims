@@ -85,11 +85,9 @@ def find_student first_name, last_name
 end
 
 def create_student first_name, last_name, grade, school, flag_type = nil
-	s = Student.create! :first_name => first_name, :last_name => last_name
+	s = Factory(:student, :first_name => first_name, :last_name => last_name)
 	# :grade => grade
-	enrollment = Enrollment.create! :grade => grade, :school => school
-	s.enrollments << enrollment
-	s.save!
+	enrollment = s.enrollments.create! :grade => grade, :school => school
 
 	if flag_type
 		f = Flag.create!(:student => s,

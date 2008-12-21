@@ -40,6 +40,9 @@ class Student < ActiveRecord::Base
     end
   end
 
+  validates_presence_of :first_name, :last_name, :district_id
+  validates_uniqueness_of :id_district, :scope=>:district_id, :unless => lambda {|e| e.id_district.blank?}
+
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
@@ -122,6 +125,12 @@ class Student < ActiveRecord::Base
     end
 
     principals
+  end
+
+  def school_enrollments=(enrolled_schs)
+    enrolled_schs = Array(enrolled_schs)
+    enrolled_sch.reject!(&:blank?)
+    self.enrollments = enrolled_sch.collect{|s| s.merge(:student_id=>self.id)}
   end
 
 end

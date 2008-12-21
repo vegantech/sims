@@ -4,7 +4,7 @@ describe TeamNotesReport do
   describe 'render_html' do
     # TODO: Figure out why this passes when run by itself, but fails with duplicated report body when run as part of the default rake task!
     it 'should generate correct text output' do
-      student = Student.create!(:first_name => 'This', :last_name => 'Student')
+      student = Factory(:student,:first_name => 'This', :last_name => 'Student')
 
       user = Factory(:user, :username => 'some_user', :first_name => 'Some', :last_name => 'User')
 

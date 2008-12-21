@@ -35,6 +35,14 @@ Factory.define :checklist_definition do |c|
   c.association :question_definitions, :factory=>:question_definition
 end
 
+Factory.define :enrollment do |e|
+  e.grade "01"
+  e.association :student
+  e.association :school
+end
+
+
+
 Factory.define :tier do |t|
   t.title "Some tier"
 end
@@ -42,6 +50,7 @@ end
 Factory.define :student do |s|
   s.last_name "Last"
   s.first_name "First"
+  s.association :district
 end
 
 Factory.define :question_definition do |q|

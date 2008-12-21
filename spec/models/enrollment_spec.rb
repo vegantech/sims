@@ -185,7 +185,7 @@ describe Enrollment do
 
     it 'should return true if the grade contains a student belonging to that user' do 
       school = School.create!(:name => 'My School', :district => mock_district)
-      e = Enrollment.create!(:grade=>'1',:school=>school)
+      e = Enrollment.create!(:grade=>'1',:school=>school, :student=>mock_student)
       user = User.new
       user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([e])
     
@@ -194,7 +194,7 @@ describe Enrollment do
 
     it 'should return false if the grade does not contain a student belonging to that user' do
       school=School.new
-      e=Enrollment.create!(:grade=>'1',:school=>school)
+      e=Enrollment.create!(:grade=>'1',:school_id=>-1,:student=>mock_student)
       user=User.new
       user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([])
       Enrollment.student_belonging_to_user?(user).should == false

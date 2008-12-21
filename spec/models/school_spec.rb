@@ -27,7 +27,7 @@ describe School do
       user=mock_user
       special_group = mock_array
       user.should_receive('special_user_groups').and_return(special_group)
-      @school.enrollments= [Enrollment.new(:grade=>2),Enrollment.new(:grade=>1),Enrollment.new(:grade=>4),Enrollment.new(:grade=>3)]
+      @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,:grade=>i,:school=>@school)}
       special_group.should_receive('all_students_in_school?').with(@school).and_return(true)
 
       @school.grades_by_user(user).should == ['*','1','2','3','4']
@@ -36,7 +36,7 @@ describe School do
     end
  
     it 'should not prepend * if there is only one' do
-      @school.enrollments.create(:grade=>'only')
+      @school.enrollments.create!(:grade=>'only',:student_id=>-1)
       user=mock_user
       user.stub_association!(:special_user_groups, :all_students_in_school? =>  true)
       @school.grades_by_user(user).should == ['only']
@@ -44,11 +44,12 @@ describe School do
     end
 
     it 'should return subset of grades in the school where there is at least one student that the user has access to' do
+      e=[2,1,4,3].collect{|i| Factory(:enrollment,:grade=>i, :school=>@school)}
 
-      @school.enrollments= [e1=Enrollment.new(:grade=>2),Enrollment.new(:grade=>1),e2=Enrollment.new(:grade=>4),Enrollment.new(:grade=>3)]
+      @school.enrollments=e
       user=mock_user
       user.stub_association!(:special_user_groups, :all_students_in_school? =>  false)
-      user.stub!(:authorized_enrollments_for_school=>[e1,e2])
+      user.stub!(:authorized_enrollments_for_school=>[e[0],e[2]])
 
 
       @school.grades_by_user(user).should == ['*','2','4']

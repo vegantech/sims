@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :students
 
 
   map.resources :user_school_assignments
