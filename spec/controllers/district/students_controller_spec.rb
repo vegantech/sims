@@ -7,12 +7,16 @@ describe District::StudentsController do
   def mock_student(stubs={})
     @mock_student ||= mock_model(Student, stubs)
   end
+
+  before do
+    @district=mock_district(:students=>Student)
+    controller.stub!(:current_district=>@district)
+
+  end
   
   describe "responding to GET index" do
     before do
-      district=mock_district
-      controller.stub!(:current_district=>district)
-      district.stub_association!(:students,:paginate_by_last_name=>@mock_students=[mock_student])
+      @district.stub_association!(:students,:paged_by_last_name=>@mock_students=[mock_student])
     end
 
     it "should expose all district_students as @district_students" do
@@ -71,13 +75,13 @@ describe District::StudentsController do
     describe "with valid params" do
       
       it "should expose a newly created student as @student" do
-        Student.should_receive(:new).with({'these' => 'params'}).and_return(mock_student(:save => true))
+        Student.should_receive(:build).with({'these' => 'params'}).and_return(mock_student(:save => true))
         post :create, :student => {:these => 'params'}
         assigns(:student).should equal(mock_student)
       end
 
       it "should redirect to the created student" do
-        Student.stub!(:new).and_return(mock_student(:save => true))
+        Student.stub!(:build).and_return(mock_student(:save => true))
         post :create, :student => {}
         response.should redirect_to(district_student_url(mock_student))
       end
@@ -87,13 +91,13 @@ describe District::StudentsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved student as @student" do
-        Student.stub!(:new).with({'these' => 'params'}).and_return(mock_student(:save => false))
+        Student.stub!(:build).with({'these' => 'params'}).and_return(mock_student(:save => false))
         post :create, :student => {:these => 'params'}
         assigns(:student).should equal(mock_student)
       end
 
       it "should re-render the 'new' template" do
-        Student.stub!(:new).and_return(mock_student(:save => false))
+        Student.stub!(:build).and_return(mock_student(:save => false))
         post :create, :student => {}
         response.should render_template('new')
       end

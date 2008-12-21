@@ -3,15 +3,15 @@
     <%= form.text_field :name %>
   </p>
   <p>
-    <%= form.label :id_district, "District identifier for this school (the school_id in your SIS)" %><br />
+    <%= form.label :id_district, id_district_desc(form.object) %><br />
     <%= form.text_field :id_district %>
   </p>
   <p>
-    <%= form.label :id_state, "State identifier for this school (the id used by your state DPI)" %><br />
+    <%= form.label :id_state, id_state_desc(form.object) %><br />
     <%= form.text_field :id_state %>
   </p>
   <p>
-    <%= form.label :id_district, "Country identifier for this school (the id in your country's Dept. of Education)" %><br />
+    <%= form.label :id_country, id_country_desc(form.object) %><br />
     <%= form.text_field :id_country %>
   </p>
 

@@ -2,7 +2,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students
   # GET /district_students.xml
   def index
-    @students = current_district.students.paginate_by_last_name(params[:last_name],params[:page])
+    @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students/1
   # GET /district_students/1.xml
   def show
-    @student = Student.find(params[:id])
+    @student = current_district.students.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,7 +40,7 @@ class District::StudentsController < ApplicationController
   # POST /district_students
   # POST /district_students.xml
   def create
-    @student = Student.new(params[:student])
+    @student = current_district.students.build(params[:student])
 
     respond_to do |format|
       if @student.save
@@ -57,7 +57,7 @@ class District::StudentsController < ApplicationController
   # PUT /district_students/1
   # PUT /district_students/1.xml
   def update
-    @student = Student.find(params[:id])
+    @student = current_district.students.find(params[:id])
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
@@ -74,7 +74,7 @@ class District::StudentsController < ApplicationController
   # DELETE /district_students/1
   # DELETE /district_students/1.xml
   def destroy
-    @student = Student.find(params[:id])
+    @student = current_district.students.find(params[:id])
     @student.destroy
 
     respond_to do |format|

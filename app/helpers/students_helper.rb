@@ -32,4 +32,19 @@ module StudentsHelper
     current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}
   end
 
+  def id_district_desc(obj)
+    obj_text=obj.class.name.downcase
+  "District identifier for this #{obj_text} (the #{obj_text}_id or primary_key in your SIS)"
+  end
+
+
+  def id_state_desc(obj)
+    obj_text=obj.class.name.downcase
+    "State identifier for this #{obj_text} (the id used by your state DPI)"
+  end
+
+  def id_country_desc(obj)
+    obj_text=obj.class.name.downcase
+    "Country identifier for this #{obj_text} (the id in your country's Dept. of Education)"
+  end
 end
