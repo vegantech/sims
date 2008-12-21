@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
   #TODO replace this default district constant
 
-  helper :all # include all helpers, all the time
+#  helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
     :current_student_id, :current_student, :current_district
   # See ActionController::RequestForgeryProtection for details

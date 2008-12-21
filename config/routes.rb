@@ -1,9 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :students
+
+
   map.resources :user_school_assignments
 
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
+    district.resources :students
+  end
+
+  map.namespace :school do |school|
+    school.resources :students
   end
 
   map.resources :custom_probes
