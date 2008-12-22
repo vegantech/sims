@@ -22,7 +22,10 @@ describe SpecialUserGroup do
     @valid_attributes = {
       :grade => "value for grade",
       :type => "value for type",
-      :is_principal => false
+      :is_principal => false,
+      :grouptype=>1,
+      :user_id=>1,
+      :school_id=>2
     }
   end
 
