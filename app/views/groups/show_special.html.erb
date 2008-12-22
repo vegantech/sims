@@ -1,15 +1,15 @@
 <p>
   <b>Title:</b>
-  <%=h @group %>
+  <%=h @group.titleize %>
   </p>
 
-  <h1> Users </h1>
+  <h2> Users </h2>
   <div id="group_users">
     <%= render :partial => 'special_user_group', :collection=>@special_user_groups %>
   </div>
 
   <div id="new_user_assignment_form">
-    <%= render :partial => 'add_user_assignment_link' %>
+    <%= render :partial => 'add_special_user_group_link' %>
 
   </div>
   

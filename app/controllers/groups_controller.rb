@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   additional_read_actions :show_special
-  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special
+  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special,
+      :add_special_form, :add_special
   # GET /groups
   # GET /groups.xml
   def index
@@ -151,9 +152,9 @@ end
   end
 
   def show_special
-    @group=params[:id].titleize
-    grade = @group.split(" ").last
-    grade= nil if grade == "School"
+    @group=params[:id]
+    grade = @group.split("_").last
+    grade= nil if grade == "school"
     @special_user_groups = current_school.special_user_groups.find_all_by_grade(grade)
   end
 
@@ -163,5 +164,28 @@ end
     respond_to do |format|
       format.js {}
     end
+  end
+
+  def add_special_form
+    @group=params[:id]
+    grade = @group.split("_").last
+    grade= nil if grade == "school"
+    @special_user_group = current_school.special_user_groups.build(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL)
+    @users = current_school.users
+  end
+
+  def add_special
+    @group=params[:id]
+    grade = @group.split("_").last
+    grade= nil if grade == "school"
+    @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL))
+    
+
+    if @special_user_group.save
+    else
+      @users=current_school.users
+      render :action=>:add_special_form
+    end
+
   end
 end
