@@ -1,9 +1,12 @@
 class GroupsController < ApplicationController
-  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user
+  additional_read_actions :show_special
+  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special
   # GET /groups
   # GET /groups.xml
- def index
+  def index
+    
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])
+    @virtual_groups = current_school.virtual_groups
 
     respond_to do |format|
       format.html # index.html.erb
@@ -145,5 +148,20 @@ end
     @group = current_school.groups.find(params[:id])
     @user_assignment = @group.user_group_assignments.find(params[:user_assignment_id])
 #    @user_assignment.destroy
+  end
+
+  def show_special
+    @group=params[:id].titleize
+    grade = @group.split(" ").last
+    grade= nil if grade == "School"
+    @special_user_groups = current_school.special_user_groups.find_all_by_grade(grade)
+  end
+
+  def remove_special
+    @group = current_school.special_user_groups.find(params[:id])
+    @group.destroy
+    respond_to do |format|
+      format.js {}
+    end
   end
 end

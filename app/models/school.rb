@@ -17,6 +17,7 @@ class School < ActiveRecord::Base
   belongs_to :district
   has_many :enrollments
   has_many :students, :through =>:enrollments
+  has_many :special_user_groups
   has_many :groups, :order => :title
   has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
@@ -53,6 +54,15 @@ class School < ActiveRecord::Base
       UserSchoolAssignment.new(s.merge(:school_id=>self.id))
     end
     self.user_school_assignments=usa
+  end
+
+  def virtual_groups
+    virt_groups=[self.groups.build(:title=>"All Students In School")]
+    enrollments.find(:all,:select=>"distinct grade").collect(&:grade).each do |grade|
+      virt_groups <<  self.groups.build(:title=>"All Students In Grade: #{grade}")
+    end
+    virt_groups
+
   end
 
 

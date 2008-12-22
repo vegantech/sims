@@ -1,0 +1,5 @@
+<% div_for special_user_group do %>
+<%= special_user_group.user %><%="-Principal" if special_user_group.is_principal? %>
+ <%=link_to_remote_degrades "Remove User", :url=>remove_special_group_path(special_user_group), :method=>:delete %>
+
+<% end %>
