@@ -12,7 +12,7 @@ Feature: Search By Student Groups
     And I am on search page
 
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","default user", "Other Guy"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy","default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     And I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]
@@ -36,7 +36,7 @@ Feature: Search By Student Groups
     And I am on search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","default user", "Other Guy"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy", "default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]

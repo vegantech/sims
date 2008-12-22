@@ -194,7 +194,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool", "2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom- Oneschool", "Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom where oneschool is not a member", "Homeroom- Oneschool"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
