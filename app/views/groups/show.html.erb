@@ -8,15 +8,20 @@
     <%= render :partial => 'student',:collection=>@group.students %>
   </div>
   <div id="new_student_form">
-    <%=link_to_remote_degrades "Add Student", :url=>add_student_form_group_path(@group), :method=>:get %>
+    <%= render :partial => 'add_student_link' %>
   </div>
 
 
 
   <h1> Users </h1>
-  <% @group.user_group_assignments.each do |user_assignment| %>
-    <%= user_assignment.user %><%="-Principal" if user_assignment.is_principal? %>
-  <% end %>
+  <div id="group_users">
+    <%= render :partial => 'user_assignment', :collection=>@group.user_group_assignments %>
+  </div>
+
+  <div id="new_user_assignment_form">
+    <%= render :partial => 'add_user_assignment_link' %>
+
+  </div>
   
 
 

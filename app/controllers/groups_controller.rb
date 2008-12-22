@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  additional_write_actions :add_student_form, :add_student, :remove_student
+  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user
   # GET /groups
   # GET /groups.xml
  def index
@@ -111,5 +111,39 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.js {}
     end
+  end
+
+
+  def add_user_form
+    @group = current_school.groups.find(params[:id])
+    @users = current_school.users 
+    @user_assignment = @group.user_group_assignments.build
+    #need to handle special user groups as well
+    respond_to do |format|
+      format.js {}
+    end
+
+  end
+
+  def add_user
+    #need to handle special user groups as well
+   @group = current_school.groups.find(params[:id])
+
+   @user_assignment = @group.user_group_assignments.build(params[:user_group_assignment])
+   respond_to do |format|
+     if @user_assignment.save
+       format.js {}
+     else
+       @users = current_school.users 
+       format.js {render :action=>"add_user_form"}
+     end
+   end
+end
+
+  def remove_user
+    #need to handle special user groups as well
+    @group = current_school.groups.find(params[:id])
+    @user_assignment = @group.user_group_assignments.find(params[:user_assignment_id])
+#    @user_assignment.destroy
   end
 end

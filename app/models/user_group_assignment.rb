@@ -16,4 +16,7 @@ class UserGroupAssignment < ActiveRecord::Base
   belongs_to :group
 
   named_scope :principal,:conditions=>{:is_principal=>true}
+
+  validates_uniqueness_of :user_id, :scope=>[:group_id,:is_principal]
+  validates_presence_of :user_id, :group_id
 end

@@ -1,1 +1,2 @@
 page.insert_html :bottom, :group_students, :partial=>"student"
+page.replace_html :new_student_form, :partial=>"add_student_link"
