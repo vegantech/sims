@@ -1,4 +1,5 @@
 class GroupsController < ApplicationController
+  additional_write_actions :add_student_form, :add_student, :remove_student
   # GET /groups
   # GET /groups.xml
  def index
@@ -80,6 +81,35 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(groups_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def remove_student
+    @group = current_school.groups.find(params[:id])
+    @student = @group.students.find(params[:student_id])
+    @group.students.delete(@student)
+
+    respond_to do |format|
+      format.js {}
+    end
+  end
+
+  def add_student_form
+    @group = current_school.groups.find(params[:id])
+    @student = Student.new
+    @students=current_school.students - @group.students
+    respond_to do |format|
+      format.js {}
+    end
+
+  end
+
+  def add_student
+    @group = current_school.groups.find(params[:id])
+    @student = current_school.students.find(params[:student][:id])
+    @group.student_ids |= [@student.id]
+    respond_to do |format|
+      format.js {}
     end
   end
 end

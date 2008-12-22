@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
-  has_many :groups, :through=> :user_group_assignments, :order => :title
+  has_many :groups, :through=> :user_group_assignments, :order =>:title
   has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
   has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
   has_and_belongs_to_many :roles
@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
         end
       end
     end
-
+    users.sort_by{|u| u.to_s}
     prompt_id,prompt_text=opts["prompt"].split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)

@@ -1,8 +1,26 @@
 <p>
   <b>Title:</b>
   <%=h @group.title %>
-</p>
+  </p>
+
+  <h1>Students </h1>
+  <div id="group_students">
+    <%= render :partial => 'student',:collection=>@group.students %>
+  </div>
+  <div id="new_student_form">
+    <%=link_to_remote_degrades "Add Student", :url=>add_student_form_group_path(@group), :method=>:get %>
+  </div>
 
 
+
+  <h1> Users </h1>
+  <% @group.user_group_assignments.each do |user_assignment| %>
+    <%= user_assignment.user %><%="-Principal" if user_assignment.is_principal? %>
+  <% end %>
+  
+
+
+  <p>
 <%= link_to 'Rename', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>
+</p>

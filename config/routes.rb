@@ -27,7 +27,8 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.logout '/logout',:controller=>'login',:action=>'logout'
-  map.resources :groups
+
+  map.resources :groups, :member=>{:add_student_form => :get,:add_student => :post , :remove_student => :delete}
 
 
   map.resources :tiers

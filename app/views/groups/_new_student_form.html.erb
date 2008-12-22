@@ -1,0 +1,8 @@
+<h1>Add Student</h1>
+<% remote_form_for(@student, :url=>add_student_group_path(@group)) do |f| %>
+  <%=  f.error_messages %>
+  <%= f.collection_select(:id,@students, :id,:to_s) %>
+  <p>
+    <%= f.submit "Add Student" %>
+  </p>
+<% end %>

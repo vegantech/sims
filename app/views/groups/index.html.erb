@@ -16,8 +16,8 @@
 <% for group in @groups %>
   <tr>
     <td><%=h group.title %></td>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'rename', edit_group_path(group) %></td>
+    <td><%= link_to 'User and Student Assignment', group %></td>
+    <td><%= link_to 'Rename', edit_group_path(group) %></td>
     <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
