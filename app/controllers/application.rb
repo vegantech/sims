@@ -4,6 +4,7 @@ require 'sims_factory'
 
 class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
+  include ControllerRights
   #TODO replace this default district constant
 
   helper :all # include all helpers, all the time
