@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :quicklist_items
+
 
 
   map.resources :user_school_assignments

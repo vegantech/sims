@@ -1,0 +1,18 @@
+<p>
+  <b>School:</b>
+  <%=h @quicklist_item.school %>
+</p>
+
+<p>
+  <b>District:</b>
+  <%=h @quicklist_item.district %>
+</p>
+
+<p>
+  <b>Intervention definition:</b>
+  <%=h @quicklist_item.intervention_definition %>
+</p>
+
+
+<%= link_to 'Edit', edit_quicklist_item_path(@quicklist_item) %> |
+<%= link_to 'Back', quicklist_items_path %>
