@@ -1,0 +1,9 @@
+Intervention Quicklist
+<%form_for :quicklist_item, :url => root_url do |f| %>
+<%= f.label :id, "Intervention Quicklist" %>
+<%= f.collection_select :id, [InterventionDefinition.new(:title=>"Most Used Intervention")], :id, :title %>
+<%= f.submit "Pick from Quicklist" %>
+
+<% end %>
+
+

@@ -13,6 +13,14 @@ Given /^common data$/i do
   create_default_intervention_pieces
 end
 
+Given /^quicklist choices (.*)$/i do |choices_array|
+  choices = Array(eval(choices_array))
+  choices.each do |choice|
+    idef = Factory(:intervention_definition, :title=>choice)
+    Factory(:quicklist_item, :school => @school, :intervention_definition => idef)
+  end
+end
+
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
   clear_login_dropdowns
   create_user user_name, password

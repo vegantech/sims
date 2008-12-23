@@ -114,6 +114,13 @@ Factory.define :intervention_definition do |id|
   id.frequency_multiplier 1
 end
 
+
+Factory.define :quicklist_item do |qi|
+  qi.association :intervention_definition
+  qi.association :school
+  #qi.association :district (it's one or the other)
+end
+
 Factory.define :time_length do |tl|
 end
 
