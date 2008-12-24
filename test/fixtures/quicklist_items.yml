@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: alpha
+  intervention_definition: ask_student_about_poor_attendance
+
+two:
+  school: alpha
+  intervention_definition: disruptive_two

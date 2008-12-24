@@ -18,7 +18,7 @@ describe AllControllers do
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
         interventions/probe_assignments interventions/probes
         interventions login main news_items
-        principal_overrides probe_questions recommendations reports roles 
+        principal_overrides probe_questions quicklist_items recommendations reports roles 
         school/students
         schools 
         states student_comments students

@@ -96,7 +96,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions, :member=>{:end=>:put} do |intervention|
+  map.resources :interventions, :member=>{:end=>:put}, :collection=>{:quicklist=>:post} do |intervention|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put} do |probe_assignment|

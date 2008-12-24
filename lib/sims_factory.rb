@@ -112,7 +112,28 @@ Factory.define :intervention_definition do |id|
   id.association :frequency
   id.time_length_num 1
   id.frequency_multiplier 1
+  id.association :intervention_cluster
 end
+
+Factory.define :intervention_cluster do |ic|
+  ic.title {Factory.next(:abbrev) + "TITLE"}
+  ic.description {|i| i.title + "Description"}
+  ic.association :objective_definition
+end
+
+Factory.define :objective_definition do |od|
+  od.title {Factory.next(:abbrev) + "TITLE"}
+  od.description {|i| i.title + "Description"}
+  od.association :goal_definition
+end
+
+Factory.define :goal_definition do |gd|
+  gd.title {Factory.next(:abbrev) + "TITLE"}
+  gd.description {|i| i.title + "Description"}
+  gd.association :district
+end
+
+
 
 
 Factory.define :quicklist_item do |qi|
@@ -121,7 +142,9 @@ Factory.define :quicklist_item do |qi|
   #qi.association :district (it's one or the other)
 end
 
+#TODO validate time length
 Factory.define :time_length do |tl|
+  tl.days 2
 end
 
 Factory.define :frequency do |f|

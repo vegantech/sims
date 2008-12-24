@@ -21,18 +21,24 @@ describe School do
     @school=Factory(:school)
   end
 
+  describe 'quicklist_items' do
+    it 'should return the school  and district quicklist items' do
+      pending "otherwise it's just a has many."
+    end
+
+  end
+
    describe 'grades_by_user' do
-    it 'should return all grades in school when user has access to 
-    all students in the school and add a * when there is more than one' do
-      user=mock_user
-      special_group = mock_array
-      user.should_receive('special_user_groups').and_return(special_group)
-      @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,:grade=>i,:school=>@school)}
-      special_group.should_receive('all_students_in_school?').with(@school).and_return(true)
+     it 'should return all grades in school when user has access to 
+     all students in the school and add a * when there is more than one' do
+       user=mock_user
+       special_group = mock_array
+       user.should_receive('special_user_groups').and_return(special_group)
+       @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,:grade=>i,:school=>@school)}
+       special_group.should_receive('all_students_in_school?').with(@school).and_return(true)
+       @school.grades_by_user(user).should == ['*','1','2','3','4']
 
-      @school.grades_by_user(user).should == ['*','1','2','3','4']
-
-                                
+                                  
     end
  
     it 'should not prepend * if there is only one' do

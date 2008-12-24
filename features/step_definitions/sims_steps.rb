@@ -15,8 +15,13 @@ end
 
 Given /^quicklist choices (.*)$/i do |choices_array|
   choices = Array(eval(choices_array))
+  goal = Factory(:goal_definition, :title => "Cucumber Goal", :district=>@district)
+  objective = Factory(:objective_definition, :title=> "Cucumber Objective", :goal_definition=>goal)
+  cluster = Factory(:intervention_cluster, :title => "Cucumber Category", :objective_definition => objective)
+  
   choices.each do |choice|
-    idef = Factory(:intervention_definition, :title=>choice)
+    
+    idef = Factory(:intervention_definition, :title => choice, :intervention_cluster => cluster)
     Factory(:quicklist_item, :school => @school, :intervention_definition => idef)
   end
 end
