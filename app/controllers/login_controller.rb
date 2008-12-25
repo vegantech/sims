@@ -17,7 +17,7 @@ class LoginController < ApplicationController
         flash[:notice] = 'Authentication Failure' if @user.new_record?
       else
         session[:district_id]=current_district.id if current_district
-        redirect_to session[:requested_url] if session[:requested_url]
+        redirect_to session[:requested_url] and return if session[:requested_url]
       end
 
       if request.subdomains.size == 4 || request.subdomains.size == 0 || @user.new_record?
