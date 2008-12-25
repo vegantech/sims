@@ -254,3 +254,10 @@ groups_admin:
   read: true
   write: true
 
+
+quicklists_admin:
+  role: school_admin
+  controller: quicklist_items
+  read: true
+  write: true
+

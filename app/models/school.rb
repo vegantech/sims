@@ -21,9 +21,9 @@ class School < ActiveRecord::Base
   has_many :groups, :order => :title
   has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
-  has_many :quicklist_items
+  has_many :quicklist_items, :dependent => :destroy
 
-  has_many :quicklist_item_definitions, :class_name=>"InterventionDefinition", :through => :quicklist_items
+  has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 
 
   validates_presence_of :name,:district
