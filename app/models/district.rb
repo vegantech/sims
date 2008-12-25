@@ -20,6 +20,7 @@ class District < ActiveRecord::Base
   has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
   has_many :probe_definitions
+  has_many :quicklist_items
   has_many :recommended_monitors, :through => :probe_definitions
   has_many :objective_definitions, :through => :goal_definitions
   has_many :tiers
