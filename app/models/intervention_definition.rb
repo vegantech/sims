@@ -51,15 +51,15 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def district_quicklist
-    quicklist_items.find_by_district_id(district.id)
+    !!quicklist_items.find_by_district_id(district.id)
   end
 
   def district_quicklist=(arg)
     if arg =="1"
-      quicklist_items.build(:district_id=>self.district.id)
+      quicklist_items.build(:district_id=>self.district.id) unless district_quicklist
     else
-      g=quicklist_items.find_by_district_id(self.district.id) || QuicklistItem.new
-      g.destroy
+      g=quicklist_items.find_by_district_id(self.district.id) 
+      g.destroy if district_quicklist
     end
   end
 

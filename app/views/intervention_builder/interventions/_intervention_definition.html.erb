@@ -10,7 +10,7 @@
 </td>
 
   <td><%= h intervention_definition.business_key %> </td>
-  <td><%=h intervention_definition.title %></td>
+  <td><%=h intervention_definition.title %> <%=content_tag :b, "QuickList" if intervention_definition.district_quicklist %></td>
   <td><%=h intervention_definition.description %></td>
   <td><%=h intervention_definition.custom %></td>
   <td><%=h intervention_definition.tier.title %></td>
@@ -19,4 +19,5 @@
   <td><%=h pluralize(intervention_definition.frequency_multiplier, "time") +" "+ intervention_definition.frequency.title%></td>
   <td><%=h intervention_definition.user %></td>
   <td><%=h intervention_definition.updated_at.to_date.to_s(:long) %></td>
+  
 <% end %>
