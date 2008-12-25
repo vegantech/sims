@@ -50,7 +50,7 @@ protected
 
 
   def populate_quicklist
-    @quicklist_intervention_definitions = current_school.quicklist_items unless flash[:custom_intervention]
+    @quicklist_intervention_definitions = current_school.quicklist unless flash[:custom_intervention]
   end
 
   def find_goal_definition

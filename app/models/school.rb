@@ -70,5 +70,9 @@ class School < ActiveRecord::Base
   end
 
 
+  def quicklist
+    d=district.quicklist_items 
+    d | quicklist_items.reject{|ql| d.any?{|dql| dql.intervention_definition == ql.intervention_definition}}
+  end
 
 end
