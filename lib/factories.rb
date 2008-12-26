@@ -1,16 +1,14 @@
-require 'factory_girl'
-
 Factory.sequence :username do |n|
   "user#{n}#{Time.now.to_i}"
 end
 
 Factory.sequence :abbrev do |a|
-  "test#{a}"
+  "test#{a}#{Time.now.to_i}"
 end
 
 Factory.define :checklist do |c|
   c.association :student
-  c.association :user
+  c.association :teacher, :factory=>:user
   c.association :tier
   c.association :checklist_definition
 end
@@ -32,7 +30,7 @@ end
 Factory.define :checklist_definition do |c|
   c.directions "Please folow the directions"
   c.text "Text for Checklist"
-  c.association :question_definitions, :factory=>:question_definition
+  c.question_definitions {|question_definitions| [question_definitions.association(:question_definition)]}
 end
 
 Factory.define :enrollment do |e|
@@ -60,13 +58,13 @@ end
 
 Factory.define :question_definition do |q|
   q.text  "Question"
-  q.association :element_definitions, :factory =>:element_definition
+  q.element_definitions {|ed| [ed.association(:element_definition, :question_definition_id=>Time.now.to_i)]}
 end
 
 Factory.define :element_definition do |e|
   e.text  "Element"
-  e.kind  'relevant'
-  e.association :answer_definitions, :factory => :answer_definition
+  e.kind  'applicable'
+  e.answer_definitions {|ad| [ad.association(:answer_definition)]}
 end
 
 
