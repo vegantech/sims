@@ -15,4 +15,12 @@
 #
 
 class CustomFlag < Flag
+  validate :either_custom_or_ignore
+
+  def either_custom_or_ignore
+    if IgnoreFlag.find_by_category_and_student_id(category, student_id)
+      errors.add(:category, "Remove custom flag first.")
+    end
+  end
+
 end
