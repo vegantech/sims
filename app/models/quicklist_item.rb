@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081223233819
+#
+# Table name: quicklist_items
+#
+#  id                         :integer         not null, primary key
+#  school_id                  :integer
+#  district_id                :integer
+#  intervention_definition_id :integer
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
 class QuicklistItem < ActiveRecord::Base
   belongs_to :district
   belongs_to :school
