@@ -34,7 +34,7 @@ class District::StudentsController < ApplicationController
 
   # GET /district_students/1/edit
   def edit
-    @student = Student.find(params[:id])
+    @student = current_district.students.find(params[:id])
   end
 
   # POST /district_students
@@ -57,6 +57,7 @@ class District::StudentsController < ApplicationController
   # PUT /district_students/1
   # PUT /district_students/1.xml
   def update
+    params[:student][:existing_system_flag_attributes] ||= {}
     @student = current_district.students.find(params[:id])
 
     respond_to do |format|
