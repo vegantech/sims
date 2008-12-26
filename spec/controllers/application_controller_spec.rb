@@ -55,7 +55,9 @@ describe ApplicationController do
     end
   end
 
+
   describe 'action_group_for_current_action' do
+    
     it 'should return write for create' do
       controller.stub!(:action_name=>"create")
       controller.send(:action_group_for_current_action).should == "write"
@@ -73,5 +75,10 @@ describe ApplicationController do
     end
 
   end
+  
+
+
+
 
 end
+

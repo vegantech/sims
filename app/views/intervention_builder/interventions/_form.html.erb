@@ -33,6 +33,11 @@
     <%=form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>  
   </p>
 
+  <p>
+    <b>District Quicklist</b> <%=form.check_box(:district_quicklist)%>
+  </p>
+
+
 
   <p>
     <%= submit_tag submit_name %>

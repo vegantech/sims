@@ -31,6 +31,7 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :school
   has_many :recommended_monitors, :order => :position
   has_many :probe_definitions, :through => :recommended_monitors
+  has_many :quicklist_items, :dependent=>:destroy
   
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_numericality_of :frequency_multiplier, :time_length_num
@@ -43,6 +44,23 @@ class InterventionDefinition < ActiveRecord::Base
 
   def business_key
     "#{tier_id}-#{goal_definition.position}-#{objective_definition.position}    -#{intervention_cluster.position}-#{position}"
+  end
+
+  def district
+    goal_definition.district
+  end
+
+  def district_quicklist
+    !!quicklist_items.find_by_district_id(district.id)
+  end
+
+  def district_quicklist=(arg)
+    if arg =="1"
+      quicklist_items.build(:district_id=>self.district.id) unless district_quicklist
+    else
+      g=quicklist_items.find_by_district_id(self.district.id) 
+      g.destroy if district_quicklist
+    end
   end
 
   def goal_definition

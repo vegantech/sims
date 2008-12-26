@@ -1,9 +1,9 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
-require 'sims_factory'
 
 class ApplicationController < ActionController::Base
   include HoptoadNotifier::Catcher
+  include ControllerRights
   #TODO replace this default district constant
 
   helper :all # include all helpers, all the time

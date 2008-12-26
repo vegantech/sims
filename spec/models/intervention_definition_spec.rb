@@ -25,19 +25,46 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InterventionDefinition do
-  before(:each) do
-    @valid_attributes = {
-      :title => "value for title",
-      :description => "value for description",
-      :time_length_id =>1,
-      :frequency_id =>1,
-      :custom => false,
-      :disabled => false,
-      :position => "1"
-    }
+  it "should create a new instance given valid attributes" do
+    Factory(:intervention_definition)
   end
 
-  it "should create a new instance given valid attributes" do
-    InterventionDefinition.create!(@valid_attributes)
+  describe 'district_quicklist' do
+    it 'should return true and false if not if it is a member of the quicklist' do
+      k=Factory(:intervention_definition)
+      ql=QuicklistItem.create!(:district=>k.district, :intervention_definition => k)
+      k.district_quicklist.should == true
+
+      ql.destroy
+      k.reload.district_quicklist.should == false
+    end
+
+    it 'should assign itself to the quicklist if = "1"' do
+      k=Factory(:intervention_definition)
+      k.district_quicklist.should == false
+      k.district_quicklist = "1"
+      k.save
+      k.district.quicklist_items.first.intervention_definition.should == k
+      k.district_quicklist.should == true
+    end
+
+    it 'should remove itself from the quicklist if = false' do
+      k=Factory(:intervention_definition)
+      k.district_quicklist ="1"
+      k.save
+      k.district_quicklist ="0"
+      k.save
+      k.district_quicklist.should == false
+      k.district.quicklist_items.should == []
+      k.reload
+      k.district_quicklist =false
+      k.district_quicklist.should == false
+    end
   end
+
+    
+    
+  
+
+
 end

@@ -1,3 +1,5 @@
+<%= render :partial => "interventions/quicklist" %>
+
 <% if @goal_definitions %>
   <% remote_form_for :goal_definition, :url=>select_interventions_goals_path do |f| %>
     <%= f.collection_select(:id, @goal_definitions,:id,:title,{}, {:onchange=>"this.form.onsubmit()"}) %>

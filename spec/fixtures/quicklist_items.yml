@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: 
+  district: 
+  intervention_definition: 
+
+two:
+  school: 
+  district: 
+  intervention_definition: 

@@ -167,7 +167,7 @@ district_builder_probes:
   read: true
   write: true
 
-district_builder_objectives:
+district_builder_recommended_monitors:
   role: district_builder
   controller: 'intervention_builder/recommended_monitors'
   read: true
@@ -251,6 +251,13 @@ users_admin:
 groups_admin:
   role: school_admin
   controller: groups
+  read: true
+  write: true
+
+
+quicklists_admin:
+  role: school_admin
+  controller: quicklist_items
   read: true
   write: true
 

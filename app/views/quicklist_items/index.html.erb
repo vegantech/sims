@@ -1,0 +1,20 @@
+<% form_tag do %>
+<% @goals.each do |goal| %>
+  <%= content_tag :h2, goal.title %>
+  <% goal.objective_definitions.each do |objective| %>
+    <%= content_tag :h2, objective.title %>
+    <% objective.intervention_clusters.each do |category| %>
+      <% content_tag :h2, category.title %>
+      <% category.intervention_definitions.each do |intervention| %>
+        <%= label_tag dom_id(intervention), intervention.title %> 
+        <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> <br />
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= submit_tag "Submit Quicklist Assignments" %>
+<%= link_to "Cancel", :back %>
+<% end %>
+
+

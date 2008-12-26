@@ -29,8 +29,8 @@ class AnswerDefinition < ActiveRecord::Base
     element_definition.answer_definitions
   end
 
-  def self.new_from_existing(answer_definition)
-    AnswerDefinition.new(answer_definition.attributes)
+  def deep_clone
+    clone
   end
 
 end

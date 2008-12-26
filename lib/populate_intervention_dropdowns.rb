@@ -48,7 +48,14 @@ protected
     populate_objectives if @goal_definition
   end
 
+
+  def populate_quicklist
+    @quicklist_intervention_definitions = current_school.quicklist unless flash[:custom_intervention]
+  end
+
   def find_goal_definition
+    populate_quicklist
+
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
         @goal_definition=current_district.goal_definitions.find(params[:goal_id] || params[:goal_definition][:id])

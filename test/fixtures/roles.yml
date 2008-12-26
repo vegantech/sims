@@ -15,12 +15,10 @@
 
 regular_user:
   name: $LABEL
-  district: wi_test
   position: 1
 
 district_builder:
   name: $LABEL
-  district: wi_test
   position: 2
 
 news_admin:

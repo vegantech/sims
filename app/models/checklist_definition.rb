@@ -27,15 +27,7 @@ class ChecklistDefinition < ActiveRecord::Base
     find_by_active(true)  || ChecklistDefinition.new
   end
 
-  def self.new_from_existing(checklist_definition)
-    new_checklist_definition = ChecklistDefinition.new(checklist_definition.attributes.merge(:active => false))
-    checklist_definition.question_definitions.each do |question_definition|
-      new_checklist_definition.question_definitions << QuestionDefinition.new_from_existing(question_definition)
-    end
-   new_checklist_definition
-  end
-
-  def save_all!
+ def save_all!
     save! and
     question_definitions.each(&:save!) and
     element_definitions.each(&:save!) and
@@ -55,6 +47,13 @@ class ChecklistDefinition < ActiveRecord::Base
 
   def checklist_definition_id
     id
+  end
+
+  def deep_clone
+    k=clone
+    k.active=false
+    k.question_definitions = question_definitions.collect{|o| o.deep_clone}
+    k
   end
 
   protected

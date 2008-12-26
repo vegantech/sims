@@ -1,16 +1,14 @@
-require 'factory_girl'
-
 Factory.sequence :username do |n|
   "user#{n}#{Time.now.to_i}"
 end
 
 Factory.sequence :abbrev do |a|
-  "test#{a}"
+  "test#{a}#{Time.now.to_i}"
 end
 
 Factory.define :checklist do |c|
   c.association :student
-  c.association :user
+  c.association :teacher, :factory=>:user
   c.association :tier
   c.association :checklist_definition
 end
@@ -32,7 +30,7 @@ end
 Factory.define :checklist_definition do |c|
   c.directions "Please folow the directions"
   c.text "Text for Checklist"
-  c.association :question_definitions, :factory=>:question_definition
+  c.question_definitions {|question_definitions| [question_definitions.association(:question_definition)]}
 end
 
 Factory.define :enrollment do |e|
@@ -60,13 +58,13 @@ end
 
 Factory.define :question_definition do |q|
   q.text  "Question"
-  q.association :element_definitions, :factory =>:element_definition
+  q.element_definitions {|ed| [ed.association(:element_definition, :question_definition_id=>Time.now.to_i)]}
 end
 
 Factory.define :element_definition do |e|
   e.text  "Element"
-  e.kind  'relevant'
-  e.association :answer_definitions, :factory => :answer_definition
+  e.kind  'applicable'
+  e.answer_definitions {|ad| [ad.association(:answer_definition)]}
 end
 
 
@@ -112,9 +110,39 @@ Factory.define :intervention_definition do |id|
   id.association :frequency
   id.time_length_num 1
   id.frequency_multiplier 1
+  id.association :intervention_cluster
 end
 
+Factory.define :intervention_cluster do |ic|
+  ic.title {Factory.next(:abbrev) + "TITLE"}
+  ic.description {|i| i.title + "Description"}
+  ic.association :objective_definition
+end
+
+Factory.define :objective_definition do |od|
+  od.title {Factory.next(:abbrev) + "TITLE"}
+  od.description {|i| i.title + "Description"}
+  od.association :goal_definition
+end
+
+Factory.define :goal_definition do |gd|
+  gd.title {Factory.next(:abbrev) + "TITLE"}
+  gd.description {|i| i.title + "Description"}
+  gd.association :district
+end
+
+
+
+
+Factory.define :quicklist_item do |qi|
+  qi.association :intervention_definition
+  qi.association :school
+  #qi.association :district (it's one or the other)
+end
+
+#TODO validate time length
 Factory.define :time_length do |tl|
+  tl.days 2
 end
 
 Factory.define :frequency do |f|

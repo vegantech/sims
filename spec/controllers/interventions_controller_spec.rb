@@ -41,15 +41,17 @@ describe InterventionsController do
   end
 
   describe "responding to GET new" do
+    before do
+      controller.stub_association!(:current_school, :quicklist_items=>[])
+      controller.should_receive(:populate_goals)
+    end
   
     it "should call populate_goals" do
-      controller.should_receive(:populate_goals)
       get :new
       response.should be_success
     end
 
     it "should assign a @custom_intervention instance variable if the custom intervention param is there" do
-      controller.should_receive(:populate_goals)
       get :new, :custom_intervention=>true
       response.should be_success
       flash[:custom_intervention].should == true

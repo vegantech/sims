@@ -5,7 +5,6 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'spec'
 require 'spec/rails'
 require File.expand_path(File.dirname(__FILE__) + '/mock_helper')
-require 'sims_factory'
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these

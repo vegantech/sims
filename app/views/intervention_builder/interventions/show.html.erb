@@ -2,7 +2,7 @@
 
 <p>
   <b>Title:</b>
-  <%=h @intervention_definition.title %>
+  <%=h @intervention_definition.title %> <%=content_tag :b, "QuickList" if @intervention_definition.district_quicklist %>
 </p>
 
 <p>
