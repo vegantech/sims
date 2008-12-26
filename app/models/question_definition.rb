@@ -27,12 +27,10 @@ class QuestionDefinition < ActiveRecord::Base
     checklist_definition.question_definitions
   end
 
-  def self.new_from_existing(question_definition)
-    new_question_definition = QuestionDefinition.new(question_definition.attributes)
-    question_definition.element_definitions.each do |element_definition|
-      new_question_definition.element_definitions << ElementDefinition.new_from_existing(element_definition)
-    end
-    new_question_definition
+  def deep_clone
+    k=clone
+    k.element_definitions = element_definitions.collect{|o| o.deep_clone(k)}
+    k
   end
 
 end

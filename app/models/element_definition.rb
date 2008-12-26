@@ -25,7 +25,7 @@ class ElementDefinition < ActiveRecord::Base
 
 
   validates_presence_of :question_definition_id, :text, :kind
-  validates_uniqueness_of :kind, :scope => :question_definition_id, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable} 
+  validates_uniqueness_of :kind, :scope => :question_definition_id, :if => :applicable_kind_uniqueness?
 
   after_create :move_to_top, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable}
 
@@ -44,13 +44,13 @@ class ElementDefinition < ActiveRecord::Base
     question_definition.element_definitions
   end
 
-  def self.new_from_existing(element_definition)
-    new_element_definition = ElementDefinition.new(element_definition.attributes)
-    element_definition.answer_definitions.each do |answer_definition|
-      new_element_definition.answer_definitions << AnswerDefinition.new_from_existing(answer_definition)
-    end
-    new_element_definition
+  def deep_clone(question_definition=nil)
+    k=clone
+    k.question_definition=question_definition
+    k.answer_definitions = answer_definitions.collect{|o| o.deep_clone}
+    k
   end
+
 
   protected
   def validate
@@ -59,7 +59,9 @@ class ElementDefinition < ActiveRecord::Base
     end
   end
 
-  
+  def applicable_kind_uniqueness?
+    !kind.blank?  && kind.to_sym == :applicable && !question_definition.new_record?
+  end 
 
 end
 

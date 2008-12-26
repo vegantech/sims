@@ -96,8 +96,8 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   end
 
   def new_from_this
-    @new_checklist_definition = current_district.checklist_definitions.new_from_existing(ChecklistDefinition.find(params[:id]))
-    @new_checklist_definition.save_all!
+    @new_checklist_definition = current_district.checklist_definitions.find(params[:id]).deep_clone
+    @new_checklist_definition.save!
     redirect_to checklist_builder_checklists_url 
   end
 end
