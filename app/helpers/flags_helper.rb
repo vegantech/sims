@@ -30,7 +30,7 @@ module FlagsHelper
     else
       s=student.flags.ignore.collect do |igflag|
         popup="#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
-        form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"student_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
+        form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"custom_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
           image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
         "</form>"
       end
@@ -39,32 +39,12 @@ module FlagsHelper
   end
 
 
-
-=begin
-def displayflag(change,image,popup,flagtype, student)
-  raise "OR ME"
-  if change
-    form_remote_tag(:url=>{:action=> "ignore_flag", :id=>student,:controller=>"student_flags", :flagtype=>flagtype},:html=>{:style=>"display:inline"}) +
-    image_submit_tag(image,"onmouseover" => "return overlib('#{popup}');",
-    "onmouseout" => "return nd();") +
-    "</form>"
-  else
-    image_tag(image,"onmouseover" => "return overlib('#{popup}');",
-    "onmouseout" => "return nd();") + " "
-  end
-end 
-
-
-                                                                                                       
-=end
-                                                                                                                    
-
   
   def current_flags(student, change = nil )
     student.flags.current.collect do |flagtype,flags|
         popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
       if change
-        form_remote_tag(:url=>{:action=> "ignore_flag", :id=>flags.first,:controller=>"student_flags"},:html=>{:style=>"display:inline"}) +
+        form_remote_tag(:url=>{:action=> "ignore_flag", :category=>flags.first.category,:controller=>"custom_flags"},:html=>{:style=>"display:inline"}) +
           image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
         "</form>"
       else

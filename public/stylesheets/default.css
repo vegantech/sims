@@ -10,6 +10,9 @@ body, html {
   display: none;
 }
 
+#studentflags div {
+  display: none;
+}
 
 body {
 }

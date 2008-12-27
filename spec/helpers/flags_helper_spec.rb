@@ -21,9 +21,9 @@ describe FlagsHelper do
       student="STUDENT"
       change="CHANGE"
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
-      self.should_receive(:current_flags).with(student).and_return('CURRENT FLAGS ')
-      self.should_receive(:ignore_flags).with(student,change).and_return('IGNORE FLAGS ')
-      self.should_receive(:custom_flags).with(student,change).and_return('CUSTOM FLAGS')
+      self.should_receive(:current_flags).with(student,change).and_return('CURRENT FLAGS ')
+      self.should_receive(:ignore_flags).with(student).and_return('IGNORE FLAGS ')
+      self.should_receive(:custom_flags).with(student).and_return('CUSTOM FLAGS')
       status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
     end
   end
