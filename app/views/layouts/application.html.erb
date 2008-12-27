@@ -13,7 +13,11 @@
   <body>
     <div id="wrap">
       <div id="header">
-        <%=current_district%>LOGO:
+        <% if current_district && current_district.logo.url != "/logos/original/missing.png" %>
+          <%=image_tag current_district.logo.url, :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
+          <% else %>
+            <%=current_district%>LOGO:
+          <% end %>
         <h1>SIMS: Student Intervention Monitoring System</h1> 
       </div>
       <div id="left_column">

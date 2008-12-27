@@ -31,6 +31,8 @@ class District < ActiveRecord::Base
   has_many :roles
 
 
+  has_attached_file  :logo
+
 
   named_scope :normal, :conditions=>{:admin=>false}
   named_scope :admin, :conditions=>{:admin=>true}
