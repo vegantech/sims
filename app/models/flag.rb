@@ -35,8 +35,27 @@ class Flag < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
 
+
+  named_scope :custom, :conditions=>{:type=>'CustomFlag'}
+  named_scope :ignore, :conditions=>{:type=>'IgnoreFlag'}
+  named_scope :system, :conditions=>{:type=>'SystemFlag'}
+
   def summary
-    "#{reason}- by #{user.fullname} on #{created_at}"
+    "#{reason}- by #{user} on #{created_at}"
+  end
+
+  def icon
+    TYPES[self.category][:icon]
+  end
+
+  def self.summary
+    all.collect(&:summary)
+  end
+
+
+  def self.current
+    #FIXME doesn't handle ignores
+    all.group_by(&:category)
   end
 
 end

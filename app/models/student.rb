@@ -27,19 +27,9 @@ class Student < ActiveRecord::Base
   has_many :principal_overrides
   has_many :interventions
   has_many :system_flags
-  has_many :flags do
-    def custom_summary
-      custom.collect(&:summary)
-    end
-
-    def custom
-      find_all_by_type('CustomFlag')
-    end
-    
-    def current
-      group_by(&:category)
-    end
-  end
+  has_many :custom_flags
+  has_many :ignore_flags
+  has_many :flags
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope=>:district_id, :unless => lambda {|e| e.id_district.blank?}

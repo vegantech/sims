@@ -16,4 +16,9 @@
 
 class SystemFlag < Flag
   validates_uniqueness_of :category, :scope=>:student_id
+  def summary
+    "#{reason} on #{created_at}"
+  end
+
+
 end

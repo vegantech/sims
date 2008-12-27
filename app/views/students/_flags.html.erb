@@ -1,4 +1,6 @@
-<span id='studentflags'> <%= status_display(@student) %></span>
+<span id='studentflags'> <%= status_display(@student) %></span> &nbsp;|Interventions: <%=@student.interventions.size %> 
+ &nbsp;|Ignored Flags<span id="ignoredflags">
+<%=ignore_flags(@student,change=true) %> </span>
 <div id="customflag">
     <%= render :partial=>"custom_flags/list",:locals=>{:student=>@student} %>
 </div>

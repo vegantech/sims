@@ -11,6 +11,7 @@ describe FlagsHelper do
 
   describe 'displayflag' do
     it "should display image with popup" do
+      pending "Possible unused code block"
       displayflag("image", "popup",nil,nil).should match(/popup/)
     end
   end
@@ -21,8 +22,9 @@ describe FlagsHelper do
       change="CHANGE"
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
       self.should_receive(:current_flags).with(student).and_return('CURRENT FLAGS ')
+      self.should_receive(:ignore_flags).with(student,change).and_return('IGNORE FLAGS ')
       self.should_receive(:custom_flags).with(student,change).and_return('CUSTOM FLAGS')
-      status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS CUSTOM FLAGS'
+      status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
     end
   end
 
@@ -48,19 +50,33 @@ describe FlagsHelper do
 
 
   describe 'custom_flags' do
-
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'flag_select' do 
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'flag_checkbox' do
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'display_flag_legend?' do
+    it 'should be tested' do
+      pending
+    end
   end
   
   describe 'intervention_status' do
+    it 'should be tested' do
+      pending
+    end
 
   end
 
