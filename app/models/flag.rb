@@ -55,7 +55,10 @@ class Flag < ActiveRecord::Base
 
   def self.current
     #FIXME doesn't handle ignores
-    all.group_by(&:category)
+    # all.group_by(&:category)
+    all.reject do |f|
+      (f[:type] == 'IgnoreFlag') or (f[:type] == 'SystemFlag' and IgnoreFlag.find_by_category_and_student_id(f.category, f.student_id))
+    end.group_by(&:category)
   end
 
 end

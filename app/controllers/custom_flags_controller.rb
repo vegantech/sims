@@ -46,6 +46,16 @@ class CustomFlagsController < ApplicationController
     end
   end
 
+
+  def ignore_flag
+  end
+
+  def unignore_flag
+
+  end
+
+
+  
   private
   def enforce_session_selections
     #doesn't work.

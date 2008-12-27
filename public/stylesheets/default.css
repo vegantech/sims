@@ -5,6 +5,12 @@ body, html {
   color:#000;
 }
 
+
+#ignoredflags div {
+  display: none;
+}
+
+
 body {
 }
 
@@ -113,4 +119,6 @@ fieldset.debug_info {
   margin: 1em;
   background: #eee;
 }
+
+
 
