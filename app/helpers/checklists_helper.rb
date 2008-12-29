@@ -45,7 +45,7 @@ module ChecklistsHelper
 
 
   def correct_element?(checklist,question_definition,element_definition)
-    checklist.score_results.blank? or checklist.score_results[question_definition].blank? or
+    correct_question?(checklist,question_definition) or
     checklist.score_results[question_definition][element_definition].blank?
   end
 
