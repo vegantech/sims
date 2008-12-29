@@ -1,7 +1,13 @@
 <h1>Editing district</h1>
 
-<% form_for(@district) do |f| %>
+<% form_for(@district, :html=> {:multipart => true}) do |f| %>
   <%= render :partial => f %>
+
+
+
+  <p>
+  <%= f.file_field :logo %>
+  </p>
   <p>
     <%= f.submit "Update" %>
   </p>

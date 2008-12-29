@@ -1,14 +1,11 @@
 # == Schema Information
-# Schema version: 20081223233819
+# Schema version: 20081227220234
 #
 # Table name: roles
 #
 #  id          :integer         not null, primary key
 #  name        :string(255)
 #  district_id :integer
-#  state_id    :integer
-#  country_id  :integer
-#  system      :boolean
 #  position    :integer
 #  created_at  :datetime
 #  updated_at  :datetime

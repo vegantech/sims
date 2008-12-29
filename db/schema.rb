@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081223233819) do
+ActiveRecord::Schema.define(:version => 20081227220234) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -66,7 +66,11 @@ ActiveRecord::Schema.define(:version => 20081223233819) do
     t.integer  "state_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",         :default => false
+    t.boolean  "admin",             :default => false
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   create_table "element_definitions", :force => true do |t|
