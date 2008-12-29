@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081208201532
+# Schema version: 20081227220234
 #
 # Table name: intervention_comments
 #

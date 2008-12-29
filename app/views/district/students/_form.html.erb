@@ -33,4 +33,9 @@
    <%= hidden_field_tag "student[school_enrollments][]", nil %>
  </div>
 
-
+<div id= "system_flags">
+  <%= render :partial => 'system_flag', :collection => @student.system_flags, :locals => {:form => form} %>
+</div>
+<%=link_to_function 'Add System Flag' do |page|
+  page.insert_html :bottom, :system_flags, :partial => 'system_flag' , :object => SystemFlag.new
+end %>

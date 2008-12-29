@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20081227220234
+#
+# Table name: user_school_assignments
+#
+#  id         :integer         not null, primary key
+#  school_id  :integer
+#  user_id    :integer
+#  admin      :boolean
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe UserSchoolAssignment do

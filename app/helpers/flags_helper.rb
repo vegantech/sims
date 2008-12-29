@@ -1,38 +1,59 @@
 module FlagsHelper
   # Since all helpers are loaded, I'll just group them by convenience
 
-  def displayflag(image,popup,flagtype, student)
+  def image_with_popup(image,popup)
     image_tag(image,"onmouseover" => "return overlib('#{popup}');",
       "onmouseout" => "return nd();") + " "
   end
 
+  
+
   def status_display(student, change = nil)
     str = intervention_status(student)
-    str += current_flags(student)
-    str += custom_flags(student,change)
+    str += current_flags(student,change)
+    str += ignore_flags(student)
+    str += custom_flags(student)
   end
 
-  def current_flags(student)
-    s=student.flags.current.collect do |flagtype,flags|
-      popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
-      image_tag(Flag::FLAGTYPES[flagtype][:icon], "onmouseover" => "return overlib('#{popup}');",
-                 "onmouseout" => "return nd();")
+  def custom_flags(student)
+    if student.flags.custom.any?
+      popup="C: Custom Flags- #{student.flags.custom.summary}"
+      image_with_popup("C.gif",popup)
+    end || ""
+  end
 
-    end
+
+  def ignore_flags(student, changable=false)
+    if !changable && student.flags.ignore.any?
+      popup = "I: Ignore Flags -  #{student.flags.ignore.summary}"
+      image_with_popup("I.gif",popup)
+    else
+      s=student.flags.ignore.collect do |igflag|
+        popup="#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
+        form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"custom_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
+          image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
+        "</form>"
+      end
     s.join(" ")
-  end
-
-  def custom_flags(student,change=nil)
-    if change.nil? && student.flags.any?
-      popup="C: Custom Flags- #{student.flags.custom_summary}"
-      image_tag("C.gif",
-      "onmouseover" => "return overlib('#{popup}');",
-      "onmouseout" => "return nd();")
-    else 
-      ""
     end
-
   end
+
+
+  
+  def current_flags(student, change = nil )
+    student.flags.current.collect do |flagtype,flags|
+        popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
+      if change
+        form_remote_tag(:url=>{:action=> "ignore_flag", :category=>flags.first.category,:controller=>"custom_flags"},:html=>{:style=>"display:inline"}) +
+          image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
+        "</form>"
+      else
+        image_with_popup(Flag::FLAGTYPES[flagtype][:icon],popup)
+
+      end
+    end.join(" ")
+  end
+
 
 
 
@@ -52,21 +73,17 @@ module FlagsHelper
   end
 
   def intervention_status(student)
-    str = ''
+    str = []
     if student.interventions.active.any?
       popup =  student.interventions.active.collect(&:title).join('<br />')
-      str += image_tag("green-dot.gif",
-        "onmouseover" => "return overlib('#{popup}');",
-        "onmouseout" => "return nd();") + " "
+      str << image_with_popup("green-dot.gif",popup)
     end
     
     if student.interventions.inactive.any?
       popup =  student.interventions.inactive.collect(&:title).join('<br />')
-      str += image_tag("gray-dot.gif",
-        "onmouseover" => "return overlib('#{popup}');",
-        "onmouseout" => "return nd();") + " "
+      str << image_with_popup("gray-dot.gif",popup)
     end
-  str
+    str.join(" ")
   end
  
 end

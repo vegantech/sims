@@ -1,16 +1,20 @@
 # == Schema Information
-# Schema version: 20081208201532
+# Schema version: 20081227220234
 #
 # Table name: districts
 #
-#  id            :integer         not null, primary key
-#  name          :string(255)
-#  abbrev        :string(255)
-#  state_dpi_num :integer
-#  state_id      :integer
-#  created_at    :datetime
-#  updated_at    :datetime
-#  admin         :boolean
+#  id                :integer         not null, primary key
+#  name              :string(255)
+#  abbrev            :string(255)
+#  state_dpi_num     :integer
+#  state_id          :integer
+#  created_at        :datetime
+#  updated_at        :datetime
+#  admin             :boolean
+#  logo_file_name    :string(255)
+#  logo_content_type :string(255)
+#  logo_file_size    :integer
+#  logo_updated_at   :datetime
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

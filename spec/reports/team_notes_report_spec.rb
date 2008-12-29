@@ -20,7 +20,7 @@ describe TeamNotesReport do
       report_body.should == <<EOS
 Report Generated at December 12, 2008 00:00
 
-<a href=\"/students/996332878\">This Student</a>:
+<a href=\"/students/#{student.id}\">This Student</a>:
 
 +---------------------------------------+
 |   Date   | User Name |   Team Note    |

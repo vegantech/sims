@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081208201532
+# Schema version: 20081227220234
 #
 # Table name: flags
 #
@@ -32,9 +32,33 @@ class Flag < ActiveRecord::Base
   belongs_to :district
   validates_presence_of :category, :reason
   validates_inclusion_of :category, :in => FLAGTYPES.keys
+
   acts_as_reportable if defined? Ruport
 
+
+  named_scope :custom, :conditions=>{:type=>'CustomFlag'}
+  named_scope :ignore, :conditions=>{:type=>'IgnoreFlag'}
+  named_scope :system, :conditions=>{:type=>'SystemFlag'}
+
   def summary
-    "#{reason}- by #{user.fullname} on #{created_at}"
+    "#{reason}- by #{user} on #{created_at}"
   end
+
+  def icon
+    TYPES[self.category][:icon]
+  end
+
+  def self.summary
+    all.collect(&:summary)
+  end
+
+
+  def self.current
+    #FIXME doesn't handle ignores
+    # all.group_by(&:category)
+    all.reject do |f|
+      (f[:type] == 'IgnoreFlag') or (f[:type] == 'SystemFlag' and IgnoreFlag.find_by_category_and_student_id(f.category, f.student_id))
+    end.group_by(&:category)
+  end
+
 end

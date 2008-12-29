@@ -112,19 +112,19 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_student.should_receive(:update_attributes).with({'these' => 'params', "existing_system_flag_attributes"=>{}})
         put :update, :id => "37", :student => {:these => 'params'}
       end
 
       it "should expose the requested student as @student" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :student => {}
         assigns(:student).should equal(mock_student)
       end
 
       it "should redirect to the student" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :student => {}
         response.should redirect_to(district_student_url(mock_student))
       end
 
@@ -134,19 +134,19 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_student.should_receive(:update_attributes).with({'these' => 'params', "existing_system_flag_attributes"=>{}})
         put :update, :id => "37", :student => {:these => 'params'}
       end
 
       it "should expose the student as @student" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, :id => "1", :student => {}
         assigns(:student).should equal(mock_student)
       end
 
       it "should re-render the 'edit' template" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, :id => "1", :student => {}
         response.should render_template('edit')
       end
 

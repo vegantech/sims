@@ -32,6 +32,15 @@ describe ChecklistsHelper do
     highlight_if_wrong_question("c","qd").should ==(nil)
   end
 
+  it 'should return true for correct_question? on a unscored checklist' do
+    correct_question?(Checklist.new, QuestionDefinition.new).should == true
+  end
+
+  it 'should return true for correct_element if question is correct' do
+    self.should_receive("correct_question?").and_return(true)
+    correct_element?(Checklist.new, QuestionDefinition.new, ElementDefinition.new).should == true
+  end
+
 
 
 

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081208201532
+# Schema version: 20081227220234
 #
 # Table name: students
 #
@@ -26,26 +26,19 @@ class Student < ActiveRecord::Base
   has_many :comments, :class_name=>"StudentComment"
   has_many :principal_overrides
   has_many :interventions
-  has_many :flags do
-    def custom_summary
-      custom.collect(&:summary)
-    end
-
-    def custom
-      find_all_by_type('CustomFlag')
-    end
-    
-    def current
-      group_by(&:category)
-    end
-  end
+  has_many :system_flags
+  has_many :custom_flags
+  has_many :ignore_flags
+  has_many :flags
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope=>:district_id, :unless => lambda {|e| e.id_district.blank?}
 
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
-
+  
+  after_update :save_system_flags
+  
   #This is duplicated in user
   def fullname 
     first_name.to_s + ' ' + last_name.to_s
@@ -126,6 +119,39 @@ class Student < ActiveRecord::Base
 
     principals
   end
+
+  def new_system_flag_attributes=(system_flag_attributes)
+    system_flag_attributes.each do |attributes|
+      system_flags.build(attributes)
+    end
+  end
+
+  def existing_system_flag_attributes=(system_flag_attributes)
+    system_flags.reject(&:new_record?).each do |system_flag|
+      attributes = system_flag_attributes[system_flag.id.to_s]
+      if attributes
+        system_flag.attributes = attributes
+      else
+        system_flags.delete(system_flag)
+      end
+    end
+  end
+
+  
+  def save_system_flags
+    system_flags.each do |system_flag|
+      system_flag.save(false)
+    end
+  end
+
+
+  def district_system_flags=(district_flags)
+    district_flags = Array(district_flags)
+    district_flags.reject!(&:blank?)
+    district_flags = district_flags.inject([]) { |result,h| result << h unless result.include?(h); result }
+    self.system_flags = district_flags.uniq.collect{|s| SystemFlag.new(s.merge(:student_id=>self.id))}
+  end
+
 
   def school_enrollments=(enrolled_schs)
     enrolled_schs = Array(enrolled_schs)

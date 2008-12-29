@@ -9,20 +9,39 @@ describe FlagsHelper do
     included_modules.should include(FlagsHelper)
   end
 
-  describe 'displayflag' do
-    it "should display image with popup" do
-      displayflag("image", "popup",nil,nil).should match(/popup/)
-    end
-  end
-
   describe 'status_display' do
     it 'should combine intervention current and custom flags' do
       student="STUDENT"
       change="CHANGE"
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
-      self.should_receive(:current_flags).with(student).and_return('CURRENT FLAGS ')
-      self.should_receive(:custom_flags).with(student,change).and_return('CUSTOM FLAGS')
-      status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS CUSTOM FLAGS'
+      self.should_receive(:current_flags).with(student,change).and_return('CURRENT FLAGS ')
+      self.should_receive(:ignore_flags).with(student).and_return('IGNORE FLAGS ')
+      self.should_receive(:custom_flags).with(student).and_return('CUSTOM FLAGS')
+      status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
+    end
+  end
+
+  describe 'image_with_popup' do
+    it 'should return an imagetag with an onmouseover and onmouse_out' do
+      result = image_with_popup("dog.jpg", "This is the popup")
+      result.should == %q{<img alt="Dog" onmouseout="return nd();" onmouseover="return overlib('This is the popup');" src="/images/dog.jpg" /> }
+    end
+  end
+
+  describe 'custom flags' do
+    it 'should return empty string when student has no custom flags' do
+      student=mock_student
+      student.stub_association!(:flags,:custom=>[])
+      custom_flags(student).should == ""
+    end
+
+    it 'should show the custom flag icon with the summary as a popup' do
+      student=mock_student
+      flag=mock_flag(:summary=>"Custom Flag Summary", :any? =>true)
+      student.stub_association!(:flags,:custom=>flag)
+      self.should_receive(:image_with_popup).with("C.gif", 'C: Custom Flags- Custom Flag Summary').and_return('RSPEC CUSTOM FLAGS')
+      custom_flags(student).should == "RSPEC CUSTOM FLAGS"
+
     end
   end
 
@@ -48,19 +67,33 @@ describe FlagsHelper do
 
 
   describe 'custom_flags' do
-
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'flag_select' do 
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'flag_checkbox' do
+    it 'should be tested' do
+      pending
+    end
   end
 
   describe 'display_flag_legend?' do
+    it 'should be tested' do
+      pending
+    end
   end
   
   describe 'intervention_status' do
+    it 'should be tested' do
+      pending
+    end
 
   end
 

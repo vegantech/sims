@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081208201532
+# Schema version: 20081227220234
 #
 # Table name: flags
 #
@@ -27,5 +27,15 @@ describe CustomFlag do
 
   it "should create a new instance given valid attributes" do
     CustomFlag.create!(@valid_attributes)
+  end
+
+  def test_do_not_allow_ignore_flag_when_ignore_exists
+    a=IgnoreFlag.new(@valid_attributes)
+    a.category="suspension"
+    a.user_id=55
+    a.save
+    b=CustomFlag.new(a.attributes)
+    a.should be_valid
+    b.should_not be_valid
   end
 end
