@@ -19,32 +19,28 @@ class Enrollment < ActiveRecord::Base
 
   named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
 
+  named_scope :by_last_name, lambda {|last_name| {:conditions => ["students.last_name like ?","%#{last_name}%"]}}
 
   def self.search(search_hash = {})
     search_hash.symbolize_keys!
 
     conditions ={}
     conditions[:grade] = search_hash[:grade] if search_hash[:grade] and search_hash[:grade] != "*"
-    conditions["#{Student.table_name}.last_name"] = search_hash[:last_name] unless search_hash[:last_name].blank?
+    
+    
    
-    joins=["left outer join students on enrollments.student_id = students.id"]
+    includes=[:student]
     
 
     unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
       #inner join to only include students with matching groups using the habtm join table
-      joins << ["inner join groups_students on groups_students.student_id = students.id"]
+      joins = "inner join groups_students on groups_students.student_id = students.id"
       conditions["groups_students.group_id"] = search_hash[:group_id]
     end
-
-    joins = joins.join(" ")
-    enrollments = find(:all,:conditions => conditions, :joins=>joins) 
-
-    # session[:search] ||= {}
-    # session[:search][:grade] = selected_grade
-    # session[:search][:last_name] = selected_last_name
-    # session[:search][:search_type] = search_type
-    # session[:search][:flagged_interention_types] = intervention_types
-
+    
+    enrollments = by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
+    
+    
     case search_hash[:search_type]
     when 'list_all'
     when 'flagged_intervention'  
@@ -66,7 +62,11 @@ class Enrollment < ActiveRecord::Base
       end
 
     when 'no_intervention'
-      enrollments=enrollments.reject{|e| e.student.interventions.active.any?}
+
+       enrollments=enrollments.reject{|e| e.student.interventions.active.any?}
+      # conditions << 
+      
+      #enrollments = find(:all,:conditions => conditions, :joins=>joins) 
     else
       raise 'Unrecognized search_type'
     end
