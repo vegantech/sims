@@ -372,6 +372,9 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "district_id"
+    t.integer  "state_id"
+    t.integer  "country_id"
+    t.boolean  "system",      :default => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
