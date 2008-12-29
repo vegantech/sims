@@ -17,24 +17,27 @@ class Enrollment < ActiveRecord::Base
 
   validates_presence_of :grade,:school_id, :student_id
 
-  named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["student_id in (?) or grade in (?)", Array(student_ids),Array(grades)]}}
+  named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
 
 
   def self.search(search_hash = {})
     search_hash.symbolize_keys!
-    enrollments = find(:all,:include => :student) #expected to already be scoped through school
 
-    if search_hash[:grade] and search_hash[:grade] != '*'
-      enrollments = enrollments.select{|e| e.grade == search_hash[:grade]}
-    end
-
-    if search_hash[:last_name] and ! search_hash[:last_name].empty?
-      enrollments = enrollments.select{|e| e.student.last_name =~ /^#{search_hash[:last_name]}/i}
-    end
+    conditions ={}
+    conditions[:grade] = search_hash[:grade] if search_hash[:grade] and search_hash[:grade] != "*"
+    conditions["#{Student.table_name}.last_name"] = search_hash[:last_name] unless search_hash[:last_name].blank?
+   
+    joins=["left outer join students on enrollments.student_id = students.id"]
+    
 
     unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
-      enrollments = enrollments.select{|e| e.student.group_ids.include?(search_hash[:group_id].to_i)}
+      #inner join to only include students with matching groups using the habtm join table
+      joins << ["inner join groups_students on groups_students.student_id = students.id"]
+      conditions["groups_students.group_id"] = search_hash[:group_id]
     end
+
+    joins = joins.join(" ")
+    enrollments = find(:all,:conditions => conditions, :joins=>joins) 
 
     # session[:search] ||= {}
     # session[:search][:grade] = selected_grade
