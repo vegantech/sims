@@ -21,6 +21,7 @@ class Enrollment < ActiveRecord::Base
 
   named_scope :by_last_name, lambda {|last_name| {:conditions => ["students.last_name like ?","%#{last_name}%"]}}
 
+  named_scope :without_active_interventions,  :conditions=> ["not exists select * from interventions where interventions.student_id = students.id and interventions.active = ?",true]
   def self.search(search_hash = {})
     search_hash.symbolize_keys!
 
@@ -38,23 +39,25 @@ class Enrollment < ActiveRecord::Base
       conditions["groups_students.group_id"] = search_hash[:group_id]
     end
     
-    enrollments = by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
     
     
-    case search_hash[:search_type]
+    enrollments=case search_hash[:search_type]
     when 'list_all'
+      by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
     when 'flagged_intervention'  
       # only include enrollments for students who have at least one of the intervention types.
+      enrollments=by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
       intervention_types = search_hash[:flagged_intervention_types]
       if intervention_types.blank? # needs a different name?
-        enrollments = enrollments.select{|e| e.student.flags.current.any?}
+        enrollments.select{|e| e.student.flags.current.any?}
       else
-         enrollments = enrollments.select do |e|
+        enrollments.select do |e|
            e.student.flags.current.find{|flag_name, flags_array| intervention_types.include?(flag_name)}
         end
       end
     when 'active_intervention'
-      enrollments = enrollments.select{|e| e.student.interventions.active.any?}
+      enrollments=by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
+      enrollments.select{|e| e.student.interventions.active.any?}
       unless search_hash[:intervention_group_types].blank?
         enrollments = enrollments.select do |e|
           e.student.interventions.active.any?{|i| search_hash[:intervention_group_types].include?(i.send(search_hash[:intervention_group].tableize.singularize).id.to_s)}
@@ -62,16 +65,10 @@ class Enrollment < ActiveRecord::Base
       end
 
     when 'no_intervention'
-
-       enrollments=enrollments.reject{|e| e.student.interventions.active.any?}
-      # conditions << 
-      
-      #enrollments = find(:all,:conditions => conditions, :joins=>joins) 
+        without_active_interventions.by_last_name(search_hash[:last_name]).find(:all,:conditions => conditions, :joins=>joins, :include=>includes)
     else
       raise 'Unrecognized search_type'
     end
-
-    enrollments
   end
 
 
