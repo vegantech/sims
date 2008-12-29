@@ -7,4 +7,12 @@ class System
     Role.system
   end
 
+  def self.bootstrap
+    if Country.count == 0
+      Country.create!(:admin=>true,:name=>"System Administration", :abbrev=>:admin)
+    end
+
+
+  end
+
 end

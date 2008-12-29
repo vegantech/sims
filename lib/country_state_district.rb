@@ -4,6 +4,8 @@ module CountryStateDistrict
     return if current_user_id
     countries=@countries ||Country.normal
 
+    countries= Country.admin if countries.blank? 
+
     unless countries.size ==1
       @countries=countries
     end
@@ -11,6 +13,7 @@ module CountryStateDistrict
 
 
     states=@states || @country.states.normal
+    states = @country.states.admin if states.blank?
 
     unless states.size == 1
       @states=states
@@ -19,6 +22,8 @@ module CountryStateDistrict
     
 
     districts=@districts || @state.districts.normal
+
+    districts=@state.districts.admin if districts.blank?
     if params[:district]
       @current_district = District.find(params[:district][:id])
     end
