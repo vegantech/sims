@@ -35,10 +35,27 @@ class Enrollment < ActiveRecord::Base
       scope =scope.scoped :conditions => "exists (select * from flags where flags.student_id = students.id)", :include => {:student=>:flags}
 
       #TODO rename this to just flag_types, also in controller and view
-      scope= scope.scoped :conditions => {"flags.category"=>search_hash[:flagged_intervention_types]} unless search_hash[:flagged_intervention_types].blank?
-      #enrollments.select do |e|
-          #   e.student.flags.current.find{|flag_name, flags_array| intervention_types.include?(flag_name)}
-          # end
+      # parsed_intervention_types = search_hash[:flagged_intervention_types].reject{|type| type == 'ignored'}
+     
+
+      #(a or s or m or la) and (i or c)
+      sti_types=[]
+
+      unless  search_hash[:flagged_intervention_types].blank?
+        sti_types << 'IgnoreFlag' if search_hash[:flagged_intervention_types].include?('ignored')
+        sti_types << 'CustomFlag' if  search_hash[:flagged_intervention_types].include?('custom')
+      end
+      categories =  Array(search_hash[:flagged_intervention_types]) - ['ignored','custom']
+      
+      scope= scope.scoped :conditions => {"flags.category" => categories} unless categories.blank?
+
+      scope= scope.scoped :conditions => {"flags.type" => sti_types} unless sti_types.blank?
+
+      unless sti_types.include?('IgnoreFlag')
+        scope = scope.scoped :conditions => ['flags.type != ? and not exists (select * from flags as flags2 where flags.category=flags2.category and 
+        flags2.type="IgnoreFlag" and flags.student_id =flags2.student_id)', "IgnoreFlag"] 
+      end
+
     when 'active_intervention'
        scope=scope.scoped :conditions=> ["exists (select * from interventions where interventions.student_id = students.id and interventions.active = ?)",true],:include =>{:student=>:interventions}
       unless search_hash[:intervention_group_types].blank?
