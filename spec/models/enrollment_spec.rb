@@ -44,6 +44,7 @@ describe Enrollment do
 
     describe 'passed list_all' do
       it 'should return all students' do
+        Enrollment.delete_all
         enrollments=(1..8).collect{|i| Enrollment.create! :grade=>i.to_s, :student_id=>99999, :school_id=>999}
         Enrollment.search(all_ids,:search_type => 'list_all').should == enrollments
       end
@@ -91,6 +92,7 @@ describe Enrollment do
 
     describe 'with or without interventions' do
       before do
+        Enrollment.delete_all
         @e1,@e2,@e3 =(1..3).collect do |i|
           s=Factory(:student)
           s.enrollments.create!(:grade=>"1",:school_id=>999)

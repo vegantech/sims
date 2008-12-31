@@ -55,14 +55,11 @@ class Enrollment < ActiveRecord::Base
     when 'active_intervention'
        scope=scope.scoped :conditions=> ["exists (select * from interventions where interventions.student_id = students.id and interventions.active = ?)",true],:include =>{:student=>:interventions}
       unless search_hash[:intervention_group_types].blank?
-        #        scope = scope.scoped :conditions =>  ... ,
-        #:includes => {:intervention=>{:intervention_definition=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}}}
-        # with_active_interventions_by_groups(search_hash[:intervention_group], search_hash[:intervention_group_types])
-        return scope.select do |e|
-          #12/29/08 Don't think this can be much better, it filters the above by selected flags, note that the intervention group
-          #is dynamic and a call on the model
-          e.student.interventions.active.any?{|i| search_hash[:intervention_group_types].include?(i.send(search_hash[:intervention_group].tableize.singularize).id.to_s)}
-        end
+        table=search_hash[:intervention_group].tableize
+        
+        scope=scope.scoped :include => {:student=>{:interventions=>{:intervention_definition=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}}}},
+        :conditions => ["#{table}.id in (?)", search_hash[:intervention_group_types]]
+
       end
 
     when 'no_intervention'
@@ -76,6 +73,9 @@ class Enrollment < ActiveRecord::Base
 
   def self.student_belonging_to_user?(user)
     #TODO this is probably incredibly slow
+
+    #called when we populate grades  
+    #called in students controller enforce session selection
     find(all).any? do |e|
       user.authorized_enrollments_for_school(e.school).include?(e)
     end
