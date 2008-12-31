@@ -161,9 +161,9 @@ describe Enrollment do
         it 'should return students with any of the selected flagged interventions' do
     
           search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention',
-           :flagged_intervention_types => ['attendance', 'suspension'])
-          search_results.should == [@e1, @e3]
+            :flagged_intervention_types => ['attendance', 'suspension'])
 
+          search_results.should == [@e1, @e3]
 
           search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention',
             :flagged_intervention_types => ['attendance', 'ignored'])

@@ -39,11 +39,12 @@ class Enrollment < ActiveRecord::Base
       conditions = {}
 
       conditions["flags.category"] = categories unless categories.blank?
-      unless  search_hash[:flagged_intervention_types].blank?
+
+      unless  (Array(search_hash[:flagged_intervention_types]) - categories ).blank?
         sti_types=[]
         sti_types << 'IgnoreFlag' if search_hash[:flagged_intervention_types].include?('ignored')
         sti_types << 'CustomFlag' if  search_hash[:flagged_intervention_types].include?('custom')
-        conditions = {"flags.type" => sti_types}
+        conditions["flags.type"] = sti_types
       else
         scope = scope.scoped :conditions => ['not exists (select * from flags as flags2 where flags.category=flags2.category and 
         flags2.type="IgnoreFlag" and flags.student_id =flags2.student_id)', "IgnoreFlag"] 
