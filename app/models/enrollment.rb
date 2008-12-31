@@ -71,16 +71,6 @@ class Enrollment < ActiveRecord::Base
   end
 
 
-  def self.student_belonging_to_user?(user)
-    #TODO this is probably incredibly slow
-
-    #called when we populate grades  
-    #called in students controller enforce session selection
-    find(all).any? do |e|
-      user.authorized_enrollments_for_school(e.school).include?(e)
-    end
-      
-  end
 
   def self.grades
      find(:all,:select=>"distinct grade").collect(&:grade)

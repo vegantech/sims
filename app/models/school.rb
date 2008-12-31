@@ -15,7 +15,7 @@
 
 class School < ActiveRecord::Base
   belongs_to :district
-  has_many :enrollments
+  has_many :enrollments 
   has_many :students, :through =>:enrollments
   has_many :special_user_groups
   has_many :groups, :order => :title
@@ -36,10 +36,9 @@ class School < ActiveRecord::Base
     if user.special_user_groups.all_students_in_school?(self)
       grades= school_grades
     else
-      grades=[]
-      school_grades.each do |grade|
-        grades << grade if enrollments.by_student_ids_or_grades(nil,grade).student_belonging_to_user?(user)
-      end
+      #all grades where user has 1 or more authorized enrollments
+      authorized_enrollments= user.authorized_enrollments_for_school(self)
+      grades=enrollments.find_all_by_id(authorized_enrollments.collect(&:id),:select=> "distinct grade").collect(&:grade)
     end
 
     grades.sort!

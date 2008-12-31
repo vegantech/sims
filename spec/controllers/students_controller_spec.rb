@@ -183,7 +183,7 @@ describe StudentsController do
       it 'should flunk enforce_session_selections if user does not have access' do
         controller.stub!(:current_user=>mock_user)
         student=mock_student
-        student.stub_association!(:enrollments,"student_belonging_to_user?" => false)
+        student.should_receive("belongs_to_user?").and_return(false)
         Student.should_receive(:find).with("999").and_return(student)
         get :show, {:id => 999}
         flash[:notice].should == 'You do not have access to that student'
