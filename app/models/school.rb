@@ -14,6 +14,8 @@
 #
 
 class School < ActiveRecord::Base
+  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+
   belongs_to :district
   has_many :enrollments 
   has_many :students, :through =>:enrollments

@@ -18,6 +18,8 @@
 #
 
 class District < ActiveRecord::Base
+  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+
   belongs_to :state
   has_many :users, :order => :username
   has_many :checklist_definitions
