@@ -107,7 +107,7 @@ class StudentsController < ApplicationController
 
 
   def student_search
-    current_user.authorized_enrollments_for_school(current_school).search(session[:search])
+    current_user.search_enrollments(current_school,session[:search])
   end
 
 
