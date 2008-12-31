@@ -84,18 +84,24 @@ def find_student first_name, last_name
   Student.find(:first, :conditions => {:first_name => first_name, :last_name => last_name})
 end
 
-def create_student first_name, last_name, grade, school, flag_type = nil
+def create_student first_name, last_name, grade, school, flag_type = nil, ignore_type = nil, ignore_reason = nil
 	s = Factory(:student, :first_name => first_name, :last_name => last_name)
 	# :grade => grade
 	enrollment = s.enrollments.create! :grade => grade, :school => school
 
 	if flag_type
-		f = Flag.create!(:student => s,
+		f = SystemFlag.create!(:student => s,
 			:category => flag_type,
 			:reason => 'some reason or another',
-			:type => 'system',
 			:user => @default_user)
 	end
+
+  if ignore_type and ignore_reason
+    i = IgnoreFlag.create!(:student => s,
+      :category => ignore_type,
+      :reason => ignore_reason,
+      :user => @default_user)
+  end
   s
 end
 

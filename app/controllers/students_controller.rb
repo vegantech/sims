@@ -93,7 +93,7 @@ class StudentsController < ApplicationController
       return true
     else
       student=Student.find(params[:id])
-      if student.enrollments.student_belonging_to_user?(current_user)
+      if student.belongs_to_user?(current_user)
         session[:school_id] = (student.schools & current_user.schools).first
         session[:selected_student]=params[:id]
         session[:selected_students]=[params[:id]]
@@ -107,7 +107,7 @@ class StudentsController < ApplicationController
 
 
   def student_search
-    current_user.authorized_enrollments_for_school(current_school).search(session[:search])
+    current_user.search_enrollments(current_school,session[:search])
   end
 
 

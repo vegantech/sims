@@ -20,6 +20,57 @@ Feature: Search By Intervention Flags
 		And I should see "Aagard, Eric"
 		And I should see "Baumeister, Mike"
 
+  Scenario: List only students with ignore flags
+    Given school "Glenn Stephens"
+		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
+		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+		And student "Sally" "Cart" in grade 2 at "Glenn Stephens" with ignore_flag for "math" with reason "Ignore this math flag"
+    And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart"]
+    And I have access to "My Group"
+		And I am on the school selection page
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
+		And I choose "List only students flagged for intervention"
+    And I check "flag_ignored"
+		When I press "Search for Students"
+		Then I should see "1 student selected"
+		And I should see "Cart, Sally"
+
+  Scenario: List only students with custom flags
+    Given school "Glenn Stephens"
+		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
+		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+		And student "Sally" "Wood" in grade 2 at "Glenn Stephens" with custom_flag for "attendance" with reason "Always skips homeroom"
+    And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Wood"]
+    And I have access to "My Group"
+		And I am on the school selection page
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
+		And I choose "List only students flagged for intervention"
+    And I check "flag_custom"
+		When I press "Search for Students"
+		Then I should see "1 student selected"
+		And I should see "Wood, Sally"
+
+  Scenario: Exclude students with only ignored flags
+    Given school "Glenn Stephens"
+		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
+		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
+		And student "Sally" "Cart" in grade 2 at "Glenn Stephens" with ignore_flag for "math" with reason "Ignore this math flag"
+    And student "Has" "Both" in grade 3 at "Glenn Stephens" with "attendance" flag and ignore_flag for "attendance" with reason "Actually here"
+    And student "Has" "More" in grade 4 at "Glenn Stephens" with "math" flag and ignore_flag for "attendance" with reason "Actually here"
+    And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart", "Has Both", "Has More"]
+    And I have access to "My Group"
+		And I am on the school selection page
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
+		And I choose "List only students flagged for intervention"
+		When I press "Search for Students"
+    And I should see "More, Has"
+    And I should see "Aagard, Eric"
+		And I should see "2 students selected"
+
+
 	Scenario: List only students flagged for intervention A
 		Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag

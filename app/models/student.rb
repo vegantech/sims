@@ -163,4 +163,10 @@ class Student < ActiveRecord::Base
     self.enrollments = enrolled_schs.uniq.collect{|s| Enrollment.new(s.merge(:student_id=>self.id))}
   end
 
+  def belongs_to_user?(user)
+    enrollments.any? do |e|
+      user.authorized_enrollments_for_school(e.school).include?(e)
+    end
+  end
+
 end
