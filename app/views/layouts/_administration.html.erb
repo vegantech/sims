@@ -1,7 +1,7 @@
 <% if session[:user_id] && current_district && current_district.admin? %>
-  <%= render_cell(:administration, :system, :district=>current_district) %>
-  <%= render_cell(:administration, :country, :district=>current_district) %>
-  <%= render_cell(:administration, :state, :district=>current_district) %>
+  <%= render_cell(:administration, :system, :district=>current_district, :user=>current_user) %>
+  <%= render_cell(:administration, :country, :district=>current_district, :user=>current_user) %>
+  <%= render_cell(:administration, :state, :district=>current_district, :user=>current_user) %>
 <% end %>
   <%= render_cell(:administration, :school, :school => current_school,:user => current_user) if session[:user_id] && session[:school_id]%>
-  <%= render_cell(:administration, :district, :district=>current_district) if session[:user_id]%>
+  <%= render_cell(:administration, :district, :district=>current_district ,:user => current_user) if session[:user_id]%>

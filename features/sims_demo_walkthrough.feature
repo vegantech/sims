@@ -8,6 +8,8 @@ Feature: Sims Demo Walkthrough
     And I fill in "Password" with "oneschool"
     Then I press "Login"
     And I should see "Logout"
+    And I should not see "news_item"
+    And I should not see "WI Test District Administration"
     Then I follow "School Selection"
     And I should see "Alpha Elementary"
     Then I press "Choose School"
@@ -82,6 +84,20 @@ Feature: Sims Demo Walkthrough
     Then I follow "Back"
     
     
+
+  Scenario:  test district_admin
+    Given load demo data
+    And I go to the home page
+    And I fill in "Login" with "district_admin"
+    And I fill in "Password" with "district_admin"
+    Then I press "Login"
+    And I should see "news_items"
+    And I should see "WI Test District Administration"
+    And I should see "Add/Remove Users"
+    And I should see "Add/Remove Students"
+    And I should see "Edit your district"
+    And I should see "Add/Remove Schools"
+
 
 
     
