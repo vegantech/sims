@@ -13,7 +13,7 @@ describe TeamNotesReport do
       sc1 = StudentComment.create!(:student => student, :user => user, :body => 'First Comment', :created_at => start_date.to_time)
       sc2 = StudentComment.create!(:student => student, :user => user, :body => 'Second Comment', :created_at => end_date.to_time)
       StudentComment.should_receive(:find).and_return([sc1, sc2])
-      Time.should_receive(:now).twice.and_return(Date.new(2008, 12, 12).to_time)
+      Time.stub!(:now=>Date.new(2008, 12, 12).to_time)
 
       report_body = TeamNotesReport.render_text(:user => user, :start_date => start_date, :end_date => end_date)
 

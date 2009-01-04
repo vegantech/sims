@@ -6,7 +6,7 @@ module ApplicationHelper
     s  << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
     s  << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
     s  << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
-    s  << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student])
+    s  << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student]
     s.compact.join(' -> ')
   end
 

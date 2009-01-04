@@ -9,4 +9,5 @@ Cucumber::Rails.use_transactional_fixtures
 require 'cucumber/rails/rspec'
 require 'rubygems'
 require 'webrat'
+require 'webrat/core'
 require 'webrat/rails'
