@@ -34,6 +34,7 @@ describe School do
        user=mock_user
        special_group = mock_array
        user.should_receive('special_user_groups').and_return(special_group)
+
        @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,:grade=>i,:school=>@school)}
        special_group.should_receive('all_students_in_school?').with(@school).and_return(true)
        @school.grades_by_user(user).should == ['*','1','2','3','4']
@@ -54,18 +55,28 @@ describe School do
 
       @school.enrollments=e
       user=mock_user
+      g1=mock_group(:student_ids=>[e[2].student_id])
 
       user.stub_association!(:special_user_groups, 
                              :all_students_in_school? =>  false, 
-                            :grades_for_school=> ['2','4'])
+                            :grades_for_school=> ['2'])
+      user.stub_association!(:groups,:find_all_by_school_id=>[g1])
+                          
   
 
 
+      user.groups.find_all_by_school_id(@school.id).collect(&:student_ids).flatten.uniq
 
       @school.grades_by_user(user).should == ['*','2','4']
-      pending "This should also account for groups"
 
     end
 
   end
+
+   describe 'to_s' do
+     it 'should return name' do
+       School.new(:name=>"Test School").to_s.should == "Test School"
+     end
+   end
+
 end
