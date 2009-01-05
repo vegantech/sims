@@ -73,8 +73,8 @@ class School < ActiveRecord::Base
 
 
   def quicklist
-    d=district.quicklist_items 
-    d | quicklist_items.reject{|ql| d.any?{|dql| dql.intervention_definition == ql.intervention_definition}}
+    InterventionDefinition.find(:all,:joins=>:quicklist_items, 
+    :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
   end
 
 end

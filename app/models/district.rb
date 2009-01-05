@@ -27,6 +27,7 @@ class District < ActiveRecord::Base
   has_many :goal_definitions, :order=>'position'
   has_many :probe_definitions
   has_many :quicklist_items, :dependent=>:destroy
+  has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
   has_many :recommended_monitors, :through => :probe_definitions
   has_many :objective_definitions, :through => :goal_definitions
   has_many :tiers

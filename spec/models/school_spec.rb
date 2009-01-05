@@ -23,7 +23,13 @@ describe School do
 
   describe 'quicklist_items' do
     it 'should return the school  and district quicklist items' do
-      pending "otherwise it's just a has many."
+      id1= Factory(:intervention_definition)
+      id2= Factory(:intervention_definition)
+      district=@school.district
+      district.quicklist_interventions << id1
+      @school.quicklist_interventions << id2
+      @school.quicklist.should == [id1, id2]
+
     end
 
   end
