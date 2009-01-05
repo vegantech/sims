@@ -106,23 +106,7 @@ class User < ActiveRecord::Base
     users
   end
 
-
-  def search_enrollments(school,search_hash)
-    #TODO have authorized_enrollments_for_school return ids instead,  involves refactoring elsewhere
-    Enrollment.search(authorized_enrollments_for_school(school).map(&:id), search_hash)
-  end
-    
-  def authorized_enrollments_for_school(school)
-    if special_user_groups.all_students_in_school?(school)
-      school.enrollments
-   else
-      grades=special_user_groups.grades_for_school(school)
-      student_ids = groups.find_all_by_school_id(school).collect(&:student_ids).flatten.uniq
-      school.enrollments.by_student_ids_or_grades(student_ids,grades)
-    end
-
-  end
-
+   
   def authorized_schools(school_id=nil)
     if school_id
       schools.find_by_id(school_id) || 

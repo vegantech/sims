@@ -107,7 +107,10 @@ class StudentsController < ApplicationController
 
 
   def student_search
-    current_user.search_enrollments(current_school,session[:search])
+    Enrollment.search(session[:search].merge(
+      :school_id => current_school_id,
+      :user => current_user
+    ))
   end
 
 

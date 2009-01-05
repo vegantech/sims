@@ -164,9 +164,7 @@ class Student < ActiveRecord::Base
   end
 
   def belongs_to_user?(user)
-    enrollments.any? do |e|
-      user.authorized_enrollments_for_school(e.school).include?(e)
-    end
+    user.groups.find_by_id(group_ids) || user.special_user_groups.find_by_school_id(school_ids)
   end
 
 end

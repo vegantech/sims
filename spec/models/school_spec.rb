@@ -54,11 +54,16 @@ describe School do
 
       @school.enrollments=e
       user=mock_user
-      user.stub_association!(:special_user_groups, :all_students_in_school? =>  false)
-      user.stub!(:authorized_enrollments_for_school=>[e[0],e[2]])
+
+      user.stub_association!(:special_user_groups, 
+                             :all_students_in_school? =>  false, 
+                            :grades_for_school=> ['2','4'])
+  
+
 
 
       @school.grades_by_user(user).should == ['*','2','4']
+      pending "This should also account for groups"
 
     end
 

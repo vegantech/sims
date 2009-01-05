@@ -39,8 +39,9 @@ class School < ActiveRecord::Base
       grades= school_grades
     else
       #all grades where user has 1 or more authorized enrollments
-      authorized_enrollments= user.authorized_enrollments_for_school(self)
-      grades=enrollments.find_all_by_id(authorized_enrollments.collect(&:id),:select=> "distinct grade").collect(&:grade)
+      grades=user.special_user_groups.grades_for_school(self)
+      student_ids = user.groups.find_all_by_school_id(self.id).collect(&:student_ids).flatten.uniq
+      grades |= enrollments.find_all_by_student_id(student_ids, :select => "distinct grade").collect(&:grade)
     end
 
     grades.sort!

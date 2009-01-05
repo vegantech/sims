@@ -14,9 +14,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Enrollment do
-  def all_ids
-    Enrollment.find(:all,:select=>"id").collect(&:id)
-  end
 
 
   describe 'search class method' do
@@ -25,13 +22,13 @@ describe Enrollment do
       Enrollment.create!(:student_id=>999,:school_id=>999,:grade=>"XX")
       school.enrollments.create!(:student_id=>999,:grade=>"XX")
       school.enrollments.size.should ==(1)
-      Enrollment.search(school.enrollment_ids,{:search_type=>'list_all'}).size.should == 1
+      Enrollment.search({:school_id=>school.id,:search_type=>'list_all'}).size.should == 1
     end
 
     describe 'with student group' do 
       it 'should return only students in that grade' do
         e1,e2,e3 = %w{1 2 3}.collect{|i| Enrollment.create! :grade=>i.to_s, :student_id=>99999, :school_id=>999}
-        Enrollment.search(all_ids,:search_type => 'list_all', :grade=>'2').should == [e2]
+        Enrollment.search(:search_type => 'list_all', :grade=>'3').should == [e3]
       end
 
     end
@@ -46,7 +43,7 @@ describe Enrollment do
       it 'should return all students' do
         Enrollment.delete_all
         enrollments=(1..8).collect{|i| Enrollment.create! :grade=>i.to_s, :student_id=>99999, :school_id=>999}
-        Enrollment.search(all_ids,:search_type => 'list_all').should == enrollments
+        Enrollment.search(:search_type => 'list_all').should == enrollments
       end
     end
 
@@ -61,7 +58,7 @@ describe Enrollment do
           s.enrollments.create!(:grade=>"1",:school_id=>999)
         end
 
-        Enrollment.search(all_ids,:group_id => g1.id.to_s, :search_type => 'list_all').should == [e1,e3]
+        Enrollment.search(:group_id => g1.id.to_s, :search_type => 'list_all').should == [e1,e3]
       end
     end
 
@@ -72,7 +69,7 @@ describe Enrollment do
           s.enrollments.create!(:grade=>"1",:school_id=>999)
         end
 
-        search_results = Enrollment.search(all_ids,:last_name => 'Beau', :search_type => 'list_all')
+        search_results = Enrollment.search(:last_name => 'Beau', :search_type => 'list_all')
 
         search_results.should == [e2,e3]
       end
@@ -83,7 +80,7 @@ describe Enrollment do
           s.enrollments.create!(:grade=>"1",:school_id=>999)
         end
 
-        search_results = Enrollment.search(all_ids,:last_name => 'son', :search_type => 'list_all')
+        search_results = Enrollment.search(:last_name => 'son', :search_type => 'list_all')
 
         search_results.should == [e3]
       end
@@ -103,19 +100,19 @@ describe Enrollment do
     
       describe 'passed not in intervention' do
         it 'should only return students that are not in an intervention' do
-          search_results = Enrollment.search(all_ids,:search_type => 'no_intervention')
+          search_results = Enrollment.search(:search_type => 'no_intervention')
           search_results.should == [@e1,@e3]
         end
       end
 
       describe 'passed in active intervention' do
         it 'should only return students that are in an active intervention' do
-          search_results = Enrollment.search(all_ids,:search_type => 'active_intervention')
+          search_results = Enrollment.search(:search_type => 'active_intervention')
           search_results.should == [@e2]
         end
 
         it 'should return students in an active intervention when no checkboxes selected' do
-          search_results = Enrollment.search(all_ids,:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
+          search_results = Enrollment.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
                                              :intervention_group_types=>[])
           search_results.should == [@e2]
    
@@ -129,7 +126,7 @@ describe Enrollment do
           @e4=Factory(:student).enrollments.create!(:grade=>"1",:school_id=>999)
           Factory(:intervention,:student=>@e4.student,:active=>true)
 
-          search_results = Enrollment.search(all_ids,:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
+          search_results = Enrollment.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
                                              :intervention_group_types=>[ob2,ob3])
                                                        
           search_results.should == [@e2,@e3]
@@ -162,16 +159,16 @@ describe Enrollment do
       describe 'and some flagged interventions were selected' do
         it 'should return students with any of the selected flagged interventions' do
     
-          search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention',
+          search_results = Enrollment.search( :search_type => 'flagged_intervention',
             :flagged_intervention_types => ['attendance', 'suspension'])
 
           search_results.should == [@e1, @e3]
 
-          search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention',
+          search_results = Enrollment.search( :search_type => 'flagged_intervention',
             :flagged_intervention_types => ['attendance', 'ignored'])
           search_results.should == [@e4, @e5]
 
-          search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention',
+          search_results = Enrollment.search( :search_type => 'flagged_intervention',
             :flagged_intervention_types => ['ignored'])
           search_results.should == [@e1,@e4, @e5]
         end
@@ -179,7 +176,7 @@ describe Enrollment do
 
       describe 'and no optional flagged interventions were selected' do
         it 'should return all the flagged enrollments' do
-          search_results = Enrollment.search(all_ids, :search_type => 'flagged_intervention', :flagged_intervention_types => [])
+          search_results = Enrollment.search( :search_type => 'flagged_intervention', :flagged_intervention_types => [])
           search_results.should == [@e1,@e2,@e3]
         end
       end

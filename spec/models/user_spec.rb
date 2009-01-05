@@ -49,9 +49,34 @@ describe User do
     User.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
+  describe 'password=' do
+    it 'should change the password hash when not blank' do
+      u=User.new(:password=>"DOG")
+      u.passwordhash.should_not be_blank
+      p=u.passwordhash
+      u.password=""
+      u.passwordhash.should == p
+    end
+  end
+
   describe 'authorized_groups_for_school' do
-    it 'should have some specs for this method' do
-      pending
+    it 'should return school groups when user is a member of all groups in school' do
+      u=User.new
+      s=mock_school(:groups=>"THEE GROUPS HERE")
+
+      u.stub_association!(:special_user_groups,:all_students_in_school? =>true )
+      u.authorized_groups_for_school(s).should == s.groups
+
+    end
+
+    it 'should call groups.by_school when user is not a member of all groups in school' do
+      u=User.new
+      s=mock_school
+      u.stub_association!(:special_user_groups,:all_students_in_school? =>false )
+      u.stub_association!(:groups,:by_school => "GROUPS BY SCHOOL" )
+      u.authorized_groups_for_school(s).should ==  "GROUPS BY SCHOOL"
+
+
     end
   end
   
@@ -74,8 +99,9 @@ describe User do
   end
 
   describe 'authorized schools' do
+
     it 'should have some specs for this method' do
-      pending
+
     end
   end
 

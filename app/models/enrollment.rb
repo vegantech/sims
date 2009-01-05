@@ -19,12 +19,32 @@ class Enrollment < ActiveRecord::Base
 
   named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
 
-  def self.search(auth_enrollment_ids,search_hash)
+  def self.search(search_hash)
     search_hash.symbolize_keys!
     #    raise "This is broken, it destroys the scoping via the association proxy"
 
-    scope = self.scoped(:include=>:student, :conditions=>{:id=>auth_enrollment_ids})
-    scope =scope.scoped :conditions => {:grade=> search_hash[:grade]} if search_hash[:grade] and search_hash[:grade] != "*"
+    sch_id = search_hash[:school_id]
+    conditions = search_hash.slice(:school_id)
+    
+    scope = self.scoped(:include=>:student, :conditions=> conditions)
+    
+    search_hash.delete(:grade) if search_hash[:grade] == "*"
+
+    if u=search_hash[:user]
+      if u.special_user_groups.all_students_in_school?(sch_id)
+        #User has access to everyone in school
+      else
+        grades = Array(search_hash[:grade])
+        user_grades = u.special_user_groups.grades_for_school(sch_id)
+        grades ||= user_grades
+        grades &= user_grades
+        #TODO change this to use group_ids
+        student_ids = u.groups.find_all_by_school_id(sch_id).collect(&:student_ids).flatten.uniq
+        scope=scope.by_student_ids_or_grades(student_ids,grades)
+      end
+    end
+
+    scope=scope.scoped(:conditions=>search_hash.slice(:grade))
     scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = students.id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
     scope = scope.scoped :conditions => ["students.last_name like ?", "#{search_hash[:last_name]}%"] unless search_hash[:last_name].blank?
 
