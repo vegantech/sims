@@ -21,7 +21,7 @@ class Group < ActiveRecord::Base
   named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
   def self.members
     #TODO tested, but it is ugly and should be refactored
-    group_ids=find(:all,:select=>"id")
+    group_ids=find(:all,:select=>"groups.id")
     User.find(:all,:joins => :groups ,:conditions=> {:groups=>{:id=>group_ids}}).uniq
   end
 
