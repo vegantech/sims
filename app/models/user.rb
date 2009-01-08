@@ -127,7 +127,7 @@ class User < ActiveRecord::Base
     @user = self.find_by_username(username)
     if @user
       expected_password=encrypted_password(password)
-      if @user.passwordhash != expected_password
+      if @user.passwordhash_before_type_cast != expected_password
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
       end
       @user
