@@ -20,6 +20,8 @@ class InterventionCluster < ActiveRecord::Base
   delegate :goal_definition, :to => :objective_definition
 
   validates_presence_of :title
+
+  acts_as_reportable if defined? Ruport
   acts_as_list :scope=>:objective_definition
 
   def disable!
@@ -29,6 +31,5 @@ class InterventionCluster < ActiveRecord::Base
 
   def summary_with_parent_tables
     "#{self.goal_definition.title}/#{self.objective_definition.title}/#{self.title}"
-
   end
 end

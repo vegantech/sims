@@ -14,12 +14,13 @@ class HtmlCsvText
 
   class Text < Ruport::Formatter
     renders :text, :for => Class.nesting[2]
+
     build :header do
       output << "Report Generated at #{Time.now.to_s(:long)}\n\n"
     end
 
     build :body do
-      output << data.to_grouping.to_text
+      output << data.to_grouping.to_text(:ignore_table_width => true)
     end
   end
 
