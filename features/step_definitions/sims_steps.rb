@@ -41,9 +41,9 @@ Given /^I am a district admin$/ do
   default_user
   log_in
   role = Role.create!(:name => "District Admin")
-  role.rights.create!(:controller=>"roles", :read=>true, :write=>true)
-  role.rights.create!(:controller=>"district/schools", :read=>true, :write=>true)
-  role.rights.create!(:controller=>"district/users", :read=>true, :write=>true)
+  role.rights.create!(:controller=>"roles", :read_access=>true, :write_access=>true)
+  role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
+  role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
   default_user.roles=[role]
   
 end

@@ -31,10 +31,10 @@ describe Role do
   describe 'has_controller_and_action_group?' do
     it 'should return nothing when there are no matching controllers and something when there is' do
       r= Role.create!(@valid_attributes.merge(:district_id=>1))
-      r.rights.create!(:controller=>'students',:read=>true)
-      Role.has_controller_and_action_group?('puppies', 'read').should == false
-      Role.has_controller_and_action_group?('students', 'read').should == true
-      Role.has_controller_and_action_group?('students', 'write').should == false
+      r.rights.create!(:controller=>'students',:read_access=>true)
+      Role.has_controller_and_action_group?('puppies', 'read_access').should == false
+      Role.has_controller_and_action_group?('students', 'read_access').should == true
+      Role.has_controller_and_action_group?('students', 'write_access').should == false
       Role.has_controller_and_action_group?('students', 'unknown').should == false
     end
       

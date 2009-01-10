@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081227220234) do
+ActiveRecord::Schema.define(:version => 20090109224200) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -362,8 +362,8 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
 
   create_table "rights", :force => true do |t|
     t.string   "controller"
-    t.boolean  "read"
-    t.boolean  "write"
+    t.boolean  "read_access"
+    t.boolean  "write_access"
     t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"

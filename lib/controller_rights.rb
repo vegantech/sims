@@ -11,10 +11,10 @@ private
   
   def action_group_for_current_action
     if self.class.write_actions.include?(action_name)
-      'write'
+      'write_access'
     elsif self.class.read_actions.include?(action_name)
       #put in the defaults here,   override this and call super in individual controllers
-      "read"
+      "read_access"
     else
       nil
     end
