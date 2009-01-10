@@ -1,10 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe TeamNotesReport do
-  describe 'render_html' do
-    # TODO: Figure out why this passes when run by itself, but fails with duplicated report body when run as part of the default rake task!
+  describe 'render_text' do
     it 'should generate correct text output' do
-      student = Factory(:student,:first_name => 'This', :last_name => 'Student')
+      student = Factory(:student, :first_name => 'This', :last_name => 'Student')
 
       user = Factory(:user, :username => 'some_user', :first_name => 'Some', :last_name => 'User')
 
@@ -13,7 +12,7 @@ describe TeamNotesReport do
       sc1 = StudentComment.create!(:student => student, :user => user, :body => 'First Comment', :created_at => start_date.to_time)
       sc2 = StudentComment.create!(:student => student, :user => user, :body => 'Second Comment', :created_at => end_date.to_time)
       StudentComment.should_receive(:find).and_return([sc1, sc2])
-      Time.stub!(:now=>Date.new(2008, 12, 12).to_time)
+      Time.stub!(:now => Date.new(2008, 12, 12).to_time)
 
       report_body = TeamNotesReport.render_text(:user => user, :start_date => start_date, :end_date => end_date)
 

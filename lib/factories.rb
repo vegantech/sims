@@ -43,8 +43,6 @@ Factory.define :group do |g|
   g.title {Factory.next :abbrev}
   g.association :school
   end
-  
-
 
 Factory.define :tier do |t|
   t.title "Some tier"
@@ -66,7 +64,6 @@ Factory.define :element_definition do |e|
   e.kind  'applicable'
   e.answer_definitions {|ad| [ad.association(:answer_definition)]}
 end
-
 
 Factory.define :answer_definition do |a|
   a.value 0
@@ -111,6 +108,7 @@ Factory.define :intervention_definition do |id|
   id.time_length_num 1
   id.frequency_multiplier 1
   id.association :intervention_cluster
+  id.association :tier
 end
 
 Factory.define :intervention_cluster do |ic|
@@ -131,18 +129,16 @@ Factory.define :goal_definition do |gd|
   gd.association :district
 end
 
-
-
-
 Factory.define :quicklist_item do |qi|
   qi.association :intervention_definition
   qi.association :school
   #qi.association :district (it's one or the other)
 end
 
-#TODO validate time length
+# TODO: validate time length
 Factory.define :time_length do |tl|
   tl.days 2
+  tl.title "Default"
 end
 
 Factory.define :frequency do |f|
