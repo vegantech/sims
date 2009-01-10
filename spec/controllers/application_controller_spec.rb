@@ -60,12 +60,12 @@ describe ApplicationController do
     
     it 'should return write for create' do
       controller.stub!(:action_name=>"create")
-      controller.send(:action_group_for_current_action).should == "write-access"
+      controller.send(:action_group_for_current_action).should == "write_access"
     end
 
     it 'should return read for index' do
       controller.stub!(:action_name=>"index")
-      controller.send(:action_group_for_current_action).should == "read-access"
+      controller.send(:action_group_for_current_action).should == "read_access"
     end
       
       
