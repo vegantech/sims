@@ -23,6 +23,7 @@ class Enrollment < ActiveRecord::Base
     search_hash.symbolize_keys!
     #    raise "This is broken, it destroys the scoping via the association proxy"
 
+
     sch_id = search_hash[:school_id]
     conditions = search_hash.slice(:school_id)
     
@@ -31,6 +32,7 @@ class Enrollment < ActiveRecord::Base
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
     if u=search_hash[:user]
+      search_hash.delete(:user_id) if search_hash[:user_id] == u.id.to_s || search_hash[:user_id] == "*"
       if u.special_user_groups.all_students_in_school?(sch_id)
         #User has access to everyone in school
       else
@@ -46,6 +48,9 @@ class Enrollment < ActiveRecord::Base
 
     scope=scope.scoped(:conditions=>search_hash.slice(:grade))
     scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = students.id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
+    scope= scope.scoped :joins => "inner join groups_students on groups_students.student_id = students.id inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id" , :conditions => {:user_group_assignments=>{:user_id => search_hash[:user_id]}}  unless search_hash[:user_id].blank?
+
+    
     scope = scope.scoped :conditions => ["students.last_name like ?", "#{search_hash[:last_name]}%"] unless search_hash[:last_name].blank?
 
     case search_hash[:search_type]

@@ -33,6 +33,13 @@ describe Enrollment do
 
     end
 
+    describe 'with different user and user_id' do
+      it 'should limit by both' do
+        pending
+      end
+    end
+    
+
     describe 'passed no search criteria' do
       it 'should raise an exception' do
         lambda {Enrollment.search}.should raise_error
