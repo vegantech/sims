@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090109224200) do
+ActiveRecord::Schema.define(:version => 20090110205335) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -432,6 +432,8 @@ ActiveRecord::Schema.define(:version => 20090109224200) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "birthdate"
+    t.boolean  "esl"
+    t.boolean  "special_ed"
   end
 
   create_table "tiers", :force => true do |t|

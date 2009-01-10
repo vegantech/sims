@@ -92,12 +92,6 @@ describe User do
     end
   end
 
-  describe 'authorized enrollments for school' do
-    it 'should have some specs for this method' do
-      pending
-    end
-  end
-
   describe 'authorized schools' do
 
     it 'should have some specs for this method' do

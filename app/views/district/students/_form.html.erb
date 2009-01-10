@@ -27,6 +27,18 @@
   <%= form.label :birthdate %><br />
   <%= form.date_select :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago%>
   </p>
+  
+  <p>
+  <%= form.label :esl %><br />
+  <%= form.check_box :esl %>
+  </p>
+  
+  <p>
+  <%= form.label :special_ed %><br />
+  <%= form.check_box :special_ed %>
+  </p>
+
+
 
  <div id= "enrollments">
    <%=render :partial => 'enrollments/enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
