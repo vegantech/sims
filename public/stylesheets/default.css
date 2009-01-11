@@ -125,3 +125,16 @@ fieldset.debug_info {
 
 
 
+
+thead th.sort-active
+  {
+    background:#CAE8EA url(../images/spinner.gif) no-repeat 0 0;
+    cursor:wait;
+  }
+
+thead th.sort-active a
+  {
+    color:#a80000 !important;
+    cursor:wait;
+  }
+
