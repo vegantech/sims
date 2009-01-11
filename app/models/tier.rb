@@ -16,6 +16,6 @@ class Tier < ActiveRecord::Base
   TIERS=Tier.find(:all,:order=>"position")
 
   def to_s
-    title
+    "#{position} - #{title}"
   end
 end

@@ -39,6 +39,12 @@
           <%= yield %>
       </div>
       <div id="footer">
+         <br style="clear:right;"/>
+         <% if current_student and current_student.max_tier %>
+            Current Tier is <%=current_student.max_tier%>
+         <% end %>
+        <br /><br />
+
         <% if ENV["RAILS_ENV"] == "development" %>
           <div id="debug">
             <a href="#" onclick="Element.toggle('params_debug_info');return false">
@@ -64,7 +70,6 @@
  
           </div>
         <% else %>
-        Footer goes here
         <% end %> 
       </div>
     </div>
