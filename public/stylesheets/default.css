@@ -138,3 +138,7 @@ thead th.sort-active a
     cursor:wait;
   }
 
+table .list-line-even {
+    background: #EEF3FA;
+}
+
