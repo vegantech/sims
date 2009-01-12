@@ -43,7 +43,7 @@ end
 
 require 'fileutils'
 task "remove_webrat_plugin" do
-  FileUtils.rm_rf("#{__FILE__}/../../vendor/plugins/webrat/")
+  FileUtils.rm_rf("#{File.dirname(__FILE__)}/../../vendor/plugins/webrat/")
 end
 
 task "default" => ["remove_webrat_plugin"]
