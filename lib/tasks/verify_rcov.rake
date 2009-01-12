@@ -40,13 +40,6 @@ RCov::VerifyTask.new('verify_rcov_integration') do |t|
   t.threshold = 60.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/integration/index.html'
 end
-
-require 'fileutils'
-task "remove_webrat_plugin" do
-  FileUtils.rm_rf("#{File.dirname(__FILE__)}/../../vendor/plugins/webrat/")
-end
-
-task "default" => ["remove_webrat_plugin"]
-#task "default" => ["test:coverage"]
+task "default" => ["test:coverage"]
 
   
