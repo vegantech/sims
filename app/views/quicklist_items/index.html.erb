@@ -6,8 +6,9 @@
     <% objective.intervention_clusters.each do |category| %>
       <% content_tag :h2, category.title %>
       <% category.intervention_definitions.each do |intervention| %>
+        <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
         <%= label_tag dom_id(intervention), intervention.title %> 
-        <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> <br />
+<br />
       <% end %>
     <% end %>
   <% end %>
