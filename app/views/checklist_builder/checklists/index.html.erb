@@ -5,12 +5,7 @@
   <%= render :partial => 'checklist_definition', :collection => @checklist_definitions %>
 </div>
 <p>
-  <%= link_to_remote content_tag(:span, "Add New Checklist Definition", :id => "add_checklist_definition_link"), 
-                     :url => new_checklist_builder_checklist_path,
-                     :loading => "Element.show('spinner')",
-                     :complete => "Element.hide('spinner')",
-                     :method => :get %>
-  <%= image_tag "spinner.gif", :id => "spinner", :style => "display:none;" %>
+<%= link_to  "Add New Checklist Definition" , new_checklist_builder_checklist_path %>
 </p>
 <div id="new_checklist_definition_notice" style="display:none"></div>
 <div id="new_checklist_definition" style="display:none"></div>

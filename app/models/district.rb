@@ -45,6 +45,8 @@ class District < ActiveRecord::Base
   named_scope :admin, :conditions=>{:admin=>true}
 
   delegate :country, :to => :state
+
+
   
   validates_presence_of :abbrev,:name, :state
   validates_uniqueness_of :abbrev,:name, :scope=>:state_id
@@ -61,6 +63,16 @@ class District < ActiveRecord::Base
   def grades
     GRADES
   end
+
+  def active_checklist_document
+    checklist_definitions.active_checklist_definition.document
+  end
+
+  def active_checklist_document?
+    checklist_definitions.active_checklist_definition.document?
+
+  end
+
 
   def find_intervention_definition_by_id(id)
     InterventionDefinition.find(id,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>self.id})

@@ -20,6 +20,9 @@ class ChecklistDefinition < ActiveRecord::Base
   has_many :element_definitions, :through =>:question_definitions
   has_many :checklists
 
+  has_attached_file  :document
+
+  before_validation :clear_document
   validates_presence_of :directions, :text
   acts_as_reportable if defined? Ruport
 
@@ -56,12 +59,26 @@ class ChecklistDefinition < ActiveRecord::Base
     k
   end
 
+  def delete_document=(value)
+    @delete_document = !value.to_i.zero?
+  end
+
+  def delete_document
+    !!@delete_document
+  end
+
+
+
   protected
 
   def before_save
     if active?
       district.checklist_definitions.active_checklist_definition.update_attribute(:active, false)
     end
+  end
+
+  def clear_document
+     self.document=nil if @delete_document && !document.dirty?
   end
 
 end

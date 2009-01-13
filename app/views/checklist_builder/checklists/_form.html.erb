@@ -13,3 +13,15 @@
   Assigned Recommendation (Blank will mean the checklist is optional: <br />
   <%= f.collection_select(:recommendation_definition_id, @checklist_definition.district.recommendation_definitions,:id,:text, :include_blank=>true) %>
 
+  <div>
+    <%= f.label(:document, 'Attach Document') %>
+    <%= f.file_field(:document) %>
+  </div>
+  <%- unless @checklist_definition.new_record? || !@checklist_definition.document? -%>
+    <div>
+      <%= f.check_box(:delete_document) %>
+      <%= f.label(:delete_document, "Delete #{@checklist_definition.document.original_filename}") %>
+    </div>
+  <%- end -%>
+
+

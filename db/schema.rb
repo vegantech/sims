@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090110205335) do
+ActiveRecord::Schema.define(:version => 20090112223608) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -37,6 +37,10 @@ ActiveRecord::Schema.define(:version => 20090110205335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "recommendation_definition_id"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
   end
 
   create_table "checklists", :force => true do |t|
