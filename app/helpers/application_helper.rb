@@ -36,6 +36,11 @@ module ApplicationHelper
     end
   end
 
+  def help_popup(msg)
+    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();")
+  end
+
+
   def spinner(suffix = nil)
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
   end

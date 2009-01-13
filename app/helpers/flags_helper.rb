@@ -1,6 +1,6 @@
 module FlagsHelper
   # Since all helpers are loaded, I'll just group them by convenience
-
+  #
   def image_with_popup(image,popup)
     image_tag(image,"onmouseover" => "return overlib('#{popup}');",
       "onmouseout" => "return nd();") + " "
@@ -31,7 +31,7 @@ module FlagsHelper
       s=student.flags.ignore.collect do |igflag|
         popup="#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
         form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"custom_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
-          image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
+          image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
         "</form>"
       end
     s.join(" ")
@@ -45,7 +45,7 @@ module FlagsHelper
         popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
       if change
         form_remote_tag(:url=>{:action=> "ignore_flag", :category=>flags.first.category,:controller=>"custom_flags"},:html=>{:style=>"display:inline"}) +
-          image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseOut" => "return nd();") +
+          image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
         "</form>"
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon],popup)
