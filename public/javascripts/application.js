@@ -6,16 +6,13 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-function searchByName() {
-	   document.student_search_form.search_type[4].checked = true;
-}
 
 function searchByIntervention() {
-	   document.student_search_form.search_type[2].checked = true;
+  document.getElementById('search_criteria_search_type_active_intervention').checked = true;
 }
 
 function searchByFlag() {
-	   document.student_search_form.search_type[1].checked = true;
+   document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
 }
 
 function selectStudents(){
