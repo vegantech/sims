@@ -53,9 +53,11 @@ class ChecklistDefinition < ActiveRecord::Base
   end
 
   def deep_clone
+
     k=clone
     k.active=false
     k.question_definitions = question_definitions.collect{|o| o.deep_clone}
+    k.document=document
     k
   end
 
