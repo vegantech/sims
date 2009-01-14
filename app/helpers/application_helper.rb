@@ -74,7 +74,7 @@ module ApplicationHelper
     icon= "icon_#{ext[0][1..-1]}.gif"
     blank={}
     blank[:target]="_blank" unless url=="#"
-    link_to "#{image_tag(icon)} #{file}", url, blank
+    link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}", url, blank
   end
 
 
