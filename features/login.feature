@@ -13,4 +13,3 @@ Feature: Login
 
 		Then I should not see "Please Login:"
 		Then I should see "Logout"
-		And I should see "School Selection"
