@@ -70,7 +70,7 @@ module ApplicationHelper
   def link_to_with_icon(name, url, suffix="")
     ext_match = /\.\w+$/
     ext = name.match ext_match
-    file = "#{name.split(ext_match).first.titleize}#{suffix}"
+    file = "#{name.split(ext_match).first.gsub(/_/," ")}#{suffix}"
     icon= "icon_#{ext[0][1..-1]}.gif"
     blank={}
     blank[:target]="_blank" unless url=="#"
