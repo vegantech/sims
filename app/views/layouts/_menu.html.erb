@@ -6,7 +6,7 @@
     <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_url %>
     <%= li_link_to_if_authorized 'Probe Builder', intervention_builder_probes_url %>
     <%= content_tag(:li,link_to('SIMS Virtual Outbox',{:controller=>'railmail'}, {:target=>:blank})) %>
-    <%= content_tag(:li, link_to(current_district.active_checklist_document.original_filename, current_district.active_checklist_document.url, {:target => :blank})) if current_district && current_district.active_checklist_document? %>
+    <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename, current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
     <li>Reports</li>
     <ul>
       <%= li_link_to_if_authorized 'Team Notes', '/reports/team_notes' %>
