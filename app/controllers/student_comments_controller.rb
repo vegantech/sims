@@ -3,26 +3,6 @@ class StudentCommentsController < ApplicationController
   # GET /student_comments.xml
   before_filter :enforce_session_selections
 
-  def index
-    @student_comments = StudentComment.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @student_comments }
-    end
-  end
-
-  # GET /student_comments/1
-  # GET /student_comments/1.xml
-  def show
-    @student_comment = StudentComment.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @student_comment }
-    end
-  end
-
   # GET /student_comments/new
   # GET /student_comments/new.xml
   def new
@@ -36,7 +16,7 @@ class StudentCommentsController < ApplicationController
 
   # GET /student_comments/1/edit
   def edit
-    @student_comment = StudentComment.find(params[:id])
+    @student_comment = current_user.student_comments.find(params[:id])
   end
 
   # POST /student_comments
@@ -59,7 +39,7 @@ class StudentCommentsController < ApplicationController
   # PUT /student_comments/1
   # PUT /student_comments/1.xml
   def update
-    @student_comment = StudentComment.find(params[:id])
+    @student_comment = current_user.student_comments.find(params[:id])
 
     respond_to do |format|
       if @student_comment.update_attributes(params[:student_comment])
@@ -76,7 +56,7 @@ class StudentCommentsController < ApplicationController
   # DELETE /student_comments/1
   # DELETE /student_comments/1.xml
   def destroy
-    @student_comment = StudentComment.find(params[:id])
+    @student_comment = current_user.student_comments.find(params[:id])
     @student_comment.destroy 
 
     respond_to do |format|

@@ -11,6 +11,8 @@
 #  updated_at :datetime
 #
 
+
+#Also known as team_note
 class StudentComment < ActiveRecord::Base
   belongs_to :student
   belongs_to :user

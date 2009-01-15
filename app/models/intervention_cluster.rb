@@ -13,6 +13,8 @@
 #  updated_at              :datetime
 #
 
+
+#Also known as category
 class InterventionCluster < ActiveRecord::Base
   belongs_to :objective_definition
   has_many :intervention_definitions, :order=>:position
