@@ -45,6 +45,8 @@ class District < ActiveRecord::Base
   named_scope :admin, :conditions=>{:admin=>true}
 
   delegate :country, :to => :state
+
+
   
   validates_presence_of :abbrev,:name, :state
   validates_uniqueness_of :abbrev,:name, :scope=>:state_id
@@ -53,6 +55,7 @@ class District < ActiveRecord::Base
   
                                          
   before_destroy :make_sure_there_are_no_schools
+  before_validation :clear_logo
   after_create :create_admin_user
 
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
@@ -60,6 +63,16 @@ class District < ActiveRecord::Base
   def grades
     GRADES
   end
+
+  def active_checklist_document
+    checklist_definitions.active_checklist_definition.document
+  end
+
+  def active_checklist_document?
+    checklist_definitions.active_checklist_definition.document?
+
+  end
+
 
   def find_intervention_definition_by_id(id)
     InterventionDefinition.find(id,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>self.id})
@@ -116,6 +129,15 @@ class District < ActiveRecord::Base
     roles + Role.system
   end
 
+  def delete_logo=(value)
+    @delete_logo = !value.to_i.zero?
+  end
+
+  def delete_logo
+    !!@delete_logo
+  end
+
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?
@@ -143,6 +165,10 @@ private
       u.roles=Role.find(:all,:conditions=>{:district_id=>nil, :name=>"district_admin"})
       u.save!
     end
+  end
+
+  def clear_logo
+    self.logo=nil if @delete_logo && !logo.dirty?
   end
 end
 

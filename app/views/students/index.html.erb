@@ -1,10 +1,27 @@
 <a onclick="selectStudents();">all</a> | <a onclick="unselectStudents();">none</a> <%=spinner %>
 <% form_tag({:action=>'select'}, {:name => "select_students_form"}) do %>
+
   <div id='table'>
-    <table>
-      <%= render :partial =>'enrolled_student', :collection=>@students -%>
+    <table class="rowstyle-list-line-even">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th class="sortable">Student</th>
+          <th class="sortable" >Number</th>
+          <th class="sortable">Grade</th>
+          <th class="sortable">ESL</th>
+          <th class="sortable">SpEd</th>
+          <th>Status</th>
+          <th><%=help_popup("Click on a column to sort.  You can hold down shift to sort by multiple columns.")  %> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial =>'enrolled_student', :collection=>@students -%>
+      </tbody>
     </table>
   </div>
   <%='&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
   <%= submit_tag "select for problem solving", :name => 'process' %>
 <% end %>
+ <%= javascript_include_tag 'tablesort',  :cache => true %>
+

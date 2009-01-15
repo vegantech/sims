@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081227220234) do
+ActiveRecord::Schema.define(:version => 20090115060535) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -37,6 +37,10 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "recommendation_definition_id"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
   end
 
   create_table "checklists", :force => true do |t|
@@ -86,6 +90,13 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
     t.integer  "school_id"
     t.integer  "student_id"
     t.string   "grade",      :limit => 16
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "flag_categories", :force => true do |t|
+    t.integer  "district_id"
+    t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -362,8 +373,8 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
 
   create_table "rights", :force => true do |t|
     t.string   "controller"
-    t.boolean  "read"
-    t.boolean  "write"
+    t.boolean  "read_access"
+    t.boolean  "write_access"
     t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -432,6 +443,8 @@ ActiveRecord::Schema.define(:version => 20081227220234) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "birthdate"
+    t.boolean  "esl"
+    t.boolean  "special_ed"
   end
 
   create_table "tiers", :force => true do |t|

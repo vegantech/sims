@@ -22,7 +22,7 @@ role :web, "vegantech.com"
 role :db,  "vegantech.com", :primary => true
 
 after "deploy:update_code", :copy_database_yml
-after "deploy:cold", :load_fixtures
+after "deploy:cold", :load_fixtures, :create_intervention_pdfs
 
 namespace :deploy do
   desc "Restart Application"
@@ -48,6 +48,8 @@ task :load_fixtures do
   run "cd #{deploy_to}/current && rake db:fixtures:load RAILS_ENV=production"
 end
 
-
-
+desc 'Create the intervention pdf reports'
+task :create_intervention_pdfs do
+  run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/console DailyJobs.regenerate_intervention_reports"
+end
 

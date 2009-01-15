@@ -1,41 +1,24 @@
-<p>
-  <b>District:</b>
-  <%=h @student.district %>
-</p>
+<table class="studentList">
+<tr>
+  <td class="label"> Name </td>
+  <td> <%=h @student.fullname_last_first%> </td> 
 
-<p>
-  <b>Last name:</b>
-  <%=h @student.last_name %>
-</p>
+  <td class="label"> Birth Date </td>
+  <td> <%=h @student.birthdate.to_s%> </td> 
+</tr>
+<tr>
+  <td class="label"> Student Number </td>
+  <td> <%=h @student.number%> </td> 
+</tr>
 
-<p>
-  <b>First name:</b>
-  <%=h @student.first_name %>
-</p>
+<% @student.enrollments.each do |enrollment| %>
+  <tr>
+  <td class="label">School</td>
+  <td> <%= h enrollment.school %> </td>
+  <td class="label">Grade</td>
+  <td> <%= h enrollment.grade %> </td>
+  </tr>
+<% end %>
 
-<p>
-  <b>Date of Birth:</b>
-  <%=h @student.birthdate %>
-</p>
-
-
-<p>
-  <b>Id district:</b>
-  <%=h @student.id_district %>
-</p>
-
-<p>
-  <b>Id state:</b>
-  <%=h @student.id_state %>
-</p>
-
-<p>
-  <b>Id country:</b>
-  <%=h @student.id_country %>
-</p>
-
-<p>
-  <b>Enrollments:</b>
-  <%=h @student.enrollments.first.grade %> (Should iterate through enrollments and show the current ones.)
-  </p>
+</table>
 

@@ -23,14 +23,18 @@ class Enrollment < ActiveRecord::Base
     search_hash.symbolize_keys!
     #    raise "This is broken, it destroys the scoping via the association proxy"
 
+
     sch_id = search_hash[:school_id]
     conditions = search_hash.slice(:school_id)
     
-    scope = self.scoped(:include=>:student, :conditions=> conditions)
+    scope = self.scoped(:conditions=> conditions)
+
+    
     
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
     if u=search_hash[:user]
+      search_hash.delete(:user_id) if search_hash[:user_id] == u.id.to_s || search_hash[:user_id] == "*"
       if u.special_user_groups.all_students_in_school?(sch_id)
         #User has access to everyone in school
       else
@@ -45,14 +49,17 @@ class Enrollment < ActiveRecord::Base
     end
 
     scope=scope.scoped(:conditions=>search_hash.slice(:grade))
-    scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = students.id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
-    scope = scope.scoped :conditions => ["students.last_name like ?", "#{search_hash[:last_name]}%"] unless search_hash[:last_name].blank?
+    scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
+    scope= scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id" , :conditions => {:user_group_assignments=>{:user_id => search_hash[:user_id]}}  unless search_hash[:user_id].blank?
+
+    
+    scope = scope.scoped :joins=>:student, :conditions => ["students.last_name like ?", "#{search_hash[:last_name]}%"] unless search_hash[:last_name].blank?
 
     case search_hash[:search_type]
     when 'list_all'
     when 'flagged_intervention'  
       # only include enrollments for students who have at least one of the intervention types.
-      scope =scope.scoped :conditions => "exists (select * from flags where flags.student_id = students.id)", :include => {:student=>:flags}
+      scope =scope.scoped :conditions => "exists (select * from flags where flags.student_id = students.id)", :joins => {:student=>:flags}
 
       #TODO rename this to just flag_types, also in controller and view
       categories = Array(search_hash[:flagged_intervention_types]) - ['ignored','custom']
@@ -73,21 +80,30 @@ class Enrollment < ActiveRecord::Base
 
 
     when 'active_intervention'
-       scope=scope.scoped :conditions=> ["exists (select * from interventions where interventions.student_id = students.id and interventions.active = ?)",true],:include =>{:student=>:interventions}
+       scope=scope.scoped :conditions=> ["exists (select * from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true],:joins =>{:student=>:interventions}
       unless search_hash[:intervention_group_types].blank?
         table=search_hash[:intervention_group].tableize
         
-        scope=scope.scoped :include => {:student=>{:interventions=>{:intervention_definition=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}}}},
+        scope=scope.scoped :joins => {:student=>{:interventions=>{:intervention_definition=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}}}},
         :conditions => ["#{table}.id in (?)", search_hash[:intervention_group_types]]
 
       end
 
     when 'no_intervention'
-      scope = scope.scoped :conditions=> ["not exists (select * from interventions where interventions.student_id = students.id and interventions.active = ?)",true]
+      scope = scope.scoped :conditions=> ["not exists (select * from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
     else
       raise 'Unrecognized search_type'
     end
-    scope#.compact
+
+    if search_hash.delete(:index_includes)
+      ids=scope.collect(&:id)
+      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user} ]})
+    else
+
+      scope#=scope.scoped #:include => :student
+      #.compact
+    end
+
   end
 
 

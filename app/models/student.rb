@@ -167,4 +167,22 @@ class Student < ActiveRecord::Base
     user.groups.find_by_id(group_ids) || user.special_user_groups.find_by_school_id(school_ids)
   end
 
+  def active_interventions
+    interventions.select(&:active)
+  end
+
+  def inactive_interventions
+    interventions.reject(&:active)
+  end
+ 
+  def current_flags
+    #FIXME doesn't handle ignores
+    # all.group_by(&:category)
+    flags.reject do |f|
+      (f[:type] == 'IgnoreFlag') or 
+      (f[:type] == 'SystemFlag' and
+      ignore_flags.any?{|igf| igf.category == f.category})
+    end.group_by(&:category)
+  end
+
 end

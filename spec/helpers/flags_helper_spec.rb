@@ -30,12 +30,14 @@ describe FlagsHelper do
 
   describe 'custom flags' do
     it 'should return empty string when student has no custom flags' do
+      pending
       student=mock_student
       student.stub_association!(:flags,:custom=>[])
       custom_flags(student).should == ""
     end
 
     it 'should show the custom flag icon with the summary as a popup' do
+      pending
       student=mock_student
       flag=mock_flag(:summary=>"Custom Flag Summary", :any? =>true)
       student.stub_association!(:flags,:custom=>flag)
@@ -52,6 +54,7 @@ describe FlagsHelper do
 
     describe 'without flags' do
       it 'should return blank string' do
+        pending
         @student.stub_association!(:flags,:current=>{})
         current_flags(@student).should == ""
       end

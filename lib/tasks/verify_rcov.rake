@@ -17,7 +17,6 @@ remove_task :default
 #task "default" => ["spec", "features"]
 remove_task :test
 task "test" => ["spec", "features"]
-task "default" => ["test:coverage"]
 
 task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration] 
 task "test:coverage" => [:verify_rcov]
@@ -41,3 +40,6 @@ RCov::VerifyTask.new('verify_rcov_integration') do |t|
   t.threshold = 60.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/integration/index.html'
 end
+task "default" => ["test:coverage"]
+
+  

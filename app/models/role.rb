@@ -21,7 +21,7 @@ class Role < ActiveRecord::Base
 
 
   def self.has_controller_and_action_group?(controller,action_group)
-    return false unless %w{ read write }.include?(action_group)
+    return false unless %w{ read_access write_access }.include?(action_group)
     find(:all).any?{|r| r.rights.find_by_controller(controller,:conditions=>["#{action_group}=?",true])}
   end
 

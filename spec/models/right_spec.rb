@@ -25,8 +25,8 @@ describe Right do
   before(:each) do
     @valid_attributes = {
       :controller => "students",
-      :read => true,
-      :write => false,
+      :read_access => true,
+      :write_access=> false,
     }
   end
 

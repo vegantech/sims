@@ -6,7 +6,7 @@ class AddRailmailTable < ActiveRecord::Migration
         t.column "subject", :string, :limit => 1.kilobyte
         t.column "sent_at", :datetime
         t.column "read_at", :datetime
-        t.column "raw", :string, :limit => 10.megabytes
+        t.column "raw", :string, :limit => 8000
       end
   end
 

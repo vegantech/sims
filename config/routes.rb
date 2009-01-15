@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :quicklist_items
 
 
@@ -9,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
     district.resources :schools
     district.resources :users
     district.resources :students
+    district.resources :flag_categories, :name_prefix=>nil
   end
 
   map.namespace :school do |school|

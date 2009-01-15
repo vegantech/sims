@@ -1,4 +1,4 @@
-<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+<tr class="<%= cycle('', 'list-line-even') %>">
   <td style="padding-right: 20px;">
     <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
   </td>
@@ -12,6 +12,13 @@
   <td style="padding-right: 20px;">
     <%= enrolled_student.grade %>
   </td>
+  <td style="padding-right: 20px;">
+    <%= yes_or_no enrolled_student.student.esl %>
+  </td>
+  <td style="padding-right: 20px;">
+    <%= yes_or_no enrolled_student.student.special_ed %>
+  </td>
+
   <td>
     <%=status_display(enrolled_student.student) %>
   </td>

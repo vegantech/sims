@@ -15,10 +15,10 @@ class AdministrationCell < Cell::Base
 
   def district
     @district = @opts[:district]
-    @show_schools = @opts[:user].authorized_for?('district/schools',:write)
-    @show_users = @opts[:user].authorized_for?('district/users', :write)
-    @show_students =@opts[:user].authorized_for?('district/students',:write)
-    @show_district= @opts[:user].authorized_for?('districts',:write)
+    @show_schools = @opts[:user].authorized_for?('district/schools',:write_access)
+    @show_users = @opts[:user].authorized_for?('district/users', :write_access)
+    @show_students =@opts[:user].authorized_for?('district/students',:write_access)
+    @show_district= @opts[:user].authorized_for?('districts',:write_access)
     
     @show = @show_schools || @show_users || @show_students || @show_district
 

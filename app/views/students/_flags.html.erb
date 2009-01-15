@@ -1,5 +1,7 @@
 <span id='studentflags'> <%= status_display(@student, true) %></span> &nbsp;|Interventions: <%=@student.interventions.size %> 
- &nbsp;|Ignored Flags<span id="ignoredflags"> <%=ignore_flags(@student,change=true) %> </span>
+&nbsp;|Ignored Flags<span id="ignoredflags"> <%=ignore_flags(@student,change=true) %> 
+  <%=help_popup("Click on a flag to ignore it.  Click on an ignored flag to stop ignoring it.  You can't ignore custom flags, and you can't create custom flags when you are ignoring a flag")  %>
+</span>
 <div id="customflag">
     <%= render :partial=>"custom_flags/list",:locals=>{:student=>@student} %>
 </div>

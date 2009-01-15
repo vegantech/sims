@@ -34,7 +34,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js
+#      format.js
     end
   end
 
@@ -42,7 +42,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
     respond_to do |format|
       format.html
-      format.js
+#      format.js
     end
   end
 
@@ -56,10 +56,10 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         format.html do
           redirect_to checklist_builder_checklist_url(@checklist_definition)
         end
-        format.js
+#        format.js
       else
         format.html { render :action => "new" }
-        format.js
+#        format.js
       end
     end
   end
@@ -76,10 +76,10 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         format.html do
           redirect_to checklist_builder_checklist_url(@checklist_definition)
         end
-        format.js
+#        format.js
       else
         format.html { render :action => "edit" }
-        format.js 
+#        format.js 
       end
     end
   end
