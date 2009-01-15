@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090112223608) do
+ActiveRecord::Schema.define(:version => 20090115060535) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -90,6 +90,13 @@ ActiveRecord::Schema.define(:version => 20090112223608) do
     t.integer  "school_id"
     t.integer  "student_id"
     t.string   "grade",      :limit => 16
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "flag_categories", :force => true do |t|
+    t.integer  "district_id"
+    t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

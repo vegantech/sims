@@ -1,0 +1,13 @@
+<p>
+  <b>District:</b>
+  <%=h @flag_category.district %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%=h @flag_category.category %>
+</p>
+
+
+<%= link_to 'Edit', edit_flag_category_path(@flag_category) %> |
+<%= link_to 'Back', flag_categories_path %>
