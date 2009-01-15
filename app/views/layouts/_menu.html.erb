@@ -11,6 +11,8 @@
     <li>Reports</li>
     <ul>
       <%= li_link_to_if_authorized 'Team Notes', '/reports/team_notes' %>
+      <%= # li_link_to_if_authorized 'Regenerate Intervention documents in menu' , {:controller=>'reports', :action=>  'regenerate_intervention_pdfs'}
+      %>
     </ul>
 <% if false %>
     <%= li_link_to_if_authorized 'Role Management',roles_url %>

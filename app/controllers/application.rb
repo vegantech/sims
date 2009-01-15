@@ -17,8 +17,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
-  #
-  #
+
   before_filter :authenticate, :authorize#, :current_district
 
   SUBDOMAIN_MATCH=/(sims)|(sims-open)/
@@ -77,11 +76,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    controller = self.class.controller_path  #may need to change this
+    controller = self.class.controller_path  # may need to change this
     action_group = action_group_for_current_action
-    unless current_user.authorized_for?(controller,action_group)
-      #log this
-      logger.info "Authorization Failure controller is #{controller} action_name is #{action_name} action_group is #{action_group}"
+    unless current_user.authorized_for?(controller, action_group)
+      logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."
       
       flash[:notice] =  "You are not authorized to access that page"
       redirect_to root_url

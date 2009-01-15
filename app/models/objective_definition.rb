@@ -18,7 +18,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   has_many :intervention_clusters, :order =>:position
   
   validates_presence_of :title, :description
-  acts_as_list :scope=>:goal_definition_id
+  acts_as_list :scope => :goal_definition_id
 
   def disable!
     intervention_clusters.each(&:disable!)
