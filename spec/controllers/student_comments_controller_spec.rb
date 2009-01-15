@@ -25,6 +25,8 @@ describe StudentCommentsController do
   describe "responding to GET edit" do
   
     it "should expose the requested student_comment as @student_comment" do
+      controller.stub_association!(:current_user, :student_comments=>StudentComment)
+      
       StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
       get :edit, :id => "37"
       assigns[:student_comment].should equal(mock_student_comment)
@@ -71,6 +73,9 @@ describe StudentCommentsController do
   end
 
   describe "responding to PUT udpate" do
+    before do
+      controller.stub_association!(:current_user, :student_comments=>StudentComment)
+    end
 
     describe "with valid params" do
 
@@ -121,6 +126,9 @@ describe StudentCommentsController do
   end
 
   describe "responding to DELETE destroy" do
+    before do
+      controller.stub_association!(:current_user, :student_comments=>StudentComment)
+    end
 
     it "should destroy the requested student_comment" do
       StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)

@@ -1,14 +1,16 @@
 <p>
-  <b>User:</b>
+  <b>Author:</b>
   <%=h comment.user %>
-</p>
-
-<p>
-  <b>Body:</b>
+  <br />
+  <b>Date Updated:</b>
+  <%= comment.updated_at.to_s(:long) %> 
+  <br />
+  <b>Note:</b>
   <%=h comment.body %>
-</p>
 
-<p>
-    <%= link_to 'Edit', edit_student_comment_path(comment) %>
-    <%= link_to 'Destroy', comment, :confirm => 'Are you sure?', :method => :delete %>
+<% if current_user.id == comment.user_id %>
+  <br />
+      <%= link_to 'Edit', edit_student_comment_path(comment) %>
+      <%= link_to 'Destroy', comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
+<% end %>
 </p>
