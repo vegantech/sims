@@ -1,6 +1,10 @@
 class ReportsController < ApplicationController
   additional_read_actions :team_notes
 
+  def regenerate_intervention_pdfs
+    CreateInterventionPdfs.generate(current_district)
+  end
+
   def team_notes
     @today = Date.current
 

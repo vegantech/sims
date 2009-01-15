@@ -8,12 +8,15 @@
     <%= render :partial => "layouts/intervention_pdf_html_list" %>
     <%= content_tag(:li,link_to('SIMS Virtual Outbox',{:controller=>'railmail'}, {:target=>:blank})) %>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename, current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
-    <li>Reports</li>
-    <ul>
-      <%= li_link_to_if_authorized 'Team Notes', '/reports/team_notes' %>
-      <%= # li_link_to_if_authorized 'Regenerate Intervention documents in menu' , {:controller=>'reports', :action=>  'regenerate_intervention_pdfs'}
-      %>
-    </ul>
+    <li>Reports
+      <ul>
+        <%= li_link_to_if_authorized 'Team Notes', '/reports/team_notes' %>
+        <li>fubar</li>
+        <% if current_user.authorized_for?('intervention_builder/interventions', :write) %>
+          <li><%= link_to "Regenerate Intervention documents in menu" , {:controller=>"reports", :action=>  "regenerate_intervention_pdfs"} %></li>
+        <% end %>
+      </ul>
+    </li>
 <% if false %>
     <%= li_link_to_if_authorized 'Role Management',roles_url %>
 <% end %>

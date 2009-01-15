@@ -16,8 +16,8 @@
 
 regular_students:
   controller: students
-  read_access: true
   role: regular_user
+  read_access: true
 
 regular_schools:
   controller: schools
@@ -135,7 +135,6 @@ district_builder_questions:
   controller: 'checklist_builder/questions'
   read_access: true
   write_access: true
-
 
 district_builder_categories:
   role: district_builder
