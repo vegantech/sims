@@ -71,7 +71,8 @@ class Intervention < ActiveRecord::Base
 
   named_scope :active,:conditions=>{:active=>true}
   named_scope :inactive,:conditions=>{:active=>false}
-  
+
+ 
   def self.build_and_initialize(args)
     #TODO Refactor
 

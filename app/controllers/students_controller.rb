@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
   def index
     flash[:notice]="Please Choose a school" and redirect_to schools_url  and return unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
-    @students = student_search
+    @students = student_search index_includes=true
 
     respond_to do |format|
       format.html # index.html.erb
@@ -106,10 +106,12 @@ class StudentsController < ApplicationController
   end
 
 
-  def student_search
+  def student_search(index_includes=false)
     Enrollment.search(session[:search].merge(
       :school_id => current_school_id,
-      :user => current_user
+      :user => current_user,
+      :index_includes =>index_includes
+      
     ))
   end
 

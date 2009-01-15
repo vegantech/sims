@@ -16,19 +16,23 @@ module FlagsHelper
   end
 
   def custom_flags(student)
-    if student.flags.custom.any?
-      popup="C: Custom Flags- #{student.flags.custom.summary}"
+    unless student.custom_flags.blank?
+      popup="C: Custom Flags- #{flag_summary(student.custom_flags)}"
       image_with_popup("C.gif",popup)
     end || ""
   end
 
 
+  def flag_summary(flags)
+    flags.collect(&:summary).join(" ")
+  end
+  
   def ignore_flags(student, changable=false)
-    if !changable && student.flags.ignore.any?
-      popup = "I: Ignore Flags -  #{student.flags.ignore.summary}"
+    if !changable && !student.ignore_flags.blank?
+      popup = "I: Ignore Flags -  #{flag_summary(student.ignore_flags)}"
       image_with_popup("I.gif",popup)
     else
-      s=student.flags.ignore.collect do |igflag|
+      s=student.ignore_flags.collect do |igflag|
         popup="#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
         form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"custom_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
           image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
@@ -41,8 +45,8 @@ module FlagsHelper
 
   
   def current_flags(student, change = nil )
-    student.flags.current.collect do |flagtype,flags|
-        popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
+    student.current_flags.collect do |flagtype,flags|
+        popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flag_summary(flags)}"
       if change
         form_remote_tag(:url=>{:action=> "ignore_flag", :category=>flags.first.category,:controller=>"custom_flags"},:html=>{:style=>"display:inline"}) +
           image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
@@ -74,13 +78,16 @@ module FlagsHelper
 
   def intervention_status(student)
     str = []
-    if student.interventions.active.any?
-      popup =  student.interventions.active.collect(&:title).join('<br />')
+
+    ai=student.active_interventions
+    unless ai.blank?
+      popup =  ai.collect(&:title).join('<br />')
       str << image_with_popup("green-dot.gif",popup)
     end
     
-    if student.interventions.inactive.any?
-      popup =  student.interventions.inactive.collect(&:title).join('<br />')
+    ii=student.inactive_interventions
+    unless ii.blank?
+      popup =  ii.collect(&:title).join('<br />')
       str << image_with_popup("gray-dot.gif",popup)
     end
     str.join(" ")
