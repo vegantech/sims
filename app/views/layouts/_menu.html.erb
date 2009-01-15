@@ -9,10 +9,13 @@
     <li>Reports</li>
     <ul>
       <li><%= link_to 'Team Notes', '/reports/team_notes' %></li>
+      <% if current_user.authorized_for?('intervention_builder/interventions', :write) %>
+        <li><%= link_to "Regenerate Intervention documents in menu" , {:controller=>"reports", :action=>  "regenerate_intervention_pdfs"} %></li>
+      <% end %>
     </ul>
-<% if false %>
-    <li><%= link_to 'Role Management',roles_url %> </li>
-<% end %>
+    <% if false %>
+        <li><%= link_to 'Role Management',roles_url %> </li>
+    <% end %>
   <% else %>
     <li>Please login.</li>
     <li>For this demo, use oneschool as the username and password</li>

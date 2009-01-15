@@ -24,16 +24,16 @@ class InterventionDefinitionSummaryReport < DefaultReport
 
 		build :body do
 			pdf_writer.start_page_numbering(350, 10, 8, :center, 'Page: <PAGENUM>')
-      pdf_writer.font_size=8
+      pdf_writer.font_size = 8
 			render_grouping data.to_grouping, :table_format => {
 				:column_options => {
-					'Category' => {:width=>95},
+					'Category' => {:width => 95},
 					'Title' => {:width => 110},
 					'Description' => {:width => 230},
 					'Progress Monitors' => {:width => 115},
-					'Duration / Frequency' => {:width=>68},
-					'Links and Attachments' => {:width=>90},
-					'Bus. Key' => {:width=> 49}
+					'Duration / Frequency' => {:width => 68},
+					'Links and Attachments' => {:width => 90},
+					'Bus. Key' => {:width => 49}
 				}
 			}, :formatter => pdf_writer
 		end
@@ -45,7 +45,6 @@ class InterventionDefinitionSummary
 
   def initialize(options = {})
     @obj = ObjectiveDefinition.find options[:objective_definition]
-    # puts "@obj: #{@obj.inspect}."
   end
 
   def to_table
@@ -60,9 +59,7 @@ class InterventionDefinitionSummary
 
     a.rename_columns(a.column_names,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
     a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
-    b = a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
-
-    return b
+    a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
   end
 
   def to_grouping

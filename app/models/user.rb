@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
                         "grade"=>"*"
                         )
 
-    grps=authorized_groups_for_school(school)
+    grps = authorized_groups_for_school(school)
 
     unless opts["grade"] =="*"
       grps = grps.select do |u_group|
@@ -153,8 +153,8 @@ class User < ActiveRecord::Base
     "#{self.username}@sims.vegantech.com"
   end
 
-  def authorized_for?(controller,action_group)
-    roles.has_controller_and_action_group?(controller.to_s,action_group.to_s)
+  def authorized_for?(controller, action_group)
+    roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
   end
 
   def grouped_principal_overrides
