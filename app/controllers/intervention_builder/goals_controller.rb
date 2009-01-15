@@ -1,6 +1,12 @@
 class InterventionBuilder::GoalsController < ApplicationController
-  #before_filter :authorize
+  additional_write_actions :regenerate_intervention_pdfs
   helper_method :move_path
+
+  def regenerate_intervention_pdfs
+    CreateInterventionPdfs.generate(current_district)
+    redirect_to :back
+  end
+
   # GET /goal_definitions
   # GET /goal_definitions.xml
   def index
