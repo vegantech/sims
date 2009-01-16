@@ -79,18 +79,21 @@ describe Interventions::CommentsController do
 
       it "should update the requested intervention_comment" do
         InterventionComment.should_receive(:find).with("37").and_return(mock_intervention_comment)
+        mock_intervention_comment.stub!('comment=' => false)
         mock_intervention_comment.should_receive(:update_attributes).with({'these' => 'params', 'user'=>@user})
         put :update, :id => "37", :intervention_comment => {:these => 'params'}
       end
 
       it "should expose the requested intervention_comment as @intervention_comment" do
-        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true))
+        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true, 'user=' => false))
+        mock_intervention_comment.stub!('comment=' => false)
         put :update, :id => "1", :intervention_comment =>{}
         assigns(:intervention_comment).should equal(mock_intervention_comment)
       end
 
       it "should redirect to the intervention_comment" do
-        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true))
+        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true, 'user=' => false))
+        mock_intervention_comment.stub!('comment=' => false)
         put :update, :id => "1", :intervention_comment =>{}
         response.should redirect_to(intervention_url(@intervention))
       end
@@ -101,18 +104,21 @@ describe Interventions::CommentsController do
 
       it "should update the requested intervention_comment" do
         InterventionComment.should_receive(:find).with("37").and_return(mock_intervention_comment)
+        mock_intervention_comment.stub!('comment=' => false)
         mock_intervention_comment.should_receive(:update_attributes).with({'these' => 'params', 'user'=>@user})
         put :update, :id => "37", :intervention_comment => {:these => 'params'}
       end
 
       it "should expose the intervention_comment as @intervention_comment" do
-        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => false))
+        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => false, 'user=' => false))
+        mock_intervention_comment.stub!('comment=' => false)
         put :update, :id => "1", :intervention_comment =>{}
         assigns(:intervention_comment).should equal(mock_intervention_comment)
       end
 
       it "should re-render the 'edit' template" do
-        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => false))
+        InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => false, 'user=' => false))
+        mock_intervention_comment.stub!('comment=' => false)
         put :update, :id => "1", :intervention_comment =>{}
         response.should render_template('edit')
       end

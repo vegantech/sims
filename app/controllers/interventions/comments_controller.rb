@@ -1,5 +1,6 @@
 class Interventions::CommentsController < ApplicationController
   before_filter :load_intervention
+  include SpellCheck
   # GET /comments/new
   # GET /comments/new.xml
   def new
@@ -20,6 +21,8 @@ class Interventions::CommentsController < ApplicationController
   # POST /comments.xml
   def create
     @intervention_comment = @intervention.comments.build(params[:intervention_comment].merge('user'=>current_user))
+    spellcheck @intervention_comment.comment and render :action=>:new and return if params[:spellcheck]
+     
 
     respond_to do |format|
       if @intervention_comment.save
@@ -37,7 +40,9 @@ class Interventions::CommentsController < ApplicationController
   # PUT /comments/1.xml
   def update
     @intervention_comment = @intervention.comments.find(params[:id])
+    @intervention_comment.comment = params[:intervention_comment][:comment] if params[:intervention_comment]
 
+    spellcheck @intervention_comment.comment and render :action=>:edit and return if params[:spellcheck]
     respond_to do |format|
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'
