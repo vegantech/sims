@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
 
   
   class_inheritable_array :read_actions,:write_actions
-  self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part']  #read raw and part are from railmail
+  self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
   self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
   
   

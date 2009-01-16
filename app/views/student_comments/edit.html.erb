@@ -1,11 +1,13 @@
-<h1>Editing student_comment</h1>
+<h1>Editing Team Note</h1>
 
 <% form_for(@student_comment) do |f| %>
  <%= render :partial=>f %>
 
  <p>
     <%= f.submit "Update" %>
+    <%= spell_check_submit %>
   </p>
 <% end %>
-
+  
+  <%= render :partial => 'spell_check/spelling'  %>
   <%= link_to 'Back', current_student %>

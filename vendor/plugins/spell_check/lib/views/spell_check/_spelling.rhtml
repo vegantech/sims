@@ -1,0 +1,21 @@
+<% unless @spelling_errors.blank? %>
+  <%=pluralize(@spelling_errors.size, "Spelling error") %> detected. Click for spelling suggestions:
+  <table>
+  <tr>
+  <td valign="top">
+  <span>
+  <h2>Errors</h2>
+  <ul>
+     <%=render :partial=>"spell_check/spelling_error", :collection=>@spelling_errors%>
+  </ul>
+  <% else%>
+    <%if @spelling_msg %>
+      <%= @spelling_msg%> 
+    <% end %>
+  <% end %>
+  </td>
+  <td valign="top">
+     <span id="suggestions"></span>
+  </td>
+  </tr>
+  </table>

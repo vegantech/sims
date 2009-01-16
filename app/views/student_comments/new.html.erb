@@ -1,12 +1,13 @@
 <h1>New Team Note for <%=@student_comment.student.fullname%> </h1>
 
-
-
 <% form_for(@student_comment) do |f| %>
   <%= render :partial=>f %>
  <p>
     <%= f.submit "Create" %>
+    <%= spell_check_submit %>
   </p>
 <% end %>
+  
+  <%= render :partial => 'spell_check/spelling'  %>
 
   <%= link_to 'Back', current_student %>

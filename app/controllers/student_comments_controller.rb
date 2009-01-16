@@ -2,6 +2,7 @@ class StudentCommentsController < ApplicationController
   # GET /student_comments
   # GET /student_comments.xml
   before_filter :enforce_session_selections
+  include SpellCheck
 
   # GET /student_comments/new
   # GET /student_comments/new.xml
@@ -23,10 +24,12 @@ class StudentCommentsController < ApplicationController
   # POST /student_comments.xml
   def create
     @student_comment = StudentComment.new(params[:student_comment])
+    
+    spellcheck @student_comment.body and render :action=>:new and return if params[:spellcheck]
 
     respond_to do |format|
       if @student_comment.save
-        flash[:notice] = 'StudentComment was successfully created.'
+        flash[:notice] = 'Team Note was successfully created.'
         format.html { redirect_to(current_student) }
         format.xml  { render :xml => @student_comment, :status => :created, :location => @student_comment }
       else
@@ -40,10 +43,12 @@ class StudentCommentsController < ApplicationController
   # PUT /student_comments/1.xml
   def update
     @student_comment = current_user.student_comments.find(params[:id])
+    @student_comment.body=params[:student_comment][:body]
+    spellcheck @student_comment.body and render :action=>:edit and return if params[:spellcheck]
 
     respond_to do |format|
-      if @student_comment.update_attributes(params[:student_comment])
-        flash[:notice] = 'StudentComment was successfully updated.'
+      if @student_comment.save
+        flash[:notice] = 'Team Note was successfully updated.'
         format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else

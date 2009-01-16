@@ -1,0 +1,5 @@
+Spellcheck
+==========
+
+Spellcheck using ASPELL 
+will fall back to googlespell check if ASPELL is not available.

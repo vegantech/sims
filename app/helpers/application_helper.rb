@@ -89,6 +89,10 @@ module ApplicationHelper
     end)
   end
 
+  def spell_check_submit
+    submit_tag "Spellcheck", :name=>"spellcheck" 
+  end
+
   def previous_answers(checklist, answer_definition, &block)
     return if checklist.student.blank?
     if block_given?
