@@ -78,6 +78,30 @@ module ApplicationHelper
   end
 
 
+
+  def plus_minus_li( title, &blk)
+    id=title.gsub(/ /, '_')
+    concat(content_tag(:li, :class => "plus_minus", :id=>"li#{id}") do
+      link_to_function(title, "toggle_visibility('ul#{id}');") +
+      content_tag(:ul, :id=>"ul#{id}") do
+        capture(&blk)
+      end
+    end)
+  end
+
+  def previous_answers(checklist, answer_definition, &block)
+    return if checklist.student.blank?
+    if block_given?
+      if (answers = checklist.previous_answers_for(answer_definition)).any?
+        concat "<div style=\"color:gray\">Previous Answers:</div>", block.binding
+        answers.each do |answer|
+          concat(capture(answer, &block),block.binding)
+        end
+      end
+    end
+  end
+
+
     
 
 end

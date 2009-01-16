@@ -152,3 +152,17 @@ table .list-line-even {
   
 
 }
+
+li.plus_minus {
+  list-style-type: none;
+  list-style-image: url(/images/plus-8.png);
+}
+
+.plus_minus ul {
+  display: none;
+} 
+
+.plus_minus ul li {
+  list-style-type: square;
+  list-style-image: none;
+}

@@ -1,10 +1,7 @@
-	  <%# plus_minus_li "Intervention and Progress Monitors", :toggle_blind, "intervention_menu" do%> 
-    <li> Intervention and Progress Monitors
-      <ul>
-         <% Dir.glob("#{RAILS_ROOT}/public/district_generated_docs/#{current_district.id}/*.{pdf,html}").each do |file| %>
-           <%= content_tag :li, link_to_with_icon(file.split("/").last, file.split("public",2).last) %>
-         <% end %>
-      </ul>
-    </li>
-		<%#end%>
+<% plus_minus_li  "Intervention and Progress Monitors" do   %>
+  <% Dir.glob("#{RAILS_ROOT}/public/district_generated_docs/#{current_district.id}/*.{pdf,html}").each do |file| %>
+    <%= content_tag :li, link_to_with_icon(file.split("/").last, file.split("public",2).last) %>
+  <% end %>
+<% end %>
+
 
