@@ -82,7 +82,7 @@ module ApplicationHelper
   def plus_minus_li( title, &blk)
     id=title.gsub(/ /, '_')
     concat(content_tag(:li, :class => "plus_minus", :id=>"li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}');") +
+      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") +
       content_tag(:ul, :id=>"ul#{id}") do
         capture(&blk)
       end
