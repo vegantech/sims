@@ -8,6 +8,6 @@ describe FlagCategory do
   end
 
   it "should create a new instance given valid attributes" do
-    District::FlagCategory.create!(@valid_attributes)
+    FlagCategory.create!(@valid_attributes)
   end
 end
