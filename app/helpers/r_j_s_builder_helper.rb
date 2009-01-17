@@ -9,6 +9,7 @@ module RJSBuilderHelper
   # start color becomes whatever the current color of the highlight is, and therefore the
   # end color.  This prevents this behavior.
   def safe_highlight(dom_id)
+    #    raise 'eee'
     page << "if(!Element.hasClassName('#{dom_id}','disabled_for_highlight')){"
     page << "Element.addClassName('#{dom_id}','disabled_for_highlight')"
     page.visual_effect :highlight, "#{dom_id}"
