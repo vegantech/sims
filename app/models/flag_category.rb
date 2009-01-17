@@ -3,4 +3,5 @@ class FlagCategory < ActiveRecord::Base
   belongs_to :district
   validates_uniqueness_of :category, :scope=>:district_id
   validates_inclusion_of :category, :in => Flag::FLAGTYPES.keys
+  has_many :assets, :as => :attachable
 end

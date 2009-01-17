@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090116000502) do
+ActiveRecord::Schema.define(:version => 20090117231323) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -33,6 +33,21 @@ ActiveRecord::Schema.define(:version => 20090116000502) do
 
   add_index "answers", ["answer_definition_id"], :name => "index_answers_on_answer_definition_id"
   add_index "answers", ["checklist_id"], :name => "index_answers_on_checklist_id"
+
+  create_table "assets", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+  end
+
+  add_index "assets", ["attachable_id", "attachable_type"], :name => "index_assets_on_attachable_id_and_attachable_type"
 
   create_table "checklist_definitions", :force => true do |t|
     t.text     "text"
