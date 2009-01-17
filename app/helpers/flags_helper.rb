@@ -1,16 +1,14 @@
 module FlagsHelper
   # Since all helpers are loaded, I'll just group them by convenience
-  #
-  def image_with_popup(image,popup)
+
+  def image_with_popup(image, popup)
     image_tag(image,"onmouseover" => "return overlib('#{popup}');",
       "onmouseout" => "return nd();") + " "
   end
 
-  
-
-  def status_display(student, change = nil)
+  def status_display(student, changeable = false)
     str = intervention_status(student)
-    str += current_flags(student,change)
+    str += current_flags(student, changeable)
     str += ignore_flags(student)
     str += custom_flags(student)
   end
@@ -22,45 +20,41 @@ module FlagsHelper
     end || ""
   end
 
-
   def flag_summary(flags)
     flags.collect(&:summary).join(" ")
   end
-  
-  def ignore_flags(student, changable=false)
-    if !changable && !student.ignore_flags.blank?
+
+  def ignore_flags(student, changeable = false)
+    unless changeable || student.ignore_flags.blank?
       popup = "I: Ignore Flags -  #{flag_summary(student.ignore_flags)}"
-      image_with_popup("I.gif",popup)
+      image_with_popup("I.gif", popup)
     else
-      s=student.ignore_flags.collect do |igflag|
-        popup="#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
-        form_remote_tag(:url=>{:action=> "unignore_flag", :id=>igflag,:controller=>"custom_flags"},:html=>{:class=>"flag_button", :style=>"display:inline"}) +
-          image_submit_tag(igflag.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
-        "</form>"
+      s = student.ignore_flags.collect do |igflag|
+        popup = "#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
+
+        form_remote_tag(:url => {:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
+          :html => {:class => "flag_button", :style => "display:inline"}) +
+          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
+          "</form>"
       end
-    s.join(" ")
+      s.join(" ")
     end
   end
 
+  def current_flags(student, changeable = false )
+    student.current_flags.collect do |flagtype, flags|
+      popup = "#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flag_summary(flags)}"
 
-  
-  def current_flags(student, change = nil )
-    student.current_flags.collect do |flagtype,flags|
-        popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flag_summary(flags)}"
-      if change
-        form_remote_tag(:url=>{:action=> "ignore_flag", :category=>flags.first.category,:controller=>"custom_flags"},:html=>{:style=>"display:inline"}) +
-          image_submit_tag(flags.first.icon,"onmouseover" => "return overlib('#{popup}');","onmouseout" => "return nd();") +
-        "</form>"
+      if changeable
+        form_remote_tag(:url => {:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
+          :html => {:style => "display:inline"}) +
+          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
+          "</form>"
       else
-        image_with_popup(Flag::FLAGTYPES[flagtype][:icon],popup)
-
+        image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
       end
     end.join(" ")
   end
-
-
-
-
 
   def flag_select
     Flag::ORDERED_TYPE_KEYS.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}
@@ -68,29 +62,28 @@ module FlagsHelper
 
   def flag_checkbox(flagtype)
     f = Flag::TYPES[flagtype.to_s]
-    check_box_tag("flagged_intervention_types[]", flagtype, false,:id=>"flag_#{flagtype}", :onclick=>"searchByFlag()") +
+    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :onclick => "searchByFlag()") +
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 
   def display_flag_legend?(&block)
-    yield if controller.controller_name=="students"
+    yield if controller.controller_name == "students"
   end
 
   def intervention_status(student)
     str = []
 
-    ai=student.active_interventions
+    ai = student.active_interventions
     unless ai.blank?
       popup =  ai.collect(&:title).join('<br />')
       str << image_with_popup("green-dot.gif",popup)
     end
-    
-    ii=student.inactive_interventions
+
+    ii = student.inactive_interventions
     unless ii.blank?
       popup =  ii.collect(&:title).join('<br />')
       str << image_with_popup("gray-dot.gif",popup)
     end
     str.join(" ")
   end
- 
 end

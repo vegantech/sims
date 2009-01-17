@@ -17,13 +17,13 @@
 class Flag < ActiveRecord::Base
 	ORDERED_TYPE_KEYS = %w{attendance languagearts math suspension ignored custom}
 
-  TYPES={
-    "attendance"=>{:icon=>"A.gif",:humanize=>"Attendance"},
-    "languagearts"=>{:icon=>"LA.gif",:humanize=>"Language Arts"},
-    "math"=>{:icon=>"M.gif",:humanize=>"Math"},
-    "suspension"=>{:icon=>"B.gif",:humanize=>"Behavior" },
-    "ignored"=>{:icon=>"I.gif", :humanize=>"Ignored"},
-    "custom"=>{:icon=>"C.gif",:humanize=>"Custom"}
+  TYPES = {
+      "attendance" => {:icon => "A.gif", :humanize => "Attendance"},
+      "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts"},
+      "math" => {:icon => "M.gif", :humanize => "Math"},
+      "suspension" => {:icon=> "B.gif", :humanize => "Behavior" },
+      "ignored" => {:icon => "I.gif", :humanize => "Ignored"},
+      "custom" => {:icon => "C.gif", :humanize => "Custom"}
     }
   FLAGTYPES= TYPES.reject{|i,j| i=="custom" || i=="ignored"}
 

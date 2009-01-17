@@ -2,22 +2,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe FlagsHelper do
   include FlagsHelper
-  
-  #Delete this example and add some real ones or delete this file
-  it "should be included in the object returned by #helper" do
-    included_modules = (class << helper; self; end).send :included_modules
-    included_modules.should include(FlagsHelper)
-  end
 
   describe 'status_display' do
     it 'should combine intervention current and custom flags' do
-      student="STUDENT"
-      change="CHANGE"
+      student = "STUDENT"
+      change = "CHANGE"
+
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
       self.should_receive(:current_flags).with(student,change).and_return('CURRENT FLAGS ')
       self.should_receive(:ignore_flags).with(student).and_return('IGNORE FLAGS ')
       self.should_receive(:custom_flags).with(student).and_return('CUSTOM FLAGS')
-      status_display(student,change).should =='INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
+
+      status_display(student,change).should == 'INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
     end
   end
 
@@ -30,131 +26,86 @@ describe FlagsHelper do
 
   describe 'custom flags' do
     it 'should return empty string when student has no custom flags' do
-      pending
-      student=mock_student
-      student.stub_association!(:flags,:custom=>[])
+      student = mock_student(:custom_flags => [])
       custom_flags(student).should == ""
     end
 
     it 'should show the custom flag icon with the summary as a popup' do
-      pending
-      student=mock_student
-      flag=mock_flag(:summary=>"Custom Flag Summary", :any? =>true)
-      student.stub_association!(:flags,:custom=>flag)
+      flag = mock_flag(:summary => "Custom Flag Summary", :any? => true)
+      student = mock_student(:custom_flags => [flag])
       self.should_receive(:image_with_popup).with("C.gif", 'C: Custom Flags- Custom Flag Summary').and_return('RSPEC CUSTOM FLAGS')
       custom_flags(student).should == "RSPEC CUSTOM FLAGS"
-
     end
   end
 
   describe 'current_flags' do
-    before do
-      @student=mock_student
-    end
-
     describe 'without flags' do
       it 'should return blank string' do
-        pending
-        @student.stub_association!(:flags,:current=>{})
-        current_flags(@student).should == ""
+        student = mock_student(:current_flags => [])
+        current_flags(student).should == ""
       end
     end
 
     describe 'with flags' do
-      it 'should show current flags' do
-        pending
+      describe 'not changeable' do
+        it 'should show current flags' do
+          cf = mock_flag(:summary => 'Current Flag Summary')
+          student = mock_student(:current_flags => {'math' => [cf]})
+          self.should_receive(:image_with_popup).with("M.gif", "M: Current Flag Summary").and_return('Rspec Current Flags')
+          current_flags(student).should == 'Rspec Current Flags'
+        end
+      end
+
+      describe 'changeable' do
+        it 'should return a form' do
+          cf = mock_flag(:category => 'languagearts', :summary => 'Current Flag Summary', :icon => 'CF.png')
+          student = mock_student(:current_flags => {'math' => [cf]})
+
+          current_flags(student, true).should == "<form action=\"/custom_flags/ignore_flag?category=languagearts\"" +
+            " method=\"post\" onsubmit=\"new Ajax.Request('/custom_flags/ignore_flag?category=languagearts'," +
+            " {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"" +
+            " style=\"display:inline\"><input onmouseout=\"return nd();\" onmouseover=\"return overlib('M: Current Flag Summary');\"" +
+            " src=\"/images/CF.png\" type=\"image\" /></form>"
+        end
       end
     end
   end
 
-
-
-  describe 'custom_flags' do
-    it 'should be tested' do
-      pending
-    end
-  end
-
-  describe 'flag_select' do 
-    it 'should be tested' do
-      pending
-    end
-  end
-
-  describe 'flag_checkbox' do
-    it 'should be tested' do
-      pending
-    end
-  end
-
-  describe 'display_flag_legend?' do
-    it 'should be tested' do
-      pending
-    end
-  end
-  
-  describe 'intervention_status' do
-    it 'should be tested' do
-      pending
+  describe 'ignore_flags' do
+    describe 'for student without ignore flags' do
+      it 'should return blank string' do
+        student = mock_student(:ignore_flags => [])
+        ignore_flags(student).should == ''
+      end
     end
 
+    describe 'for student with ignore flags' do
+      describe 'not changeable' do
+        it 'should show I.gif image with popup message' do
+          flag = mock_flag(:summary => 'Ignore Flag Summary')
+          student = mock_student(:ignore_flags => [flag])
+          self.should_receive(:image_with_popup).with("I.gif", "I: Ignore Flags -  Ignore Flag Summary").and_return('Rspec Ignore Flags')
+          ignore_flags(student).should == 'Rspec Ignore Flags'
+        end
+      end
+
+      describe 'passed changeable set to true' do
+        it 'should return form remote tag output' do
+          u = mock_user(:to_s => 'Mock User')
+
+          flag = mock_flag(:category => 'SomeCategory', :reason => 'Just because', :user => u, :created_at => Date.new(2009, 1, 12).to_time,
+            :icon => 'fubar.png')
+
+          student = mock_student(:ignore_flags => [flag])
+
+          ignore_flags(student, true).should == "<form action=\"/custom_flags/unignore_flag/#{flag.id}\" class=\"flag_button\" method=\"post\"" +
+            " onsubmit=\"new Ajax.Request('/custom_flags/unignore_flag/#{flag.id}'," +
+            " {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"" +
+            " style=\"display:inline\"><input onmouseout=\"return nd();\"" +
+            " onmouseover=\"return overlib('Somecategory - Just because  by Mock User on Mon Jan 12 00:00:00 -0600 2009');\"" +
+            " src=\"/images/fubar.png\" type=\"image\" /></form>"
+        end
+      end
+    end
   end
-
-
-=begin
-
-  def status_display(student, change = nil)
-    10     str = intervention_status(student)
-    11 
-    12     student.flags.current.each do |flagtype,flags|
-      13       popup="#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flags.collect(&:summary).join(" ")}"
-      14       str += displayflag(Flag::FLAGTYPES[flagtype][:icon],popup, flagtype, student)      
-      15     end
-    16 
-    17     if change.nil? && student.flags.any?
-    18       popup="C: Custom Flags- #{student.flags.custom_summary}"
-    19       str += image_tag("C.gif",
-                              20       "onmouseover" => "return overlib('#{popup}');",
-                              21       "onmouseout" => "return nd();")
-                              22     end
-  23 
-  24     str
-  25   end
-  26 
-  27   def flag_select
-  28     Flag::ORDERED_TYPE_KEYS.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}
-  29   end
-  30 
-  31   def flag_checkbox(flagtype)
-  32     f = Flag::TYPES[flagtype.to_s]
-  33     check_box_tag("flagged_intervention_types[]", flagtype, false,:id=>"flag_#{flagtype}", :onclick=>"searchByFlag()") +
-    34     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
-  35   end
-  36 
-  37   def display_flag_legend?(&block)
-  38     yield if controller.controller_name=="students"
-  39   end
-  40 
-  41   def intervention_status(student)
-  42     str = ''
-  43     if student.interventions.active.any?
-  44       popup =  student.interventions.active.collect(&:title).join('<br />')
-  45       str += image_tag("green-dot.gif",
-                            46         "onmouseover" => "return overlib('#{popup}');",
-                            47         "onmouseout" => "return nd();") + " "
-                            48     end
-  49     
-  50     if student.interventions.inactive.any?
-  51       popup =  student.interventions.inactive.collect(&:title).join('<br />')
-  52       str += image_tag("gray-dot.gif",
-                            53         "onmouseover" => "return overlib('#{popup}');",
-                            54         "onmouseout" => "return nd();") + " "
-                            55     end
-  56   str
-  57   end
-  58  
-  59 end
-
-
-=end  
 end

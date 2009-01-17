@@ -23,7 +23,7 @@ class Student < ActiveRecord::Base
   has_many :recommendations
   has_many :enrollments
   has_many :schools, :through=>:enrollments
-  has_many :comments, :class_name=>"StudentComment"
+  has_many :comments, :class_name => "StudentComment"
   has_many :principal_overrides
   has_many :interventions
   has_many :system_flags
@@ -32,14 +32,14 @@ class Student < ActiveRecord::Base
   has_many :flags
 
   validates_presence_of :first_name, :last_name, :district_id
-  validates_uniqueness_of :id_district, :scope=>:district_id, :unless => lambda {|e| e.id_district.blank?}
+  validates_uniqueness_of :id_district, :scope => :district_id, :unless => lambda {|e| e.id_district.blank?}
 
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
-  
+
   after_update :save_system_flags
-  
-  #This is duplicated in user
+
+  # This is duplicated in user
   def fullname 
     first_name.to_s + ' ' + last_name.to_s
   end
@@ -47,7 +47,6 @@ class Student < ActiveRecord::Base
   def fullname_last_first
     last_name.to_s + ', ' + first_name.to_s
   end
-
 
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
@@ -61,7 +60,7 @@ class Student < ActiveRecord::Base
   def max_tier
     unless recommendations.blank?
       district.tiers.first
-      #FIXME, should only be promoted 
+      # FIXME, should only be promoted 
 #      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
     else
       district.tiers.first
@@ -69,13 +68,13 @@ class Student < ActiveRecord::Base
   end
 
   def self.find_flagged_students(flagtypes=[])
-    flagtype=Array(flagtypes)
-    stitypes=[]
-    custom=flagtype.reject!{|v| v =="custom"}
-    ignore=flagtype.reject!{|v| v == "ignored"}
+    flagtype = Array(flagtypes)
+    stitypes = []
+    custom = flagtype.reject!{|v| v =="custom"}
+    ignore = flagtype.reject!{|v| v == "ignored"}
     flagtype.reject!{|v| !Flag::TYPES.keys.include?(v)}
 
-    flagtype=Flag::FLAGTYPES.keys if flagtype.blank?
+    flagtype = Flag::FLAGTYPES.keys if flagtype.blank?
 
     stitypes << "CustomFlag" if custom
     stitypes << "IgnoreFlag" if ignore
@@ -107,9 +106,9 @@ class Student < ActiveRecord::Base
   end
 
   def special_group_principals
-    grades=enrollments.collect(&:grade)
-    schools=enrollments.collect(&:school_id)
-    principals=[]
+    grades = enrollments.collect(&:grade)
+    schools = enrollments.collect(&:school_id)
+    principals = []
 
     principals << district.special_user_groups.principal.all_students_in_district.collect(&:user)
     schools.each do |school|
@@ -136,14 +135,12 @@ class Student < ActiveRecord::Base
       end
     end
   end
-
   
   def save_system_flags
     system_flags.each do |system_flag|
       system_flag.save(false)
     end
   end
-
 
   def district_system_flags=(district_flags)
     district_flags = Array(district_flags)
@@ -152,12 +149,11 @@ class Student < ActiveRecord::Base
     self.system_flags = district_flags.uniq.collect{|s| SystemFlag.new(s.merge(:student_id=>self.id))}
   end
 
-
   def school_enrollments=(enrolled_schs)
     enrolled_schs = Array(enrolled_schs)
     enrolled_schs.reject!(&:blank?)
 
-    #This removes duplicates,  uniq doesn't work with an array of hashes (they're different objects with the same contents.)
+    # This removes duplicates,  uniq doesn't work with an array of hashes (they're different objects with the same contents.)
     enrolled_schs = enrolled_schs.inject([]) { |result,h| result << h unless result.include?(h); result }
 
     self.enrollments = enrolled_schs.uniq.collect{|s| Enrollment.new(s.merge(:student_id=>self.id))}
@@ -174,15 +170,13 @@ class Student < ActiveRecord::Base
   def inactive_interventions
     interventions.reject(&:active)
   end
- 
+
   def current_flags
     #FIXME doesn't handle ignores
     # all.group_by(&:category)
     flags.reject do |f|
       (f[:type] == 'IgnoreFlag') or 
-      (f[:type] == 'SystemFlag' and
-      ignore_flags.any?{|igf| igf.category == f.category})
+      (f[:type] == 'SystemFlag' and ignore_flags.any?{|igf| igf.category == f.category})
     end.group_by(&:category)
   end
-
 end
