@@ -8,19 +8,25 @@ describe District::FlagCategoriesController do
     @mock_flag_category ||= mock_model(FlagCategory, stubs)
   end
   
+
+  before do
+    controller.stub_association!(:current_district,:flag_categories=>FlagCategory)
+  end
   describe "responding to GET index" do
 
-    it "should expose all district_flag_categories as @district_flag_categories" do
+    it "should expose all district_flag_categories as @flag_categories" do
       FlagCategory.should_receive(:find).with(:all).and_return([mock_flag_category])
+      controller.stub_association!(:current_district,:flag_categories=>FlagCategory.find(:all))
       get :index
-      assigns[:district_flag_categories].should == [mock_flag_category]
+      assigns[:flag_categories].should == [mock_flag_category]
     end
 
     describe "with mime type of xml" do
   
-      it "should render all district_flag_categories as xml" do
+      it "should render all flag_categories as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
         FlagCategory.should_receive(:find).with(:all).and_return(flag_categories = mock("Array of FlagCategories"))
+        controller.stub_association!(:current_district,:flag_categories=>FlagCategory.find(:all))
         flag_categories.should_receive(:to_xml).and_return("generated XML")
         get :index
         response.body.should == "generated XML"
@@ -55,7 +61,7 @@ describe District::FlagCategoriesController do
   describe "responding to GET new" do
   
     it "should expose a new flag_category as @flag_category" do
-      FlagCategory.should_receive(:new).and_return(mock_flag_category)
+      FlagCategory.should_receive(:build).and_return(mock_flag_category)
       get :new
       assigns[:flag_category].should equal(mock_flag_category)
     end
@@ -77,14 +83,14 @@ describe District::FlagCategoriesController do
     describe "with valid params" do
       
       it "should expose a newly created flag_category as @flag_category" do
-        FlagCategory.should_receive(:new).with({'these' => 'params'}).and_return(mock_flag_category(:save => true))
+        FlagCategory.should_receive(:build).with({'these' => 'params'}).and_return(mock_flag_category(:save => true))
         post :create, :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
 
       it "should redirect to the created flag_category" do
         pending
-        FlagCategory.stub!(:new).and_return(mock_flag_category(:save => true))
+        FlagCategory.stub!(:build).and_return(mock_flag_category(:save => true))
         post :create, :flag_category => {}
         response.should redirect_to(mock_flag_category)
       end
@@ -94,13 +100,13 @@ describe District::FlagCategoriesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved flag_category as @flag_category" do
-        FlagCategory.stub!(:new).with({'these' => 'params'}).and_return(mock_flag_category(:save => false))
+        FlagCategory.stub!(:build).with({'these' => 'params'}).and_return(mock_flag_category(:save => false))
         post :create, :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
 
       it "should re-render the 'new' template" do
-        FlagCategory.stub!(:new).and_return(mock_flag_category(:save => false))
+        FlagCategory.stub!(:build).and_return(mock_flag_category(:save => false))
         post :create, :flag_category => {}
         response.should render_template('new')
       end

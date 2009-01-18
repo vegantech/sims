@@ -6,7 +6,7 @@ class District::FlagCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @district_flag_categories }
+      format.xml  { render :xml => @flag_categories }
     end
   end
 
