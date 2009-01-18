@@ -1,16 +1,7 @@
 <h1>Editing flag_category</h1>
 
 <% form_for(@flag_category) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :district %><br />
-    <%= f.text_field :district %>
-  </p>
-  <p>
-    <%= f.label :category %><br />
-    <%= f.text_field :category %>
-  </p>
+  <%= render :partial => f %>
   <p>
     <%= f.submit "Update" %>
   </p>

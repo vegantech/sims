@@ -1,0 +1,8 @@
+<% plus_minus_li "Core Practices" do   %>
+  <% current_district.core_practice_assets.each do |asset| %>
+    <%= content_tag(:li, link_to_with_icon(asset.name, asset.url)) unless asset.url.blank? %>
+    <%= content_tag(:li, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document? %>
+  <% end %>
+<% end unless current_district.core_practice_assets.blank? %>
+
+

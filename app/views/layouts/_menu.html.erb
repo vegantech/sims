@@ -1,26 +1,26 @@
 <ul>
   <% if session[:user_id] %>
-    <li><%= render :partial => 'login/logout' %></li>
+    <li><%= link_to "Home", root_url %> </li>
     <%= li_link_to_if_authorized 'School Selection', schools_url %> 
+    <%= render :partial => "layouts/core_practices" %>
+    <%= render :partial => "layouts/intervention_pdf_html_list" %>
     <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_url %>
     <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_url %>
     <%= li_link_to_if_authorized 'Probe Builder', intervention_builder_probes_url %>
-    <%= render :partial => "layouts/intervention_pdf_html_list" %>
+    <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_url %>
     <%= content_tag(:li,link_to('SIMS Virtual Outbox',{:controller=>'railmail'}, {:target=>:blank})) %>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename, current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
 
-    <% # plus_minus_li "Reports", :toggle_blind, "report_menu" do %>
-    <li>Reports</li>
-      <ul>
+    <% plus_minus_li "Reports" do %>
         <%= li_link_to_if_authorized 'Team Notes', '/reports/team_notes' %>
         <%= li_link_to_if_authorized "Regenerate Intervention documents in menu" , 
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
-      </ul>
-    <% # end %>
+    <%  end %>
 
-<% if false %>
-    <%= li_link_to_if_authorized 'Role Management',roles_url %>
-<% end %>
+    <% if false %>
+        <%= li_link_to_if_authorized 'Role Management',roles_url %>
+    <% end %>
+    <li><%= render :partial => 'login/logout' %></li>
   <% else %>
     <li>Please login.</li>
     <li>For this demo, use oneschool as the username and password</li>

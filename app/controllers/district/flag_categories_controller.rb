@@ -2,7 +2,7 @@ class District::FlagCategoriesController < ApplicationController
   # GET /district_flag_categories
   # GET /district_flag_categories.xml
   def index
-    @district_flag_categories = FlagCategory.find(:all)
+    @flag_categories = current_district.flag_categories
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class District::FlagCategoriesController < ApplicationController
   # GET /district_flag_categories/1
   # GET /district_flag_categories/1.xml
   def show
-    @flag_category = FlagCategory.find(params[:id])
+    @flag_category = current_district.flag_categories.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +24,7 @@ class District::FlagCategoriesController < ApplicationController
   # GET /district_flag_categories/new
   # GET /district_flag_categories/new.xml
   def new
-    @flag_category = FlagCategory.new
+    @flag_category = current_district.flag_categories.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,13 +34,13 @@ class District::FlagCategoriesController < ApplicationController
 
   # GET /district_flag_categories/1/edit
   def edit
-    @flag_category = FlagCategory.find(params[:id])
+    @flag_category = current_district.flag_categories.find(params[:id])
   end
 
   # POST /district_flag_categories
   # POST /district_flag_categories.xml
   def create
-    @flag_category = FlagCategory.new(params[:flag_category])
+    @flag_category = current_district.flag_categories.build(params[:flag_category])
 
     respond_to do |format|
       if @flag_category.save
@@ -57,7 +57,7 @@ class District::FlagCategoriesController < ApplicationController
   # PUT /district_flag_categories/1
   # PUT /district_flag_categories/1.xml
   def update
-    @flag_category = FlagCategory.find(params[:id])
+    @flag_category = current_district.flag_categories.find(params[:id])
 
     respond_to do |format|
       if @flag_category.update_attributes(params[:flag_category])
@@ -74,7 +74,7 @@ class District::FlagCategoriesController < ApplicationController
   # DELETE /district_flag_categories/1
   # DELETE /district_flag_categories/1.xml
   def destroy
-    @flag_category = FlagCategory.find(params[:id])
+    @flag_category = current_district.flag_categories.find(params[:id])
     @flag_category.destroy
 
     respond_to do |format|

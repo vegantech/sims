@@ -23,6 +23,8 @@ class District < ActiveRecord::Base
   belongs_to :state
   has_many :users, :order => :username
   has_many :checklist_definitions
+  has_many :flag_categories
+  has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
   has_many :probe_definitions

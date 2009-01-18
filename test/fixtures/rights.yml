@@ -172,6 +172,12 @@ district_builder_recommended_monitors:
   read_access: true
   write_access: true
 
+district_builder_flag_categories:
+  role: district_builder
+  controller: 'district/flag_categories'
+  read_access: true
+  write_access: true
+
 
 regular_railmail:
   role: regular_user
