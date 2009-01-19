@@ -1,0 +1,20 @@
+<% unless  session[:search][:search_type] == 'flagged_intervention' or current_district.core_practice_assets.blank?  %>
+
+  <% current_district.flag_categories.each do |fc| %>
+
+    <% if 100*@flagcount[fc.category].to_f/@students.size  > fc.threshold %>
+      <b>This student list has <%=fc.threshold %>% or more of the students flagged for: 
+<%=Flag::FLAGTYPES[fc.category][:humanize] %> 
+</b>
+
+      <%= links_and_attachments(fc, :p) %>
+
+  Please review the appropriate core practices document(s) prior to selecting individual students for problem solving.
+    <% end %>
+
+
+
+
+  <% end %>
+
+<% end %>

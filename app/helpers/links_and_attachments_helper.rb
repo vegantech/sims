@@ -7,6 +7,16 @@ module LinksAndAttachmentsHelper
     end
   end
 
+  def links_and_attachments(obj, tag_type)
+    obj.assets.collect do |asset| 
+      d=''
+      d+= content_tag(tag_type, link_to_with_icon(asset.name, asset.url)) unless asset.url.blank? 
+      d+= content_tag(tag_type, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document? 
+      d
+    end.join(" ")
+
+  end
+
   def link_to_add_attachment(object)
     link_to 'Add Attachment', {:controller=>"attachment",:action=>:new,
     :class=>object.class, :id=>object} ,{:method=>:post} if object.respond_to?"attachments"

@@ -23,5 +23,7 @@
   <%='&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
   <%= submit_tag "select for problem solving", :name => 'process' %>
 <% end %>
+
+<%= render :partial => 'review_core_practices' %>
  <%= javascript_include_tag 'tablesort',  :cache => true %>
 

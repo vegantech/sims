@@ -43,6 +43,9 @@ module FlagsHelper
 
   def current_flags(student, changeable = false )
     student.current_flags.collect do |flagtype, flags|
+      @flagcount ||= Hash.new(0)
+      @flagcount[flagtype] +=1
+
       popup = "#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flag_summary(flags)}"
 
       if changeable

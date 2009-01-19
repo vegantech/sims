@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(:version => 20090118224504) do
     t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "threshold",   :default => 0
+    t.integer  "threshold",   :default => 100
   end
 
   add_index "flag_categories", ["district_id"], :name => "index_flag_categories_on_district_id"
