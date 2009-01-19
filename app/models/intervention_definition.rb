@@ -24,7 +24,7 @@
 
 class InterventionDefinition < ActiveRecord::Base
   include ActionView::Helpers::TextHelper # to pick up pluralize
-
+  include LinkAndAttachmentAssets
   belongs_to :intervention_cluster
   belongs_to :frequency
   belongs_to :time_length

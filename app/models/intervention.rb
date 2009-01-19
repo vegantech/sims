@@ -21,6 +21,7 @@
 #
 
 class Intervention < ActiveRecord::Base
+  include LinkAndAttachmentAssets
   belongs_to :user
   belongs_to :student
   belongs_to :intervention_definition

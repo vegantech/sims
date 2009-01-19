@@ -14,6 +14,7 @@
 #
 
 class ObjectiveDefinition < ActiveRecord::Base
+  include LinkAndAttachmentAssets
   belongs_to :goal_definition
   has_many :intervention_clusters, :order =>:position
   
