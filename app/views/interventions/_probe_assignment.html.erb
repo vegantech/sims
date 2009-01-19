@@ -1,7 +1,6 @@
 <p>
 Progress Monitor
 <%= probe_assignment.probe_definition.title %>
-<%=list_links_and_attachments(probe_assignment.probe_definition)%>  
 
 <% if @intervention.active? %>
   <%= display_assessment_links(probe_assignment) %>

@@ -4,7 +4,6 @@
      <%= content_tag :h3,intervention_probe_assignment.probe_definition.title %>
      Description:
       <%= intervention_probe_assignment.probe_definition.description %>
-      <%=list_links_and_attachments(intervention_probe_assignment.probe_definition)%>
       
       <p>      Benchmarks
       <%= render_with_empty :partial=>"benchmark", :collection=>intervention_probe_assignment.probe_definition.probe_definition_benchmarks, 
