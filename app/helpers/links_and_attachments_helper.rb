@@ -1,5 +1,12 @@
 module LinksAndAttachmentsHelper
 
+  def add_asset_link(name, parent)
+    link_to_function name do |page|
+      page.insert_html :bottom, :assets, :partial => 'assets/asset', :object => Asset.new,
+        :locals =>{:parent => parent}
+    end
+  end
+
   def link_to_add_attachment(object)
     link_to 'Add Attachment', {:controller=>"attachment",:action=>:new,
     :class=>object.class, :id=>object} ,{:method=>:post} if object.respond_to?"attachments"

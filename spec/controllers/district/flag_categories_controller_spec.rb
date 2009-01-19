@@ -62,6 +62,7 @@ describe District::FlagCategoriesController do
   
     it "should expose a new flag_category as @flag_category" do
       FlagCategory.should_receive(:build).and_return(mock_flag_category)
+      mock_flag_category.stub_association!(:assets,:build=>{})
       get :new
       assigns[:flag_category].should equal(mock_flag_category)
     end
@@ -121,20 +122,20 @@ describe District::FlagCategoriesController do
 
       it "should update the requested flag_category" do
         FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params', "existing_asset_attributes" => {}})
         put :update, :id => "37", :flag_category => {:these => 'params'}
       end
 
       it "should expose the requested flag_category as @flag_category" do
         FlagCategory.stub!(:find).and_return(mock_flag_category(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
 
       it "should redirect to the flag_category" do
         pending
         FlagCategory.stub!(:find).and_return(mock_flag_category(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :flag_category => {:these => 'params'}
         response.should redirect_to(mock_flag_category)
       end
 
@@ -144,19 +145,19 @@ describe District::FlagCategoriesController do
 
       it "should update the requested flag_category" do
         FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params', "existing_asset_attributes" => {}})
         put :update, :id => "37", :flag_category => {:these => 'params'}
       end
 
       it "should expose the flag_category as @flag_category" do
         FlagCategory.stub!(:find).and_return(mock_flag_category(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, :id => "1", :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
 
       it "should re-render the 'edit' template" do
         FlagCategory.stub!(:find).and_return(mock_flag_category(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, :id => "1", :flag_category => {:these => 'params'}
         response.should render_template('edit')
       end
 

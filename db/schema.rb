@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090117231323) do
+ActiveRecord::Schema.define(:version => 20090118224504) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20090117231323) do
     t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "threshold",   :default => 0
   end
 
   add_index "flag_categories", ["district_id"], :name => "index_flag_categories_on_district_id"

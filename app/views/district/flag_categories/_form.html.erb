@@ -2,6 +2,21 @@
 
   <p>
     <%= form.label :category %><br />
-    <%= form.text_field :category %>
+    <%= form.select :category, Flag::FLAGTYPES.collect{|h,k| [k[:humanize],h]} %>
   </p>
+
+  <p> 
+    <%= form.label :threshold %>   Between 0 and 100 <br />
+    <%= form.text_field :threshold %>
+  </p>
+
+  <div id = "assets" >
+    Attach a file or link <br />
+    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "flag_category"}%>
+  </div>
+
+  <p>
+    <%= add_asset_link "Add a file or link", "flag_category" %>
+  </p>
+  
 

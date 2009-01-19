@@ -25,6 +25,7 @@ class District::FlagCategoriesController < ApplicationController
   # GET /district_flag_categories/new.xml
   def new
     @flag_category = current_district.flag_categories.build
+    @flag_category.assets.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -57,6 +58,7 @@ class District::FlagCategoriesController < ApplicationController
   # PUT /district_flag_categories/1
   # PUT /district_flag_categories/1.xml
   def update
+    params[:flag_category][:existing_asset_attributes] ||= {}
     @flag_category = current_district.flag_categories.find(params[:id])
 
     respond_to do |format|
