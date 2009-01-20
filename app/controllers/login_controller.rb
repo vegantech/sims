@@ -20,13 +20,15 @@ class LoginController < ApplicationController
         redirect_to session[:requested_url] and return if session[:requested_url]
       end
 
-      if request.subdomains.size == 4 || request.subdomains.size == 0 || @user.new_record?
-        redirect_to root_url and return
-      elsif r=request.subdomains.last.match(SUBDOMAIN_MATCH)
-        district_state_and_country = [current_district.abbrev]  if request.subdomains.size <4
-        district_state_and_country << current_district.state.abbrev  if request.subdomains.size <3
-        district_state_and_country << current_district.state.country.abbrev if request.subdomains.size < 2
-        redirect_to "#{request.protocol}#{district_state_and_country.join(".")}.#{request.host_with_port}/"
+      unless @user.new_record?
+        if request.subdomains.last.match(SUBDOMAIN_MATCH)
+          district_state_and_country = [current_district.abbrev]
+          district_state_and_country << current_district.state.abbrev 
+          district_state_and_country << current_district.state.country.abbrev
+          redirect_to "#{request.protocol}#{district_state_and_country.join("_")}.#{request.host_with_port}/"
+        else
+          redirec to root_url and return
+        end
       end
 
     end

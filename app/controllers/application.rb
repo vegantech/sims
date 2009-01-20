@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate, :authorize#, :current_district
 
-  SUBDOMAIN_MATCH=/(sims)|(sims-open)/
+  SUBDOMAIN_MATCH=/(sims)|(sims-open)\./
   
   private
   def current_user_id
@@ -120,10 +120,17 @@ class ApplicationController < ActionController::Base
 
   def subdomains
       g=self.request.subdomains
-      if g.pop.to_s.match(SUBDOMAIN_MATCH)
-         params[:country_abbrev],params[:state_abbrev],params[:district_abbrev]=g.reverse
+
+      if g.pop.to_s.match(SUBDOMAIN_MATCH) and !g.blank?
+
+        s=g.first.split("_").reverse
+        params[:district_abbrev] = s.pop
+        params[:state_abbrev] = s.pop || "wi"
+        params[:country_abbrev] = s.pop || "us"
+      else
+
+      return
       end
-      return unless params[:country_abbrev]
 
       @country ||= Country.find_by_abbrev(params[:country_abbrev])
       if @country

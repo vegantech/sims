@@ -54,6 +54,7 @@ class District < ActiveRecord::Base
   validates_uniqueness_of :abbrev,:name, :scope=>:state_id
   validates_uniqueness_of :admin, :scope=>:state_id, :if=>lambda{|d| d.admin?}  #only 1 admin state per country
   validates_uniqueness_of :state_id,  :if=>lambda{|d| d.state && d.state.admin?}  #only 1 district per admin state
+  validates_format_of :abbrev, :with => /\A[1-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   
                                          
   before_destroy :make_sure_there_are_no_schools
