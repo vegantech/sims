@@ -38,11 +38,11 @@ module Paperclip
       def flush_writes #:nodoc:
         logger.info("[paperclip] Writing files for #{name}")
         @queued_for_write.each do |style, file|
+          file.close
           FileUtils.mkdir_p(File.dirname(path(style)))
           logger.info("[paperclip] -> #{path(style)}")
           FileUtils.mv(file.path, path(style))
           FileUtils.chmod(0644, path(style))
-          file.close
         end
         @queued_for_write = {}
       end
@@ -55,6 +55,14 @@ module Paperclip
             FileUtils.rm(path) if File.exist?(path)
           rescue Errno::ENOENT => e
             # ignore file-not-found, let everything else pass
+          end
+          begin
+            while(true)
+              path = File.dirname(path)
+              FileUtils.rmdir(path)
+            end
+          rescue Errno::ENOTEMPTY, Errno::ENOENT, Errno::EINVAL, Errno::ENOTDIR
+            # Stop trying to remove parent directories
           end
         end
         @queued_for_delete = []

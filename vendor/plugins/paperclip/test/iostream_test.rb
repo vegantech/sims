@@ -14,11 +14,14 @@ class IOStreamTest < Test::Unit::TestCase
       @file = File.new(File.join(File.dirname(__FILE__), "fixtures", "5k.png"), 'rb')
     end
 
+    teardown { @file.close }
+
     context "that is sent #stream_to" do
 
       context "and given a String" do
         setup do
-          assert @result = @file.stream_to("/tmp/iostream.string.test")
+          FileUtils.mkdir_p(File.join(ROOT, 'tmp'))
+          assert @result = @file.stream_to(File.join(ROOT, 'tmp', 'iostream.string.test'))
         end
 
         should "return a File" do

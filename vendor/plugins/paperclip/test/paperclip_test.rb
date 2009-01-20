@@ -72,6 +72,8 @@ class PaperclipTest < Test::Unit::TestCase
       @file = File.new(File.join(FIXTURES_DIR, "5k.png"), 'rb')
     end
 
+    teardown { @file.close }
+
     should "not error when trying to also create a 'blah' attachment" do
       assert_nothing_raised do
         Dummy.class_eval do
@@ -174,6 +176,21 @@ class PaperclipTest < Test::Unit::TestCase
         setup do
           Dummy.send(:"validates_attachment_#{validation}", :avatar, options)
           @dummy = Dummy.new
+        end
+        context "and assigning nil" do
+          setup do
+            @dummy.avatar = nil
+            @dummy.valid?
+          end
+          if validation == :presence
+            should "have an error on the attachment" do
+              assert @dummy.errors.on(:avatar)
+            end
+          else
+            should "not have an error on the attachment" do
+              assert_nil @dummy.errors.on(:avatar)
+            end
+          end
         end
         context "and assigned a valid file" do
           setup do

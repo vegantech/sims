@@ -81,6 +81,8 @@ class AttachmentTest < Test::Unit::TestCase
       @dummy.avatar = @file
     end
 
+    teardown { @file.close }
+
     should "make sure that they are interpolated correctly" do
       assert_equal "1024.omg/1024-bbq/1024what/000/001/024.wtf", @dummy.avatar.path
     end
@@ -98,6 +100,8 @@ class AttachmentTest < Test::Unit::TestCase
                                  "5k.png"), 'rb')
       @dummy.avatar = @file
     end
+
+    teardown { @file.close }
 
     should "return the proper path" do
       temporary_rails_env(@rails_env) {
@@ -131,6 +135,56 @@ class AttachmentTest < Test::Unit::TestCase
     before_should "call extra_options_for(:thumb/:large)" do
       Paperclip::Attachment.any_instance.expects(:extra_options_for).with(:thumb)
       Paperclip::Attachment.any_instance.expects(:extra_options_for).with(:large)
+    end
+  end
+
+  context "An attachment with :convert_options that is a proc" do
+    setup do
+      rebuild_model :styles => {
+                      :thumb => "100x100",
+                      :large => "400x400"
+                    },
+                    :convert_options => {
+                      :all => lambda{|i| i.all },
+                      :thumb => lambda{|i| i.thumb }
+                    }
+      Dummy.class_eval do
+        def all;   "-all";   end
+        def thumb; "-thumb"; end
+      end
+      @dummy = Dummy.new
+      @dummy.avatar
+    end
+
+    should "report the correct options when sent #extra_options_for(:thumb)" do
+      assert_equal "-thumb -all", @dummy.avatar.send(:extra_options_for, :thumb), @dummy.avatar.convert_options.inspect
+    end
+
+    should "report the correct options when sent #extra_options_for(:large)" do
+      assert_equal "-all", @dummy.avatar.send(:extra_options_for, :large)
+    end
+
+    before_should "call extra_options_for(:thumb/:large)" do
+      Paperclip::Attachment.any_instance.expects(:extra_options_for).with(:thumb)
+      Paperclip::Attachment.any_instance.expects(:extra_options_for).with(:large)
+    end
+  end
+
+  geometry_specs = [ 
+    [ lambda{|z| "50x50#" }, :png ],
+    lambda{|z| "50x50#" },
+    { :geometry => lambda{|z| "50x50#" } }
+  ]
+  geometry_specs.each do |geometry_spec|
+    context "An attachment geomtry like #{geometry_spec}" do
+      setup do
+        rebuild_model :styles => { :normal => geometry_spec }
+        @attachment = Dummy.new.avatar
+      end
+
+      should "have the correct geometry" do
+        assert_equal "50x50#", @attachment.styles[:normal][:geometry]
+      end
     end
   end
 
@@ -171,6 +225,53 @@ class AttachmentTest < Test::Unit::TestCase
         Paperclip::Thumbnail.expects(:make).with(@file, expected_params).returns(@file)
         Paperclip::Test.expects(:make).with(@file, expected_params).returns(@file)
       end
+    end
+  end
+
+  context "When spawn is not defined on the instance" do
+    setup do
+      rebuild_model :styles => {:foo => true}
+      @dummy = Dummy.new
+      @file = StringIO.new("12345")
+    end
+
+    should "not call spawn on the instance when assigned a file" do
+      @dummy.expects(:spawn).times(0)
+      @dummy.avatar.expects(:post_process_styles)
+      # This is pretty ugly, but mocha expectations make the object
+      # respond_to? things it wouldn't have. Gotta get around it.
+      class << @dummy
+        def respond_to_with_spawn?(method)
+          (method == :spawn) ? false : respond_to_without_spawn?(method)
+        end
+        alias_method_chain :respond_to?, :spawn
+      end
+      @dummy.avatar = @file
+    end
+  end
+
+  # context "When spawn is defined on the instance" do
+  #   setup do
+  #     Dummy.any_instance.stubs(:spawn)
+  #     rebuild_model :styles => {:foo => true}
+  #     @dummy = Dummy.new
+  #     @file = StringIO.new("12345")
+  #   end
+
+  #   should "not call spawn on the instance when assigned a file" do
+  #     @dummy.expects(:spawn)
+  #     @dummy.avatar = @file
+  #   end
+  # end
+
+  context "An attachment with no processors defined" do
+    setup do
+      rebuild_model :processors => [], :styles => {:something => 1}
+      @dummy = Dummy.new
+      @file = StringIO.new("...")
+    end
+    should "raise when assigned to" do
+      assert_raises(RuntimeError){ @dummy.avatar = @file }
     end
   end
 
@@ -262,11 +363,13 @@ class AttachmentTest < Test::Unit::TestCase
       rebuild_model
       
       @not_file = mock
+      @tempfile = mock
       @not_file.stubs(:nil?).returns(false)
-      @not_file.expects(:to_tempfile).returns(self)
+      @not_file.expects(:size).returns(10)
+      @tempfile.expects(:size).returns(10)
+      @not_file.expects(:to_tempfile).returns(@tempfile)
       @not_file.expects(:original_filename).returns("sheep_say_bæ.png\r\n")
       @not_file.expects(:content_type).returns("image/png\r\n")
-      @not_file.expects(:size).returns(10).times(2)
       
       @dummy = Dummy.new
       @attachment = @dummy.avatar
@@ -297,6 +400,8 @@ class AttachmentTest < Test::Unit::TestCase
                                  "fixtures",
                                  "5k.png"), 'rb')
     end
+
+    teardown { @file.close }
 
     should "raise if there are not the correct columns when you try to assign" do
       @other_attachment = Paperclip::Attachment.new(:not_here, @instance)
@@ -329,7 +434,7 @@ class AttachmentTest < Test::Unit::TestCase
 
       should "return a correct url even if the file does not exist" do
         assert_nil @attachment.to_file
-        assert_match %r{^/avatars/#{@instance.id}/blah/5k\.png}, @attachment.url(:blah)
+        assert_match %r{^/system/avatars/#{@instance.id}/blah/5k\.png}, @attachment.url(:blah)
       end
 
       should "make sure the updated_at mtime is in the url if it is defined" do
@@ -388,8 +493,8 @@ class AttachmentTest < Test::Unit::TestCase
             should "return the real url" do
               file = @attachment.to_file
               assert file
-              assert_match %r{^/avatars/#{@instance.id}/original/5k\.png}, @attachment.url
-              assert_match %r{^/avatars/#{@instance.id}/small/5k\.jpg}, @attachment.url(:small)
+              assert_match %r{^/system/avatars/#{@instance.id}/original/5k\.png}, @attachment.url
+              assert_match %r{^/system/avatars/#{@instance.id}/small/5k\.jpg}, @attachment.url(:small)
               file.close
             end
 
@@ -463,6 +568,8 @@ class AttachmentTest < Test::Unit::TestCase
       @dummy = Dummy.new
       @file = File.new(File.join(File.dirname(__FILE__), "fixtures", "5k.png"), 'rb')
     end
+
+    teardown { @file.close }
 
     should "not error when assigned an attachment" do
       assert_nothing_raised { @dummy.avatar = @file }
