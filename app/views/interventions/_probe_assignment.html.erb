@@ -4,6 +4,7 @@ Progress Monitor
 
 <% if @intervention.active? %>
   <%= display_assessment_links(probe_assignment) %>
+  <%= links_and_attachments probe_assignment.probe_definition, :p %>
 
 
   <%= link_to  "Enter scores for previously administered assessment", new_probe_path(@intervention,probe_assignment) %> <br />

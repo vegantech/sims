@@ -21,8 +21,15 @@
 <p>
   <b>Intervention definition:</b>
   <%=h @intervention.intervention_definition.title %>
+  <%= links_and_attachments @intervention.intervention_definition, :p %>
 </p>
 
+  <%= links_and_attachments @intervention, :p %>
+<p>
+  <b> Objective Definition </b>
+  <%=h @intervention.objective_definition.title %>
+  <%= links_and_attachments @intervention.objective_definition, :p %>
+</p>
 <p>
   <b>Frequency:</b>
   <%=h @intervention.frequency.title %>

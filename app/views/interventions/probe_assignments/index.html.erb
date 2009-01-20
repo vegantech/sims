@@ -15,6 +15,7 @@
         <%= ipa.label :end_date %>
         <%= ipa.date_select :end_date, {:index=>intervention_probe_assignment.id.to_s} %>
         <%= ipa.hidden_field :probe_definition_id %>
+        <%= links_and_attachments intervention_probe_assignment.probe_definition, :span %>        
         </p>
       <% end %>
     <% end %>

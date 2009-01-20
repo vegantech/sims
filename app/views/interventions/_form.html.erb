@@ -9,6 +9,7 @@
   </p>
     <%= form.hidden_field :intervention_definition_id %>
   <p>
+  <%= links_and_attachments form.object.intervention_definition, :p %>
     <%= form.label :frequency %><br />
     <%= form.collection_select(:frequency_id,Frequency.all,:id,:title) %>
   </p>

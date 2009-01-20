@@ -14,7 +14,7 @@
   <%=h @objective_definition.updated_at %>
 </p>
 
-
+  <%=links_and_attachments @objective_definition, :p %>
 
 <%= link_to 'Edit', edit_intervention_builder_objective_path(@goal_definition,@objective_definition) %> |
 <%= link_to 'Back', intervention_builder_objectives_path %> |<%= link_to 'see Categories', intervention_builder_categories_path(@goal_definition,@objective_definition)%>

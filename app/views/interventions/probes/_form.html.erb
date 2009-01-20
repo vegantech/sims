@@ -5,4 +5,4 @@
 <%=form.label :score %>
 <%= form.text_field :score%> <br />
 <%=form.hidden_field :assessment_type %> <br />
-
+<%= links_and_attachments form.object.probe_definition, :p %>

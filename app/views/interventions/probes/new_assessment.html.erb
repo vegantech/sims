@@ -18,6 +18,7 @@
       end %>
     </p>
 
+  <%= links_and_attachments @intervention_probe_assignment.probe_definition, :p %>
 
 
 <% form_for @probe, :url=>save_assessment_probes_path(@intervention,@intervention_probe_assignment) do |f|%>
