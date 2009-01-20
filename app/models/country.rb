@@ -21,7 +21,7 @@ class Country < ActiveRecord::Base
   validates_uniqueness_of :admin, :if=> lambda{|c| c.admin?}   #Only 1 admin country
   validates_presence_of :name,:abbrev
   validates_uniqueness_of :name,:abbrev
-  validates_format_of :abbrev, :with => /\A[1-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
+  validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   before_destroy :make_sure_there_are_no_states
   after_create :create_admin_state
 

@@ -21,13 +21,13 @@ class LoginController < ApplicationController
       end
 
       unless @user.new_record?
-        if request.subdomains.last.match(SUBDOMAIN_MATCH)
+        if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH)
           district_state_and_country = [current_district.abbrev]
           district_state_and_country << current_district.state.abbrev 
           district_state_and_country << current_district.state.country.abbrev
           redirect_to "#{request.protocol}#{district_state_and_country.join("_")}.#{request.host_with_port}/"
         else
-          redirec to root_url and return
+          redirect_to root_url and return
         end
       end
 
