@@ -12,8 +12,8 @@
     <td><%=h district.name %></td>
     <td><%=h district.abbrev %></td>
     <td><%= link_to 'Destroy', district, :confirm => 'Are you sure?', :method => :delete %></td>
-    <td><%= link_to 'Reset Admin Password', reset_password_district, :confirm => 'Are you sure?', :method => :put %></td>
-    <td><%= link_to 'Recreate Admin', recreate_admin_district, :confirm => 'Are you sure?  You probably just need to reset the password instead.', :method => :put %></td>
+    <td><%= link_to 'Reset Admin Password', reset_password_district_url, :confirm => 'Are you sure?', :method => :put %></td>
+    <td><%= link_to 'Recreate Admin', recreate_admin_district_url, :confirm => 'Are you sure?  You probably just need to reset the password instead.', :method => :put %></td>
   </tr>
 <% end %>
 </table>
