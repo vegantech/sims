@@ -35,6 +35,8 @@ describe InterventionBuilder::ProbesController do
   
     it "should expose a new probe_definition as @probe_definition" do
       ProbeDefinition.should_receive(:build).and_return(@mock_probe_definition)
+      @mock_probe_definition.stub_association(:assets, :build=>true)
+
       get :new
       assigns[:probe_definition].should equal(@mock_probe_definition)
     end
