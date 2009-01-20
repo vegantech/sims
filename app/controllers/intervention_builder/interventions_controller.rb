@@ -25,6 +25,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # GET /intervention_definitions/new
   def new
     @intervention_definition = @intervention_cluster.intervention_definitions.build(:tier_id=>1)
+    @intervention_definition.assets.build
   end
 
   # GET /intervention_definitions/1;edit

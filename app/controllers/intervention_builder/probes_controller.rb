@@ -12,6 +12,7 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def new
     @probe_definition = current_district.probe_definitions.build
+    @probe_definition.assets.build
   end
 
   def edit

@@ -8,6 +8,16 @@
   <%= form.text_area :description %>
 </p>
 
+
+  <div id = "assets" >
+    Attach a file or link <br />
+    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "objective_definition"}%>
+  </div>
+
+  <p>
+    <%= add_asset_link "Add a file or link", "objective_definition" %>
+  </p>
+
 <p>
   <%= submit_tag submit_name %>
 </p>

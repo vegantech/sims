@@ -37,7 +37,15 @@
     <b>District Quicklist</b> <%=form.check_box(:district_quicklist)%>
   </p>
 
+ 
+  <div id = "assets" >
+    Attach a file or link <br />
+    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "intervention_definition"}%>
+  </div>
 
+  <p>
+    <%= add_asset_link "Add a file or link", "intervention_definition" %>
+  </p>
 
   <p>
     <%= submit_tag submit_name %>
