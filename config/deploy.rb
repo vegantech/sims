@@ -50,6 +50,6 @@ end
 
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
-  run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/console DailyJobs.regenerate_intervention_reports"
+  run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
 end
 
