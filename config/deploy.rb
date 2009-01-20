@@ -30,6 +30,12 @@ namespace :deploy do
     run "touch #{current_path}/tmp/restart.txt"
   end
 
+  desc "Reset Files and data"
+  task :reset_files_and_data, :roles => "app" do 
+    run "cd #{deploy_to}/current && RAILS_ENV=production rake db:drop db:create db:migrate db:fixtures:load && rm -rf #{deploy_to}/current/system/*"
+    create_intervention_pdfs
+  end
+
   task :start, :roles => "app" do
     puts "go start passenger and make sure it is configured"
   end
