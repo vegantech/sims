@@ -10,5 +10,9 @@
 #
 
 class Frequency < ActiveRecord::Base
-  FREQUENCIES=Frequency.find(:all)
+  begin
+    FREQUENCIES=Frequency.find(:all)
+  rescue
+    puts "Error loading frequencies, table may not exist yet."
+  end
 end

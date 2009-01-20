@@ -40,7 +40,7 @@ namespace :deploy do
 end 
 
 task :copy_database_yml do 
-  run "cp  #{deploy_to}/config/database.yml.mysql #{release_path}/config/database.yml"
+  run "cp  #{deploy_to}/database.yml.mysql #{release_path}/config/database.yml"
 end
 
 desc 'Load the fixtures from test/fixtures, this will overwrite whatever is in the db'
