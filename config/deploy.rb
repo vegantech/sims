@@ -1,5 +1,5 @@
 default_run_options[:pty] = true
-default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"a
+default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
 set :domain, 'sims-open.vegantech.com'
 set :repository,  "git://github.com/vegantech/sims.git"
 set :application, "sims-open"
