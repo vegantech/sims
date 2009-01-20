@@ -2,7 +2,7 @@ require 'fileutils'
 class CreateInterventionPdfs
   def self.generate(district)
     district.objective_definitions.each do |o| 
-      dir = "#{RAILS_ROOT}/public/district_generated_docs/#{district.id}/"
+      dir = "#{RAILS_ROOT}/public/system/district_generated_docs/#{district.id}/"
       FileUtils.mkdir_p dir unless File.exists? dir
 
       File.open(dir+"#{o.title.split(" ").join("_")}.pdf",'w') do |f|
