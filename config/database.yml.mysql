@@ -7,13 +7,13 @@ defaults: &defaults
 #  socket: /opt/local/var/run/mysql5/mysqld.sock
 
 development:
-  database: sims_development
+  database: sims_open_development
   <<: *defaults
 
 test:
-  database: sims_test 
+  database: sims_open_test 
   <<: *defaults
 
 production:
-  database: sims_production
+  database: sims_open_production
   <<: *defaults
