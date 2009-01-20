@@ -22,7 +22,7 @@ role :app, "vegantech.com"
 role :web, "vegantech.com"
 role :db,  "vegantech.com", :primary => true
 
-after "deploy:update_code", :copy_database_yml
+after "deploy:update_code", :copy_database_yml, :setup_domain_constant
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs
 
 namespace :deploy do
