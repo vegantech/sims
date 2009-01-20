@@ -13,7 +13,7 @@ describe CreateInterventionPdfs do
 
           CreateInterventionPdfs.generate(district)
 
-          district_dir = "#{RAILS_ROOT}/public/district_generated_docs/#{district.id}"
+          district_dir = "#{RAILS_ROOT}/public/system/district_generated_docs/#{district.id}"
           root_file_name = "#{district_dir}/some_objective_definition"
           File.read("#{root_file_name}.pdf").should  == 'PDF Contents'
           File.read("#{root_file_name}.html").should == 'HTML Contents'
