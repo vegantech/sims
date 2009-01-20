@@ -1,5 +1,6 @@
 default_run_options[:pty] = true
-default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
+default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"a
+set :domain, 'sims-open.vegantech.com'
 set :repository,  "git://github.com/vegantech/sims.git"
 set :application, "sims-open"
 set :use_sudo, false
@@ -52,6 +53,10 @@ end
 desc 'Load the fixtures from test/fixtures, this will overwrite whatever is in the db'
 task :load_fixtures do
   run "cd #{deploy_to}/current && rake db:fixtures:load RAILS_ENV=production"
+end
+
+task :setup_domain_constant do
+  run "cd #{deploy_to}/current/config && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
 end
 
 desc 'Create the intervention pdf reports'
