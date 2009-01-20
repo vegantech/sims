@@ -97,9 +97,9 @@ class AddIndicesForForeignKeys < ActiveRecord::Migration
     add_index :quicklist_items, :district_id
     add_index :quicklist_items, :intervention_definition_id
 
-    add_index :recommendation_answer_definitions, :recommendation_definition_id
+    add_index :recommendation_answer_definitions, :recommendation_definition_id, :name => 'rec_def_id'
     add_index :recommendation_answers, :recommendation_id
-    add_index :recommendation_answers, :recommendation_answer_definition_id
+    add_index :recommendation_answers, :recommendation_answer_definition_id, :name => 'rec_ans_def_id'
 
     add_index :recommendation_definitions, :district_id
     add_index :recommendation_definitions, :checklist_definition_id

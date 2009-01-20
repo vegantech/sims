@@ -13,7 +13,11 @@
 
 class Tier < ActiveRecord::Base
   belongs_to :district
-  TIERS=Tier.find(:all,:order=>"position")
+  begin
+    TIERS=Tier.find(:all,:order=>"position")
+  rescue
+    puts "Table may not exist yet"
+  end
 
   def to_s
     "#{position} - #{title}"

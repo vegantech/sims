@@ -11,5 +11,9 @@
 #
 
 class TimeLength < ActiveRecord::Base
-  TIMELENGTHS = TimeLength.find(:all)
+  begin
+    TIMELENGTHS = TimeLength.find(:all)
+  rescue
+    puts "Table may not exist yet."
+    end
 end
