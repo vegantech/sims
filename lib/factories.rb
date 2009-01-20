@@ -143,4 +143,3 @@ end
 
 Factory.define :frequency do |f|
 end
-  

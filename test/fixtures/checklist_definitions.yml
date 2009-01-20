@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081227220234
+# Schema version: 20090118224504
 #
 # Table name: checklist_definitions
 #
@@ -11,6 +11,10 @@
 #  created_at                   :datetime
 #  updated_at                   :datetime
 #  recommendation_definition_id :integer
+#  document_file_name           :string(255)
+#  document_content_type        :string(255)
+#  document_file_size           :integer
+#  document_updated_at          :datetime
 #
 
 checklist_definition_one:
