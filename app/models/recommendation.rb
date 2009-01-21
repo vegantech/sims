@@ -59,8 +59,6 @@ class Recommendation < ActiveRecord::Base
           :optional_checklist => "Optional Checklist Completed"
         }  
 
-
-
   def status
     if draft?
       STATUS[:draft]
@@ -79,14 +77,11 @@ class Recommendation < ActiveRecord::Base
     else
       return STATUS[:unknown]
     end
-
   end
 
   def previous_answers
     @prev_answers ||=RecommendationAnswer.find(:all,:include=>:recommendation,:conditions=>["recommendations.student_id=? and recommendations.id !=? and recommendations.created_at < ?",self.student_id,self.id, self.created_at],:order=>"recommendation_answers.updated_at").group_by{|a| a.recommendation_answer_definition_id}
-
   end
-  
 
   def answers
     recommendation_definition.recommendation_answer_definitions.each do |ad|
@@ -106,12 +101,14 @@ class Recommendation < ActiveRecord::Base
     end
   end
 
-
   def show_button?(k)
-    v=RECOMMENDATION[k]
+    v = RECOMMENDATION[k]
     !v[:readonly] || self.recommendation == k
   end
 
+  def self.without_checklist
+    find(:all, :conditions => "checklist_id is null")
+  end
 
   protected
 

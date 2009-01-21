@@ -22,6 +22,7 @@ class FlagSummary
 		table.rename_column('type', 'sti_type')
 
 		table.replace_column('user_id') {|r| (User.find(r['user_id']) || User.new).fullname}
+		table.replace_column('updated_at') {|r| (r['updated_at'].to_s(:long))}
 
 		sort_lambda = lambda {|g| ['Attendance','Behavior', 'Language Arts', 'Math', 'Custom Flags', 'IgnoreFlags'].index(g.name) || 999 }
 		table.sort_rows_by sort_lambda

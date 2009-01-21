@@ -22,6 +22,8 @@
 
 class Intervention < ActiveRecord::Base
   include LinkAndAttachmentAssets
+  include ActionView::Helpers::TextHelper
+
   belongs_to :user
   belongs_to :student
   belongs_to :intervention_definition
@@ -127,29 +129,33 @@ class Intervention < ActiveRecord::Base
     self.save!
   end
 
+  def participants_with_author
+    intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
+  end
 
- def participants_with_author
-   intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
+  def build_custom_probe(opts={})
+    probe_definition=ProbeDefinition.new(opts)
+    probe_definition.intervention_definitions << self.intervention_definition
+    probe_definition.intervention_probe_assignments.build(:enabled=>true, :intervention=>self)
+    probe_definition
+  end
 
- end
+  def auto_implementer?
+    @auto_implementer == "1"
+  end
 
- def build_custom_probe(opts={})
-   probe_definition=ProbeDefinition.new(opts)
-   probe_definition.intervention_definitions << self.intervention_definition
-   probe_definition.intervention_probe_assignments.build(:enabled=>true, :intervention=>self)
-   probe_definition
+  def frequency_summary
+    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
+  end
 
- end
-
- def auto_implementer?
-   @auto_implementer == "1"
- end
-   
-
+  def time_length_summary
+    pluralize time_length_number , time_length.description
+  end
 
   protected
+
   def create_other_students
-    #TODO tests
+    # TODO tests
     #make sure it does nothing when apply_to_all if false
     #make sure it doesn't create double interventions for the selected student
     #make sure it creates interventions for each student
@@ -161,7 +167,6 @@ class Intervention < ActiveRecord::Base
       end
     end
     true
-
   end
 
   def assign_implementer
@@ -193,11 +198,5 @@ class Intervention < ActiveRecord::Base
     end
 
     true
-
   end
-
-
-
-
-
 end

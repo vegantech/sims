@@ -2,11 +2,23 @@ class ReportsController < ApplicationController
   additional_read_actions :team_notes, :student_overall, :student_overall_options
 
   def student_overall
+    # process params for student_overall_options
+    params[:format] = params[:report_params][:format] if params[:report_params]
+    params[:format] = 'html' unless defined? PDF::HTMLDoc
+
+    @opts = params[:report_params] || {}
+
+    respond_to do |format|
+			@student = current_student
+
+      format.html {}
+      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.studentNum}.pdf" }
+		end
   end
 
   def student_overall_options
     # present choices for report, maybe merge this in via postback if it seems right. 
-    @opts = [:top_summary, :extended_profile, :flags, :team_notes, :intervention_summary, :checklists_and_or_recommendations]
+    @opts = [:top_summary, :flags, :team_notes, :intervention_summary, :checklists_and_or_recommendations]
 		@student = current_student
 		@filetypes = ['html']
     @filetypes << ['pdf'] if defined? PDF::HTMLDoc
