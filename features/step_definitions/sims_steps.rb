@@ -227,3 +227,9 @@ Given /^there is an email containing "(.*)"$/ do |target_text|
   last_mail.should match(/#{target_text}/)
 
 end
+
+When /^I follow "(.*)" within (.*)$/ do |link, scope|
+  click_link_within(scope,link)
+end
+
+

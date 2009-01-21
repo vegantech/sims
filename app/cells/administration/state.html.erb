@@ -1,7 +1,7 @@
 <% if @show %>
   <h2>State Administration</h2>
   <ul>
-    <li><%=link_to 'Manage Districts', districts_url unless @district.country_admin?%> </li>
-    <li><%=link_to 'Edit your state', edit_state_url(@district.state)%> </li>
+    <li><%=link_to 'Manage Districts', districts_path unless @current_district.country_admin?%> </li>
+    <li><%=link_to 'Edit your state', edit_state_path(@current_district.state)%> </li>
   </ul>
 <% end %>

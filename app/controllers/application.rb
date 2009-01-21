@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
 
       if g.pop.to_s.match(SUBDOMAIN_MATCH) and !g.blank?
 
-        s=g.first.split("_").reverse
+        s=g.first.split("-").reverse
         params[:district_abbrev] = s.pop
         params[:state_abbrev] = s.pop || "wi"
         params[:country_abbrev] = s.pop || "us"
