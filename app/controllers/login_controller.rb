@@ -25,7 +25,8 @@ class LoginController < ApplicationController
           district_state_and_country = [current_district.abbrev]
           district_state_and_country << current_district.state.abbrev 
           district_state_and_country << current_district.state.country.abbrev
-          redirect_to "#{request.protocol}#{district_state_and_country.join("_")}.#{request.host_with_port}/"
+
+          redirect_to "#{request.protocol}#{district_state_and_country.join("-")}.#{request.subdomains.last}.#{request.domain}#{request.port_string}/"
         else
           redirect_to root_url and return
         end

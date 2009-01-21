@@ -4,17 +4,17 @@ class AdministrationCell < Cell::Base
   end
 
   def country
-    @district=@opts[:district]
-    @show=@district.country_admin?
+    @current_district=@opts[:district]
+    @show=@current_district.country_admin?
   end
 
   def state
-    @district=@opts[:district]
-    @show=@district.admin?
+    @current_district=@opts[:district]
+    @show=@current_district.admin?
   end
 
   def district
-    @district = @opts[:district]
+    @current_district = @opts[:district]
     @show_schools = @opts[:user].authorized_for?('district/schools',:write_access)
     @show_users = @opts[:user].authorized_for?('district/users', :write_access)
     @show_students =@opts[:user].authorized_for?('district/students',:write_access)
