@@ -6,6 +6,7 @@
 
 
   <p>
+  <%= f.label :logo, 'Attach or replace logo' %>
   <%= f.file_field :logo %>
   </p>
   <%- unless  !@district.logo? -%>

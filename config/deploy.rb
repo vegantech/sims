@@ -56,7 +56,7 @@ task :load_fixtures do
 end
 
 task :setup_domain_constant do
-  run "cd #{deploy_to}/current/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
+  run "cd #{release_path}/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
 end
 
 desc 'Create the intervention pdf reports'
