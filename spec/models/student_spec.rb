@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081227220234
+# Schema version: 20090118224504
 #
 # Table name: students
 #
@@ -14,6 +14,8 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  birthdate   :date
+#  esl         :boolean
+#  special_ed  :boolean
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

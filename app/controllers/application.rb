@@ -88,12 +88,10 @@ class ApplicationController < ActionController::Base
     true
   end
 
-  
   class_inheritable_array :read_actions,:write_actions
   self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
   self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
-  
-  
+
   def action_group_for_current_action
     if self.class.write_actions.include?(action_name)
       'write_access'
@@ -108,7 +106,7 @@ class ApplicationController < ActionController::Base
   def self.show_read_actions
     puts "read actions are: #{@@read_actions.inspect}."
   end
- 
+
   def self.additional_read_actions(*args)
      self.read_actions = Array(args).flatten.map(&:to_s)
   end
@@ -116,7 +114,6 @@ class ApplicationController < ActionController::Base
   def self.additional_write_actions(*args)
      self.write_actions= Array(args).flatten.map(&:to_s)
   end
-
 
   def subdomains
       g=self.request.subdomains
@@ -146,7 +143,5 @@ class ApplicationController < ActionController::Base
         @districts =[]
         @current_district = district
       end
-
   end
-
 end

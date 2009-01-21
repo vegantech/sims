@@ -1,5 +1,17 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes
+  additional_read_actions :team_notes, :student_overall, :student_overall_options
+
+  def student_overall
+  end
+
+  def student_overall_options
+    # present choices for report, maybe merge this in via postback if it seems right. 
+    @opts = [:top_summary, :extended_profile, :flags, :team_notes, :intervention_summary, :checklists_and_or_recommendations]
+		@student = current_student
+		@filetypes = ['html']
+    @filetypes << ['pdf'] if defined? PDF::HTMLDoc
+  end
+
   def team_notes
     @today = Date.current
 
@@ -56,5 +68,4 @@ class ReportsController < ApplicationController
       nil
     end
   end
-
 end

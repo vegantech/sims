@@ -51,9 +51,7 @@ Spec::Runner.configure do |config|
       controller.should_receive(:authenticate).any_number_of_times.and_return(true)
       controller.class.before_filters.should include(:authenticate) 
     end
-
   end
-
 
   describe "an authorized controller", :shared => true do
     before(:each) do
@@ -65,13 +63,8 @@ Spec::Runner.configure do |config|
       controller.class.public_instance_methods(false).each do |public_action|
         controller.stub!(:action_name => public_action.to_s)
         # controller.send(:action_group_for_current_action).should_not be_nil
-        flunk public_action.to_s if  controller.send(:action_group_for_current_action).blank?
+        flunk public_action.to_s if controller.send(:action_group_for_current_action).blank?
       end
- 
     end
-
   end
-
-
-
 end

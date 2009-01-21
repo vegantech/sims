@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081227220234
+# Schema version: 20090118224504
 #
 # Table name: flags
 #
@@ -22,5 +22,4 @@ class CustomFlag < Flag
       errors.add(:category, "Remove custom flag first.")
     end
   end
-
 end

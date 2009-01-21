@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20081227220234
+# Schema version: 20090118224504
 #
 # Table name: flags
 #
@@ -51,7 +51,6 @@ class Flag < ActiveRecord::Base
     all.collect(&:summary)
   end
 
-
   def self.current
     #FIXME doesn't handle ignores
     # all.group_by(&:category)
@@ -59,5 +58,4 @@ class Flag < ActiveRecord::Base
       (f[:type] == 'IgnoreFlag') or (f[:type] == 'SystemFlag' and IgnoreFlag.find_by_category_and_student_id(f.category, f.student_id))
     end.group_by(&:category)
   end
-
 end
