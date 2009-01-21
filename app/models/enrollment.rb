@@ -27,13 +27,13 @@ class Enrollment < ActiveRecord::Base
     sch_id = search_hash[:school_id]
     conditions = search_hash.slice(:school_id)
     
-    scope = self.scoped(:conditions=> conditions)
+    scope = self.scoped(:conditions => conditions)
 
     
     
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
-    if u=search_hash[:user]
+    if u = search_hash[:user]
       search_hash.delete(:user_id) if search_hash[:user_id] == u.id.to_s || search_hash[:user_id] == "*"
       if u.special_user_groups.all_students_in_school?(sch_id)
         #User has access to everyone in school

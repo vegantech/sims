@@ -17,7 +17,7 @@ class StudentsController < ApplicationController
 
   def select
     # add selected students to session, then redirect to show
-    
+
     @students = student_search
     authorized_student_ids = @students.collect {|s| s.student.id.to_s}
 
@@ -39,9 +39,9 @@ class StudentsController < ApplicationController
   def search
     if request.get?
       @grades = current_school.grades_by_user(current_user)
-      
+
       flash[:notice] = "User doesn't have access to any students at #{current_school.name}" and redirect_to schools_url and return if @grades.blank?
- 
+
       @groups=current_user.filtered_groups_by_school(current_school)
       @users=current_user.filtered_members_by_school(current_school)
    else
@@ -69,22 +69,19 @@ class StudentsController < ApplicationController
     end
   end
 
-
-  #RJS methods for search page
+  # RJS methods for search page
 
   def grade_search
     @users=current_user.filtered_members_by_school(current_school,params)
     @groups=current_user.filtered_groups_by_school(current_school,params)
-
   end
- 
+
   def member_search
     @groups=current_user.filtered_groups_by_school(current_school,params)
   end
 
- 
-
   private
+
   def enforce_session_selections
     return true unless params[:id]
 		# raise "I'm here" if selected_students_ids.nil?
@@ -105,16 +102,10 @@ class StudentsController < ApplicationController
     end
   end
 
-
   def student_search(index_includes=false)
     Enrollment.search(session[:search].merge(
       :school_id => current_school_id,
       :user => current_user,
-      :index_includes =>index_includes
-      
-    ))
+      :index_includes =>index_includes))
   end
-
-
-
 end
