@@ -3,9 +3,138 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ReportsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  
+  describe 'student overall options' do
+    integrate_views
+
+    before do
+      # @from_url = 'http://where_we_came_from.com'
+      # @request.env['HTTP_REFERER'] = @from_url
+      @district = Factory(:district)
+      @student = Factory(:student)
+      # controller.should_receive(:current_district).and_return(District.new)
+    end
+
+    it 'should show up' do
+      get :student_overall_options, {}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
+      response.should have_tag('h1', 'SIMS: Student Intervention Monitoring System', 'Should have rendered layout')
+      response.should be_success
+    end
+  
+    it 'should show checkbox for each section' do
+      get :student_overall_options, {}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
+
+      response.should be_success
+      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_top_summary]')
+      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_extended_profile]')
+      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_flags]')
+      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_team_notes]')
+      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_intervention_summary]')
+    end
+  end
+  # 
+  #   describe 'student overall report' do
+  #     before do
+  #       school = School.new
+  #       controller.should_receive(:selected_student).and_return(Student.new(:first_name => 'Moe', :last_name => 'Flanders'))
+  #       # controller.should_receive(:render_component_as_string_with_notify_on_error).and_return("")
+  #     end
+  # 
+  #     it 'should show top summary when selected' do
+  #       controller.should_receive(:render).with(:partial => 'student_profile/top_summary')
+  #       get :student_overall, {:report_params => {:format => "html", :top_summary=>"1"}}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should not show top summary when not selected' do
+  #       controller.should_receive(:render).with(:partial => 'student_profile/top_summary').never
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show team notes when selected' do
+  #       controller.should_receive(:render).with(:partial => 'student_comment/comment', :collection=>[])
+  #       get :student_overall, {:report_params => {:format => "html", :team_notes => "1"}}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should not show team notes when not selected' do
+  #       controller.should_receive(:render).with(:partial => 'student_comment/comment').never
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show flags when selected' do
+  #       FlagsForStudentReport.should_receive(:render_html)
+  #       get :student_overall, {:report_params => {:format => "html", :flags => "1"}}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should not show flags when not selected' do
+  #       FlagsForStudentReport.should_not_receive(:render_html)
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  #  
+  #     it 'should show student interventions when selected' do
+  #       StudentInterventionsReport.should_receive(:render_html)
+  #       get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"}}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should not show student interventions when not selected' do
+  #       StudentInterventionsReport.should_not_receive(:render_html)
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show extended profile when selected' do
+  #       controller.should_receive(:render_component_as_string_with_notify_on_error)
+  #       get :student_overall, {:report_params=>{:format => "html", :extended_profile => "1"}}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should not show extended profile when not selected' do
+  #       controller.should_not_receive(:render_component_as_string_with_notify_on_error)
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show up as html when pdf and htmldoc gem is not installed' do
+  #       #controller.should_receive(:defined?).and_return(false)
+  #       if defined? PDF::HTMLDoc 
+  #         OLD_HTMLDOC= PDF::HTMLDoc
+  #         PDF.send(:remove_const, "HTMLDoc")
+  #       end
+  # 
+  #       controller.should_not_receive(:render_to_pdf).and_return('PDF')
+  #       get :student_overall, {:format=>"pdf"}, {:user_id => 1}
+  #       PDF.send(:const_set,"HTMLDoc", OLD_HTMLDOC) if defined? OLD_HTMLDOC
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show up when pdf and htmldoc gem is installed' do
+  #       unless defined? PDF::HTMLDoc 
+  #         loaded = true
+  #         module PDF; end
+  #         PDF.const_set('HTMLDoc',2)
+  #       end
+  # 
+  #       controller.should_receive(:render_to_pdf).and_return('PDF')
+  # 
+  #       get :student_overall, {:format => "pdf"}, {:user_id => 1}
+  #       PDF.send(:remove_const, "HTMLDoc") if loaded
+  #       response.should be_success
+  #     end
+  # 
+  #     it 'should show up when html' do
+  #       get :student_overall, {:format => "html"}, {:user_id => 1}
+  #       controller.should_not_receive(:render_to_pdf).and_return('PDF')
+  #       response.should be_success
+  #     end
+  #   end
 
   describe 'team_notes' do
-
     describe 'GET' do
       it 'should set instance variables' do
         get :team_notes
@@ -66,8 +195,7 @@ describe ReportsController do
           response.should be_success
           response.body.should equal(m)
         end
-      end # PDF
-      
+      end
     end
   end
 end
