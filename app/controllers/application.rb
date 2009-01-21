@@ -126,6 +126,9 @@ class ApplicationController < ActionController::Base
         params[:district_abbrev] = s.pop
         params[:state_abbrev] = s.pop || "wi"
         params[:country_abbrev] = s.pop || "us"
+      elsif params[:country_abbrev] || params[:state_abbrev] || params[:district_abbrev]
+        params[:state_abbrev] ||=  "wi"
+        params[:country_abbrev] ||=  "us"
       else
 
       return
