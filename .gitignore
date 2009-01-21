@@ -5,6 +5,7 @@ doc/app
 config/database.yml
 *~
 *.sqlite3
+db/*.sqlite3-journal
 coverage
 coverage.data
 rcovrt.so
