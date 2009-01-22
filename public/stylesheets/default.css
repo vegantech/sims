@@ -39,7 +39,7 @@ h1.form_banner {
   color: white;
 
 }
-fieldset {
+.new_form fieldset {
   background: #e2e3cf;
   margin-right: auto;
   width: 50%;
@@ -53,7 +53,7 @@ legend {
 
 }
 
-label {
+.new_form label {
   width: 10em;
   font-weight: bold;
   float: left;

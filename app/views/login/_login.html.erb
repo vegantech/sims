@@ -7,6 +7,7 @@
 %> 
 
 <h1>Please Login:</h1>
+<div class = "new_form">
 <%= render :partial => 'login/country_state_district' %>
   
   <% form_tag({:controller => 'login', :action => 'login'}, :id=>'login') do %> 
@@ -37,6 +38,7 @@
 
     
   <% end %> 
+</div>
 <% end %>
 
 
