@@ -61,11 +61,12 @@ class Student < ActiveRecord::Base
 
   def max_tier
     unless recommendations.blank?
-      district.tiers.first
+      #TODO Tiers should be specific to district
+      Tier.first
       # FIXME, should only be promoted 
 #      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
     else
-      district.tiers.first
+      Tier.first
     end
   end
 
