@@ -27,3 +27,15 @@ bravo_one:
   school: bravo
   students: bravo_first_smith,  bravo_first_jones
 
+
+wi_music:
+  title: Alpha Music Class
+  school: wi_alpha
+
+wi_gym:
+  title: Alpha Gym Class
+  school: wi_alpha
+
+wi_shared:
+  title: Alpha Common Class
+  school: wi_alpha

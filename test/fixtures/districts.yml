@@ -25,7 +25,7 @@ wi_test:
   state: state_wi
 
 wi_admin:
-  name: Wisconsin Administration
+  name: Wisconsin Administration District
   abbrev: admin
   state: state_wi
   admin: true

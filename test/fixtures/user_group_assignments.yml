@@ -28,3 +28,20 @@ three:
   user: twoschools
   group: other_homeroom
   is_principal: false
+
+four:
+  user: wi_melody
+  group: wi_music
+
+five:
+  user: wi_oneschool
+  group: wi_gym
+
+six:
+  user: wi_oneschool
+  group: wi_shared
+
+seven:
+  user: wi_melody
+  group: wi_shared
+

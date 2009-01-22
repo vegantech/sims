@@ -38,4 +38,19 @@ alphaprin_alpha:
   user: alphaprin
   admin: true
 
+wi_alphaprin_alpha:
+  school: wi_alpha
+  user: wi_alphaprin
+  admin: true
+
+wi_oneschool_alpha:
+  school: wi_alpha
+  user: wi_oneschool
+  admin: false
+
+wi_melody_alpha:
+  school: wi_alpha
+  user: wi_melody
+  admin: false
+
 

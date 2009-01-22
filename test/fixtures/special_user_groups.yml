@@ -36,4 +36,11 @@ alpha_three:
   school: alpha
   grade: "3"
 
-  
+mmsd_elem_prin:
+  user: wi_alphaprin
+  district: wi_mmsd
+  school: wi_alpha
+  is_principal: true
+
+
+

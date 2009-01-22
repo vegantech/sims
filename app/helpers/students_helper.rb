@@ -45,6 +45,6 @@ module StudentsHelper
 
   def id_country_desc(obj)
     obj_text=obj.class.name.downcase
-    "Country identifier for this #{obj_text} (the id in your country's Dept. of Education)"
+    "National identifier for this #{obj_text} (the ID used by the Deptartment of Education)"
   end
 end
