@@ -15,6 +15,11 @@ class District::SchoolsController < ApplicationController
   def new
     @school = current_district.schools.build
 
+    # uncomment this to start off creating a user:
+    # @school.user_school_assignments.build
+
+    @users = User.all
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @school }
@@ -24,6 +29,7 @@ class District::SchoolsController < ApplicationController
   # GET /district_schools/1/edit
   def edit
     @school = current_district.schools.find(params[:id])
+    @users = User.all
   end
 
   # POST /district_schools
@@ -31,32 +37,27 @@ class District::SchoolsController < ApplicationController
   def create
     @school = current_district.schools.build(params[:school])
 
-    respond_to do |format|
-      if @school.save
-        flash[:notice] = 'School was successfully created.'
-        format.html { redirect_to(district_schools_url) }
-        format.xml  { render :xml => @school, :status => :created, :location => @school }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @school.errors, :status => :unprocessable_entity }
-      end
+    if @school.save
+      flash[:notice] = "Successfully created school and user assignments."
+      redirect_to district_schools_path
+    else
+      @users = User.all
+      render :action => 'new'
     end
   end
 
   # PUT /district_schools/1
   # PUT /district_schools/1.xml
   def update
+    params[:school][:existing_user_school_assignment_attributes] ||= {}
     @school = current_district.schools.find(params[:id])
 
-    respond_to do |format|
-      if @school.update_attributes(params[:school])
-        flash[:notice] = 'School was successfully updated.'
-        format.html { redirect_to(district_schools_url) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @school.errors, :status => :unprocessable_entity }
-      end
+    if @school.update_attributes(params[:school])
+      flash[:notice] = "Successfully updated school and user assignments."
+      redirect_to district_schools_path
+    else
+      @users = User.all
+      render :action => 'edit'
     end
   end
 

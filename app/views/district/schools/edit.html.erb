@@ -1,15 +1,11 @@
 <h1>Editing school</h1>
 
-<% form_for(@school, :url=>district_school_path(@school),:method=>:put) do |f| %>
+<% form_for(@school, :url => district_school_path(@school), :method => :put) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => f %>
-
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
-<%= render :partial => 'user_school_assignments/new_link', :locals=>{:obj=>"user"} %>
 
 <%= link_to 'Back', district_schools_path %>
-
-

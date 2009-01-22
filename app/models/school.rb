@@ -16,6 +16,8 @@
 class School < ActiveRecord::Base
   ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
 
+  after_update :save_user_school_assignments
+
   belongs_to :district
   has_many :enrollments 
   has_many :students, :through =>:enrollments
@@ -27,25 +29,22 @@ class School < ActiveRecord::Base
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 
-
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id
-
-
 
   def grades_by_user(user)
     school_grades = enrollments.grades
     if user.special_user_groups.all_students_in_school?(self)
       grades= school_grades
     else
-      #all grades where user has 1 or more authorized enrollments
+      # all grades where user has 1 or more authorized enrollments
       grades=user.special_user_groups.grades_for_school(self)
       student_ids = user.groups.find_all_by_school_id(self.id).collect(&:student_ids).flatten.uniq
       grades |= enrollments.find_all_by_student_id(student_ids, :select => "distinct grade").collect(&:grade)
     end
 
     grades.sort!
-    grades.unshift("*") if grades.size >1
+    grades.unshift("*") if grades.size > 1
     grades
   end
 
@@ -53,13 +52,22 @@ class School < ActiveRecord::Base
     name
   end
 
-  def user_assignments=(sch)
-    sch = Array(sch)
-    sch.reject!(&:blank?)
-    usa = sch.collect do |s|
-      UserSchoolAssignment.new(s.merge(:school_id=>self.id))
+  def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
+    user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
+      attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
+
+      if attributes
+        user_school_assignment.attributes = attributes
+      else
+        user_school_assignments.delete(user_school_assignment)
+      end
     end
-    self.user_school_assignments=usa
+  end
+
+  def new_user_school_assignment_attributes=(usa_attributes)
+    usa_attributes.each do |attributes|
+      user_school_assignments.build(attributes)
+    end
   end
 
   def virtual_groups
@@ -68,13 +76,16 @@ class School < ActiveRecord::Base
       virt_groups <<  self.groups.build(:title=>"All Students In Grade: #{grade}")
     end
     virt_groups
-
   end
-
 
   def quicklist
     InterventionDefinition.find(:all,:joins=>:quicklist_items, 
     :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
   end
 
+  def save_user_school_assignments
+    user_school_assignments.each do |user_school_assignment|
+      user_school_assignment.save(false)
+    end
+  end
 end

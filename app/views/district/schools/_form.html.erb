@@ -1,25 +1,25 @@
-  <p>
-    <%= form.label :name %><br />
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.label :id_district, id_district_desc(form.object) %><br />
-    <%= form.text_field :id_district %>
-  </p>
-  <p>
-    <%= form.label :id_state, id_state_desc(form.object) %><br />
-    <%= form.text_field :id_state %>
-  </p>
-  <p>
-    <%= form.label :id_country, id_country_desc(form.object) %><br />
-    <%= form.text_field :id_country %>
-  </p>
+<p>
+  <%= form.label :name %><br />
+  <%= form.text_field :name %>
+</p>
+<p>
+  <%= form.label :id_district, id_district_desc(form.object) %><br />
+  <%= form.text_field :id_district %>
+</p>
+<p>
+  <%= form.label :id_state, id_state_desc(form.object) %><br />
+  <%= form.text_field :id_state %>
+</p>
+<p>
+  <%= form.label :id_country, id_country_desc(form.object) %><br />
+  <%= form.text_field :id_country %>
+</p>
 
-    <h2>Explicit User Assignments</h2>
-      (all students in district implies regular access to all schools)
-     <div id= "user_school_assignments">
-       <%=render :partial => 'user_school_assignments/assignment' ,:collection => @school.user_school_assignments ,:locals=>{:form =>form, :obj=>"user"} %>
-       <%= hidden_field_tag "school_[user_assignments][]", nil %>
-     </div>
-
-
+<h2>Explicit User Assignments</h2>
+  (All students in district implies regular access to all schools)
+<div id="user_school_assignments">
+  <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>
+</div>
+<p>
+  <%= add_user_school_assignment_link "Add a user" %>
+</p>
