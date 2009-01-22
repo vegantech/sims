@@ -18,7 +18,7 @@ class District::SchoolsController < ApplicationController
     # uncomment this to start off creating a user:
     # @school.user_school_assignments.build
 
-    @users = User.all
+    @users = current_district.users
 
     respond_to do |format|
       format.html # new.html.erb
@@ -29,7 +29,7 @@ class District::SchoolsController < ApplicationController
   # GET /district_schools/1/edit
   def edit
     @school = current_district.schools.find(params[:id])
-    @users = User.all
+    @users = current_district.users
   end
 
   # POST /district_schools
@@ -38,10 +38,10 @@ class District::SchoolsController < ApplicationController
     @school = current_district.schools.build(params[:school])
 
     if @school.save
-      flash[:notice] = "Successfully created school and user assignments."
+      flash[:notice] = "Successfully created school."
       redirect_to district_schools_path
     else
-      @users = User.all
+      @users = current_district.users
       render :action => 'new'
     end
   end
@@ -56,7 +56,7 @@ class District::SchoolsController < ApplicationController
       flash[:notice] = "Successfully updated school and user assignments."
       redirect_to district_schools_path
     else
-      @users = User.all
+      @users = current_district.users
       render :action => 'edit'
     end
   end
