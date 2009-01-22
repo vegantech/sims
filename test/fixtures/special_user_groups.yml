@@ -40,6 +40,7 @@ mmsd_elem_prin:
   user: wi_alphaprin
   district: wi_mmsd
   school: wi_alpha
+  grouptype: <%=SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL%>
   is_principal: true
 
 

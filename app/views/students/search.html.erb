@@ -31,7 +31,10 @@
           <div class="small_bump_right">
             <%= flag_select  %> 
           </div>
-          <%= radio_button_tag('search_criteria[search_type]', :active_intervention) %><label for="search_criteria_search_type_active_intervention">List only students in an active intervention</label><%= active_intervention_select %>
+          <%= radio_button_tag('search_criteria[search_type]', :active_intervention) %><label for="search_criteria_search_type_active_intervention">List only students in an active intervention</label>
+          <div class = "small_bump_right">
+           <%= active_intervention_select %> 
+         </div>
           <%= radio_button_tag('search_criteria[search_type]', :no_intervention) %><label for="search_criteria_search_type_no_intervention">List only students not in an active intervention</label>
         </div>
       </div>

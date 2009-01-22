@@ -4,7 +4,7 @@
 # Table name: answer_definitions
 #
 #  id                    :integer         not null, primary key
-#  element_definition_id :integer
+#  element_definition :integer
 #  text                  :text
 #  value                 :string(255)
 #  position              :integer
@@ -14,8 +14,7 @@
 #
 
 answer_definition_one:
-  id: 1
-  element_definition_id: 1
+  element_definition: element_definition_one
   text: 'Zoo'
   value: 1
   position: 1
@@ -23,8 +22,7 @@ answer_definition_one:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_two:
-  id: 2
-  element_definition_id: 1
+  element_definition: element_definition_one
   text: 'Mars'
   value: 0
   position: 2
@@ -32,8 +30,7 @@ answer_definition_two:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_three:
-  id: 3
-  element_definition_id: 1
+  element_definition: element_definition_one
   text: 'Japan'
   value: 0
   position: 3
@@ -41,8 +38,7 @@ answer_definition_three:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_four:
-  id: 4
-  element_definition_id: 2
+  element_definition: element_definition_two
   text: 'Yes'
   value: 1
   position: 1
@@ -50,8 +46,7 @@ answer_definition_four:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_five:
-  id: 5
-  element_definition_id: 2
+  element_definition: element_definition_two
   text: 'No'
   value: 0
   position: 2
@@ -59,8 +54,7 @@ answer_definition_five:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_six:
-  id: 6
-  element_definition_id: 2
+  element_definition: element_definition_two
   text: 'Comments'
   value: Type your comments here...
   position: 3
@@ -68,8 +62,7 @@ answer_definition_six:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_seven:
-  id: 7
-  element_definition_id: 3
+  element_definition: element_definition_three
   text: 'Plane'
   value: 1
   position: 1
@@ -77,8 +70,7 @@ answer_definition_seven:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_eight:
-  id: 8
-  element_definition_id: 3
+  element_definition: element_definition_three
   text: 'Train'
   value: 0
   position: 2
@@ -86,8 +78,7 @@ answer_definition_eight:
   updated_at: <%= Time.now.to_s(:db) %>
 
 answer_definition_nine:
-  id: 9
-  element_definition_id: 3
+  element_definition: element_definition_three
   text: 'Automobile'
   value: 0
   position: 3

@@ -33,6 +33,12 @@ class ChecklistsController < ApplicationController
       return
     end
 
+    if @checklist.checklist_definition.new_record?  || @checklist.checklist_definition.blank?
+      flash[:notice] = "No checklist available.  Have the content builder create one."
+      redirect_to current_student
+      return
+    end
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @checklist }

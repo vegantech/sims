@@ -40,3 +40,7 @@ bravo:
 other:
   name: Other Middle
   district: wi_test
+
+wi_alpha:
+  name: Alpha Elementary
+  district: wi_mmsd

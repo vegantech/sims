@@ -44,7 +44,7 @@ self.use_instantiated_fixtures = true
     @student=Student.new()
     @student.first_name="Frist"
     @student.last_name="last"
-    @element_definition = ElementDefinition.find(1)
+    @element_definition = @element_definion_one
     @checklist=Checklist.find(:first)
     @checklist_definition = @checklist.checklist_definition
     @student.district=@checklist_definition.district
@@ -63,7 +63,7 @@ self.use_instantiated_fixtures = true
     Answer.destroy_all
     @teacher=User.find(:first)
     @checklist = new_from_student_and_teacher_permutation{|checklist,ig1,ig2| return checklist}
-    @checklist.answers.create!(:answer_definition=>1)
+    @checklist.answers.create!(:answer_definition=>@answer_definition_one)
     @checklist.save!
     @checklist.recommendations.create!(:should_advance=>true, :progress=>1,:recommendation=>4)
     assert @checklist.show_score?

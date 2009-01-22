@@ -21,7 +21,9 @@
     </table>
   </div>
   <%='&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
-  <%= submit_tag "select for problem solving", :name => 'process' %>
+  <p>
+    <%= submit_tag "select for problem solving", :name => 'process' %>
+  </p>
 <% end %>
 
 <%= render :partial => 'review_core_practices' %>
