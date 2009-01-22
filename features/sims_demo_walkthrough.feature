@@ -4,6 +4,7 @@ Feature: Sims Demo Walkthrough
   Scenario: Run Demo with oneschool
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "oneschool"
     And I fill in "Password" with "oneschool"
     Then I press "Login"
@@ -88,6 +89,7 @@ Feature: Sims Demo Walkthrough
   Scenario:  test district_admin
     Given load demo data
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "district_admin"
     And I fill in "Password" with "district_admin"
     Then I press "Login"
@@ -125,6 +127,7 @@ Feature: Sims Demo Walkthrough
   Scenario: Alphaprin
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "alphaprin"
     And I fill in "Password" with "alphaprin"
     Then I press "Login"
@@ -144,6 +147,7 @@ Feature: Sims Demo Walkthrough
   Scenario alphagradethree
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "alphagradethree"
     And I fill in "Password" with "alphagradethree"
     Then I press "Login"
@@ -158,6 +162,7 @@ Feature: Sims Demo Walkthrough
   Scenario twoschools
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "twoschools"
     And I fill in "Password" with "twoschools"
     Then I press "Login"
@@ -192,12 +197,13 @@ Feature: Sims Demo Walkthrough
   Scenario noschools
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "noschools"
     And I fill in "Password" with "noschools"
     Then I press "Login"
     Then I follow "School Selection"
     Then I should see "No schools available"
-    And I should see "Splash Page"
+    And I should not see "Please Login"
     And I follow "Logout"
     And I should see "Logged Out"
     And I should see "Please Login"
@@ -208,6 +214,7 @@ Feature: Sims Demo Walkthrough
   Scenario nogroups
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "nogroups"
     And I fill in "Password" with "nogroups"
     Then I press "Login"
@@ -222,6 +229,7 @@ Feature: Sims Demo Walkthrough
   Scenario allstudents
     Given load demo data 
     And I go to the home page
+    And I select "WI Test District" from "District"
     And I fill in "Login" with "allstudents"
     And I fill in "Password" with "allstudents"
     Then I press "Login"

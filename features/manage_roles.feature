@@ -8,7 +8,6 @@ Feature: Manage roles
     And I should not see "Role Management"
     When I enter URL "/roles/new"
     Then I should see "You are not authorized"
-    And I should see "Splash Page"
 
   Scenario: Register new role
     Given I am a district admin 

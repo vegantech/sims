@@ -14,7 +14,7 @@
     <fieldset>
       <div class = "form_row">
         <% unless @districts.blank? %>
-          <label for="district">District</label>
+          <label for="district_id">District</label>
           <%=collection_select(:district,:id, @districts, :id, :name) %>
         <% else  %>
           <%=hidden_field_tag("district[id]",@current_district.id) if @current_district%>
