@@ -147,6 +147,8 @@ self.use_instantiated_fixtures = true
 
 
   def test_previous_answer_for_existing_checklist_with_answers
+    pending
+
     Checklist.destroy_all
     Answer.delete_all
     def_opts={:user_id=>4, :from_tier=>1, :checklist_definition_id=>1}

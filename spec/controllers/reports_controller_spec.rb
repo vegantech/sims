@@ -14,7 +14,8 @@ describe ReportsController do
 
     it 'should show up' do
       get :student_overall_options, {}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
-      response.should have_tag('h1', 'SIMS: Student Intervention Monitoring System', 'Should have rendered layout')
+# puts response.body
+      response.should have_text(/Student Intervention Monitoring System/)
       response.should be_success
     end
   
