@@ -6,42 +6,35 @@
 <% #cache 'login' do 
 %> 
 
+<h1>Please Login:</h1>
 <%= render :partial => 'login/country_state_district' %>
   
-<h4>Please Login: </h4>
   <% form_tag({:controller => 'login', :action => 'login'}, :id=>'login') do %> 
-    <table cellpadding="2">
-      <tr id="choose_district">
+    <fieldset>
+      <div class = "form_row">
         <% unless @districts.blank? %>
-          <td><label for="district">District</label></td>
-          <td><%=collection_select(:district,:id, @districts, :id, :name) %></td>
-          <% else  %>
-          <%=content_tag :td,hidden_field_tag("district[id]",@current_district.id) if @current_district%>
+          <label for="district">District</label>
+          <%=collection_select(:district,:id, @districts, :id, :name) %>
+        <% else  %>
+          <%=hidden_field_tag("district[id]",@current_district.id) if @current_district%>
         <% end %>
-      </tr>
+      </div>
+
+      <div class = "form_row">
+        <label for="username">Login</label>
+        <%= text_field_tag(:username, params[:username]) %>
+      </div>
+      <div class = "form_row">
+        <label for="password">Password</label>
+        <%= password_field_tag(:password, params[:password]) %>
+      </div>
 
 
-      <tr>
-        <td><label for="username">Login</label></td>
-        <td><%= text_field_tag(:username, params[:username]) %></td>
-      </tr>
-      <tr>
-        <td><label for="password">Password</label></td>
-        <td><%= password_field_tag(:password, params[:password]) %></td>
-      </tr>
-      
+      <div class="form_row">
+        <%= submit_tag "Login", :class => "submit" %> 
+      </div>
+    </fieldset>
 
-
-      <tr>
-        <td colspan="2">
-          <%= submit_tag "Login" %> 
-          </td>
-
-        <td><!-- High Contrast <%=check_box_tag(:high_contrast) if false #TODO enable when the stle sheet looks better
-          %> -->
-        </td>
-      </tr>
-    </table>
     
   <% end %> 
 <% end %>

@@ -6,6 +6,80 @@ body, html {
 }
 
 
+
+/* Hack to get IE to display fieldset/ legend correctly */
+
+html fieldset {
+  position: relative;
+}
+
+html legend {
+  position: absolute;
+  top: -1em;
+  left: .5em;
+}
+
+
+
+
+html fieldset {
+  position: relative;
+  margin-top: 1em;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+/* Form Styles */
+
+
+h1.form_banner {
+  margin-right: auto;
+  width: 50%;
+  background: blue;
+  color: white;
+
+}
+fieldset {
+  background: #e2e3cf;
+  margin-right: auto;
+  width: 50%;
+}
+
+legend {
+  color: white;
+#  font-size: 2em;
+  background: maroon;
+#  padding: .5em 5em;
+
+}
+
+label {
+  width: 10em;
+  font-weight: bold;
+  float: left;
+  text-align: right;
+  margin-right: .5em;
+  display: block;
+}
+
+.form_row {
+  white-space: nowrap;
+  padding-bottom: .5em;
+}
+
+.submit {
+  margin-left: 12em;
+
+}
+
+
+
+
+
+
+
+
+
 #ignoredflags div {
   display: none;
 }
@@ -24,17 +98,20 @@ body {
 
 
 
-#left_column{
+#left_column, #left_header{
   float: left;
   width: 20%;
   margin-left: 1%;
   display: inline;
 }
 
-#main{
+#main, #right_header{
   float: left;
   width: 75%;
   margin-left: 3%;
+}
+
+#left_header img {
 }
 
 #footer{
