@@ -23,8 +23,10 @@ module StudentsHelper
 
 
   def intervention_group_checkbox(grp)
+    '<div class="small_bump_right">' +
     check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") + 
-      label_tag(dom_id(grp), grp.title)
+      label_tag(dom_id(grp), grp.title) +
+    "</div>"
 
   end
 

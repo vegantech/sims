@@ -29,6 +29,9 @@ html fieldset {
   padding-bottom: 2em;
 }
 
+
+
+
 /* Form Styles */
 
 
@@ -39,10 +42,15 @@ h1.form_banner {
   color: white;
 
 }
-.new_form fieldset {
+fieldset {
   background: #e2e3cf;
   margin-right: auto;
-  width: 50%;
+  width: 70%;
+}
+
+fieldset fieldset {
+  width: 80%;
+
 }
 
 legend {
@@ -53,13 +61,39 @@ legend {
 
 }
 
-.new_form label {
+
+.fake_label, .new_form label {
   width: 10em;
   font-weight: bold;
   float: left;
   text-align: right;
   margin-right: .5em;
   display: block;
+}
+
+#student_fake_left {
+  margin-bottom: 15em;
+}
+
+#student_fake_right label {
+  width: 100%;
+  float: none;
+}
+
+.small_bump_right {
+  text-indent: 2em;
+}
+
+.small_bump_right img { 
+  margin-right: 1em;
+  margin-left: .2em;
+}
+
+
+.new_form fieldset fieldset label{
+  width: 100%;
+  width: 80%;
+
 }
 
 .form_row {
@@ -103,6 +137,7 @@ body {
   width: 20%;
   margin-left: 1%;
   display: inline;
+  background: #fec689;
 }
 
 #main, #right_header{
