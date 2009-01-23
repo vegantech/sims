@@ -14,6 +14,7 @@ class District::UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = current_district.users.build
+    @schools = current_district.schools
 
     respond_to do |format|
       format.html # new.html.erb
@@ -21,9 +22,10 @@ class District::UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/edit
+  # GET /users/1/edit  
   def edit
     @user = current_district.users.find(params[:id])
+    @schools = current_district.schools
   end
 
   # POST /users
@@ -37,6 +39,7 @@ class District::UsersController < ApplicationController
         format.html { redirect_to(district_users_url)}
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
+        @schools = current_district.schools
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
@@ -46,6 +49,8 @@ class District::UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
+    params[:user] ||= {}
+    params[:user][:existing_user_school_assignment_attributes] ||= {}
     @user = current_district.users.find(params[:id])
 
     respond_to do |format|
@@ -54,6 +59,7 @@ class District::UsersController < ApplicationController
         format.html { redirect_to(district_users_url)}
         format.xml  { head :ok }
       else
+        @schools = current_district.schools
         format.html { render :action => "edit" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end

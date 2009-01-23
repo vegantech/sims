@@ -1,0 +1,16 @@
+<div class="user_school_assignment">
+  <% new_or_existing = user_school_assignment.new_record? ? 'new' : 'existing' %>
+  <% prefix = "user[#{new_or_existing}_user_school_assignment_attributes][]" %>
+
+  <% fields_for prefix, user_school_assignment do |f| -%>
+    <p>
+      <%= f.label 'school_id', 'School:' %>
+      <%= f.collection_select('school_id', @schools, :id, :to_s) %>
+
+      <%= f.label :admin %>
+      <%= f.select :admin, [['No', false], ['Yes', true]] %>
+
+      <%= link_to_function "Remove", "$(this).up('.user_school_assignment').remove()" %>
+    </p>
+  <% end -%>
+</div>

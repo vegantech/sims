@@ -15,8 +15,8 @@ class UserGroupAssignment < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
 
-  named_scope :principal,:conditions=>{:is_principal=>true}
+  named_scope :principal, :conditions => {:is_principal => true}
 
-  validates_uniqueness_of :user_id, :scope=>:group_id, :message=>"-- Remove the user first"
+  validates_uniqueness_of :user_id, :scope => :group_id, :message=>"-- Remove the user first"
   validates_presence_of :user_id, :group_id
 end
