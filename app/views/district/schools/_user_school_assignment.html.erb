@@ -8,7 +8,7 @@
       <%= f.collection_select('user_id', @users, :id, :to_s) %>
 
       <%= f.label :admin %>
-      <%= f.check_box :admin %>
+      <%= f.select :admin, [['No', false], ['Yes', true]] %>
 
       <%= link_to_function "Remove", "$(this).up('.user_school_assignment').remove()" %>
     </p>
