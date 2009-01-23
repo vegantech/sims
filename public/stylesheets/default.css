@@ -146,6 +146,10 @@ body {
   margin-left: 3%;
 }
 
+#left_header {
+  background: white;
+}
+
 #left_header img {
 }
 
@@ -156,8 +160,9 @@ body {
 }
 
 #header {
-  margin-bottom: 10px;
+/*  margin-bottom: 10px;*/
   margin-top: 5px;
+  background-color: white;
 }
 #header h1{
   display:inline;
