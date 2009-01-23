@@ -122,9 +122,6 @@ legend {
   display: none;
 }
 
-body {
-}
-
 #wrap {
   background:#FFF;
   margin:0 auto;
@@ -158,6 +155,7 @@ body {
   border-style: solid;
   border-width: thin;
   border-color: #008B8B;
+  font-size: 13px;
 }
 
 #left_header {
