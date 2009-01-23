@@ -146,6 +146,10 @@ body {
   margin-left: 3%;
 }
 
+#left_header {
+  background: white;
+}
+
 #left_header img {
 }
 
@@ -156,8 +160,9 @@ body {
 }
 
 #header {
-  margin-bottom: 10px;
+/*  margin-bottom: 10px;*/
   margin-top: 5px;
+  background-color: white;
 }
 #header h1{
   display:inline;
@@ -195,6 +200,26 @@ a:hover { color: #fff; background-color:#000; }
   padding-bottom: 12px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
+}
+
+#right_header {
+  background-color: #008B8B;
+  text-align: center;
+/*  width: 76%;*/
+  width: 78%;
+  margin-left: 0%;
+}
+
+#right_header h1 {
+  display: block;
+  font-weight: normal;
+  color: white;
+  top-border: 50px;
+}
+
+#right_header h2 {
+  font-weight: normal;
+  color: #fec689;
 }
 
 #left_column h2 {
