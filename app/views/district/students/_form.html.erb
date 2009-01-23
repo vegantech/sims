@@ -42,8 +42,12 @@
 
  <div id= "enrollments">
    <%=render :partial => 'enrollments/enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
-   <%= hidden_field_tag "student[school_enrollments][]", nil %>
  </div>
+
+  <%=link_to_function 'Add Enrollment' do |page|
+   page.insert_html :bottom, :enrollments, :partial => 'enrollment' , :object => Enrollment.new
+  end %>
+
 
 <div id= "system_flags">
   <%= render :partial => 'system_flag', :collection => @student.system_flags, :locals => {:form => form} %>

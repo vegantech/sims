@@ -35,11 +35,11 @@ class Student < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :unless => lambda {|e| e.id_district.blank?}
-
+  
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
-  after_update :save_system_flags
+  after_update :save_system_flags, :save_enrollments
 
   # This is duplicated in user
   def fullname 
@@ -139,11 +139,35 @@ class Student < ActiveRecord::Base
     end
   end
   
+  def save_enrollments
+    enrollments.each do |enrollment|
+      enrollment.save(false)
+    end
+  end
+
+  def new_enrollment_attributes=(enrollment_attributes)
+    enrollment_attributes.each do |attributes|
+      enrollments.build(attributes)
+    end
+  end
+
+  def existing_enrollment_attributes=(enrollment_attributes)
+    enrollments.reject(&:new_record?).each do |enrollment|
+      attributes = enrollment_attributes[enrollment.id.to_s]
+      if attributes
+        enrollment.attributes = attributes
+      else
+        enrollments.delete(enrollment)
+      end
+    end
+  end
+  
   def save_system_flags
     system_flags.each do |system_flag|
       system_flag.save(false)
     end
   end
+
 
   def district_system_flags=(district_flags)
     district_flags = Array(district_flags)
