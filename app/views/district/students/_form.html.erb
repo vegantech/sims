@@ -41,7 +41,7 @@
 
 
  <div id= "enrollments">
-   <%=render :partial => 'enrollments/enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
+   <%=render :partial => 'enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
  </div>
 
   <%=link_to_function 'Add Enrollment' do |page|
