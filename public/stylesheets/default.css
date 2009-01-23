@@ -142,10 +142,18 @@ body {
   border-color: #008B8B;
 }
 
-#main, #right_header{
+#main {
   float: left;
-  width: 75%;
-  margin-left: 3%;
+  width: 73%;
+  margin-top: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+  padding-top: 1%;
+  padding-left: 1%;
+  padding-bottom: 1%;
+  border-style: solid;
+  border-width: thin;
+  border-color: #008B8B;
 }
 
 #left_header {
@@ -210,6 +218,7 @@ a:hover { color: #fff; background-color:#000; }
 }
 
 #right_header {
+  float: left;
   background-color: #008B8B;
   text-align: center;
   width: 80%;
