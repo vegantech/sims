@@ -1,1 +1,0 @@
-page.replace_html "new_enrollment_link", :partial => "new"

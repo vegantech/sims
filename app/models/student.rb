@@ -168,24 +168,6 @@ class Student < ActiveRecord::Base
     end
   end
 
-
-  def district_system_flags=(district_flags)
-    district_flags = Array(district_flags)
-    district_flags.reject!(&:blank?)
-    district_flags = district_flags.inject([]) { |result,h| result << h unless result.include?(h); result }
-    self.system_flags = district_flags.uniq.collect{|s| SystemFlag.new(s.merge(:student_id=>self.id))}
-  end
-
-  def school_enrollments=(enrolled_schs)
-    enrolled_schs = Array(enrolled_schs)
-    enrolled_schs.reject!(&:blank?)
-
-    # This removes duplicates,  uniq doesn't work with an array of hashes (they're different objects with the same contents.)
-    enrolled_schs = enrolled_schs.inject([]) { |result,h| result << h unless result.include?(h); result }
-
-    self.enrollments = enrolled_schs.uniq.collect{|s| Enrollment.new(s.merge(:student_id=>self.id))}
-  end
-
   def belongs_to_user?(user)
     user.groups.find_by_id(group_ids) || user.special_user_groups.find_by_school_id(school_ids)
   end
