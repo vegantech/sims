@@ -197,6 +197,15 @@ a:hover { color: #fff; background-color:#000; }
   background-color: #f0f0f0;
 }
 
+#left_column h2 {
+  color: white;
+  background-color: #008B8B;
+  font-size: 10px;
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
+}
+
 #errorExplanation h2 {
   text-align: left;
   font-weight: bold;
