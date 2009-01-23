@@ -9,15 +9,12 @@
   <%= link_to 'Recommend Probes', url_for(:controller=>'intervention_builder/recommended_monitors',:action=>"assign_probes_to_intervention",:id=>intervention_definition) %> 
 </td>
 
-  <td><%= h intervention_definition.business_key %> </td>
   <td><%=h intervention_definition.title %> <%=content_tag :b, "QuickList" if intervention_definition.district_quicklist %></td>
   <td><%=h intervention_definition.description %></td>
-  <td><%=h intervention_definition.custom %></td>
   <td><%=h intervention_definition.tier.title %></td>
   <td><%=h intervention_definition.rec_mon_preface %></td>
   <td><%=h pluralize(intervention_definition.time_length_num, intervention_definition.time_length.title) %></td>
   <td><%=h pluralize(intervention_definition.frequency_multiplier, "time") +" "+ intervention_definition.frequency.title%></td>
-  <td><%=h intervention_definition.user %></td>
-  <td><%=h intervention_definition.updated_at.to_date.to_s(:long) %></td>
+  <td><%=h intervention_definition.updated_at.to_date.to_s(:short) %></td>
   
 <% end %>
