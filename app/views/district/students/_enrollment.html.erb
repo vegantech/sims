@@ -1,0 +1,19 @@
+<div class="enrollment">
+  <% new_or_existing = enrollment.new_record? ? 'new' : 'existing' %> 
+  <% prefix = "student[#{new_or_existing}_enrollment_attributes][]" %>
+
+
+  <% fields_for prefix, enrollment  do |enrollment_form| %>
+  <%= error_messages_for :enrollment, :object => enrollment %>
+  <p>
+    <%=enrollment_form.label :school_id, 'School'%>
+    <%= enrollment_form.collection_select(:school_id, current_district.schools, :id, :to_s ) %>
+    <%=enrollment_form.label :grade %> 
+    <%= enrollment_form.text_field :grade , :size=>5%>
+  </p>
+  <% end %>
+
+  <%= link_to_function "Remove", "$(this).up('.enrollment').remove()" %>
+</p>
+</div>
+

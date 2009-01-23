@@ -202,15 +202,6 @@ class User < ActiveRecord::Base
     district.roles | System.roles
   end
 
-  def school_assignments=(sch)
-    sch = Array(sch)
-    sch.reject!(&:blank?)
-    usa = sch.collect do |s|
-      UserSchoolAssignment.new(s.merge(:user_id=>self.id))
-    end
-    self.user_school_assignments=usa
-  end
-  
   def self.paged_by_last_name(last_name="", page="1")
     paginate :per_page => 25, :page => page, 
       :conditions=> ['last_name like ?', "%#{last_name}%"],

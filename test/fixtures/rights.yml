@@ -234,19 +234,6 @@ district_students_admin:
   read_access: true
   write_access: true
 
-user_schools_admin:
-  role: district_admin
-  controller: 'user_school_assignments'
-  read_access: true
-  write_access: true
-
-district_student_enrollments:
-  role: district_admin
-  controller: 'enrollments'
-  read_access: true
-  write_access: true
-
-
 users_admin:
   role: district_admin
   controller: 'district/users'
