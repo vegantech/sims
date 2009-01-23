@@ -140,6 +140,10 @@ body {
   border-style: solid;
   border-width: medium;
   border-color: #008B8B;
+
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   13px;
+  line-height: 18px;
 }
 
 #main {
