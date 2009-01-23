@@ -330,3 +330,24 @@ li.plus_minus {
   list-style-type: square;
   list-style-image: none;
 }
+
+table.top_summary  {
+  margin-top: 10px;
+  width: 85%;
+  border-style: solid;
+  border-width: 1px;
+  color: #008B8B;
+  background: #e2e3cf;
+}
+
+td.label {
+  color: #000000;
+  font-weight: bold;
+}
+
+.profile_page h2 {
+  text-align: center;
+  line-height: 110%;
+  background: #EEF3FA;
+
+}

@@ -1,24 +1,30 @@
-<table class="studentList">
-<tr>
-  <td class="label"> Name </td>
-  <td> <%=h @student.fullname_last_first%> </td> 
+<table class ="top_summary">
+  <tbody>
+    <tr>
+      <td class="label">Name</td>
+      <td> <%=h @student.fullname_last_first%> </td> 
+      <td class ="spacer"> </td>
+      <td class="label"> Birth Date </td>
+      <td> <%=h @student.birthdate.to_s%> </td> 
+    </tr>
+    <tr>
+      <td class="label"> Student Number </td>
+      <td> <%=h @student.number%> </td> 
+      <td class ="spacer"> </td>
+      <td></td>
+      <td><b> <%= "ESL" if @student.esl? %> <%= "Special Ed" if @student.special_ed %> </b></td>
+    </tr>
 
-  <td class="label"> Birth Date </td>
-  <td> <%=h @student.birthdate.to_s%> </td> 
-</tr>
-<tr>
-  <td class="label"> Student Number </td>
-  <td> <%=h @student.number%> </td> 
-</tr>
+    <% @student.enrollments.each do |enrollment| %>
+      <tr>
+      <td class="label">School</td>
+      <td> <%= h enrollment.school %> </td>
+      <td class ="spacer"> </td>
+      <td class="label">Grade</td>
+      <td> <%= h enrollment.grade %> </td>
+      </tr>
+    <% end %>
 
-<% @student.enrollments.each do |enrollment| %>
-  <tr>
-  <td class="label">School</td>
-  <td> <%= h enrollment.school %> </td>
-  <td class="label">Grade</td>
-  <td> <%= h enrollment.grade %> </td>
-  </tr>
-<% end %>
-
+  </tbody>
 </table>
 

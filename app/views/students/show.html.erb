@@ -3,14 +3,16 @@ Student Profile for <%= @student.fullname %>
 <%= selected_navigation %>
 
 <%= render :partial =>'student'%>
+<div class = "profile_page">
 
-<%= render :partial => 'team_notes' %>
+  <%= render :partial => 'team_notes' %>
 
-<%= render :partial => 'interventions' %>
+  <%= render :partial => 'interventions' %>
 
-<%= render :partial => 'checklists' %>
+  <%= render :partial => 'checklists' %>
 
-<%= render :partial => 'recommendations' %>
+  <%= render :partial => 'recommendations' %>
+</div>
 
   
 
