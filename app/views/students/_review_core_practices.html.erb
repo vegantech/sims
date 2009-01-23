@@ -2,7 +2,7 @@
 
   <% current_district.flag_categories.each do |fc| %>
 
-    <% if 100*@flagcount[fc.category].to_f/@students.size  > fc.threshold %>
+    <% if !@flagcount.blank? && 100*@flagcount[fc.category].to_f/@students.size  > fc.threshold %>
       <b>This student list has <%=fc.threshold %>% or more of the students flagged for: 
 <%=Flag::FLAGTYPES[fc.category][:humanize] %> 
 </b>

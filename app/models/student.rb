@@ -23,7 +23,7 @@ class Student < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :checklists
   has_many :recommendations
-  has_many :enrollments
+  has_many :enrollments, :dependent => :destroy
   has_many :schools, :through => :enrollments
   has_many :comments, :class_name => "StudentComment"
   has_many :principal_overrides
@@ -60,6 +60,16 @@ class Student < ActiveRecord::Base
   end
 
   def max_tier
+    l_tier=Tier.last
+    if principal_overrides.exists?(:end_tier_id => l_tier)
+      return l_tier
+    elsif recommendations.exists?(:promoted => true)
+      return l_tier
+    else
+      return Tier.first
+    end
+
+    
     unless recommendations.blank?
       #TODO Tiers should be specific to district
       Tier.first

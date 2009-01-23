@@ -19,7 +19,7 @@ class School < ActiveRecord::Base
   after_update :save_user_school_assignments
 
   belongs_to :district
-  has_many :enrollments 
+  has_many :enrollments , :dependent => :destroy
   has_many :students, :through =>:enrollments
   has_many :special_user_groups
   has_many :groups, :order => :title

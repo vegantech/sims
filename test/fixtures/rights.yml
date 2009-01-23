@@ -253,3 +253,9 @@ quicklists_admin:
   read_access: true
   write_access: true
 
+school_admin2:
+  role: school_admin
+  controller: schools
+  read_access: true
+  write_access: true
+
