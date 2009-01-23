@@ -14,21 +14,22 @@
 #
 
 class User < ActiveRecord::Base
+  after_update :save_user_school_assignments
+
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
   has_many :schools, :through=>:user_school_assignments, :order => "name"
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
-  has_many :groups, :through=> :user_group_assignments, :order =>:title
-  has_many :principal_override_requests, :class_name=>"PrincipalOverride",:foreign_key=>:teacher_id
-  has_many :principal_override_responses, :class_name=>"PrincipalOverride",:foreign_key=>:principal_id
+  has_many :groups, :through => :user_group_assignments, :order => :title
+  has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
+  has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
   has_and_belongs_to_many :roles
   has_many :rights, :through => :roles
   has_many :student_comments
 
-
-  attr_accessor :password,:all_students_in_district
+  attr_accessor :password, :all_students_in_district
 
   validates_presence_of :username, :last_name, :first_name, :district
   validates_presence_of :password, :on => :create
@@ -216,8 +217,23 @@ class User < ActiveRecord::Base
       :order => 'last_name'
   end
 
+  def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
+    user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
+      attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
 
+      if attributes
+        user_school_assignment.attributes = attributes
+      else
+        user_school_assignments.delete(user_school_assignment)
+      end
+    end
+  end
 
+  def new_user_school_assignment_attributes=(usa_attributes)
+    usa_attributes.each do |attributes|
+      user_school_assignments.build(attributes)
+    end
+  end
 
 protected
   def district_special_groups
@@ -229,6 +245,11 @@ protected
     elsif @all_students_in_district == "0"
       all_students.destroy
     end
+  end
 
+  def save_user_school_assignments
+    user_school_assignments.each do |user_school_assignment|
+      user_school_assignment.save(false)
+    end
   end
 end
