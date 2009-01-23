@@ -1,2 +1,0 @@
-page.insert_html :bottom, 'enrollments', :partial => 'enrollment'
-page.replace 'new_enrollment_link', :partial => 'new_link'
