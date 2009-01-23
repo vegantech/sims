@@ -15,7 +15,7 @@ class Enrollment < ActiveRecord::Base
   belongs_to :student
   belongs_to :school
 
-  validates_presence_of :grade,:school_id, :student_id
+  validates_presence_of :grade
 
   named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
 
