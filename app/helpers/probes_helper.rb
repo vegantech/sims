@@ -68,35 +68,6 @@ end
     #vertgraph_#{count} {
           width: #{width}px; 
           height: #{height}px; 
-          position: relative; 
-          left: 10px;  
-          font-family: "Lucida Grande", Verdana, Arial;
-      }
-    
-      #vertgraph_#{count} dl dd {
-        position: absolute;
-        width: 28px;
-        height: 100px;
-        bottom: 45px;
-        padding: 0 !important;
-        margin: 0 !important;
-        text-align: center;
-        font-weight: bold;
-        color: white;
-        line-height: 1.5em;
-        overflow: hidden;
-      }
-      
-      #vertgraph_#{count} dl dt {
-        position: absolute;
-        width: 60px;
-        height: 34px;
-        bottom: 0px;
-        padding: 0 !important;
-        margin: 0 !important;
-        text-align: center;
-        color: #444444;
-        font-size: 0.8em;
       }
     HTML
 
@@ -135,7 +106,7 @@ end
           Current scores for "#{data[0][2]}"<br />
           Benchmark: #{data[0][3]} at grade level #{data[0][4]}
         </p>
-      <div id="vertgraph_#{count}">
+      <div id="vertgraph_#{count}" class="vertgraph">
       
         <dl>
     HTML
