@@ -20,7 +20,6 @@ git clone git://github.com/vegantech/sims.git
 cd sims
 git submodule init
 git submodule update vendor/plugins/cells
-git submodule update vendor/plugins/will_paginate
 
 copy the config/database.yml.sqlite3 to config/database.yml
 rake db:migrate
