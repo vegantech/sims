@@ -2,7 +2,7 @@ begin
   require File.dirname(__FILE__)+ '/rcov_rake_helper'
    
   
-if defined? Rcov
+if defined? Rcov and defined? Spec
   
   namespace :test do
     namespace :coverage do

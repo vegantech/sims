@@ -1,3 +1,4 @@
+begin
 require File.dirname(__FILE__)+ '/rcov_rake_helper'
 require File.expand_path("vendor/plugins/rspec/lib/spec/rake/verify_rcov")
 
@@ -42,4 +43,5 @@ RCov::VerifyTask.new('verify_rcov_integration') do |t|
 end
 task "default" => ["test:coverage"]
 
-  
+rescue LoadError
+end
