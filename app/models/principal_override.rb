@@ -41,7 +41,8 @@ class PrincipalOverride < ActiveRecord::Base
 
 
   def self.pending_for_principal(user)
-    pending.select do |p|
+    pnd=pending.find(:all,:joins=>:student,   :conditions => {:students => {:district_id => user.district_id }})
+    pnd.select do |p|
       !p.student.blank? && p.student.principals.include?(user) 
     end
   end
