@@ -1,8 +1,8 @@
 body, html {
   margin:0;
   padding:0;
-  background:#FFF;
-  color:#000;
+  background: #e2e3cf; /*#FFF;*/
+  color: #000;
 }
 
 
@@ -123,7 +123,7 @@ legend {
 }
 
 #wrap {
-  background:#FFF;
+  background: #e2e3cf; /*#FFF;*/
   margin:0 auto;
 }
 
@@ -151,11 +151,13 @@ legend {
   margin-right: 2%;
   padding-top: 1%;
   padding-left: 1%;
+  padding-right: 1%;
   padding-bottom: 1%;
   border-style: solid;
   border-width: thin;
   border-color: #008B8B;
   font-size: 13px;
+  background: #fff;
 }
 
 #left_header {
@@ -231,12 +233,21 @@ a:hover { color: #fff; background-color:#000; }
   display: block;
   font-weight: normal;
   color: white;
-  top-border: 50px;
+  /*border-top: ?*/
+  /*top-border: 50px;*/
+  margin-top: .3em;
+  padding-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 #right_header h2 {
   font-weight: normal;
   color: #fec689;
+  margin-top: .2em;
+  padding-top: 0;
+  margin-bottom: .1em;
+  padding-bottom: 0;
 }
 
 #left_column h2 {
@@ -333,7 +344,7 @@ li.plus_minus {
 
 table.top_summary  {
   margin-top: 10px;
-  width: 85%;
+  width: 100%;
   border-style: solid;
   border-width: 1px;
   color: #008B8B;
@@ -348,7 +359,7 @@ td.label {
 .profile_page h2 {
   text-align: center;
   line-height: 110%;
-  background: #EEF3FA;
+  background: #ecede0; /*#EEF3FA;*/
 
 }
 
