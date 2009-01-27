@@ -16,14 +16,14 @@
       <div id="header">
         <div id ="left_header">
           <% if current_district && current_district.logo.url != "/logos/original/missing.png" %>
-            <%=image_tag current_district.logo.url, :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
+            <%=image_tag current_district.logo.url, :size=>"200x60", :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
           <% else %>
             <%=current_district%>
           <% end %>
         </div>
         <div id = "right_header">
           <h1>SIMS:</h1>
-          <h2>Student Intervention Monitoring System<h2>
+          <h2>Student Intervention Monitoring System</h2>
         </div>
         <br clear="both" />
       </div>
