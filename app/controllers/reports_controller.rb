@@ -12,7 +12,7 @@ class ReportsController < ApplicationController
 			@student = current_student
 
       format.html {}
-      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.studentNum}.pdf" }
+      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
 		end
   end
 
