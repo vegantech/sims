@@ -31,6 +31,8 @@ describe ReportsController do
   end
 
   describe 'student overall report' do
+    integrate_views
+
     before do
       @district = Factory(:district)
       @student = Factory(:student)
@@ -40,14 +42,13 @@ describe ReportsController do
     end
 
     it 'should show top summary when selected' do
-      pending
-      # controller.should_receive(:render).with(:partial => 'student_profile/top_summary')      
-      # controller.expect_render(:partial => 'student_profile/top_summary')
+      controller.should_receive(:render).with(:partial => 'student_profile/top_summary')
 
       get :student_overall, {:report_params => {:format => "html", :top_summary => "1"}},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
-puts "\n\nResponse body:\n"+response.body + "xxx\n\n"
+
       response.should be_success
+      response.should_not be_redirect
     end
 
     # it 'should not show top summary when not selected' do
