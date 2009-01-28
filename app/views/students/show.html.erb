@@ -1,9 +1,8 @@
-Student Profile for <%= @student.fullname %>
-<%= render :partial => 'flags'%>
 <%= selected_navigation %>
-
 <%= render :partial =>'student'%>
+
 <div class = "profile_page">
+  <%= render :partial => 'custom_flags'%>
 
   <%= render :partial => 'team_notes' %>
 
