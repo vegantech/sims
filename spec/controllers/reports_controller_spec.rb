@@ -39,7 +39,7 @@ describe ReportsController do
     end
 
     it 'should show top summary when selected' do
-      controller.should_receive(:render).with(:partial => 'student_profile/top_summary')
+      controller.should_receive(:render).with(:partial => 'students/student')
 
       get :student_overall, {:report_params => {:format => "html", :top_summary => "1"}},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
@@ -49,7 +49,7 @@ describe ReportsController do
     end
 
     it 'should not show top summary when not selected' do
-      controller.should_receive(:render).with(:partial => 'student_profile/top_summary').never
+      controller.should_receive(:render).with(:partial => 'students/student').never
       get :student_overall, {:report_params => {:format => "html"}}, {:user_id => 1, :district_id => @district.id}
       response.should be_success
     end
