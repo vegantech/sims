@@ -24,4 +24,5 @@ Feature: Team Notes
     And I should not see "Fourth Team Note"
     # TODO: Get this working...
     When I follow "Common Last"
-    Then I should see "Student Profile for Common Last"
+    Then I should see "Intervention Summary"
+    And I should see "Last, Common"

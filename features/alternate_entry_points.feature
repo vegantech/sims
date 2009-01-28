@@ -12,4 +12,5 @@ Feature: Alternate Entry Points
     And I fill in "Password" with "default_user"
     And I press "Login"
     And I should not see "Authentication Failure"
-    Then I should see "Student Profile for Common Last"
+    Then I should see "Intervention Summary"
+    And I should see "Last, Common"
