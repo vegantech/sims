@@ -12,12 +12,11 @@ module LinksAndAttachmentsHelper
   end
 
   def links_and_attachments(obj, tag_type)
-    obj.assets.collect do |asset| 
-      d=''
-      d+= content_tag(tag_type, link_to_with_icon(asset.name, asset.url)) unless asset.url.blank? 
-      d+= content_tag(tag_type, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document? 
-      d
-    end.join(" ")
+    obj.assets.inject("") do |str,asset|
+      str += content_tag(tag_type, link_to_with_icon(asset.name, asset.url)) unless asset.url.blank? 
+      str += content_tag(tag_type, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document? 
+      str
+    end
 
   end
 
