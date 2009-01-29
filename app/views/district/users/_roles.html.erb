@@ -1,5 +1,5 @@
 <h2>Roles</h2>
-  <% @user.available_roles.each do |role| %>
+  <% current_district.available_roles.each do |role| %>
       <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
       <%=label_tag dom_id(role), role%>
 <% end %>

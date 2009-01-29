@@ -140,6 +140,11 @@ class District < ActiveRecord::Base
     !!@delete_logo
   end
 
+  def available_roles
+    roles | System.roles
+  end
+
+
 
 private
   def make_sure_there_are_no_schools

@@ -44,5 +44,18 @@ describe District do
     district.search_intervention_by.should == []
   end
 
+  describe "available_roles" do
+    it 'should merge system and district roles' do
+      district_roles=[1,2,4]
+      system_roles = [2,3,5]
+      district=District.new
+
+      district.should_receive(:roles).and_return(district_roles)
+      System.should_receive(:roles).and_return(system_roles)
+      district.available_roles.should == [1,2,4,3,5]
+    end
+
+  end
+
 
 end

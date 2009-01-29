@@ -42,7 +42,9 @@ describe User do
   end
   
   describe 'full_name' do
-    User.new(:first_name=>"0First.", :last_name=>"noschools").fullname.should == ("0First. noschools")
+    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
+    u.fullname.should == ("0First. noschools")
+    u.to_s.should == ("0First. noschools")
   end
   
   describe 'full_name_last_first' do
@@ -125,6 +127,38 @@ describe User do
 
 
 
+  describe "principal?" do
+    it 'should return true if principal of a group or special user group and false if not' do
+      u=@user
+      u.principal?.should == false
+      u.user_group_assignments.create!(:is_principal=>true, :group_id=>11)
+      u.principal?.should == true
+      u.user_group_assignments.clear
+      u.principal?.should == false
+      u.special_user_groups.create!(:is_principal => true ,:grouptype=>2, :district_id => 11)
+      u.principal?.should == true
+
+    end
+    
+
+  end
+
+  describe 'grouped_principal_overrides' do
+    it 'should group requests, responses and pending' do
+      @user.grouped_principal_overrides.should == {:user_requests => []}
+      req='New Override Request'
+      @user.stub!(:principal_override_requests=> [req])
+      @user.grouped_principal_overrides.should == {:user_requests => [req]}
+
+      @user.stub!(:principal? => true)
+      @user.stub!(:principal_override_responses => ["Principal Override Response"])
+      PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
+      @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"], 
+          :pending_requests => ["Pending For Principal"]}
+      
+
+    end
+  end
 
 
 end

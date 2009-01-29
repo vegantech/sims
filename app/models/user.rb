@@ -190,16 +190,13 @@ class User < ActiveRecord::Base
   end
 
   def principal?
-    user_group_assignments.principal.first || special_user_groups.principal.first
+    !!(user_group_assignments.principal.first || special_user_groups.principal.first)
   end
 
   def all_students_in_district
-    !! special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
+    #called in district/users/_district_groups.html.erb
+    special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
 
-  end
-
-  def available_roles
-    district.roles | System.roles
   end
 
   def self.paged_by_last_name(last_name="", page="1")
@@ -228,7 +225,7 @@ class User < ActiveRecord::Base
 
 protected
   def district_special_groups
-    all_students = special_user_groups.all_students_in_district.find_by_district_id(self.district_id) || 
+    all_students = all_students_in_district || 
         special_user_groups.build(:district_id=>self.district_id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
 
     if @all_students_in_district == "1"
