@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
 
 
   def current_student
-    @student ||=Student.find_by_id(current_student_id)
+    @student ||= Student.find_by_id(current_student_id)
   end
 
   def current_school_id
@@ -118,7 +118,7 @@ class ApplicationController < ActionController::Base
   end
 
   def subdomains
-      g=self.request.subdomains
+      g = self.request.subdomains
 
       if g.pop.to_s.match(SUBDOMAIN_MATCH) and !g.blank?
 
@@ -130,8 +130,7 @@ class ApplicationController < ActionController::Base
         params[:state_abbrev] ||=  "wi"
         params[:country_abbrev] ||=  "us"
       else
-
-      return
+        return
       end
 
       @country ||= Country.find_by_abbrev(params[:country_abbrev])

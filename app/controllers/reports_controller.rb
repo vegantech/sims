@@ -1,16 +1,22 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options
+  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions
+
+	# interventions for a single student
+	def student_interventions
+		@student = current_student
+		flash[:notice] = "Select a student first" and redirect_to :back and return if @student.nil?
+		handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
+	end
 
   def student_overall
-    # process params for student_overall_options
+    # process params from student_overall_options
     params[:format] = params[:report_params][:format] if params[:report_params]
     params[:format] = 'html' unless defined? PDF::HTMLDoc
 
     @opts = params[:report_params] || {}
+		@student = current_student
 
     respond_to do |format|
-			@student = current_student
-
       format.html {}
       format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
 		end
