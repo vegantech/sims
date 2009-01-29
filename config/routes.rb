@@ -47,6 +47,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :ignore_flags
 
+  map.delete_custom_flag '/custom_flags/delete/:id', :controller=>"custom_flags",:action=>'destroy'
+
   map.resources :custom_flags
 
 

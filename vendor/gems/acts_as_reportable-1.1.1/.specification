@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-06-08 22:00:00 -07:00
+date: 2008-06-09 00:00:00 -05:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -43,6 +43,8 @@ rdoc_options:
 - --title
 - Ruport Documentation
 require_paths: 
+- bin
+- bin
 - bin
 - bin
 - bin

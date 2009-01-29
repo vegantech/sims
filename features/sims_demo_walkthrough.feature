@@ -29,7 +29,10 @@ Feature: Sims Demo Walkthrough
     And I select "Math" from "Category"
     Then I press "Save Custom Flag"
     Then I should see "Math- \ntest reason from cucumber"
-    #can't remove yet, doesn't work without javascript
+    Then I follow "Remove"
+    Then I should not see "Math- \ntest reason from cucumber"
+
+    
 
     #intervention
     Then I follow "Assign New Intervention"

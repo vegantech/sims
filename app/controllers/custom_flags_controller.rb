@@ -38,7 +38,12 @@ class CustomFlagsController < ApplicationController
   # DELETE /custom_flags/1.xml
   def destroy
     @custom_flag = CustomFlag.find(params[:id])
-    @custom_flag.destroy if selected_students_ids.include?(@custom_flag.student_id)
+    if selected_students_ids.include?(@custom_flag.student_id.to_s)
+      @custom_flag.destroy
+    else
+      # raise "selected ids #{selected_students_ids.inspect}   custom_flag #{@custom_flag.inspect}"
+
+    end
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
@@ -56,7 +61,7 @@ class CustomFlagsController < ApplicationController
         format.js 
       end
     else
-      @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(:user_id=>current_user_id))
+     @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(:user_id=>current_user_id))
       @ignore_flag.save
       respond_to do |format|
         format.html do 
