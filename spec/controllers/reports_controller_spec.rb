@@ -89,18 +89,17 @@ describe ReportsController do
       response.should be_success
     end
 
-    # it 'should show student interventions when selected' do
-    #   pending
-    #   StudentInterventionsReport.should_receive(:render_html)
-    #   get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"}}, {:user_id => 1, :district_id => @district.id}
-    #   response.should be_success
-    # end
+    it 'should show student interventions when selected' do
+      StudentInterventionsReport.should_receive(:render_html)
+      get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"}}, {:user_id => 1, :district_id => @district.id}
+      response.should be_success
+    end
 
-    # it 'should not show student interventions when not selected' do
-    #   StudentInterventionsReport.should_not_receive(:render_html)
-    #   get :student_overall, {:format => "html"}, {:user_id => 1}
-    #   response.should be_success
-    # end
+    it 'should not show student interventions when not selected' do
+      StudentInterventionsReport.should_not_receive(:render_html)
+      get :student_overall, {:format => "html"}, {:user_id => 1, :district_id => @district.id}
+      response.should be_success
+    end
 
     # it 'should show extended profile when selected' do
     #   controller.should_receive(:render_component_as_string_with_notify_on_error)
