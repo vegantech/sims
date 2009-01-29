@@ -37,13 +37,8 @@ class CustomFlagsController < ApplicationController
   # DELETE /custom_flags/1
   # DELETE /custom_flags/1.xml
   def destroy
-    @custom_flag = CustomFlag.find(params[:id])
-    if selected_students_ids.include?(@custom_flag.student_id.to_s)
-      @custom_flag.destroy
-    else
-      # raise "selected ids #{selected_students_ids.inspect}   custom_flag #{@custom_flag.inspect}"
-
-    end
+    @custom_flag = current_student.custom_flags.find_by_id(params[:id])
+    @custom_flag.destroy unless @custom_flag.nil?
 
     respond_to do |format|
       format.html { redirect_to(current_student) }

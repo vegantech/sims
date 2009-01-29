@@ -23,7 +23,7 @@ describe CustomFlagsController do
     end
   
     it "should map #destroy" do
-      route_for(:controller => "custom_flags", :action => "destroy", :id => 1).should == "/custom_flags/1"
+      route_for(:controller => "custom_flags", :action => "destroy", :id => 1).should == "/custom_flags/delete/1"
     end
   end
 

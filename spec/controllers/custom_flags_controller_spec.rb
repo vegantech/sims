@@ -60,18 +60,20 @@ describe CustomFlagsController do
   end
 
   describe "responding to DELETE destroy" do
+    before do
+      controller.should_receive(:current_student).twice.and_return(mock_student(:id=>1, 'new_record?'=>false,:custom_flags=>CustomFlag))
+
+    end
 
     it "should destroy the requested custom_flag" do
-      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag(:student_id => 1))
+      CustomFlag.should_receive(:find_by_id).with("37").and_return(mock_custom_flag(:student_id => 1))
       mock_custom_flag.should_receive(:destroy)
-      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-      delete :destroy, {:id => "37"},{:selected_students=>[1]}
+      delete :destroy, {:id => "37"}
     end
   
     it "should redirect to the student profile" do
       CustomFlag.stub!(:find).and_return(mock_custom_flag(:destroy => true, :student_id => 1))
-      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-      delete :destroy, {:id => "1"},{:selected_students=>[1]}
+      delete :destroy, {:id => "1"}
       response.should redirect_to(student_url(1))
     end
 
