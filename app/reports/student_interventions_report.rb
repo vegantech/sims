@@ -102,13 +102,13 @@ class StudentInterventionsSummary
 	  i.intervention_definition.intervention_cluster.title,
 	  i.intervention_definition.title,
 	  i.intervention_definition.description,
-	  i.start_date.to_date.to_s(:normal),
-	  i.end_date.to_date.to_s(:normal),
+	  i.start_date.to_date.to_s(:report),
+	  i.end_date.to_date.to_s(:report),
 	  i.frequency_summary,
 	  i.time_length_summary,
 	  (i.ended_teacher || User.new).fullname,
 	  i.ended_at,
-	  i.updated_at.to_date.to_s(:normal),
+	  i.updated_at.to_date.to_s(:report),
 	  i.intervention_definition.tier_summary,
 	  intervention_people(i)
 	  ]
