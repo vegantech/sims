@@ -11,7 +11,7 @@ describe StudentInterventionsReport do
 
 	describe 'for student with one intervention' do
 		before :each do
-		 @report= StudentInterventionsReport.render_text(:student => mock_student(1,2))
+		 @report = StudentInterventionsReport.render_text(:student => mock_student(1, 2))
 		end
 
 		it 'should say has 1 intervention' do
@@ -61,7 +61,7 @@ describe StudentInterventionsReport do
 
 	describe 'for student with two interventions' do
 		it 'should say has 2 interventions' do
-			@report= StudentInterventionsReport.render_text(:student=>mock_student(2))
+			@report = StudentInterventionsReport.render_text(:student => mock_student(2))
 			@report.should match(/Joe Smith \(16\) has 2 interventions\./)
 		end
 	end
@@ -93,10 +93,10 @@ describe StudentInterventionsReport do
 							:end_date => '09/20/08',
 							:frequency_summary => '3 times weekly',
 							:time_length_summary => '1 month',
-							:ended_teacher => mock_ended_teacher,
+							:ended_by => mock_ended_teacher,
 							:ended_at => '09/18/08',
 							:updated_at => '09/19/08',
-							:intervention_people => intervention_people,
+							:intervention_participants => intervention_people,
 							:intervention_probe_definitions => mock_intervention_probe_assignments(2))
 	end
 

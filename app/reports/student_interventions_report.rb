@@ -106,7 +106,7 @@ class StudentInterventionsSummary
 	  i.end_date.to_date.to_s(:report),
 	  i.frequency_summary,
 	  i.time_length_summary,
-	  (i.ended_teacher || User.new).fullname,
+	  (i.ended_by || User.new).fullname,
 	  i.ended_at,
 	  i.updated_at.to_date.to_s(:report),
 	  i.intervention_definition.tier_summary,
@@ -115,7 +115,7 @@ class StudentInterventionsSummary
 	end
 
 	def intervention_people(i)
-	  participants = i.intervention_people.collect do |ip|
+	  participants = i.intervention_participants.collect do |ip|
 	    if ip.role_id == 0
 	      "*#{ip.user.fullname}*"
 	    else

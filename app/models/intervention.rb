@@ -29,7 +29,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :intervention_definition
   belongs_to :frequency
   belongs_to :time_length
-  belongs_to :ended_by, :class_name =>"User"
+  belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment"
   has_many :intervention_participants
 
@@ -120,12 +120,10 @@ class Intervention < ActiveRecord::Base
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to =>:objective_definition
 
-
-
   def end(ended_by)
-    self.ended_by_id=ended_by
-    self.active=false
-    self.ended_at=Date.today
+    self.ended_by_id = ended_by
+    self.active = false
+    self.ended_at = Date.today
     self.save!
   end
 
@@ -134,9 +132,9 @@ class Intervention < ActiveRecord::Base
   end
 
   def build_custom_probe(opts={})
-    probe_definition=ProbeDefinition.new(opts)
+    probe_definition = ProbeDefinition.new(opts)
     probe_definition.intervention_definitions << self.intervention_definition
-    probe_definition.intervention_probe_assignments.build(:enabled=>true, :intervention=>self)
+    probe_definition.intervention_probe_assignments.build(:enabled => true, :intervention => self)
     probe_definition
   end
 
@@ -149,21 +147,22 @@ class Intervention < ActiveRecord::Base
   end
 
   def time_length_summary
-    pluralize time_length_number , time_length.description
+    pluralize time_length_number, time_length.title
   end
 
   protected
 
   def create_other_students
     # TODO tests
-    #make sure it does nothing when apply_to_all if false
-    #make sure it doesn't create double interventions for the selected student
-    #make sure it creates interventions for each student
-    if self.apply_to_all =="1"
-      student_ids=self.selected_ids
+    # make sure it does nothing when apply_to_all if false
+    # make sure it doesn't create double interventions for the selected student
+    # make sure it creates interventions for each student
+    if self.apply_to_all == "1"
+      student_ids = self.selected_ids
       student_ids.delete(self.student_id.to_s)
-      @interventions=student_ids.collect do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id=>student_id,:apply_to_all=>false,:auto_implementer=>self.auto_implementer,:called_internally=>true))
+      @interventions = student_ids.collect do |student_id|
+        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
+          :auto_implementer => self.auto_implementer, :called_internally => true))
       end
     end
     true
@@ -191,7 +190,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def send_creation_emails
-    #PENDING
+    # PENDING
     @interventions = Array(self) | Array(@interventions)
     unless self.called_internally 
       Notifications.deliver_intervention_starting(@interventions)

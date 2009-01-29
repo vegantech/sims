@@ -32,6 +32,11 @@ module ApplicationHelper
     link_to_unless_current(title,path) if conditions || path == request.path
   end
 
+	def if_student_selected(session = session)
+    if session[:selected_students] && session[:selected_student]
+      yield 
+    end
+  end
 
   def link_to_remote_degrades(name, options = {}, html_options = {})
     html_options[:href] = url_for(options[:url]) unless html_options.has_key?(:href)
