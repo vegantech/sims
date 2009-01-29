@@ -94,14 +94,6 @@ describe User do
     end
   end
 
-  describe 'authorized schools' do
-
-    it 'should have some specs for this method' do
-
-    end
-  end
-
-
   describe 'authorized_ for' do 
     it 'should return false if unknown action_group_type' do
       User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
@@ -158,6 +150,40 @@ describe User do
       
 
     end
+  end
+
+  describe 'authorized_schools' do
+    it 'should return blank for user with no schools' do
+      @user.authorized_schools.should be_blank
+      @user.authorized_schools('zzz').should be_blank
+    end
+
+    it 'should return all schools for user with access to all schools' do
+      s1=Factory(:school, :district => @user.district)
+      s2=Factory(:school, :district => @user.district)
+      s3=Factory(:school, :district => @user.district)
+      s4=Factory(:school)
+      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district => @user.district)
+      @user.authorized_schools.should == [s1,s2,s3]
+      @user.authorized_schools(s1.id).should == [s1]
+      @user.authorized_schools('qqq').should == []
+    end
+
+    it 'should return s1 and s3 for user with access to s1 and special access tp s3' do
+      s1=Factory(:school, :district => @user.district)
+      s2=Factory(:school, :district => @user.district)
+      s3=Factory(:school, :district => @user.district)
+      
+      @user.schools << s1
+      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3)
+      @user.authorized_schools.should == [s1,s3]
+      @user.authorized_schools(s1.id).should == [s1]
+      @user.authorized_schools(s2.id).should == []
+
+    end
+
+
+
   end
 
 

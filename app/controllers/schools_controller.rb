@@ -5,7 +5,7 @@ class SchoolsController < ApplicationController
   end
 
   def select
-    @school = current_user.authorized_schools(params["school"]["id"])
+    @school = current_user.authorized_schools(params["school"]["id"]).first
     # add school to session
     session[:school_id] = @school.id
     flash[:notice] = @school.name + ' Selected' 
