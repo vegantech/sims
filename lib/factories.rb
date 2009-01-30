@@ -76,7 +76,7 @@ Factory.define :district do |d|
 end
 
 Factory.define :school do |s|
-  s.name "Test School"
+  s.name {"#{Factory.next(:abbrev)} School"}
   s.association :district
 end
 

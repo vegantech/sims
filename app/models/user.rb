@@ -109,18 +109,15 @@ class User < ActiveRecord::Base
 
    
   def authorized_schools(school_id=nil)
-    if school_id
-      schools.find_by_id(school_id) || 
-        special_schools.find_by_id(school_id) ||
-        (special_user_groups.all_schools_in_district.find_by_district_id(self.district_id) && district.schools.find_by_id(school_id))
-    else
-
+    c_hash = {}
+    c_hash[:conditions] = {:id=>school_id} unless school_id.blank?
     #TODO make all students in school implicit
-      if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
-        district.schools
-      else
-        schools | special_user_groups.schools
-      end
+    if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
+      district.schools.find(:all,c_hash)
+    else
+      sc_hash = {}
+      sc_hash[:conditions] = {:school_id => school_id} unless school_id.blank?
+      schools.find(:all,c_hash) | special_user_groups.find(:all,sc_hash).collect(&:school).compact.flatten
     end
   end
 
