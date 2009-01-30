@@ -83,14 +83,58 @@ describe User do
   end
   
   describe 'filtered_groups_by_school' do
-    it 'should have some specs for this method' do
-      pending
+    it 'should return all authorized_groups for school if prompt is blank' do
+      @user.should_receive(:authorized_groups_for_school).with('s1').any_number_of_times.and_return(['group 2', 'group 1'])
+      g1=Group.new
+      Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
+      
+      @user.filtered_groups_by_school('s1').should == [g1,'group 2', 'group 1']
     end
+
+    it 'should return one authorized group with prompt depending on special user groups' do
+      g1=Group.new
+      Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
+     
+      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
+      @user.should_receive(:authorized_groups_for_school).with('s1').any_number_of_times.and_return(['group 1'])
+      @user.filtered_groups_by_school('s1').should == ['group 1']
+      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
+      @user.filtered_groups_by_school('s1').should == [g1,'group 1']
+    end
+
+    it 'should filter groups if prompt' do
+      s=Factory(:school)
+      @user.filtered_groups_by_school(s,:grade=>'E',:user=>5 ).should == []
+    end
+    
+    
   end
  
   describe 'filtered_members_by_school' do
-    it 'should have some specs for this method' do
-      pending
+    before do
+      @g1=User.new
+
+    end
+    
+     it 'should return all authorized_members if prompt is blank' do
+        User.should_receive(:new).with(:id=>"*", :first_name =>"Filter", :last_name => "by Group Member").any_number_of_times.and_return(@g1)
+        @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra", "Elephant", "Tiger"])
+        @user.filtered_members_by_school('s1').should == [@g1,'Elephant', 'Tiger', 'Zebra']
+      end
+
+    it 'should return one authorized group with prompt depending on special user groups' do
+      User.should_receive(:new).with(:id=>"*", :first_name =>"Filter", :last_name => "by Group Member").any_number_of_times.and_return(@g1)
+      @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra"])
+      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
+      @user.filtered_members_by_school('s1').should == ['Zebra']
+      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
+      @user.filtered_members_by_school('s1').should == [@g1,'Zebra']
+     
+    end
+
+    it 'should filter groups if prompt' do
+      s=Factory(:school)
+      @user.filtered_members_by_school(s,:grade=>'E').should == []
     end
   end
 
