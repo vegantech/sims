@@ -21,10 +21,10 @@ protected
 
   def populate_definitions
     find_intervention_definition
-    unless flash[:custom_intervention] 
-      @intervention_definitions = @intervention_cluster.intervention_definitions
-    else
+    if flash[:custom_intervention] 
       @intervention_definition = @intervention_cluster.intervention_definitions.build
+    else
+      @intervention_definitions = @intervention_cluster.intervention_definitions
     end
     populate_intervention if @intervention_definition
   end
