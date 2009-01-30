@@ -93,11 +93,8 @@ class User < ActiveRecord::Base
 
     users=authorized_groups_for_school(school).members
     unless opts["grade"]  == "*"
-      users=users.select do |group_user|
-        group_user.groups.any? do |u_group|
-          u_group.students.find(:first,:conditions=>["enrollments.grade=?",opts["grade"]],:include=>:enrollments)
-        end
-      end
+      user_ids =users.collect(&:id)
+      users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}})
     end
     users=users.sort_by{|u| u.to_s}
     prompt_id,prompt_text=opts["prompt"].split("-",2)
