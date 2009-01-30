@@ -56,10 +56,10 @@ protected
 
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
-        @goal_definition = current_district.goal_definitions.find(params[:goal_id] || params[:goal_definition][:id])
+        current_district.goal_definitions.find(params[:goal_id] || params[:goal_definition][:id])
       elsif current_district.goal_definitions.size == 1
-        @goal_definition = current_district.goal_definitions.first
-      elsif false 
+        current_district.goal_definitions.first
+      # elsif false
         # intervention definition provided
       end
   end
@@ -68,9 +68,9 @@ protected
     find_goal_definition
     @objective_definition ||= 
       if params[:objective_id] || (params[:objective_definition] && params[:objective_definition][:id])
-          @objective_definition = @goal_definition.objective_definitions.find(params[:objective_id] || params[:objective_definition][:id])
+        @goal_definition.objective_definitions.find(params[:objective_id] || params[:objective_definition][:id])
       elsif @goal_definition.objective_definitions.size == 1
-          @objective_definition = @goal_definition.objective_definitions.first
+        @goal_definition.objective_definitions.first
       end
   end
 
@@ -78,9 +78,9 @@ protected
     find_objective_definition
     @intervention_cluster ||= 
       if params[:category_id] || (params[:intervention_cluster] && params[:intervention_cluster][:id])
-          @intervention_cluster = @objective_definition.intervention_clusters.find(params[:category_id] || params[:intervention_cluster][:id])
+        @objective_definition.intervention_clusters.find(params[:category_id] || params[:intervention_cluster][:id])
       elsif @objective_definition.intervention_clusters.size == 1
-          @intervention_cluster = @objective_definition.intervention_clusters.first
+        @objective_definition.intervention_clusters.first
       end
   end
 
@@ -88,9 +88,9 @@ protected
     find_intervention_cluster
     @intervention_definition ||= 
       if params[:definition_id] || (params[:intervention_definition] && params[:intervention_definition][:id])
-          @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:definition_id] || params[:intervention_definition][:id])
+        @intervention_cluster.intervention_definitions.find(params[:definition_id] || params[:intervention_definition][:id])
       elsif @intervention_cluster.intervention_definitions.size == 1
-          @intervention_definition = @intervention_cluster.intervention_definitions.first
+        @intervention_cluster.intervention_definitions.first
       end
   end
 end
