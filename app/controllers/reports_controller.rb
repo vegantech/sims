@@ -40,7 +40,7 @@ class ReportsController < ApplicationController
       @start_date = @end_date = @today
     end
 
-    handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :start_date => @start_date, :end_date => @end_date
+    handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date
   end
 
   private

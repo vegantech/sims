@@ -1,6 +1,6 @@
 class TeamNotesReport < DefaultReport
   stage :header, :body
-  required_option :user
+  required_option :user, :school, :start_date, :end_date
   load_html_csv_text
   
   def setup
@@ -34,6 +34,7 @@ class TeamNotes
 
   def initialize(options={})
     @user = options[:user]
+    @school = options[:school]
     @start_date = options[:start_date]
     @end_date = options[:end_date]
   end
@@ -42,9 +43,12 @@ class TeamNotes
     return unless defined? Ruport
 
     # rt = @user.student_comments.report_table(:all, :only => [:body])
+    student_ids = Enrollment.search({:search_type =>'list_all',
+                 :school_id => @school.id, :user => @user}).collect(&:student_id)
 
     rt = StudentComment.report_table(:all,
-      :conditions => ["created_at between ? and ?", @start_date.beginning_of_day, @end_date.end_of_day],
+    :conditions => {:created_at  => @start_date.beginning_of_day..@end_date.end_of_day,
+                    :students => {:id=>student_ids,:district_id => @user.district_id }}, # OK to remove, since handled by search above?
       :include => {:student => {:only => [:id], :methods => :fullname}, :user => {:only => [], :methods => :fullname}},
       :only => [:body, :created_at])
 

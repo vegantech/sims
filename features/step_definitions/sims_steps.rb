@@ -31,11 +31,6 @@ Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
   create_user user_name, password
 end
 
-Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
-  date = date_string.to_date
-  StudentComment.create!(:student => @student, :body => content, :created_at => date)
-end
-
 Given /^I am a district admin$/ do
   clear_login_dropdowns
   default_user
@@ -232,4 +227,31 @@ When /^I follow "(.*)" within (.*)$/ do |link, scope|
   click_link_within(scope,link)
 end
 
+Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
+  date = date_string.to_date
+  nondistrict_student = Factory(:student)  #will create another district
+  StudentComment.create!(:student => nondistrict_student, :body => content, :created_at => date)
+end
 
+Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
+  date = date_string.to_date
+  StudentComment.create!(:student => @student, :body => content, :created_at => date)
+end
+
+Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
+  date = date_string.to_date
+  non_selected_school_student = Factory(:student, :district => @student.district) #will create student in an unselected school
+  StudentComment.create!(:student => non_selected_school_student, :body => content, :created_at => date)
+end
+
+Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
+  date = date_string.to_date
+  unauthorized_student = Factory(:student, :district => @student.district)  #will create a student in same district
+  unauthorized_student.enrollments.create!(:grade=>"ZZ", :school=>@student.enrollments.first.school)
+
+  # TODO: Change this, so it doesn't remain a trap for later?
+  @default_user.special_user_groups.destroy_all
+  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
+
+  StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
+end
