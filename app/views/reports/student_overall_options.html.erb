@@ -5,8 +5,8 @@
 
 <% form_tag :action => "student_overall", :id => @student do %><br/ >
   <% @opts.each do |section| %>
-    <label for="report_params_<%= section.to_s %>"><%= section.to_s.humanize.gsub(/ and or /, ' and/or ') %></label> 
     <%= check_box :report_params, section, :checked => true %> <br />
+    <label for="report_params_<%= section.to_s %>"><%= section.to_s.humanize.gsub(/ and or /, ' and/or ') %></label> 
   <% end %><br/>
 
   <%= submit_tag "Generate Report", :name => 'generate' %>
