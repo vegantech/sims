@@ -49,4 +49,11 @@ module StudentsHelper
     obj_text=obj.class.name.downcase
     "National identifier for this #{obj_text} (the ID used by the Deptartment of Education)"
   end
+
+  def extended_profile(student)
+    file = student.extended_profile.to_file 
+    p = file.readlines
+    file.close
+    p
+  end
 end

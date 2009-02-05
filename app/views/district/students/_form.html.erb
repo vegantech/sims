@@ -47,9 +47,7 @@
   <%- if @student.extended_profile? -%>
   <fieldset class="other">
     <legend>Extended Profile</legend>
-      <% file= @student.extended_profile.to_file %>
-      <%= file.readlines %>
-      <% file.close %>
+      <%= extended_profile(@student) %>
       <%=form.label(:delete_extended_profile, 'Delete Profile') %>
       <%=form.check_box(:delete_extended_profile) %>
     </fieldset>

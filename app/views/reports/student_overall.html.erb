@@ -3,7 +3,7 @@
 <% end %>
 
 <% subreport_selected(@opts[:extended_profile]) do %>
-  <%#= Extended profile stuff %>
+  <%= extended_profile(@student) %>
 <% end %>
 
 <% subreport_selected(@opts[:flags]) do %>
