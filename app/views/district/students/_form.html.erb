@@ -40,6 +40,22 @@
 
 
 
+  <p>
+  <%=form.label :extended_profile, 'Add student profile html or csv' %><br/>
+  <%=form.file_field :extended_profile %>
+  </p>
+  <%- if @student.extended_profile? -%>
+  <fieldset class="other">
+    <legend>Extended Profile</legend>
+      <% file= @student.extended_profile.to_file %>
+      <%= file.readlines %>
+      <% file.close %>
+      <%=form.label(:delete_extended_profile, 'Delete Profile') %>
+      <%=form.check_box(:delete_extended_profile) %>
+    </fieldset>
+  <% end %>
+
+
  <div id= "enrollments">
    <%=render :partial => 'enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
  </div>

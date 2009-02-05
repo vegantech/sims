@@ -54,9 +54,9 @@ fieldset fieldset {
 }
 
 legend {
-  color: white;
+#  color: white;
 #  font-size: 2em;
-  background: maroon;
+#  background: maroon;
 #  padding: .5em 5em;
 
 }

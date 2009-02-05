@@ -2,6 +2,10 @@
   <%= render :partial => "students/student" %> 
 <% end %>
 
+<% subreport_selected(@opts[:extended_profile]) do %>
+  <%#= Extended profile stuff %>
+<% end %>
+
 <% subreport_selected(@opts[:flags]) do %>
   <h2>Flags</h2>
   <%= FlagsForStudentReport.render_html(:student => @student) %>

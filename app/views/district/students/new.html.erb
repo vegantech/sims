@@ -1,6 +1,6 @@
 <h1>New student</h1>
 
-<% form_for(@student, :url=>district_students_url, :method=>:post) do |f| %>
+<% form_for(@student, :url=>district_students_url, :method=>:post, :html=> {:multipart => true}) do |f| %>
   <%= f.error_messages %>
 
   <%= render :partial => f %>

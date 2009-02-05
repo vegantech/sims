@@ -33,6 +33,9 @@ class Student < ActiveRecord::Base
   has_many :ignore_flags
   has_many :flags
 
+  has_attached_file  :extended_profile
+  attr_reader :delete_extended_profile
+
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :unless => lambda {|e| e.id_district.blank?}
   
@@ -40,6 +43,7 @@ class Student < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
+  before_validation :clear_extended_profile
 
   # This is duplicated in user
   def fullname 
@@ -197,5 +201,14 @@ class Student < ActiveRecord::Base
       (f[:type] == 'IgnoreFlag') or 
       (f[:type] == 'SystemFlag' and ignore_flags.any?{|igf| igf.category == f.category})
     end.group_by(&:category)
+  end
+
+
+  def delete_extended_profile=(value)
+    @delete_extended_profile = !value.to_i.zero?
+  end
+  
+  def clear_extended_profile
+    self.extended_profile=nil if @delete_extended_profile && !extended_profile.dirty?
   end
 end

@@ -3,21 +3,17 @@
 <% form_for(@district, :html=> {:multipart => true}) do |f| %>
   <%= render :partial => f %>
 
-
-
   <p>
-  <%= f.label :logo, 'Attach or replace logo 200x60px ' %>
-  <%= f.file_field :logo %>
+    <%= f.label :logo, 'Attach or replace logo 200x60px ' %>
+    <%= f.file_field :logo %>
   </p>
-  <%- unless  !@district.logo? -%>
-
+  <%- if @district.logo? -%>
     <div>
       <%= f.label(:delete_logo, 'Delete logo') %>
       <%= image_tag(@district.logo.url, :alt => 'Photo', :title => 'Current logo') %>
       <%= f.check_box(:delete_logo) %>
     </div>
   <% end %>
-
 
   <p>
     <%= f.submit "Update" %>
