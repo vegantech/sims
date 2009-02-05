@@ -317,11 +317,18 @@ table .list-line-even {
     background: #EEF3FA;
 }
 
+
+
+
 .help-question {
   color: #FF66FF;
   font-size: 2em;
-
 }
+
+#student_overall .help-question {
+  display: none;
+}
+
 .menu_icon {
   border: none;
   

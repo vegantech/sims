@@ -1,16 +1,13 @@
 <% @title1 = 'Student Report'
    @title2 = 'Reports Selection' %>
 
-<h2>Choose Format for Student Report <%= @student.fullname %></h2>
+<h2>Choose Sections for Student Report <%= @student.fullname %></h2>
 
 <% form_tag :action => "student_overall", :id => @student do %><br/ >
-  Format: <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %>
-
-  <br />
   <% @opts.each do |section| %>
     <label for="report_params_<%= section.to_s %>"><%= section.to_s.humanize.gsub(/ and or /, ' and/or ') %></label> 
     <%= check_box :report_params, section, :checked => true %> <br />
-  <% end %>
+  <% end %><br/>
 
   <%= submit_tag "Generate Report", :name => 'generate' %>
 <% end %>

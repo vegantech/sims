@@ -1,41 +1,43 @@
-<% subreport_selected(@opts[:top_summary]) do %>
-  <%= render :partial => "students/student" %> 
-<% end %>
+<div id="student_overall">
+  <% subreport_selected(@opts[:top_summary]) do %>
+    <%= render :partial => "students/student" %> 
+  <% end %>
 
-<% subreport_selected(@opts[:extended_profile]) do %>
-  <%= extended_profile(@student) %>
-<% end %>
+  <% subreport_selected(@opts[:extended_profile]) do %>
+    <%= extended_profile(@student) %>
+  <% end %>
 
-<% subreport_selected(@opts[:flags]) do %>
-  <h2>Flags</h2>
-  <%= FlagsForStudentReport.render_html(:student => @student) %>
-<% end %>
+  <% subreport_selected(@opts[:flags]) do %>
+    <h2>Flags</h2>
+    <%= FlagsForStudentReport.render_html(:student => @student) %>
+  <% end %>
 
-<% subreport_selected(@opts[:team_notes]) do %>
-  <% @user = User.new %>
-  <h2>Team Notes</h2>
-  <%= render :partial => "student_comments/comment", :collection => @student.comments %>
-<% end %>
+  <% subreport_selected(@opts[:team_notes]) do %>
+    <% @user = User.new %>
+    <h2>Team Notes</h2>
+    <%= render :partial => "student_comments/comment", :collection => @student.comments %>
+  <% end %>
 
-<% subreport_selected @opts[:intervention_summary] do %>
-  <h2>Summary of Interventions</h2>
-  <%= StudentInterventionsReport.render_html(:student => @student) %>
-<% end %>
+  <% subreport_selected @opts[:intervention_summary] do %>
+    <h2>Summary of Interventions</h2>
+    <%= StudentInterventionsReport.render_html(:student => @student) %>
+  <% end %>
 
-<% subreport_selected @opts[:checklists_and_or_recommendations] do %>
-  <h2>Checklists and Recommendations</h2>
-  <div id="checklist">
-    <% @student.checklists.each do |checklist| %>
-      <% @checklist = checklist %>
-      <%= render :partial => 'checklists/view', :locals => {:checklist => checklist} %>
-    <% end %>
-  </div>
+  <% subreport_selected @opts[:checklists_and_or_recommendations] do %>
+    <h2>Checklists and Recommendations</h2>
+    <div id="checklist">
+      <% @student.checklists.each do |checklist| %>
+        <% @checklist = checklist %>
+        <%= render :partial => 'checklists/view', :locals => {:checklist => checklist} %>
+      <% end %>
+    </div>
 
-  <div id="Recommendation">
-    <% @student.recommendations.without_checklist.each do |recommendation| %>
-      <p>Completed by <%= recommendation.user.fullname %> on
-      <%= recommendation.updated_at.to_s(:chatty) %> </p>
-      <%= render :partial => 'recommendations/view', :locals => {:recommendation => recommendation} %>
-    <% end %>
-  </div>
-<% end %>
+    <div id="Recommendation">
+      <% @student.recommendations.without_checklist.each do |recommendation| %>
+        <p>Completed by <%= recommendation.user.fullname %> on
+        <%= recommendation.updated_at.to_s(:chatty) %> </p>
+        <%= render :partial => 'recommendations/view', :locals => {:recommendation => recommendation} %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
