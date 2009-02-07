@@ -4,53 +4,62 @@ require 'test/unit'
 describe StatesController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
-  fixtures :states
 
   before do
+    
     @state=mock_state
-    controller.stub_association!(:current_district, :state=>@state)
+    @country = mock_country
+    controller.stub_association!(:current_district, :state=>@state, :country => @country)
 
   end
 
-  def test_should_get_index
-    pending
+  it 'should assign states and country for index' do
+    @country.stub_association!(:states,:normal=>['normal'])
     get :index
-    assert_response :success
-    assert_not_nil assigns(:states)
+    assigns(:states).should == ['normal']
+    assigns(:country).should == @country
   end
 
-  def test_should_get_new
+  it 'should assign state for get new' do
+    State.should_receive(:new).and_return(@state)
     get :new
-    assert_response :success
+    assigns(:state).should == @state
   end
 
-  def test_should_create_state
-    pending "should be scoped to country"
-    assert_difference('State.count') do
-      post :create, :state =>Factory.attributes_for(:state)
+  describe 'create' do
+    before do
+      @country.should_receive(:states).and_return(State)
     end
 
-    assert_redirected_to state_path(assigns(:state))
+    it 'should assign state and redirect to states_url when save is successful' do
+      attr = {'cat'=>'dog'}
+      State.should_receive(:build).with(attr).and_return(@state)
+      @state.should_receive(:save).and_return(true)
+      post :create, :state=>attr
+      response.should redirect_to(states_url)
+    end
+    
+    it 'should render new if creating invalid state' do
+      State.should_receive(:build).and_return(mock_state(:save=>false))
+      post :create
+      response.should be_success
+      response.should render_template("new")
+    end
   end
-  it 'should render new if creating invalid state' do
-    pending
-    State.should_receive(:new).and_return(mock_state(:save=>false))
-    post :create
+
+
+   it 'should assign @state when get edit' do
+    get :edit, :id => '1'
     response.should be_success
-    response.should render_template("new")
+    assigns(:state).should == @state
   end
 
-
-  def test_should_get_edit
-    get :edit, :id => states(:one).id
-    assert_response :success
-  end
-
-  def test_should_update_state
+  it 'should put update and redirect to root_url' do
     @state.should_receive(:update_attributes).and_return(true)
-    put :update, :id => states(:one).id, :state => { }
-    assert_redirected_to root_url
+    put :update
+    response.should redirect_to(root_url)
   end
+
 
   it 'should render edit if updating invalid state' do
     @state.should_receive(:update_attributes).and_return(false)
@@ -60,12 +69,12 @@ describe StatesController do
   end
 
 
-  def test_should_destroy_state
-    pending
-    assert_difference('State.count', -1) do
-      delete :destroy, :id => states(:one).id
-    end
-
-    assert_redirected_to states_path
+  it 'should destroy state ' do
+    @country.should_receive(:states).and_return(State)
+    State.should_receive(:find).with('1').and_return(@state)
+    @state.should_receive(:destroy)
+    @state.should_receive(:errors).and_return({})
+    delete :destroy, :id => '1'
+    @response.should redirect_to(states_path)
   end
 end
