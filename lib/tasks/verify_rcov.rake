@@ -22,7 +22,7 @@ task "test" => ["spec", "features"]
 task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration] 
 task "test:coverage" => [:verify_rcov]
 
-#http://vegantech.lighthouseapp.com/projects/17513/tickets/75-test-coverage-70-unit-70-functional-60-integration
+#http://vegantech.lighthouseapp.com/projects/17513/tickets/143-test-coverage-75-unit-75-functional-65-integration
 
 RCov::VerifyTask.new('verify_rcov_unit') do |t|
   t.require_exact_threshold=false
@@ -32,7 +32,7 @@ end
 
 RCov::VerifyTask.new('verify_rcov_functional') do |t|
   t.require_exact_threshold=false
-  t.threshold = 71.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 75.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/functional/index.html'
 end
 

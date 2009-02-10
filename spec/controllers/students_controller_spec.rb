@@ -8,7 +8,7 @@ describe StudentsController do
     it 'should get index when there is a current school and search criteria' do
       controller.should_receive(:student_search).and_return(['a','b','c'])
       controller.should_receive(:current_school_id).and_return(['a','b','c'])
-      get :index, {},{:search=>true}
+      get :index, {},{:search=>{}}
       response.should be_success
       assigns(:students).should == ['a','b','c']
     end
@@ -262,6 +262,14 @@ describe StudentsController do
       
     end
     
+  end
+
+  it 'has student search should call Enrollment.search' do
+    Enrollment.should_receive(:search).and_return([1,2,3])
+    controller.session ={:search => {}}
+    #    controller.should_receive(:session).and_return({:search=>{}})
+    controller.send(:student_search).should == [1,2,3]
+
   end
     
 

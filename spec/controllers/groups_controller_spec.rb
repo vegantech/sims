@@ -25,17 +25,6 @@ describe GroupsController do
       assigns[:groups].should == [mock_group]
     end
 
-    describe "with mime type of xml" do
-  
-      it "should render all groups as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        Group.should_receive(:paged_by_title).and_return(groups = mock("Array of Groups"))
-        groups.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
 
   end
 
@@ -47,18 +36,7 @@ describe GroupsController do
       assigns[:group].should equal(mock_group)
     end
     
-    describe "with mime type of xml" do
-
-      it "should render the requested group as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        Group.should_receive(:find).with("37").and_return(mock_group)
-        mock_group.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
+   
   end
 
   describe "responding to GET new" do

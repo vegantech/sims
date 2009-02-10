@@ -8,7 +8,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   end
 
   # GET /goal_definitions
-  # GET /goal_definitions.xml
   def index
     @goal_definitions = current_district.goal_definitions
 
@@ -18,7 +17,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   end
 
   # GET /goal_definitions/1
-  # GET /goal_definitions/1.xml
   def show
     @goal_definition = current_district.goal_definitions.find(params[:id])
 
@@ -38,7 +36,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   end
 
   # POST /goal_definitions
-  # POST /goal_definitions.xml
   def create
     @goal_definition = current_district.goal_definitions.build(params[:goal_definition])
 
@@ -53,7 +50,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   end
 
   # PUT /goal_definitions/1
-  # PUT /goal_definitions/1.xml
   def update
     @goal_definition = current_district.goal_definitions.find(params[:id])
 
@@ -68,7 +64,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   end
 
   # DELETE /goal_definitions/1
-  # DELETE /goal_definitions/1.xml
   def destroy
     @goal_definition = current_district.goal_definitions.find(params[:id])
     if @goal_definition.objective_definitions.any?

@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def multiple_selected_students?
-    selected_students_ids and selected_students_ids.size > 1
+    selected_students_ids.to_a.size > 1
   end
 
   def current_student_id
@@ -103,10 +103,6 @@ class ApplicationController < ActionController::Base
     else
       nil
     end
-  end
-
-  def self.show_read_actions
-    puts "read actions are: #{@@read_actions.inspect}."
   end
 
   def self.additional_read_actions(*args)

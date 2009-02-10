@@ -2,24 +2,20 @@ class InterventionBuilder::CategoriesController < ApplicationController
   helper_method :move_path
   
   # GET /intervention_clusters
-  # GET /intervention_clusters.xml
   before_filter(:get_objective_definition)
   def index
     @intervention_clusters = @objective_definition.intervention_clusters.find(:all)
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @intervention_clusters.to_xml }
     end
   end
 
   # GET /intervention_clusters/1
-  # GET /intervention_clusters/1.xml
   def show
 
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @intervention_cluster.to_xml }
     end
   end
 
@@ -33,7 +29,6 @@ class InterventionBuilder::CategoriesController < ApplicationController
   end
 
   # POST /intervention_clusters
-  # POST /intervention_clusters.xml
   def create
     @intervention_cluster = @objective_definition.intervention_clusters.build(params[:intervention_cluster])
 
@@ -41,32 +36,26 @@ class InterventionBuilder::CategoriesController < ApplicationController
       if @intervention_cluster.save
         flash[:notice] = 'InterventionCluster was successfully created.'
         format.html { redirect_to intervention_builder_category_url(@goal_definition,@objective_definition,@intervention_cluster) }
-        format.xml  { head :created, :location => intervention_builder_category_url(@intervention_cluster) }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @intervention_cluster.errors.to_xml }
       end
     end
   end
 
   # PUT /intervention_clusters/1
-  # PUT /intervention_clusters/1.xml
   def update
 
     respond_to do |format|
       if @intervention_cluster.update_attributes(params[:intervention_cluster])
         flash[:notice] = 'InterventionCluster was successfully updated.'
         format.html { redirect_to intervention_builder_category_url(@goal_definition,@objective_definition,@intervention_cluster) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @intervention_cluster.errors.to_xml }
       end
     end
   end
 
   # DELETE /intervention_clusters/1
-  # DELETE /intervention_clusters/1.xml
   def destroy
     if @intervention_cluster.intervention_definitions.any?
       flash[:notice]= "Please remove intervention definitions first."
@@ -76,7 +65,6 @@ class InterventionBuilder::CategoriesController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to intervention_builder_categories_url }
-      format.xml  { head :ok }
     end
   end
 
@@ -85,7 +73,6 @@ class InterventionBuilder::CategoriesController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to intervention_builder_categories_url }
-      format.xml  { head :ok }
     end
   end
 
