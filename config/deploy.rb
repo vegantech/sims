@@ -1,13 +1,24 @@
 default_run_options[:pty] = true
 default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
+
+
+
 set :domain, 'sims-open.vegantech.com'
 set :repository,  "git://github.com/vegantech/sims.git"
 set :application, "sims-open"
+
+desc "pilot for pilot, default is demo"
+task :pilot do
+  set :domain, 'simspilot.vegantech.com'
+  set :application, "simspilot"
+end
+
+
 set :use_sudo, false
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
-set :deploy_to, "/www/#{application}"
+set (:deploy_to){ "/www/#{application}"}
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
@@ -24,6 +35,7 @@ role :db,  "vegantech.com", :primary => true
 
 after "deploy:update_code", :copy_database_yml, :setup_domain_constant
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs
+
 
 namespace :deploy do
   desc "Restart Application"
