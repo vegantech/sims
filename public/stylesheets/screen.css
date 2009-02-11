@@ -1,0 +1,39 @@
+#header {
+  margin-top: 5px;
+  margin-left: 1%;
+  background-color: white;
+  border-style: solid;
+  border-width: medium;
+  border-color: #008B8B;
+}
+
+#header h1{
+  display: inline;
+}
+
+#left_column {
+  float: left;
+  width: 20%;
+  margin-left: 1%;
+  display: inline;
+  background: #fec689;
+
+  border-style: solid;
+  border-width: medium;
+  border-color: #008B8B;
+
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   13px;
+  line-height: 18px;
+}
+
+#left_column h2 {
+  font-weight: normal;
+/*font-family: Gill Sans, sans-serif;*/
+  color: white;
+  background-color: #008B8B;
+  font-size: 12px;
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
+}

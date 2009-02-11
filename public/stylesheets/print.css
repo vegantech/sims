@@ -1,6 +1,15 @@
 #header {
   display: none;
 }
+
 #left_column {
+  display: none;
+}
+
+#breadcrumbs_and_banners {
+  display: none;
+}
+
+#debug {
   display: none;
 }
