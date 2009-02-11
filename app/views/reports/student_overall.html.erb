@@ -8,14 +8,18 @@
   <% end %>
 
   <% subreport_selected(@opts[:flags]) do %>
-    <h2>Flags</h2>
-    <%= FlagsForStudentReport.render_html(:student => @student) %>
+    <% unless @student.flags.empty? %>
+      <h2>Flags</h2>
+      <%= FlagsForStudentReport.render_html(:student => @student) %>
+    <% end %>
   <% end %>
 
   <% subreport_selected(@opts[:team_notes]) do %>
-    <% @user = User.new %>
-    <h2>Team Notes</h2>
-    <%= render :partial => "student_comments/comment", :collection => @student.comments %>
+    <% unless @student.comments.empty? %>
+      <% @user = User.new %>
+      <h2>Team Notes</h2>
+      <%= render :partial => "student_comments/comment", :collection => @student.comments %>
+    <% end %>
   <% end %>
 
   <% subreport_selected @opts[:intervention_summary] do %>

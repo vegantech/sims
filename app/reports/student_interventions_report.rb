@@ -11,7 +11,8 @@ class StudentInterventionsReport <  DefaultReport
   class HTML < Ruport::Formatter::HTML
     renders :html, :for => StudentInterventionsReport
     build :header do
-      output << "#{data.student.fullname} (#{data.student.number}) has #{pluralize(data.student.interventions.size, "intervention").sub(/^0 /, 'no ')}<br />"
+      num_interventions = pluralize(data.student.interventions.size, "intervention").sub(/^0 /, 'no ')
+      output << "#{data.student.fullname} #{"(#{data.student.number})" unless data.student.number.blank?} has #{num_interventions}<br />"
     end
 
     build :body do
@@ -26,8 +27,9 @@ class StudentInterventionsReport <  DefaultReport
   class Text < Ruport::Formatter
     renders :text, :for => StudentInterventionsReport
     build :header do
+      num_interventions = pluralize(data.student.interventions.size, "intervention").sub(/^0 /, 'no ')
       output << "Report Generated at #{Time.now}\n"
-      output << "#{data.student.fullname} (#{data.student.number}) has #{pluralize(data.student.interventions.size, "intervention").sub(/^0 /, 'no ')}.\n\n"
+      output << "#{data.student.fullname}#{" (#{data.student.number})" unless data.student.number.blank?} has #{num_interventions}.\n\n"
     end
 
     build :body do
@@ -63,7 +65,7 @@ class StudentInterventionsSummary
   def to_table
     return unless defined? Ruport
 
-    table = Ruport::Data::Table(["Goal","Objective", "Category", "Intervention", "Description", 'Start Date', 'End Date', 'Frequency', 'Duration', 'Ended By', 'Ended On','Last Updated', 'Tier', 'Participants'])
+    table = Ruport::Data::Table(["Goal Objective Category", "Intervention", "Description", 'Start Date End Date', 'Frequency Duration', 'Ended By', 'Ended On','Last Updated', 'Tier', 'Participants'])
 
     # info in model itself dates, frequency, duration.
     # intervention_deftiniion (and parent) info
@@ -84,9 +86,7 @@ class StudentInterventionsSummary
 
    def to_grouping
       tbl = to_table
-      tbl.replace_column("Goal"){|r| "#{r.Goal} - #{r.Objective}"}
-      tbl.remove_column("Objective")
-      Ruport::Data::Grouping(tbl, :by => "Goal")
+      Ruport::Data::Grouping(tbl, :by => "Goal Objective Category")
    end
 
   # Accessor to student data for building report header
@@ -97,20 +97,22 @@ class StudentInterventionsSummary
 	private
 
 	def report_row(i)
-	  [i.intervention_definition.intervention_cluster.objective_definition.goal_definition.title,
-	  i.intervention_definition.intervention_cluster.objective_definition.title,
-	  i.intervention_definition.intervention_cluster.title,
-	  i.intervention_definition.title,
-	  i.intervention_definition.description,
-	  i.start_date.to_date.to_s(:report),
-	  i.end_date.to_date.to_s(:report),
-	  i.frequency_summary,
-	  i.time_length_summary,
-	  (i.ended_by || User.new).fullname,
-	  i.ended_at,
-	  i.updated_at.to_date.to_s(:report),
-	  i.intervention_definition.tier_summary,
-	  intervention_people(i)
+	  goal = i.intervention_definition.intervention_cluster.objective_definition.goal_definition.title
+	  objective = i.intervention_definition.intervention_cluster.objective_definition.title
+	  category = i.intervention_definition.intervention_cluster.title
+	  start_date = i.start_date.to_date.to_s(:report)
+    end_date = i.end_date.to_date.to_s(:report)
+
+	  ["#{goal} #{objective} #{category}",
+  	  i.intervention_definition.title,
+  	  i.intervention_definition.description,
+  	  "#{start_date} #{end_date}",
+  	  "#{i.frequency_summary} #{i.time_length_summary}",
+  	  (i.ended_by || User.new).fullname,
+  	  i.ended_at,
+  	  i.updated_at.to_date.to_s(:report),
+  	  i.intervention_definition.tier_summary,
+  	  intervention_people(i)
 	  ]
 	end
 

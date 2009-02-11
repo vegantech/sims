@@ -79,7 +79,11 @@ describe ReportsController do
 
     it 'should show flags when selected' do
       FlagsForStudentReport.should_receive(:render_html)
-      get :student_overall, {:report_params => {:format => "html", :flags => "1"}}, {:user_id => 1, :district_id => @district.id}
+      @student.flags << SystemFlag.create!(:category => 'attendance', :reason => 'Late every day')
+
+      get :student_overall, {:report_params => {:format => "html", :flags => "1"}},
+        {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
+
       response.should be_success
     end
 
