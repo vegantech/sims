@@ -224,7 +224,7 @@ protected
 
     if @all_students_in_district == "1"
       all_students.save
-    elsif @all_students_in_district == "0"
+    elsif @all_students_in_district == "0" or new_record?
       all_students.destroy
     end
   end

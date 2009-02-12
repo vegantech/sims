@@ -48,5 +48,10 @@ class SpecialUserGroup < ActiveRecord::Base
   def self.grades_for_school(school)
     find_all_by_grouptype_and_school_id(ALL_STUDENTS_IN_SCHOOL,school,:select=>"distinct grade", :conditions=>"grade is not null").collect(&:grade).uniq
   end
+
+  def to_i
+    #fixes ticket 152
+    1
+  end
 end
 
