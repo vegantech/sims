@@ -19,7 +19,7 @@ class School < ActiveRecord::Base
   after_update :save_user_school_assignments
 
   belongs_to :district
-  has_many :enrollments , :dependent => :destroy
+  has_many :enrollments, :dependent => :destroy
   has_many :students, :through =>:enrollments
   has_many :special_user_groups, :dependent => :destroy
   has_many :groups, :order => :title, :dependent => :destroy
@@ -35,10 +35,10 @@ class School < ActiveRecord::Base
   def grades_by_user(user)
     school_grades = enrollments.grades
     if user.special_user_groups.all_students_in_school?(self)
-      grades= school_grades
+      grades = school_grades
     else
       # all grades where user has 1 or more authorized enrollments
-      grades=user.special_user_groups.grades_for_school(self)
+      grades = user.special_user_groups.grades_for_school(self)
       student_ids = user.groups.find_all_by_school_id(self.id).collect(&:student_ids).flatten.uniq
       grades |= enrollments.find_all_by_student_id(student_ids, :select => "distinct grade").collect(&:grade)
     end
