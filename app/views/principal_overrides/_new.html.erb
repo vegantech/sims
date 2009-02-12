@@ -1,6 +1,8 @@
+<% if @principal_override.start_tier %>
+
 <% form_remote_for(:principal_override,:url=>principal_overrides_path) do |f| %>
   <%= f.error_messages %>
-  
+
     <%= f.label :start_tier, "Current Tier:" %>
     <%= @principal_override.start_tier.title %>
   </p>
@@ -11,6 +13,9 @@
   <p>
     <%= f.submit "Submit Request" %>
   </p>
+<% end  %>
+<% else %>
+  Overrides unavailable, no tiers defined.
 <% end %>
 
 <%= link_to 'Cancel', @principal_override.student %>
