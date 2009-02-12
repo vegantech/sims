@@ -144,6 +144,16 @@ class District < ActiveRecord::Base
     roles | System.roles
   end
 
+  def goal_definitions_with_state
+    @state2||=state.districts.find_by_admin(true)
+    @goal_definition_with_state ||= GoalDefinition.find_all_by_district_id([self.id,@state2.id], :order => :position)
+  end
+
+  def find_goal_definition_with_state(id2)
+    @state2 ||=state.districts.find_by_admin(true)
+    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,@state2.id], :order => :position)
+
+  end
 
 
 private
@@ -165,6 +175,7 @@ private
     end
 
   end
+
 
   def create_admin_user
     if users.blank?
