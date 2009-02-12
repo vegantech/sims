@@ -24,6 +24,12 @@
   <%= form.text_field :last_name %>
 </p>
 
+<p>
+  <%= form.label :email %><br />
+  <%= form.text_field :email %>
+</p>
+
+
 <%= render :partial => 'roles', :locals => {:form => form} %>
 
 <%= render :partial => 'district_groups', :locals => {:form => form} %>
