@@ -103,7 +103,7 @@ describe StudentInterventionsReport do
 	def mock_intervention_people num_people
 		(1..num_people).to_a.map do |p|
 			mock_participant_user = mock_model(User, :fullname => "Participant #{p}")
-			mock_intervention_participant(:user => mock_participant_user, :role_id => (p - 1))
+			mock_intervention_participant(:user => mock_participant_user, :role => (p - 1))
 		end
 	end
 

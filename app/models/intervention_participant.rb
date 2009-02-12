@@ -20,7 +20,7 @@ class InterventionParticipant < ActiveRecord::Base
 
   after_create :send_new_participant_email
   
-  validates_uniqueness_of :user_id, :scope=>:intervention_id, :message=>"has already been assigned to this intervention"
+  validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
   validates_presence_of :user_id, :role, :intervention_id
 
   AUTHOR=-1

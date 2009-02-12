@@ -118,7 +118,7 @@ class StudentInterventionsSummary
 
 	def intervention_people(i)
 	  participants = i.intervention_participants.collect do |ip|
-	    if ip.role_id == 0
+	    if ip.role == InterventionParticipant::IMPLEMENTER
 	      "*#{ip.user.fullname}*"
 	    else
 	      ip.user.fullname
