@@ -29,10 +29,12 @@
     <li><%= render :partial => 'login/logout' %></li>
   <% else %>
     <li>Please login.</li>
+    <% if @districts.blank? %>
     <li>For this demo, use oneschool as the username and password</li>
     <li>or twoschools for the name and password</li>
     <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>
     <li>Use content_builder to access the builders</li>
     <li>(MMSD has oneschools, alphaprin, district_admin, and content_builder)</li>
+  <% end %>
   <% end %>
 </ul>
