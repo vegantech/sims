@@ -90,6 +90,11 @@ describe ApplicationController do
       controller.send('subdomains')
     end
 
+    it 'simspilot.example.com' do
+      controller.send('subdomains')
+
+    end
+
 
     it 'sims.example.com' do
       controller.stub_association!(:request,:subdomains=>['sims'])
