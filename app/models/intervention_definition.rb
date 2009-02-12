@@ -31,7 +31,7 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :tier
   belongs_to :user
   belongs_to :school
-  has_many :recommended_monitors, :order => :position
+  has_many :recommended_monitors, :order => :position, :dependent => :destroy
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
 

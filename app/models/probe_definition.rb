@@ -21,7 +21,7 @@ class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent=>:destroy
-  has_many :recommended_monitors
+  has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions  
