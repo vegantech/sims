@@ -8,6 +8,7 @@ describe ReportsController do
 	  integrate_views
 
 	  before do
+	    @school = Factory(:school)
       @district = Factory(:district)
 	    @from_url = request.env["HTTP_REFERER"] = 'http://one_step_back.org'
     end
@@ -23,10 +24,9 @@ describe ReportsController do
 
 			describe 'without grade' do
 				it 'shows Choose Report Format Menu Inside of Layout' do
-					calendar_id = 2
-					School.should_receive(:find).with(calendar_id).and_return(School.new())
+					School.should_receive(:find).with(@school.id).and_return(@school)
 
-					get :student_flag_summary, {}, {:user_id => 1, :calendarID => calendar_id, :district_id => @district.id}
+					get :student_flag_summary, {}, {:user_id => 1, :district_id => @district.id, :school_id => @school.id}
 
 					response.should_not be_redirect
 					response.should be_success
@@ -36,10 +36,9 @@ describe ReportsController do
 
 			describe 'with selected school and grade' do
 				it 'shows Choose Report Format Menu Inside of Layout' do
-					calendar_id = 2
-					School.should_receive(:find).with(calendar_id).and_return(School.new())
+				  School.should_receive(:find).with(@school.id).and_return(@school)
 
-					get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1, :calendarID => calendar_id, :district_id => @district.id}
+					get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
 
 					response.should_not be_redirect
 					response.should be_success
@@ -53,12 +52,11 @@ describe ReportsController do
 				describe 'and HTML format choice' do
 					it 'renders output of StudentFlagReport.render_html' do
 						m = 'This is the HTML Student Flag Report Content'
-						calendar_id = 2
-						School.should_receive(:find).with(calendar_id).and_return(School.new())
+						School.should_receive(:find).with(@school.id).and_return(@school)
 						StudentFlagReport.stubs(:render_html).returns(m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
-						  {:user_id => 1, :calendarID => calendar_id, :district_id => @district.id}
+						  {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
 
 						response.should_not be_redirect
 						assigns[:report].should equal(m)
@@ -72,12 +70,11 @@ describe ReportsController do
 				describe 'and CSV format choice' do
 					it 'returns output of StudentFlagReport.render_csv as report' do
 						m = 'This is the CSV Student Flag Report Content'
-						calendar_id = 2
-						School.should_receive(:find).with(calendar_id).and_return(School.new())
+						School.should_receive(:find).with(@school.id).and_return(@school)
 						StudentFlagReport.stubs(:render_csv).returns(m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
-						  {:user_id => 1, :calendarID => calendar_id}
+						  {:user_id => 1, :school_id => @school.id}
 
 						response.should_not be_redirect
 						response.should be_success
@@ -92,12 +89,11 @@ describe ReportsController do
 				describe 'and PDF format choice' do
 					it 'returns output of StudentFlagReport.render_pdf as report' do
 						m = 'This is the PDF Student Flag Report Content'
-						calendar_id = 2
-						School.should_receive(:find).with(calendar_id).and_return(School.new())
+						School.should_receive(:find).with(@school.id).and_return(@school)
 						StudentFlagReport.stubs(:render_pdf).returns(m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
-						  {:user_id => 1, :calendarID => calendar_id}
+						  {:user_id => 1, :school_id => @school.id}
 
 						response.should_not be_redirect
 						response.should be_success
