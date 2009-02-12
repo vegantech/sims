@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090118224504
+# Schema version: 20090212222347
 #
 # Table name: users
 #
@@ -11,6 +11,7 @@
 #  district_id  :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#  email        :string(255)
 #
 
 class User < ActiveRecord::Base

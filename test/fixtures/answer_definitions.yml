@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20090118224504
+# Schema version: 20090212222347
 #
 # Table name: answer_definitions
 #
 #  id                    :integer         not null, primary key
-#  element_definition :integer
+#  element_definition_id :integer
 #  text                  :text
 #  value                 :string(255)
 #  position              :integer
