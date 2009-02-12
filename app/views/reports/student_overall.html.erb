@@ -23,25 +23,31 @@
   <% end %>
 
   <% subreport_selected @opts[:intervention_summary] do %>
-    <h2>Summary of Interventions</h2>
-    <%= StudentInterventionsReport.render_html(:student => @student) %>
+    <% if @student.interventions.empty? %>
+      Student has no interventions
+    <% else %>
+      <h2>Summary of Interventions</h2>
+      <%= StudentInterventionsReport.render_html(:student => @student) %>
+    <% end %>
   <% end %>
 
   <% subreport_selected @opts[:checklists_and_or_recommendations] do %>
-    <h2>Checklists and Recommendations</h2>
-    <div id="checklist">
-      <% @student.checklists.each do |checklist| %>
-        <% @checklist = checklist %>
-        <%= render :partial => 'checklists/view', :locals => {:checklist => checklist} %>
-      <% end %>
-    </div>
+    <% unless @student.checklists.empty? and @student.recommendations.without_checklist.empty? %>
+      <h2>Checklists and Recommendations</h2>
+      <div id="checklist">
+        <% @student.checklists.each do |checklist| %>
+          <% @checklist = checklist %>
+          <%= render :partial => 'checklists/view', :locals => {:checklist => checklist} %>
+        <% end %>
+      </div>
 
-    <div id="Recommendation">
-      <% @student.recommendations.without_checklist.each do |recommendation| %>
-        <p>Completed by <%= recommendation.user.fullname %> on
-        <%= recommendation.updated_at.to_s(:chatty) %> </p>
-        <%= render :partial => 'recommendations/view', :locals => {:recommendation => recommendation} %>
-      <% end %>
-    </div>
+      <div id="Recommendation">
+        <% @student.recommendations.without_checklist.each do |recommendation| %>
+          <p>Completed by <%= recommendation.user.fullname %> on
+          <%= recommendation.updated_at.to_s(:chatty) %> </p>
+          <%= render :partial => 'recommendations/view', :locals => {:recommendation => recommendation} %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
