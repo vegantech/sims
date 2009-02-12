@@ -1,4 +1,4 @@
-<% if @recommendation %>
+<% if @recommendation.recommendation_definition %>
 <%
 @title1="Checklist to Address Culturally Responsive Practices: Part 2" 
 @subtitle1="Summarize progress and make recommendations"
@@ -13,4 +13,4 @@
 <br clear="left"/>
 <% else %>
   No Recommendation Available <%= link_to :back, :back %>
-<% end>
+<% end %>
