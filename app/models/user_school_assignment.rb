@@ -20,4 +20,30 @@ class UserSchoolAssignment < ActiveRecord::Base
   # validates_presence_of :user_id
 
   named_scope :admin, :conditions => {:admin => true}
+  after_save :create_all_students
+
+  def all_students
+    !!user.special_user_groups.find_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL) if user
+  end
+
+  def all_students=(val)
+    if val =="true"
+      @all_students=true
+
+    elsif val == "false"
+      @all_students=false
+    end
+
+  end
+
+private
+  def create_all_students
+    if @all_students
+      user.special_user_groups.create!(:school_id=>school_id,:grade=>nil,:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL) 
+    elsif @all_students ==false
+     user.special_user_groups.find_all_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL).each(&:destroy)
+    end
+
+  end
+
 end

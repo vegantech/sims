@@ -9,6 +9,9 @@
 
       <%= f.label :admin %>
       <%= f.select :admin, [['No', false], ['Yes', true]] %>
+      
+      <%= f.label :all_students %>
+      <%= f.select :all_students, [['No', false], ['Yes', true]] %>
 
       <%= link_to_function "Remove", "$(this).up('.user_school_assignment').remove()" %>
     </p>
