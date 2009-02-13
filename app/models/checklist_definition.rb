@@ -41,7 +41,11 @@ class ChecklistDefinition < ActiveRecord::Base
     element_definitions.collect(&:answer_definitions).flatten
   end
 
+  def self.active_checklist_definition
+    find_by_active(true)  || ChecklistDefinition.new
+  end
 
+  
   def answer_definitions2
     @answer_definitions||=AnswerDefinition.find(:all,
     :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
