@@ -8,7 +8,7 @@ describe FlagsForStudentReport do
 
       d = mock_district
       user = User.create!(:district => d, :username => 'username', :first_name => 'First', :last_name => 'Last', :password => 'pword')
-      flag1 = CustomFlag.create!(:category => 'math',    :reason => 'Does not know addition tables.', :updated_at => now, :user => user)
+      flag1 = CustomFlag.create!(:category => 'math', :reason => 'Does not know addition tables.', :updated_at => now, :user => user)
       flag2 = SystemFlag.create!(:category => 'languagearts', :reason => 'Reading below grade level', :updated_at => now, :user => user)
       student = Factory(:student, :flags => [flag1, flag2])
 
