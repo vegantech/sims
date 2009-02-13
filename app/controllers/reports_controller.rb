@@ -1,5 +1,20 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions
+  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary
+ 
+  # TODO: Add an actual link to this in the GUI!
+  # Ported from Madison SIMS on 2/12/09, SDA
+	# flagged students for a given school (and optional grade)
+	def student_flag_summary
+		@school = School.find session[:school_id] if session[:school_id]
+		request.env['HTTP_REFERER'] ||= '/'
+		flash[:notice] = "Choose a school first" and redirect_to :back and return if @school.blank?
+
+		@grades = @school.enrollments.grades
+    # @grades[0][0] = 'All Grades'
+		grade = params[:report_params][:grade] if params[:report_params]
+		grade = nil if grade.blank? or grade.include?("*")
+		handle_report_postback StudentFlagReport, 'student_flag_summary', :grade => grade, :school => @school
+	end
 
 	# interventions for a single student
 	def student_interventions
