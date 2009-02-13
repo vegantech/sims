@@ -1,4 +1,4 @@
-<h2>Conclusions and Recommendations for Changing Tiers </h2>
+<h2 class="conclusions_and_recommendations">Conclusions and Recommendations for Changing Tiers </h2>
   <% @student.recommendations.group_by(&:tier).each do |g,r| %>
     <%= content_tag :h4, g.inspect %>
     <ul><%= render :partial => 'recommendations/recommendation', :collection=> r %></ul>

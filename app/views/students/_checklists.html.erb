@@ -1,4 +1,4 @@
-<h2>Checklists</h2>
+<h2 class="checklists">Checklists</h2>
 
   <%= link_to "Complete a Checklist for this Student", new_checklist_url %>
   <%cks = @student.checklists.group_by(&:from_tier).each do |g,ck| %>

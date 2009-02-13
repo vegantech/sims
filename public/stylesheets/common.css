@@ -340,3 +340,23 @@ td.label {
   font-size: 1px;
   line-height: 0;
 }
+
+h2.team_notes_header
+{
+  background: #bce5e7;
+}
+
+h2.intervention_summary
+{
+  background: #ffe9ad;
+}
+
+h2.checklists
+{
+  background: #e1ecb2;
+}
+
+h2.conclusions_and_recommendations
+{
+  background: #d7c0dd;
+}
