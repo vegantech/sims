@@ -68,12 +68,15 @@ class District < ActiveRecord::Base
   end
 
   def active_checklist_document
-    checklist_definitions.active_checklist_definition.document
+    active_checklist_definition.document
   end
 
   def active_checklist_document?
-    checklist_definitions.active_checklist_definition.document?
+    active_checklist_definition.document?
+  end
 
+  def active_checklist_definition
+    checklist_definitions.find_by_active(true) or state_district.checklist_definitions.find_by_active(true) or ChecklistDefinition.new
   end
 
 
@@ -144,14 +147,16 @@ class District < ActiveRecord::Base
     roles | System.roles
   end
 
+  def state_district
+    @state2||=state.districts.admin.first
+  end
+
   def goal_definitions_with_state
-    @state2||=state.districts.find_by_admin(true)
-    @goal_definition_with_state ||= GoalDefinition.find_all_by_district_id([self.id,@state2.id], :order => :position)
+    @goal_definition_with_state ||= GoalDefinition.find_all_by_district_id([self.id,state_district.id], :order => :position)
   end
 
   def find_goal_definition_with_state(id2)
-    @state2 ||=state.districts.find_by_admin(true)
-    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,@state2.id], :order => :position)
+    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,state_district.id], :order => :position)
 
   end
 

@@ -30,11 +30,7 @@ class ChecklistDefinition < ActiveRecord::Base
   validates_presence_of :directions, :text
   acts_as_reportable if defined? Ruport
 
-  def self.active_checklist_definition
-    find_by_active(true)  || ChecklistDefinition.new
-  end
-
- def save_all!
+  def save_all!
     save! and
     question_definitions.each(&:save!) and
     element_definitions.each(&:save!) and

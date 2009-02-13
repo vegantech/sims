@@ -34,11 +34,6 @@ describe ChecklistDefinition do
     ChecklistDefinition.create!(@valid_attributes)
   end
   
-  it "should return the active_checklist_definition" do
-    c=ChecklistDefinition.find_by_active(true) || ChecklistDefinition.create!(@valid_attributes.merge(:active=>true))
-    ChecklistDefinition.active_checklist_definition.should ==(c)
-  end
-
   it "should require directions and text" do
     c=ChecklistDefinition.new(@valid_attributes)
     c.should be_valid

@@ -63,7 +63,7 @@ class Student < ActiveRecord::Base
   end
 
   def checklist_definition
-    return district.checklist_definitions.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
+    return district.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
     latest_checklist
   end
 

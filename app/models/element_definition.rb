@@ -60,7 +60,7 @@ class ElementDefinition < ActiveRecord::Base
   end
 
   def applicable_kind_uniqueness?
-    !kind.blank?  && kind.to_sym == :applicable && !question_definition.new_record?
+    !kind.blank?  && kind.to_sym == :applicable && (!question_definition || !question_definition.new_record?)
   end 
 
 end

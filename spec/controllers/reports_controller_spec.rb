@@ -53,7 +53,7 @@ describe ReportsController do
 					it 'renders output of StudentFlagReport.render_html' do
 						m = 'This is the HTML Student Flag Report Content'
 						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stubs(:render_html).returns(m) 
+						StudentFlagReport.stub!(:render_html=>m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
 						  {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
@@ -71,7 +71,7 @@ describe ReportsController do
 					it 'returns output of StudentFlagReport.render_csv as report' do
 						m = 'This is the CSV Student Flag Report Content'
 						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stubs(:render_csv).returns(m) 
+						StudentFlagReport.stub!(:render_csv=>m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
 						  {:user_id => 1, :school_id => @school.id}
@@ -90,7 +90,7 @@ describe ReportsController do
 					it 'returns output of StudentFlagReport.render_pdf as report' do
 						m = 'This is the PDF Student Flag Report Content'
 						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stubs(:render_pdf).returns(m) 
+						StudentFlagReport.stub!(:render_pdf=>m) 
 
 						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
 						  {:user_id => 1, :school_id => @school.id}

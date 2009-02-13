@@ -25,6 +25,51 @@ describe District do
     Factory.build(:district).should be_valid
   end
 
+  describe 'active_checklist_definition method' do
+    before(:all) do
+      @local_district = Factory(:district, :name=>"CK_TEST", :abbrev=>"CKAZZ2")
+      @state_district = @local_district.state.districts.admin.first
+      @sd_cd = Factory(:checklist_definition, :district => @state_district)
+      @ld_cd = Factory(:checklist_definition, :district => @local_district)
+    end
+
+    describe 'with an active state definition' do
+      before do
+        @sd_cd.update_attribute(:active,true)
+      end
+    
+      describe 'with active district definition' do
+        it "should return district's active definition" do
+          @ld_cd.update_attribute(:active,true)
+          @local_district.active_checklist_definition.should == @ld_cd
+        end
+      end
+      describe 'without active district definition' do
+        it "should return state's active definition" do
+          @ld_cd.update_attribute(:active,false)
+          @local_district.active_checklist_definition.should == @sd_cd
+        end
+      end
+    end
+    describe 'without an active state definition' do
+      before do
+        @sd_cd.update_attribute(:active,false)
+      end
+
+      describe 'with active district definition' do
+        it "should return district's active definition" do
+          @ld_cd.update_attribute(:active,true)
+          @local_district.active_checklist_definition.should == @ld_cd
+        end
+      end
+      describe 'without active district definition' do
+        it 'should return nil' do
+          @ld_cd.update_attribute(:active,false)
+          @local_district.active_checklist_definition.should be_new_record
+        end
+      end
+    end
+  end
 
   it "grades should return GRADES constant" do
     District.new.grades.should == District::GRADES
