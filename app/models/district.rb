@@ -31,7 +31,6 @@ class District < ActiveRecord::Base
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
   has_many :recommended_monitors, :through => :probe_definitions
-  has_many :objective_definitions, :through => :goal_definitions
   has_many :tiers
   has_many :schools, :order => :name
   has_many :students
@@ -160,6 +159,9 @@ class District < ActiveRecord::Base
 
   end
 
+  def objective_definitions
+    @objective_definitions ||= ObjectiveDefinition.find(:all, :joins=>:goal_definition, :conditions => {:goal_definitions=>{:district_id=>[self.id, state_district.id]}})
+  end
 
 private
   def make_sure_there_are_no_schools
