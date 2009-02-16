@@ -103,6 +103,17 @@ Feature: Sims Demo Walkthrough
     And I should see "Edit your district"
     And I should see "Add/Remove Schools"
 
+  #Edit User
+    When I follow "Add/Remove Users"
+    When I follow "edit" within #tr_880270606
+    Then I should see "Editing user"
+    Then I press "Update"
+
+  # lighthouse ticket 158 editing a second time causes a validation error
+    When I follow "edit" within #tr_880270606
+    Then I should see "Editing user"
+    Then I press "Update"
+
  Scenario: test wi_admin
     Given load demo data
     And I enter url "http://admin-wi-us.sims-open.example.com"

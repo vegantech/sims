@@ -6,8 +6,9 @@
     <th>Fullname</th>
   </tr>
 
+
 <% for user in @users %>
-  <tr>
+  <tr id="tr_<%=user.id%>">
     <td><%= h user.username %></td>
     <td><%= h user %></td>
     <td><%= link_to 'Edit', edit_district_user_path(user) %></td>
