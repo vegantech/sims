@@ -7,6 +7,11 @@ set :domain, 'sims-open.vegantech.com'
 set :repository,  "git://github.com/vegantech/sims.git"
 set :application, "sims-open"
 
+
+set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
+If you\'re looking for the pilot, it\'s at <%=link_to "https://simspilot.vegantech.com", "https://simspilot.vegantech.com" %> '
+
+
 desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
@@ -74,5 +79,10 @@ end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
+end
+
+task :overwrite_login_pilot_note do
+  run "echo #{login_note}"
+
 end
 
