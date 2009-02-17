@@ -21,7 +21,7 @@ class Interventions::CommentsController < ApplicationController
   # POST /comments.xml
   def create
     @intervention_comment = @intervention.comments.build(params[:intervention_comment].merge('user'=>current_user))
-    spellcheck @intervention_comment.comment and render :action=>:new and return if params[:spellcheck]
+    spellcheck @intervention_comment.comment and render :action=>:new and return unless params[:spellcheck].blank?
      
 
     respond_to do |format|
@@ -40,7 +40,7 @@ class Interventions::CommentsController < ApplicationController
   # PUT /comments/1.xml
   def update
     @intervention_comment = @intervention.comments.find(params[:id])
-    @intervention_comment.comment = params[:intervention_comment][:comment] if params[:intervention_comment]
+    @intervention_comment.comment = params[:intervention_comment][:comment] unless params[:intervention_comment].blank?
 
     spellcheck @intervention_comment.comment and render :action=>:edit and return if params[:spellcheck]
     respond_to do |format|

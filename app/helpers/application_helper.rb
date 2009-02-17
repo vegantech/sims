@@ -95,7 +95,8 @@ module ApplicationHelper
   end
 
   def spell_check_submit
-    submit_tag "Spellcheck", :name=>"spellcheck" 
+    hidden_field_tag("spellcheck",nil) + 
+    submit_tag("Spellcheck", :name=>"spellcheck",:onclick =>"$('spellcheck').value='Spellcheck'")
   end
 
   def previous_answers(checklist, answer_definition, &block)
