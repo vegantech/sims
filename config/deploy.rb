@@ -16,6 +16,7 @@ desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
   set :application, "simspilot"
+  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-demo.vegantech.com", "http://sims-demo.vegantech.com" %> '
 end
 
 
@@ -38,7 +39,7 @@ role :app, "vegantech.com"
 role :web, "vegantech.com"
 role :db,  "vegantech.com", :primary => true
 
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant
+after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_note
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs
 
 
@@ -82,7 +83,7 @@ task :create_intervention_pdfs do
 end
 
 task :overwrite_login_pilot_note do
-  run "echo #{login_note}"
+  put("#{login_note}", :"#{release_path}/app/views/login/_demo_pilot_login_note.html.erb")
 
 end
 
