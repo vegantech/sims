@@ -1,5 +1,7 @@
 class InterventionsController < ApplicationController
   additional_write_actions 'end', 'quicklist'
+  before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy]
+  
 
 
 
@@ -7,8 +9,6 @@ class InterventionsController < ApplicationController
   # GET /interventions/1
   # GET /interventions/1.xml
   def show
-    @intervention = current_student.interventions.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @intervention }
@@ -28,14 +28,12 @@ class InterventionsController < ApplicationController
 
   # GET /interventions/1/edit
   def edit
-    @intervention = current_student.interventions.find(params[:id])
   end
 
   # POST /interventions
   # POST /interventions.xml
   def create
     @intervention= build_from_session_and_params
-
 
     respond_to do |format|
       if @intervention.save
@@ -52,8 +50,6 @@ class InterventionsController < ApplicationController
   # PUT /interventions/1
   # PUT /interventions/1.xml
   def update
-    @intervention = current_student.interventions.find(params[:id])
-
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
@@ -69,7 +65,6 @@ class InterventionsController < ApplicationController
   # DELETE /interventions/1
   # DELETE /interventions/1.xml
   def destroy
-    @intervention = current_student.interventions.find(params[:id])
     @intervention.destroy
 
     respond_to do |format|
@@ -79,7 +74,6 @@ class InterventionsController < ApplicationController
   end
 
   def end
-    @intervention = current_student.interventions.find(params[:id])
     @intervention.end(current_user.id)
      respond_to do |format|
       format.html { redirect_to(current_student) }
@@ -94,7 +88,19 @@ class InterventionsController < ApplicationController
     @objective_definition = @intervention_cluster.objective_definition
     @goal_definition = @objective_definition.goal_definition
     redirect_to new_intervention_url(:goal_id=>@goal_definition,:objective_id=>@objective_definition,
-                                                    :category_id=>@intervention_cluster,:definition_id=>@intervention_definition)
+           :category_id=>@intervention_cluster,:definition_id=>@intervention_definition)
+  end
+
+  private
+
+  def find_intervention
+    @intervention = current_student.interventions.find_by_id(params[:id])
+    unless @intervention
+      flash[:notice] = "Intervention could not be found"
+      redirect_to current_student and return
+
+    end
+
   end
   
 end
