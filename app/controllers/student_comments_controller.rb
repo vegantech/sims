@@ -37,6 +37,7 @@ class StudentCommentsController < ApplicationController
          }
         format.xml  { render :xml => @student_comment, :status => :created, :location => @student_comment }
       else
+        format.js { render :action => "new" } 
         format.html { render :action => "new" }
         format.xml  { render :xml => @student_comment.errors, :status => :unprocessable_entity }
       end

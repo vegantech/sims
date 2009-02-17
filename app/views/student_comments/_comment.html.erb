@@ -1,4 +1,4 @@
-<p>
+<% content_tag_for :p, comment do  %>
   <b>Author:</b>
   <%=h comment.user %>
   <br />
@@ -8,9 +8,9 @@
   <b>Note:</b>
   <%=h comment.body %>
 
-<% if current_user.id == comment.user_id %>
-  <br />
-      <%= link_to 'Edit', edit_student_comment_path(comment) %>
-      <%= link_to 'Destroy', comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
+  <% if current_user.id == comment.user_id %>
+    <br />
+        <%= link_to 'Edit', edit_student_comment_path(comment) %>
+        <%= link_to_remote_degrades 'Destroy', :url=>comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
+  <% end %>
 <% end %>
-</p>
