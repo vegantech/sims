@@ -49,7 +49,7 @@ class StudentsController < ApplicationController
         session[:search] = params['search_criteria'] ||{}
         session[:search]['flagged_intervention_types'] = params['flagged_intervention_types']
         session[:search]['intervention_group_types'] = params['intervention_group_types']
-        session[:search][:intervention_group] = current_district.search_intervention_by.class_name if session[:search][:intervention_group_types]
+        session[:search][:intervention_group] = current_district.search_intervention_by.first.class.name if session[:search][:intervention_group_types]
         redirect_to students_url
       else
         flash[:notice] = 'Missing search criteria'

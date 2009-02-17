@@ -14,7 +14,17 @@ Feature: Sims Demo Walkthrough
     Then I follow "School Selection"
     And I should see "Alpha Elementary"
     Then I press "Choose School"
+    And I choose "List only students in an active intervention"
+
+    #lighthouse #162
+    And I check "Math"  
     Then I press "Search for Students"
+
+    Then I follow "Student Search"
+    Then I press "Search for Students"
+
+
+
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
     And I should click js "all"
