@@ -30,8 +30,11 @@ class StudentCommentsController < ApplicationController
 
     respond_to do |format|
       if @student_comment.save
-        flash[:notice] = 'Team Note was successfully created.'
-        format.html { redirect_to(current_student) }
+        format.js 
+        format.html { 
+          flash[:notice] = 'Team Note was successfully created.'
+          redirect_to(current_student) 
+         }
         format.xml  { render :xml => @student_comment, :status => :created, :location => @student_comment }
       else
         format.html { render :action => "new" }
@@ -66,6 +69,7 @@ class StudentCommentsController < ApplicationController
     @student_comment.destroy 
 
     respond_to do |format|
+      format.js
       format.html { redirect_to(current_student) }
       format.xml  { head :ok }
     end
