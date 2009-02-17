@@ -26,7 +26,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   # GET /intervention_definitions/1;edit
   def edit
-    @intervention_clusters = current_district.intervention_clusters(:include=>[{:objective_definition=> :goal_definition}],:order=>"goal_definitions.title, objective_definitions.title, intervention_clusters.title")
+    @intervention_clusters = current_district.intervention_clusters
   end
 
   # POST /intervention_definitions

@@ -9,13 +9,14 @@ describe InterventionBuilder::InterventionsController do
   end
 
   before do
+    @intervention_definition = mock_intervention_definition
     @intervention_cluster = mock_intervention_cluster(:intervention_definitions=>@intervention_definition)
     @intervention_cluster.stub!(:find => @intervention_cluster)
     @objective_definition = mock_objective_definition(:intervention_clusters=>@intervention_cluster)
     @objective_definition.stub!(:find => @objective_definition)
     @goal_definition = mock_goal_definition(:objective_definitions => @objective_definition)
     @goal_definition.stub!(:find => @goal_definition)
-    controller.stub_association!(:current_district,:goal_definitions => @goal_definition)
+    controller.stub_association!(:current_district,:goal_definitions => @goal_definition, :intervention_clusters=>[1,2,3])
   end
   
   describe "responding to GET index" do
@@ -39,7 +40,7 @@ describe InterventionBuilder::InterventionsController do
   describe "responding to GET new" do
   
     it "should expose a new intervention as @intervention" do
-      @intervention_defintion.should_receive(:build).and_return(mock_intervention)
+      @intervention_definition.should_receive(:build).and_return(mock_intervention)
       mock_intervention.stub_association!(:assets,:build=>true)
       get :new
       assigns[:intervention_definition].should equal(mock_intervention)
@@ -50,10 +51,11 @@ describe InterventionBuilder::InterventionsController do
   describe "responding to GET edit" do
   
     it "should expose the requested intervention as @intervention" do
-      pending "This should be limited to district."
-      Intervention.should_receive(:find).with("37").and_return(mock_intervention)
+      
+      @intervention_definition.should_receive(:find).with("37").and_return(mock_intervention)
       get :edit, :id => "37"
-      assigns[:intervention].should equal(mock_intervention)
+      assigns[:intervention_definition].should equal(mock_intervention)
+      assigns[:intervention_clusters].should == [1,2,3]
     end
 
   end

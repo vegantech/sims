@@ -163,6 +163,12 @@ class District < ActiveRecord::Base
     @objective_definitions ||= ObjectiveDefinition.find(:all, :joins=>:goal_definition, :conditions => {:goal_definitions=>{:district_id=>[self.id, state_district.id]}})
   end
 
+  def intervention_clusters  #district only
+    @intervention_clusters ||= InterventionCluster.find(:all,:joins => {:objective_definition=>:goal_definition}, 
+      :conditions => {:goal_definitions =>{:district_id => self.id}})
+
+  end
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?
