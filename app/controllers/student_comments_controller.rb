@@ -19,6 +19,10 @@ class StudentCommentsController < ApplicationController
   # GET /student_comments/1/edit
   def edit
     @student_comment = current_user.student_comments.find(params[:id])
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   # POST /student_comments
@@ -54,9 +58,11 @@ class StudentCommentsController < ApplicationController
     respond_to do |format|
       if @student_comment.save
         flash[:notice] = 'Team Note was successfully updated.'
+        format.js
         format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
+        format.js   { render :action => "edit" }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @student_comment.errors, :status => :unprocessable_entity }
       end
