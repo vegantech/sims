@@ -1,6 +1,10 @@
   <h2 class="team_notes_header">Team Notes</h2>
-  <%=link_to 'Add Note', new_student_comment_path %> <br />
   <%=render_with_empty :partial=>"student_comments/comment", :collection=> @student.comments, :empty => content_tag(:p,"No notes have been submitted for this student. Click the 'Add Note' link above to add a note for this student.")  
 %>
+<br />
+<div id="new_team_note">
+  
+  <%= render :partial => 'add_note_link' %>
 
+</div>
 

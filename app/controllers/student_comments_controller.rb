@@ -10,6 +10,7 @@ class StudentCommentsController < ApplicationController
     @student_comment = StudentComment.new(:student_id=>current_student_id, :user_id=>current_user_id)
 
     respond_to do |format|
+      format.js 
       format.html # new.html.erb
       format.xml  { render :xml => @student_comment }
     end
