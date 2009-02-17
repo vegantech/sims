@@ -16,7 +16,7 @@ desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
   set :application, "simspilot"
-  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-demo.vegantech.com", "http://sims-open.vegantech.com" %> '
+  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
 end
 
 
