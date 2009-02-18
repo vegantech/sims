@@ -351,6 +351,13 @@ h2.intervention_summary
   background: #ffe9ad;
 }
 
+h3.intervention_summary
+{
+  background: #ffe9ad;
+  text-align: center;
+  line-height: 110%;
+}
+
 h2.checklists
 {
   background: #e1ecb2;

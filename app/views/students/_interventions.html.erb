@@ -1,14 +1,26 @@
-<h2 class="intervention_summary"> Intervention and Progress Monitoring </h2>
+<h2 class="intervention_summary">Intervention and Progress Monitoring</h2>
 
+<h3 class="intervention_summary">Assign New Intervention and Progress Monitor </h3>
 
+<% content_tag :ul do %>
+  <%=content_tag :li, link_to("Select New Intervention and Progress Monitor from Menu ", new_intervention_path)%>
+  <%=content_tag :li, link_to("Create New Custom Intervention", new_intervention_path(:custom_intervention=>true))%>
+  <%=content_tag :li, link_to("Select from Intervention Quicklist", new_intervention_path)%>
+<% end %>
+
+<h3 class="intervention_summary">Current Active Interventions</h3>
 <% content_tag :ul do %>
 <%=render_with_empty :partial => 'intervention', :collection => @student.interventions ,:empty=>'' %>
 <% end %>
 
+
+
+<h3 class="intervention_summary">Previous Inactive Interventions</h3>
+
 <% content_tag :ul do %>
-  <%=content_tag :li, link_to("Assign New Intervention", new_intervention_path)%>
-  <%=content_tag :li, link_to("New Custom Intervention", new_intervention_path(:custom_intervention=>true))%>
+<%#=render_with_empty :partial => 'intervention', :collection => @student.interventions.inactive ,:empty=>''%>
 <% end %>
+
 
 
 
