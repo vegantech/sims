@@ -5,12 +5,14 @@
 <% content_tag :ul do %>
   <%=content_tag :li, link_to("Select New Intervention and Progress Monitor from Menu ", new_intervention_path)%>
   <%=content_tag :li, link_to("Create New Custom Intervention", new_intervention_path(:custom_intervention=>true))%>
-  <%=content_tag :li, link_to("Select from Intervention Quicklist", new_intervention_path)%>
+  <li> <%=link_to_remote_degrades("Select from Intervention Quicklist", :url=>quicklist_options_interventions_path, :method => :get) %>
+    <span id="quicklist"> </span>
+  </li>
 <% end %>
 
 <h3 class="intervention_summary">Current Active Interventions</h3>
 <% content_tag :ul do %>
-<%=render_with_empty :partial => 'intervention', :collection => @student.interventions ,:empty=>'' %>
+<%=render_with_empty :partial => 'intervention', :collection => @student.interventions.active ,:empty=>'' %>
 <% end %>
 
 
@@ -18,7 +20,7 @@
 <h3 class="intervention_summary">Previous Inactive Interventions</h3>
 
 <% content_tag :ul do %>
-<%#=render_with_empty :partial => 'intervention', :collection => @student.interventions.inactive ,:empty=>''%>
+<%=render_with_empty :partial => 'intervention', :collection => @student.interventions.inactive ,:empty=>''%>
 <% end %>
 
 
