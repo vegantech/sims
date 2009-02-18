@@ -151,16 +151,16 @@ class District < ActiveRecord::Base
   end
 
   def goal_definitions_with_state
-    @goal_definition_with_state ||= GoalDefinition.find_all_by_district_id([self.id,state_district.id], :order => :position)
+    @goal_definitions_with_state ||= GoalDefinition.find_all_by_district_id([self.id,state_district.id],:conditions=>["district_id = ? or (district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.split(",")], :order => :position)
   end
 
   def find_goal_definition_with_state(id2)
-    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,state_district.id], :order => :position)
+    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,state_district.id],:conditions=>["district_id = ? or (district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.split(",")])
 
   end
 
   def objective_definitions
-    @objective_definitions ||= ObjectiveDefinition.find(:all, :joins=>:goal_definition, :conditions => {:goal_definitions=>{:district_id=>[self.id, state_district.id]}})
+    @objective_definitions ||= ObjectiveDefinition.find(:all, :joins=>:goal_definition, :conditions =>["goal_definitions.district_id = ? or (goal_definitions.district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.split(",")])
   end
 
   def intervention_clusters  #district only

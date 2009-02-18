@@ -21,14 +21,37 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe District do
 
+  before(:all) do
+    @local_district = Factory(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
+    @state_district = @local_district.state.districts.admin.first
+  end
   it 'should be valid' do
     Factory.build(:district).should be_valid
   end
 
+  describe 'goal_definitions_for_state' do
+    before(:all) do
+      @marked_sd_gd = Factory(:goal_definition, :district => @state_district)
+      @local_district.marked_state_goal_ids= @marked_sd_gd.id.to_s
+      @local_district.save
+      @unmarked_sd_gd = Factory(:goal_definition, :district => @state_district)
+      @ld_gd = Factory(:goal_definition, :district => @local_district)
+    end
+
+    it 'should find all with our district id' do
+      @local_district.goal_definitions_with_state.should include(@ld_gd)
+    end
+
+    it 'should include only marked goal definitions from state district' do
+      @state_district.goal_definitions.should include(@marked_sd_gd)
+      @local_district.goal_definitions_with_state.should include(@marked_sd_gd)
+      @local_district.goal_definitions_with_state.should_not include(@unmarked_sd_gd)
+    end
+
+  end
+
   describe 'active_checklist_definition method' do
     before(:all) do
-      @local_district = Factory(:district, :name=>"CK_TEST", :abbrev=>"CKAZZ2")
-      @state_district = @local_district.state.districts.admin.first
       @sd_cd = Factory(:checklist_definition, :district => @state_district)
       @ld_cd = Factory(:checklist_definition, :district => @local_district)
     end

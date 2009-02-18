@@ -22,7 +22,7 @@ class State < ActiveRecord::Base
   validates_uniqueness_of :admin, :scope=>:country_id, :if=>lambda{|s| s.admin?}  #only 1 admin state per country
   validates_uniqueness_of :country_id,  :if=>lambda{|s| s.country && s.country.admin?}  #only 1 state per admin country
   validates_presence_of :name,:abbrev, :country
-  validates_uniqueness_of :name,:abbrev, :scope=>:country_id
+  validates_uniqueness_of :name, :abbrev, :scope=>:country_id
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
 
 
