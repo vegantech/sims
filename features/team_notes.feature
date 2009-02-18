@@ -31,5 +31,5 @@ Feature: Team Notes
     And I should not see "Sixth Team Note"
     And I should not see "Seventh Team Note"
     When I follow "Common Last"
-    Then I should see "Intervention Summary"
+    Then I should see "Intervention and Progress Monitoring"
     And I should see "Last, Common"
