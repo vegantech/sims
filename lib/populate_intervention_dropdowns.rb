@@ -13,6 +13,7 @@ protected
   end
 
   def populate_intervention
+    return if  params[:intervention_definition] and params[:intervention_definition][:id].blank?
     find_intervention_definition
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
@@ -22,22 +23,22 @@ protected
   def populate_definitions
     find_intervention_definition
     if flash[:custom_intervention] 
-      @intervention_definition = @intervention_cluster.intervention_definitions.build
+      @intervention_definition = @intervention_cluster.intervention_definitions.build if @intervention_cluster
     else
-      @intervention_definitions = @intervention_cluster.intervention_definitions
+      @intervention_definitions = @intervention_cluster.intervention_definitions if @intervention_cluster
     end
     populate_intervention if @intervention_definition
   end
 
   def populate_categories
     find_intervention_cluster
-    @intervention_clusters = @objective_definition.intervention_clusters
+    @intervention_clusters = @objective_definition.intervention_clusters if @objective_definition
     populate_definitions if @intervention_cluster
   end
 
   def populate_objectives
     find_objective_definition
-    @objective_definitions = @goal_definition.objective_definitions
+    @objective_definitions = @goal_definition.objective_definitions if @goal_definition
     populate_categories if @objective_definition
   end
 
@@ -47,48 +48,44 @@ protected
     populate_objectives if @goal_definition
   end
 
-  def populate_quicklist
-    @quicklist_intervention_definitions = current_school.quicklist unless flash[:custom_intervention]
-  end
 
   def find_goal_definition
-    populate_quicklist
-
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
         current_district.find_goal_definition_with_state(params[:goal_id] || params[:goal_definition][:id])
       elsif current_district.goal_definitions_with_state.size == 1
         current_district.goal_definitions_with_state.first
-      # elsif false
+      else
+        nil
         # intervention definition provided
       end
   end
 
   def find_objective_definition
-    find_goal_definition
+    find_goal_definition or return
     @objective_definition ||= 
       if params[:objective_id] || (params[:objective_definition] && params[:objective_definition][:id])
-        @goal_definition.objective_definitions.find(params[:objective_id] || params[:objective_definition][:id])
+        @goal_definition.objective_definitions.find_by_id(params[:objective_id] || params[:objective_definition][:id])
       elsif @goal_definition.objective_definitions.size == 1
         @goal_definition.objective_definitions.first
       end
   end
 
   def find_intervention_cluster
-    find_objective_definition
+    find_objective_definition or return
     @intervention_cluster ||= 
       if params[:category_id] || (params[:intervention_cluster] && params[:intervention_cluster][:id])
-        @objective_definition.intervention_clusters.find(params[:category_id] || params[:intervention_cluster][:id])
+        @objective_definition.intervention_clusters.find_by_id(params[:category_id] || params[:intervention_cluster][:id])
       elsif @objective_definition.intervention_clusters.size == 1
         @objective_definition.intervention_clusters.first
       end
   end
 
   def find_intervention_definition
-    find_intervention_cluster
+    find_intervention_cluster or return
     @intervention_definition ||= 
       if params[:definition_id] || (params[:intervention_definition] && params[:intervention_definition][:id])
-        @intervention_cluster.intervention_definitions.find(params[:definition_id] || params[:intervention_definition][:id])
+        @intervention_cluster.intervention_definitions.find_by_id(params[:definition_id] || params[:intervention_definition][:id])
       elsif @intervention_cluster.intervention_definitions.size == 1
         @intervention_cluster.intervention_definitions.first
       end
