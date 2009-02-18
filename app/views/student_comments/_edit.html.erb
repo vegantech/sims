@@ -1,0 +1,13 @@
+<% remote_form_for(@student_comment) do |f| %>
+  <%= render :partial=>f %>
+ <p>
+    <%= f.submit "Edit" %>
+    <%= spell_check_submit %>
+  </p>
+<% end %>
+  
+  <%= render :partial => 'spell_check/spelling'  %>
+
+  <%= link_to_function 'cancel',{:href=> url_for(current_student)} do |page| 
+    page[dom_id(@student_comment)].replace_html(:partial=>'student_comments/comment', :object=>@student_comment)
+    end  %>
