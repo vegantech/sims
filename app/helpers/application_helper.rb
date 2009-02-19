@@ -112,6 +112,8 @@ module ApplicationHelper
   end
 
 
-    
+  def description(obj)
+    "<div class='fake_label'>Description</div>#{obj.description}" if obj
+  end
 
 end

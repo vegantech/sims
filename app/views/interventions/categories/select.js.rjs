@@ -1,3 +1,3 @@
 page.remove "intervention"
 page.replace "definitions", :partial=>"interventions/definitions/select"
-page.replace_html "category_description", @intervention_cluster.description if @intervention_cluster 
+page.replace_html "category_description", description(@intervention_cluster) 

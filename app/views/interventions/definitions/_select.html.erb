@@ -4,7 +4,7 @@
     <%= f.label :id, 'Assign Intervention' %>
     <%= f.collection_select(:id, @intervention_definitions,:id,:title,{:prompt=>''},{:onchange=>"form.onsubmit()"}) %>
     <%= content_tag :noscript, submit_tag("Choose Intervention") %> <br />
-    <div id="intervention_description"><%=@intervention_definition.description if @intervention_definition %></div>
+    <div id="intervention_description"><%=description(@intervention_definition)%></div>
   <% end %>
 
 <% end %>

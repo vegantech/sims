@@ -91,7 +91,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def frequency_summary
-    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
+    "#{pluralize frequency_multiplier, "time"} #{frequency.title}" if frequency
   end
 
   def links_and_attachments
@@ -105,7 +105,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def time_length_summary
-    pluralize time_length_num, time_length.title
+    pluralize time_length_num, time_length.title if time_length
   end
 
   def tier_summary
