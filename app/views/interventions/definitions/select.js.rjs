@@ -1,2 +1,2 @@
 page.replace "intervention", :partial=>"interventions/intervention"
-page.replace_html "intervention_description", @intervention_definition.description if @intervention_definition
+page.replace_html "intervention_description", description(@intervention_definition)

@@ -60,6 +60,12 @@ legend {
   display: block;
 }
 
+label.checkbox_label {
+  float: none;
+  text-align: left;
+  width: auto;
+} 
+
 #student_fake_left {
   margin-bottom: 15em;
 }
