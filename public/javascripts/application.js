@@ -37,7 +37,7 @@ function unselectStudents(){
 
 
 function change_date(){
-        var timeType = document.StudentInterventionForm.elements["intervention[time_length_type]"].selectedIndex;
+        var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
     var timeNum = document.StudentInterventionForm.elements["intervention[time_length_number]"].value;
 
     var typeMultiplier = 0;
