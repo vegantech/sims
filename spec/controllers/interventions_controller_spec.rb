@@ -4,40 +4,31 @@ describe InterventionsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  before :each do 
-    controller.should_receive(:current_student).any_number_of_times.and_return(mock_student(:interventions => mock_intervention))
-    #build_from_session_and_params and populate_dropdowns are unit tested
-    controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(mock_intervention(:student=>mock_student))
+  before :each do
+    @student = mock_student
+    @intervention = mock_intervention(:student => @student, :comments => [])
+    @interventions = [@intervention]
+    @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
+    @student.should_receive(:interventions).any_number_of_times.and_return(@interventions)
+    controller.should_receive(:current_student).any_number_of_times.and_return(@student)
+    # build_from_session_and_params and populate_dropdowns are unit tested
+    controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(@intervention)
   end
 
-  def mock_student(stubs ={})
-    @mock_student ||= mock_model(Student, stubs)
-
-  end
-  def mock_intervention(stubs={})
-    @mock_intervention ||= mock_model(Intervention,stubs)
-  end
-  
   describe "responding to GET show" do
-     
     it "should expose the requested intervention as @intervention" do
-      mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-      get :show, :id => "37"
-      assigns[:intervention].should equal(mock_intervention)
+      get :show, :id => @intervention.id
+      assigns[:intervention].should equal(@intervention)
     end
-    
-    describe "with mime type of xml" do
 
+    describe "with mime type of xml" do
       it "should render the requested intervention as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-        mock_intervention.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
+        @intervention.should_receive(:to_xml).and_return("generated XML")
+        get :show, :id => @intervention.id
         response.body.should == "generated XML"
       end
-
     end
-    
   end
 
   describe "responding to GET new" do
@@ -45,153 +36,131 @@ describe InterventionsController do
       controller.stub_association!(:current_school, :quicklist_items=>[])
       controller.should_receive(:populate_goals)
     end
-  
+
     it "should call populate_goals" do
       get :new
       response.should be_success
     end
 
     it "should assign a @custom_intervention instance variable if the custom intervention param is there" do
-      get :new, :custom_intervention=>true
+      get :new, :custom_intervention => true
       response.should be_success
       flash[:custom_intervention].should == true
-
     end
   end
 
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
-      mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-      get :edit, :id => "37"
-      assigns[:intervention].should equal(mock_intervention)
+      get :edit, :id => @intervention.id
+      assigns[:intervention].should equal(@intervention)
     end
-
   end
 
   describe "responding to POST create" do
+    before do
+      comments = []
+      comments.should_receive(:build).and_return('some comment')
+      @intervention.should_receive(:comments).and_return(comments)
+    end
 
     describe "with valid params" do
-      
       it "should expose a newly created intervention as @intervention" do
-        mock_intervention.should_receive(:save).and_return(true)
-        mock_intervention.should_receive(:autoassign_message).and_return('')
+        @intervention.should_receive(:save).and_return(true)
+        @intervention.should_receive(:autoassign_message).and_return('')
         post :create, :intervention => {:these => 'params'}
-        assigns(:intervention).should equal(mock_intervention)
+        assigns(:intervention).should equal(@intervention)
       end
 
       it "should redirect to the student profile" do
-        mock_intervention.should_receive(:save).and_return(true)
-        mock_intervention.should_receive(:autoassign_message).and_return('')
+        @intervention.should_receive(:save).and_return(true)
+        @intervention.should_receive(:autoassign_message).and_return('')
         post :create, :intervention => {}
-        response.should redirect_to(student_url(mock_student))
+        response.should redirect_to(student_url(@student))
       end
-      
     end
     
     describe "with invalid params" do
-
       it "should expose a newly created but unsaved intervention as @intervention" do
-        mock_intervention.should_receive(:save).and_return(false)
-        mock_intervention.should_receive(:intervention_definition_id).and_return(1)
+        @intervention.should_receive(:save).and_return(false)
+        @intervention.should_receive(:intervention_definition_id).and_return(1)
         post :create, :intervention => {:these => 'params'}
-        assigns(:intervention).should equal(mock_intervention)
+        assigns(:intervention).should equal(@intervention)
       end
 
       it "should re-render the 'new' template" do
-        mock_intervention.should_receive(:save).and_return(false)
-        mock_intervention.should_receive(:intervention_definition_id).and_return(1)
+        @intervention.should_receive(:save).and_return(false)
+        @intervention.should_receive(:intervention_definition_id).and_return(1)
         post :create, :intervention => {}
         response.should render_template('new')
       end
-      
     end
-    
   end
 
   describe "responding to PUT udpate" do
     describe "with valid params" do
-
       it "should update the requested intervention" do
-        mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-        mock_intervention.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :intervention => {:these => 'params'}
+        @intervention.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
       it "should expose the requested intervention as @intervention" do
-        mock_intervention.stub!(:find_by_id).and_return(mock_intervention(:update_attributes => true))
-        mock_intervention.should_receive(:update_attributes).and_return(true)
-        put :update, :id => "1"
-        assigns(:intervention).should equal(mock_intervention)
+        @intervention.should_receive(:update_attributes).and_return(true)
+        put :update, :id => @intervention.id
+        assigns(:intervention).should equal(@intervention)
       end
 
       it "should redirect to the intervention" do
-        mock_intervention.stub!(:find_by_id).and_return(mock_intervention(:update_attributes => true))
-        mock_intervention.should_receive(:update_attributes).and_return(true)
-        put :update, :id => "1"
-        response.should redirect_to(student_url(mock_student))
+        @intervention.should_receive(:update_attributes).and_return(true)
+        put :update, :id => @intervention.id
+        response.should redirect_to(student_url(@student))
       end
-
     end
-    
-    describe "with invalid params" do
 
+    describe "with invalid params" do
       it "should update the requested intervention" do
-        mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-        mock_intervention.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :intervention => {:these => 'params'}
+        @intervention.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
       it "should expose the intervention as @intervention" do
-        mock_intervention.stub!(:find_by_id).and_return(mock_intervention(:update_attributes => false))
-        mock_intervention.should_receive(:update_attributes).and_return(false)
-        put :update, :id => "1"
-        assigns(:intervention).should equal(mock_intervention)
+        @intervention.should_receive(:update_attributes).and_return(false)
+        put :update, :id => @intervention.id
+        assigns(:intervention).should equal(@intervention)
       end
 
       it "should re-render the 'edit' template" do
-        mock_intervention.stub!(:find_by_id).and_return(mock_intervention(:update_attributes => false))
-        mock_intervention.should_receive(:update_attributes).and_return(false)
-        put :update, :id => "1"
+        @intervention.should_receive(:update_attributes).and_return(false)
+        put :update, :id => @intervention.id
         response.should render_template('edit')
       end
-
     end
-
   end
 
   describe "responding to DELETE destroy" do
     it "should destroy the requested intervention" do
-      mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
-      mock_intervention.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      @intervention.should_receive(:destroy)
+      delete :destroy, :id => @intervention.id
     end
   
     it "should redirect to the interventions list" do
-      mock_intervention.stub!(:find_by_id).and_return(mock_intervention(:destroy => true))
-      mock_intervention.should_receive(:destroy)
-      delete :destroy, :id => "1"
-      response.should redirect_to(student_url(mock_student))
+      @intervention.should_receive(:destroy)
+      delete :destroy, :id => @intervention.id
+      response.should redirect_to(student_url(@student))
     end
-
   end
 
   describe "responding to UPDATE end" do
     it "should end the requested intervention" do
-      mock_intervention.should_receive(:find_by_id).with("37").and_return(mock_intervention)
       controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
-      mock_intervention.should_receive(:end).with(1)
-      put :end, :id => "37"
+      @intervention.should_receive(:end).with(1)
+      put :end, :id => @intervention.id
     end
   
     it "should redirect to the interventions list" do
-      mock_intervention.stub!(:find_by_id).and_return(mock_intervention)
-      controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
-      mock_intervention.should_receive(:end).with(1)
-      put :end, :id => "37"
-      response.should redirect_to(student_url(mock_student))
+      controller.should_receive(:current_user).and_return(mock_model(User, :id => 1))
+      @intervention.should_receive(:end).with(1)
+      put :end, :id => @intervention.id
+      response.should redirect_to(student_url(@student))
     end
-
   end
-
-
 end

@@ -33,8 +33,8 @@ class InterventionsController < ApplicationController
   def create
     comments = params['intervention'].delete('comments')
 
-    @intervention= build_from_session_and_params
-    @intervention.comments.build(:comment => comments, :user_id => current_user)
+    @intervention = build_from_session_and_params
+    @intervention.comments.build(:comment => comments, :user_id => current_user) unless comments.blank?
 
     respond_to do |format|
       if @intervention.save
@@ -111,10 +111,6 @@ class InterventionsController < ApplicationController
     unless @intervention
       flash[:notice] = "Intervention could not be found"
       redirect_to current_student and return
-
     end
-
   end
-  
 end
-
