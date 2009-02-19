@@ -57,9 +57,6 @@ describe InterventionsController do
   end
 
   describe "responding to POST create" do
-    # before do
-    # end
-
     describe "with valid params" do
       describe 'and a passed in comment' do
         it 'should also create a new comment' do
