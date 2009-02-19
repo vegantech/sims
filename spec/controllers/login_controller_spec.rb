@@ -35,10 +35,10 @@ describe LoginController do
   describe "responding to POST login with valid credentials" do
     it "should be successful" do
       controller.should_receive(:dropdowns)
-      district=mock_district
+      district=mock_district(:name => 'mock_district')
       controller.stub!(:current_district).and_return(district)
       district.stub!(:users).and_return(User)
-      user=mock_user(:new_record=>false,:id=>999)
+      user=mock_user(:new_record=>false,:id=>999, :fullname => 'Moc User')
       User.should_receive(:authenticate).with('user','pass').and_return(user)
       post :login ,:username=>'user',:password=>'pass'
       session[:user_id].should == 999
@@ -50,7 +50,7 @@ describe LoginController do
   describe "responding to POST login with invalid credentials" do
      it "should render the login" do
       controller.should_receive(:dropdowns)
-      district=mock_district
+      district=mock_district(:name => 'mock district')
       controller.stub!(:current_district).and_return(district)
       district.stub!(:users).and_return(User)
       User.should_receive(:authenticate).and_return(false)
