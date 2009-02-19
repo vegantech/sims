@@ -45,7 +45,7 @@ Feature: Sims Demo Walkthrough
     
 
     #intervention
-    Then I follow "Assign New Intervention"
+    Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
     Then I select "Math" from "objective_definition_id"

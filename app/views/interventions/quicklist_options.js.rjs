@@ -1,0 +1,1 @@
+page[:quicklist].replace_html(:partial =>'quicklist')

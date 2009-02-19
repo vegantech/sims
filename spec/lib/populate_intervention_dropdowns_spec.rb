@@ -47,19 +47,6 @@ describe "Populate Intervention Dropdowns Module" do
     end
   end
 
-  describe 'populate_quicklist' do
-    it 'should not populate @quicklist_interventions for custom interventions' do
-      flash[:custom_intervention]=true
-      populate_quicklist.should == nil
-      @quicklist_intervention_definitions.should == nil
-    end
-
-    it 'should set @quicklist_intervention_definitions if not custom interventins' do
-      flash[:custom_intervention]=nil
-      populate_quicklist.should == []
-      @quicklist_intervention_definitions.should == []
-    end
-  end
 
   describe 'populate_goals' do 
     it 'should populate @goal_definitions' do

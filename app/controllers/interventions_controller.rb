@@ -1,9 +1,6 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist'
+  additional_write_actions 'end', 'quicklist', 'quicklist_options'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy]
-  
-
-
 
   include PopulateInterventionDropdowns
   # GET /interventions/1
@@ -20,6 +17,7 @@ class InterventionsController < ApplicationController
   def new
     flash[:custom_intervention] = params[:custom_intervention]
     flash.keep(:custom_intervention)
+    @quicklist=true if params[:quicklist]
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
       format.xml  { render :xml => @intervention }
@@ -81,14 +79,26 @@ class InterventionsController < ApplicationController
     end
   end
 
-  def quicklist
+
+  def quicklist_options
+    @quicklist_intervention_definitions = current_school.quicklist 
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
+
+  
+  def quicklist #post
+    
     #FIXME scope this somehow
-    @intervention_definition = InterventionDefinition.find(params[:quicklist_item][:intervention_definition_id])
+    @intervention_definition = InterventionDefinition.find_by_id(params[:quicklist_item][:intervention_definition_id])
+    redirect_to :back and return if @intervention_definition.blank?
     @intervention_cluster = @intervention_definition.intervention_cluster
     @objective_definition = @intervention_cluster.objective_definition
     @goal_definition = @objective_definition.goal_definition
     redirect_to new_intervention_url(:goal_id=>@goal_definition,:objective_id=>@objective_definition,
-           :category_id=>@intervention_cluster,:definition_id=>@intervention_definition)
+           :category_id=>@intervention_cluster,:definition_id=>@intervention_definition, :quicklist=>true)
   end
 
   private

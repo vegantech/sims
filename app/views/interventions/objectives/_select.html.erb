@@ -1,8 +1,9 @@
 <div id="objectives">
 <% if @objective_definitions %>
   <% remote_form_for :objective_definition, :url => select_interventions_objectives_path(@goal_definition) do |f| %>
-    <%= f.collection_select(:id, @objective_definitions,:id,:title,{},{:onchange=>"this.form.onsubmit()"}) %>
-    <%= submit_tag("Choose Objective") %>
+    <%= f.label(:id, 'Assign Objective') %>
+    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:onchange=>"this.form.onsubmit()"}) %>
+    <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>
 <% end %>
 </div>
