@@ -6,9 +6,10 @@
   <br class="brclear" />
   <p>
   <% if @intervention.selected_ids %>
-    <%= f.label :apply_to_all, "Apply to all selected students" %>
+  <div class="fake_label">
     <%= f.check_box :apply_to_all %> 
   <% end %>
+  <%= f.label :apply_to_all, "Apply to all selected students", {:class=>'checkbox_label'} %>
   <br class="brclear" />
   <div class="fake_label">
     <%= f.check_box :auto_implementer  %> 
