@@ -1,5 +1,9 @@
 <h1>New intervention</h1>
 
-<%= render :partial =>'interventions/goals/select' %>
+<% if @quicklist %>
+  <%= render :partial =>'interventions/intervention' %>
+<% else %>
+  <%= render :partial =>'interventions/goals/select' %>
+<% end %>
 
 

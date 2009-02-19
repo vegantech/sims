@@ -1,12 +1,11 @@
-<% unless @quicklist_intervention_definitions.blank? %>
-<div id ="quicklist">
-  <%form_for :quicklist_item, :url => quicklist_interventions_path do |f| %>
+<% if @quicklist_intervention_definitions.blank? %>
+   Quicklist is not available.
+<% else %>
+   <%form_for :quicklist_item, :url => quicklist_interventions_path do |f| %>
     <%= f.label :intervention_definition_id, "Intervention Quicklist" %>
-    <%= f.collection_select :intervention_definition_id, @quicklist_intervention_definitions, :id, :title ,{},:onchange=>"submit()"%>
-    <%= f.submit "Pick from Quicklist" %>
-
+    <%= f.collection_select :intervention_definition_id, @quicklist_intervention_definitions, :id, :title ,{:prompt=>""},:onchange=>"submit()"%>
+    <noscript><%= f.submit "Pick from Quicklist" %></noscript>
   <% end %>
-  </div>
 <% end %>
 
 

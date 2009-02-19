@@ -1,12 +1,11 @@
-<%= render :partial => "interventions/quicklist" %>
-
 <% if @goal_definitions.blank? %>
-  Interventions are not available, no goals  defined.
+  Interventions are not available, no goals defined.
   <%= link_to :back, :back %>
 <%else%>
   <% remote_form_for :goal_definition, :url=>select_interventions_goals_path do |f| %>
-    <%= f.collection_select(:id, @goal_definitions,:id,:title,{}, {:onchange=>"this.form.onsubmit()"}) %>
-    <%= submit_tag("Choose Goal") %>
+    <%= f.label(:id,'Assign Goal') %>
+    <%= f.collection_select(:id, @goal_definitions,:id,:title,{:prompt=>""}, {:onchange=>"this.form.onsubmit()"}) %>
+    <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>
 <% end %>
 <%= render :partial=>'interventions/objectives/select' %>
