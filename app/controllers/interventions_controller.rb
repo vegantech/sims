@@ -31,7 +31,10 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.xml
   def create
+    comments = params['intervention'].delete('comments')
+
     @intervention= build_from_session_and_params
+    @intervention.comments.build(:comment => comments, :user_id => current_user)
 
     respond_to do |format|
       if @intervention.save
