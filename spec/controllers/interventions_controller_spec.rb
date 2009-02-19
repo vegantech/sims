@@ -57,13 +57,22 @@ describe InterventionsController do
   end
 
   describe "responding to POST create" do
-    before do
-      comments = []
-      comments.should_receive(:build).and_return('some comment')
-      @intervention.should_receive(:comments).and_return(comments)
-    end
+    # before do
+    # end
 
     describe "with valid params" do
+      describe 'and a passed in comment' do
+        it 'should also create a new comment' do
+          comments = []
+          comments.should_receive(:build).and_return('some comment')
+          @intervention.should_receive(:comments).and_return(comments)
+          @intervention.should_receive(:save).and_return(true)
+          @intervention.should_receive(:autoassign_message).and_return('')
+          post :create, :intervention => {:these => 'params', :comments => {:commennt => 'fubar'}}
+          assigns(:intervention).should equal(@intervention)
+        end
+      end
+
       it "should expose a newly created intervention as @intervention" do
         @intervention.should_receive(:save).and_return(true)
         @intervention.should_receive(:autoassign_message).and_return('')
