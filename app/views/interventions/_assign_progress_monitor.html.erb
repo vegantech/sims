@@ -1,0 +1,13 @@
+    <br class="brclear" />
+  <p>
+    <%= label :naught,:probe_definition_id, "Assigned Progress Monitor" %>
+    <% if @recommended_monitors.size == 1 %>
+      <%= @intervention_probe_assignment.title %>
+    <% else %>
+      <%= collection_select(:naught,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title) %>
+    <% end %>
+  </p>
+    <br class="brclear" />
+  <div id="intervention_probe_assignment">
+    <%= render :partial => 'interventions/intervention_probe_assignment_detail' %>
+  </div>

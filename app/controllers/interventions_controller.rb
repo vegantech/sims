@@ -18,6 +18,7 @@ class InterventionsController < ApplicationController
     flash[:custom_intervention] = params[:custom_intervention]
     flash.keep(:custom_intervention)
     @quicklist=true if params[:quicklist]
+
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
       format.xml  { render :xml => @intervention }
@@ -31,14 +32,12 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.xml
   def create
-    comments = params['intervention'].delete('comments')
-
     @intervention = build_from_session_and_params
-    @intervention.comments.build(:comment => comments, :user_id => current_user) unless comments.blank?
 
     respond_to do |format|
       if @intervention.save
-        flash[:notice] = 'Intervention was successfully created. '+ @intervention.autoassign_message
+        flash[:notice] = 'Intervention was successfully created. '
+        flash[:notice] += @intervention.autoassign_message if @intervention.autoassign_message
         format.html { redirect_to(current_student) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else

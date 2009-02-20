@@ -16,5 +16,14 @@ class RecommendedMonitor < ActiveRecord::Base
   belongs_to :intervention_definition
   belongs_to :probe_definition
 
+  delegate :title, :to=>:probe_definition
   acts_as_list :scope=>:intervention_definition_id
+
+  def recommended_frequency_mult
+    InterventionProbeAssignment::RECOMMENDED_FREQUENCY
+  end
+
+  def build_intervention_probe_assignment
+    probe_definition.intervention_probe_assignments.build if probe_definition
+  end
 end

@@ -14,11 +14,11 @@
     <%= form.label :time_length_number, 'Intervention Duration' %>
     <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date();"}%>
     <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:onchange => "change_date();"}) %> 
-    <%= "(Rec: #{@intervention_definition.time_length_summary})" unless flash[:custom_intervention] %>
+    <%= "(Rec: #{@intervention_definition.time_length_summary})" unless flash[:custom_intervention]  or @intervention_definition.blank? %>
 
   </p>
   <br class="brclear" />
- <p>
+  <p>
     <%= form.label :start_date , 'Intervention Start Date' %>
     <%= form.date_select :start_date ,{}, {:onchange => "change_date();"}%>
   </p>
@@ -27,11 +27,16 @@
     <%= form.label :end_date, 'Intervention End Date' %>
     <%= form.date_select :end_date %>
   </p>
+
+  <br class="brclear" />
+  <%= render :partial => 'interventions/assign_progress_monitor' ,:locals =>{ :form=>form }  unless @recommended_monitors.blank?%>
+  <br class="brclear" />
+
+  <%form.fields_for :comment,InterventionComment.new do |comment_fields|%>
+    <p>
+      <%= comment_fields.label :comment, 'Comments about the intervention plan' %>
+      <%= comment_fields.text_area :comment %>
+    </p>
+  <% end %>
   <br class="brclear" />
     <%= form.hidden_field :intervention_definition_id %>
-  <p>
-    <%= form.label :comments, 'Comments about the intervention plan' %>
-    <%= form.text_area :comments %>
-  </p>
-  <p>
-  </p>

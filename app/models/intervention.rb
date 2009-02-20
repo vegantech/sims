@@ -33,7 +33,7 @@ class Intervention < ActiveRecord::Base
   has_many :comments, :class_name => "InterventionComment"
   has_many :intervention_participants
 
-  has_many :intervention_probe_assignments do 
+  has_many :intervention_probe_assignments, :dependent=>:destroy do 
     def prepare_all(passed_params={})
       ipas=find(:all)
       prepared=[]
@@ -150,6 +150,17 @@ class Intervention < ActiveRecord::Base
     pluralize time_length_number, time_length.title
   end
 
+
+  def intervention_probe_assignment=(params)
+    ipa=intervention_probe_assignments.build(params.merge(:enabled=>true))
+    ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
+    ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
+  end
+
+  def comment=(txt)
+    comments.build(:comment=>txt[:comment], :user_id=>self.user_id)
+  end
+
   protected
 
   def create_other_students
@@ -177,6 +188,7 @@ class Intervention < ActiveRecord::Base
 
   def autoassign_probe
     rec_mon_count = intervention_definition.recommended_monitors.count
+    return true if intervention_probe_assignments.any?
     case rec_mon_count
     when 0
       @autoassign_message = 'No Monitors Available for this intervention.'

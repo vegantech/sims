@@ -15,6 +15,8 @@ protected
   def populate_intervention
     return if  params[:intervention_definition] and params[:intervention_definition][:id].blank?
     find_intervention_definition
+    @recommended_monitors = @intervention_definition.recommended_monitors
+    @intervention_probe_assignment = @recommended_monitors.first.build_intervention_probe_assignment if @recommended_monitors.size >= 1
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
     build_from_session_and_params
