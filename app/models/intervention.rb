@@ -152,13 +152,14 @@ class Intervention < ActiveRecord::Base
 
 
   def intervention_probe_assignment=(params)
+    return if params.blank?
     ipa=intervention_probe_assignments.build(params.merge(:enabled=>true))
     ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
   end
 
   def comment=(txt)
-    comments.build(:comment=>txt[:comment], :user_id=>self.user_id)
+    comments.build(:comment=>txt[:comment], :user_id=>self.user_id) if !txt[:comment].blank?
   end
 
   protected

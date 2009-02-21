@@ -56,7 +56,8 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Intervention"
     #change some options here?
     Then I press "Create"
-    Then I should see "Please assign a progress monitor"
+#    Then I should see "Please assign a progress monitor"
+    #They choose them now ^^^
 
     #principal overrides
     Then I follow "Request Principal Override to unlock next tier"

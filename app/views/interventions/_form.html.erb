@@ -7,7 +7,7 @@
     <%= form.label :frequency_multiplier, 'Intervention Frequency' %>
     <%= form.select :frequency_multiplier, (1..20).to_a %>
     <%= form.collection_select(:frequency_id,Frequency.all,:id,:title) %> 
-    <%= "(Rec: #{@intervention_definition.frequency_summary})" unless flash[:custom_intervention] %>
+    <%= "(Rec: #{@intervention_definition.frequency_summary})" unless flash[:custom_intervention] or @intervention_definition.blank?%>
   </p>
   <br class="brclear" />
   <p>

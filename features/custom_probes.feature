@@ -25,10 +25,12 @@ Feature: Create Custom Probes
     Then the "Custom Probe Title1" checkbox should be checked
     Then I follow "Back"
     Then I follow "Back"
-    Then I complete "Assign New Intervention"
-    #It's assigned
-    Then I should see "Custom Probe Title1 has been automatically assigned"
-
-    
-
-
+   
+    When I follow "Select New Intervention and Progress Monitor from Menu"
+    And I select "Some Goal" from "goal_definition_id"
+    And I press "Choose Goal"
+    And I select "Some Objective" from "objective_definition_id"
+    And I press "Choose Objective"
+    And I select "Some Category" from "intervention_cluster_id"
+    And I press "Choose Category"
+    Then I should see "Custom Probe Title1"

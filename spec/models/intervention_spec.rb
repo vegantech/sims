@@ -31,6 +31,8 @@ describe Intervention do
       i=Factory(:intervention)
       p=i.build_custom_probe(:title=>"test",:description=>"test")
       p.save!
+      
+      i.reload
       i.intervention_definition.probe_definitions.first.should == p
       i.intervention_probe_assignments.first.probe_definition.should == p
     end
