@@ -1,5 +1,5 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options'
+  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy]
 
   include PopulateInterventionDropdowns
@@ -100,6 +100,12 @@ class InterventionsController < ApplicationController
     @goal_definition = @objective_definition.goal_definition
     redirect_to new_intervention_url(:goal_id=>@goal_definition,:objective_id=>@objective_definition,
            :category_id=>@intervention_cluster,:definition_id=>@intervention_definition, :quicklist=>true)
+  end
+
+  def ajax_probe_assignment
+    rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
+    @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
+    render :partial => 'interventions/intervention_probe_assignment_detail'
   end
 
   private

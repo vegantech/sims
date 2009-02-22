@@ -4,7 +4,8 @@
     <% if @recommended_monitors.size == 1 %>
       <%= @intervention_probe_assignment.title %>
     <% else %>
-      <%= collection_select(:naught,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title) %>
+      <%= collection_select(:naught,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('naught_probe_definition_id').value"
+)}) %>
     <% end %>
   </p>
     <br class="brclear" />
