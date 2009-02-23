@@ -3,21 +3,33 @@
 <% form_tag do  %>
 
     <% @intervention_probe_assignments.each do |intervention_probe_assignment| %>
-      <p>
+      <div class="new_form">
       <% fields_for("intervention_probe_assignments[]",intervention_probe_assignment) do |ipa|  %>
         <%= ipa.error_messages %>
-        <%= check_box_tag "intervention_probe_assignments[#{intervention_probe_assignment.probe_definition_id.to_s}][enabled]", true, intervention_probe_assignment.enabled   %>
-        <%= label_tag "intervention_probe_assignments[#{intervention_probe_assignment.probe_definition_id.to_s}][enabled]", intervention_probe_assignment.probe_definition.title %> <br>
+        <div class="form_row">
+        <div class="fake_label">
+          <%= check_box_tag "intervention_probe_assignments[#{intervention_probe_assignment.probe_definition_id.to_s}][enabled]", true, intervention_probe_assignment.enabled %>
+</div>
+        <%= label_tag "intervention_probe_assignments[#{intervention_probe_assignment.probe_definition_id.to_s}][enabled]", intervention_probe_assignment.probe_definition.title , {:class=>"checkbox_label"}%> 
+        </div>
+        <div class="form_row">
         <label for="<%=intervention_probe_assignment.probe_definition%>">Frequency Multiplier</label>
         <%= ipa.text_field :frequency_multiplier, :id=>intervention_probe_assignment.probe_definition , :index => intervention_probe_assignment.probe_definition_id%>
-        <%= ipa.label :first_date %>
+        </div>
+        <div class="form_row">
+        <%= ipa.label "first_date_1i","First Date", {:index=>intervention_probe_assignment.probe_definition_id.to_s}%>
         <%= ipa.date_select :first_date, {:index=>intervention_probe_assignment.probe_definition_id.to_s} %>
-        <%= ipa.label :end_date %>
+        </div>
+        <div class="form_row">
+        <%= ipa.label "end_date_1i","End Date", {:index=>intervention_probe_assignment.probe_definition_id.to_s}%>
         <%= ipa.date_select :end_date, {:index=>intervention_probe_assignment.probe_definition_id.to_s} %>
+        </div>
         <%= ipa.hidden_field :probe_definition_id, {:index => intervention_probe_assignment.probe_definition_id} %>
+        <br />
         <%= links_and_attachments intervention_probe_assignment.probe_definition, :span %>        
-        </p>
+        </div>
       <% end %>
+      <br />
     <% end %>
     <%= submit_tag "Create" unless @intervention_probe_assignments.blank?%>
 <% end %>

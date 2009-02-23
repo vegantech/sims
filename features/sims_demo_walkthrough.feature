@@ -75,12 +75,17 @@ Feature: Sims Demo Walkthrough
     
 
 
-    Then I follow "Assign Monitors"
-    Then I check "Fact Interview A"
+    When I follow "Assign Monitors"
+    And I check "Fact Interview A"
+    And I select "2014" from "First Date"
+    And I select "2013" from "End Date"
     Then I press "Create"
- 
-
-    Then I follow "Show"
+    
+    Then I follow "Assign Monitors"
+    And I should see "\"selected\" value=\"2014\""
+    And I should see "\"selected\" value=\"2013\""
+    Then I follow "back"
+    
     Then I follow "Enter scores for previously administered assessment"
     Then I fill in "score" with "2"
     Then I press "Enter Score"

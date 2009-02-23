@@ -52,6 +52,10 @@ class Intervention < ActiveRecord::Base
         if p=params.detect{|param_ipa|  !param_ipa.nil? and
           d.probe_definition_id == param_ipa["probe_definition_id"].to_i}
           d.attributes=p
+
+          d.first_date = Date.civil(p["first_date(1i)"].to_i,p["first_date(2i)"].to_i,p["first_date(3i)"].to_i)
+          d.end_date = Date.civil(p["end_date(1i)"].to_i,p["end_date(2i)"].to_i,p["end_date(3i)"].to_i)
+          
           d.enabled=p[:enabled]
         end
         prepared << d
