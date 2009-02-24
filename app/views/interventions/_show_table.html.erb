@@ -1,0 +1,120 @@
+<table>
+  <tr>
+    <td>
+      Goal
+    </td>
+    <td>
+      <%= @intervention.goal_definition %>
+    </td>
+    <td>
+    </td>
+    <td>
+      Objective
+    </td>
+    <td>
+      <%= @intervention.objective_definition %>
+    </td>
+    <td> <%= links_and_attachments @intervention.objective_definition , :p%> </td>
+  
+  </tr>
+
+  <tr>
+    <td>
+      Category
+    </td>
+    <td>
+      <%= @intervention.intervention_cluster %>
+    </td>
+    <td>
+      <%= links_and_attachments @intervention.intervention_cluster ,:p%>
+    </td>
+    <td>
+      Intervention
+    </td>
+    <td>
+      <%= @intervention.title %>
+    </td>
+    <td> <%= links_and_attachments @intervention.intervention_definition , :p%> </td>
+  </tr>
+  <tr>
+    <td>
+      Description
+    </td>
+    <td colspan="4">
+      <%= @intervention.intervention_definition.description %>
+    </td>
+    <td>
+      <%= links_and_attachments @intervention ,:p%>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Participants
+    </td>
+    <td colspan="4">
+       <%= render :partial => 'participant', :collection=>@intervention.participants_with_author %>
+    </td>
+    <td>
+      <%= link_to "Add Participant", new_intervention_participant_path(@intervention) %>
+    </td>
+  </tr>
+    
+  <tr>
+    <td>
+      Frequency
+    </td>
+    <td>
+      <%= @intervention.frequency_summary %>
+    </td>
+    <td>
+    </td>
+    <td>
+      Duration
+    </td>
+    <td>
+      <%= @intervention.time_length_summary %>
+    </td>
+    <td> </td>
+  </tr>
+ 
+  <tr>
+    <td>
+      Start Date
+    </td>
+    <td>
+      <%= @intervention.start_date %>
+    </td>
+    <td>
+    </td>
+    <td>
+      Expected End Date
+    </td>
+    <td>
+      <%= @intervention.end_date %>
+    </td>
+    <td> </td>
+  </tr>
+ 
+  <%unless @intervention.active? %>
+     <tr>
+        <td>
+          Ended on
+        </td>
+        <td>
+          <%= @intervention.ended_at %>
+        </td>
+        <td>
+        </td>
+        <td>
+          Ended by
+        </td>
+        <td>
+          <%= @intervention.ended_by.fullname %>
+        </td>
+        <td> </td>
+      </tr>
+  <% end %>
+
+
+</table>

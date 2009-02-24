@@ -25,4 +25,8 @@ class GoalDefinition < ActiveRecord::Base
     update_attribute(:disabled,true)
   end
 
+  def to_s
+    title
+  end
+
 end

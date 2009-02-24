@@ -34,4 +34,8 @@ class InterventionCluster < ActiveRecord::Base
   def summary_with_parent_tables
     "#{self.goal_definition.title}/#{self.objective_definition.title}/#{self.title}"
   end
+
+  def to_s
+    title
+  end
 end

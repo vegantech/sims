@@ -25,4 +25,8 @@ class ObjectiveDefinition < ActiveRecord::Base
     intervention_clusters.each(&:disable!)
     update_attribute(:disabled,true)
   end
+
+  def to_s
+    title
+  end
 end
