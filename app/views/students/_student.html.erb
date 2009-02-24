@@ -1,22 +1,23 @@
+<% changeable = true if changeable.nil? %>
 <table class ="top_summary">
   <tbody>
     <tr>
-      <td> <%=h @student.fullname_last_first%> </td> 
-      <td> <span id='studentflags'> <%= status_display(@student, true) %></span> </td>
+      <td> <%=h @student.fullname_last_first%> </td>
+      <td> <span id='studentflags'> <%= status_display(@student, changeable) %></span> </td>
       <td class="label">Interventions:</td>
       <td> <%=@student.interventions.size %> </td>
       <td class="label"> Ignored Flags:</td>
       <td>
-        <span id="ignoredflags"> <%= ignore_flags(@student, change = true) %> </span> 
+        <span id="ignoredflags"><%= ignore_flags(@student, changeable) %></span>
         <%= help_popup("Click on a flag to ignore it.  Click on an ignored flag to stop ignoring it.  You can't ignore custom flags, and you can't create custom flags when you are ignoring a flag")  %>
       </td>
       <td class ="spacer"> </td>
     </tr>
     <tr>
       <td class="label">Student Number:</td>
-      <td> <%=h @student.number%> </td> 
+      <td> <%=h @student.number%> </td>
       <td class="label">Birth Date: </td>
-      <td> <%=h @student.birthdate.to_s%> </td> 
+      <td> <%=h @student.birthdate.to_s%> </td>
       <td class ="spacer"> </td>
       <td></td>
       <td><b> <%= "ESL" if @student.esl? %> <%= "Special Ed" if @student.special_ed %> </b></td>

@@ -1,20 +1,13 @@
 <%= selected_navigation %>
-<%= render :partial =>'student'%>
+<%= render :partial =>'student', :locals => {:changeable => true} %>
 
 <div class = "profile_page">
   <%= render :partial => 'custom_flags'%>
-  
   <%= render :partial => 'extended_profile' %>
   <%= render :partial => 'team_notes' %>
-
   <%= render :partial => 'interventions' %>
-
   <%= render :partial => 'checklists' %>
-
   <%= render :partial => 'recommendations' %>
 </div>
 
-  
-
 <%= selected_navigation %>
-

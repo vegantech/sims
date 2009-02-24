@@ -143,7 +143,7 @@ describe ReportsController do
     end
 
     it 'should show top summary when selected' do
-      controller.should_receive(:render).with(:partial => 'students/student')
+      controller.should_receive(:render).with(:partial => 'students/student', :locals => {:changeable => false})
 
       get :student_overall, {:report_params => {:format => "html", :top_summary => "1"}},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}

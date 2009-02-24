@@ -1,6 +1,6 @@
 <div id="student_overall">
   <% subreport_selected(@opts[:top_summary]) do %>
-    <%= render :partial => "students/student" %> 
+    <%= render :partial => "students/student", :locals => {:changeable => false} %> 
   <% end %>
 
   <% subreport_selected(@opts[:extended_profile]) do %>
