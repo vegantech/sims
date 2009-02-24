@@ -5,7 +5,7 @@
 <%else%>
   <% remote_form_for :goal_definition, :url=>select_interventions_goals_path do |f| %>
       <%= f.label(:id,'Assign Goal') %>
-      <%= f.collection_select(:id, @goal_definitions,:id,:title,{:prompt=>""}, {:onchange=>"this.form.onsubmit()"}) %>
+      <%= f.collection_select(:id, @goal_definitions,:id,:title,{:prompt=>""}, {:onchange=>"this.form.onsubmit()", :class=>"fixed_width"}) %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>
 <% end %>
