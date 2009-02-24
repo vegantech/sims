@@ -9,7 +9,7 @@
       <td class="label"> Ignored Flags:</td>
       <td>
         <span id="ignoredflags"><%= ignore_flags(@student, changeable) %></span>
-        <%= help_popup("Click on a flag to ignore it.  Click on an ignored flag to stop ignoring it.  You can't ignore custom flags, and you can't create custom flags when you are ignoring a flag")  %>
+        <%= help_popup("Click on a flag to ignore it.  Click on an ignored flag to stop ignoring it.  You can't ignore custom flags, and you can't create custom flags when you are ignoring a flag") if changeable %>
       </td>
       <td class ="spacer"> </td>
     </tr>
