@@ -52,7 +52,7 @@ legend {
 }
 
 .fake_label, .new_form label {
-  width: 10em;
+  width: 11em;
   font-weight: bold;
   float: left;
   text-align: right;
@@ -92,6 +92,15 @@ label.checkbox_label {
 .form_row {
   white-space: nowrap;
   padding-bottom: .5em;
+}
+
+.form_row_wrap_label {
+  white-space: auto;
+  padding-bottom: .5em;
+}
+
+.form_row form {
+  display: inline;
 }
 
 .submit {
@@ -187,6 +196,7 @@ a:hover { color: #fff; background-color:#000; }
   display: block;
   font-weight: normal;
   color: white;
+  font-size: 26px;
   /*border-top: ?*/
   /*top-border: 50px;*/
   margin-top: .3em;
@@ -198,10 +208,11 @@ a:hover { color: #fff; background-color:#000; }
 #right_header h2 {
   font-weight: normal;
   color: #fec689;
+  font-size: 23px;
   margin-top: .2em;
   padding-top: 0;
   margin-bottom: .1em;
-  padding-bottom: 0;
+  padding-bottom: .1em;
 }
 
 #errorExplanation h2 {
@@ -241,7 +252,10 @@ fieldset.debug_info {
   background: #eee;
 }
 
+h1 {
+  font-size: 26px;
 
+}
 thead th.sort-active
   {
     background:#CAE8EA url(../images/spinner.gif) no-repeat 0 0;

@@ -1,29 +1,29 @@
 <% if @intervention_probe_assignment %>
-  <div class="fake_label">Description</div>
+  <div class="form_row_wrap_label">
+  <div class="fake_label">Progress Monitor Description</div>
   <%= @intervention_probe_assignment.probe_definition.description if @intervention_probe_assignment.probe_definition %>
+  </div>
+  <br class="brclear" />
   <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
-    <fieldset>
-      <legend>Progress Monitor</legend>
       <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition  %>
       <%= error_messages_for(:intervention_probe_assignment) %>
-      <p>
+      <div class="form_row_wrap_label">
         <%= ipa.label :frequency_multiplier, 'Monitoring Frequency' %>
         <%= ipa.select :frequency_multiplier, (1..20).to_a %>
         <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {:onchange => "change_date();"}) %> 
         (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
-      </p>
+      </div>
       <br class="brclear" />
-      <p>
+      <div class="form_row">
         <%= ipa.label :first_date , 'First Date' %>
         <%= ipa.date_select :first_date ,{}, {:onchange => "change_date();"}%>
-      </p>
+      </div>
       <br class="brclear" />
-      <p>
+      <div class="form_row">
         <%= ipa.label :end_date, 'Last Date' %>
         <%= ipa.date_select :end_date %>
-      </p>
+      </div>
        <%= ipa.hidden_field :probe_definition_id %>
-    </fieldset>
     <br class="brclear" />
   <% end %>
 <% end %>
