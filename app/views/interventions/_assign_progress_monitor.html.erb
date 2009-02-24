@@ -4,8 +4,9 @@
     <% if @recommended_monitors.size == 1 %>
       <%= @intervention_probe_assignment.title %>
     <% else %>
-      <%= collection_select(:naught,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('naught_probe_definition_id').value"
+      <%= collection_select(:naught,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('naught_probe_definition_id').value", :before =>"$('spinnerassign_progress').show()",:success => "$('spinnerassign_progress').hide();"
 ), :class => "fixed_width"}) %>
+    <%= spinner("assign_progress") %>
     <% end %>
   </p>
     <br class="brclear" />

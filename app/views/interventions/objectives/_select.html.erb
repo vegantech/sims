@@ -2,7 +2,8 @@
 <% if @objective_definitions %>
   <% remote_form_for :objective_definition, :url => select_interventions_objectives_path(@goal_definition) do |f| %>
     <%= f.label(:id, 'Assign Objective') %>
-    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:onchange=>"this.form.onsubmit()", :class=>"fixed_width"}) %>
+    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:onchange=>"$('spinnerobjectives').show();this.form.onsubmit()", :class=>"fixed_width"}) %>
+    <%= spinner("objectives") %>
     <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>
 <% end %>
