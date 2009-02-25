@@ -112,8 +112,8 @@ module ApplicationHelper
   end
 
 
-  def description(obj)
-    "<div class='fake_label'>Description</div>#{obj.description}" if obj
+  def description(obj, name="Description")
+    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
   end
 
 end

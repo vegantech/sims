@@ -1,8 +1,5 @@
 <% if @intervention_probe_assignment %>
-  <div class="form_row_wrap_label">
-  <div class="fake_label">Progress Monitor Description</div>
-  <%= @intervention_probe_assignment.probe_definition.description if @intervention_probe_assignment.probe_definition %>
-  </div>
+  <%= description(@intervention_probe_assignment.probe_definition, "Progress Monitor Description") %>
   <br class="brclear" />
   <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
       <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition  %>
