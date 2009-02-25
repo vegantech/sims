@@ -31,9 +31,31 @@ describe Enrollment do
       end
     end
 
-    describe 'with different user and user_id' do
-      it 'should limit by both' do
-        pending
+    describe 'with user_id and user' do
+      before do
+        group1=Factory(:group,:school_id=>999)
+        group2=Factory(:group, :school_id=>999)
+        group3=Factory(:group, :school_id=>999)
+        @user1=Factory(:user)
+        @user2=Factory(:user)
+        student1=Factory(:student)
+        student2=Factory(:student)
+        student3=Factory(:student)
+        student1.groups << group1
+        student2.groups << group2
+        student3.groups << group3
+        group1.users  << @user1
+        group2.users << [@user1,@user2]
+        group3.users << @user2
+        @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999)
+        @e2 = student2.enrollments.create!(:grade=>"1",:school_id=>999)
+        @e3 = student3.enrollments.create!(:grade=>"1",:school_id=>999)
+      end
+      it 'should filter correctly' do
+        Enrollment.search(:search_type=>'list_all').should == [@e1,@e2,@e3]
+        Enrollment.search(:search_type=>'list_all',:user_id=>@user2.id.to_s, :school_id=>999).should == [@e2, @e3]
+        Enrollment.search(:search_type=>'list_all',:user=>@user1, :school_id=>999).should == [@e1, @e2]
+        Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user2.id.to_s, :school_id=>999).should == [@e2]
       end
     end
 
