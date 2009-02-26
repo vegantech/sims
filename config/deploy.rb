@@ -9,7 +9,7 @@ set :application, "sims-open"
 
 
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
-If you\'re looking for the pilot, it\'s at <%=link_to "https://simspilot.vegantech.com", "https://simspilot.vegantech.com" %> '
+If you\'re looking for the pilot, it\'s at <%=link_to "https://simspilot.vegantech.com", "https://simspilot.vegantech.com" %> <br /> The data in this demo gets reset weekly. '
 
 
 desc "pilot for pilot, default is demo"

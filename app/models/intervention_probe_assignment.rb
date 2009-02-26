@@ -19,7 +19,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :intervention
   belongs_to :probe_definition
   belongs_to :frequency
-  has_many :probes
+  has_many :probes, :dependent => :destroy
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
