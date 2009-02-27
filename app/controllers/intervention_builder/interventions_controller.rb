@@ -35,8 +35,8 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
     respond_to do |format|
       if @intervention_definition.save
-        flash[:notice] = 'InterventionDefinition was successfully created.'
-        format.html { redirect_to intervention_builder_intervention_url(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition) }
+        flash[:notice] = 'Intervention was successfully created.'
+        format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
         format.html { render :action => "new" }
       end
@@ -48,9 +48,9 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
     respond_to do |format|
       if @intervention_definition.update_attributes(params[:intervention_definition])
-        flash[:notice] = 'InterventionDefinition was successfully updated.'
+        flash[:notice] = 'Intervention was successfully updated.'
         @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
-        format.html { redirect_to intervention_builder_intervention_url(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition) }
+        format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
         format.html { edit;render :action => "edit" }
       end

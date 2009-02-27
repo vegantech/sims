@@ -15,5 +15,9 @@ class TimeLength < ActiveRecord::Base
     TIMELENGTHS = TimeLength.find(:all)
   rescue
     puts "Table may not exist yet."
-    end
+  end
+
+  def after_create
+    TimeLength.const_set("TIMELENGTHS",TimeLength.all)
+  end
 end

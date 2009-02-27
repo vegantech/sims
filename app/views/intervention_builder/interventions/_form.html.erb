@@ -1,42 +1,47 @@
+<div class="new_form">
   <p>
-    <b>Title</b><br />
+    <%= form.label :title %>
     <%= form.text_area :title %>
   </p>
 
   <p>
-    <b>Description</b><br />
+    <%= form.label :description %>
     <%= form.text_area :description %>
   </p>
 
-    <%= form.hidden_field :custom %>
+  <%= form.hidden_field :custom %>
 
   <p>
-    <b>Tier</b><br />
+    <%= form.label :tier_id, 'Tier' %>
     <%= form.collection_select(:tier_id, Tier::TIERS, :id, :title) %>
   </p>
 
   <p>
-    <b>Preface for choosing recommended monitor</b><br />
+    <%= form.label :rec_mon_preface, "Preface for choosing recommended monitor" %>
     <%= form.text_field :rec_mon_preface %>
   </p>
 
+  <br class='brclear' />
+
   <p>
-    <b>Time length</b><br />
+   <%= form.label :time_length_num, 'Time length' %>
    <%= form.text_field :time_length_num %>
    <%= form.collection_select(:time_length_id,TimeLength::TIMELENGTHS,:id,:title) %>
   </p>
 
 
   <p>
-    <b>Frequency</b><br />
+    <%= form.label :frequency_multipler, "Frequency" %>
     <%=form.text_field :frequency_multiplier%> Time(s) 
     <%=form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>  
   </p>
 
   <p>
-    <b>District Quicklist</b> <%=form.check_box(:district_quicklist)%>
+    <div class="fake_label"><%=form.check_box(:district_quicklist)%></div>
+    <%= form.label :district_quicklist ,"District Quicklist",{:class =>"checkbox_label"} %>
   </p>
 
+  <br class='brclear' />
  
   <div id = "assets" >
     Attach a file or link <br />
@@ -48,5 +53,6 @@
   </p>
 
   <p>
-    <%= submit_tag submit_name %>
+    <%= submit_tag submit_name , :class =>"submit"%>
   </p>
+</div>

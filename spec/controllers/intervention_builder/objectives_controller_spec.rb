@@ -6,6 +6,7 @@ describe InterventionBuilder::ObjectivesController do
 
   #Delete this example and add some real ones
   it "should use InterventionBuilder::ObjectivesController" do
+    pending "Write some specs."
     controller.should be_an_instance_of(InterventionBuilder::ObjectivesController)
   end
 

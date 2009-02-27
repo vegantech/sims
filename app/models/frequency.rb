@@ -15,4 +15,9 @@ class Frequency < ActiveRecord::Base
   rescue
     puts "Error loading frequencies, table may not exist yet."
   end
+
+  def after_create
+    Frequency.const_set("FREQUENCIES",Frequency.all)
+  end
+
 end

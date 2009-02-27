@@ -1,13 +1,14 @@
-
+<div class="new_form">
   <p>
-    <b>Title</b><br />
+    <%=form.label :title %>
     <%= form.text_field :title %>
   </p>
 
   <p>
-    <b>Description</b><br />
+    <%=form.label :description %>
     <%= form.text_area :description %>
   </p>
   <p>
-    <%= submit_tag submit_name %>
+    <%= submit_tag submit_name , :class=>"submit"%>
   </p>
+</div>

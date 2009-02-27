@@ -36,6 +36,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :quicklist_items, :dependent => :destroy
 
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
+  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title]
   validates_numericality_of :frequency_multiplier, :time_length_num
 
   acts_as_reportable if defined? Ruport
@@ -60,7 +61,7 @@ class InterventionDefinition < ActiveRecord::Base
   def district_quicklist=(arg)
     if arg =="1"
       quicklist_items.build(:district_id=>self.district.id) unless district_quicklist
-    else
+    elsif !new_record?
       g=quicklist_items.find_by_district_id(self.district.id) 
       g.destroy if district_quicklist
     end
@@ -92,12 +93,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   def frequency_summary
     "#{pluralize frequency_multiplier, "time"} #{frequency.title}" if frequency
-  end
-
-  def links_and_attachments
-    # la = links.collect(&:name) + attachments.collect(&:filename)
-    # la.collect{|f| "'#{f}'"}.join(" ").gsub(/_/, " ")
-    ''
   end
 
   def monitor_summary

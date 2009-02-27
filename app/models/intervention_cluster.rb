@@ -22,6 +22,7 @@ class InterventionCluster < ActiveRecord::Base
   delegate :goal_definition, :to => :objective_definition
 
   validates_presence_of :title
+  validates_uniqueness_of :description, :scope =>[:objective_definition_id, :title]
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope=>:objective_definition

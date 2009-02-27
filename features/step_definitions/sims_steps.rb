@@ -32,12 +32,17 @@ Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
 end
 
 Given /^I log in as content_builder$/ do
+  Factory(:tier)
+  Factory(:time_length)
+  Factory(:frequency)
   clear_login_dropdowns
   u=create_user "content_builder", "content_builder"
   r=Role.create!(:name => 'content_builder', :district_id => u.district_id)
   u.roles << r
   r.rights.create!(:controller=>"intervention_builder/goals", :read_access=>true, :write_access=>true)
   r.rights.create!(:controller=>"intervention_builder/objectives", :read_access=>true, :write_access=>true)
+  r.rights.create!(:controller=>"intervention_builder/categories", :read_access=>true, :write_access=>true)
+  r.rights.create!(:controller=>"intervention_builder/interventions", :read_access=>true, :write_access=>true)
   
  
   visit '/'

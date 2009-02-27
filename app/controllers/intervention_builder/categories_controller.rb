@@ -34,8 +34,8 @@ class InterventionBuilder::CategoriesController < ApplicationController
 
     respond_to do |format|
       if @intervention_cluster.save
-        flash[:notice] = 'InterventionCluster was successfully created.'
-        format.html { redirect_to intervention_builder_category_url(@goal_definition,@objective_definition,@intervention_cluster) }
+        flash[:notice] = 'Category was successfully created.'
+        format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
         format.html { render :action => "new" }
       end
@@ -47,8 +47,8 @@ class InterventionBuilder::CategoriesController < ApplicationController
 
     respond_to do |format|
       if @intervention_cluster.update_attributes(params[:intervention_cluster])
-        flash[:notice] = 'InterventionCluster was successfully updated.'
-        format.html { redirect_to intervention_builder_category_url(@goal_definition,@objective_definition,@intervention_cluster) }
+        flash[:notice] = 'Category was successfully updated.'
+        format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
         format.html { render :action => "edit" }
       end
@@ -89,7 +89,6 @@ class InterventionBuilder::CategoriesController < ApplicationController
     end
   end
 
-
   private
   def get_objective_definition
     @goal_definition = current_district.goal_definitions.find(params[:goal_id])
@@ -100,7 +99,4 @@ class InterventionBuilder::CategoriesController < ApplicationController
   def move_path(item, direction)
     move_intervention_builder_category_path(:id=>item,:direction=>direction)
   end
-
-  
-
 end

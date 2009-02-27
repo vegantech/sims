@@ -16,7 +16,7 @@
 class GoalDefinition < ActiveRecord::Base
   belongs_to :district
   has_many :objective_definitions, :order =>:position, :dependent => :destroy
-  validates_uniqueness_of [:title,:description], :scope=>"district_id"
+  validates_uniqueness_of :description, :scope=>[:district_id,:description]
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id

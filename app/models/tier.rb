@@ -22,4 +22,8 @@ class Tier < ActiveRecord::Base
   def to_s
     "#{position} - #{title}"
   end
+
+  def after_create
+    Tier.const_set("TIERS",Tier.all(:order=>"position"))
+  end
 end
