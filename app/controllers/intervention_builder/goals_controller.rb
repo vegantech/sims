@@ -41,7 +41,7 @@ class InterventionBuilder::GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal_definition.save
-        flash[:notice] = 'Goal Definition was successfully created.'
+        flash[:notice] = 'Goal was successfully created.'
         format.html { redirect_to intervention_builder_goals_url }
       else
         format.html { render :action => "new" }
@@ -55,7 +55,7 @@ class InterventionBuilder::GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal_definition.update_attributes(params[:goal_definition])
-        flash[:notice] = 'Goal Definition was successfully updated.'
+        flash[:notice] = 'Goal was successfully updated.'
         format.html { redirect_to intervention_builder_goals_url }
       else
         format.html { render :action => "edit" }
@@ -67,7 +67,7 @@ class InterventionBuilder::GoalsController < ApplicationController
   def destroy
     @goal_definition = current_district.goal_definitions.find(params[:id])
     if @goal_definition.objective_definitions.any?
-      flash[:notice]="Objective Definitions Assigned, please remove them first"
+      flash[:notice]="Objective Assigned, please remove them first"
     else
       @goal_definition.destroy
     end

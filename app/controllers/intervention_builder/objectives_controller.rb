@@ -36,7 +36,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
     @objective_definition = @goal_definition.objective_definitions.build(params[:objective_definition])
     respond_to do |format|
       if @objective_definition.save
-        flash[:notice] = 'ObjectiveDefinition was successfully created.'
+        flash[:notice] = 'Objective was successfully created.'
         format.html { redirect_to intervention_builder_objective_url(@goal_definition,@objective_definition) }
       else
         format.html { render :action => "new" }
@@ -49,7 +49,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
     respond_to do |format|
       if @objective_definition.update_attributes(params[:objective_definition])
-        flash[:notice] = 'ObjectiveDefinition was successfully updated.'
+        flash[:notice] = 'Objective was successfully updated.'
         format.html { redirect_to intervention_builder_objective_url(@goal_definition,@objective_definition) }
       else
         format.html { render :action => "edit" }
