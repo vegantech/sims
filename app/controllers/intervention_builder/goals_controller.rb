@@ -42,7 +42,7 @@ class InterventionBuilder::GoalsController < ApplicationController
     respond_to do |format|
       if @goal_definition.save
         flash[:notice] = 'Goal Definition was successfully created.'
-        format.html { redirect_to intervention_builder_goal_url(@goal_definition) }
+        format.html { redirect_to intervention_builder_goals_url }
       else
         format.html { render :action => "new" }
       end
@@ -56,7 +56,7 @@ class InterventionBuilder::GoalsController < ApplicationController
     respond_to do |format|
       if @goal_definition.update_attributes(params[:goal_definition])
         flash[:notice] = 'Goal Definition was successfully updated.'
-        format.html { redirect_to intervention_builder_goal_url(@goal_definition) }
+        format.html { redirect_to intervention_builder_goals_url }
       else
         format.html { render :action => "edit" }
       end

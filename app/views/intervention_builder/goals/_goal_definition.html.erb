@@ -7,7 +7,7 @@
    <%= link_to 'Disable', disable_intervention_builder_goal_path(goal_definition), :confirm => 'Are you sure? This is similar to deletion, except any existing interventions will retain their info. ', :method => :put %>  <br /> 
   <%= link_to 'Destroy', intervention_builder_goal_path(goal_definition), :confirm => 'Are you sure?  If there is anything existing assigned, considering disabling instead.', :method => :delete %> 
   <br />
-  <%= link_to 'See Objective Definitions', intervention_builder_objectives_path(goal_definition)%>
+  <%= link_to 'See Objectives', intervention_builder_objectives_path(goal_definition)%>
   </td>
 
   <td><%=h goal_definition.title %></td>

@@ -75,7 +75,7 @@ describe InterventionBuilder::GoalsController do
       it "should redirect to the created goal_definition" do
         GoalDefinition.stub!(:build).and_return(mock_goal(:save => true))
         post :create, :goal => {}
-        response.should redirect_to(intervention_builder_goal_url(mock_goal))
+        response.should redirect_to(intervention_builder_goals_url)
       end
       
     end
@@ -117,7 +117,7 @@ describe InterventionBuilder::GoalsController do
       it "should redirect to the goal" do
         GoalDefinition.stub!(:find).and_return(mock_goal(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(intervention_builder_goal_url(mock_goal))
+        response.should redirect_to(intervention_builder_goals_url)
       end
 
     end

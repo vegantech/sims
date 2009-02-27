@@ -31,6 +31,23 @@ Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
   create_user user_name, password
 end
 
+Given /^I log in as content_builder$/ do
+  clear_login_dropdowns
+  u=create_user "content_builder", "content_builder"
+  r=Role.create!(:name => 'content_builder', :district_id => u.district_id)
+  u.roles << r
+  r.rights.create!(:controller=>"intervention_builder/goals", :read_access=>true, :write_access=>true)
+  r.rights.create!(:controller=>"intervention_builder/objectives", :read_access=>true, :write_access=>true)
+  
+ 
+  visit '/'
+  fill_in 'Login', :with => 'content_builder'
+  fill_in 'Password', :with => 'content_builder'
+  click_button 'Login'
+        
+  
+end
+
 Given /^I am a district admin$/ do
   clear_login_dropdowns
   default_user
