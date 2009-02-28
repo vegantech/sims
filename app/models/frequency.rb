@@ -10,14 +10,8 @@
 #
 
 class Frequency < ActiveRecord::Base
-  begin
-    FREQUENCIES=Frequency.find(:all)
-  rescue
-    puts "Error loading frequencies, table may not exist yet."
-  end
-
-  def after_create
-    Frequency.const_set("FREQUENCIES",Frequency.all)
-  end
-
+  #TODO ADD POSITION
+  @all_cache_order = "id"
+  include AllCache
 end
+

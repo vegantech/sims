@@ -120,7 +120,7 @@ end
 
 def create_default_intervention_pieces
   g1=@district.goal_definitions.create!(:title=>"Some Goal",:description=>"whatever")
-  @district.goal_definitions.create!(:title=>"Goal 1",:description=>"whatever")
+  @district.goal_definitions.create!(:title=>"Goal 1",:description=>"whatever2")
   o1=g1.objective_definitions.create!(:title=>"Some Objective",:description=>"whatever")
   g1.objective_definitions.create!(:title=>"Other Objective",:description=>"whatever")
   c1=o1.intervention_clusters.create!(:title=>"Some Category",:description=>"whatever")

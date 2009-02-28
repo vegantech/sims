@@ -34,6 +34,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :recommended_monitors, :order => :position, :dependent => :destroy
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
+  has_many :interventions
 
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title]
@@ -41,10 +42,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => 'intervention_cluster_id'
-
-  def interventions
-    []
-  end
 
   def business_key
     "#{tier_id}-#{goal_definition.position}-#{objective_definition.position}    -#{intervention_cluster.position}-#{position}"
@@ -105,5 +102,9 @@ class InterventionDefinition < ActiveRecord::Base
 
   def tier_summary
     "#{tier_id} - #{tier.title}"
+  end
+
+  def links_and_attachments
+    assets.collect(&:to_s).join(" ")
   end
 end

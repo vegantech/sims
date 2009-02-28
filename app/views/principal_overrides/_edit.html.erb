@@ -12,7 +12,7 @@
     <% if @principal_override.action == "accept" %>
       <p>
       <%= f.label :end_tier %>
-      <%= f.collection_select(:end_tier_id, Tier::TIERS, :id, :title) %>
+      <%= f.collection_select(:end_tier_id, Tier.all_cache, :id, :title) %>
       </p>
     <% end %>
 

@@ -19,4 +19,8 @@
 class Asset < ActiveRecord::Base
   belongs_to :attachable, :polymorphic => true
   has_attached_file :document
+
+  def to_s
+    "#{name} #{document.original_filename if document?}"
+  end
 end

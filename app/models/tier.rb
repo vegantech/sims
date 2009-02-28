@@ -12,18 +12,13 @@
 #
 
 class Tier < ActiveRecord::Base
+  @@all_cache_order = "position"
+  include AllCache
   belongs_to :district
-  begin
-    TIERS=Tier.find(:all,:order=>"position")
-  rescue
-    puts "Table may not exist yet"
-  end
+
 
   def to_s
     "#{position} - #{title}"
   end
-
-  def after_create
-    Tier.const_set("TIERS",Tier.all(:order=>"position"))
-  end
+  
 end

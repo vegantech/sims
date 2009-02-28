@@ -13,7 +13,7 @@
 
   <p>
     <%= form.label :tier_id, 'Tier' %>
-    <%= form.collection_select(:tier_id, Tier::TIERS, :id, :title) %>
+    <%= form.collection_select(:tier_id, Tier.all_cache, :id, :title) %>
   </p>
 
   <p>
@@ -26,14 +26,14 @@
   <p>
    <%= form.label :time_length_num, 'Time length' %>
    <%= form.text_field :time_length_num %>
-   <%= form.collection_select(:time_length_id,TimeLength::TIMELENGTHS,:id,:title) %>
+   <%= form.collection_select(:time_length_id,TimeLength.all_cache,:id,:title) %>
   </p>
 
 
   <p>
     <%= form.label :frequency_multipler, "Frequency" %>
     <%=form.text_field :frequency_multiplier%> Time(s) 
-    <%=form.collection_select(:frequency_id,Frequency::FREQUENCIES,:id,:title) %>  
+    <%=form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %>  
   </p>
 
   <p>
