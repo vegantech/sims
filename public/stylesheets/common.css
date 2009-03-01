@@ -390,9 +390,12 @@ h2.intervention_summary
 
 h3.intervention_summary
 {
-  background: #ffe9ad;
   text-align: center;
   line-height: 110%;
+}
+h3.intervention_summary span
+{
+  border: 2px solid #ffe9ad;
 }
 
 h2.checklists

@@ -4,14 +4,14 @@
   </p>
 
   <div class="form_row_wrap_label">
-    <%= form.label :frequency_multiplier, 'Intervention Frequency:' %>
+    <%= form.label :frequency_multiplier, 'Frequency:' %>
     <%= form.select :frequency_multiplier, (1..20).to_a %>
     <%= form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %> 
     <%= "(Rec: #{@intervention_definition.frequency_summary})" unless flash[:custom_intervention] or @intervention_definition.blank?%>
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <%= form.label :time_length_number, 'Intervention Duration:' %>
+    <%= form.label :time_length_number, 'Duration:' %>
     <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date();"}%>
     <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:onchange => "change_date();"}) %> 
     <%= "(Rec: #{@intervention_definition.time_length_summary})" unless flash[:custom_intervention]  or @intervention_definition.blank? %>
@@ -19,12 +19,12 @@
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <%= form.label :start_date , 'Intervention Start Date:' %>
+    <%= form.label :start_date , 'Start Date:' %>
     <%= form.date_select :start_date ,{}, {:onchange => "change_date();"}%>
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <%= form.label :end_date, 'Intervention End Date:' %>
+    <%= form.label :end_date, 'End Date:' %>
     <%= form.date_select :end_date %>
   </div>
 

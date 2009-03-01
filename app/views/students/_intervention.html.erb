@@ -1,4 +1,3 @@
-<li> 
   <%=link_to "Show",intervention %> | 
   <%=link_to "Assign Monitors", intervention_probe_assignments_path(intervention) %> |
   <%=link_to "Edit",edit_intervention_path(intervention) %> |
@@ -7,5 +6,3 @@
     <%= link_to 'End', end_intervention_path(intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> |
   <% end %>
   <%=intervention.intervention_definition.title %> 
-</li>
-
