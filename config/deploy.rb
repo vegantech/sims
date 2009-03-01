@@ -1,6 +1,12 @@
 default_run_options[:pty] = true
 default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
 
+#require 'centostrano'
+
+set :ruby_vm_type,      :ree       # :ree, :mri
+set :web_server_type,   :apache    # :apache, :nginx
+set :app_server_type,   :passenger # :passenger, :mongrel
+set :db_server_type,    :mysql     # :mysql, :postgresql,...
 
 
 set :domain, 'sims-open.vegantech.com'
@@ -19,6 +25,17 @@ task :pilot do
   set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
 end
 
+desc "pilot2 for pilot on rimuhosting"
+task :pilot2 do
+  role :app, "74.50.50.62"
+  role :web, "74.50.50.62"
+  role :db,  "74.50.50.62", :primary => true
+  set :domain, 'simspilot.org'
+  set :application, "simspilot"
+  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
+
+end
+
 
 set :use_sudo, false
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -34,13 +51,15 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
+#role :app, "vegantech.com"
+#role :web, "vegantech.com"
+#role :db,  "vegantech.com", :primary => true
 
-role :app, "vegantech.com"
-role :web, "vegantech.com"
-role :db,  "vegantech.com", :primary => true
 
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note
+
+after "deploy:update_code", :copy_database_yml, :setup_domain_constanta, :overwrite_login_pilot_note
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs
+
 
 
 namespace :deploy do
@@ -83,7 +102,7 @@ task :create_intervention_pdfs do
 end
 
 task :overwrite_login_pilot_note do
-  put("#{login_note}", :"#{release_path}/app/views/login/_demo_pilot_login_note.html.erb")
+  put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", :mode=>0755, :via=>:scp)
 
 end
 
