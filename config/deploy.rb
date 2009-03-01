@@ -31,10 +31,11 @@ task :pilot2 do
   role :web, "74.50.50.62"
   role :db,  "74.50.50.62", :primary => true
   set :domain, 'simspilot.org'
-  set :default_url, 'http://www.simspilot.org'
+  set :default_url, 'https://www.simspilot.org'
   set :application, "simspilot"
   set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
 
+  after  :setup_domain_constant, :setup_default_url
 end
 
 
@@ -95,7 +96,10 @@ end
 
 task :setup_domain_constant do
   run "cd #{release_path}/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
-  put("DEFULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb") if defined? default_url
+end
+
+task :setup_default_url do
+  put("DEFAULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb", :via => :scp) 
 end
 
 desc 'Create the intervention pdf reports'
