@@ -9,6 +9,7 @@ describe ApplicationController do
     @req=mock_object(:subdomains=>[])
     controller.stub!(:request).and_return(@req)
     @req.stub!(:url=>"gopher://www.example.com/")
+    @req.stub!(:domain=>"www.example.com")
     controller.stub!(:params).and_return(flash)
   end
 
@@ -97,14 +98,14 @@ describe ApplicationController do
 
 
     it 'sims.example.com' do
-      controller.stub_association!(:request,:subdomains=>['sims'])
+      controller.stub_association!(:request,:subdomains=>['sims'], :domain=>"example.com")
       controller.stub!(:params).and_return(flash)
       controller.send('subdomains')
     end
 
     describe '' do
       before do
-        controller.stub_association!(:request,:subdomains=>['test','sims'])
+        controller.stub_association!(:request,:subdomains=>['test','sims'], :domain=>"example.com")
         controller.stub!(:params).and_return(flash)
         Country.should_receive(:find_by_abbrev).with('us').and_return(mock_country(:states=>State))
         State.should_receive(:find_by_abbrev).with('wi').and_return(mock_state(:districts=>District))
@@ -131,7 +132,7 @@ describe ApplicationController do
 
       it 'test-state.sims.example.com' do
         State.find_by_abbrev('wi') #from before above
-        controller.stub_association!(:request,:subdomains=>['test-state','sims'])
+        controller.stub_association!(:request,:subdomains=>['test-state','sims'], :domain=>"example.com")
         State.should_receive(:find_by_abbrev).with('state').and_return(mock_state(:districts=>District))
         controller.send('subdomains')
       end
@@ -139,7 +140,7 @@ describe ApplicationController do
       it 'test-wi-country' do 
         Country.find_by_abbrev('us') #from before above
         
-        controller.stub_association!(:request,:subdomains=>['test-wi-country','sims'])
+        controller.stub_association!(:request,:subdomains=>['test-wi-country','sims'], :domain=>"example.com")
         Country.should_receive(:find_by_abbrev).with('country').and_return(mock_state(:states=>State))
         controller.send('subdomains')
 
