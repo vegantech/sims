@@ -113,8 +113,16 @@ class ApplicationController < ActionController::Base
      self.write_actions= Array(args).flatten.map(&:to_s)
   end
 
+  RESERVED_SUBDOMAINS = %w( www asset demo asset2 asset1 asset0 mail )
   def subdomains
       g = self.request.subdomains
+      if request.domain == "simspilot.org"
+        g << "sims"
+        g.pop if RESERVED_SUBDOMAINS.include?(g.first)
+      end
+
+     
+
 
       if g.pop.to_s.match(SUBDOMAIN_MATCH) and !g.blank?
 

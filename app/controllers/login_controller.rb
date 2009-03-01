@@ -24,12 +24,13 @@ class LoginController < ApplicationController
       end
 
       unless @user.new_record?
-        if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH)
+        if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH) or request.host == "www.simspilot.org"
           district_state_and_country = [current_district.abbrev]
           district_state_and_country << current_district.state.abbrev 
           district_state_and_country << current_district.state.country.abbrev
+          existing_subdomain=".#{request.subdomains.last}" unless RESERVED_SUBDOMAINS.include?request.subdomains.last
 
-          redirect_to "#{request.protocol}#{district_state_and_country.join("-")}.#{request.subdomains.last}.#{request.domain}#{request.port_string}/"
+          redirect_to "#{request.protocol}#{district_state_and_country.join("-")}#{existing_subdomain}.#{request.domain}#{request.port_string}/"
         else
           redirect_to root_url and return
         end
