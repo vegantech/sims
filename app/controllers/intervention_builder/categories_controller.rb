@@ -64,7 +64,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
     end
     
     respond_to do |format|
-      format.html { redirect_to intervention_builder_categories_url }
+      format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
     end
   end
 
