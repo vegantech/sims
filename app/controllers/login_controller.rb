@@ -28,7 +28,7 @@ class LoginController < ApplicationController
           district_state_and_country = [current_district.abbrev]
           district_state_and_country << current_district.state.abbrev 
           district_state_and_country << current_district.state.country.abbrev
-          existing_subdomain=".#{request.subdomains.last}" unless RESERVED_SUBDOMAINS.include?request.subdomains.last
+          existing_subdomain=".#{request.subdomains.last}" unless System::RESERVED_SUBDOMAINS.include?request.subdomains.last
 
           redirect_to "#{request.protocol}#{district_state_and_country.join("-")}#{existing_subdomain}.#{request.domain}#{request.port_string}/"
         else

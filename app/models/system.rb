@@ -1,4 +1,5 @@
 class System
+  RESERVED_SUBDOMAINS = %w{ www asset demo asset2 asset1 asset0 mail staging }
   def self.news
     NewsItem.system
   end
