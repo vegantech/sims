@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
   RESERVED_SUBDOMAINS = %w{ www asset demo asset2 asset1 asset0 mail }
   def subdomains
       g = self.request.subdomains
-      if request.domain == "simspilot2.org"
+      if request.domain == "simspilot.org"
         g.shift if RESERVED_SUBDOMAINS.include?(g.first)
         g << "sims"
       end
