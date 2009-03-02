@@ -99,7 +99,7 @@ label.checkbox_label {
   padding-bottom: .5em;
 }
 
-select.fixed_width {
+select.fixed_width, textarea.fixed_width {
   width: 60%;
 }
 

@@ -12,7 +12,7 @@ Feature: Intervention Quicklist
     And I select "Quicklist Item 1" from "Intervention Quicklist"
     When I press "Pick from Quicklist"
     #Then I should see "Quicklist Item 1"
-    And I should see "Create"
+    And I should see "Save"
     #When I select "Some Goal" from "goal_definition_id"
     #And I press "Choose Objective"
     #Then I should see "Quicklist Item 1"

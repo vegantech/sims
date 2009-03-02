@@ -55,7 +55,7 @@ Feature: Sims Demo Walkthrough
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
     #change some options here?
-    Then I press "Create"
+    Then I press "Save"
 #    Then I should see "Please assign a progress monitor"
     #They choose them now ^^^
 

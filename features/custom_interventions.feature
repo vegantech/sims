@@ -22,13 +22,13 @@ Feature: Create Custom Intervention
 
     And I fill in "Title" with "Custom Intervention Name"
     And I fill in "Description" with "Custom Description"
-    And I select "2" from "Intervention Frequency"
-    And I select "2" from "Intervention Duration"
+    And I select "2" from "Frequency"
+    And I select "2" from "Duration"
     And I select "Some Tier" from "Tier"
 
     # and anything else that isn't already there or derivable Intervention definition gets created
     # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
-    When I press "Create"
+    When I press "Save"
     # And I go Back to student profile screen
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
