@@ -9,7 +9,7 @@ module InterventionsHelper
     if max_tier
       d=(1..max_tier).to_a
     else
-      d=c.keys
+      d=c.keys.sort
     end
     d.each do |group|
       ret << '<optgroup label ="' + group + '">'
