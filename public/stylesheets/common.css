@@ -395,7 +395,7 @@ h3.intervention_summary
 }
 h3.intervention_summary span
 {
-  border: 2px solid #ffe9ad;
+  background: #ffe9ad;
 }
 
 h2.checklists

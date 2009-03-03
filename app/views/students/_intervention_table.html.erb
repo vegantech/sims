@@ -1,0 +1,8 @@
+<% if !interventions.blank? %>
+  <table>
+    <%=render :partial => 'intervention', :collection => interventions %>
+  </table>
+<% else %>
+ <p>No Interventions</p>
+<% end %>
+
