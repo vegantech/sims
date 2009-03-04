@@ -35,6 +35,7 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.xml
   def create
+    params[:intervention].delete(:intervention_probe_assignment) if params[:intervention_probe_assignment] and  params[:intervention_probe_assignment][:probe_definition_id].blank?
     @intervention = build_from_session_and_params
 
     respond_to do |format|

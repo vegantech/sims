@@ -44,7 +44,7 @@ Feature: Sims Demo Walkthrough
 
     
 
-    #intervention
+    #intervention ticket #185
     Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
@@ -54,9 +54,39 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Category"
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
+    
+    And I should see "value=\"777239083\" selected=\"selected\""
+    #Fact interview A
+    And I select "" from "Assign Progress Monitor"
+    
     #change some options here?
     Then I press "Save"
-#    Then I should see "Please assign a progress monitor"
+    Then I should see "Please assign a progress monitor"
+    Then I follow "Edit/Add Comment"
+    And I should see "<option value=\"\"></option>\n<option value=\"777239083\">Fact Interview A</option>\n<option value=\"777239084\">Fact Interview B</option></select>"
+    And I follow "Delete"
+ 
+
+    Then I follow "Select New Intervention and Progress Monitor from Menu"
+    Then I select "Learning" from "goal_definition_id"
+    Then I press "Choose Goal"
+    Then I select "Math" from "objective_definition_id"
+    Then I press "Choose Objective"
+    Then I select "Arithmetic problems" from "intervention_cluster_id"
+    Then I press "Choose Category"
+    Then I select "Arithmetic one" from "intervention_definition_id"
+    Then I press "Choose Intervention"
+    
+    And I should see "value=\"777239083\" selected=\"selected\""
+    #Fact interview A
+    
+    #change some options here?
+    Then I press "Save"
+    Then I follow "Edit/Add Comment"
+    And I should see "value=\"777239083\" selected=\"selected\""
+    And I press "Save"
+
+
     #They choose them now ^^^
 
     #principal overrides
@@ -74,7 +104,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Save Draft"
     
 
-    And I an now pending
+    And I am now pending
     When I follow "Assign Monitors"
     And I check "Fact Interview A"
     And I select "2014" from "First Date"
