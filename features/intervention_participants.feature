@@ -9,7 +9,8 @@ Feature: Assign Participants to Intervention
     And there are "0" emails
     And I am on student profile page
     And I complete "Assign New Intervention"
-    And I follow "Show"
+    And I follow "Edit"
+    And I am now pending
     When I follow "Add Participant"
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_id"
     And I select "Participant" from "intervention_participant_role"

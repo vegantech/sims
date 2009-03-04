@@ -10,6 +10,7 @@ Feature: Create Custom Probes
     And I am on student profile page
     Then I complete "Assign New Intervention"
 
+    And I am now pending
     And I follow "Assign Monitors"
     And I follow "Assign Custom Probe"
     And I press "Create"

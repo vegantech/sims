@@ -74,7 +74,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Save Draft"
     
 
-
+    And I an now pending
     When I follow "Assign Monitors"
     And I check "Fact Interview A"
     And I select "2014" from "First Date"

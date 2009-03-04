@@ -6,7 +6,10 @@ describe InterventionsController do
 
   before :each do
     @student = mock_student
-    @intervention = mock_intervention(:student => @student, :comments => [])
+    @intervention_definition = mock_intervention_definition(:recommended_monitors => [1,3,2])
+    @intervention = mock_intervention(:student => @student, :comments => [], :intervention_probe_assignments=>[1],
+    :intervention_definition => @intervention_definition)
+    
     @interventions = [@intervention]
     @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
     @student.should_receive(:interventions).any_number_of_times.and_return(@interventions)
@@ -19,6 +22,7 @@ describe InterventionsController do
     it "should expose the requested intervention as @intervention" do
       get :show, :id => @intervention.id
       assigns[:intervention].should equal(@intervention)
+      assigns[:intervention_probe_assignment].should == 1
     end
 
     describe "with mime type of xml" do
@@ -53,6 +57,8 @@ describe InterventionsController do
     it "should expose the requested intervention as @intervention" do
       get :edit, :id => @intervention.id
       assigns[:intervention].should equal(@intervention)
+      assigns[:intervention_probe_assignment].should == 1
+      assigns[:recommended_monitors].should == [1,3,2]
     end
   end
 
