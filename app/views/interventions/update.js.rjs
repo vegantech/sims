@@ -1,0 +1,1 @@
+page[dom_id(@intervention)].replace_html(:partial => 'interventions/intervention', :object => @intervention)

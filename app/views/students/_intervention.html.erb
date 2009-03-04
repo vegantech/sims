@@ -1,23 +1,24 @@
-<tr>
-  <td><%=intervention.objective_definition %></td>
-  <td><%=intervention.title %></td>
-  <td><%=intervention.start_date %></td>
-  <td><%=intervention.assigned_probes %></td>
+<% content_tag_for :tr, intervention do %>
+  <td><%= intervention.objective_definition %></td>
+  <td><%= intervention.title %></td>
+  <td><%= intervention.start_date %></td>
+  <td><%= intervention.assigned_probes %></td>
   <td>
     <% if intervention.active? %>
-      <%=link_to "Edit/Add Comment",edit_intervention_path(intervention) %> 
+      <% #= link_to "Edit/Add Comment", edit_intervention_path(intervention) %>
+      <%= link_to_remote_degrades 'Edit/Add Comment', :url => edit_intervention_path(intervention), :method=> :get %>
     <% else %>
-      <%=link_to "View",intervention %>  
+      <%= link_to "View", intervention %>  
     <% end %>
   </td>
-</tr>
+<% end %>
 
 <% if false %>
-  <%=link_to "Assign Monitors", intervention_probe_assignments_path(intervention) %> |
-  <%=link_to "Edit",edit_intervention_path(intervention) %> |
-  <%= link_to 'Delete', intervention_path(intervention), :method=>:delete,:confirm=>"Are you sure you want to delete this intervention?" %> |
+  <%= link_to "Assign Monitors", intervention_probe_assignments_path(intervention) %> |
+  <%= link_to "Edit", edit_intervention_path(intervention) %> |
+  <%= link_to 'Delete', intervention_path(intervention), :method => :delete, :confirm => "Are you sure you want to delete this intervention?" %> |
   <% if intervention.active? %>
-    <%= link_to 'End', end_intervention_path(intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> |
+    <%= link_to 'End', end_intervention_path(intervention), :method => :put, :confirm => "Are you sure you want to end this intervention?" %> |
   <% end %>
-  <%=intervention.intervention_definition.title %> 
+  <%= intervention.intervention_definition.title %> 
 <% end %>

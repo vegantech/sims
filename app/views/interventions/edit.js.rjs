@@ -1,0 +1,1 @@
+page.replace_html(dom_id(@intervention), :partial => 'interventions/edit_view_row')
