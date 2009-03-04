@@ -1,1 +1,1 @@
-page[dom_id(@student_comment)].replace_html(:partial => 'student_comments/comment', :object => @student_comment)
+page[dom_id(@student_comment)].replace_html(:partial=>'student_comments/comment', :object=>@student_comment)

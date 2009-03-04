@@ -30,10 +30,6 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
-    respond_to do |format|
-      format.js
-      format.html
-    end
   end
 
   # POST /interventions
@@ -60,11 +56,9 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.js
         format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
-        format.js { render :action => 'edit' }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
       end
