@@ -131,6 +131,13 @@ class Intervention < ActiveRecord::Base
     self.save!
   end
 
+  def undo_end
+    self.ended_by_id = nil
+    self.active = true
+    self.ended_at = nil
+    self.save!
+  end
+
   def participants_with_author
     intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
   end

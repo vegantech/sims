@@ -1,11 +1,12 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment'
-  before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy]
+  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end'
+  before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
 
   include PopulateInterventionDropdowns
   # GET /interventions/1
   # GET /interventions/1.xml
   def show
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @intervention }
@@ -80,6 +81,12 @@ class InterventionsController < ApplicationController
       format.html { redirect_to(current_student) }
       format.xml  { head :ok }
     end
+  end
+
+  def undo_end
+    
+    @intervention.undo_end
+    redirect_to current_student
   end
 
 

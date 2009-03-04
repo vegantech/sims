@@ -16,6 +16,7 @@
 #
 
 class InterventionProbeAssignment < ActiveRecord::Base
+  include ActionView::Helpers::TextHelper
   belongs_to :intervention
   belongs_to :probe_definition
   belongs_to :frequency
@@ -45,6 +46,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def student_grade
     #TODO delegate this
     student.enrollments.first.grade
+  end
+
+  def frequency_summary
+    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
   end
 
   protected

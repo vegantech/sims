@@ -100,7 +100,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions, :member=>{:end=>:put}, :collection=>{:quicklist_options =>:get,:quicklist=>:post, :ajax_probe_assignment => :get} do |intervention|
+  map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:quicklist_options =>:get,:quicklist=>:post, :ajax_probe_assignment => :get} do |intervention|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put} do |probe_assignment|
