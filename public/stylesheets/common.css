@@ -326,6 +326,18 @@ table.intervention_summary {
   background: #ffe9ad;
 }
 
+table.intervention_list {
+  width: 80%;
+  table-layout: fixed;
+  text-align: left;
+
+
+}
+table.intervention_list td{
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 td.label {
   color: #000000;
   font-weight: bold;

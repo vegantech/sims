@@ -1,8 +1,10 @@
-<h2 class="checklists">Checklists</h2>
+<h2 class="checklists", ondblclick="$('checklists').toggle();">Checklists</h2>
 
+<div id="checklists">
   <%= link_to "Complete a Checklist for this Student", new_checklist_url %>
   <%cks = @student.checklists.group_by(&:from_tier).each do |g,ck| %>
     <h4><%= Tier.first.title%></h4>
     <%= render :partial => 'checklists/checklist', :collection => ck %>
   <%end%>
+</div>
 

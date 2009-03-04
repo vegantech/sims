@@ -30,7 +30,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
-  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy
+  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
   has_many :intervention_participants, :dependent => :destroy
 
   has_many :intervention_probe_assignments, :dependent=>:destroy do 
@@ -120,7 +120,7 @@ class Intervention < ActiveRecord::Base
     int
   end
 
-  delegate :title, :intervention_cluster, :to => :intervention_definition
+  delegate :title, :tier,:description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to =>:objective_definition
 
@@ -164,6 +164,10 @@ class Intervention < ActiveRecord::Base
 
   def comment=(txt)
     comments.build(:comment=>txt[:comment], :user_id=>self.user_id) if !txt[:comment].blank?
+  end
+
+  def assigned_probes
+    intervention_probe_assignments.active.collect(&:title).join(";")
   end
 
   protected

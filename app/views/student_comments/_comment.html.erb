@@ -11,6 +11,6 @@
   <% if current_user.id == comment.user_id %>
     <br />
         <%= link_to_remote_degrades 'Edit', :url => edit_student_comment_path(comment), :method=> :get %>
-        <%= link_to_remote_degrades 'Destroy', :url=>comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
+        <%= link_to_remote_degrades 'Delete', :url=>comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
   <% end %>
 <% end %>

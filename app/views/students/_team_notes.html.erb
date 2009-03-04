@@ -1,9 +1,11 @@
-  <h2 class="team_notes_header">Team Notes</h2>
+  <h2 class="team_notes_header", ondblclick="$('team_notes').toggle();"> Team Notes </h2>
+<div id="team_notes">
+
   <%=render_with_empty :partial=>"student_comments/comment", :collection=> @student.comments, :empty => content_tag(:p,"No notes have been submitted for this student. Click the 'Add Note' link above to add a note for this student.",:id=>"no_team_notes")  
 %>
-<div id="new_team_note">
+  <div id="new_team_note">
   
-  <%= render :partial => 'add_note_link' %>
+    <%= render :partial => 'add_note_link' %>
 
+  </div>
 </div>
-

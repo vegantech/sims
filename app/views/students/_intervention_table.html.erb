@@ -1,6 +1,22 @@
 <% if !interventions.blank? %>
-  <table>
-    <%=render :partial => 'intervention', :collection => interventions %>
+  <table class="intervention_list">
+    <col style="width: 09em;" />
+    <col style="width: 12em;" />
+    <col style="width: 07em;" />
+    <col style="width: 12em;" />
+    <col style="width: 12em;" />
+    <thead>
+      <tr>
+        <th>Objective Title</th>
+        <th>Intervention Title</th>
+        <th>Start Date</th>
+        <th>Progress Monitor</th>
+        <th> </th> 
+      </tr>
+    </thead>
+    <tbody>
+      <%=render :partial => 'intervention', :collection => interventions %>
+    </tbody>
   </table>
 <% else %>
  <p>No Interventions</p>

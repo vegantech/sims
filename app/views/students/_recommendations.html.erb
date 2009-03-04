@@ -1,4 +1,5 @@
-<h2 class="conclusions_and_recommendations">Conclusions and Recommendations for Changing Tiers </h2>
+<h2 class="conclusions_and_recommendations"  ondblclick="$('recommendations').toggle();">Conclusions and Recommendations for Changing Tiers </h2>
+<div id="recommendations">
   <% @student.recommendations.group_by(&:tier).each do |g,r| %>
     <%= content_tag :h4, g.inspect %>
     <ul><%= render :partial => 'recommendations/recommendation', :collection=> r %></ul>
@@ -11,4 +12,4 @@
   </span>
   <div id="override" style="display:none">
   </div>
-
+</div>

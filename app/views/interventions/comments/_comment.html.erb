@@ -1,6 +1,9 @@
+<% readonly=false %>
 <li> 
-<%=h comment.comment %> by <%=h comment.user%> on <%= h comment.updated_at %>
+<%=h comment.comment %> by <%=h comment.user%> on <%= h comment.updated_at.to_date %>
+<% if current_user == comment.user and !readonly %>
 <%= link_to 'Edit', edit_intervention_comment_path(@intervention,comment) %>
 <%= link_to 'Delete', intervention_comment_path(@intervention,comment), :method=>:delete, :confirm => 'Are you sure?' %>
+<% end %>
 </li>
 

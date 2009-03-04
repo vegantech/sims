@@ -2,7 +2,7 @@
   <td><%=intervention.objective_definition %></td>
   <td><%=intervention.title %></td>
   <td><%=intervention.start_date %></td>
-  <td>Replace with progress monitor</td>
+  <td><%=intervention.assigned_probes %></td>
   <td>
     <% if intervention.active? %>
       <%=link_to "Edit/Add Comment",edit_intervention_path(intervention) %> 

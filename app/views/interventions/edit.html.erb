@@ -1,11 +1,36 @@
-<h1>Editing intervention</h1>
+<h1>Active Intervention and Progress Monitor</h1>
 
-<% form_for(@intervention) do |f| %>
-  <%=render(:partial=>f) %>
-  <p>
-    <%= f.submit "Save" %>
-  </p>
-<% end %>
+<div class="new_form">
+  <% form_for(@intervention) do |f| %>
+    <div class="form_row">
+      <div class="fake_label">Objective</div><%=@intervention.objective_definition %>
+    </div>
+  
+    <p>
+      <div class="fake_label">Category</div><%=@intervention.intervention_cluster %>
+      <%=description(@intervention.intervention_cluster) %>
+    </p>
+    <br class="brclear" />
 
-<%= link_to 'Show', @intervention %> |
+    <div class="form_row">
+      <div class="fake_label">Intervention</div><%=@intervention.title %> <br />
+      <br class="brclear" />
+      <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
+      <br class="brclear" />
+      <%= description(@intervention) %>
+      
+    </div>
+    <%=render(:partial=>f) %>
+    <p>
+      <%= f.submit "Save", :class=>"submit" %>
+    </p>
+  <% end %>
+</div>
+  <% if @intervention.active? %>
+    <%= link_to 'End', end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> |
+  <% end %>
+  <%= link_to 'Delete', intervention_path(@intervention), :method=>:delete,:confirm=>"Are you sure you want to delete this intervention?" %> |
 <%= link_to 'Back', @intervention.student %>
+
+<%= render :partial=>"comments" %>
+
