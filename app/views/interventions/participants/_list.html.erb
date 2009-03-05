@@ -2,7 +2,7 @@
   <div id="participants_list">
   <%= render :partial=>"interventions/participants/participant",:collection=>@intervention.participant_users %>
   </div>
-  <%= link_to_function ("Add Participant", nil)  { |page| page.insert_html(:top,'participants_list', :partial=>'interventions/participants/new')} %>
+  <%= link_to_function("Add Participant", nil)  { |page| page.insert_html(:top,'participants_list', :partial=>'interventions/participants/new')} %>
 </div>
 
 

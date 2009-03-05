@@ -125,7 +125,7 @@ describe Interventions::ParticipantsController do
   
     it "should redirect to the intervention_participants list" do 
       mock_intervention_participant.should_receive(:destroy)
-      delete :destroy, :id => "1"
+      delete :destroy, :id => "1", :format=>"html"
       response.should redirect_to(intervention_url(@intervention))
     end
 

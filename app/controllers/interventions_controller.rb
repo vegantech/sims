@@ -54,7 +54,7 @@ class InterventionsController < ApplicationController
   # PUT /interventions/1
   # PUT /interventions/1.xml
   def update
-    params[:intervention][:participant_user_ids] ||=[]
+    params[:intervention][:participant_user_ids] ||=[] if params[:intervention]
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'

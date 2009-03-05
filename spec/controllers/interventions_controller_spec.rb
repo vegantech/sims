@@ -9,6 +9,7 @@ describe InterventionsController do
     @intervention_definition = mock_intervention_definition(:recommended_monitors => [1,3,2])
     @intervention = mock_intervention(:student => @student, :comments => [], :intervention_probe_assignments=>[1],
     :intervention_definition => @intervention_definition)
+    controller.stub_association!(:current_school, :users=>[])
     
     @interventions = [@intervention]
     @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
@@ -108,7 +109,7 @@ describe InterventionsController do
   describe "responding to PUT udpate" do
     describe "with valid params" do
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params'})
+        @intervention.should_receive(:update_attributes).with({'these' => 'params', "participant_user_ids"=>[]})
         put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
@@ -127,7 +128,7 @@ describe InterventionsController do
 
     describe "with invalid params" do
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params'})
+        @intervention.should_receive(:update_attributes).with({'these' => 'params',  "participant_user_ids"=>[]})
         put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
