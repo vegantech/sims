@@ -33,6 +33,10 @@
           <%= ipa.date_select :end_date %>
         <% end %>
       </div>
+      <div class="form_row">
+        <div class="fake_label">Scores:</div>
+        <%=link_to "Enter/view scores", intervention_probe_assignments_path(@intervention) %>
+      </div>
        <%= ipa.hidden_field :probe_definition_id %>
     <br class="brclear" />
   <% end %>
