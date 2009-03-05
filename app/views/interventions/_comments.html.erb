@@ -1,6 +1,6 @@
 <p>
 <h2 id="intervention_comments">Comments</h2>
-  <%=content_tag :ul, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention.") %>
+  <%=content_tag :div, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention.") %>
 </p>
 
 
