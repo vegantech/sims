@@ -70,7 +70,9 @@ class InterventionsController < ApplicationController
   # DELETE /interventions/1
   # DELETE /interventions/1.xml
   def destroy
+    logger.info("DELETION- #{current_user} at #{current_user.district} removed #{@intervention.title} from #{current_student}")
     @intervention.destroy
+    
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
