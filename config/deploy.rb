@@ -18,6 +18,15 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 If you\'re looking for the pilot, it\'s at <%=link_to "https://simspilot.vegantech.com", "https://simspilot.vegantech.com" %> <br /> The data in this demo gets reset weekly. '
 
 
+desc ":wip for work in progress demo"
+task :wip do
+  set :login_note, 'This is a work in progress (unstable) demo.   You use names like oneschool (look to the menu at the left for more.)
+If you\'re looking for the pilot, it\'s at <%=link_to "https://simspilot.vegantech.com", "https://simspilot.vegantech.com" %> <br /> The data in this demo gets reset weekly. '
+  set :application, "sims-wip"
+  set :domain, 'sims-wip.vegantech.com'
+
+end
+
 desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
@@ -53,9 +62,9 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
-#role :app, "vegantech.com"
-#role :web, "vegantech.com"
-#role :db,  "vegantech.com", :primary => true
+role :app, "vegantech.com"
+role :web, "vegantech.com"
+role :db,  "vegantech.com", :primary => true
 
 
 
