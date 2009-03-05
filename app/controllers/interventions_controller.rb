@@ -29,7 +29,7 @@ class InterventionsController < ApplicationController
   # GET /interventions/1/edit
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.active.first
     @users=current_school.users
   end
 
