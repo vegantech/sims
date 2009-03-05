@@ -1,4 +1,4 @@
 <div>
-  <%=select_tag("intervention[participant_user_ids][]", options_for_select(User.all.collect{|e| [e.fullname, e.id]}))%>
+  <%=select_tag("intervention[participant_user_ids][]", options_for_select(@users))%>
   <%= link_to("X","#", :onclick => "this.parentNode.parentNode.removeChild(this.parentNode)") %>
 </div>

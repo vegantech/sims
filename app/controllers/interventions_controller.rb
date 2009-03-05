@@ -30,7 +30,7 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.active.first
-    @users=current_school.users
+    @users=current_school.users.collect{|e| [e.fullname, e.id]}
   end
 
   # POST /interventions
@@ -115,8 +115,10 @@ class InterventionsController < ApplicationController
   end
 
   def ajax_probe_assignment
-    rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
-    @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
+    @intervention = current_student.interventions.find_by_id(params[:intervention_id])
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
+    rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id]) unless @intervention_probe_assignment
+    @intervention_probe_assignment ||= rec_mon.build_intervention_probe_assignment if rec_mon
     render :partial => 'interventions/intervention_probe_assignment_detail'
   end
 

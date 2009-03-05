@@ -7,7 +7,7 @@
     <% elsif @recommended_monitors.size == 1 %>
       <%= @intervention_probe_assignment.title %>
     <% else %>
-      <%= collection_select(:intervention_probe_assignment,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{:include_blank =>true},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('intervention_probe_assignment_probe_definition_id').value", :before =>"$('spinnerassign_progress').show()",:success => "$('spinnerassign_progress').hide();"
+      <%= collection_select(:intervention_probe_assignment,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{:include_blank =>true},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before =>"$('spinnerassign_progress').show()",:success => "$('spinnerassign_progress').hide();"
 ), :class => "fixed_width"}) %>
     <%= spinner("assign_progress") %>
     <% end %>
