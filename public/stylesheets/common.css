@@ -338,6 +338,15 @@ table.intervention_list td{
   overflow: hidden;
 }
 
+
+.trunc {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  
+}
+
+
 td.label {
   color: #000000;
   font-weight: bold;

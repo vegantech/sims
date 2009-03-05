@@ -1,13 +1,13 @@
 <tr>
-  <td><%=intervention.objective_definition %></td>
-  <td><%=intervention.title %></td>
-  <td><%=intervention.start_date %></td>
-  <td><%=intervention.assigned_probes %></td>
+  <td><%=content_tag :div, intervention.objective_definition, :class=>"trunc" %>
+  <td><%=content_tag :div, intervention.title, :class=>"trunc" %></td>
+  <td><%=content_tag :div, intervention.start_date , :class=>"trunc"%></td>
+  <td><%=content_tag :div, intervention.assigned_probes, :class=>"trunc" %></td>
   <td>
     <% if intervention.active? %>
-      <%=link_to "Edit/Add Comment",edit_intervention_path(intervention) %> 
+      <%=content_tag :div, link_to("Edit/Add Comment",edit_intervention_path(intervention)), :class=>"trunc" %> 
     <% else %>
-      <%=link_to "View",intervention %>  
+      <%=content_tag :div, link_to("View",intervention), :class=>"trunc" %>  
     <% end %>
   </td>
 </tr>
