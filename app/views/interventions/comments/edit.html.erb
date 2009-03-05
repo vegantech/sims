@@ -1,15 +1,4 @@
 <h1>Editing intervention_comment</h1>
 
-<% form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
-  <%= render :partial=>f %>
-  <p>
-    <%= f.submit "Update" %>
-    <%= spell_check_submit %>
-  </p>
-<% end %>
-
- <%= render :partial => 'spell_check/spelling'  %>
-
-
-<%= link_to 'Back', intervention_path(@intervention) %>
+<%= render :partial => 'edit' %>
 

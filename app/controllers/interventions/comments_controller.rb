@@ -15,6 +15,11 @@ class Interventions::CommentsController < ApplicationController
   # GET /comments/1/edit
   def edit
     @intervention_comment = @intervention.comments.find(params[:id])
+    respond_to do |format|
+      format.js
+      format.html
+    end
+
   end
 
   # POST /comments
@@ -41,14 +46,17 @@ class Interventions::CommentsController < ApplicationController
   def update
     @intervention_comment = @intervention.comments.find(params[:id])
     @intervention_comment.comment = params[:intervention_comment][:comment] unless params[:intervention_comment].blank?
+  
 
-    spellcheck @intervention_comment.comment and render :action=>:edit and return if params[:spellcheck]
+    spellcheck @intervention_comment.comment and render :action=>:edit and return unless params[:spellcheck].blank?
     respond_to do |format|
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'
+        format.js
         format.html { redirect_to(@intervention) }
         format.xml  { head :ok }
       else
+        format.js   { render :action => 'edit' }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @intervention_comment.errors, :status => :unprocessable_entity }
       end
@@ -58,11 +66,12 @@ class Interventions::CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.xml
   def destroy
-    @intervention_comment = @intervention.comments.find(params[:id])
-    @intervention_comment.destroy
+    @intervention_comment = @intervention.comments.find_by_id(params[:id])
+    @intervention_comment.destroy if @intervention_comment
 
     respond_to do |format|
-      format.html { redirect_to(@intervention) }
+      format.js
+      format.html { redirect_to(current_student) }
       format.xml  { head :ok }
     end
   end
