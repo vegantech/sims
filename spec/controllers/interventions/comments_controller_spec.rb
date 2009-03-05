@@ -9,12 +9,12 @@ describe Interventions::CommentsController do
   end
 
   before :each do 
-    student=mock_student
-    @intervention=mock_intervention
-    student.stub_association!(:interventions,:find=>@intervention)
+    @student = mock_student
+    @intervention = mock_intervention
+    @student.stub_association!(:interventions,:find=>@intervention)
     @intervention.stub!(:comments).and_return(InterventionComment)
-    controller.stub!(:current_student).and_return(student)
-    @user=mock_user
+    controller.stub!(:current_student).and_return(@student)
+    @user = mock_user
     controller.stub!(:current_user).and_return(@user)
   end
   
@@ -73,7 +73,7 @@ describe Interventions::CommentsController do
     
   end
 
-  describe "responding to PUT udpate" do
+  describe "responding to PUT update" do
 
     describe "with valid params" do
 
@@ -94,7 +94,7 @@ describe Interventions::CommentsController do
       it "should redirect to the intervention_comment" do
         InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true, 'user=' => false))
         mock_intervention_comment.stub!('comment=' => false)
-        put :update, :id => "1", :intervention_comment =>{}
+        put :update, :id => "1", :intervention_comment =>{}, :format => 'html'
         response.should redirect_to(intervention_url(@intervention))
       end
 
@@ -130,15 +130,15 @@ describe Interventions::CommentsController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested intervention_comment" do
-      InterventionComment.should_receive(:find).with("37").and_return(mock_intervention_comment)
+      InterventionComment.should_receive(:find).with(:first, {:conditions=>{:id=>"37"}}).and_return(mock_intervention_comment)
       mock_intervention_comment.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
   
     it "should redirect to the intervention_comments list" do
       InterventionComment.stub!(:find).and_return(mock_intervention_comment(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(intervention_url(@intervention))
+      delete :destroy, :id => "1", :format => 'html'
+      response.should redirect_to(student_url(@student))
     end
 
   end

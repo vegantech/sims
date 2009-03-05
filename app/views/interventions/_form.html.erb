@@ -50,6 +50,14 @@
   </div>
 
   <br class="brclear" />
+  <div class="form_row">
+    <%= form.label :participant_users, 'Participants' %>
+    <table><tr><td>
+      <%= render :partial => 'interventions/participants/list' ,:locals =>{ :form=>form , :readonly=>readonly}  unless @intervention.new_record?%>
+    </td></tr></table>
+  </div>
+  <br class="brclear" />
+  <br class="brclear" />
   <%= render :partial => 'interventions/assign_progress_monitor' ,:locals =>{ :form=>form , :readonly=>readonly}  unless !readonly and @recommended_monitors.blank?%>
   <br class="brclear" />
 

@@ -23,8 +23,10 @@
     <div class ="form_row">
       <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}"%>
     </div>
-  
     <% end %>
+    <div class ="form_row">
+      <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
+    </div>
     <%=render(:partial=>f, :locals => {:readonly => readonly}) %>
     <p>
       <%= f.submit "Save", :class=>"submit" unless readonly %>

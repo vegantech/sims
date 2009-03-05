@@ -1,9 +1,0 @@
-<h2>Participants</h2>
-
-
-<div>
-  <%= render :partial=>"participant",:collection=>@intervention.participants_with_author %>
-
-
-<%= link_to "Add Participant", new_intervention_participant_path(@intervention) %>
-</div>

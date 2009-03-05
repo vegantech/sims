@@ -1,0 +1,6 @@
+<% div_for participant do %>
+<%="#{participant.fullname}" %>
+<%= hidden_field_tag "intervention[participant_user_ids][]" ,participant.id%>
+<%= link_to_function("X", nil, {:href=>intervention_participant_path(@intervention,participant),:method=>:delete, :confirm=>"Are you sure?"}) { |page|
+    page[dom_id(participant)].remove() }%> 
+<% end %>

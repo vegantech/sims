@@ -30,6 +30,7 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
+    @users=current_school.users
   end
 
   # POST /interventions
@@ -53,6 +54,7 @@ class InterventionsController < ApplicationController
   # PUT /interventions/1
   # PUT /interventions/1.xml
   def update
+    params[:intervention][:participant_user_ids] ||=[]
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'

@@ -132,7 +132,7 @@ describe StudentCommentsController do
     end
 
     it "should destroy the requested student_comment" do
-      StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
+      StudentComment.should_receive(:find).with(:first, {:conditions=>{:id=>"37"}}).and_return(mock_student_comment)
       mock_student_comment.should_receive(:destroy)
       #      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
       delete :destroy, {:id => "37"}, {:selected_students=>[1]}
