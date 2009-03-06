@@ -52,6 +52,9 @@ class InterventionProbeAssignment < ActiveRecord::Base
     "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
   end
 
+  def valid_score_range
+    "#{probe_definition.minimum_score} - #{probe_definition.maximum_score}"
+  end
   protected
   def last_date_must_be_after_first_date
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date

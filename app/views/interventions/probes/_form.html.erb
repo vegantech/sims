@@ -4,5 +4,8 @@
 <%=form.date_select :administered_at %> <br />
 <%=form.label :score %>
 <%= form.text_field :score%> <br />
+<div class='fake_label'>"Valid Range</div>
+<%= @intervention_probe_definition.valid_score_range %><br />
+
 <%=form.hidden_field :assessment_type %> <br />
 <%= links_and_attachments form.object.probe_definition, :p %>
