@@ -8,7 +8,7 @@ describe InterventionsController do
     @student = mock_student
     @intervention_definition = mock_intervention_definition(:recommended_monitors => [1,3,2])
     @intervention = mock_intervention(:student => @student, :comments => [], :intervention_probe_assignments=>[1],
-    :intervention_definition => @intervention_definition)
+    :intervention_definition => @intervention_definition, :title=>"mock_title")
     controller.stub_association!(:current_school, :users=>[])
     
     @interventions = [@intervention]
@@ -56,6 +56,8 @@ describe InterventionsController do
 
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
+
+      @intervention.stub_association!(:intervention_probe_assignments, :active=>[1])
       get :edit, :id => @intervention.id
       assigns[:intervention].should equal(@intervention)
       assigns[:intervention_probe_assignment].should == 1
@@ -149,6 +151,7 @@ describe InterventionsController do
   describe "responding to DELETE destroy" do
     it "should destroy the requested intervention" do
       @intervention.should_receive(:destroy)
+
       delete :destroy, :id => @intervention.id
     end
   
