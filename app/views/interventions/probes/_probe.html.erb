@@ -1,3 +1,4 @@
+<% unless probe.new_record? %>
 <p>
 Score:
       <%= probe.score %>
@@ -10,3 +11,5 @@ Score:
             <% end %>
 
             </p>
+
+<% end %>

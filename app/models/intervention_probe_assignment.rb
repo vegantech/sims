@@ -55,6 +55,12 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def valid_score_range
     "#{probe_definition.minimum_score} - #{probe_definition.maximum_score}"
   end
+
+  def new_probe=(params)
+    probes.build(params)
+    #    raise params.inspect
+  end
+  
   protected
   def last_date_must_be_after_first_date
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date

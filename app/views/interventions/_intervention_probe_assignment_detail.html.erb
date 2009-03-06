@@ -35,7 +35,12 @@
       </div>
       <div class="form_row">
         <div class="fake_label">Scores:</div>
-        <%=link_to "Enter/view scores", intervention_probe_assignments_path(@intervention) %>
+        <div id="enter_view_score_link"> 
+          <%=link_to_remote "Enter/view scores", :url=> intervention_probe_assignments_path(@intervention,:probe_definition_id=>@intervention_probe_assignment.probe_definition_id) ,:method =>:get ,:loading => "$('spinnerscore_link').show();"%> <%= spinner 'score_link' %>
+        </div>
+      </div>
+      <br class="brclear" />
+      <div id="enter_view_scores">
       </div>
        <%= ipa.hidden_field :probe_definition_id %>
     <br class="brclear" />

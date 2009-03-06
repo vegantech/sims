@@ -1,29 +1,30 @@
 <p>
-Progress Monitor
-<%= probe_assignment.probe_definition.title %>
+<% if @intervention.active? and probe_assignment.enabled? %>
+  <%#= display_assessment_links(probe_assignment) %>
+  <% fields_for 'intervention[intervention_probe_assignment][new_probe]', probe_assignment.probes.build  do |paf| %>
+    <%= render :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment} %>
+  <% end %>
 
-<% if @intervention.active? %>
-  <%= display_assessment_links(probe_assignment) %>
-  <%= links_and_attachments probe_assignment.probe_definition, :p %>
-
-
-  <%= link_to  "Enter scores for previously administered assessment", new_probe_path(@intervention,probe_assignment) %> <br />
+<% else %>
+  <%= probe_assignment.title %>
 <% end %>
-<%= link_to "Details/Individual Scores", probes_path(@intervention,probe_assignment) %> <br />
 
-<% unless probe_assignment.probes.blank? %>
 
-<%= link_to_function("Hide Graph", nil, :id => "more_link_#{probe_assignment_counter}") do |page|
-    page.visual_effect :toggle_blind, "graph_#{probe_assignment_counter}"
-    page["more_link_#{probe_assignment_counter}"].replace_html "Show/Hide Graph"
-    page.show "spinner#{probe_assignment_counter}"
-    page.delay(1.5) do
-     page.hide "spinner#{probe_assignment_counter}"
-    end  
-  end %><%= spinner("#{probe_assignment_counter}") %>
+
+<%= render :partial=>"interventions/probes/probe", :collection=>probe_assignment.probes %> <br />
+<% unless probe_assignment.probes.blank? or probe_assignment.probes.size == 1 %>
+
+  <%= link_to_function("Hide Graph", nil, :id => "more_link_#{probe_assignment_counter}") do |page|
+      page.visual_effect :toggle_blind, "graph_#{probe_assignment_counter}"
+      page["more_link_#{probe_assignment_counter}"].replace_html "Show/Hide Graph"
+      page.show "spinner#{probe_assignment_counter}"
+      page.delay(1.5) do
+       page.hide "spinner#{probe_assignment_counter}"
+      end  
+    end %><%= spinner("#{probe_assignment_counter}") %>
           
  
-</p>
+  </p>
 
   <div id='<%= "graph_#{probe_assignment_counter}" %>'>
   
@@ -31,6 +32,3 @@ Progress Monitor
 
     </div>
 <% end %>
-
-<br /> <br /> <br /> <br />
- 

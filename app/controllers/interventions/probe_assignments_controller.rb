@@ -4,9 +4,11 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   additional_write_actions  'disable_all'
   
   def index
-    @intervention_probe_assignments = @intervention.intervention_probe_assignments.prepare_all
+    #need t odo something with probe definition id (that's the active one, and might need building)
+    @intervention_probe_assignments = @intervention.intervention_probe_assignments #.prepare_all
 
     respond_to do |format|
+      format.js
       format.html # index.html.erb
     end
   end
