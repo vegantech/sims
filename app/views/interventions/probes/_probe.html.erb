@@ -5,8 +5,8 @@ Score:
       Date administered:
       <%= probe.administered_at.to_date %>
       <% if @intervention.active? %>
-      <%= link_to 'Edit Score', edit_probe_url(@intervention,probe.intervention_probe_assignment,probe) %>
-      <%= link_to 'Delete Score', probe_url(@intervention,probe.intervention_probe_assignment,probe), 
+      <%#= link_to 'Edit Score', edit_probe_url(@intervention,probe.intervention_probe_assignment,probe) %>
+      <%#= link_to 'Delete Score', probe_url(@intervention,probe.intervention_probe_assignment,probe), 
               :confirm => 'Are you sure?', :method => :delete %>
             <% end %>
 
