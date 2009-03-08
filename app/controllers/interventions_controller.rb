@@ -29,7 +29,7 @@ class InterventionsController < ApplicationController
   # GET /interventions/1/edit
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.active.first
+    @intervention_probe_assignment = @intervention.intervention_probe_assignment 
     @users=current_school.users.collect{|e| [e.fullname, e.id]}
   end
 
@@ -37,7 +37,7 @@ class InterventionsController < ApplicationController
   # POST /interventions.xml
   def create
     params[:intervention].delete(:intervention_probe_assignment) if params[:intervention_probe_assignment] and  params[:intervention_probe_assignment][:probe_definition_id].blank?
-    @intervention = build_from_session_and_params
+    build_from_session_and_params
 
     respond_to do |format|
       if @intervention.save
@@ -55,13 +55,14 @@ class InterventionsController < ApplicationController
   # PUT /interventions/1.xml
   def update
     params[:intervention][:participant_user_ids] ||=[] if params[:intervention]
+    params[:intervention][:intervention_probe_assignment] ||= {}
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
         format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { edit and render :action => "edit" }
         format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
       end
     end
@@ -117,7 +118,7 @@ class InterventionsController < ApplicationController
   end
 
   def ajax_probe_assignment
-    @intervention = current_student.interventions.find_by_id(params[:intervention_id])
+    @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
     rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id]) unless @intervention_probe_assignment
     @intervention_probe_assignment ||= rec_mon.build_intervention_probe_assignment if rec_mon

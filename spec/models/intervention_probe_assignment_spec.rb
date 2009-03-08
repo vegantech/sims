@@ -30,4 +30,9 @@ describe InterventionProbeAssignment do
   it "should create a new instance given valid attributes" do
     InterventionProbeAssignment.create!(@valid_attributes)
   end
+
+  it 'should validate end_date after first_date' do
+    ipa = InterventionProbeAssignment.new(@valid_attributes.merge({:end_date => Date.today.yesterday}))
+    ipa.should_not be_valid
+  end
 end

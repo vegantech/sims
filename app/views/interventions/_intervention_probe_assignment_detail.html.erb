@@ -2,8 +2,9 @@
 <% if @intervention_probe_assignment %>
   <br class="brclear" />
   <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
+      <%= ipa.hidden_field :probe_definition_id %>
       <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition  %>
-      <%= error_messages_for(:intervention_probe_assignment) %>
+      <%= error_messages_for(:object => @intervention_probe_assignment, :object_name => 'Probe Assignment') %>
       <div class="form_row_wrap_label">
         
         <%= ipa.label :frequency_multiplier, 'Frequency:' %>
@@ -33,6 +34,7 @@
           <%= ipa.date_select :end_date %>
         <% end %>
       </div>
+    <% unless @intervention.new_record? %>
       <div class="form_row">
         <div class="fake_label">Scores:</div>
         <div id="enter_view_score_link"> 
@@ -42,6 +44,7 @@
       <br class="brclear" />
       <div id="enter_view_scores">
       </div>
+    <% end %>
        <%= ipa.hidden_field :probe_definition_id %>
     <br class="brclear" />
   <% end %>

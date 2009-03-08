@@ -1,7 +1,7 @@
-<%#= form.error_messages %>
+<%= form.error_messages %>
 
 <%=form.label :administered_at,"Date progress monitor administered" %>
-<%=form.date_select :administered_at %> <br />
+<%=form.date_select :administered_at, :index=>[] %> <br />
 <%=form.label :score %>
 <%= form.text_field :score%> <br />
 <div class='fake_label'>Valid Range</div>

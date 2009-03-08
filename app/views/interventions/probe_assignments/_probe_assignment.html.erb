@@ -1,8 +1,15 @@
 <p>
-<% if @intervention.active? and probe_assignment.enabled? %>
+<% if @intervention.active? && probe_assignment %>
   <%#= display_assessment_links(probe_assignment) %>
-  <% fields_for 'intervention[intervention_probe_assignment][new_probe]', probe_assignment.probes.build  do |paf| %>
-    <%= render :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment} %>
+  <% fields_for 'intervention[intervention_probe_assignment][new_probes][]', probe_assignment.probes.build  do |paf| %>
+    <div id="new_probe_forms">
+      <%= render :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment} %>
+    </div>
+    <%= link_to_function 'Add Additional Score' do |page|
+        page.insert_html(:bottom, 'new_probe_forms', :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment})
+      end
+
+    %>
   <% end %>
 
 <% else %>

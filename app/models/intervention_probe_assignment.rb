@@ -24,13 +24,12 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
-
+  validates_associated :probes
+  validate :last_date_must_be_after_first_date
 
   RECOMMENDED_FREQUENCY=2
 
 #  validates_date :first_date, :end_date
-
-#  validate :last_date_must_be_after_first_date
 
   named_scope :active, :conditions => {:enabled=>true}
 
@@ -56,9 +55,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
     "#{probe_definition.minimum_score} - #{probe_definition.maximum_score}"
   end
 
-  def new_probe=(params)
-    probes.build(params)
-    #    raise params.inspect
+  def new_probes=(params)
+    params.each do |param|
+      @new_probe = probes.build(param) unless param['score'].blank?
+    end
   end
   
   protected
@@ -69,5 +69,4 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def after_initialize
     self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
   end
-
 end

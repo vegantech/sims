@@ -68,11 +68,13 @@ class Intervention < ActiveRecord::Base
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
+  validate :validate_intervention_probe_assignment
   
 
   before_create :assign_implementer
   after_create :autoassign_probe,:create_other_students, :send_creation_emails
   after_update :save_assigned_monitor
+  
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id
   attr_reader :autoassign_message
@@ -166,11 +168,19 @@ class Intervention < ActiveRecord::Base
 
   def intervention_probe_assignment=(params)
     intervention_probe_assignments.update_all(:enabled=>false)
-    return if params.blank?
+    return if params.blank? or params[:probe_definition_id].blank?
     @ipa=intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
     @ipa.attributes=params.merge(:enabled=>true)
     @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
+  end
+  def intervention_probe_assignment(probe_definition_id=nil)
+    
+    if probe_definition_id
+      intervention_probe_assignments.find_or_initialize_by_probe_definition_id(probe_definition_id)
+    else
+      @ipa || intervention_probe_assignments.active.first
+    end
   end
 
   def comment=(txt)
@@ -234,5 +244,12 @@ class Intervention < ActiveRecord::Base
     end
 
     true
+  end
+  
+  def validate_intervention_probe_assignment
+    return true unless defined? @ipa
+    return true if @ipa.valid?
+    errors.add_to_base("Progress Monitor Assignment is invalid") 
+    false
   end
 end
