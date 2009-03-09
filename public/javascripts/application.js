@@ -36,12 +36,14 @@ function unselectStudents(){
 }
 
 
-function change_date(){
-        var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
+function change_date(new_record){
+    
+    var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
     var timeNum = document.StudentInterventionForm.elements["intervention[time_length_number]"].value;
 
     var typeMultiplier = 0;
-    
+
+      
     if(timeType == 0){
       //Day
       typeMultiplier = 1;
@@ -80,6 +82,17 @@ function change_date(){
       document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value = endDate.getFullYear()
       document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value = ((endDate.getMonth() + 1).toString());
       
+      if((new_record == 'true') && (typeof(document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"])) !== 'undefined'){
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(1i)]"].value;
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(2i)]"].value;
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(3i)]"].value;
+
+
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value;
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value;
+       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(3i)]"].value;
+
+      }
       }
      
     }

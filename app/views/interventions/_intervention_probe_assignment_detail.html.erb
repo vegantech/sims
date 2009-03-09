@@ -12,7 +12,7 @@
           <%= @intervention_probe_assignment.frequency_summary %>
         <% else %>
           <%= ipa.select :frequency_multiplier, (1..20).to_a %>
-          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {:onchange => "change_date();"}) %> 
+          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {}) %> 
         <% end %>
         (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
       </div>
@@ -22,7 +22,7 @@
         <% if readonly %>
           <%= @intervention_probe_assignment.first_date %>
         <% else %>
-          <%= ipa.date_select :first_date ,{}, {:onchange => "change_date();"}%>
+          <%= ipa.date_select :first_date ,{}, {}%>
         <% end %>
       </div>
       <br class="brclear" />
@@ -44,6 +44,9 @@
       <br class="brclear" />
       <div id="enter_view_scores">
       </div>
+    <% else %>
+
+          <script>change_date('<%= @intervention.new_record? %>');</script>
     <% end %>
        <%= ipa.hidden_field :probe_definition_id %>
     <br class="brclear" />
