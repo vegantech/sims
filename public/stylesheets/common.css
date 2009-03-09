@@ -63,7 +63,7 @@ legend {
 label.checkbox_label {
   float: none;
   text-align: left;
-  width: auto;
+  white-space: nowrap;
 } 
 
 #student_fake_left {
