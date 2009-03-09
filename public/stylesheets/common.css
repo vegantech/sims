@@ -85,7 +85,6 @@ label.checkbox_label {
 }
 
 .new_form fieldset fieldset label{
-  width: 100%;
   width: 80%;
 }
 
@@ -113,6 +112,9 @@ select.fixed_width, textarea.fixed_width {
 
 .submit {
   margin-left: 12em;
+}
+.center_submit {
+  text-align: center;
 }
 
 #ignoredflags div {
@@ -331,7 +333,6 @@ table.intervention_list {
   table-layout: fixed;
   text-align: left;
 
-
 }
 table.intervention_list td{
   white-space: nowrap;
@@ -342,7 +343,7 @@ table.intervention_list td{
 .trunc {
   white-space: nowrap;
   overflow: hidden;
-  width: 100%;
+  width: 95%;
   
 }
 

@@ -28,11 +28,12 @@
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
     <%=render(:partial=>f, :locals => {:readonly => readonly}) %>
-    <p>
-      <%= f.submit "Save", :class=>"submit" unless readonly %>
-    </p>
+    <div class="center_submit">
+      <%= f.submit "Save" unless readonly %>
+    </div>
   <% end %>
 </div>
+<div class="center_submit">
   <% if @intervention.active? %>
     <%= link_to 'End', end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> 
   <% else %>
@@ -40,6 +41,6 @@
   <% end %>
   <%= link_to 'Delete', intervention_path(@intervention), :method=>:delete,:confirm=>"Are you sure you want to delete this intervention?" %> 
 <%= link_to 'Back', @intervention.student %>
-
+</div>
 <%= render :partial=>"comments" %>
 

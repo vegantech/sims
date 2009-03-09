@@ -18,11 +18,13 @@
   <%= f.label :auto_implementer, "Assign yourself to this intervention", {:class=>'checkbox_label'} %>
   </p>
   <br class="brclear" />
- <p>
-    <%= f.submit "Save", :class=>"submit" %>
-  </p>
+ <div class="center_submit">
+    <%= f.submit "Save" %>
+ </div>
 
 <% end %>
-<%= link_to 'Back', student_path(@intervention.student) %>
+ <div class="center_submit">
+    <%= link_to 'Back', student_path(@intervention.student) %>
+ </div>
 <% end %>
 </div>

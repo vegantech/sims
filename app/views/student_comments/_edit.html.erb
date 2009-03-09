@@ -1,9 +1,5 @@
 <% remote_form_for(@student_comment) do |f| %>
   <%= render :partial=>f %>
- <p>
-    <%= f.submit "Edit" %>
-    <%= spell_check_submit %>
-  </p>
 <% end %>
   
   <%= render :partial => 'spell_check/spelling'  %>
