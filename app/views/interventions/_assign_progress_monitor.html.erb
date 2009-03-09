@@ -4,8 +4,8 @@
     <%= label :intervention_probe_assignment,:probe_definition_id, "Assign Progress Monitor" %>
     <% if readonly %>
       <%= @intervention.assigned_probes %>
-    <% elsif @recommended_monitors.size == 1 && !@intervention_probe_assignment.blank? && @intervention.new_record?%>
-      <%= @intervention_probe_assignment.title %>
+    <% elsif @recommended_monitors.size == 1 && !@intervention_probe_assignment.blank? && @intervention.new_record?  %>
+      <%= @intervention_probe_assignment.title if @intervention_probe_assignment.probe_definition %>
     <% else %>
       <%= collection_select(:intervention_probe_assignment,:probe_definition_id, @recommended_monitors, :probe_definition_id, :title,{:include_blank =>true},{:onchange=>remote_function(:update=>'intervention_probe_assignment', :url=> ajax_probe_assignment_interventions_url, :method=>:get, :with=>"'id=' + $('intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before =>"$('spinnerassign_progress').show()",:success => "$('spinnerassign_progress').hide();"
 ), :class => "fixed_width"}) %>
