@@ -1,8 +1,13 @@
+<% unless @intervention.new_record? %>
 <p>
-<h2 id="intervention_comments">Comments</h2>
-  <%=content_tag :div, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention.") %>
+  <%=content_tag :div, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention."), :id=>"intervention_comments_div" %>
+<div class="fake_label">&nbsp;</div>
+<%= link_to_function ("Show/Hide Comments", nil) do |page|
+  page.toggle('intervention_comments_div')
+  end
+%>
 </p>
-
+<% end %>
 
 
 

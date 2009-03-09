@@ -49,10 +49,11 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def destroy
-    @probe = @intervention_probe_assignment.probes.find(params[:id])
-    @probe.destroy
+    @probe = @intervention_probe_assignment.probes.find_by_id(params[:id])
+    @probe.destroy unless @probe.blank?
 
     respond_to do |format|
+      format.js {}
       format.html { redirect_to(probes_url(@intervention,@intervention_probe_assignment)) }
     end
   end

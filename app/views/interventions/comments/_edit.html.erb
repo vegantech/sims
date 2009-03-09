@@ -1,12 +1,15 @@
 <% remote_form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
   <%= render :partial=>f %>
-  <p>
+  <div class="center_submit">
     <%= f.submit "Update" %>
     <%= spell_check_submit %>
-  </p>
+  </div>
 <% end %>
 
  <%= render :partial => 'spell_check/spelling'  %>
 
 
-<%= link_to_function('Cancel',nil,{:href=>edit_intervention_path(@intervention)}){|page|  page.replace_html(dom_id(@intervention_comment),:partial => 'interventions/comments/comment', :object=>@intervention_comment)} %>
+<div class="center_submit">
+<%#= link_to_function('Cancel',nil,{:href=>edit_intervention_path(@intervention)}){|page|  page.replace_html(dom_id(@intervention_comment),:partial => 'interventions/comments/comment', :object=>@intervention_comment)} %>
+<%= link_to_function('Cancel', "self.close()") %>
+</div>

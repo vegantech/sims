@@ -1,10 +1,11 @@
 <%= form.error_messages %>
-
+<p>
 <%=form.label :administered_at,"Date progress monitor administered" %>
-<%=form.date_select :administered_at, :index=>[] %> <br />
+<%=form.date_select :administered_at, :index=>[] %>
+</p>
+<br class="brclear" />
+<p>
 <%=form.label :score %>
-<%= form.text_field :score%> <br />
-<div class='fake_label'>Valid Range</div>
-<%= probe_assignment.valid_score_range %><br />
-
+<%= form.text_field :score%> (<%=probe_assignment.valid_score_range%>) 
+</p>
 <%=form.hidden_field :assessment_type %> <br />

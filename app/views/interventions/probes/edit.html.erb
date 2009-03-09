@@ -1,9 +1,16 @@
 <h1>Edit Probe </h1>
 <% form_for @probe, :url=>probe_url(@intervention,@intervention_probe_assignment,@probe), :method=>:put do |f| %>
-  <%=render :partial=>f %>
- <p>
-    <%= f.submit "Enter Score" %>
-  </p>
+<div class="new_form">
+  <%=render :partial=>f, :locals=>{:probe_assignment => @intervention_probe_assignment} %>
+ <div class="center_submit"p>
+    <%= f.submit "Save" %>
+  </div>
+</div>
 <% end %>
+<div class="center_submit">
+  <%#= link_to 'Cancel', probes_path(@intervention,@intervention_probe_assignment) %>
 
-<%= link_to 'Back', probes_path(@intervention,@intervention_probe_assignment) %>
+  <%= link_to_function('Cancel', "self.close()") %>
+</div>
+
+
