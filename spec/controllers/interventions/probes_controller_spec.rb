@@ -151,7 +151,7 @@ describe Interventions::ProbesController do
       end
     
       it "should redirect to the probes list" do
-        pending("remove if we never end up with html,  otherwise add a format to the delete)"
+        pending("remove if we never end up with html,  otherwise add a format to the delete")
         @intervention_probe_assignment.stub_association!(:probes,:find_by_id=>mock_probe(:destroy => true))
         delete :destroy, :id => "1"
         response.should redirect_to(probes_url(@intervention,@intervention_probe_assignment))
