@@ -145,13 +145,14 @@ describe Interventions::ProbesController do
     describe "responding to DELETE destroy" do
 
       it "should destroy the requested probe" do
-        @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe)
+        @intervention_probe_assignment.stub_association!(:probes,:find_by_id=>mock_probe)
         mock_probe.should_receive(:destroy)
         delete :destroy, :id => "37"
       end
     
       it "should redirect to the probes list" do
-        @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe(:destroy => true))
+        pending("remove if we never end up with html,  otherwise add a format to the delete)"
+        @intervention_probe_assignment.stub_association!(:probes,:find_by_id=>mock_probe(:destroy => true))
         delete :destroy, :id => "1"
         response.should redirect_to(probes_url(@intervention,@intervention_probe_assignment))
       end

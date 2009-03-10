@@ -27,9 +27,12 @@ describe Interventions::ProbeAssignmentsController do
   describe "responding to GET index" do
 
     it "should expose all intervention_probe_assignment as @intervention_probe_assignments" do
-      @intervention.stub_association!(:intervention_probe_assignments,:prepare_all=>[1,2,3])
-      get :index, :intervention_id=>1
-      assigns[:intervention_probe_assignments].should == [1,2,3]
+      @intervention.should_receive(:intervention_probe_assignments).and_return([])
+      ipa=mock_intervention_probe_assignment
+      @intervention.should_receive(:intervention_probe_assignment).and_return(ipa)
+      
+      get :index, :intervention_id => 1
+      assigns[:intervention_probe_assignments].should == [ipa]
       assigns[:intervention].should == @intervention
       response.should be_success
     end

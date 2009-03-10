@@ -36,8 +36,8 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.xml
   def create
-    params[:intervention].delete(:intervention_probe_assignment) if params[:intervention_probe_assignment] and  params[:intervention_probe_assignment][:probe_definition_id].blank?
-    build_from_session_and_params
+    params[:intervention].delete(:intervention_probe_assignment) if params[:intervention_probe_assignment] and  params[:intervention_probe_assignment][:probe_definition_id].blank? if params[:intervention_probe_assignment]
+    @intervention = build_from_session_and_params
 
     respond_to do |format|
       if @intervention.save
@@ -55,7 +55,7 @@ class InterventionsController < ApplicationController
   # PUT /interventions/1.xml
   def update
     params[:intervention][:participant_user_ids] ||=[] if params[:intervention]
-    params[:intervention][:intervention_probe_assignment] ||= {}
+    params[:intervention][:intervention_probe_assignment] ||= {} if params[:intervention]
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
@@ -134,4 +134,5 @@ class InterventionsController < ApplicationController
       redirect_to current_student and return
     end
   end
+
 end

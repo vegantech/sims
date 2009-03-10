@@ -7,7 +7,6 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     #need t odo something with probe definition id (that's the active one, and might need building)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment(params[:probe_definition_id])
     @intervention_probe_assignments = [@intervention_probe_assignment] | @intervention.intervention_probe_assignments
-    raise 'WTF?' unless @intervention_probe_assignments.include? @intervention_probe_assignment
 
     respond_to do |format|
       format.js

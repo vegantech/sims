@@ -4,7 +4,7 @@ describe InterventionsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  before :each do
+  before do
     @student = mock_student
     @intervention_definition = mock_intervention_definition(:recommended_monitors => [1,3,2])
     @intervention = mock_intervention(:student => @student, :comments => [], :intervention_probe_assignments=>[1],
@@ -57,7 +57,8 @@ describe InterventionsController do
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
 
-      @intervention.stub_association!(:intervention_probe_assignments, :active=>[1])
+      @intervention_definition.stub_association!(:recommended_monitors, :select=> [1,3,2])
+      @intervention.stub!(:intervention_probe_assignment =>1)
       get :edit, :id => @intervention.id
       assigns[:intervention].should equal(@intervention)
       assigns[:intervention_probe_assignment].should == 1
@@ -111,7 +112,7 @@ describe InterventionsController do
   describe "responding to PUT udpate" do
     describe "with valid params" do
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params', "participant_user_ids"=>[]})
+        @intervention.should_receive(:update_attributes).with({'these' => 'params', "participant_user_ids"=>[], "intervention_probe_assignment"=>{}}).and_return(true)
         put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
@@ -129,8 +130,11 @@ describe InterventionsController do
     end
 
     describe "with invalid params" do
+      before do
+        controller.should_receive(:edit).and_return(true)
+      end
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params',  "participant_user_ids"=>[]})
+        @intervention.should_receive(:update_attributes).with({'these' => 'params',  "participant_user_ids"=>[], "intervention_probe_assignment"=>{}})
         put :update, :id => @intervention.id, :intervention => {:these => 'params'}
       end
 
@@ -162,7 +166,7 @@ describe InterventionsController do
     end
   end
 
-  describe "responding to UPDATE end" do
+  describe "responding to PUT end" do
     it "should end the requested intervention" do
       controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
       @intervention.should_receive(:end).with(1)

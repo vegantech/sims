@@ -55,9 +55,9 @@ Feature: Sims Demo Walkthrough
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
     
-    And I should see "value=\"777239083\" selected=\"selected\""
+    #And I should see "value=\"777239083\" selected=\"selected\""
     #Fact interview A
-    And I select "" from "Assign Progress Monitor"
+    #And I select "" from "Assign Progress Monitor"
     
     #change some options here?
     Then I press "Save"
@@ -77,13 +77,13 @@ Feature: Sims Demo Walkthrough
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
     
-    And I should see "value=\"777239083\" selected=\"selected\""
+    #And I should see "value=\"777239083\" selected=\"selected\""
     #Fact interview A
     
     #change some options here?
     Then I press "Save"
     Then I follow "Edit/Add Comment"
-    And I should see "value=\"777239083\" selected=\"selected\""
+    #And I should see "value=\"777239083\" selected=\"selected\""
     And I press "Save"
 
 
