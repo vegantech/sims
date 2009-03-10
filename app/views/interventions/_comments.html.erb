@@ -1,13 +1,10 @@
 <% unless @intervention.new_record? %>
-<p>
-  <%=content_tag :div, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "There are no comments for this intervention."), :id=>"intervention_comments_div" %>
-<div class="fake_label">&nbsp;</div>
-<%= link_to_function ("Show/Hide Comments", nil) do |page|
-  page.toggle('intervention_comments_div')
-  end
-%>
-</p>
+  <div class="fake_label">Comments</div> 
+    <%= link_to_function ("Show/Hide Comments", nil) do |page|
+      page.toggle('intervention_comments_div')
+      end
+    %>
+
+  <div class="fake_label">&nbsp;</div> 
+  <%=content_tag :table, render_with_empty(:partial=>"interventions/comments/comment", :collection => @intervention.comments, :empty => "<tr><td>There are no comments for this intervention.</td></tr>"), :id=>"intervention_comments_div" %>
 <% end %>
-
-
-

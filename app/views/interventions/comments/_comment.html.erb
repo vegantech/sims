@@ -1,11 +1,17 @@
 <% readonly=false %>
-<% content_tag_for :div, comment do %> 
-  <div class="fake_label">&nbsp;</div>
-  <%=h comment.comment %> by <%=h comment.user%> on <%= h comment.updated_at.to_date %>
-  <% if current_user == comment.user and !readonly %>
-    <%= link_to 'Edit', edit_intervention_comment_path(@intervention,comment) ,{:target=>"_blank"}%>
-    <%= link_to_remote_degrades 'Delete', :url=>intervention_comment_path(@intervention,comment), 
-      :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
-  <% end %>
+
+<% content_tag_for :tr, comment do %> 
+  <td>
+    <%=h comment.comment %> by <%=h comment.user%> on <%= h comment.updated_at.to_date %>
+  </td>
+    <% if current_user == comment.user and !readonly %>
+      <td>
+        <%= link_to 'Edit', edit_intervention_comment_path(@intervention,comment) ,{:target=>"_blank"}%>
+      </td>
+      <td>
+        <%= link_to_remote_degrades 'Delete', :url=>intervention_comment_path(@intervention,comment), 
+        :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
+      </td>
+    <% end %>
 <% end %>
 

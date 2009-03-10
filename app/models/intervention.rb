@@ -174,6 +174,7 @@ class Intervention < ActiveRecord::Base
     @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
   end
+  
   def intervention_probe_assignment(probe_definition_id=nil)
     
     if probe_definition_id

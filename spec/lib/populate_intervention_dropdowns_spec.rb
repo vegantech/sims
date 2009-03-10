@@ -42,8 +42,9 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'build_from_session_and_params' do
     it 'should build intervention from session and params' do
-      mock_intervention.should_receive(:build_and_initialize).with(values_from_session.merge(:test => true)).and_return("BUILD")
-      build_from_session_and_params.should == "BUILD"
+      intervention=mock_object(:intervention_probe_assignment => true)
+      mock_intervention.should_receive(:build_and_initialize).with(values_from_session.merge(:test => true)).and_return(intervention)
+      build_from_session_and_params.should == intervention
     end
   end
 

@@ -62,12 +62,13 @@
   <br class="brclear" />
 
   <%= render :partial=>"interventions/comments" %>
+
+  <br class="brclear" />
   <% unless readonly %>
+  <br class="brclear" />
     <%form.fields_for :comment,InterventionComment.new do |comment_fields|%>
-      <p>
-        <%= comment_fields.label :comment, 'Comments about the intervention plan and progress' %>
-        <%= comment_fields.text_area :comment,  :rows=>5, :class=>"fixed_width" %>
-      </p>
+      <%= comment_fields.label :comment, 'Add new comment about the intervention plan and progress' %>
+      <%= comment_fields.text_area :comment,  :rows=>5, :class=>"fixed_width" %>
     <% end %>
   <% end %>
   <br class="brclear" />
