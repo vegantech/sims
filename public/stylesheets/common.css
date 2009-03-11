@@ -102,6 +102,10 @@ select.fixed_width, textarea.fixed_width {
   width: 60%;
 }
 
+th {
+vertical-align: text-top;
+}
+
 .form_row form {
   display: inline;
 }
@@ -357,6 +361,20 @@ td.label {
   text-align: center;
   line-height: 110%;
   background: #ecede0; /*#EEF3FA;*/
+}
+
+h3.extended_profile 
+{
+  text-align: center;
+}
+h3.extended_profile span
+{
+  background: #ecede0; /*#EEF3FA;*/
+}
+
+#extended_profile table 
+{
+  width: 95%;
 }
 
 /* Progress Monitor Graphs */
