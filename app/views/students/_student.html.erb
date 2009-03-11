@@ -2,10 +2,10 @@
 <table class ="top_summary">
   <tbody>
     <tr>
+      <td class ="label">Student Name:</td>
       <td> <%=h @student.fullname_last_first%> </td>
+      <td class="label">Flags:</td>
       <td> <span id='studentflags'> <%= status_display(@student, changeable) %></span> </td>
-      <td class="label">Interventions:</td>
-      <td> <%=@student.interventions.size %> </td>
       <td class="label"> Ignored Flags:</td>
       <td>
         <span id="ignoredflags"><%= ignore_flags(@student, changeable) %></span>
@@ -16,6 +16,9 @@
     <tr>
       <td class="label">Student Number:</td>
       <td> <%=h @student.number%> </td>
+
+      <td class="label">Interventions:</td>
+      <td> <%=@student.interventions.size %> </td>
       <td class="label">Birth Date: </td>
       <td> <%=h @student.birthdate.to_s%> </td>
       <td class ="spacer"> </td>
@@ -27,6 +30,7 @@
       <tr>
       <td class="label">School:</td>
       <td> <%= h enrollment.school %> </td>
+      <td class ="spacer"> </td>
       <td class ="spacer"> </td>
       <td class="label">Grade:</td>
       <td> <%= h enrollment.grade %> </td>

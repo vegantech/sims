@@ -1,6 +1,7 @@
+<h2 class="extended_profile", ondblclick="$('extended_profile').toggle();">Extended Profile</h2>
 <% if @student.extended_profile? %>
-  <%= link_to_function 'Toggle Extended Profile', "$('extended_profile').toggle()" %>
-  <div id="extended_profile">
+  <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
+<% end %>
+  <div id="extended_profile"> 
     <%=extended_profile(@student)%>
   </div>
-<% end %>
