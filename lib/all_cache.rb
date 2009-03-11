@@ -25,7 +25,7 @@ module AllCache
     end
 
     def all_cache
-      @@all_cache || self.reset_all_cache
+      @@all_cache = self.reset_all_cache
     end
  
   end

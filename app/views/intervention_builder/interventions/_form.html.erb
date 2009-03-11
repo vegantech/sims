@@ -45,7 +45,7 @@
  
   <div id = "assets" >
     Attach a file or link <br />
-    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "intervention_definition"}%>
+    <%= render :partial => 'assets/asset', :collection => @intervention_definition.assets , :locals => {:parent => "intervention_definition"}%>
   </div>
 
   <p>
