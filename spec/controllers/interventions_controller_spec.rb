@@ -6,7 +6,7 @@ describe InterventionsController do
 
   before do
     @student = mock_student
-    @intervention_definition = mock_intervention_definition(:recommended_monitors => [1,3,2])
+    @intervention_definition = mock_intervention_definition(:recommended_monitors_with_custom => [1,3,2])
     @intervention = mock_intervention(:student => @student, :comments => [], :intervention_probe_assignments=>[1],
     :intervention_definition => @intervention_definition, :title=>"mock_title")
     controller.stub_association!(:current_school, :users=>[])
@@ -57,7 +57,7 @@ describe InterventionsController do
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
 
-      @intervention_definition.stub_association!(:recommended_monitors, :select=> [1,3,2])
+      @intervention_definition.stub_association!(:recommended_monitors_with_custom, :select=> [1,3,2])
       @intervention.stub!(:intervention_probe_assignment =>1)
       get :edit, :id => @intervention.id
       assigns[:intervention].should equal(@intervention)
