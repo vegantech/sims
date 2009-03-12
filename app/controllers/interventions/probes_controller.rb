@@ -41,7 +41,7 @@ class Interventions::ProbesController < ApplicationController
     respond_to do |format|
       if @probe.update_attributes(params[:probe])
         flash[:notice] = 'Probe was successfully updated.'
-        format.html { redirect_to(@intervention) }
+        format.html { } #redirect_to(@intervention) }
       else
         format.html { render :action => "edit" }
       end
