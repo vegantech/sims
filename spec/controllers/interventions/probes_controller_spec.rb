@@ -110,10 +110,10 @@ describe Interventions::ProbesController do
           assigns(:probe).should equal(mock_probe)
         end
 
-        it "should redirect to the intervention" do
+        it "should render update which closes window" do
           @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe(:update_attributes => true))
           put :update, :id => "1"
-          response.should redirect_to(intervention_url(@intervention))
+          response.should render_template('update')
         end
 
       end
