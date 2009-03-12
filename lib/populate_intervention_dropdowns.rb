@@ -3,7 +3,7 @@ protected
   def values_from_session
     { :user_id => session[:user_id],
       :selected_ids => selected_students_ids,
-      :school_id => session[:school_id]
+      :school_id => session[:school_id],
     }
   end
 
@@ -17,7 +17,7 @@ protected
   def populate_intervention
     return if  params[:intervention_definition] and params[:intervention_definition][:id].blank?
     find_intervention_definition
-    @recommended_monitors = @intervention_definition.recommended_monitors.select(&:probe_definition)
+    @recommended_monitors = @intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
     build_from_session_and_params
@@ -26,7 +26,7 @@ protected
   def populate_definitions
     find_intervention_definition
     if flash[:custom_intervention] 
-      @intervention_definition = @intervention_cluster.intervention_definitions.build if @intervention_cluster
+      @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
     else
       @intervention_definitions = @intervention_cluster.intervention_definitions if @intervention_cluster
     end
