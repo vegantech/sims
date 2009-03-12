@@ -64,7 +64,7 @@ class Student < ActiveRecord::Base
 
   def checklist_definition
     return district.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
-    latest_checklist
+    latest_checklist.checklist_definition
   end
 
   def max_tier

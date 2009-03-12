@@ -49,6 +49,7 @@ class Checklist < ActiveRecord::Base
  attr_accessor :score_results, :deletable, :needs_recommendation, :fake_edit
   @checklist_definition = {}
   def checklist_definition_cache
+    return checklist_definition   #
     if @skip_cache then
       checklist_definition
     else

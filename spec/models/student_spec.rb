@@ -68,6 +68,17 @@ describe Student do
   end
 
 
+  describe 'latest checklist' do
+    it  'there should be specs for both paths see #193 in Lighthouse' do
+      pending
+    end
+  end
+
+
+
+ 
+     
+  
 
 
 

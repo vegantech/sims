@@ -242,6 +242,14 @@ self.use_instantiated_fixtures = true
     assert_equal Checklist::STATUS[:failing_score], @checklist.status
 
   end
+
+  describe 'checklist_definition_cache' do
+    it 'should have specs see #193 and #194 in Lighthouse' do
+      pending
+    end
+    
+  end
+    
 end
 
 
