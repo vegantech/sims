@@ -1,7 +1,11 @@
 <%= form.error_messages %>
 <p>
 <%=form.label :administered_at,"Date progress monitor administered" %>
-<%=form.date_select :administered_at, :index=>[] %>
+<% if defined? @probe and !@probe.new_record? %>
+  <%= form.date_select :administered_at %>
+<% else %>
+  <%=form.date_select :administered_at, :index=>[] %>
+<% end %>
 </p>
 <br class="brclear" />
 <p>
