@@ -44,7 +44,7 @@ class InterventionDefinition < ActiveRecord::Base
   acts_as_list :scope => 'intervention_cluster_id'
 
   def business_key
-    "#{tier_id}-#{goal_definition.position}-#{objective_definition.position}    -#{intervention_cluster.position}-#{position}"
+    "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
   end
 
   def district
@@ -101,7 +101,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def tier_summary
-    "#{tier_id} - #{tier.title}"
+    tier.to_s
   end
 
   def links_and_attachments

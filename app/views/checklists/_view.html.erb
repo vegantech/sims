@@ -1,0 +1,11 @@
+<div id="checklist">
+  <p>Completed by <%= checklist.teacher.fullname %> on 
+  <%= checklist.updated_at.to_s(:chatty) %> </p>
+  
+  <%- form_for checklist do |f| -%>
+    <%= render :partial => 'checklists/form', 
+    :locals => { :view=>true } %>
+    <%- end -%>
+    <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>checklist.recommendation} if checklist.recommendation%>
+<%=link_to "Back", checklist.student%>
+</div>
