@@ -16,10 +16,6 @@ describe Interventions::ProbeAssignmentsController do
       params_from(:get, "/intervention_probe_assignments").should == {:controller => "intervention_probe_assignments", :action => "index"}
     end
   
-    it "should generate params for #create" do
-      pending
-      params_from(:post, "/intervention_probe_assignments").should == {:controller => "intervention_probe_assignments", :action => "create"}
-    end
   end
   
 end

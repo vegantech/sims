@@ -60,7 +60,6 @@ Given /^I am a district admin$/ do
   role = Role.create!(:name => "District Admin")
 
   Role.create!(:name => 'regular_user', :district_id => @default_user.district_id)
-  role.rights.create!(:controller=>"roles", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
   default_user.roles=[role]

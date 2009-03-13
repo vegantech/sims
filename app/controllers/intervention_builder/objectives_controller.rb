@@ -6,7 +6,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
   # GET /objective_definitions
   def index
-    @objective_definitions = @goal_definition.objective_definitions.find(:all)
+    @objective_definitions = @goal_definition.objective_definitions
 
     respond_to do |format|
       format.html # index.rhtml
@@ -15,7 +15,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
   # GET /objective_definitions/1
   def show
-
+    #@objective_definition populated by before filter
     respond_to do |format|
       format.html # show.rhtml
     end
@@ -23,12 +23,12 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
   # GET /objective_definitions/new
   def new
-    @objective_definition = @goal_definition.objective_definitions.build
-    @objective_definition.assets.build
+    @objective_definition = @goal_definition.objective_definitions.build_with_new_asset
   end
 
   # GET /objective_definitions/1;edit
   def edit
+    #@objective_definition populated by before filter
   end
 
   # POST /objective_definitions

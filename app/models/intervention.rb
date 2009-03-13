@@ -34,37 +34,7 @@ class Intervention < ActiveRecord::Base
   has_many :intervention_participants, :dependent => :destroy
   has_many :participant_users, :through => :intervention_participants, :source=>:user
 
-  has_many :intervention_probe_assignments, :dependent=>:destroy do 
-    def prepare_all(passed_params={})
-      ipas=find(:all)
-      prepared=[]
-      proxy_owner.intervention_definition.recommended_monitors.each do |rec_mon|
-        if d=ipas.detect{|ipa| ipa.probe_definition_id== rec_mon.probe_definition_id}
-        else
-          d= proxy_owner.intervention_probe_assignments.build(:probe_definition_id=>rec_mon.probe_definition_id)
-        end
-      
-        if passed_params.respond_to?(:values)
-          #TODO look into possible issue where some are new and some aren't
-          params=passed_params.values
-        else
-          params=passed_params
-        end
-        if p=params.detect{|param_ipa|  !param_ipa.nil? and
-          d.probe_definition_id == param_ipa["probe_definition_id"].to_i}
-          d.attributes=p
-
-          d.first_date = Date.civil(p["first_date(1i)"].to_i,p["first_date(2i)"].to_i,p["first_date(3i)"].to_i)
-          d.end_date = Date.civil(p["end_date(1i)"].to_i,p["end_date(2i)"].to_i,p["end_date(3i)"].to_i)
-          
-          d.enabled=p[:enabled]
-        end
-        prepared << d
-      end
-      prepared
-    end
-  end
-
+  has_many :intervention_probe_assignments, :dependent=>:destroy 
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}

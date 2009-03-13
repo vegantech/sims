@@ -15,7 +15,13 @@
 
 class GoalDefinition < ActiveRecord::Base
   belongs_to :district
-  has_many :objective_definitions, :order =>:position, :dependent => :destroy
+  has_many :objective_definitions, :order =>:position, :dependent => :destroy do
+    def build_with_new_asset
+      x=build
+      x.assets.build
+      x
+    end
+  end
   validates_uniqueness_of :description, :scope=>[:district_id,:description]
 
   validates_presence_of :title, :description
