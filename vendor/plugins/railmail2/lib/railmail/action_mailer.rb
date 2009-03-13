@@ -7,7 +7,7 @@ module Railmail
     
       def perform_delivery_railmail(mail)
         r = RailmailDelivery.new
-        
+        mail.body = mail.body.first(5000)
         r.recipients = mail.to
         r.from = mail.from
         r.subject = mail.subject
