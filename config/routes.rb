@@ -22,12 +22,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :news_items
 
 
-  map.resources :roles
 
   map.resources :principal_overrides, :member => {:undo=> :put}
 
 
-  map.resources :probe_questions
 
 
   map.logout '/logout',:controller=>'login',:action=>'logout'
@@ -37,15 +35,12 @@ ActionController::Routing::Routes.draw do |map|
             :show_special => :get, :remove_special => :delete, :add_special_form => :get, :add_special =>:post }
 
 
-  map.resources :tiers
-
 
   map.resources :checklists
   map.resources :recommendations
 
   map.resources :student_comments
 
-  map.resources :ignore_flags
 
   map.delete_custom_flag '/custom_flags/delete/:id', :controller=>"custom_flags",:action=>'destroy'
 
@@ -61,7 +56,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users
 
-  map.resources :frequencies
 
   map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put }
 
