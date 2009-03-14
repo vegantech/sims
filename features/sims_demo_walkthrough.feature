@@ -42,7 +42,38 @@ Feature: Sims Demo Walkthrough
     Then I follow "Remove"
     Then I should not see "Math- \ntest reason from cucumber"
 
+
+    #creating and editing score #195
+    Then I follow "Select New Intervention and Progress Monitor from Menu"
+    Then I select "Learning" from "goal_definition_id"
+    Then I press "Choose Goal"
+    Then I select "Language Arts" from "objective_definition_id"
+    Then I press "Choose Objective"
+    Then I select "Reading problems" from "intervention_cluster_id"
+    Then I press "Choose Category"
+    Then I select "Reading one" from "intervention_definition_id"
+    Then I press "Choose Intervention"
+  
+    Then I should see "<td>Reading one</td>"
+    Then I press "Save"
+    Then I follow "Edit/Add Comment"
+    Then I follow "Enter/view scores"
+    Then I fill in "Score" with "15"
+    Then I press "Save"
+    Then I follow "Edit/Add Comment"
+    Then I follow "Enter/View scores"
+    Then I follow "Edit Score"
+    Then I fill in "Score" with "25"
+    Then I press "Save"
+    Then I follow "Alpha_Third Grader"
+    Then I follow "Edit/Add Comment"
+    Then I follow "Delete"
     
+
+   
+
+
+ 
 
     #intervention ticket #185
     Then I follow "Select New Intervention and Progress Monitor from Menu"
