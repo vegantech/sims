@@ -94,10 +94,12 @@ class Recommendation < ActiveRecord::Base
     hsh.each do |h|
       h=h.last if h.is_a?Array and h.size==2
       h.symbolize_keys!
-      a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
-        recommendation_answers.build(h)
-      a.text=h[:text]
-      a.draft=self.draft
+      if h[:recommendation_answer_definition_id]
+        a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
+          recommendation_answers.build(h) 
+        a.text=h[:text]
+        a.draft=self.draft
+      end
     end
   end
 

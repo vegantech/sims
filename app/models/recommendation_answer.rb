@@ -16,5 +16,6 @@ class RecommendationAnswer < ActiveRecord::Base
   belongs_to :recommendation
   attr_accessor :draft
   validates_presence_of :text, :if=>lambda{|r| !r.draft}
+  validates_presence_of :recommendation_answer_definition_id
 
 end

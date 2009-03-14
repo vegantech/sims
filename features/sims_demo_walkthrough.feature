@@ -99,9 +99,13 @@ Feature: Sims Demo Walkthrough
     #empty checklist
     Then I follow "Complete a Checklist for this Student"
     Then I press "Submit and Make Recommendation"
+    
 
     #draft recommendation
     Then I press "Save Draft"
+    And I follow "view"
+    And I follow "Student Report"
+    And I press "Generate Report"
     
 
     And I am now pending
