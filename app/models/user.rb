@@ -140,11 +140,6 @@ class User < ActiveRecord::Base
     first_name.to_s + ' ' + last_name.to_s
   end
 
-	
-  def fullname_last_first
-    last_name.to_s + ', ' + first_name.to_s
-  end
-
   def authorized_for?(controller, action_group)
     roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
   end

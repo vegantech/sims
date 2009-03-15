@@ -75,6 +75,25 @@ describe Student do
   end
 
 
+  describe 'full_name_last_first' do
+    Student.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
+  end
+
+  describe 'find_checklist' do
+    it 'should include the answes and score by default' do
+      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(mc=mock_checklist(:show_score? => true))
+      mc.should_receive(:score_checklist)
+      Student.new.find_checklist('55').should ==mc
+    end
+
+    it 'should just find if show is false' do
+      Checklist.should_receive(:find_by_id).with('55').and_return(mc=mock_checklist())
+      Student.new.find_checklist('55', show=false).should == mc
+    end
+
+
+  end
+
 
  
      

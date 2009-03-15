@@ -1,25 +1,11 @@
 class ChecklistsController < ApplicationController
-  # GET /checklists
-  # GET /checklists.xml
-  def index
-    @checklists = Checklist.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @checklists }
-    end
-  end
-
   # GET /checklists/1
   # GET /checklists/1.xml
   def show
-    @checklist=current_student.checklists.find(params[:id],:include=>{:answers=>:answer_definition})
+    @checklist=current_student.find_checklist(params[:id])
     flash[:notice] = "Checklist no longer exists." and redirect_to :back and return if @checklist.blank?
-    @checklist.score_checklist if @checklist.show_score?
-
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @checklist }
     end
   end
 
@@ -91,12 +77,11 @@ class ChecklistsController < ApplicationController
   # DELETE /checklists/1
   # DELETE /checklists/1.xml
   def destroy
-    @checklist = current_student.checklists.find(params[:id])
-    @checklist.destroy
+    @checklist = current_student.find_checklist(params[:id], show=false)
+    @checklist.destroy if @checklist
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
-      format.xml  { head :ok }
     end
   end
 end

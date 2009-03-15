@@ -48,10 +48,6 @@ describe User do
     u.to_s.should == ("0First. noschools")
   end
   
-  describe 'full_name_last_first' do
-    User.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
-  end
-
   describe 'password=' do
     it 'should change the password hash when not blank' do
       u=User.new(:password=>"DOG")

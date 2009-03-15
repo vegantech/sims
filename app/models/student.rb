@@ -215,4 +215,15 @@ class Student < ActiveRecord::Base
   def clear_extended_profile
     self.extended_profile=nil if @delete_extended_profile && !extended_profile.dirty?
   end
+
+
+  def find_checklist(checklist_id, show=true)
+    if show
+      @checklist=checklists.find_by_id(checklist_id,:include=>{:answers=>:answer_definition})
+      @checklist.score_checklist if @checklist.show_score?
+      @checklist
+    else
+      @checklist=checklists.find_by_id(checklist_id)
+    end
+  end
 end
