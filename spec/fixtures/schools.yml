@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090212222347
+# Schema version: 20090316004509
 #
 # Table name: schools
 #

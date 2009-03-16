@@ -1,14 +1,18 @@
 # == Schema Information
-# Schema version: 20090212222347
+# Schema version: 20090316004509
 #
 # Table name: roles
 #
-#  id          :integer         not null, primary key
-#  name        :string(255)
-#  district_id :integer
-#  position    :integer
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  district_id        :integer
+#  position           :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  asset_file_name    :string(255)
+#  asset_content_type :string(255)
+#  asset_file_size    :integer
+#  asset_updated_at   :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
