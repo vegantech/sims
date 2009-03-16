@@ -137,11 +137,12 @@ vertical-align: text-top;
 #left_header {
   float: left;
   width: 20%;
-  margin-left: 1%;
   display: inline;
-  background: #fec689;
+  background: white;
 
-  border-style: solid;
+  text-align: center;
+  margin-left: 0%;
+  border-style: none;
   border-width: medium;
   border-color: #008B8B;
 
@@ -150,17 +151,7 @@ vertical-align: text-top;
   line-height: 18px;
 }
 
-#left_header {
-  margin-left: 0%;
-  background: white;
-  
-  border-style: none;
-  border-width: medium;
-  border-color: #008B8B;
-}
 
-#left_header img {
-}
 
 #footer {
   clear: both;

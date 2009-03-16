@@ -1,0 +1,4 @@
+edit_district:
+  name: Change your logo and url
+  url: /help/edit_district
+  attachable: district_admin (Role)

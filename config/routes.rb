@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.resources :help
   map.resources :quicklist_items
 
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090217225159) do
+ActiveRecord::Schema.define(:version => 20090316004509) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -522,6 +522,10 @@ ActiveRecord::Schema.define(:version => 20090217225159) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "asset_file_name"
+    t.string   "asset_content_type"
+    t.integer  "asset_file_size"
+    t.datetime "asset_updated_at"
   end
 
   add_index "roles", ["district_id"], :name => "index_roles_on_district_id"

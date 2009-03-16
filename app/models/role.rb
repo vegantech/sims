@@ -12,6 +12,8 @@
 #
 
 class Role < ActiveRecord::Base
+  include LinkAndAttachmentAssets
+
   belongs_to :district
   has_many :rights, :dependent=>:destroy
   has_and_belongs_to_many :users

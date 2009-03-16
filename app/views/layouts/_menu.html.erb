@@ -37,4 +37,14 @@
     <li>(MMSD has oneschools, alphaprin, district_admin, and content_builder)</li>
   <% end %>
   <% end %>
+
+  <% plus_minus_li "Help" do %>
+    <% if session[:user_id] %>
+      <% current_user.roles.each do |role| %>
+        <% plus_minus_li role.name.humanize do %>
+          <%=links_and_attachments(role, :li) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 </ul>
