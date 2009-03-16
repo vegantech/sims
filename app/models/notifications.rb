@@ -3,8 +3,8 @@ class Notifications < ActionMailer::Base
 
    if defined?DEFAULT_URL
      default_url_options[:host] = 'www.simspilot.org'
-     default_url_options[:port]= 443
-     default_url_options[:protocol]=:https
+     default_url_options[:port]= nil
+     default_url_options[:protocol]='https'
    else
      default_url_options[:host] = 'sims-open.vegantech.com'
      default_url_options[:port] = 80
@@ -38,6 +38,12 @@ class Notifications < ActionMailer::Base
     interventions=Array(interventions)
     participants=interventions.first.participants_with_author
 
+    if defined?DEFAULT_URL &&  RAILS_ENV == 'production'
+      d=interventions.first.user.district.abbrev
+      default_url_options[:port]=nil
+      default_url_options[:protocol]='https'
+      default_url_options[:host]="#{d}.simspilot.org"
+    end
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'

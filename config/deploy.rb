@@ -45,7 +45,7 @@ task :pilot2 do
   set :application, "simspilot"
   set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
 
-  after  :setup_domain_constant, :setup_default_url
+  after  :setup_domain_constant, :setup_default_url, :change_railmail_to_smtp 
 end
 
 
@@ -112,6 +112,9 @@ task :setup_default_url do
   put("DEFAULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb", :via => :scp) 
 end
 
+task :change_railmail_to_smtp do
+  run "cd #{release_path}/config/ && sed -i  -e 's/railmail/none/' environment.rb "
+end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
