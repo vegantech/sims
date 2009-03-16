@@ -1,8 +1,14 @@
 class Notifications < ActionMailer::Base
   if RAILS_ENV == 'production'
 
-   default_url_options[:host] = 'sims-open.vegantech.com'
-   default_url_options[:port] = 80
+   if defined?DEFAULT_URL
+     default_url_options[:host] = 'www.simspilot.org'
+     default_url_options[:port]= 443
+     default_url_options[:protocol]=:https
+   else
+     default_url_options[:host] = 'sims-open.vegantech.com'
+     default_url_options[:port] = 80
+   end
   else
 
     default_url_options[:host] = 'localhost'
@@ -13,7 +19,7 @@ class Notifications < ActionMailer::Base
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'
     recipients override.student.principals.collect(&:email).join(',')
-    from       'SIMS <b723176@madison.k12.wi.us>'
+    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
     body       :override=>override
@@ -22,7 +28,7 @@ class Notifications < ActionMailer::Base
   def principal_override_response(override)
     subject    "[SIMS] Principal Override #{override.action.capitalize}ed"
     recipients override.teacher.email
-    from       'SIMS <b723176@madison.k12.wi.us>'
+    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
     body       :override => override
@@ -34,7 +40,7 @@ class Notifications < ActionMailer::Base
 
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
-    from       'SIMS <b723176@madison.k12.wi.us>'
+    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
@@ -60,7 +66,7 @@ class Notifications < ActionMailer::Base
 
   def intervention_participant_added(intervention_person)
     subject    '[SIMS]  Student Intervention New Participant'
-    from       'SIMS <b723176@madison.k12.wi.us>'
+    from       'SIMS <sims@simspilot.org>'
     recipients intervention_person.user.email
     sent_on    Time.now
     body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author,
