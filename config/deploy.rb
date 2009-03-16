@@ -36,6 +36,7 @@ end
 
 desc "pilot2 for pilot on rimuhosting"
 task :pilot2 do
+  ENV['HOSTS']='74.50.50.62'
   role :app, "74.50.50.62"
   role :web, "74.50.50.62"
   role :db,  "74.50.50.62", :primary => true
