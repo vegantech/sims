@@ -1,5 +1,15 @@
 <% changeable = true if changeable.nil? %>
 <table class ="top_summary">
+  <thead>
+    <col style="width:10em;" />
+    <col />
+    <col style="width:7em;" />
+    <col />
+    <col style="width:9em;" />
+    <col />
+    <col />
+    
+  </thead>
   <tbody>
     <tr>
       <td class ="label">Student Name:</td>
@@ -11,27 +21,25 @@
         <span id="ignoredflags"><%= ignore_flags(@student, changeable) %></span>
         <%= help_popup("Click on a flag to ignore it.  Click on an ignored flag to stop ignoring it.  You can't ignore custom flags, and you can't create custom flags when you are ignoring a flag") if changeable %>
       </td>
-      <td class ="spacer"> </td>
+      <td><b><%= "Special Ed" if @student.special_ed %> </b></td>
+      
     </tr>
     <tr>
       <td class="label">Student Number:</td>
-      <td> <%=h @student.number%> </td>
-
+      <td> <%=h @student.number%></td>
       <td class="label">Interventions:</td>
-      <td> <%=@student.interventions.size %> </td>
+      <td> <%=@student.interventions.size %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
       <td class="label">Birth Date: </td>
       <td> <%=h @student.birthdate.to_s%> </td>
-      <td class ="spacer"> </td>
-      <td></td>
-      <td><b> <%= "ESL" if @student.esl? %> <%= "Special Ed" if @student.special_ed %> </b></td>
+      <td><b> <%= "ESL" if @student.esl? %> </b></td>
     </tr>
 
     <% @student.enrollments.each do |enrollment| %>
       <tr>
       <td class="label">School:</td>
       <td> <%= h enrollment.school %> </td>
-      <td class ="spacer"> </td>
-      <td class ="spacer"> </td>
+      <td class="label"> </td>
+      <td> </td>
       <td class="label">Grade:</td>
       <td> <%= h enrollment.grade %> </td>
       </tr>

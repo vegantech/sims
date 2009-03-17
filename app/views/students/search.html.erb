@@ -6,14 +6,16 @@
         <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade'%>
       </div>
       <div class="form_row">
-        <label for="search_criteria_user_id" class="fake_label">Group Member</label>
+        <label for="search_criteria_user_id" class="fake_label">Group Member (staff)</label>
         <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname ) %>
         <%= observe_field 'search_criteria_user_id', :url => member_search_students_path, 
           :with=>"'user=' +escape(value) + '&grade=' + escape($('search_criteria_grade').value)" %>
+        <%=help_popup("Search by staff assigned to a group.  Typically teachers assigned to sections, but could be coaches of teams, staff members of neighborhoods, etc.") %>
       </div>
       <div class="form_row">
         <label for="search_criteria_group_id" class="fake_label">Student Group</label>
         <%= collection_select(:search_criteria,:group_id,@groups,:id,:title) %>
+        <%=help_popup("Search by group name.   Groups are commonly sections of classes, but could also be neighborhood, team, etc.") %>
       </div>
       <div class="form_row">
         <label for="search_criteria_last_name" class="fake_label">Last Name</label>
@@ -39,8 +41,8 @@
         </div>
       </div>
       <br clear ="both" />
-      <div class ="form_row">
-        <%= submit_tag "Search for Students", :name => 'search', :class=> "submit" %>
+      <div class ="form_row center_submit">
+        <%= submit_tag "Search for Students", :name => 'search'%>
       </div>
             </fieldset>
 <% end %>
