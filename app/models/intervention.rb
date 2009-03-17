@@ -182,7 +182,6 @@ class Intervention < ActiveRecord::Base
 
   def assign_implementer
     if self.auto_implementer == "1"
-      # intervention_participants.implementer.build(:user => self.user, :skip_email => true)
       intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER)
     end
     true
