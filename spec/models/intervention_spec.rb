@@ -24,6 +24,22 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Intervention do
 
+  describe 'when creating an intervention' do
+    describe 'with auto_implementer not set' do
+      it 'should not create an intervention_participant' do
+        i = Factory(:intervention)
+        i.intervention_participants.implementer.should be_empty
+      end
+    end
+
+    describe 'with auto_implementer set to "1"' do
+      it 'should create an implementer' do
+        i = Factory(:intervention, :auto_implementer => '1')
+        i.intervention_participants.implementer.size.should == 1
+      end
+    end
+  end
+
   describe 'intervention_probe_assignments' do
     describe 'when invalid' do
       it 'should cause a validation error on the intervention itself' do

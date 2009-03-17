@@ -15,7 +15,7 @@ class InterventionParticipant < ActiveRecord::Base
   belongs_to :user
   belongs_to :intervention
 
-  delegate :email,:fullname, :to=>:user
+  delegate :email, :fullname, :to => :user
   attr_writer :skip_email
 
   after_create :send_new_participant_email
@@ -23,12 +23,12 @@ class InterventionParticipant < ActiveRecord::Base
   validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
   validates_presence_of :user_id, :role, :intervention_id
 
-  AUTHOR=-1
-  IMPLEMENTER=0
-  PARTICIPANT=1
+  AUTHOR = -1
+  IMPLEMENTER = 0
+  PARTICIPANT = 1
 
-  ROLES=%w{Implementer Participant Author}
-  named_scope :implementer, :conditions=>{:role=>IMPLEMENTER}
+  ROLES = %w{Implementer Participant Author}
+  named_scope :implementer, :conditions => {:role => IMPLEMENTER}
 
   RoleStruct = Struct.new(:id, :name)
 

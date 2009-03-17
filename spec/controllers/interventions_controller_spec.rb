@@ -19,6 +19,51 @@ describe InterventionsController do
     controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(@intervention)
   end
 
+  describe 'find_intervention' do
+    it 'should redirect to current_student if the intervention cannot be found' do
+      @interventions.stub!(:find_by_id=>nil)
+      get :edit, :id=>'no'
+      flash[:notice].should == 'Intervention could not be found'
+      response.should redirect_to(student_url(@student))
+    end
+
+    describe 'alternate entry' do
+      before do
+        @student.should_receive(:blank?).and_return(true)
+      end
+      it 'should logout if the intervention cannot be found' do
+        Intervention.should_receive(:find_by_id).with('33').and_return(nil)
+        get :edit, :id=>'33'
+        response.should redirect_to(logout_url)
+      end
+
+      it 'should logout if the student no longer exists' do
+        Intervention.should_receive(:find_by_id).with('33').and_return(mock_intervention(:student=>nil))
+        get :edit, :id=>'33'
+        response.should redirect_to(logout_url)
+      end
+
+      it 'should logout if the user does nto have access to the student' do
+        Intervention.should_receive(:find_by_id).with('33').and_return(mock_intervention(:student=>mock_student('belongs_to_user?' => false)))
+        get :edit, :id=>'33'
+        response.should redirect_to(logout_url)
+      end
+
+      it 'should setup the session if the user does have access to the student' do
+        Intervention.should_receive(:find_by_id).with('33').and_return(i=mock_intervention(:student=>s=mock_student('belongs_to_user?' => true, :schools => [sch=mock_school]),:undo_end=>true))
+        controller.stub_association!(:current_user, :schools =>[sch])
+        put :undo_end, :id=>'33'
+        
+        session[:selected_student].should == s.id
+        session[:selected_students].should == [s.id]
+        session[:school_id].should == sch.id
+        assigns[:intervention].should == i
+
+      end
+    end
+  end
+  
+
   describe "responding to GET show" do
     it "should expose the requested intervention as @intervention" do
       get :show, :id => @intervention.id
