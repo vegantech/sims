@@ -14,3 +14,14 @@ Feature: Alternate Entry Points
     And I should not see "Authentication Failure"
     Then I should see "Intervention and Progress Monitoring"
     And I should see "Last, Common"
+
+
+  Scenario oneschool intervention email
+    Given load demo data
+    When I enter url "/interventions/184330814/edit"
+    Then I should see "Login"
+    And I select "WI Test District" from "District"
+    And I fill in "Login" with "oneschool"
+    And I fill in "Password" with "oneschool"
+    Then I press "Login"
+    Then I should see "Add new comment about the intervention plan"

@@ -128,10 +128,26 @@ class InterventionsController < ApplicationController
   private
 
   def find_intervention
-    @intervention = current_student.interventions.find_by_id(params[:id])
+    if current_student.blank?
+     #alternate entry point
+      intervention = Intervention.find_by_id(params[:id])
+      if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
+        student=intervention.student
+        session[:school_id] = (student.schools & current_user.schools).first.id
+        session[:selected_student]=student.id
+        session[:selected_students]=[student.id]
+        @intervention = intervention
+      else
+        flash[:notice] = 'Intervention not available'
+        redirect_to logout_url and return false
+      end
+    else
+      @intervention = current_student.interventions.find_by_id(params[:id])
+    end
+    
     unless @intervention
       flash[:notice] = "Intervention could not be found"
-      redirect_to current_student and return
+      redirect_to current_student and return false
     end
   end
 
