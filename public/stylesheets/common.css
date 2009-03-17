@@ -280,7 +280,8 @@ table .list-line-even {
 
 .help-question {
   color: #FF66FF;
-  font-size: 2em;
+  font-size: 1.25em;
+  font-weight: bold;
 }
 
 #student_overall .help-question {
