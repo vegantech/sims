@@ -23,6 +23,7 @@ html fieldset {
   margin-top: 1em;
   padding-top: 2em;
   padding-bottom: 2em;
+  width: 98%;
 }
 
 /* Form Styles */
@@ -37,7 +38,6 @@ h1.form_banner {
 fieldset {
   background: #e2e3cf;
   margin-right: auto;
-  width: 70%;
 }
 
 fieldset fieldset {
@@ -52,7 +52,7 @@ legend {
 }
 
 .fake_label, .new_form label {
-  width: 11em;
+  width: 13em;
   font-weight: bold;
   float: left;
   text-align: right;
@@ -244,6 +244,7 @@ a:hover { color: #fff; background-color:#000; }
 #debug {
   margin-top: 1em;
   margin-left: auto;
+  width: 97%;
 }
 
 #debug a, #debug a.visited {
@@ -255,6 +256,7 @@ fieldset.debug_info {
   text-align: left;
   margin: 1em;
   background: #eee;
+  width: 97%;
 }
 
 h1 {
@@ -263,7 +265,7 @@ h1 {
 }
 thead th.sort-active
   {
-    background:#CAE8EA url(../images/spinner.gif) no-repeat 0 0;
+    background:#e2e3cf; url(../images/spinner.gif) no-repeat 0 0;
     cursor:wait;
   }
 
@@ -274,9 +276,13 @@ thead th.sort-active a
   }
 
 table .list-line-even {
-    background: #EEF3FA;
+    background: #e2e3cf;
 }
 
+table#fd-table-1 {
+  width: 98%;
+
+}
 
 .help-question {
   color: #FF66FF;
