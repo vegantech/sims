@@ -1,26 +1,25 @@
 Given /^common data$/i do
   @default_user = default_user
   clear_login_dropdowns
-  @district=Factory(:district)
-  @default_user.district=@district
-  @school=Factory(:school,:district=>@district, :name=>"Default School")
-  @another_user = Factory(:user, :username => "cucumber_another", :district=>@district)
+  @district = Factory(:district)
+  @default_user.district = @district
+  @school = Factory(:school, :district => @district, :name => "Default School")
+  @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
   @another_user.schools << @school
   @default_user.save!
   create_default_student
-  @student.district=@district
+  @student.district = @district
   @student.save!
   create_default_intervention_pieces
 end
 
 Given /^quicklist choices (.*)$/i do |choices_array|
   choices = Array(eval(choices_array))
-  goal = Factory(:goal_definition, :title => "Cucumber Goal", :district=>@district)
-  objective = Factory(:objective_definition, :title=> "Cucumber Objective", :goal_definition=>goal)
+  goal = Factory(:goal_definition, :title => "Cucumber Goal", :district => @district)
+  objective = Factory(:objective_definition, :title=> "Cucumber Objective", :goal_definition => goal)
   cluster = Factory(:intervention_cluster, :title => "Cucumber Category", :objective_definition => objective)
   
   choices.each do |choice|
-    
     idef = Factory(:intervention_definition, :title => choice, :intervention_cluster => cluster)
     Factory(:quicklist_item, :school => @school, :intervention_definition => idef)
   end
@@ -43,14 +42,11 @@ Given /^I log in as content_builder$/ do
   r.rights.create!(:controller=>"intervention_builder/objectives", :read_access=>true, :write_access=>true)
   r.rights.create!(:controller=>"intervention_builder/categories", :read_access=>true, :write_access=>true)
   r.rights.create!(:controller=>"intervention_builder/interventions", :read_access=>true, :write_access=>true)
-  
- 
+
   visit '/'
   fill_in 'Login', :with => 'content_builder'
   fill_in 'Password', :with => 'content_builder'
   click_button 'Login'
-        
-  
 end
 
 Given /^I am a district admin$/ do
@@ -63,18 +59,15 @@ Given /^I am a district admin$/ do
   role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
   default_user.roles=[role]
-  
 end
 
 Given /^I enter default student url$/ do
   visit "/students/#{@student.id}"
 end
 
-
 Given /^I enter url "(.*)"$/ do |url|
   visit url
 end
-
 
 When /^I go to (.*)$/ do |page_name|
 	go_to_page page_name
@@ -183,7 +176,6 @@ Given /^load demo data$/ do
   Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
     Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end
-
 end
 
 Then /^I Display Body$/i do
@@ -204,7 +196,7 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   user=User.find_by_username("default_user")
   other_guy=User.find_by_username("Other_Guy")
   school=School.find_by_name("Central")
- 
+
   if observed_field == "search_criteria_grade"
     xml_http_request  :post, "/students/grade_search/", {:grade=>3}, {:user_id => user.id, :school_id=>school.id}
   elsif observed_field == "search_criteria_user_id"
@@ -212,12 +204,11 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   else
     flunk response.body
   end
-    
+
   Array(eval(target_fields)).each do |target_field|
     response.body.should match(/Element.update\("#{target_field}"/)
   end
   #  response.should hav_text /"<option value=\"996332878\">default user</option>");"/
-  
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
@@ -232,18 +223,15 @@ Given /^there are "(\d+)" emails$/ do |num_emails|
   assert_emails num_emails.to_i
 end
 
-
 Given /^there is not an email containing "(.*)"$/ do |target_text|
   assert_no_emails
-
 end
 
 Given /^there is an email containing "(.*)"$/ do |target_text|
   #  assert_emails 2
   # ActionMailer::Base.perform_deliveries = true
-  last_mail=ActionMailer::Base.deliveries.join("********")
+  last_mail = ActionMailer::Base.deliveries.join("********")
   last_mail.should match(/#{target_text}/)
-
 end
 
 When /^I follow "(.*)" within (.*)$/ do |link, scope|

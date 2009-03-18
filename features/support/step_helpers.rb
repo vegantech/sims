@@ -1,19 +1,19 @@
 def go_to_page page_name
-	page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
+  page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
-	if page_name == 'home'
-		visit '/'
-	else
-		log_in
-		# flunk response.body
-		click_link 'School Selection'
+  if page_name == 'home'
+    visit '/'
+  else
+    log_in
+    # flunk response.body
+    click_link 'School Selection'
 
-		page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
+    page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
-		case page_name
-		when 'search'
-			click_button 'Choose School'
-		when 'school selection'
+    case page_name
+    when 'search'
+      click_button 'Choose School'
+    when 'school selection'
     when 'new role'
     when 'student profile'
       # search
@@ -22,10 +22,10 @@ def go_to_page page_name
       click_button "Search for Students"
       click_all_name_id_brackets
       click_button "select for problem solving"
-		else
-			raise "Can't find mapping from \"#{page_name}\" to a path"
-		end
-	end
+    else
+      raise "Can't find mapping from \"#{page_name}\" to a path"
+    end
+  end
 end
 
 def click_all_name_id_brackets
@@ -37,19 +37,18 @@ end
 
 def verify_select_box id, options
   options=Array(eval(options))
-	response.should have_dropdown(id, options)
+  response.should have_dropdown(id, options)
 end
 
 def log_in
-	default_user
-	create_school 'Glenn Stephens'
-	visit '/'
-	fill_in 'Login', :with => @default_user.username
-	fill_in 'Password', :with => @default_user.username
-	click_button 'Login'
-	response.should_not have_text(/Authentication Failure/)
+  default_user
+  create_school 'Glenn Stephens'
+  visit '/'
+  fill_in 'Login', :with => @default_user.username
+  fill_in 'Password', :with => @default_user.username
+  click_button 'Login'
+  response.should_not have_text(/Authentication Failure/)
 end
-
 
 def find_or_create_user user_name
   User.find_by_username(user_name) || create_user(user_name)
@@ -63,10 +62,10 @@ def create_user user_name='first_last', password=user_name
 end
 
 def create_school school_name
-	found = School.find_by_name(school_name)
-	s = found || Factory(:school,:name => school_name)
-	default_user.schools << s unless default_user.schools.include?(s)
-	@school||=s
+  found = School.find_by_name(school_name)
+  s = found || Factory(:school,:name => school_name)
+  default_user.schools << s unless default_user.schools.include?(s)
+  @school||=s
   s
 end
 
@@ -85,16 +84,16 @@ def find_student first_name, last_name
 end
 
 def create_student first_name, last_name, grade, school, flag_type = nil, ignore_type = nil, ignore_reason = nil
-	s = Factory(:student, :first_name => first_name, :last_name => last_name)
-	# :grade => grade
-	enrollment = s.enrollments.create! :grade => grade, :school => school
+  s = Factory(:student, :first_name => first_name, :last_name => last_name)
+  # :grade => grade
+  enrollment = s.enrollments.create! :grade => grade, :school => school
 
-	if flag_type
-		f = SystemFlag.create!(:student => s,
-			:category => flag_type,
-			:reason => 'some reason or another',
-			:user => @default_user)
-	end
+  if flag_type
+    f = SystemFlag.create!(:student => s,
+      :category => flag_type,
+      :reason => 'some reason or another',
+      :user => @default_user)
+  end
 
   if ignore_type and ignore_reason
     i = IgnoreFlag.create!(:student => s,
@@ -112,7 +111,7 @@ def create_default_student
   g.save!
   @default_user.groups << g
   @default_user.save!
- 
+
   @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id)
 
   @student
@@ -131,8 +130,6 @@ def create_default_intervention_pieces
   Frequency.create!(:title=>"Default")
   @district.tiers.create!(:title=>"Default")
   @district.tiers.create!(:title=>"Some Tier")
-  
-
 end
 
 def clear_login_dropdowns
@@ -156,7 +153,6 @@ def default_user
     default_role.rights.create!(:controller=>c, :read_access=> true, :write_access => true)
   end
 
-
-  #put other stuff above this
+  # put other stuff above this
   @default_user
 end

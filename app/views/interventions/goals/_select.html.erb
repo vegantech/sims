@@ -3,12 +3,12 @@
   Interventions are not available, no goals defined.
   <%= link_to :back, :back %>
 <%else%>
-  <% remote_form_for :goal_definition, :url=>select_interventions_goals_path do |f| %>
+  <% remote_form_for :goal_definition, :url => select_interventions_goals_path do |f| %>
       <%= f.label(:id,'Assign Goal') %>
-      <%= f.collection_select(:id, @goal_definitions,:id,:title,{:prompt=>""}, {:onchange=>"$('spinnergoals').show();this.form.onsubmit()", :class=>"fixed_width"}) %>
-<%=spinner("goals") %>
+      <%= f.collection_select(:id, @goal_definitions, :id, :title, {:prompt => ""}, {:onchange => "$('spinnergoals').show();this.form.onsubmit()", :class => "fixed_width"}) %>
+<%= spinner("goals") %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>
 <% end %>
 </div>
-<%= render :partial=>'interventions/objectives/select' %>
+<%= render :partial => 'interventions/objectives/select' %>

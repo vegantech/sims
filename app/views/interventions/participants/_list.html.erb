@@ -1,9 +1,14 @@
-<% readonly=false if readonly.nil? %>
+<%  readonly = false if readonly.nil?
+  if @intervention.new_record?
+    fallback_url = new_intervention_url(:goal_id => @goal_definition.id, :objective_id => @objective_definition.id, :category_id => @intervention_cluster.id, :definition_id => @intervention_definition.id, :add_participant => true)
+  else
+    fallback_url = edit_intervention_url(@intervention)
+  end
+%>
 <div>
   <div id="participants_list">
-  <%= render :partial=>"interventions/participants/participant",:collection=>@intervention.participant_users %>
+    <%= render :partial => 'interventions/participants/new' if !readonly && params[:add_participant] %>
+    <%= render :partial => "interventions/participants/participant", :collection => @intervention.participant_users %>
   </div>
-  <%= link_to_function("Add Participant", nil)  { |page| page.insert_html(:top,'participants_list', :partial=>'interventions/participants/new')} unless readonly%>
+  <%= link_to_function("Add Participant", :href => fallback_url) {|page| page.insert_html(:top, 'participants_list', :partial => 'interventions/participants/new')} unless readonly %>
 </div>
-
-

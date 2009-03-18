@@ -18,7 +18,7 @@ class InterventionsController < ApplicationController
   def new
     flash[:custom_intervention] = params[:custom_intervention]
     flash.keep(:custom_intervention)
-    @quicklist=true if params[:quicklist]
+    @quicklist = true if params[:quicklist]
 
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
@@ -30,7 +30,7 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
-    @users=current_school.users.collect{|e| [e.fullname, e.id]}
+    @users = current_school.users.collect{|e| [e.fullname, e.id]}
   end
 
   # POST /interventions

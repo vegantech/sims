@@ -1,30 +1,31 @@
 <div id="intervention">
   <% if @intervention %>
-  <% form_for(@intervention, :html=>{:name=>"StudentInterventionForm"}) do |f| %>
-    <%=render :partial => 'interventions/custom', :locals=>{:form=>f} if flash[:custom_intervention]%>
-    <%=render :partial =>'interventions/form',:locals=>{:form=>f} %>
-    <br class="brclear" />
-    <p>
-      <% if @intervention.selected_ids %>
-        <div class="fake_label">
-          <%= f.check_box :apply_to_all %> 
-        </div>
-        <%= f.label :apply_to_all, "Apply to all selected students", {:class=>'checkbox_label'} %>
-      <% end %>
+    <% form_for(@intervention, :html => {:name => "StudentInterventionForm"}) do |f| %>
+      <%= render :partial => 'interventions/custom', :locals => {:form => f} if flash[:custom_intervention] %>
+      <%= render :partial => 'interventions/form', :locals => {:form => f} %>
       <br class="brclear" />
-      <div class="fake_label">
-        <%= f.check_box :auto_implementer  %> 
-      </div>
-      <%= f.label :auto_implementer, "Assign yourself to this intervention", {:class=>'checkbox_label'} %>
-    </p>
-    <br class="brclear" />
-   <div class="center_submit">
-      <%= f.submit "Save" %>
-   </div>
+      <p>
+        <% if @intervention.selected_ids %>
+          <div class="fake_label">
+            <%= f.check_box :apply_to_all %> 
+          </div>
+          <%= f.label :apply_to_all, "Apply to all selected students", {:class => 'checkbox_label'} %>
+        <% end %>
+        <br class="brclear" />
 
-  <% end %>
-   <div class="center_submit">
+        <div class="fake_label">
+          <%= f.check_box :auto_implementer %> 
+        </div>
+        <%= f.label :auto_implementer, "Assign yourself to this intervention", {:class => 'checkbox_label'} %>
+      </p>
+      <br class="brclear" />
+
+      <div class="center_submit">
+        <%= f.submit "Save" %>
+      </div>
+    <% end %>
+    <div class="center_submit">
       <%= link_to 'Back', student_path(@intervention.student) %>
-   </div>
+    </div>
   <% end %>
 </div>
