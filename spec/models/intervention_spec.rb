@@ -35,7 +35,7 @@ describe Intervention do
     describe 'with auto_implementer set to "1"' do
       it 'should create an implementer' do
         i = Factory(:intervention, :auto_implementer => '1')
-        i.intervention_participants.implementer.size.should == 1
+        i.intervention_participants.size.should == 2 #Author and participant
       end
     end
   end

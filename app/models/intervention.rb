@@ -46,7 +46,7 @@ class Intervention < ActiveRecord::Base
   after_update :save_assigned_monitor
 
 
-  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id
+  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
   attr_reader :autoassign_message
 
 
@@ -169,15 +169,18 @@ class Intervention < ActiveRecord::Base
       student_ids.delete(self.student_id.to_s)
       @interventions = student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
-          :auto_implementer => self.auto_implementer, :called_internally => true))
+          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids=>self.participant_user_ids))
       end
     end
     true
   end
 
   def assign_implementer
+    
+    @creation_email=true
     if self.auto_implementer == "1"
-      intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER)
+      self.participant_user_ids |= [self.user_id]
+      #      intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
     end
     true
   end

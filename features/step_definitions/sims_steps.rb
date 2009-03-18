@@ -4,6 +4,7 @@ Given /^common data$/i do
   @district = Factory(:district)
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
+  @default_user.schools << @school
   @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
   @another_user.schools << @school
   @default_user.save!
@@ -11,6 +12,13 @@ Given /^common data$/i do
   @student.district = @district
   @student.save!
   create_default_intervention_pieces
+end
+
+Given /^with additional student$/i do
+  s=Factory(:student,:district=>@student.district)
+  s.enrollments.create!(@student.enrollments.first.attributes)
+  s.save!
+
 end
 
 Given /^quicklist choices (.*)$/i do |choices_array|
