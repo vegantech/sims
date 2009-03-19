@@ -64,4 +64,23 @@ describe CountriesController do
 
     assert_redirected_to countries_path
   end
+
+  it 'should reset_password' do
+    Country.should_receive(:find).with('1').and_return(m=mock_country)
+    m.should_receive(:admin_district).and_return(ad=mock_district)
+    ad.should_receive(:reset_admin_password!).and_return('Reset admin password')
+    put :reset_password, :id=>1
+    flash[:notice].should == "Reset admin password"
+    response.should redirect_to(countries_url)
+  end
+
+  it 'should recreate admin' do
+    Country.should_receive(:find).with('1').and_return(m=mock_country)
+    m.should_receive(:admin_district).and_return(ad=mock_district)
+    ad.should_receive(:recreate_admin!).and_return('Recreate admin')
+    put :recreate_admin, :id=>1
+    flash[:notice].should == "Recreate admin"
+    response.should redirect_to(countries_url)
+
+  end
 end
