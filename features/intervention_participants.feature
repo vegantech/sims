@@ -38,15 +38,16 @@ Feature: Assign Participants to Intervention
     And I press "Choose Objective"
     And I select "Some Category" from "intervention_cluster_id"
     And I press "Choose Category"
-    And I check "Assign yourself to this intervention"
     When I follow "Add Participant"
-    # Then I show page
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_ids_"
+    And I check "Assign yourself to this intervention"
     And I press "Save"
     Then there are "1" emails
       #(One to both users)
-    # verify user is a participant
-    # verify other user is a participant
+    When I follow "Edit/Add Comment"
+    # And I show page
+    Then I should see "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
+    And I should see "Firstcucumber_another Last_Name"
 
   
  Scenario: Add same Participant and select checkbox
@@ -67,9 +68,9 @@ Feature: Assign Participants to Intervention
     # Then I show page
     And I select "default user" from "intervention_participant_user_ids_"
     And I press "Save"
-    # verify user is a participant
-    # verify other user is a participant
-    #...
+    When I follow "Edit/Add Comment"
+    Then I should see "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
+    And I should see "Firstcucumber_another Last_Name"
 
     Then there are "1" emails
     # one to each user(1),  even though there are multiple students

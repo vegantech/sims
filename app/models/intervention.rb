@@ -141,7 +141,7 @@ class Intervention < ActiveRecord::Base
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
   end
 
-  def intervention_probe_assignment(probe_definition_id=nil)
+  def intervention_probe_assignment(probe_definition_id = nil)
     if probe_definition_id
       intervention_probe_assignments.find_or_initialize_by_probe_definition_id(probe_definition_id)
     else
@@ -169,18 +169,17 @@ class Intervention < ActiveRecord::Base
       student_ids.delete(self.student_id.to_s)
       @interventions = student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
-          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids=>self.participant_user_ids))
+          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids))
       end
     end
     true
   end
 
   def assign_implementer
-    
-    @creation_email=true
+    @creation_email = true
     if self.auto_implementer == "1"
       self.participant_user_ids |= [self.user_id]
-      #      intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
+      # intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
     end
     true
   end
