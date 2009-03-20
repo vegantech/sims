@@ -118,10 +118,18 @@ class InterventionsController < ApplicationController
   end
 
   def ajax_probe_assignment
+    flash.keep(:custom_intervention)
     @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
-    rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id]) unless @intervention_probe_assignment
-    @intervention_probe_assignment ||= rec_mon.build_intervention_probe_assignment if rec_mon
+    if params[:id] == 'custom'
+      # I'll need probe definition & an intervention_probe_assignment
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.new if @intervention
+    else
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
+      unless @intervention_probe_assignment
+        rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
+        @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
+      end
+    end  
     render :partial => 'interventions/intervention_probe_assignment_detail'
   end
 
