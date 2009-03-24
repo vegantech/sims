@@ -14,7 +14,7 @@
       <td><%= pdef.text_field :minimum_score, :size => 5 %></td>
 
       <td width="15%"><%= pdef.label :maximum_score, 'Max score' %></td>
-      <td width="35%"><%= pdef.text_field :maximum_score, :size => 5  %></td>
+      <td width="35%"><%= pdef.text_field :maximum_score, :size => 5 %></td>
     </tr>
     <tr>
     </tr>
@@ -23,11 +23,11 @@
 
   <div id="benchmarks">
     <% pdef.object.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
-      <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
+      <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index => index} %>
     <% end %>
   </div>
   <p>
-    <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => pdef.object.probe_definition_benchmarks.size } %>
+    <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
   </p>
 
   <div id="assets" >

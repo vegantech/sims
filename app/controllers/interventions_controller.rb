@@ -1,15 +1,16 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end'
+  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark', 'remove_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
 
   include PopulateInterventionDropdowns
+
   # GET /interventions/1
   # GET /interventions/1.xml
   def show
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @intervention }
+      format.xml { render :xml => @intervention }
     end
   end
 
@@ -73,7 +74,6 @@ class InterventionsController < ApplicationController
   def destroy
     logger.info("DELETION- #{current_user} at #{current_user.district} removed #{@intervention.title} from #{current_student}")
     @intervention.destroy
-    
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
@@ -104,15 +104,14 @@ class InterventionsController < ApplicationController
     end
   end
 
-  
   def quicklist #post
-    
     #FIXME scope this somehow
     @intervention_definition = InterventionDefinition.find_by_id(params[:quicklist_item][:intervention_definition_id])
     redirect_to :back and return if @intervention_definition.blank?
     @intervention_cluster = @intervention_definition.intervention_cluster
     @objective_definition = @intervention_cluster.objective_definition
     @goal_definition = @objective_definition.goal_definition
+
     redirect_to new_intervention_url(:goal_id=>@goal_definition,:objective_id=>@objective_definition,
            :category_id=>@intervention_cluster,:definition_id=>@intervention_definition, :quicklist=>true)
   end
@@ -152,11 +151,10 @@ class InterventionsController < ApplicationController
     else
       @intervention = current_student.interventions.find_by_id(params[:id])
     end
-    
+
     unless @intervention
       flash[:notice] = "Intervention could not be found"
       redirect_to current_student and return false
     end
   end
-
 end
