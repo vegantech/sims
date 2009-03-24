@@ -1,9 +1,9 @@
-<% ipa.fields_for :probe_definition do |pdef| %>
+<% ipa.fields_for :probe_definition, ProbeDefinition.new do |pdef| %>
   <table width="98%">
   <!--[form:probe_definition]-->
     <tr>
       <td width="15%"><%= pdef.label :title %></td>
-      <td colspan="3"><%= pdef.text_field :title, :size => 51  %></td>
+      <td colspan="3"><%= pdef.text_field :title, :size => 51 %></td>
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :description %></td>
@@ -22,21 +22,21 @@
   </table>
 
   <div id="benchmarks">
-    <% pdef.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
+    <% pdef.object.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
       <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
     <% end %>
   </div>
 
   <p>
-    <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => pdef.probe_definition_benchmarks.size } %>
+    <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => pdef.object.probe_definition_benchmarks.size } %>
   </p>
 
-  <div id = "assets" >
+  <div id="assets" >
     Attach a file or link <br />
-    <%= render :partial => 'assets/asset', :collection => form.object.assets, :locals => {:parent => "probe_definition"} %>
+    <%= render :partial => 'assets/asset', :collection => pdef.object.assets, :locals => {:parent => 'probe_definition'} %>
   </div>
 
   <p>
-    <%= add_asset_link "Add a file or link", "probe_definition" %>
+    <%= add_asset_link 'Add a file or link', 'probe_definition' %>
   </p>
 <% end %>
