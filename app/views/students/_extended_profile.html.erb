@@ -2,6 +2,6 @@
 <% if @student.extended_profile? %>
   <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
 <% end %>
-  <div id="extended_profile"> 
+  <div id="extended_profile" <%= 'style="display:none;"' if params[:tn]=='0' %> >
     <%=extended_profile(@student)%>
   </div>
