@@ -37,7 +37,15 @@ class InterventionsController < ApplicationController
   # POST /interventions
   # POST /interventions.xml
   def create
-    params[:intervention].delete(:intervention_probe_assignment) if params[:intervention_probe_assignment] and  params[:intervention_probe_assignment][:probe_definition_id].blank? if params[:intervention_probe_assignment]
+    if params[:intervention_probe_assignment]
+      if params[:intervention_probe_assignment][:probe_definition_id].blank?
+        params[:intervention].delete(:intervention_probe_assignment)
+      elsif params[:intervention_probe_assignment][:probe_definition_id] == 'custom'
+        new_pd = ProbeDefinition.create!(params[:intervention][:intervention_probe_assignment][:probe_definition])
+        params[:intervention][:intervention_probe_assignment][:probe_definition_id] = new_pd.id
+        params[:intervention][:intervention_probe_assignment][:probe_definition] = new_pd
+      end
+    end
     @intervention = build_from_session_and_params
 
     respond_to do |format|
