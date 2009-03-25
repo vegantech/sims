@@ -7,5 +7,4 @@
     :locals => { :view=>true } %>
     <%- end -%>
     <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>checklist.recommendation} if checklist.recommendation%>
-<%=link_to "Back", checklist.student%>
 </div>
