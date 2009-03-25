@@ -170,6 +170,10 @@ class District < ActiveRecord::Base
 
   end
 
+  def find_probe_definition(p_id)
+    probe_definitions.find_by_id(p_id)
+  end
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?

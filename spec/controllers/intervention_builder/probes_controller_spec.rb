@@ -151,22 +151,51 @@ describe InterventionBuilder::ProbesController do
 
   end
 
-  describe "responding to DELETE destroy" do
-    describe 'when there are no objective definitions' do
-      before do
-        @mock_probe_definition.should_receive(:objective_definitions).and_return([])
-      end
 
-      it "should destroy the requested probe_definition when there are no objective definitions and redirect" do
-        pending
-        ProbeDefinition.should_receive(:find).with("37").and_return(@mock_probe_definition)
-        
-        @mock_probe_definition.should_receive(:destroy)
-        delete :destroy, :id => "37"
-        response.should redirect_to(intervention_builder_probe_definitions_url)
-      end
+  describe "responding to put disable" do
+    it 'should toggle the active state' do
+      @district.should_receive(:find_probe_definition).with("37").and_return(mpd=mock_probe_definition)
+      mpd.should_receive(:toggle!)
+      put :disable, :id=> "37"
+      response.should redirect_to(intervention_builder_probes_url)
+    end
+
+    it 'should fail gracefully if probe no longer exists' do
+      @district.should_receive(:find_probe_definition).with("37").and_return(nil)
+      put :disable, :id=> "37"
+      flash[:notice].should == "Probe Definition no longer exists."
+      response.should redirect_to(intervention_builder_probes_url)
+
+    end
+
+  end
+  
+  describe "responding to DELETE destroy" do
+
+    it "should destroy the requested probe_definition when there are no probes and redirect" do
+      @district.should_receive(:find_probe_definition).with("37").and_return(mpd=mock_probe_definition)
+      mpd.stub_association!(:probes,:count=>0)
+      mpd.should_receive(:destroy)
+      delete :destroy, :id => "37"
+      response.should redirect_to(intervention_builder_probes_url)
+    end
+
+    it 'should just redirect if the probe definition does not exist' do
+      @district.should_receive(:find_probe_definition).with("37").and_return(nil)
+      delete :destroy, :id => "37"
+      response.should redirect_to(intervention_builder_probes_url)
+    end
+
+    it 'should set the flash if there are probes assigned' do
+      @district.should_receive(:find_probe_definition).with("37").and_return(mpd=mock_probe_definition)
+      mpd.stub_association!(:probes,:count=>1)
+      delete :destroy, :id=>"37"
+      flash[:notice].should =='Probe Definition could not be deleted, it is in use.'
+      response.should redirect_to(intervention_builder_probes_url)
+      
+    end
     
-   end
+  
 
   end
 

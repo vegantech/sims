@@ -66,17 +66,21 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def disable
     #disable/reenable
-    probe_definition=current_district.probe_definitions.find(params[:id])
-    probe_definition.toggle!(:active)
+    probe_definition=current_district.find_probe_definition((params[:id]))
+    if probe_definition
+      probe_definition.toggle!(:active)
+    else
+      flash[:notice] = 'Probe Definition no longer exists.'
+    end
     redirect_to intervention_builder_probes_url
   end
 
   def destroy
-    probe_definition=current_district.probe_definitions.find(params[:id])
-    if probe_definition.probes.count > 0
+    probe_definition=current_district.find_probe_definition((params[:id]))
+    if probe_definition && probe_definition.probes.count > 0
       flash[:notice]='Probe Definition could not be deleted, it is in use.'
     else
-      probe_definition.destroy
+      probe_definition.destroy if probe_definition
     end
     redirect_to intervention_builder_probes_url
 
