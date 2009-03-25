@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325214721
+# Schema version: 20090325221606
 #
 # Table name: probe_definition_benchmarks
 #
@@ -10,6 +10,8 @@
 #  created_at          :datetime
 #  updated_at          :datetime
 #  deleted_at          :datetime
+#  copied_at           :datetime
+#  copied_from         :integer
 #
 
 class ProbeDefinitionBenchmark < ActiveRecord::Base
