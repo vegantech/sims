@@ -55,7 +55,13 @@ class InterventionParticipant < ActiveRecord::Base
   end
 
   protected
- 
+
+  def before_create
+
+    if intervention.created_at == intervention.updated_at 
+      @skip_email = true if Time.now - intervention.created_at < 1.second
+    end
+  end
   def send_new_participant_email
     unless @skip_email
       Notifications.deliver_intervention_participant_added(self)

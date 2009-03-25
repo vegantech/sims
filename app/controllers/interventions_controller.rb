@@ -18,7 +18,7 @@ class InterventionsController < ApplicationController
   def new
     flash[:custom_intervention] = params[:custom_intervention]
     flash.keep(:custom_intervention)
-    @quicklist=true if params[:quicklist]
+    @quicklist = true if params[:quicklist]
 
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
@@ -30,7 +30,7 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
-    @users=current_school.users.collect{|e| [e.fullname, e.id]}
+    @users = current_school.users.collect{|e| [e.fullname, e.id]}
   end
 
   # POST /interventions
@@ -42,7 +42,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.save
         flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
-        format.html { redirect_to(current_student) }
+        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
         format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
@@ -59,7 +59,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(current_student) }
+        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
         format.xml  { head :ok }
       else
         format.html { edit and render :action => "edit" }

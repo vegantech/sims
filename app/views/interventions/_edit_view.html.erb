@@ -7,7 +7,7 @@
   
     <p>
       <div class="fake_label">Category</div><%=@intervention.intervention_cluster %>
-      <%=description(@intervention.intervention_cluster) %>
+      <%= description(@intervention.intervention_cluster) %>
     </p>
     <br class="brclear" />
 
@@ -20,14 +20,14 @@
       
     </div>
     <% if readonly %>
-    <div class ="form_row">
-      <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}"%>
-    </div>
+      <div class ="form_row">
+        <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}"%>
+      </div>
     <% end %>
     <div class ="form_row">
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
-    <%=render(:partial=>f, :locals => {:readonly => readonly}) %>
+    <%= render(:partial => f, :locals => {:readonly => readonly}) %>
     <div class="center_submit">
       <%= f.submit "Save" unless readonly %>
     </div>
@@ -42,4 +42,3 @@
   <%= link_to 'Delete', intervention_path(@intervention), :method=>:delete,:confirm=>"Are you sure you want to delete this intervention?" %> 
 <%= link_to 'Back', @intervention.student %>
 </div>
-

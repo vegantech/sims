@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <%=render :partial => 'intervention', :collection => interventions %>
+      <%=render :partial => 'students/intervention', :collection => interventions, :locals=>{:no_action=>(defined?no_action && no_action)} %>
     </tbody>
   </table>
 <% else %>

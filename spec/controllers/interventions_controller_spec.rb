@@ -133,7 +133,7 @@ describe InterventionsController do
         @intervention.should_receive(:save).and_return(true)
         @intervention.should_receive(:autoassign_message).and_return('')
         post :create, :intervention => {}
-        response.should redirect_to(student_url(@student))
+        response.should redirect_to(student_url(@student, :tn=>0,:ep=>0))
       end
     end
     
@@ -170,7 +170,7 @@ describe InterventionsController do
       it "should redirect to the intervention" do
         @intervention.should_receive(:update_attributes).and_return(true)
         put :update, :id => @intervention.id
-        response.should redirect_to(student_url(@student))
+        response.should redirect_to(student_url(@student, :tn=>0,:ep=>0))
       end
     end
 

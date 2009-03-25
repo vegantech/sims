@@ -137,6 +137,11 @@ Feature: Sims Demo Walkthrough
     And I follow "view"
     And I follow "Student Report"
     And I press "Generate Report"
+
+    And I follow "Student Interventions"
+    And I press "Generate Report"
+
+    
     
 
     And I am now pending

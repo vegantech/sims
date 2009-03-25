@@ -1,10 +1,9 @@
 <h1>Assign New Intervention and Progress Monitor</h1>
 
 <div class ='new_form'>
-<% if @quicklist %>
-  <%= render :partial =>'interventions/intervention' %>
-<% else %>
-  <%= render :partial =>'interventions/goals/select' %>
-<% end %>
-
+  <% if @quicklist %>
+    <%= render :partial =>'interventions/intervention' %>
+  <% else %>
+    <%= render :partial =>'interventions/goals/select' %>
+  <% end %>
 </div>

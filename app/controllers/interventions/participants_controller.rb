@@ -43,8 +43,8 @@ class Interventions::ParticipantsController < ApplicationController
     flash[:notice] = @intervention_participant.fullname + "is now a" + @intervention_participant.role_title
 
     respond_to do |format|
-        format.html { redirect_to(@intervention) }
-      end
+      format.html { redirect_to(@intervention) }
+    end
   end
 
   # DELETE /intervention_participants/1

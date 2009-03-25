@@ -32,41 +32,38 @@ class Intervention < ActiveRecord::Base
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
   has_many :intervention_participants, :dependent => :destroy
-  has_many :participant_users, :through => :intervention_participants, :source=>:user
+  has_many :participant_users, :through => :intervention_participants, :source => :user
 
-  has_many :intervention_probe_assignments, :dependent=>:destroy 
+  has_many :intervention_probe_assignments, :dependent => :destroy 
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
   validate :validate_intervention_probe_assignment
-  
+
 
   before_create :assign_implementer
-  after_create :autoassign_probe,:create_other_students, :send_creation_emails
+  after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_update :save_assigned_monitor
-  
 
-  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id
+
+  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
   attr_reader :autoassign_message
 
 
-  named_scope :active,:conditions=>{:active=>true}
-  named_scope :inactive,:conditions=>{:active=>false}
+  named_scope :active, :conditions => {:active => true}
+  named_scope :inactive, :conditions => {:active => false}
 
- 
+
   def self.build_and_initialize(args)
     #TODO Refactor
 
     if k=args["intervention_definition"] and !k.is_a?(InterventionDefinition)
       int_def_args = (args.delete("intervention_definition"))
     end
-    
 
-    int=self.new(args)
+    int = self.new(args)
     int.build_intervention_definition(int_def_args) if int_def_args
-    
 
-    
     if int.intervention_definition.new_record? 
       #This represents a custom intervention, passing in a new intervention definition as a param
       int.intervention_definition.school_id = int.school_id
@@ -77,7 +74,7 @@ class Intervention < ActiveRecord::Base
       int.intervention_definition.frequency = int.frequency
       int.intervention_definition.frequency_multiplier = int.frequency_multiplier
     end
-            
+
     int.start_date ||=Time.now
     if int.intervention_definition
       int.frequency ||= int.intervention_definition.frequency
@@ -86,17 +83,17 @@ class Intervention < ActiveRecord::Base
       int.time_length_number ||= int.intervention_definition.time_length_num
     end
     int.time_length ||= TimeLength.first
-    
+
     int.time_length_number ||= 1
     int.end_date ||= (int.start_date + (int.time_length_number*int.time_length.days).days)
     int.selected_ids=nil if int.selected_ids.size == 1
-    
+
     int
   end
 
   delegate :title, :tier,:description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
-  delegate :goal_definition, :to =>:objective_definition
+  delegate :goal_definition, :to => :objective_definition
 
   def end(ended_by)
     self.ended_by_id = ended_by
@@ -135,7 +132,6 @@ class Intervention < ActiveRecord::Base
     pluralize time_length_number, time_length.title
   end
 
-
   def intervention_probe_assignment=(params)
     intervention_probe_assignments.update_all(:enabled=>false)
     return if params.blank? or params[:probe_definition_id].blank?
@@ -144,9 +140,8 @@ class Intervention < ActiveRecord::Base
     @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
   end
-  
-  def intervention_probe_assignment(probe_definition_id=nil)
-    
+
+  def intervention_probe_assignment(probe_definition_id = nil)
     if probe_definition_id
       intervention_probe_assignments.find_or_initialize_by_probe_definition_id(probe_definition_id)
     else
@@ -174,15 +169,17 @@ class Intervention < ActiveRecord::Base
       student_ids.delete(self.student_id.to_s)
       @interventions = student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
-          :auto_implementer => self.auto_implementer, :called_internally => true))
+          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids))
       end
     end
     true
   end
 
   def assign_implementer
+    @creation_email = true
     if self.auto_implementer == "1"
-      intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER)
+      self.participant_user_ids |= [self.user_id]
+      # intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
     end
     true
   end

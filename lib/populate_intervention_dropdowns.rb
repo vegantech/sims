@@ -15,12 +15,13 @@ protected
   end
 
   def populate_intervention
-    return if  params[:intervention_definition] and params[:intervention_definition][:id].blank?
+    return if params[:intervention_definition] and params[:intervention_definition][:id].blank?
     find_intervention_definition
     @recommended_monitors = @intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
     build_from_session_and_params
+    @users = current_school.users.collect{|e| [e.fullname, e.id]}
   end
 
   def populate_definitions
