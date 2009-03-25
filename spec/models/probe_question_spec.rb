@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325214721
 #
 # Table name: probe_questions
 #
@@ -11,6 +11,7 @@
 #  second_digit        :integer
 #  created_at          :datetime
 #  updated_at          :datetime
+#  deleted_at          :datetime
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

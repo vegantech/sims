@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325214721
 #
 # Table name: element_definitions
 #
@@ -10,6 +10,7 @@
 #  position               :integer
 #  created_at             :datetime
 #  updated_at             :datetime
+#  deleted_at             :datetime
 #
 
 element_definition_one:

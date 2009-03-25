@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325214721
 #
 # Table name: recommendation_definitions
 #
@@ -11,6 +11,7 @@
 #  score_options           :integer
 #  created_at              :datetime
 #  updated_at              :datetime
+#  deleted_at              :datetime
 #
 
 class RecommendationDefinition < ActiveRecord::Base

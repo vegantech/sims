@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325214721
 #
 # Table name: question_definitions
 #
@@ -9,6 +9,7 @@
 #  position                :integer
 #  created_at              :datetime
 #  updated_at              :datetime
+#  deleted_at              :datetime
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
