@@ -26,6 +26,7 @@ class GoalDefinition < ActiveRecord::Base
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
+  acts_as_paranoid
 
   def disable!
     objective_definitions.each(&:disable!)

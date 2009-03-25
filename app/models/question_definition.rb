@@ -12,14 +12,13 @@
 #
 
 class QuestionDefinition < ActiveRecord::Base
-
-  acts_as_list :scope => :checklist_definition
-
   belongs_to :checklist_definition
 
   has_many :element_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :answer_definitions, :through=> :element_definitions
   acts_as_reportable if defined? Ruport
+  acts_as_list :scope => :checklist_definition
+  acts_as_paranoid
 
   validates_presence_of :text
 

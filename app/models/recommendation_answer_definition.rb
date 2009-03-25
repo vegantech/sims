@@ -16,6 +16,7 @@ class RecommendationAnswerDefinition < ActiveRecord::Base
   has_many :recommendation_answers, :dependent => :destroy
 
   acts_as_list :scope=>:recommendation_definition_id
+  acts_as_paranoid
 
   validates_presence_of :text
 end

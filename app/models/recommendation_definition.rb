@@ -17,4 +17,5 @@ class RecommendationDefinition < ActiveRecord::Base
   has_many :checklist_definitions
   belongs_to :district
   has_many :recommendation_answer_definitions, :dependent => :destroy
+  acts_as_paranoid
 end

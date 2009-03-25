@@ -42,6 +42,7 @@ class InterventionDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => 'intervention_cluster_id'
+  acts_as_paranoid
 
   def business_key
     "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
