@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325221606
+# Schema version: 20090325230037
 #
 # Table name: objective_definitions
 #
@@ -12,6 +12,8 @@
 #  created_at         :datetime
 #  updated_at         :datetime
 #  deleted_at         :datetime
+#  copied_at          :datetime
+#  copied_from        :integer
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
