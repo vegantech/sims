@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090325221606) do
+ActiveRecord::Schema.define(:version => 20090325230037) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -180,6 +180,8 @@ ActiveRecord::Schema.define(:version => 20090325221606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.datetime "copied_at"
+    t.integer  "copied_from"
   end
 
   add_index "goal_definitions", ["district_id"], :name => "index_goal_definitions_on_district_id"
@@ -335,6 +337,8 @@ ActiveRecord::Schema.define(:version => 20090325221606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.datetime "copied_at"
+    t.integer  "copied_from"
   end
 
   add_index "objective_definitions", ["goal_definition_id"], :name => "index_objective_definitions_on_goal_definition_id"
