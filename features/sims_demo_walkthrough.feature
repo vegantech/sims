@@ -241,7 +241,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool","2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group",  "Homeroom where oneschool is not a member","Homeroom- Oneschool"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Class where oneschool and twoschools have students" , "Homeroom where oneschool is not a member","Homeroom- Oneschool"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
@@ -275,9 +275,9 @@ Feature: Sims Demo Walkthrough
     And I should see "Alpha Elementary"
     And I should see "Bravo Elementary"
     Then I press "Choose School"
-    And I should see select box with id of "search_criteria_grade" and contains ["3"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*","1","3"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member", "1First. oneschool", "2Second. twoschools"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Class where oneschool and twoschools have students", "Homeroom where oneschool is not a member"]
     Then I follow "School Selection"
     And I select "Bravo Elementary" from "school_id"
     Then I press "Choose School"
@@ -343,7 +343,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool", "2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom where oneschool is not a member", "Homeroom- Oneschool"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Class where oneschool and twoschools have students", "Homeroom where oneschool is not a member", "Homeroom- Oneschool"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"

@@ -37,6 +37,58 @@ Feature: Search By Student Groups
     Then I should see "Orange, Alfie"
     And I should not see "Yerbie, Harold"
 
+  
+
+
+  Scenario User with Two groups picks one shared by another user Lighthouse 209
+    Given school "Central"
+    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
+    And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
+    And group "Yellow Team" for school "Central" with student "Yellow Mellow" in grade "3"
+    And group "Green Team" for school "Central" with student "Green Gene" in grade "3"
+    And I have access to ["Blue Team","Red Team", "Yellow Team", "Green Team"]
+    And "Other_Guy" has access to ["Blue Team", "Yellow Team", "Green Team"]
+    And I am on search page
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Green Team","Red Team", "Yellow Team"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy","default user"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
+
+    When I select "3" from "search_criteria_grade"
+    And I select "Other Guy" from "search_criteria_user_id"
+    And I select "Blue Team" from "search_criteria_group_id"
+    Then I press "Search for Students"
+    Then I should see "Blue Floyd"
+    Then I should not see "Red Fred"
+    
+    
+
+
+
+  Scenario: User with two groups, changes member  grade 3
+    Given school "Central"
+    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "3"
+    And group "Red Team" for school "Central" with student "Red Fred" in grade "1"
+    And I have access to ["Blue Team","Red Team"]
+    And "Other_Guy" has access to ["Blue Team"]
+    And I am on search page
+    
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy", "default user"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
+
+    And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]
+  
+    And I select "3" from "search_criteria_grade"
+    #and I ignore the rjs call 
+    When I select "Other Guy" from "search_criteria_user_id"
+    And xhr "search_criteria_user_id" updates ["search_criteria_group_id"]  
+    Then I should verify rjs has options ["Blue Team"]
+
+
+
+
+
+
 #test student group dropdown
 # 0 all (2 exist) groups available to user (show * + 2 options in dropdown)   should be able to see ungrouped
 # 1 group available to user (user with one group above) should not beable to see ungrouped   readonly
