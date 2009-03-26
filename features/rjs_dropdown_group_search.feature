@@ -46,8 +46,7 @@ Feature: Search By Student Groups
     And xhr "search_criteria_grade" updates ["search_criteria_group_id", "search_criteria_user_id"]  
     #And rjs is triggered for "grade" and value "3"
 
-    And I display body  
-    Then I should verify rjs has options ["Filter by Group Member", "Other Guy","default user", "Red Team", "Green Team", "Yellow Team"]
+    Then I should verify rjs has options ["Filter by Group Member", "Other Guy","default user", "Filter by Group","Green Team","Red Team",  "Yellow Team"]
 
 
 

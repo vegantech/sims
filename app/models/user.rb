@@ -56,10 +56,9 @@ class User < ActiveRecord::Base
     #the - separates id and prompt
     
     opts.stringify_keys!
-    opts.reverse_merge!("prompt"=>"*-Filter by Group",
-                        "grade"=>"*"
-                        )
-
+    
+    opts.reverse_merge!( "grade"=>"*") 
+    prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group").split("-",2)
     grps = authorized_groups_for_school(school)
 
     unless opts["grade"] =="*"
@@ -75,7 +74,6 @@ class User < ActiveRecord::Base
     end
 
     
-    prompt_id,prompt_text=opts["prompt"].split("-",2)
     grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if grps.size > 1 or special_user_groups.all_students_in_school?(school)
     @groups=grps
 
@@ -83,22 +81,21 @@ class User < ActiveRecord::Base
 
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
-  #default prompt is "*-Filter by Group"
+  #default prompt is "*-Filter by Group Member"
   #the - separates id and prompt
   #blank grade defaults to *
   #blank user defaults to *
 
     opts.stringify_keys!
-    opts.reverse_merge!("prompt"=>"*-Filter by Group Member",
-                        "grade"=>"*")
+    opts.reverse_merge!( "grade"=>"*")
 
     users=authorized_groups_for_school(school).members
     unless opts["grade"]  == "*"
       user_ids =users.collect(&:id)
-      users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}})
+      users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}).uniq
     end
     users=users.sort_by{|u| u.to_s}
-    prompt_id,prompt_text=opts["prompt"].split("-",2)
+    prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group Member").split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
 
