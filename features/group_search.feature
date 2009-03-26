@@ -55,10 +55,10 @@ Feature: Search By Student Groups
 
     When I select "3" from "search_criteria_grade"
     And I select "Other Guy" from "search_criteria_user_id"
-    And I select "Blue Team" from "search_criteria_group_id"
+    And I select "Yellow Team" from "search_criteria_group_id"
     Then I press "Search for Students"
-    Then I should see "Blue Floyd"
-    Then I should not see "Red Fred"
+    Then I should see "Mellow, Yellow"
+    Then I should not see "Fred, Red"
     
     
 
