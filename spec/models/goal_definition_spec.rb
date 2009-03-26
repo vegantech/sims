@@ -19,13 +19,22 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe GoalDefinition do
-  before(:each) do
+  before do
     @valid_attributes = {
       :title => "value for title",
       :description => "value for description",
       :position => "1",
       :disabled => false
     }
+  end
+
+  describe 'deep_clone' do
+    it 'should clone child objectives' do
+      g1 = Factory(:goal_definition)
+      ods = Factory(:objective_definition, :goal_definition => g1) 
+      g2 = g1.deep_clone(-1)
+      g2.objective_definitions.map(&:title).should == g1.objective_definitions.map(&:title)
+    end
   end
 
   it "should create a new instance given valid attributes" do

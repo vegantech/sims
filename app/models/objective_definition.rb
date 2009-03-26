@@ -34,4 +34,8 @@ class ObjectiveDefinition < ActiveRecord::Base
   def to_s
     title
   end
+
+  def deep_clone
+    o=self.clone
+  end
 end

@@ -126,5 +126,37 @@ describe District do
 
   end
 
+  describe 'clone_content_from_admin' do
+    it 'should clone the content of its admin district?' do
+      district = @local_district
+      admin_district = district.state_district
+      gd1 = Factory(:goal_definition, :district=>admin_district)
+      od1 = Factory(:objective_definition, :goal_definition => gd1)
 
+      district.clone_content_from_admin
+
+      district.goal_definitions.should_not == admin_district.goal_definitions
+      district.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
+      district.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
+    end
+
+    it 'should do updates, deletes, and handle changes like our intervention_updates document' do
+      pending
+    end
+  end
+
+  describe 'admin district' do
+    it 'should return the state admin district for a leaf (normal) district' do
+      pending
+    end
+
+    it 'should return the country admin district for a state admin district' do
+      pending
+    end
+
+
+    it 'should return nil for the coutnry admin district'  do
+      pending
+    end
+  end
 end

@@ -40,4 +40,13 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
+  def deep_clone(district_id)
+    k=clone
+    k.district_id=district_id
+    k.copied_at=Time.now
+    k.copied_from = id
+    k.save!
+    k.objective_definitions << objective_definitions.collect{|o| o.deep_clone}
+    k
+  end
 end

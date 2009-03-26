@@ -174,6 +174,17 @@ class District < ActiveRecord::Base
     probe_definitions.find_by_id(p_id)
   end
 
+  def clone_content_from_admin
+    admin_district.goal_definitions.collect{|g| g.deep_clone(self.id)}
+    goal_definitions(true)
+  end
+
+
+  def admin_district
+    puts "CHANGE THIS"
+    state_district
+  end
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?
