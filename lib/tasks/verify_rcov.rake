@@ -26,13 +26,13 @@ task "test:coverage" => [:verify_rcov]
 
 RCov::VerifyTask.new('verify_rcov_unit') do |t|
   t.require_exact_threshold=false
-  t.threshold = 76.0  # Make sure you have rcov 0.7 or higher! 
+  t.threshold = 76.5  # Make sure you have rcov 0.7 or higher! 
   t.index_html = 'test/coverage/unit/index.html'
 end
 
 RCov::VerifyTask.new('verify_rcov_functional') do |t|
   t.require_exact_threshold=false
-  t.threshold = 76.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 76.5 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/functional/index.html'
 end
 
