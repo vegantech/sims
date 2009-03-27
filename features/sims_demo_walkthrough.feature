@@ -44,6 +44,8 @@ Feature: Sims Demo Walkthrough
 
 
     #creating and editing score #195
+    #also 211 for verifying score date.
+
     Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
@@ -58,10 +60,13 @@ Feature: Sims Demo Walkthrough
     Then I press "Save"
     Then I follow "Edit/Add Comment"
     Then I follow "Enter/view scores"
+    Then I select "2007" from "intervention_intervention_probe_assignment_new_probes__administered_at_1i"
     Then I fill in "Score" with "15"
+    
     Then I press "Save"
     Then I follow "Edit/Add Comment"
     Then I follow "Enter/View scores"
+    Then I should see ", 2007"
     Then I follow "Edit Score"
     Then I fill in "Score" with "25"
     Then I press "Save"
