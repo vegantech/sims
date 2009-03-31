@@ -202,7 +202,6 @@ describe ReportsController do
       @student = Factory(:student, :interventions => [intervention])
       @student.interventions.should_not be_empty
       Student.should_receive(:find).with(:first, {:conditions=>{:id=>@student.id}}).and_return(@student)
-      StudentInterventionsReport.should_receive(:render_html)
 
       get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"}},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}

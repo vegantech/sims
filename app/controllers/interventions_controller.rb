@@ -56,9 +56,9 @@ class InterventionsController < ApplicationController
         if new_pd
           new_pd.intervention_definitions << @intervention.intervention_definition
         end
-
-        format.html { redirect_to(current_student) }
+        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
+
       else
         format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
         format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
@@ -74,7 +74,7 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(current_student) }
+        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
         format.xml  { head :ok }
       else
         format.html { edit and render :action => "edit" }

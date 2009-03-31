@@ -26,8 +26,12 @@
     <% if @student.interventions.empty? %>
       Student has no interventions
     <% else %>
-      <h2>Summary of Interventions</h2>
-      <%= StudentInterventionsReport.render_html(:student => @student) %>
+    <h2>Interventions</h2>
+    <h3 class="intervention_summary"><span>Active Interventions</span></h3>
+    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.active, :no_action=>true} %>
+
+    <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
+    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.inactive, :no_action => true} %>
     <% end %>
   <% end %>
 

@@ -13,7 +13,7 @@
       current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
 
     <% plus_minus_li "Reports" do %>
-        <%= li_link_to_if_authorized('Team Notes', '/reports/team_notes') unless current_school.blank? %>
+        <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
         <%= li_link_to_if_authorized "Regenerate Intervention documents in menu" , 
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
 
