@@ -41,16 +41,22 @@ class InterventionsController < ApplicationController
       if params[:intervention_probe_assignment][:probe_definition_id].blank?
         params[:intervention].delete(:intervention_probe_assignment)
       elsif params[:intervention_probe_assignment][:probe_definition_id] == 'custom'
-        new_pd = ProbeDefinition.create!(params[:intervention][:intervention_probe_assignment][:probe_definition])
+        new_pd = ProbeDefinition.create!(params[:intervention][:intervention_probe_assignment][:probe_definition]) #will blow up if fails validation
         params[:intervention][:intervention_probe_assignment][:probe_definition_id] = new_pd.id
         params[:intervention][:intervention_probe_assignment][:probe_definition] = new_pd
       end
     end
     @intervention = build_from_session_and_params
 
+    
+
     respond_to do |format|
       if @intervention.save
         flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
+        if new_pd
+          new_pd.intervention_definitions << @intervention.intervention_definition
+        end
+
         format.html { redirect_to(current_student) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
