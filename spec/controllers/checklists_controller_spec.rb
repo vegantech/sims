@@ -9,7 +9,9 @@ describe ChecklistsController do
   end
 
   before do
-    controller.stub!(:current_student =>@current_student=mock_student)
+    controller.stub!(:current_student =>@current_student=mock_student, :current_user =>@current_user=mock_user)
+    @current_student.stub!(:checklists=>Checklist)
+    
   end
   
   describe "responding to GET show" do
@@ -35,10 +37,23 @@ describe ChecklistsController do
   describe "responding to GET new" do
   
     it "should expose a new checklist as @checklist" do
-    pending
-      Checklist.should_receive(:new).and_return(mock_checklist)
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>false))
       get :new
       assigns[:checklist].should equal(mock_checklist)
+    end
+
+    it 'should redirect to current student if there is a checklist in progress' do
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>true,'missing_checklist_definition?'=>false))
+      get :new
+      flash[:notice].should == "Please submit/edit or delete the already started checklist first"
+      response.should redirect_to(student_url(@current_student))
+    end
+
+    it 'should redirect to current_student if there is no checklist defined' do
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>true))
+      get :new
+      flash[:notice].should == "No checklist available.  Have the content builder create one."
+      response.should redirect_to(student_url(@current_student))
     end
 
   end
