@@ -5,25 +5,21 @@ class InterventionsController < ApplicationController
   include PopulateInterventionDropdowns
 
   # GET /interventions/1
-  # GET /interventions/1.xml
   def show
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @intervention }
     end
   end
 
   # GET /interventions/new
-  # GET /interventions/new.xml
   def new
-    flash[:custom_intervention] = params[:custom_intervention]
     flash.keep(:custom_intervention)
+    flash[:custom_intervention] ||= params[:custom_intervention]
     @quicklist = true if params[:quicklist]
 
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
-      format.xml  { render :xml => @intervention }
     end
   end
 
@@ -35,39 +31,25 @@ class InterventionsController < ApplicationController
   end
 
   # POST /interventions
-  # POST /interventions.xml
   def create
-    if params[:intervention_probe_assignment]
-      if params[:intervention_probe_assignment][:probe_definition_id].blank?
-        params[:intervention].delete(:intervention_probe_assignment)
-      elsif params[:intervention_probe_assignment][:probe_definition_id] == 'custom'
-        new_pd = ProbeDefinition.create!(params[:intervention][:intervention_probe_assignment][:probe_definition]) #will blow up if fails validation
-        params[:intervention][:intervention_probe_assignment][:probe_definition_id] = new_pd.id
-        params[:intervention][:intervention_probe_assignment][:probe_definition] = new_pd
-      end
-    end
     @intervention = build_from_session_and_params
-
-    
-
-    respond_to do |format|
-      if @intervention.save
-        flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
-        if new_pd
-          new_pd.intervention_definitions << @intervention.intervention_definition
-        end
-        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
-        format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
-
-      else
-        format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
-        format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
-      end
-    end
+    if @intervention.save
+      flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
+      redirect_to(student_url(current_student, :tn=>0, :ep=>0))
+    else
+      raise @intervention.errors.inspect
+      flash[:notice]='Failed validation' and redirect_to :action=>:new and return
+      #VALIDATIO NNEEDS FIXING
+      flash[:custom_intervention]=true if @intervention.intervention_definition.new_record? || @intervention.intervention_definition.blank?
+      
+      
+      @users = current_school.users.collect{|e| [e.fullname, e.id]}
+      
+      render :action => "new"
+    end       
   end
 
   # PUT /interventions/1
-  # PUT /interventions/1.xml
   def update
     params[:intervention][:participant_user_ids] ||=[] if params[:intervention]
     params[:intervention][:intervention_probe_assignment] ||= {} if params[:intervention]
@@ -75,23 +57,19 @@ class InterventionsController < ApplicationController
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
         format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
-        format.xml  { head :ok }
       else
         format.html { edit and render :action => "edit" }
-        format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /interventions/1
-  # DELETE /interventions/1.xml
   def destroy
     logger.info("DELETION- #{current_user} at #{current_user.district} removed #{@intervention.title} from #{current_student}")
     @intervention.destroy
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
-      format.xml  { head :ok }
     end
   end
 
@@ -99,7 +77,6 @@ class InterventionsController < ApplicationController
     @intervention.end(current_user.id)
      respond_to do |format|
       format.html { redirect_to(current_student) }
-      format.xml  { head :ok }
     end
   end
 

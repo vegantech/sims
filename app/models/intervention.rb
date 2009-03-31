@@ -42,7 +42,7 @@ class Intervention < ActiveRecord::Base
 
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
-  after_update :save_assigned_monitor
+  after_save :save_assigned_monitor
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
   attr_reader :autoassign_message
@@ -109,13 +109,6 @@ class Intervention < ActiveRecord::Base
     intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
   end
 
-  def build_custom_probe(opts={})
-    probe_definition = ProbeDefinition.new(opts)
-    probe_definition.intervention_definitions << self.intervention_definition
-    probe_definition.intervention_probe_assignments.build(:enabled => true, :intervention => self)
-    probe_definition
-  end
-
   def auto_implementer?
     @auto_implementer == "1"
   end
@@ -131,7 +124,16 @@ class Intervention < ActiveRecord::Base
   def intervention_probe_assignment=(params)
     intervention_probe_assignments.update_all(:enabled => false)
     return if params.blank? or params[:probe_definition_id].blank?
+   
+    if params[:probe_definition_id] == 'custom'
+      params[:probe_definition_id] = nil
+    end
     @ipa = intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
+
+    
+    if params[:probe_definition_id].nil?
+      params[:probe_definition]=@ipa.build_probe_definition(params[:probe_definition])
+    end
     @ipa.attributes = params.merge(:enabled => true)
     @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
@@ -197,7 +199,9 @@ class Intervention < ActiveRecord::Base
 
   def save_assigned_monitor
     return true unless defined?(@ipa)
+    @ipa.probe_definition.intervention_definitions << self.intervention_definition  if @ipa.probe_definition.intervention_definitions.blank?
     @ipa.save
+
   end
 
   def send_creation_emails
