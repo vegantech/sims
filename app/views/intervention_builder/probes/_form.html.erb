@@ -4,24 +4,19 @@
 <!--[form:probe_definition]-->
   <tr>
     <td width="15%"><label for="probe_definition_title">Title</label></td>
-    <td colspan="3"><%= text_field 'probe_definition', 'title', 'size'=> 51  %></td>
+    <td colspan="3"><%= text_field 'probe_definition', 'title', 'size' => 51  %></td>
   </tr>
   <tr>
     <td width="15%"><label for="probe_definition_description">Description</label></td>
-    <td colspan="3"><%= text_area 'probe_definition', 'description', 'cols'=>50,  'rows'=> 5  %></td>
+    <td colspan="3"><%= text_area 'probe_definition', 'description', 'cols' => 50,  'rows' => 5  %></td>
   </tr>
-  
-
   <tr>
     <td width="15%"><label for="probe_definition_minimum_score">Min score</label></td>
-    <td><%= text_field 'probe_definition', 'minimum_score', 'size'=>5  %></td>
-    
+    <td><%= text_field 'probe_definition', 'minimum_score', 'size' => 5  %></td>
+
     <td width="15%"><label for="probe_definition_maximum_score">Max score</label></td>
-    <td width="35%"><%= text_field 'probe_definition', 'maximum_score', 'size'=>5  %></td>
+    <td width="35%"><%= text_field 'probe_definition', 'maximum_score', 'size' => 5  %></td>
   </tr>
-  
-  
- 
   <tr>
   </tr>
 <!--[eoform:probe_definition]-->
@@ -29,24 +24,19 @@
 
 <div id="benchmarks">
   <% @probe_definition.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
-    
-  <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
-    
+    <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
   <% end %>
-  
-  </div>
+</div>
+
 <p>
   <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => @probe_definition.probe_definition_benchmarks.size } %>
 </p>
 
+<div id = "assets" >
+  Attach a file or link <br />
+  <%= render :partial => 'assets/asset', :collection => form.object.assets, :locals => {:parent => "probe_definition"} %>
+</div>
 
-
-  <div id = "assets" >
-    Attach a file or link <br />
-    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "probe_definition"}%>
-  </div>
-
-  <p>
-    <%= add_asset_link "Add a file or link", "probe_definition" %>
-  </p>
-
+<p>
+  <%= add_asset_link "Add a file or link", "probe_definition" %>
+</p>

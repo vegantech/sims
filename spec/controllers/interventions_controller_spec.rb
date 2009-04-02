@@ -13,10 +13,10 @@ describe InterventionsController do
     
     @interventions = [@intervention]
     @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
-    @student.should_receive(:interventions).any_number_of_times.and_return(@interventions)
-    controller.should_receive(:current_student).any_number_of_times.and_return(@student)
+    @student.stub!(:interventions=>@interventions)
+    controller.stub!(:current_student=>@student)
     # build_from_session_and_params and populate_dropdowns are unit tested
-    controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(@intervention)
+    controller.stub!(:build_from_session_and_params=>@intervention)
   end
 
   describe 'find_intervention' do

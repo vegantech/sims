@@ -1,4 +1,5 @@
-<% readonly = false if readonly.nil? %> 
+<% readonly = false if readonly.nil? %>
+<% custom = (flash[:custom_intervention].blank? == false) %>
 <%= form.error_messages %>
   <p>
   <%= links_and_attachments form.object.intervention_definition, :p %>
@@ -7,24 +8,24 @@
   <div class="form_row_wrap_label">
     <% if readonly %>
       <div class ="fake_label">Frequency</div><%= @intervention.frequency_summary %>
-      <%= "(Rec: #{@intervention.intervention_definition.frequency_summary})" unless @intervention.intervention_definition.blank?%>
+      <%= "(Rec: #{@intervention.intervention_definition.frequency_summary})" unless @intervention.intervention_definition.blank? %>
     <% else %>
       <%= form.label :frequency_multiplier, 'Frequency:' %>
       <%= form.select :frequency_multiplier, (1..20).to_a %>
       <%= form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %> 
-      <%= "(Rec: #{@intervention_definition.frequency_summary})" unless flash[:custom_intervention] or @intervention_definition.blank?%>
+      <%= "(Rec: #{@intervention_definition.frequency_summary})" unless custom or @intervention_definition.blank? %>
     <% end %>
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
     <% if readonly %>
         <div class ="fake_label">Duration</div><%= @intervention.time_length_summary %>
-        <%= "(Rec: #{@intervention.intervention_definition.time_length_summary})" unless @intervention.intervention_definition.blank?%>
+        <%= "(Rec: #{@intervention.intervention_definition.time_length_summary})" unless @intervention.intervention_definition.blank? %>
       <% else %>
       <%= form.label :time_length_number, 'Duration:' %>
-      <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date('#{@intervention.new_record?}');"}%>
+      <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date('#{@intervention.new_record?}');"} %>
       <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:onchange => "change_date('#{@intervention.new_record?}');"}) %> 
-      <%= "(Rec: #{@intervention_definition.time_length_summary})" unless flash[:custom_intervention]  or @intervention_definition.blank? %>
+      <%= "(Rec: #{@intervention_definition.time_length_summary})" unless custom or @intervention_definition.blank? %>
     <% end %>
 
   </div>
@@ -58,17 +59,17 @@
   </div>
   <br class="brclear" />
   <br class="brclear" />
-  <%= render :partial => 'interventions/assign_progress_monitor', :locals => { :form => form, :readonly => readonly} unless !readonly and @recommended_monitors.blank?%>
+  <%= render :partial => 'interventions/probe_assignments/assign_progress_monitor', :locals => {:form => form, :readonly => readonly, :custom => custom} unless !readonly and @recommended_monitors.blank? and !custom %>
   <br class="brclear" />
 
-  <%= render :partial=>"interventions/comments" %>
+  <%= render :partial => "interventions/comments" %>
 
   <br class="brclear" />
   <% unless readonly %>
-  <br class="brclear" />
-    <%form.fields_for :comment,InterventionComment.new do |comment_fields|%>
+    <br class="brclear" />
+    <% form.fields_for :comment, InterventionComment.new do |comment_fields| %>
       <%= comment_fields.label :comment, 'Add new comment about the intervention plan and progress' %>
-      <%= comment_fields.text_area :comment,  :rows=>5, :class=>"fixed_width" %>
+      <%= comment_fields.text_area :comment,  :rows => 5, :class => "fixed_width" %>
     <% end %>
   <% end %>
   <br class="brclear" />
