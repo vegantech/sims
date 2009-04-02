@@ -8,9 +8,10 @@
   <% else %>
     <% options = @recommended_monitors.map {|element| [element.send(:title), element.send(:probe_definition_id)]} %>
     <% options << ['Custom', 'custom'] if flash[:custom_intervention] %>
+    <% ipa = @intervention.intervention_probe_assignment ?  @intervention.intervention_probe_assignment.probe_definition_id : nil %> 
     
 
-    <%= select('intervention[intervention_probe_assignment]', :probe_definition_id, options, {:include_blank => true, :selected =>  @intervention.intervention_probe_assignment.probe_definition_id}, {:onchange => remote_function(:update => 'intervention_probe_assignment', :url => ajax_probe_assignment_interventions_url, :method => :get, :with => "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before => "$('spinnerassign_progress').show()", :success => "$('spinnerassign_progress').hide();"
+    <%= select('intervention[intervention_probe_assignment]', :probe_definition_id, options, {:include_blank => true, :selected => ipa}, {:onchange => remote_function(:update => 'intervention_probe_assignment', :url => ajax_probe_assignment_interventions_url, :method => :get, :with => "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before => "$('spinnerassign_progress').show()", :success => "$('spinnerassign_progress').hide();"
 ), :class => "fixed_width"}) %>
 
     <%= spinner("assign_progress") %>
