@@ -38,7 +38,7 @@ class Intervention < ActiveRecord::Base
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
-  validate :validate_intervention_probe_assignment
+  validate :validate_intervention_probe_assignment, :end_date_after_start_date?
 
 
   before_create :assign_implementer
@@ -219,5 +219,11 @@ class Intervention < ActiveRecord::Base
     return true if @ipa.valid?
     errors.add_to_base("Progress Monitor Assignment is invalid") 
     false
+  end
+
+
+  def end_date_after_start_date?
+    errors.add(:end_date, "Must be after start date") and return false if end_date.blank? || start_date.blank? || end_date < start_date
+    true
   end
 end

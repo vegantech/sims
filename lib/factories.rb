@@ -98,6 +98,8 @@ Factory.define :intervention do |i|
   i.frequency_multiplier 1
   i.time_length_number 1
   i.association :intervention_definition
+  i.start_date {Date.today}
+  i.end_date {Date.today  + 1.day }
 end
 
 Factory.define :intervention_definition do |id|

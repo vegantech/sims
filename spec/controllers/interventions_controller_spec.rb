@@ -138,16 +138,19 @@ describe InterventionsController do
     end
     
     describe "with invalid params" do
+      before do
+        @intervention.stub!(:goal_definition => mock_goal_definition, :objective_definition => mock_objective_definition,
+              :intervention_cluster => mock_intervention_cluster, :intervention_definition => mock_intervention_definition )
+        controller.stub!(:populate_goals)
+      end
       it "should expose a newly created but unsaved intervention as @intervention" do
         @intervention.should_receive(:save).and_return(false)
-        @intervention.should_receive(:intervention_definition_id).and_return(1)
         post :create, :intervention => {:these => 'params'}
         assigns(:intervention).should equal(@intervention)
       end
 
       it "should re-render the 'new' template" do
         @intervention.should_receive(:save).and_return(false)
-        @intervention.should_receive(:intervention_definition_id).and_return(1)
         post :create, :intervention => {}
         response.should render_template('new')
       end

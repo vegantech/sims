@@ -45,7 +45,17 @@ class InterventionsController < ApplicationController
         format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
         format.xml  { render :xml => @intervention, :status => :created, :location => @intervention }
       else
-        format.html { render :action => "new",:intervention=>{:intervention_definition_id=>@intervention.intervention_definition_id }}
+        #This is to make validation work
+        i=@intervention
+        @goal_definition = @intervention.goal_definition
+        @objective_definition=@intervention.objective_definition
+        @intervention_cluster = @intervention.intervention_cluster
+        @intervention_definition = @intervention.intervention_definition
+        populate_goals
+        @intervention=i
+
+        #end code to make validation work
+        format.html { render :action => "new"}
         format.xml  { render :xml => @intervention.errors, :status => :unprocessable_entity }
       end
     end

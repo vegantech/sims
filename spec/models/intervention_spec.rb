@@ -87,4 +87,17 @@ describe Intervention do
     i.ended_by_id.should ==(1)
     i.ended_at.should == Date.today
   end
+
+  it 'should require end_date be after (or same as) start date' do
+    i=Factory(:intervention)
+    i.start_date=nil
+    i.should_not be_valid
+    i.errors_on(:end_date).should_not be_nil
+    i.start_date=5.days.ago
+    i.should be_valid
+    i.start_date=5.days.since
+    i.should_not be_valid
+    i.errors_on(:end_date).should_not be_nil
+
+  end
 end
