@@ -1,21 +1,21 @@
-<%@intervention_definition = @intervention.intervention_definition %>
-<%form.fields_for(@intervention_definition) do |int_def| %>
+<% @intervention_definition = @intervention.intervention_definition %>
+<% form.fields_for(@intervention_definition) do |int_def| %>
   <%=# debug int_def
- %>
-  <%=error_messages_for(:intervention_definition) %>
-<p>
-  <%=int_def.label :title %> 
-  <%=int_def.text_field :title %> 
-</p>
-<br class="brclear"/ >
-<p>
-  <%=int_def.label :description %> 
-  <%=int_def.text_area :description %> 
-</p>
-<br class="brclear"/ >
-<p>
-  <%=int_def.hidden_field :intervention_cluster_id%>
-  <%=int_def.label :tier_id, "Tier"%> 
-  <%=int_def.collection_select(:tier_id, Tier.all, :id, :title)%>
-</p>
+  %>
+  <%= error_messages_for(:intervention_definition) %>
+  <p>
+    <%= int_def.label :title %> 
+    <%= int_def.text_field :title %> 
+  </p>
+  <br class="brclear"/ >
+  <p>
+    <%= int_def.label :description %> 
+    <%= int_def.text_area :description %> 
+  </p>
+  <br class="brclear"/ >
+  <p>
+    <%= int_def.hidden_field :intervention_cluster_id %>
+    <%= int_def.label :tier_id, "Tier" %> 
+    <%= int_def.collection_select(:tier_id, Tier.all, :id, :title) %>
+  </p>
 <% end %>

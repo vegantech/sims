@@ -13,10 +13,10 @@ describe InterventionsController do
     
     @interventions = [@intervention]
     @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
-    @student.should_receive(:interventions).any_number_of_times.and_return(@interventions)
-    controller.should_receive(:current_student).any_number_of_times.and_return(@student)
+    @student.stub!(:interventions=>@interventions)
+    controller.stub!(:current_student=>@student)
     # build_from_session_and_params and populate_dropdowns are unit tested
-    controller.should_receive(:build_from_session_and_params).any_number_of_times.and_return(@intervention)
+    controller.stub!(:build_from_session_and_params=>@intervention)
   end
 
   describe 'find_intervention' do
@@ -71,14 +71,6 @@ describe InterventionsController do
       assigns[:intervention_probe_assignment].should == 1
     end
 
-    describe "with mime type of xml" do
-      it "should render the requested intervention as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        @intervention.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => @intervention.id
-        response.body.should == "generated XML"
-      end
-    end
   end
 
   describe "responding to GET new" do
