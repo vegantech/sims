@@ -38,17 +38,14 @@ class Intervention < ActiveRecord::Base
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
-  validate :validate_intervention_probe_assignment
-
+  validate :validate_intervention_probe_assignment, :end_date_after_start_date?
 
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
-  after_update :save_assigned_monitor
-
+  after_save :save_assigned_monitor
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
   attr_reader :autoassign_message
-
 
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
@@ -56,9 +53,9 @@ class Intervention < ActiveRecord::Base
   acts_as_reportable # if defined? Ruport
 
   def self.build_and_initialize(args)
-    #TODO Refactor
+    # TODO Refactor
 
-    if k=args["intervention_definition"] and !k.is_a?(InterventionDefinition)
+    if k = args["intervention_definition"] and !k.is_a?(InterventionDefinition)
       int_def_args = (args.delete("intervention_definition"))
     end
 
@@ -66,7 +63,7 @@ class Intervention < ActiveRecord::Base
     int.build_intervention_definition(int_def_args) if int_def_args
 
     if int.intervention_definition.new_record? 
-      #This represents a custom intervention, passing in a new intervention definition as a param
+      # This represents a custom intervention, passing in a new intervention definition as a param
       int.intervention_definition.school_id = int.school_id
       int.intervention_definition.custom = true
       int.intervention_definition.user_id = int.user_id
@@ -76,7 +73,7 @@ class Intervention < ActiveRecord::Base
       int.intervention_definition.frequency_multiplier = int.frequency_multiplier
     end
 
-    int.start_date ||=Time.now
+    int.start_date ||= Time.now
     if int.intervention_definition
       int.frequency ||= int.intervention_definition.frequency
       int.frequency_multiplier ||= int.intervention_definition.frequency_multiplier
@@ -87,7 +84,7 @@ class Intervention < ActiveRecord::Base
 
     int.time_length_number ||= 1
     int.end_date ||= (int.start_date + (int.time_length_number*int.time_length.days).days)
-    int.selected_ids=nil if int.selected_ids.size == 1
+    int.selected_ids = nil if int.selected_ids.size == 1
 
     int
   end
@@ -114,13 +111,6 @@ class Intervention < ActiveRecord::Base
     intervention_participants | [intervention_participants.build(:user => self.user,:role => InterventionParticipant::AUTHOR)]
   end
 
-  def build_custom_probe(opts={})
-    probe_definition = ProbeDefinition.new(opts)
-    probe_definition.intervention_definitions << self.intervention_definition
-    probe_definition.intervention_probe_assignments.build(:enabled => true, :intervention => self)
-    probe_definition
-  end
-
   def auto_implementer?
     @auto_implementer == "1"
   end
@@ -134,10 +124,19 @@ class Intervention < ActiveRecord::Base
   end
 
   def intervention_probe_assignment=(params)
-    intervention_probe_assignments.update_all(:enabled=>false)
+    intervention_probe_assignments.update_all(:enabled => false)
     return if params.blank? or params[:probe_definition_id].blank?
-    @ipa=intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
-    @ipa.attributes=params.merge(:enabled=>true)
+   
+    if params[:probe_definition_id] == 'custom'
+      params[:probe_definition_id] = nil
+    end
+    @ipa = intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
+
+    
+    if params[:probe_definition_id].nil?
+      params[:probe_definition]=@ipa.build_probe_definition(params[:probe_definition])
+    end
+    @ipa.attributes = params.merge(:enabled => true)
     @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
     @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
   end
@@ -206,7 +205,9 @@ class Intervention < ActiveRecord::Base
 
   def save_assigned_monitor
     return true unless defined?(@ipa)
+    @ipa.probe_definition.intervention_definitions << self.intervention_definition  if @ipa.probe_definition.intervention_definitions.blank?
     @ipa.save
+
   end
 
   def send_creation_emails
@@ -224,5 +225,11 @@ class Intervention < ActiveRecord::Base
     return true if @ipa.valid?
     errors.add_to_base("Progress Monitor Assignment is invalid") 
     false
+  end
+
+
+  def end_date_after_start_date?
+    errors.add(:end_date, "Must be after start date") and return false if end_date.blank? || start_date.blank? || end_date < start_date
+    true
   end
 end

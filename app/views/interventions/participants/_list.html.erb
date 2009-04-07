@@ -1,6 +1,6 @@
 <%  readonly = false if readonly.nil?
   if @intervention.new_record?
-    fallback_url = new_intervention_url(:goal_id => @goal_definition.id, :objective_id => @objective_definition.id, :category_id => @intervention_cluster.id, :definition_id => @intervention_definition.id, :add_participant => true)
+    fallback_url = new_intervention_url(:goal_id => @goal_definition, :objective_id => @objective_definition, :category_id => @intervention_cluster, :definition_id => @intervention_definition, :add_participant => true)
   else
     fallback_url = edit_intervention_url(@intervention)
   end
