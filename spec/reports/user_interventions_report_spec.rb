@@ -16,9 +16,9 @@ Report Generated at December 12, 2008 00:00
 First Last:
 
 +---------------------------------------------------------------------------------------------------------+
-|    Role     |     Title / Status     | Start Date |     Frequency     | Active | Time Length | End Date |
+|     Title / Status     |    Role     | Start Date | End Date |     Frequency     | Time Length | Active |
 +---------------------------------------------------------------------------------------------------------+
-| Participant | #{ip.intervention.title.ljust(22)} |            | 1 time Freq Title | true   | 1 Default   |          |
+| #{ip.intervention.title.ljust(22)} | Participant |            |          | 1 time Freq Title | 1 Default   | true   |
 +---------------------------------------------------------------------------------------------------------+
 
 EOS

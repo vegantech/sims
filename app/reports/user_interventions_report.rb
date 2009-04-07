@@ -32,17 +32,15 @@ class UserInterventions
     table.rename_columns("role_title" => "Role", "intervention.report_summary" => "Title / Status",
       "intervention.start_date" => "Start Date", "intervention.frequency_summary" => "Frequency",
       "intervention.active" => "Active", "intervention.time_length_summary" => "Time Length",
-      "intervention.end_date" => "End Date")
+      "intervention.end_date" => "End Date", 'student.fullname' => 'Student Name')
 
-    # table.reorder("Title / Status", "Role", "Start Date", "End Date", "Frequency", "Time Length", "Active", "intervention.student_name")
+    table.reorder("Title / Status", "Role", "Start Date", "End Date", "Frequency", "Time Length", "Active", "Student Name")
     table
   end
 
   def to_grouping
     @table ||= to_table
     return @table if @table.column_names.blank?
-    # Ruport::Data::Grouping(@table, :by => "intervention.student.name")
-# puts "Col Names:  #{@table.column_names.join(', ')}"
-    Ruport::Data::Grouping(@table, :by => "student.fullname")
+    Ruport::Data::Grouping(@table, :by => "Student Name")
   end
 end
