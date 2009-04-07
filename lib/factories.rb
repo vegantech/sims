@@ -96,7 +96,9 @@ Factory.define :intervention do |i|
   i.association :user
   i.association :student
   i.frequency_multiplier 1
+  i.association :frequency
   i.time_length_number 1
+  i.association :time_length
   i.association :intervention_definition
 end
 
@@ -142,4 +144,5 @@ Factory.define :time_length do |tl|
 end
 
 Factory.define :frequency do |f|
+  f.title 'Freq Title'
 end

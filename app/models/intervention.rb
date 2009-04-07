@@ -53,6 +53,7 @@ class Intervention < ActiveRecord::Base
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
 
+  acts_as_reportable # if defined? Ruport
 
   def self.build_and_initialize(args)
     #TODO Refactor
@@ -91,7 +92,7 @@ class Intervention < ActiveRecord::Base
     int
   end
 
-  delegate :title, :tier,:description, :intervention_cluster, :to => :intervention_definition
+  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
 
@@ -110,7 +111,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def participants_with_author
-    intervention_participants | [intervention_participants.build(:user=>self.user,:role=>InterventionParticipant::AUTHOR)]
+    intervention_participants | [intervention_participants.build(:user => self.user,:role => InterventionParticipant::AUTHOR)]
   end
 
   def build_custom_probe(opts={})
@@ -155,6 +156,10 @@ class Intervention < ActiveRecord::Base
 
   def assigned_probes
     intervention_probe_assignments.active.collect(&:title).join(";")
+  end
+
+  def report_summary
+    "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
   end
 
   protected

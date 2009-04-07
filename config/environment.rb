@@ -30,10 +30,11 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
+
   if YAML.load_file(RAILS_ROOT+"/config/database.yml")[RAILS_ENV]["adapter"] == "sqlserver"
     config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
   end
-  
+
 
  # need to upgrade rubygems
   # config.gem 'hpricot'
@@ -65,7 +66,7 @@ Rails::Initializer.run do |config|
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
     :session_key => '_sims-open_session',
-    :secret      => 'c3486d7d4f714a0edf8187077b3eed7f4bbc2d715a5511ca03e89f8e45746a6a2ace9b3d786a21b8036eb5ec24231d4a1226c41a1041c9d7d5a45c7b0083c7b6'
+    :secret => 'c3486d7d4f714a0edf8187077b3eed7f4bbc2d715a5511ca03e89f8e45746a6a2ace9b3d786a21b8036eb5ec24231d4a1226c41a1041c9d7d5a45c7b0083c7b6'
   }
 
   # Use the database for sessions instead of the cookie-based default,
@@ -80,7 +81,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
-  config.action_mailer.delivery_method = :railmail 
+  config.action_mailer.delivery_method = :railmail
 
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )
 end
