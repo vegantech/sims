@@ -30,7 +30,7 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
-
+  config.gem 'BlueCloth', :lib=>'bluecloth'
   if YAML.load_file(RAILS_ROOT+"/config/database.yml")[RAILS_ENV]["adapter"] == "sqlserver"
     config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
   end
