@@ -8,6 +8,19 @@ class UserInterventionsReport < DefaultReport
   def setup
     self.data = UserInterventions.new(options)
   end
+
+  class PDF < Ruport::Formatter::PDF
+    renders :pdf, :for => UserInterventionsReport
+    build :header do
+      add_text "Report Generated at #{Time.now}"
+    end
+
+    build :body do
+      pdf_writer.start_page_numbering(350,10,8,:center,"Page: <PAGENUM>")
+
+      output << render_grouping(data.to_grouping, options.to_hash.merge(:formatter=> pdf_writer))
+    end
+  end
 end
 
 

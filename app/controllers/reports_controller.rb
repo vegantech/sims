@@ -1,27 +1,32 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary
- 
+  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary, :user_interventions
+
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA
-	# flagged students for a given school (and optional grade)
-	def student_flag_summary
-		@school = School.find session[:school_id] if session[:school_id]
-		request.env['HTTP_REFERER'] ||= '/'
-		flash[:notice] = "Choose a school first" and redirect_to :back and return if @school.blank?
+  # flagged students for a given school (and optional grade)
+  def student_flag_summary
+    @school = School.find session[:school_id] if session[:school_id]
+    request.env['HTTP_REFERER'] ||= '/'
+    flash[:notice] = "Choose a school first" and redirect_to :back and return if @school.blank?
 
-		@grades = @school.enrollments.grades
+    @grades = @school.enrollments.grades
     # @grades[0][0] = 'All Grades'
-		grade = params[:report_params][:grade] if params[:report_params]
-		grade = nil if grade.blank? or grade.include?("*")
-		handle_report_postback StudentFlagReport, 'student_flag_summary', :grade => grade, :school => @school
-	end
+    grade = params[:report_params][:grade] if params[:report_params]
+    grade = nil if grade.blank? or grade.include?("*")
+    handle_report_postback StudentFlagReport, 'student_flag_summary', :grade => grade, :school => @school
+  end
 
-	# interventions for a single student
-	def student_interventions
-		@student = current_student
-		flash[:notice] = "Select a student first" and redirect_to :back and return if @student.nil?
-		handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
-	end
+  # interventions for a single student
+  def student_interventions
+    @student = current_student
+    flash[:notice] = "Select a student first" and redirect_to :back and return if @student.nil?
+    handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
+  end
+
+  def user_interventions
+    user = current_user
+    handle_report_postback UserInterventionsReport, user.fullname, :user => current_user
+  end
 
   def student_overall
     # process params from student_overall_options
@@ -29,19 +34,19 @@ class ReportsController < ApplicationController
     params[:format] = 'html' unless defined? PDF::HTMLDoc
 
     @opts = params[:report_params] || {}
-		@student = current_student
+    @student = current_student
 
     respond_to do |format|
       format.html {}
       format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
-		end
+    end
   end
 
   def student_overall_options
     # present choices for report, maybe merge this in via postback if it seems right. 
     @opts = [:top_summary, :extended_profile, :flags, :team_notes, :intervention_summary, :checklists_and_or_recommendations]
-		@student = current_student
-		@filetypes = ['html']
+    @student = current_student
+    @filetypes = ['html']
     @filetypes << ['pdf'] if defined? PDF::HTMLDoc
   end
 
