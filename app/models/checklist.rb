@@ -272,14 +272,7 @@ private
   end
 
   def cannot_pass_unless_recommended
-    
     errors.add(:recommendation, "Must have recommendation") if  promoted and  needs_recommendation? 
   end
 
-  def self.clear_checklist_definition_cache
-    #We change datasets so this cache needs to be invalidated for integration
-    #tests.   Im most cases they are run separately, however with autotest
-    #this fails
-    @checklist_definition = {}
-  end
 end
