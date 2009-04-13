@@ -1,0 +1,13 @@
+multiuser on
+acladd sanderson
+acladd eric
+acladd shawn
+
+screen -t 'spec' bash
+screen -t 'tests' bash
+screen -t 'code' bash
+screen -t 'devlog' bash
+screen -t 'server' bash
+screen -t 'console' bash
+
+caption always "%{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%?"
