@@ -19,11 +19,11 @@ describe District::UsersController do
     end
   
     it "should map #update" do
-      route_for(:controller => "district/users", :action => "update", :id => "1").should == "/district/users/1"
+      route_for(:controller => "district/users", :action => "update", :id => "1").should == {:path => "/district/users/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "district/users", :action => "destroy", :id => "1").should == "/district/users/1"
+      route_for(:controller => "district/users", :action => "destroy", :id => "1").should == {:path => "/district/users/1", :method => :delete}
     end
   end
 

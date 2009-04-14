@@ -19,11 +19,11 @@ describe GroupsController do
     end
   
     it "should map #update" do
-      route_for(:controller => "groups", :action => "update", :id => "1").should == "/groups/1"
+      route_for(:controller => "groups", :action => "update", :id => "1").should == {:path => "/groups/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "groups", :action => "destroy", :id => "1").should == "/groups/1"
+      route_for(:controller => "groups", :action => "destroy", :id => "1").should == {:path => "/groups/1", :method => :delete}
     end
   end
 

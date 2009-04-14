@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::ProbeAssignmentsController do
-  it_should_behave_like "an authorized controller"
   describe "route generation" do
     it "should map #index" do
       pending

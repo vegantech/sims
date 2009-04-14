@@ -19,11 +19,11 @@ describe District::FlagCategoriesController do
     end
   
     it "should map #update" do
-      route_for(:controller => "district/flag_categories", :action => "update", :id => "1").should == "/district/flag_categories/1"
+      route_for(:controller => "district/flag_categories", :action => "update", :id => "1").should == {:path => "/district/flag_categories/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "district/flag_categories", :action => "destroy", :id => "1").should == "/district/flag_categories/1"
+      route_for(:controller => "district/flag_categories", :action => "destroy", :id => "1").should == {:path => "/district/flag_categories/1", :method => :delete}
     end
   end
 

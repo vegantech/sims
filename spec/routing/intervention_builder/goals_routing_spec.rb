@@ -19,11 +19,11 @@ describe InterventionBuilder::GoalsController do
     end
   
     it "should map #update" do
-      route_for(:controller => "intervention_builder/goals", :action => "update", :id => "1").should == "/intervention_builder/goals/1"
+      route_for(:controller => "intervention_builder/goals", :action => "update", :id => "1").should == {:path => "/intervention_builder/goals/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "intervention_builder/goals", :action => "destroy", :id => "1").should == "/intervention_builder/goals/1"
+      route_for(:controller => "intervention_builder/goals", :action => "destroy", :id => "1").should == {:path => "/intervention_builder/goals/1", :method => :delete}
     end
   end
 

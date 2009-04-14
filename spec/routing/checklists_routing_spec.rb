@@ -19,11 +19,11 @@ describe ChecklistsController do
     end
   
     it "should map #update" do
-      route_for(:controller => "checklists", :action => "update", :id => "1").should == "/checklists/1"
+      route_for(:controller => "checklists", :action => "update", :id => "1").should == {:path => "/checklists/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "checklists", :action => "destroy", :id => "1").should == "/checklists/1"
+      route_for(:controller => "checklists", :action => "destroy", :id => "1").should == {:path => "/checklists/1", :method => :delete}
     end
   end
 

@@ -19,11 +19,11 @@ describe StudentCommentsController do
     end
   
     it "should map #update" do
-      route_for(:controller => "student_comments", :action => "update", :id => "1").should == "/student_comments/1"
+      route_for(:controller => "student_comments", :action => "update", :id => "1").should == {:path => "/student_comments/1", :method => :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "student_comments", :action => "destroy", :id => "1").should == "/student_comments/1"
+      route_for(:controller => "student_comments", :action => "destroy", :id => "1").should == {:path => "/student_comments/1", :method => :delete}
     end
   end
 
