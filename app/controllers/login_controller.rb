@@ -45,7 +45,6 @@ class LoginController < ApplicationController
     reset_session
     session[:user_id]=nil
     session[:district_id]=nil
-    flash.now[:notice] = "#{oldflash} Logged Out"
     dropdowns
     render :action=>:login #the redirect wasn't properly clearing the cookie via the reset_session
   end
