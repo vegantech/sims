@@ -11,19 +11,19 @@ describe Interventions::CommentsController do
     end
   
     it "should map #show" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "show", :id => 1).should == "/interventions/2/comments/1"
+      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "show", :id => "1").should == "/interventions/2/comments/1"
     end
   
     it "should map #edit" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "edit", :id => 1).should == "/interventions/2/comments/1/edit"
+      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "edit", :id => "1").should == "/interventions/2/comments/1/edit"
     end
   
     it "should map #update" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "update", :id => 1).should == "/interventions/2/comments/1"
+      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "update", :id => "1").should == "/interventions/2/comments/1"
     end
   
     it "should map #destroy" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "destroy", :id => 1).should == "/interventions/2/comments/1"
+      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "destroy", :id => "1").should == "/interventions/2/comments/1"
     end
   end
 

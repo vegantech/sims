@@ -14,22 +14,22 @@ describe Interventions::ProbesController do
   
     it "should map #show" do 
       pending
-      route_for(:controller => "probes", :action => "show", :id => 1).should == "/probes/1"
+      route_for(:controller => "probes", :action => "show", :id => "1").should == "/probes/1"
     end
   
     it "should map #edit" do 
       pending
-      route_for(:controller => "probes", :action => "edit", :id => 1).should == "/probes/1/edit"
+      route_for(:controller => "probes", :action => "edit", :id => "1").should == "/probes/1/edit"
     end
   
     it "should map #update" do 
       pending
-      route_for(:controller => "probes", :action => "update", :id => 1).should == "/probes/1"
+      route_for(:controller => "probes", :action => "update", :id => "1").should == "/probes/1"
     end
   
     it "should map #destroy" do 
       pending
-      route_for(:controller => "probes", :action => "destroy", :id => 1).should == "/probes/1"
+      route_for(:controller => "probes", :action => "destroy", :id => "1").should == "/probes/1"
     end
   end
 
