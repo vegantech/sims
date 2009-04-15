@@ -4,109 +4,109 @@ describe ReportsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-	describe 'student_flag_summary' do
-	  integrate_views
+  describe 'student_flag_summary' do
+    integrate_views
 
-	  before do
-	    @school = Factory(:school)
+    before do
+      @school = Factory(:school)
       @district = Factory(:district)
-	    @from_url = request.env["HTTP_REFERER"] = 'http://one_step_back.org'
+      @from_url = request.env["HTTP_REFERER"] = 'http://one_step_back.org'
     end
 
-		describe 'GET call' do
-			describe 'without selected school' do
-				it 'redirects back to HTTP_REFERER URL' do
-					get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1}
-					flash[:notice].should == 'Choose a school first'
-					response.should redirect_to(@from_url)
-				end
-			end
+    describe 'GET call' do
+      describe 'without selected school' do
+        it 'redirects back to HTTP_REFERER URL' do
+          get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1}
+          flash[:notice].should == 'Choose a school first'
+          response.should redirect_to(@from_url)
+        end
+      end
 
-			describe 'without grade' do
-				it 'shows Choose Report Format Menu Inside of Layout' do
-					School.should_receive(:find).with(@school.id).and_return(@school)
+      describe 'without grade' do
+        it 'shows Choose Report Format Menu Inside of Layout' do
+          School.should_receive(:find).with(@school.id).and_return(@school)
 
-					get :student_flag_summary, {}, {:user_id => 1, :district_id => @district.id, :school_id => @school.id}
+          get :student_flag_summary, {}, {:user_id => 1, :district_id => @district.id, :school_id => @school.id}
 
-					response.should_not be_redirect
-					response.should be_success
-					response.should have_tag('h2', 'Choose Student Flag Report Format for Selected Students')
-				end
-			end
+          response.should_not be_redirect
+          response.should be_success
+          response.should have_tag('h2', 'Choose Student Flag Report Format for Selected Students')
+        end
+      end
 
-			describe 'with selected school and grade' do
-				it 'shows Choose Report Format Menu Inside of Layout' do
-				  School.should_receive(:find).with(@school.id).and_return(@school)
+      describe 'with selected school and grade' do
+        it 'shows Choose Report Format Menu Inside of Layout' do
+          School.should_receive(:find).with(@school.id).and_return(@school)
 
-					get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
+          get :student_flag_summary, {:report_params => {:grade => 'A'}}, {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
 
-					response.should_not be_redirect
-					response.should be_success
-					response.should have_tag('h2', 'Choose Student Flag Report Format for Selected Students')
-				end
-			end
-		end
+          response.should_not be_redirect
+          response.should be_success
+          response.should have_tag('h2', 'Choose Student Flag Report Format for Selected Students')
+        end
+      end
+    end
 
-		describe 'POST call' do
-			describe 'with selected school' do
-				describe 'and HTML format choice' do
-					it 'renders output of StudentFlagReport.render_html' do
-						m = 'This is the HTML Student Flag Report Content'
-						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stub!(:render_html=>m) 
+    describe 'POST call' do
+      describe 'with selected school' do
+        describe 'and HTML format choice' do
+          it 'renders output of StudentFlagReport.render_html' do
+            m = 'This is the HTML Student Flag Report Content'
+            School.should_receive(:find).with(@school.id).and_return(@school)
+            StudentFlagReport.stub!(:render_html=>m) 
 
-						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
-						  {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
+            post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
+              {:user_id => 1, :school_id => @school.id, :district_id => @district.id}
 
-						response.should_not be_redirect
-						assigns[:report].should equal(m)
-						response.should render_template('reports/student_flag_summary')
+            response.should_not be_redirect
+            assigns[:report].should equal(m)
+            response.should render_template('reports/student_flag_summary')
 
-						response.should be_success
-						response.should have_text(/#{m}/)
-					end
-				end # HTML
+            response.should be_success
+            response.should have_text(/#{m}/)
+          end
+        end # HTML
 
-				describe 'and CSV format choice' do
-					it 'returns output of StudentFlagReport.render_csv as report' do
-						m = 'This is the CSV Student Flag Report Content'
-						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stub!(:render_csv=>m) 
+        describe 'and CSV format choice' do
+          it 'returns output of StudentFlagReport.render_csv as report' do
+            m = 'This is the CSV Student Flag Report Content'
+            School.should_receive(:find).with(@school.id).and_return(@school)
+            StudentFlagReport.stub!(:render_csv=>m) 
 
-						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
-						  {:user_id => 1, :school_id => @school.id}
+            post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
+              {:user_id => 1, :school_id => @school.id}
 
-						response.should_not be_redirect
-						response.should be_success
-						assigns[:report].should equal(m)
-						assert_template nil	# not sure how to do this with an Rspec matcher...
+            response.should_not be_redirect
+            response.should be_success
+            assigns[:report].should equal(m)
+            assert_template nil # not sure how to do this with an Rspec matcher...
 
-						response.should be_success
-						response.body.should equal(m)
-					end
-				end # CSV
+            response.should be_success
+            response.body.should equal(m)
+          end
+        end # CSV
 
-				describe 'and PDF format choice' do
-					it 'returns output of StudentFlagReport.render_pdf as report' do
-						m = 'This is the PDF Student Flag Report Content'
-						School.should_receive(:find).with(@school.id).and_return(@school)
-						StudentFlagReport.stub!(:render_pdf=>m) 
+        describe 'and PDF format choice' do
+          it 'returns output of StudentFlagReport.render_pdf as report' do
+            m = 'This is the PDF Student Flag Report Content'
+            School.should_receive(:find).with(@school.id).and_return(@school)
+            StudentFlagReport.stub!(:render_pdf=>m) 
 
-						post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
-						  {:user_id => 1, :school_id => @school.id}
+            post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
+              {:user_id => 1, :school_id => @school.id}
 
-						response.should_not be_redirect
-						response.should be_success
-						assigns[:report].should equal(m)
-						assert_template nil	# not sure how to do this with an Rspec matcher...
+            response.should_not be_redirect
+            response.should be_success
+            assigns[:report].should equal(m)
+            assert_template nil # not sure how to do this with an Rspec matcher...
 
-						response.should be_success
-						response.body.should equal(m)
-					end
-				end # PDF
-			end # with student
-		end # POST
-	end # student_flag_summary
+            response.should be_success
+            response.body.should equal(m)
+          end
+        end # PDF
+      end # with student
+    end # POST
+  end # student_flag_summary
 
   describe 'student overall options' do
     integrate_views
@@ -316,6 +316,62 @@ describe ReportsController do
           TeamNotesReport.stub!(:render_pdf=>m)
 
           post :team_notes, {:generate => "Do the report", :report_params => {:format => 'pdf'}}, {:user_id => 1}
+          assigns[:report].should equal(m)
+          assert_template nil # not sure how to do this with an Rspec matcher...
+
+          response.should be_success
+          response.body.should equal(m)
+        end
+      end
+    end
+  end
+
+  describe 'user_interventions' do
+    describe 'GET' do
+      it 'should set instance variables' do
+        get :user_interventions
+
+        assigns[:filetypes].should == ['html', 'pdf', 'csv']
+        assigns[:selected_filetype].should == 'html'
+        assigns[:report].should be_nil
+      end
+    end
+
+    describe 'POST' do
+      describe 'with HTML format choice'
+      it 'should return output of UserInterventionsReport.render_html as report' do
+        m = 'This is the User Interventions Report Content'
+        UserInterventionsReport.stub!(:render_html => m)
+
+        post :user_interventions, "report_params" => {"format"=>"html"}, "generate" => "Generate Report"
+
+        assigns[:filetypes].should == ['html', 'pdf', 'csv']
+        assigns[:selected_filetype].should == 'html'
+
+        assigns[:report].class.should == String
+        assigns[:report].should == m
+      end
+
+      describe 'and CSV format choice' do
+        it 'returns output of UserInterventionsReport.render_csv as report' do
+          m = 'This is the CSV User Interventions Report Content'
+          UserInterventionsReport.stub!(:render_csv => m)
+
+          post :user_interventions, {:generate => "Do the report", :report_params => {:format => 'csv'}}, {:user_id => 1}
+          assigns[:report].should equal(m)
+          assert_template nil # not sure how to do this with an Rspec matcher...
+
+          response.should be_success
+          response.body.should equal(m)
+        end
+      end # CSV
+
+      describe 'and PDF format choice' do
+        it 'returns output of UserInterventionsReport.render_pdf as report' do
+          m = 'This is the PDF User Interventions Report Content'
+          UserInterventionsReport.stub!(:render_pdf => m)
+
+          post :user_interventions, {:generate => "Do the report", :report_params => {:format => 'pdf'}}, {:user_id => 1}
           assigns[:report].should equal(m)
           assert_template nil # not sure how to do this with an Rspec matcher...
 

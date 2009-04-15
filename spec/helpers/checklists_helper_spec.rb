@@ -41,6 +41,31 @@ describe ChecklistsHelper do
     correct_element?(Checklist.new, QuestionDefinition.new, ElementDefinition.new).should == true
   end
 
+  it 'should return incorrect_answer_highlight if correct_element is false' do
+    self.should_receive(:correct_element?).with(1,2,3).and_return(true)
+    highlight_if_wrong_element(1,2,3).should == nil
+    self.should_receive(:correct_element?).with(6,7,8).and_return(false)
+    highlight_if_wrong_element(6,7,8).should == incorrect_answer_highlight
+
+
+  end
+
+  describe 'markdown_with_span' do
+    it 'should return markdown text wrapped in a span' do
+      markdown_with_span('text to display').should == '<span class="markdown"><p>text to display</p></span>'
+    end
+  end
+
+  describe 'with bluecloth defined' do
+    it 'should show markdown note' do
+      markdown_note.should match(/AboutMarkdown/)
+    end
+
+  end
+
+
+    
+
 
 
 

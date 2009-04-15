@@ -1,8 +1,8 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
-ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'spec'
+ENV["RAILS_ENV"] ||= 'test'
+require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require 'spec/autorun'
 require 'spec/rails'
 require File.expand_path(File.dirname(__FILE__) + '/mock_helper')
 
@@ -44,14 +44,14 @@ Spec::Runner.configure do |config|
   #
   # == Notes
   # 
-  # For more information take a look at Spec::Example::Configuration and Spec::Runner
-
+  # For more information take a look at Spec::Runner::Configuration and Spec::Runner
   describe "an authenticated controller", :shared => true do
     before(:each) do
       controller.should_receive(:authenticate).any_number_of_times.and_return(true)
       controller.class.before_filters.should include(:authenticate) 
     end
   end
+
 
   describe "an authorized controller", :shared => true do
     before(:each) do
@@ -68,3 +68,5 @@ Spec::Runner.configure do |config|
     end
   end
 end
+
+

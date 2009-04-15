@@ -48,8 +48,9 @@ class TeamNotes
 
     rt = StudentComment.report_table(:all,
       :conditions => {:created_at  => @start_date.beginning_of_day..@end_date.end_of_day,
-                    :students => {:id=>student_ids,:district_id => @user.district_id }}, # OK to remove, since handled by search above?
+                    :students => {:id=> student_ids,:district_id => @user.district_id }}, # OK to remove, since handled by search above?
       :include => {:student => {:only => [:id], :methods => :fullname}, :user => {:only => [], :methods => :fullname}},
+      :joins => :student,
       :only => [:body, :created_at])
 
     unless rt.empty?

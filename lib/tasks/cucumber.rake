@@ -1,8 +1,5 @@
+$LOAD_PATH.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib') if File.directory?(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
 begin
-  $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
-
-
-  require 'rubygems'
   require 'cucumber/rake/task'
   require File.dirname(__FILE__)+ '/rcov_rake_helper'
 
@@ -24,5 +21,8 @@ begin
   end
   task :features_with_rcov => ['db:test:prepare']
 rescue LoadError
-  #Cucumber probably isn't loaded
+  desc 'Cucumber rake task not available'
+  task :features do
+    abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
+  end
 end

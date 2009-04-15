@@ -205,7 +205,7 @@ describe StudentsController do
         @user.should_receive(:filtered_members_by_school).with(@school,{"grade"=>"*", "action"=>"grade_search", "controller"=>"students"}).and_return([1,2,3,4])
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>"*",  "action"=>"grade_search", "controller"=>"students"}).and_return([5,6,7,8])
         
-        post :grade_search, :grade=>"*"
+        xhr :post, :grade_search, :grade=>"*"
         assigns(:groups).should == [5,6,7,8]
         assigns(:users).should == [1,2,3,4]
         
@@ -217,7 +217,7 @@ describe StudentsController do
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>'01',  "action"=>"grade_search", "controller"=>"students"}).and_return(['g1-1','g1-3'])
         @user.should_receive(:filtered_members_by_school).with(@school,{"grade"=>'01', "action"=>"grade_search", "controller"=>"students"}).and_return(['g1-6','g1-8'])
 
-        post :grade_search, :grade=>"01"
+        xhr :post, :grade_search, :grade=>"01"
         assigns(:groups).should == ['g1-1','g1-3']
         assigns(:users).should == ['g1-6','g1-8']
 
@@ -238,7 +238,7 @@ describe StudentsController do
       it 'should assign same value for @groups as student groups' do
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>'*',"user"=>"",  "action"=>"member_search", "controller"=>"students"}).and_return([1,2,3,4])
 
-        post :member_search, :grade=>"*", :user=>""
+        xhr :post, :member_search, :grade=>"*", :user=>""
         assigns(:groups).should == [1,2,3,4]
       end
     end
@@ -246,7 +246,7 @@ describe StudentsController do
     describe 'passed blank for user and 01 for grade' do
       it 'should call filter student groups by grade and assign @groups accordingly' do
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>'01',"user"=>"",  "action"=>"member_search", "controller"=>"students"}).and_return([1,2,4])
-        post :member_search, :grade=>"01", :user=>""
+        xhr :post, :member_search, :grade=>"01", :user=>""
         assigns(:groups).should == [1,2,4]
 
       end
@@ -256,7 +256,7 @@ describe StudentsController do
     describe 'passed 5 for user and 01 for grade' do
       it 'should filter by both grade and user' do
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>'01',"user"=>"5",  "action"=>"member_search", "controller"=>"students"}).and_return([2])
-        post :member_search, :grade=>"01", :user=>"5"
+        xhr :post, :member_search, :grade=>"01", :user=>"5"
         assigns(:groups).should == [2]
       end
       

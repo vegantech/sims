@@ -27,7 +27,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   validates_associated :probes
   validate :last_date_must_be_after_first_date
 
-  RECOMMENDED_FREQUENCY=2
+  RECOMMENDED_FREQUENCY = 2
 
 #  validates_date :first_date, :end_date
 

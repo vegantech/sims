@@ -5,26 +5,26 @@ module ApplicationHelper
     #TODO Test then Refactor!!!     This is a spike.
     if options.is_a?String
       url = options
-      url=  "/"+url.split("/")[3..-1].join("/")if url.include?("http:") 
-      hsh = ::ActionController::Routing::Routes.recognize_path url, :method=>:get
+      url = "/"+url.split("/")[3..-1].join("/")if url.include?("http:") 
+      hsh = ::ActionController::Routing::Routes.recognize_path url, :method => :get
     else
-      url =url_for(options)
-      hsh =  ::ActionController::Routing::Routes.recognize_path url
+      url = url_for(options)
+      hsh = ::ActionController::Routing::Routes.recognize_path url
     end
 
-#    hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
-    ctrl= "#{hsh[:controller]}Controller".camelize.constantize
-    grp='write_access' if ctrl.write_actions.include?(hsh[:action])
-    grp='read_access' if ctrl.read_actions.include?(hsh[:action])
-    content_tag :li, link_to(name,url,html_options)if  current_user.authorized_for?(ctrl.controller_path,grp)
+    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
+    ctrl = "#{hsh[:controller]}Controller".camelize.constantize
+    grp = 'write_access' if ctrl.write_actions.include?(hsh[:action])
+    grp = 'read_access' if ctrl.read_actions.include?(hsh[:action])
+    content_tag :li, link_to(name, url, html_options) if current_user.authorized_for?(ctrl.controller_path, grp)
   end
 
   def breadcrumbs
     s = [link_to('Home', root_path)]
-    s  << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
-    s  << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
-    s  << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
-    s  << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student]
+    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
+    s << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
+    s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
+    s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student]
     s.compact.join(' -> ')
   end
 
@@ -32,9 +32,9 @@ module ApplicationHelper
     link_to_unless_current(title,path) if conditions || path == request.path
   end
 
-	def if_student_selected(session = session)
+  def if_student_selected(session = session)
     if session[:selected_students] && session[:selected_student]
-      yield 
+      yield
     end
   end
 
@@ -63,7 +63,6 @@ module ApplicationHelper
     content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();")
   end
 
-
   def spinner(suffix = nil)
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
   end
@@ -82,13 +81,11 @@ module ApplicationHelper
     link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}", url, blank
   end
 
-
-
   def plus_minus_li( title, &blk)
-    id=title.gsub(/ /, '_')
-    concat(content_tag(:li, :class => "plus_minus", :id=>"li#{id}") do
+    id = title.gsub(/ /, '_')
+    concat(content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
       link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") +
-      content_tag(:ul, :id=>"ul#{id}") do
+      content_tag(:ul, :id => "ul#{id}") do
         capture(&blk)
       end
     end)
@@ -111,9 +108,7 @@ module ApplicationHelper
     end
   end
 
-
   def description(obj, name="Description")
     "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
   end
-
 end

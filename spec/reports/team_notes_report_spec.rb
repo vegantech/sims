@@ -6,7 +6,7 @@ describe TeamNotesReport do
       student = Factory(:student, :first_name => 'This', :last_name => 'Student')
       school = Factory(:school, :district_id =>student.district_id)
       student.enrollments.create!(:school=>school, :grade => "05")
-      
+
       user = Factory(:user, :username => 'some_user', :first_name => 'Some', :last_name => 'User')
       user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district_id => school.district_id)
 

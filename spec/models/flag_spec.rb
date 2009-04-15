@@ -41,7 +41,7 @@ describe Flag do
     it 'should work when scoped' do
       student=Factory(:student)
       student.ignore_flags << IgnoreFlag.new(:category => 'math', :reason => '2 + 2 = 5')
-      student.flags.current.should == []
+      student.flags.current.should == {}
     end
   end
 end

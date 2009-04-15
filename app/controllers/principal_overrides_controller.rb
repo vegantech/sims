@@ -23,8 +23,13 @@ class PrincipalOverridesController < ApplicationController
   # GET /principal_overrides/1/edit
   # Principal response
   def edit
-    @principal_override = PrincipalOverride.find(params[:id])
-    @principal_override.setup_response_for_edit(params[:response])
+    @principal_override = PrincipalOverride.find_by_id(params[:id])
+    if @principal_override
+      @principal_override.setup_response_for_edit(params[:response]) #accept or reject
+    else
+      flash[:notice]="Override not found"
+      redirect_to principal_overrides_url
+    end
   end
 
   # POST /principal_overrides
@@ -45,7 +50,7 @@ class PrincipalOverridesController < ApplicationController
 
   # PUT /principal_overrides/1
   def update
-    @principal_override = PrincipalOverride.find(params[:id])
+    @principal_override = PrincipalOverride.find_by_id(params[:id])
 
 
     respond_to do |format|
@@ -62,8 +67,8 @@ class PrincipalOverridesController < ApplicationController
 
   
   def undo
-    @principal_override=current_user.principal_override_responses.find(params[:id])
-    @principal_override.undo!
+    @principal_override=current_user.principal_override_responses.find_by_id(params[:id])
+    @principal_override.undo! if @principal_override
     respond_to do |format|
       format.js {}
       format.html {redirect_to principal_overrides_url}
@@ -73,8 +78,8 @@ class PrincipalOverridesController < ApplicationController
 
   # DELETE /principal_overrides/1
   def destroy
-    @principal_override = current_user.principal_override_requests.find(params[:id])
-    @principal_override.destroy
+    @principal_override = current_user.principal_override_requests.find_by_id(params[:id])
+    @principal_override.destroy if @principal_override
 
     respond_to do |format|
       format.js   {}

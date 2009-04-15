@@ -16,7 +16,7 @@ Feature: Alternate Entry Points
     And I should see "Last, Common"
 
 
-  Scenario oneschool intervention email
+  Scenario: oneschool intervention email
     Given load demo data
     When I enter url "/interventions/184330814/edit"
     Then I should see "Login"

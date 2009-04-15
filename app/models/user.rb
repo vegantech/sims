@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
-  has_many :schools, :through=>:user_school_assignments, :order => "name"
+  has_many :schools, :through => :user_school_assignments, :order => "name"
   has_many :special_user_groups
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments
@@ -29,18 +29,19 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_many :rights, :through => :roles
   has_many :student_comments
+  has_many :intervention_participants
 
   attr_accessor :password, :all_students_in_district
 
   validates_presence_of :username, :last_name, :first_name, :district
   validates_presence_of :password, :on => :create
   validates_presence_of :passwordhash, :on => :update
-  validates_uniqueness_of :username, :scope=>:district_id
+  validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
   after_save :district_special_groups
 
-  acts_as_reportable if defined? Ruport
+  acts_as_reportable # if defined? Ruport
 
   def authorized_groups_for_school(school)
     if special_user_groups.all_students_in_school?(school)
@@ -72,9 +73,11 @@ class User < ActiveRecord::Base
         u_group.users.exists?(opts["user"].to_i)
       end
     end
-
     
-    grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if grps.size > 1 or special_user_groups.all_students_in_school?(school)
+    if grps.length > 1 or special_user_groups.all_students_in_school?(school)
+      grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text))
+    end
+
     @groups=grps
 
   end

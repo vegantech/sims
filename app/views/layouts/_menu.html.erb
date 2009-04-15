@@ -14,13 +14,14 @@
 
     <% plus_minus_li "Reports" do %>
         <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
-        <%= li_link_to_if_authorized "Regenerate Intervention documents in menu" , 
+        <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
 
         <% if_student_selected do %>
           <%= li_link_to_if_authorized "<b>Student Report</b>", :controller => "reports", :action => "student_overall_options" %>
           <%= li_link_to_if_authorized "Student Interventions", :controller => "reports", :action => "student_interventions" %>
         <% end %>
+        <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
     <%  end %>
 
     <% if false %>
@@ -30,11 +31,11 @@
   <% elsif !defined?DEFAULT_URL %>
     <li>Please login.</li>
     <% if @districts.blank? or @districts.size < 4 %>
-    <li>For this demo, use oneschool as the username and password</li>
-    <li>or twoschools for the name and password</li>
-    <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>
-    <li>Use content_builder to access the builders</li>
-    <li>(MMSD has oneschools, alphaprin, district_admin, and content_builder)</li>
+      <li>For this demo, use oneschool as the username and password</li>
+      <li>or twoschools for the name and password</li>
+      <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>
+      <li>Use content_builder to access the builders</li>
+      <li>(MMSD has oneschools, alphaprin, district_admin, and content_builder)</li>
   <% end %>
   <% end %>
 
