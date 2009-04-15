@@ -206,9 +206,9 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    xml_http_request  :post, "/students/grade_search/", {:grade=>3}, {:user_id => user.id, :school_id=>school.id}
+    xml_http_request  :post, "/students/grade_search/", {:grade=>3}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   elsif observed_field == "search_criteria_user_id"
-    xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id}, {:user_id => user.id, :school_id=>school.id}
+    xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   else
     flunk response.body
   end
@@ -278,3 +278,8 @@ end
 Given /^I show page$/ do
   save_and_open_page
 end
+
+When /^page should contain "(.*)"$/ do |arg1|
+  response.body.should =~ /#{arg1}/
+end
+

@@ -45,4 +45,4 @@ Feature: School Selection
 		And I press "Choose School"
 
     Then I should see "User doesn't have access to any students at East High"
-    And I should see "Choose School"
+    And page should contain "Choose School"

@@ -68,7 +68,6 @@ describe LoginController do
        controller.should_receive(:dropdowns)
        get :logout
        response.should render_template('login')
-       flash[:notice].should == " Logged Out"
     end
   end
 end

@@ -24,7 +24,7 @@ Feature: Search By Student Groups
     Then I should see "Floyd, Blue"
     And I should not see "Fred, Red"
 
-  Scenario User With Two Groups Picks One
+  Scenario: User With Two Groups Picks One
     Given school "East High"
     And group "Orange Team" for school "East High" with student "Alfie Orange"
     And group "Maroon Team" for school "East High" with student "Harold Yerbie"
@@ -40,7 +40,7 @@ Feature: Search By Student Groups
   
 
 
-  Scenario User with Two groups picks one shared by another user Lighthouse 209
+  Scenario: User with Two groups picks one shared by another user Lighthouse 209
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
     And group "Red Team" for school "Central" with student "Red Fred" in grade "3"

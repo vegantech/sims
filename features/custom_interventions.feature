@@ -65,9 +65,11 @@ Feature: Create Custom Intervention
     When I press "Save"
     And I should see "Must be after start date"
     # And I go Back to student profile screen
-    And I should see "Choose Goal"
 
-  Scenario Create invalid custom
+    # And I should see "Choose Goal"
+    And page should contain "Choose Category"
+
+  Scenario: Create invalid custom
     #missing title    feature for #212
     Given common data
     And I am on student profile page
@@ -91,5 +93,7 @@ Feature: Create Custom Intervention
     # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
     When I press "Save"
     And I should see "Title can't be blank"
-    And I should see "Choose Category"
+
+    # And I should see "Choose Category"
+    And page should contain "Choose Category"
 

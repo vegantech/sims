@@ -73,9 +73,11 @@ class User < ActiveRecord::Base
         u_group.users.exists?(opts["user"].to_i)
       end
     end
-
     
-    grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text)) if grps.size > 1 or special_user_groups.all_students_in_school?(school)
+    if grps.length > 1 or special_user_groups.all_students_in_school?(school)
+      grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text))
+    end
+
     @groups=grps
 
   end
