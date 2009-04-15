@@ -49,9 +49,15 @@ class Enrollment < ActiveRecord::Base
     end
 
     scope=scope.scoped(:conditions=>search_hash.slice(:grade))
-    scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
 
-    scope= scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id" , :conditions => {:user_group_assignments=>{:user_id => search_hash[:user_id]}}  unless search_hash[:user_id].blank?
+    if search_hash[:group_id].blank? or search_hash[:group_id] == "*" or search_hash[:user_id].blank?
+      scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"
+
+      scope= scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id" , :conditions => {:user_group_assignments=>{:user_id => search_hash[:user_id]}}  unless search_hash[:user_id].blank?
+    else  #BOTH A GROUP AND group memebr (different from requestor) selected
+      scope= scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id" , :conditions => {"groups_students.group_id" => search_hash[:group_id],:user_group_assignments=>{:user_id => search_hash[:user_id]}}  
+
+    end
 
     
     scope = scope.scoped :joins=>:student, :conditions => ["students.last_name like ?", "#{search_hash[:last_name]}%"] unless search_hash[:last_name].blank?

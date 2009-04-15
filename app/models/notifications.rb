@@ -3,7 +3,6 @@ class Notifications < ActionMailer::Base
 
    if defined?DEFAULT_URL
      default_url_options[:host] = 'www.simspilot.org'
-     default_url_options[:port]= nil
      default_url_options[:protocol]='https'
    else
      default_url_options[:host] = 'sims-open.vegantech.com'
@@ -13,6 +12,13 @@ class Notifications < ActionMailer::Base
 
     default_url_options[:host] = 'localhost'
     default_url_options[:port] = 3000
+  end
+
+  def setup_url(district)
+    if defined?DEFAULT_URL &&  RAILS_ENV == 'production'
+      default_url_options[:protocol]='https'
+      default_url_options[:host]="#{district.abbrev}.simspilot.org"
+    end
   end
 
 
@@ -38,12 +44,7 @@ class Notifications < ActionMailer::Base
     interventions=Array(interventions)
     participants=interventions.first.participants_with_author
 
-    if defined?DEFAULT_URL &&  RAILS_ENV == 'production'
-      d=interventions.first.user.district.abbrev
-      default_url_options[:port]=nil
-      default_url_options[:protocol]='https'
-      default_url_options[:host]="#{d}.simspilot.org"
-    end
+    setup_url(interventions.first.user.district)
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'
@@ -74,6 +75,7 @@ class Notifications < ActionMailer::Base
     subject    '[SIMS]  Student Intervention New Participant'
     from       'SIMS <sims@simspilot.org>'
     recipients intervention_person.user.email
+    setup_url(intervention_person.user.district)
     sent_on    Time.now
     body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author,
                 :interventions=> [intervention_person.intervention],:participant => intervention_person

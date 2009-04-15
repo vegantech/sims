@@ -83,6 +83,8 @@ end
       pos_benchmark = 40 + scaled_min - scaled_benchmark
     end
     
+    pos_max = 40 + scaled_min + scale_graph_value(data_max,data_max,80)
+    
     data.each_with_index do |d, index|
       scaled_value = scale_graph_value(d.last, data_max, 80)
       bar_left = bar_offset + (bar_increment * index)
@@ -125,7 +127,7 @@ end
       
       html += <<-"HTML"
       
-      <dt class="#{d.first.to_s.downcase}">#{d[1].to_s.humanize}<br />Score: #{d.last.to_s}</dt>
+      <dt class="#{d.first.to_s.downcase}">#{d[1].to_s.humanize}<br />#{d.last.to_s}</dt>
       <dd class="#{d.first.to_s.downcase}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{positive};" title="#{d.last}">#{scaled_value < floor_cutoff ? '' : d.last}</dd>
       <dd class="bottom_#{d.first.to_s.downcase}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{negative}" title="#{d.last}">#{scaled_value < floor_cutoff ? '' : d.last}</dd>
       
@@ -149,7 +151,14 @@ end
     HTML
     
     end
+
+    
     html += <<-"HTML"
+
+<div id="max_line" style="position: absolute; bottom: #{pos_max}px !important; height: 15px; width: #{line_width}px; border-bottom: 1px dotted #888888;">
+      </div>
+      
+    
     
     </div>
     </div>

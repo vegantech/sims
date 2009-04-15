@@ -72,39 +72,28 @@ module ChecklistsHelper
       onclick = {:onclick=>d} 
     end
     onclick
- end
- 
- def autoset_message(answer_definition)
-   '&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />' if answer_definition.autoset_others? 
- end
-
- def recommendation_buttons(form)
-  a=Recommendation::RECOMMENDATION.sort.collect do |k,v|
-    opts={}
-    opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
-    form.radio_button(:recommendation, k,opts) +
-      form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ?form.text_field(:other) : "") if form.object.show_button?(k)
   end
-  a.compact.join("<br />\n")
 
-  #
- end
+  def autoset_message(answer_definition)
+    '&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />' if answer_definition.autoset_others? 
+  end
+
+  def recommendation_buttons(form)
+   a=Recommendation::RECOMMENDATION.sort.collect do |k,v|
+     opts={}
+     opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
+     form.radio_button(:recommendation, k,opts) +
+       form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ?form.text_field(:other) : "") if form.object.show_button?(k)
+   end
+   a.compact.join("<br />\n")
+
+   #
+  end
 
 
      
-  unless defined?BlueCloth
-    def markdown(text)
-      h(text)
-    end
-
-    def markdown_note
-      ""
-    end
-               
-  else
-    def markdown_note  
+  def markdown_note  
       link_to "You can use markdown","http://www.deveiate.org/projects/BlueCloth/wiki/AboutMarkdown",:target=>"_blank"
-    end
   end
        
   def markdown_with_span(text)

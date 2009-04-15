@@ -1,6 +1,5 @@
 class ChecklistsController < ApplicationController
   # GET /checklists/1
-  # GET /checklists/1.xml
   def show
     @checklist=current_student.find_checklist(params[:id])
     flash[:notice] = "Checklist no longer exists." and redirect_to :back and return if @checklist.blank?
@@ -10,24 +9,20 @@ class ChecklistsController < ApplicationController
   end
 
   # GET /checklists/new
-  # GET /checklists/new.xml
   def new
-    @checklist = current_student.checklists.new_from_teacher(current_user,import_previous_answers=true,score=true)
-    if @checklist.previous_checklist and (@checklist.previous_checklist.is_draft? or @checklist.previous_checklist.needs_recommendation?)
+    @checklist = current_student.checklists.new_from_teacher(current_user)
+    if @checklist.pending?
       flash[:notice]="Please submit/edit or delete the already started checklist first"
-      redirect_to current_student
-      return
+      redirect_to current_student and return
     end
 
-    if @checklist.checklist_definition.new_record?  || @checklist.checklist_definition.blank?
+    if @checklist.missing_checklist_definition?
       flash[:notice] = "No checklist available.  Have the content builder create one."
-      redirect_to current_student
-      return
+      redirect_to current_student and return
     end
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @checklist }
     end
   end
 
@@ -55,7 +50,6 @@ class ChecklistsController < ApplicationController
   def create
     #FIXME should be skinnier model
     @checklist = current_student.checklists.new_from_params_and_teacher(params,current_user)
-    
 
     respond_to do |format|
       if @checklist.all_valid?
@@ -63,13 +57,11 @@ class ChecklistsController < ApplicationController
         flash[:notice] = 'Checklist was successfully created.'
         unless @checklist.needs_recommendation? 
           format.html { redirect_to(current_student) }
-          format.xml  { render :xml => @checklist, :status => :created, :location => @checklist }
         else
           format.html {redirect_to new_recommendation_url(:checklist_id=>@checklist.id)}
         end
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @checklist.errors, :status => :unprocessable_entity }
       end
     end
   end

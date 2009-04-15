@@ -40,6 +40,19 @@ self.use_instantiated_fixtures = true
 #    Checklist.create!(@valid_attributes)
   end
 
+  describe 'pending?' do
+    it 'should have specs for pending?' do
+      pending
+    end
+
+  end
+
+  describe 'missing_checklist_definition?' do
+    it 'should have specs for missing_checklist_definition?' do
+      pending
+    end
+  end
+
   def setup
     @student=Student.new()
     @student.first_name="Frist"

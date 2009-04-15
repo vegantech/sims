@@ -67,7 +67,7 @@ describe Intervention do
       i = Factory(:intervention)
       p = i.build_custom_probe(:title => "test", :description => "test")
       p.save!
-      
+
       i.reload
       i.intervention_definition.probe_definitions.first.should == p
       i.intervention_probe_assignments.first.probe_definition.should == p
@@ -75,7 +75,7 @@ describe Intervention do
   end
 
   it "should create a new instance given valid attributes" do
-      i = Factory(:intervention)
+    i = Factory(:intervention)
   end
 
   it "should end an intervention" do
@@ -86,5 +86,17 @@ describe Intervention do
     i.active.should ==(false)
     i.ended_by_id.should ==(1)
     i.ended_at.should == Date.today
+  end
+
+  it 'should require end_date be after (or same as) start date' do
+    i = Factory(:intervention, :start_date => Date.today, :end_date => Date.today + 1.day)
+    i.start_date = nil
+    i.should_not be_valid
+    i.errors_on(:end_date).should_not be_nil
+    i.start_date = 5.days.ago
+    i.should be_valid
+    i.start_date = 5.days.since
+    i.should_not be_valid
+    i.errors_on(:end_date).should_not be_nil
   end
 end

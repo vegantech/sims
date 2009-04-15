@@ -43,9 +43,6 @@ class Role < ActiveRecord::Base
     district_id.blank?
   end
 
-
-
-
   private
 
   def after_initialize

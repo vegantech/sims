@@ -2,7 +2,7 @@
 
   <% current_district.flag_categories.each do |fc| %>
 
-    <% if !@flagcount.blank? && 100*@flagcount[fc.category].to_f/@students.size  > fc.threshold %>
+<p>    <% if !@flagcount.blank? && 100*@flagcount[fc.category].to_f/@students.size  > fc.threshold %>
       <b>This student list has <%=fc.threshold %>% or more of the students flagged for: 
 <%=Flag::FLAGTYPES[fc.category][:humanize] %> 
 </b>
@@ -10,6 +10,7 @@
       <%= links_and_attachments(fc, :p) %>
 
   Please review the appropriate core practices document(s) prior to selecting individual students for problem solving.
+</p>
     <% end %>
 
 

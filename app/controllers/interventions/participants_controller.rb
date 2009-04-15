@@ -52,15 +52,7 @@ class Interventions::ParticipantsController < ApplicationController
   def destroy
     @intervention_participant = @intervention.intervention_participants.find(params[:id])
     @intervention_participant.destroy
-
-    respond_to do |format|
-      format.js {
-
-
-      }
-      format.html { redirect_to(@intervention) }
-      format.xml  { head :ok }
-    end
+    redirect_to(@intervention)
   end
 
   protected

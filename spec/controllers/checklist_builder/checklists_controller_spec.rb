@@ -11,10 +11,28 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should get index' do
-    pending
+    d=Factory(:district)
+    controller.stub!(:current_district).and_return(d)
+    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :index
+    assigns(:checklist_definitions).should == [a]
     response.should be_success
   end
+
+  it 'should get preview' do
+    d=Factory(:district)
+    controller.stub!(:current_district).and_return(d)
+    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
+    
+    get :preview, :id=>a.id.to_s
+    assigns(:checklist_definition).should == a
+    assigns(:checklist).skip_cache.should be_true
+    assigns(:checklist).checklist_definition.should == a
+    response.should be_success
+   
+
+  end
+  
 
   it 'should get new' do
     d=Factory(:district)

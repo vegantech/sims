@@ -12,7 +12,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   # GET /intervention_definitions/1
   def show
-
     respond_to do |format|
       format.html # show.rhtml
     end
@@ -45,7 +44,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   # PUT /intervention_definitions/1
   def update
-
     respond_to do |format|
       if @intervention_definition.update_attributes(params[:intervention_definition])
         flash[:notice] = 'Intervention was successfully updated.'
@@ -79,9 +77,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
     end
   end
 
-
-
-  
   def move
     @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id])
 
@@ -95,19 +90,14 @@ class InterventionBuilder::InterventionsController < ApplicationController
     end
   end
 
-
-
-
-
-  
   private
+
   def get_intervention_cluster
     @goal_definition = current_district.goal_definitions.find(params[:goal_id])
     @objective_definition=@goal_definition.objective_definitions.find(params[:objective_id])
     @intervention_cluster = @objective_definition.intervention_clusters.find(params[:category_id])
     @intervention_definition=@intervention_cluster.intervention_definitions.find(params[:id]) if params[:id]
   end
-
 
   def move_path(item, direction)
     unless action_name=="show"
@@ -116,6 +106,4 @@ class InterventionBuilder::InterventionsController < ApplicationController
       url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
     end
   end
-  
-
 end

@@ -72,20 +72,27 @@ class Checklist < ActiveRecord::Base
      end
    end
 
+   def pending?
+     previous_checklist and (previous_checklist.is_draft? or previous_checklist.needs_recommendation?)
+   end
 
-   def self.new_from_teacher(teacher,import_previous_answers=false, score=false)
+   def missing_checklist_definition?
+     checklist_definition.new_record?  || checklist_definition.blank?
+   end
+
+
+   def self.new_from_teacher(teacher)
+    
      checklist=Checklist.new(:teacher=>teacher)
      return nil unless checklist.student
      checklist.checklist_definition=checklist.student.checklist_definition
      checklist.from_tier=checklist.student.max_tier
      checklist.district_id=checklist.student.district_id
-     if import_previous_answers or score
-       c=checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id,
+     c=checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id,
       :order=>"created_at DESC")
-       c.answers.each {|e| checklist.answers.build e.attributes} if c and import_previous_answers
-       c.score_checklist  if c and score and c.show_score?(false)
-       checklist.score_results = c.score_results if c and score
-      end
+     c.answers.each {|e| checklist.answers.build e.attributes} if c
+     c.score_checklist  if c and score and c.show_score?(false)
+     checklist.score_results = c.score_results if c 
      checklist
    end
 
@@ -265,14 +272,7 @@ private
   end
 
   def cannot_pass_unless_recommended
-    
     errors.add(:recommendation, "Must have recommendation") if  promoted and  needs_recommendation? 
   end
 
-  def self.clear_checklist_definition_cache
-    #We change datasets so this cache needs to be invalidated for integration
-    #tests.   Im most cases they are run separately, however with autotest
-    #this fails
-    @checklist_definition = {}
-  end
 end

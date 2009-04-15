@@ -24,7 +24,7 @@ end
   
   def specs_corresponding_to_functional
     #maybe add views later
-    %w( controllers ).collect{|e| "spec/#{e}/**/*_spec.rb"}
+    %w( controllers routing).collect{|e| "spec/#{e}/**/*_spec.rb"}
     
   end
   

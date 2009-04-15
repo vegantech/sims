@@ -16,7 +16,7 @@ class InterventionBuilder::ProbesController < ApplicationController
   end
 
   def edit
-    @probe_definition=current_district.probe_definitions.find(params[:id])
+    @probe_definition = current_district.probe_definitions.find(params[:id])
   end
 
   def create
@@ -36,7 +36,6 @@ class InterventionBuilder::ProbesController < ApplicationController
      else
        render :action=>"new"
      end
-
   end
 
   def update

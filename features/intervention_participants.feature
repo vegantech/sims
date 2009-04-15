@@ -13,7 +13,7 @@ Feature: Assign Participants to Intervention
 
     # Yes.  The following line of code is lame.
     # Basically, I did not want to accept a false match on "default user" higher on the page.
-    Then I should see "\ndefault user\n<input id="intervention_participant_user_ids_"
+    Then page should contain "\ndefault user\n<input id=\"intervention_participant_user_ids_"
 
     # And I show page
     And I am now pending
@@ -46,7 +46,7 @@ Feature: Assign Participants to Intervention
       #(One to both users)
     When I follow "Edit/Add Comment"
     # And I show page
-    Then I should see "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
+    Then page should contain '\ndefault user\n<input id=\"intervention_participant_user_ids_' # see comment about this above
     And I should see "Firstcucumber_another Last_Name"
 
   
@@ -69,7 +69,7 @@ Feature: Assign Participants to Intervention
     And I select "default user" from "intervention_participant_user_ids_"
     And I press "Save"
     When I follow "Edit/Add Comment"
-    Then I should see "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
+    Then page should contain "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
     And I should see "Firstcucumber_another Last_Name"
 
     Then there are "1" emails

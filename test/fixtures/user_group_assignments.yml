@@ -45,3 +45,10 @@ seven:
   user: wi_melody
   group: wi_shared
 
+eight:
+  user: oneschool
+  group: shared_class
+
+nine: 
+  user: twoschools
+  group: shared_class

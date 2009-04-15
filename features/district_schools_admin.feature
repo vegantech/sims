@@ -2,7 +2,7 @@ Feature: School Maintenance
   In order to create/maintain schools
   A SIMS district admin
   Should be able to create edit and remove schools school
-  
+
   Scenario: Nondistrict admin should not see school administration panel
     Given common data
     When I go to the school selection page
@@ -29,8 +29,3 @@ Feature: School Maintenance
     Then I fill in "Name" with "Cucumber Middle"
     Then I press "Update"
     Then I should see "Cucumber Middle"
-
-
-    
-    
-

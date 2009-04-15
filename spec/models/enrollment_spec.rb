@@ -50,18 +50,31 @@ describe Enrollment do
         @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999)
         @e2 = student2.enrollments.create!(:grade=>"1",:school_id=>999)
         @e3 = student3.enrollments.create!(:grade=>"1",:school_id=>999)
+        @group2=group2
       end
       it 'should filter correctly' do
         Enrollment.search(:search_type=>'list_all').should == [@e1,@e2,@e3]
         Enrollment.search(:search_type=>'list_all',:user_id=>@user2.id.to_s, :school_id=>999).should == [@e2, @e3]
         Enrollment.search(:search_type=>'list_all',:user=>@user1, :school_id=>999).should == [@e1, @e2]
         Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user2.id.to_s, :school_id=>999).should == [@e2]
+        Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user2.id.to_s, :school_id=>999,:group_id=>@group2.id.to_s).should == [@e2]
       end
+    end
+
+    describe 'with index_includes' do
+      it 'should include student, custom flags, interventions with intervon, flags' do
+        #        Enrollment.should_receive(:find).with({:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user} ]}})
+        Enrollment.search(:search_type=>'list_all',:index_includes=>true)
+
+      end
+      
+
     end
 
     describe 'passed no search criteria' do
       it 'should raise an exception' do
         lambda {Enrollment.search}.should raise_error
+        lambda {Enrollment.search(:search_type=>'fake')}.should raise_error
       end
     end
 

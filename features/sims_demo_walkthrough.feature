@@ -38,12 +38,14 @@ Feature: Sims Demo Walkthrough
     And I fill in "custom_flag_reason" with "test reason from cucumber"
     And I select "Math" from "Category"
     Then I press "Save Custom Flag"
-    Then I should see "Math- \ntest reason from cucumber"
+    Then page should contain "Math- \ntest reason from cucumber"
     Then I follow "Remove"
     Then I should not see "Math- \ntest reason from cucumber"
 
 
     #creating and editing score #195
+    #also 211 for verifying score date.
+
     Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
@@ -54,14 +56,17 @@ Feature: Sims Demo Walkthrough
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
   
-    Then I should see "<td>Reading one</td>"
+    Then page should contain "<td>Reading one</td>"
     Then I press "Save"
     Then I follow "Edit/Add Comment"
     Then I follow "Enter/view scores"
+    Then I select "2007" from "intervention_intervention_probe_assignment_new_probes__administered_at_1i"
     Then I fill in "Score" with "15"
+    
     Then I press "Save"
     Then I follow "Edit/Add Comment"
     Then I follow "Enter/View scores"
+    Then I should see ", 2007"
     Then I follow "Edit Score"
     Then I fill in "Score" with "25"
     Then I press "Save"
@@ -94,7 +99,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Save"
     Then I should see "Please assign a progress monitor"
     Then I follow "Edit/Add Comment"
-    And I should see "<option value=\"\"></option>\n<option value=\"777239083\">Fact Interview A</option>\n<option value=\"777239084\">Fact Interview B</option></select>"
+    And page should contain "<option value=\"\"></option>\n<option value=\"777239083\">Fact Interview A</option>\n<option value=\"777239084\">Fact Interview B</option></select>"
     And I follow "Delete"
  
 
@@ -152,8 +157,8 @@ Feature: Sims Demo Walkthrough
     Then I press "Create"
     
     Then I follow "Assign Monitors"
-    And I should see "\"selected\" value=\"2014\""
-    And I should see "\"selected\" value=\"2013\""
+    And page should contain "\"selected\" value=\"2014\""
+    And page should contain "\"selected\" value=\"2013\""
     Then I follow "back"
     
     Then I follow "Enter scores for previously administered assessment"
@@ -186,7 +191,7 @@ Feature: Sims Demo Walkthrough
     And I follow "Change your logo and url"
     And I should not see "Sorry, help not found."
     And I follow "Home"
-    And I should see "news_items"
+    And page should contain "news_items"
     And I should see "WI Test District Administration"
     And I should see "Add/Remove Users"
     And I should see "Add/Remove Students"
@@ -241,14 +246,14 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool","2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group",  "Homeroom where oneschool is not a member","Homeroom- Oneschool"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Class where oneschool and twoschools have students" , "Homeroom where oneschool is not a member","Homeroom- Oneschool"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
 
     
 
-  Scenario alphagradethree
+  Scenario: alphagradethree
     Given load demo data 
     And I go to the home page
     And I select "WI Test District" from "District"
@@ -263,7 +268,7 @@ Feature: Sims Demo Walkthrough
     And I should not see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
 
-  Scenario twoschools
+  Scenario: twoschools
     Given load demo data 
     And I go to the home page
     And I select "WI Test District" from "District"
@@ -275,9 +280,9 @@ Feature: Sims Demo Walkthrough
     And I should see "Alpha Elementary"
     And I should see "Bravo Elementary"
     Then I press "Choose School"
-    And I should see select box with id of "search_criteria_grade" and contains ["3"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Homeroom where oneschool is not a member"]
+    And I should see select box with id of "search_criteria_grade" and contains ["*","1","3"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member", "1First. oneschool", "2Second. twoschools"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Class where oneschool and twoschools have students", "Homeroom where oneschool is not a member"]
     Then I follow "School Selection"
     And I select "Bravo Elementary" from "school_id"
     Then I press "Choose School"
@@ -286,7 +291,7 @@ Feature: Sims Demo Walkthrough
     And I should see "Jones, Bravo_First"
     And I should see "Smith, Bravo_First"
 
-  Scenario nouser
+  Scenario: nouser
     Given load demo data 
     When I go to the home page
     And I fill in "Login" with "invalid_user"
@@ -298,7 +303,7 @@ Feature: Sims Demo Walkthrough
     Then I should see "Authentication Failure"
      
     
-  Scenario noschools
+  Scenario: noschools
     Given load demo data 
     And I go to the home page
     And I select "WI Test District" from "District"
@@ -309,13 +314,12 @@ Feature: Sims Demo Walkthrough
     Then I should see "No schools available"
     And I should not see "Please Login"
     And I follow "Logout"
-    And I should see "Logged Out"
     And I should see "Please Login"
     
 
  
 
-  Scenario nogroups
+  Scenario: nogroups
     Given load demo data 
     And I go to the home page
     And I select "WI Test District" from "District"
@@ -326,11 +330,11 @@ Feature: Sims Demo Walkthrough
     And I should see "Alpha Elementary"
     Then I press "Choose School"
     And I should see "User doesn't have access to any students at Alpha Elementary"
-    And I should see "Choose School"
+    And page should contain "Choose School"
     
 
 
-  Scenario allstudents
+  Scenario: allstudents
     Given load demo data 
     And I go to the home page
     And I select "WI Test District" from "District"
@@ -343,7 +347,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool", "2Second. twoschools"]
-    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Homeroom where oneschool is not a member", "Homeroom- Oneschool"]
+    And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group", "Class where oneschool and twoschools have students", "Homeroom where oneschool is not a member", "Homeroom- Oneschool"]
     Then I press "Search for Students"
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
