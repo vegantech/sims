@@ -32,7 +32,7 @@ class ChecklistDefinition < ActiveRecord::Base
   before_validation :clear_document
   validates_presence_of :directions, :text
   acts_as_reportable if defined? Ruport
-  acts_as_paranoid
+  is_paranoid
 
   def save_all!
     save! and

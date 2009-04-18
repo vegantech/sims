@@ -24,7 +24,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
   acts_as_list :scope => :goal_definition_id
-  acts_as_paranoid
+  is_paranoid
 
   def disable!
     intervention_clusters.each(&:disable!)

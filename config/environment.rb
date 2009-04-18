@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
   if YAML.load_file(RAILS_ROOT+"/config/database.yml")[RAILS_ENV]["adapter"] == "sqlserver"
     config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
   end
-
+ config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
 
  # need to upgrade rubygems
   # config.gem 'hpricot'

@@ -18,7 +18,7 @@
 
 class AnswerDefinition < ActiveRecord::Base
   acts_as_list :scope => :element_definition
-  acts_as_paranoid
+  is_paranoid
 
   belongs_to :element_definition
 

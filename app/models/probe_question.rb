@@ -19,7 +19,7 @@
 class ProbeQuestion < ActiveRecord::Base
   belongs_to :probe_definition
   has_and_belongs_to_many :probes
-  acts_as_paranoid
+  is_paranoid
 
 
   def self.find_questions_for_report(assessment_type, intervention_probe_definition)

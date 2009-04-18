@@ -29,7 +29,7 @@ class InterventionCluster < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope=>:objective_definition
-  acts_as_paranoid
+  is_paranoid
 
   def disable!
     intervention_definitions.each(&:disable!)

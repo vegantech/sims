@@ -25,7 +25,7 @@ class ElementDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :question_definition
-  acts_as_paranoid
+  is_paranoid
 
 
   validates_presence_of :question_definition_id, :text, :kind

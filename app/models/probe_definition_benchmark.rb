@@ -19,7 +19,7 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validates_presence_of :benchmark, :grade_level
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
-  acts_as_paranoid
+  is_paranoid
 
   protected
   def validate_within_probe_definition_range
