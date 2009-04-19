@@ -15,6 +15,6 @@
   <td><%=h intervention_definition.rec_mon_preface %></td>
   <td><%=h pluralize(intervention_definition.time_length_num, intervention_definition.time_length.title) %></td>
   <td><%=h intervention_definition.frequency_summary %> </td>
-  <td><%=h intervention_definition.updated_at.to_date.to_s(:short) %></td>
+  <td><%=h intervention_definition.updated_at.to_s(:report) %></td>
   
 <% end %>

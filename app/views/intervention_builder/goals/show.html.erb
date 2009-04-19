@@ -10,7 +10,7 @@
 
 <p>
   <b>Updated on:</b>
-  <%= h @goal_definition.updated_at %>
+  <%= h @goal_definition.updated_at.to_s(:report) %>
 
 
 <%= link_to 'Edit', edit_intervention_builder_goal_path(@goal_definition) %> |
