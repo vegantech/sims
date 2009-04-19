@@ -21,6 +21,20 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validate :validate_within_probe_definition_range
   is_paranoid
 
+  def deep_clone(pd)
+    k=pd.probe_definition_benchmarks.find_with_destroyed(:first,:conditions=>{:copied_from=>self.id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.probe_definition =pd
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+    k
+  end
+
   protected
   def validate_within_probe_definition_range
     

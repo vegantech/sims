@@ -29,7 +29,92 @@ describe GoalDefinition do
   end
 
   describe 'deep_clone' do
+    before do
+      @goal = Factory(:goal_definition)
+      @admin_district = @goal.district.admin_district
+      @target_district = @goal.district
+      @goal.district=@admin_district
+      @goal.save!
+    end
+    
+    describe 'new goal in admin not in target' do
+      it 'should add a copy of @goal to target_district' do
+        @target_district.goal_definitions.should be_empty
+        @admin_district.goal_definitions.first.deep_clone(@target_district)
+        goal_copy = @target_district.goal_definitions.find(:first)
+        goal_copy.copied_from.should == @goal.id
+        goal_copy.copied_at.should_not be_nil
+        goal_copy.id.should_not == @goal.id
+        goal_copy.description.should == @goal.description
+        goal_copy.title.should == @goal.title
+        goal_copy.reload
+        goal_copy.updated_at.should == goal_copy.copied_at
+        
+        
+      end
+
+      it 'should clone objective_definitions' do
+        pending
+      end
+      
+    end
+
+    describe 'goal in admin unchanged in target' do
+      it 'should not change' do
+        goal=@admin_district.goal_definitions.first.deep_clone(@target_district)
+        goal2= @admin_district.goal_definitions.first.deep_clone(@target_district)
+        goal.should == goal2
+      end
+
+      it 'should clone objective_definitions' do
+        
+        pending
+      end
+      
+    end
+
+    describe 'goal in admin deleted in target' do
+      it 'should not change or be created' do
+        pending
+        goal=@admin_district.goal_definitions.first.deep_clone(@target_district)
+        goal.destroy
+        goal2= @admin_district.goal_definitions.first.deep_clone(@target_district)
+        goal2.should_not == goal
+      end
+
+    end
+
+    describe 'goal deleted in admin' do
+      describe 'unchanged in target' do
+      end
+
+      describe 'changed in target' do
+      end
+
+      describe 'in use in target' do
+      end
+
+    end
+
+    describe 'goal changed in admin' do
+      describe 'unchanged in target' do
+      end
+
+      describe 'changed in target' do
+      end
+
+      describe 'deleted in target' do
+      end
+      
+
+    end
+
+    
+
+
+    
     it 'should clone child objectives' do
+      pending
       g1 = Factory(:goal_definition)
       ods = Factory(:objective_definition, :goal_definition => g1) 
       g2 = g1.deep_clone(-1)

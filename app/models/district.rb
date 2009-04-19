@@ -175,8 +175,15 @@ class District < ActiveRecord::Base
   end
 
   def clone_content_from_admin
-    admin_district.goal_definitions.collect{|g| g.deep_clone(self.id)}
-    goal_definitions(true)
+    admin_district.goal_definitions.each{|g| g.deep_clone(self)}
+    admin_district.probe_definitions.each{|g| g.deep_clone(self)}
+
+    
+    int_defs=InterventionDefinition.find(:all,:joins=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>admin_district.id})
+    int_defs.each do |idef| 
+      idef.recommended_monitors.each {|g| g.deep_clone(self)}
+    end
+    
   end
 
 

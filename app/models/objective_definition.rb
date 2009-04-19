@@ -35,7 +35,18 @@ class ObjectiveDefinition < ActiveRecord::Base
     title
   end
 
-  def deep_clone
-    o=self.clone
+  def deep_clone(gd)
+    k=gd.objective_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id})
+    if k
+      #already exists
+    else
+      k=clone
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.goal_definition=gd
+      k.save! if k.valid?
+    end
+    k.intervention_clusters << intervention_clusters.collect{|o| o.deep_clone(k)}
+    k
   end
 end

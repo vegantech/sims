@@ -124,4 +124,19 @@ class InterventionDefinition < ActiveRecord::Base
     end
 
   end
+  
+  def deep_clone(ic)
+    k=ic.intervention_definitions.find_with_destroyed(:first, :conditions => {:copied_from => id})
+    if k
+      #exists
+    else
+      k=clone
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.intervention_cluster = ic
+      #      k.save! if k.valid?
+    end
+    
+    k
+  end
 end

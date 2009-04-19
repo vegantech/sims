@@ -37,6 +37,7 @@ class ProbeDefinition < ActiveRecord::Base
   validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
+  is_paranoid
   
   def validate
     #TODO this can be refactored out using rails 2.x changes
@@ -47,6 +48,23 @@ class ProbeDefinition < ActiveRecord::Base
 
   def probes
     intervention_probe_assignments
+  end
+
+  def deep_clone(district)
+    k=district.probe_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.district=district
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+     
+    k.probe_definition_benchmarks << probe_definition_benchmarks.collect{|o| o.deep_clone(k)}
+    k.probe_questions << probe_questions.collect{|o| o.deep_clone(k)}
+    k
   end
 
   def self.group_by_cluster_and_objective

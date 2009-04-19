@@ -21,6 +21,20 @@ class ProbeQuestion < ActiveRecord::Base
   has_and_belongs_to_many :probes
   is_paranoid
 
+  def deep_clone(pd)
+    k=pd.probe_questions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.probe_definition=pd
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+     
+    k
+  end
 
   def self.find_questions_for_report(assessment_type, intervention_probe_definition)
     #I'm not sure what this is yet

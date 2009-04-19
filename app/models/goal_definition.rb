@@ -25,7 +25,7 @@ class GoalDefinition < ActiveRecord::Base
       x
     end
   end
-  validates_uniqueness_of :description, :scope=>[:district_id,:description]
+  validates_uniqueness_of :description, :scope=>[:district_id,:title]
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
@@ -40,13 +40,22 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
-  def deep_clone(district_id)
-    k=clone
-    k.district_id=district_id
-    k.copied_at=Time.now
-    k.copied_from = id
-    k.save!
-    k.objective_definitions << objective_definitions.collect{|o| o.deep_clone}
+  def deep_clone(district)
+    k=district.goal_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.district=district
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+     
+    k.objective_definitions << objective_definitions.collect{|o| o.deep_clone(k)}
     k
   end
+
+  
+  
 end
