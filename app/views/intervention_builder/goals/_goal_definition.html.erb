@@ -12,5 +12,5 @@
 
   <td><%=h goal_definition.title %></td>
   <td><%=h goal_definition.description %></td>
-  <td><%= h goal_definition.updated_at %> </td>
+  <td><%= h goal_definition.updated_at.to_s(:report) %> </td>
 <% end %>
