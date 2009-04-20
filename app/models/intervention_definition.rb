@@ -93,7 +93,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def monitor_summary
-    "#{rec_mon_preface} #{probe_definitions.collect(&:title).join("; ")}"
+    "#{probe_definitions.collect(&:title).join("; ")}"
   end
 
   def time_length_summary
