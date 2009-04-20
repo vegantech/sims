@@ -90,9 +90,11 @@ class Checklist < ActiveRecord::Base
      checklist.district_id=checklist.student.district_id
      c=checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id,
       :order=>"created_at DESC")
-     c.answers.each {|e| checklist.answers.build e.attributes} if c
-     c.score_checklist  if c and score and c.show_score?(false)
-     checklist.score_results = c.score_results if c 
+     if c
+       c.answers.each {|e| checklist.answers.build e.attributes} 
+       c.score_checklist  if c.show_score?(false)
+       checklist.score_results = c.score_results 
+     end
      checklist
    end
 
