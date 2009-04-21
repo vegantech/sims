@@ -7,7 +7,7 @@
         <td><%= field.text_field :benchmark, 'size'=>5  %></td>
  
         <td><label for="probe_definition_grade_level">Grade level</label></td>
-        <td><%= field.select :grade_level, District::GRADES, {:include_blank => true} %></td>
+        <td><%= field.text_field :grade_level,:size=>ProbeDefinitionBenchmark::GRADE_LEVEL_SIZE %></td>
         <td><%= link_to_remote 'remove', :url => { :action => 'remove_benchmark', :index => index} %></td>
       </tr>
     </table>

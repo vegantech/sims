@@ -21,6 +21,7 @@
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
+  #  has_many :benchmarks, :class_name=>'ProbeDefinitionBenchmark', :order =>:grade_level, :dependent => :destroy
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
@@ -34,6 +35,8 @@ class ProbeDefinition < ActiveRecord::Base
   validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
+
+  #  accepts_nested_attributes_for :benchmarks, :allow_destroy => true
   
   def validate
     #TODO this can be refactored out using rails 2.x changes
