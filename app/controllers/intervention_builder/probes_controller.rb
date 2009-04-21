@@ -1,4 +1,6 @@
 class InterventionBuilder::ProbesController < ApplicationController
+  skip_before_filter :authorize, :only => [:add_benchmark, :remove_benchmark]
+  additional_read_actions :add_benchmark, :remove_benchmark
 
   def index
     @probe_definitions_in_groups =
@@ -12,7 +14,6 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def new
     @probe_definition = current_district.probe_definitions.build
-    @probe_definition.assets.build
   end
 
   def edit
@@ -83,6 +84,12 @@ class InterventionBuilder::ProbesController < ApplicationController
     end
     redirect_to intervention_builder_probes_url
 
+  end
+
+  def add_benchmark
+  end
+
+  def remove_benchmark
   end
  
 end

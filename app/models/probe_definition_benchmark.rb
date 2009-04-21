@@ -12,10 +12,13 @@
 #
 
 class ProbeDefinitionBenchmark < ActiveRecord::Base
+  GRADE_LEVEL_SIZE=4
   belongs_to :probe_definition
   validates_presence_of :benchmark, :grade_level
+  validates_length_of :grade_level ,:maximum=>GRADE_LEVEL_SIZE
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
+
 
 
 
