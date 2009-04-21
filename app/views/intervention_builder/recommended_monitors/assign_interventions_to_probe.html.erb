@@ -11,9 +11,9 @@
 <% @int_defs=ic.intervention_definitions %>
 
         <% @int_defs.each do |int_def| %>
-         <%=check_box_tag("int_defs[]", int_def.id,@probe_definition.intervention_definitions.include?(int_def)) %>
+         <%=check_box_tag("int_defs[]", int_def.id,@probe_definition.intervention_definitions.include?(int_def), :id=>int_def.id) %>
 		 
-         <%= int_def.title %><br />
+         <%= label_tag int_def.id, int_def.title %><br />
         <% end %>
 <% end %>
 <% end %>

@@ -20,12 +20,12 @@ If you want to remove a recommended monitor, be sure to uncheck it everywhere it
    <% @probe_definitions_in_groups.each do |k,g| %>
     <%= content_tag :h2, k.to_s.titleize %>
     <% g[:clusters].each do |k,ic| %>
-      <%= content_tag :h4, ic[:title] unless ic[:title].blank?%>
+      <%= content_tag :h4, k unless k==:none%>
       <% ic[:probes].each do |probe|  %>
 
         <%=check_box_tag("probes[]", probe.id,@intervention_definition.probe_definitions.include?(probe),
-          :onclick=>"select_others(this);") %>
-          <%= probe.title %> <br />
+          :onclick=>"select_others(this);", :id=>probe.id) %>
+          <%= label_tag probe.id, probe.title %> <br />
       <% end %>
 
     <% end %>

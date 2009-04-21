@@ -3,7 +3,7 @@
   <% @probe_definitions_in_groups.each do |k,g| %>
     <%= content_tag :h2, k.to_s.titleize %>
     <% g[:clusters].each do |k,ic| %>
-      <%= content_tag :h4, ic[:title] unless ic[:title].blank?%>
+      <%= content_tag :h4, k unless k==:none%>
       <%=render :partial=>'probe_definition',:collection=>ic[:probes] %>
     <% end %>
   <% end %>
