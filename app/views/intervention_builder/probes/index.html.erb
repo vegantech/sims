@@ -1,10 +1,31 @@
+<h1> Progress Monitors </h1>
 <p><b>Groups are determined by the recommended monitors page via the intervention builder.  </b></p>  
+
+
 <ul id="probe_definition_list">
   <% @probe_definitions_in_groups.each do |k,g| %>
     <%= content_tag :h2, k.to_s.titleize %>
     <% g[:clusters].each do |k,ic| %>
       <%= content_tag :h4, k unless k==:none%>
-      <%=render :partial=>'probe_definition',:collection=>ic[:probes] %>
+      <table>
+        <col width= 15%></col>
+        <col width= 40%></col>
+        <col width= 7%></col>
+        <col width= 8%></col>
+        <col width= 20%></col>
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Min/Max</th>
+          <th>Updated On</th>
+          <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+          <%=render :partial=>'probe_definition',:collection=>ic[:probes] %>
+        </tbody>
+      </table>
     <% end %>
   <% end %>
 </ul>
@@ -16,4 +37,6 @@
 <p>
   <%= link_to "Create New Progress Monitor", new_intervention_builder_probe_path %>
   
- </p>
+</p>
+
+
