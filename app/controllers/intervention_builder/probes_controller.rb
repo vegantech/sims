@@ -53,7 +53,7 @@ class InterventionBuilder::ProbesController < ApplicationController
 
      if @probe_definition.update_attributes(params[:probe_definition])
        flash[:notice]= 'Probe Definition was successfully updated'
-       @probe_definition.probe_definition_benchmarks.destroy(bench)
+       @probe_definition.probe_definition_benchmarks.find(bench).each(&:destroy)
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
        render :action=>"edit"
