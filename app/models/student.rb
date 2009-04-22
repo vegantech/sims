@@ -42,7 +42,7 @@ class Student < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :unless => lambda {|e| e.id_district.blank?}
-  
+
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
@@ -68,7 +68,7 @@ class Student < ActiveRecord::Base
   end
 
   def max_tier
-    l_tier=Tier.last
+    l_tier = Tier.last
     if principal_overrides.exists?(:end_tier_id => l_tier)
       return l_tier
     elsif recommendations.exists?(:promoted => true)
@@ -77,9 +77,8 @@ class Student < ActiveRecord::Base
       return Tier.first
     end
 
-    
     unless recommendations.blank?
-      #TODO Tiers should be specific to district
+      # TODO Tiers should be specific to district
       Tier.first
       # FIXME, should only be promoted 
 #      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
