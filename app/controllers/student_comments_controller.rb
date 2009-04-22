@@ -72,8 +72,8 @@ class StudentCommentsController < ApplicationController
   # DELETE /student_comments/1
   # DELETE /student_comments/1.xml
   def destroy
-    @student_comment = current_user.student_comments.find_by_id(params[:id])
-    @student_comment.destroy unless @student_comment.blank?
+    @student_comment = current_user.student_comments.find(params[:id])
+    @student_comment.destroy 
 
     respond_to do |format|
       format.js

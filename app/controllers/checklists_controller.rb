@@ -33,9 +33,9 @@ class ChecklistsController < ApplicationController
 
   def update
     #FIXME editing checklists shouldn't be this messy, and shouldn't delete the old record.
-    @checklist=Checklist.find_by_id(params[:id])
+    @checklist=Checklist.find(params[:id])
     @oldchecklist=@checklist
-    @old_created_at = @checklist.created_at if @checklist
+    @old_created_at = @checklist.created_at 
     create
     @checklist.created_at = @old_created_at if @old_created_at
     @checklist.save

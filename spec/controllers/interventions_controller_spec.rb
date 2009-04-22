@@ -12,7 +12,7 @@ describe InterventionsController do
     controller.stub_association!(:current_school, :users=>[])
     
     @interventions = [@intervention]
-    @interventions.should_receive(:find_by_id).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
+    @interventions.should_receive(:find).with(@intervention.id.to_s).any_number_of_times.and_return(@intervention)
     @student.stub!(:interventions=>@interventions)
     controller.stub!(:current_student=>@student)
     # build_from_session_and_params and populate_dropdowns are unit tested
@@ -21,7 +21,7 @@ describe InterventionsController do
 
   describe 'find_intervention' do
     it 'should redirect to current_student if the intervention cannot be found' do
-      @interventions.stub!(:find_by_id=>nil)
+      @interventions.stub!(:find=>nil)
       get :edit, :id=>'no'
       flash[:notice].should == 'Intervention could not be found'
       response.should redirect_to(student_url(@student))
@@ -32,25 +32,25 @@ describe InterventionsController do
         @student.should_receive(:blank?).and_return(true)
       end
       it 'should logout if the intervention cannot be found' do
-        Intervention.should_receive(:find_by_id).with('33').and_return(nil)
+        Intervention.should_receive(:find).with('33').and_return(nil)
         get :edit, :id=>'33'
         response.should redirect_to(logout_url)
       end
 
       it 'should logout if the student no longer exists' do
-        Intervention.should_receive(:find_by_id).with('33').and_return(mock_intervention(:student=>nil))
+        Intervention.should_receive(:find).with('33').and_return(mock_intervention(:student=>nil))
         get :edit, :id=>'33'
         response.should redirect_to(logout_url)
       end
 
       it 'should logout if the user does nto have access to the student' do
-        Intervention.should_receive(:find_by_id).with('33').and_return(mock_intervention(:student=>mock_student('belongs_to_user?' => false)))
+        Intervention.should_receive(:find).with('33').and_return(mock_intervention(:student=>mock_student('belongs_to_user?' => false)))
         get :edit, :id=>'33'
         response.should redirect_to(logout_url)
       end
 
       it 'should setup the session if the user does have access to the student' do
-        Intervention.should_receive(:find_by_id).with('33').and_return(i=mock_intervention(:student=>s=mock_student('belongs_to_user?' => true, :schools => [sch=mock_school]),:undo_end=>true))
+        Intervention.should_receive(:find).with('33').and_return(i=mock_intervention(:student=>s=mock_student('belongs_to_user?' => true, :schools => [sch=mock_school]),:undo_end=>true))
         controller.stub_association!(:current_user, :schools =>[sch])
         put :undo_end, :id=>'33'
         

@@ -130,7 +130,7 @@ describe Interventions::CommentsController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested intervention_comment" do
-      InterventionComment.should_receive(:find).with(:first, {:conditions=>{:id=>"37"}}).and_return(mock_intervention_comment)
+      InterventionComment.should_receive(:find).with("37").and_return(mock_intervention_comment)
       mock_intervention_comment.should_receive(:destroy)
       delete :destroy, :id => "37"
     end

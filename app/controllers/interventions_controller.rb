@@ -99,8 +99,7 @@ class InterventionsController < ApplicationController
 
   def quicklist #post
     #FIXME scope this somehow
-    @intervention_definition = InterventionDefinition.find_by_id(params[:quicklist_item][:intervention_definition_id])
-    redirect_to :back and return if @intervention_definition.blank?
+    @intervention_definition = InterventionDefinition.find(params[:quicklist_item][:intervention_definition_id])
     @intervention_cluster = @intervention_definition.intervention_cluster
     @objective_definition = @intervention_cluster.objective_definition
     @goal_definition = @objective_definition.goal_definition
@@ -111,8 +110,8 @@ class InterventionsController < ApplicationController
 
   def ajax_probe_assignment
     flash.keep(:custom_intervention)
-    @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
+    @intervention = current_student.interventions.find(params[:intervention_id]) || Intervention.new
+    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) 
     unless @intervention_probe_assignment
       rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
       @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
@@ -124,7 +123,7 @@ class InterventionsController < ApplicationController
   def find_intervention
     if current_student.blank?
      #alternate entry point
-      intervention = Intervention.find_by_id(params[:id])
+      intervention = Intervention.find(params[:id])
       if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
         student=intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
@@ -136,7 +135,7 @@ class InterventionsController < ApplicationController
         redirect_to logout_url and return false
       end
     else
-      @intervention = current_student.interventions.find_by_id(params[:id])
+      @intervention = current_student.interventions.find(params[:id])
     end
 
     unless @intervention
