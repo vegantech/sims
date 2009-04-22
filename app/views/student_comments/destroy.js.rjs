@@ -1,1 +1,2 @@
 page.remove(dom_id(@student_comment)) unless @student_comment.blank?
+page.replace_html('team_notes_count', team_notes_count(@student_comment.student))

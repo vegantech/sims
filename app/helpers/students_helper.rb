@@ -58,4 +58,17 @@ module StudentsHelper
       p
     end
   end
+
+  def team_notes_count(student)
+    "<span id='team_notes_count'>(#{student.comments.size})</span>"
+  end
+
+  def active_interventions_count(student)
+    "<span id='active_interventions_count'>(#{student.interventions.active.size})</span>"
+  end
+
+  def inactive_interventions_count(student)
+    "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
+  end
+
 end
