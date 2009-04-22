@@ -37,8 +37,8 @@ class CustomFlagsController < ApplicationController
   # DELETE /custom_flags/1
   # DELETE /custom_flags/1.xml
   def destroy
-    @custom_flag = current_student.custom_flags.find_by_id(params[:id])
-    @custom_flag.destroy unless @custom_flag.nil?
+    @custom_flag = current_student.custom_flags.find(params[:id])
+    @custom_flag.destroy 
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
@@ -72,7 +72,7 @@ class CustomFlagsController < ApplicationController
   end
 
   def unignore_flag
-    @ignore_flag=current_student.ignore_flags.find_by_id(params[:id]) || IgnoreFlag.new
+    @ignore_flag=current_student.ignore_flags.find(params[:id])
     @ignore_flag.destroy
     respond_to do |format| 
       format.html {redirect_to student_url(current_student)}

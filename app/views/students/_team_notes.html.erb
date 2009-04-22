@@ -1,7 +1,7 @@
   <h2 class="team_notes_header", ondblclick="$('team_notes').toggle();"> Team Notes </h2>
- <%= link_to_function 'Show/Hide Team Notes', "$('team_notes').toggle()" %>
+ <%= link_to_function "Show/Hide Team Notes" , "$('team_notes').toggle()" %> <%=team_notes_count(@student) %>
 
-<div id="team_notes" <%= 'style="display:none;"' if params[:tn]=='0' %> >
+<div id="team_notes" style="display:none;">
 
   <%=render_with_empty :partial=>"student_comments/comment", :collection=> @student.comments, :empty => content_tag(:p,"No notes have been submitted for this student. Click the 'Add Note' link above to add a note for this student.",:id=>"no_team_notes")  
 %>

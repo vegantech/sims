@@ -80,15 +80,17 @@ describe Student do
   end
 
   describe 'find_checklist' do
+    before do
+      Checklist.stub!({:find=>@mc=mock_checklist(:show_score? => true)})
+
+    end
     it 'should include the answes and score by default' do
-      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(mc=mock_checklist(:show_score? => true))
-      mc.should_receive(:score_checklist)
-      Student.new.find_checklist('55').should ==mc
+      @mc.should_receive(:score_checklist)
+      Student.new.find_checklist('55').should ==@mc
     end
 
     it 'should just find if show is false' do
-      Checklist.should_receive(:find_by_id).with('55').and_return(mc=mock_checklist())
-      Student.new.find_checklist('55', show=false).should == mc
+      Student.new.find_checklist('55', show=false).should == @mc
     end
 
 

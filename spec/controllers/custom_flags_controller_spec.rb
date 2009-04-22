@@ -66,7 +66,7 @@ describe CustomFlagsController do
     end
 
     it "should destroy the requested custom_flag" do
-      CustomFlag.should_receive(:find_by_id).with("37").and_return(mock_custom_flag(:student_id => 1))
+      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag(:student_id => 1))
       mock_custom_flag.should_receive(:destroy)
       delete :destroy, {:id => "37"}
     end

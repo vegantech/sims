@@ -8,10 +8,14 @@
     <span id="quicklist"> </span>
 
 <h3 class="intervention_summary"><span>Active Interventions</span></h3>
-<%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.active} %>
-
+<%= link_to_function "Show/Hide" , "$('active_interventions').toggle()" %> <%=active_interventions_count(@student) %>
+<div id='active_interventions'>
+  <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.active} %>
+</div>
 <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
-<%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
-
+<%= link_to_function "Show/Hide" , "$('inactive_interventions').toggle()" %> <%=inactive_interventions_count(@student) %>
+<div id='inactive_interventions' style='display:none'>
+  <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
+</div>
 </div>
 

@@ -37,7 +37,7 @@ describe PrincipalOverridesController do
   describe "responding to GET edit" do
     describe 'with valid id' do
       it "should expose the requested principal_override as @principal_override" do
-        PrincipalOverride.should_receive(:find_by_id).with("37").and_return(@override)
+        PrincipalOverride.should_receive(:find).with("37").and_return(@override)
         @override.should_receive(:setup_response_for_edit).with('accept')
         get :edit, :id => "37", :response => 'accept'
         assigns[:principal_override].should equal(@override)
@@ -46,10 +46,10 @@ describe PrincipalOverridesController do
 
     describe 'with invalid id' do
       it 'should redirect to the index and set a flash' do
-        PrincipalOverride.should_receive(:find_by_id).with("37").and_return(nil)
+        #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
         get :edit, :id=> "37"
-        response.should redirect_to(principal_overrides_url)
-        flash[:notice].should == "Override not found"
+        response.should redirect_to(root_url)
+        flash[:notice].should == "Record not found"
       end
 
     end
@@ -154,13 +154,13 @@ describe PrincipalOverridesController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested principal_override" do
-      PrincipalOverride.should_receive(:find_by_id).with("37").and_return(@override)
+      PrincipalOverride.should_receive(:find).with("37").and_return(@override)
       @override.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
 
     it 'should not destroy if override is not found' do
-      PrincipalOverride.should_receive(:find_by_id).with("37").and_return(nil)
+      #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
       delete :destroy, :id => "37"
 
     end
@@ -169,7 +169,7 @@ describe PrincipalOverridesController do
 
   describe 'responding to PUT undo' do
     it 'should undo if the override is found' do
-      PrincipalOverride.should_receive(:find_by_id).with("37").and_return(@override)
+      PrincipalOverride.should_receive(:find).with("37").and_return(@override)
       @override.should_receive(:undo!)
       put :undo, :id => "37", :format =>'html'
       response.should redirect_to(principal_overrides_url)
@@ -177,9 +177,9 @@ describe PrincipalOverridesController do
     end
 
     it 'should not undo if the override is not found' do
-      PrincipalOverride.should_receive(:find_by_id).with("37").and_return(nil)
+      #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
       put :undo, :id => "37", :format =>'html'
-      response.should redirect_to(principal_overrides_url)
+      response.should redirect_to(root_url)
 
     end
 
