@@ -1,1 +1,0 @@
-page["probe_definition_benchmark_#{params[:index]}"].remove

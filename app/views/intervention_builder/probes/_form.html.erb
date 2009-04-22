@@ -3,19 +3,19 @@
 <table width="98%">
 <!--[form:probe_definition]-->
   <tr>
-    <td width="15%"><label for="probe_definition_title">Title</label></td>
-    <td colspan="3"><%= text_field 'probe_definition', 'title', 'size' => 51  %></td>
+    <td width="15%"><%=form.label :title %></td>
+    <td colspan="3"><%= form.text_field  'title', 'size' => 51  %></td>
   </tr>
   <tr>
-    <td width="15%"><label for="probe_definition_description">Description</label></td>
-    <td colspan="3"><%= text_area 'probe_definition', 'description', 'cols' => 50,  'rows' => 5  %></td>
+    <td width="15%"><%= form.label :description %></td>
+    <td colspan="3"><%= form.text_area :description, 'cols' => 50,  'rows' => 5  %></td>
   </tr>
   <tr>
-    <td width="15%"><label for="probe_definition_minimum_score">Min score</label></td>
-    <td><%= text_field 'probe_definition', 'minimum_score', 'size' => 5  %></td>
+    <td width="15%"><%= form.label :minimum_score %></td>
+    <td><%= form.text_field  :minimum_score, 'size' => 5  %></td>
 
-    <td width="15%"><label for="probe_definition_maximum_score">Max score</label></td>
-    <td width="35%"><%= text_field 'probe_definition', 'maximum_score', 'size' => 5  %></td>
+    <td width="15%"><%= form.label  :maximum_score %></td>
+    <td width="35%"><%= form.text_field :maximum_score, 'size' => 5  %></td>
   </tr>
   <tr>
   </tr>
@@ -23,8 +23,8 @@
 </table>
 
 <div id="benchmarks">
-  <% @probe_definition.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
-    <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => probe_definition_benchmark, :index => index } %>
+  <% form.fields_for :probe_definition_benchmarks do |benchmark_fields| %>
+    <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => benchmark_fields.object, :index =>"e_#{benchmark_fields.object.id}", :form=>form} %>
   <% end %>
 </div>
 
