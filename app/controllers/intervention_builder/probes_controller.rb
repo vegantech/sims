@@ -32,7 +32,6 @@ class InterventionBuilder::ProbesController < ApplicationController
   end
 
   def update
-    #TODO Move this to the model
     @probe_definition = current_district.probe_definitions.find(params[:id])
 
      if @probe_definition.update_attributes(params[:probe_definition])
