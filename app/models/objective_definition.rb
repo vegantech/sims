@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: objective_definitions
 #
@@ -11,6 +11,9 @@
 #  disabled           :boolean
 #  created_at         :datetime
 #  updated_at         :datetime
+#  deleted_at         :datetime
+#  copied_at          :datetime
+#  copied_from        :integer
 #
 
 class ObjectiveDefinition < ActiveRecord::Base
@@ -21,6 +24,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
   acts_as_list :scope => :goal_definition_id
+  is_paranoid
 
   def disable!
     intervention_clusters.each(&:disable!)
@@ -29,5 +33,20 @@ class ObjectiveDefinition < ActiveRecord::Base
 
   def to_s
     title
+  end
+
+  def deep_clone(gd)
+    k=gd.objective_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id})
+    if k
+      #already exists
+    else
+      k=clone
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.goal_definition=gd
+      k.save! if k.valid?
+    end
+    k.intervention_clusters << intervention_clusters.collect{|o| o.deep_clone(k)}
+    k
   end
 end

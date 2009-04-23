@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: probe_definitions
 #
@@ -15,18 +15,21 @@
 #  position      :integer
 #  created_at    :datetime
 #  updated_at    :datetime
+#  deleted_at    :datetime
+#  copied_at     :datetime
+#  copied_from   :integer
 #
 
 # Also referred to as "Progress Monitors"
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
-  #  has_many :benchmarks, :class_name=>'ProbeDefinitionBenchmark', :order =>:grade_level, :dependent => :destroy
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions
+  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active', 'district_id']
@@ -35,8 +38,7 @@ class ProbeDefinition < ActiveRecord::Base
   validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
-
-  #  accepts_nested_attributes_for :benchmarks, :allow_destroy => true
+  is_paranoid
   
   def validate
     #TODO this can be refactored out using rails 2.x changes
@@ -47,6 +49,23 @@ class ProbeDefinition < ActiveRecord::Base
 
   def probes
     intervention_probe_assignments
+  end
+
+  def deep_clone(district)
+    k=district.probe_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.district=district
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+     
+    k.probe_definition_benchmarks << probe_definition_benchmarks.collect{|o| o.deep_clone(k)}
+    k.probe_questions << probe_questions.collect{|o| o.deep_clone(k)}
+    k
   end
 
   def self.group_by_cluster_and_objective

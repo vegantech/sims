@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: goal_definitions
 #
@@ -11,6 +11,9 @@
 #  disabled    :boolean
 #  created_at  :datetime
 #  updated_at  :datetime
+#  deleted_at  :datetime
+#  copied_at   :datetime
+#  copied_from :integer
 #
 
 class GoalDefinition < ActiveRecord::Base
@@ -22,10 +25,11 @@ class GoalDefinition < ActiveRecord::Base
       x
     end
   end
-  validates_uniqueness_of :description, :scope=>[:district_id,:description]
+  validates_uniqueness_of :description, :scope=>[:district_id,:title]
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
+  is_paranoid
 
   def disable!
     objective_definitions.each(&:disable!)
@@ -36,4 +40,22 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
+  def deep_clone(district)
+    k=district.goal_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.district=district
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+     
+    k.objective_definitions << objective_definitions.collect{|o| o.deep_clone(k)}
+    k
+  end
+
+  
+  
 end

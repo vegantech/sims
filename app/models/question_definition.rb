@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: question_definitions
 #
@@ -9,17 +9,19 @@
 #  position                :integer
 #  created_at              :datetime
 #  updated_at              :datetime
+#  deleted_at              :datetime
+#  copied_at               :datetime
+#  copied_from             :integer
 #
 
 class QuestionDefinition < ActiveRecord::Base
-
-  acts_as_list :scope => :checklist_definition
-
   belongs_to :checklist_definition
 
   has_many :element_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :answer_definitions, :through=> :element_definitions
   acts_as_reportable if defined? Ruport
+  acts_as_list :scope => :checklist_definition
+  is_paranoid
 
   validates_presence_of :text
 

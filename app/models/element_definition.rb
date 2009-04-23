@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: element_definitions
 #
@@ -10,6 +10,9 @@
 #  position               :integer
 #  created_at             :datetime
 #  updated_at             :datetime
+#  deleted_at             :datetime
+#  copied_at              :datetime
+#  copied_from            :integer
 #
 
 class ElementDefinition < ActiveRecord::Base
@@ -22,6 +25,7 @@ class ElementDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :question_definition
+  is_paranoid
 
 
   validates_presence_of :question_definition_id, :text, :kind

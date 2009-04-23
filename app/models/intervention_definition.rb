@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: intervention_definitions
 #
@@ -20,6 +20,9 @@
 #  rec_mon_preface         :string(255)
 #  created_at              :datetime
 #  updated_at              :datetime
+#  deleted_at              :datetime
+#  copied_at               :datetime
+#  copied_from             :integer
 #
 
 class InterventionDefinition < ActiveRecord::Base
@@ -42,6 +45,7 @@ class InterventionDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => 'intervention_cluster_id'
+  is_paranoid
 
   def business_key
     "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
@@ -119,5 +123,20 @@ class InterventionDefinition < ActiveRecord::Base
       recommended_monitors
     end
 
+  end
+  
+  def deep_clone(ic)
+    k=ic.intervention_definitions.find_with_destroyed(:first, :conditions => {:copied_from => id})
+    if k
+      #exists
+    else
+      k=clone
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.intervention_cluster = ic
+      #      k.save! if k.valid?
+    end
+    
+    k
   end
 end

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: recommendation_answer_definitions
 #
@@ -9,6 +9,9 @@
 #  text                         :text
 #  created_at                   :datetime
 #  updated_at                   :datetime
+#  deleted_at                   :datetime
+#  copied_at                    :datetime
+#  copied_from                  :integer
 #
 
 class RecommendationAnswerDefinition < ActiveRecord::Base
@@ -16,6 +19,7 @@ class RecommendationAnswerDefinition < ActiveRecord::Base
   has_many :recommendation_answers, :dependent => :destroy
 
   acts_as_list :scope=>:recommendation_definition_id
+  is_paranoid
 
   validates_presence_of :text
 end

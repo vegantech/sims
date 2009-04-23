@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: probe_definition_benchmarks
 #
@@ -9,6 +9,9 @@
 #  grade_level         :string(255)
 #  created_at          :datetime
 #  updated_at          :datetime
+#  deleted_at          :datetime
+#  copied_at           :datetime
+#  copied_from         :integer
 #
 
 class ProbeDefinitionBenchmark < ActiveRecord::Base
@@ -18,10 +21,21 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validates_length_of :grade_level ,:maximum=>GRADE_LEVEL_SIZE
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
+  is_paranoid
 
-
-
-
+  def deep_clone(pd)
+    k=pd.probe_definition_benchmarks.find_with_destroyed(:first,:conditions=>{:copied_from=>self.id}) 
+    if k
+      #it already exists
+   else
+      k=clone
+      k.probe_definition =pd
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.save! if k.valid?
+    end
+    k
+  end
 
 
   protected

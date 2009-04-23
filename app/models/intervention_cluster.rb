@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: intervention_clusters
 #
@@ -11,6 +11,9 @@
 #  disabled                :boolean
 #  created_at              :datetime
 #  updated_at              :datetime
+#  deleted_at              :datetime
+#  copied_at               :datetime
+#  copied_from             :integer
 #
 
 
@@ -25,7 +28,8 @@ class InterventionCluster < ActiveRecord::Base
   validates_uniqueness_of :description, :scope => [:objective_definition_id, :title]
 
   acts_as_reportable if defined? Ruport
-  acts_as_list :scope => :objective_definition
+  acts_as_list :scope=>:objective_definition
+  is_paranoid
 
   def disable!
     intervention_definitions.each(&:disable!)
@@ -39,4 +43,20 @@ class InterventionCluster < ActiveRecord::Base
   def to_s
     title
   end
+
+  def deep_clone(od)
+    k=od.intervention_clusters.find_with_destroyed(:first,:conditions=>{:copied_from=>id})
+    if k
+      #exists
+    else
+      k=clone
+      k.copied_at=Time.now
+      k.copied_from = id
+      k.objective_definition = od 
+      k.save!
+    end
+    k.intervention_definitions << intervention_definitions.collect{|o| o.deep_clone(k)}
+    k
+  end
+
 end

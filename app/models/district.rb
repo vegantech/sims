@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: districts
 #
@@ -172,6 +172,24 @@ class District < ActiveRecord::Base
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
+  end
+
+  def clone_content_from_admin
+    admin_district.goal_definitions.each{|g| g.deep_clone(self)}
+    admin_district.probe_definitions.each{|g| g.deep_clone(self)}
+
+    
+    int_defs=InterventionDefinition.find(:all,:joins=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>admin_district.id})
+    int_defs.each do |idef| 
+      idef.recommended_monitors.each {|g| g.deep_clone(self)}
+    end
+    
+  end
+
+
+  def admin_district
+    puts "CHANGE THIS"
+    state_district
   end
 
 private

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: checklist_definitions
 #
@@ -15,6 +15,9 @@
 #  document_content_type        :string(255)
 #  document_file_size           :integer
 #  document_updated_at          :datetime
+#  deleted_at                   :datetime
+#  copied_at                    :datetime
+#  copied_from                  :integer
 #
 
 class ChecklistDefinition < ActiveRecord::Base
@@ -29,6 +32,7 @@ class ChecklistDefinition < ActiveRecord::Base
   before_validation :clear_document
   validates_presence_of :directions, :text
   acts_as_reportable if defined? Ruport
+  is_paranoid
 
   def save_all!
     save! and

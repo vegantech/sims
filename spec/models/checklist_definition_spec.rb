@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090316004509
+# Schema version: 20090325230037
 #
 # Table name: checklist_definitions
 #
@@ -15,6 +15,9 @@
 #  document_content_type        :string(255)
 #  document_file_size           :integer
 #  document_updated_at          :datetime
+#  deleted_at                   :datetime
+#  copied_at                    :datetime
+#  copied_from                  :integer
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
