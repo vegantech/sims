@@ -20,10 +20,10 @@ require 'test/unit'
 require 'spec'
 
 describe Checklist do
-  fixtures :element_definitions, :checklists, :checklist_definitions,:answers,:answer_definitions,:students,:users, :districts
-self.use_instantiated_fixtures = true
+  fixtures :element_definitions, :checklists, :checklist_definitions, :answers, :answer_definitions, :students,:users, :districts
+  self.use_instantiated_fixtures = true
 
-  before(:each) do
+  before do
     @valid_attributes = {
       :checklist_definition => 1,
       :from_tier => "1",
@@ -35,16 +35,54 @@ self.use_instantiated_fixtures = true
     }
   end
 
+  describe 'new_from_teacher class method' do
+    before do
+      @t = mock_user
+      @s = Factory(:student)
+    end
+
+    describe 'not associated with a student' do
+      it 'should return nil' do
+        Checklist.new_from_teacher(@t).should be_nil
+      end
+    end
+
+    describe 'associated with a student' do
+      describe 'and student has valid values' do
+        it 'should populate values' do
+          cd = Factory(:checklist_definition)
+          tier = Factory(:tier)
+          @s.should_receive(:checklist_definition).and_return(cd)
+          @s.should_receive(:max_tier).and_return(tier)
+          @s.should_receive(:district_id).and_return(15)
+
+          Student.should_receive(:find).with(@s.id, {:conditions=>nil, :readonly=>nil, :select=>nil, :include=>nil}).and_return(@s)
+
+
+          cl = @s.checklists.new_from_teacher(@t)
+
+          cl.student.should == @s
+          cl.should_not be_nil
+          cl.checklist_definition.should == cd
+          cl.tier.should == tier
+          cl.district_id.should == 15
+        end
+      end
+
+      describe 'and student has a since-deleted checklist_definition' do
+      end
+    end
+  end
+
   it "should create a new instance given valid attributes" do
     pending 'Test:Unit for now'
-#    Checklist.create!(@valid_attributes)
+    # Checklist.create!(@valid_attributes)
   end
 
   describe 'pending?' do
     it 'should have specs for pending?' do
       pending
     end
-
   end
 
   describe 'missing_checklist_definition?' do
@@ -63,11 +101,11 @@ self.use_instantiated_fixtures = true
     @student.district=@checklist_definition.district
     @student.save!
   end
-   def assert_validity(obj, options ={})
-     message = "#{options[:message]}#{obj.class.to_s.titleize} was invalid: \n#{obj.errors.to_yaml}"
-     assert obj.valid?, message
-   end
 
+  def assert_validity(obj, options ={})
+    message = "#{options[:message]}#{obj.class.to_s.titleize} was invalid: \n#{obj.errors.to_yaml}"
+    assert obj.valid?, message
+  end
 
   def test_new_from_student_and_teacher
     #Empty Checklists
@@ -253,17 +291,11 @@ self.use_instantiated_fixtures = true
 
     @checklist.promoted=false
     assert_equal Checklist::STATUS[:failing_score], @checklist.status
-
   end
 
   describe 'checklist_definition_cache' do
     it 'should have specs see #193 and #194 in Lighthouse' do
       pending
     end
-    
   end
-    
 end
-
-
-

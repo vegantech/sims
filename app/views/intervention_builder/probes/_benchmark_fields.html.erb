@@ -1,17 +1,25 @@
-<div id="probe_definition_benchmark_<%= index %>">
-  <% fields_for "probe_definition_benchmarks[#{index}]", probe_definition_benchmark do |field| %>
-  <%= error_messages_for 'probe_definition_benchmark'%>
-  <table width="98%">
-      <tr>
-        <td width="15%"><label for="probe_definition_benchmark">Benchmark</label></td>
-        <td><%= field.text_field :benchmark, 'size'=>5  %></td>
+<div id="probe_definition_benchmark_<%=index %>">
+<% fields_for 'probe_definition[probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
+<table width="98%">
+  <tr>
+    <td width="15%"><%= form.label :benchmark %></td>
+    <td><%= form.text_field :benchmark, 'size'=>5  %></td>
+    <%= form.hidden_field :id unless probe_definition_benchmark.new_record? %>
  
-        <td><label for="probe_definition_grade_level">Grade level</label></td>
-        <td><%= field.select :grade_level, District::GRADES, {:include_blank => true} %></td>
-        <td><%= link_to_remote 'remove', :url => { :action => 'remove_benchmark', :index => index} %></td>
-      </tr>
-    </table>
-  <% end %>
-  <p>
-  </p>
+    <td><%= form.label :grade_level %></td>
+    <td><%= form.text_field :grade_level,:size=>ProbeDefinitionBenchmark::GRADE_LEVEL_SIZE %></td>
+    <td>
+    <% if probe_definition_benchmark.new_record? %>
+      <%= link_to_function('remove') {|page| page["probe_definition_benchmark_#{index}"].remove} %>
+    <% else %>
+      <%= link_to_function('remove') do |page|  
+        page.replace "probe_definition_benchmark_#{index}",:partial => 'intervention_builder/probes/remove_benchmark' , 
+          :locals =>{:probe_definition_benchmark => probe_definition_benchmark, :index => index}
+        end
+        %>
+    <% end %>
+    </td>
+  </tr>
+</table>
+<% end %>
 </div>

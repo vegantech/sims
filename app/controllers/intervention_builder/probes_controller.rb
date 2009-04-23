@@ -1,4 +1,6 @@
 class InterventionBuilder::ProbesController < ApplicationController
+  skip_before_filter :authorize, :only => [:add_benchmark]
+  additional_read_actions :add_benchmark
 
   def index
     @probe_definitions_in_groups =
@@ -12,7 +14,6 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def new
     @probe_definition = current_district.probe_definitions.build
-    @probe_definition.assets.build
   end
 
   def edit
@@ -21,14 +22,6 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def create
     @probe_definition = current_district.probe_definitions.build(params[:probe_definition])
-    #TODO Move this to the model
-
-     if params[:probe_definition_benchmarks]
-       params[:probe_definition_benchmarks].each_value do | benchmark |
-         @probe_definition.probe_definition_benchmarks.build(benchmark.merge(
-                            :probe_definition=>@probe_definition)) unless benchmark.values.all?(&:blank?)
-       end
-     end
 
      if @probe_definition.save
        flash[:notice]= 'Probe Definition was successfully created'
@@ -41,18 +34,9 @@ class InterventionBuilder::ProbesController < ApplicationController
   def update
     #TODO Move this to the model
     @probe_definition = current_district.probe_definitions.find(params[:id])
-    bench=@probe_definition.probe_definition_benchmark_ids
-     if params[:probe_definition_benchmarks]
-       params[:probe_definition_benchmarks].each_value do | benchmark |
-         @probe_definition.probe_definition_benchmarks.build(benchmark.merge(
-                            :probe_definition=>@probe_definition)) unless benchmark.values.all?(&:blank?)
-       end
-     end
-
 
      if @probe_definition.update_attributes(params[:probe_definition])
        flash[:notice]= 'Probe Definition was successfully updated'
-       @probe_definition.probe_definition_benchmarks.destroy(bench)
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
        render :action=>"edit"
@@ -84,5 +68,9 @@ class InterventionBuilder::ProbesController < ApplicationController
     redirect_to intervention_builder_probes_url
 
   end
- 
+
+  def add_benchmark
+    @probe_definition_benchmark = ProbeDefinitionBenchmark.new
+  end
+
 end

@@ -66,8 +66,8 @@ class Interventions::CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.xml
   def destroy
-    @intervention_comment = @intervention.comments.find_by_id(params[:id])
-    @intervention_comment.destroy if @intervention_comment
+    @intervention_comment = @intervention.comments.find(params[:id])
+    @intervention_comment.destroy 
 
     respond_to do |format|
       format.js

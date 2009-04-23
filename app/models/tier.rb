@@ -16,9 +16,7 @@ class Tier < ActiveRecord::Base
   include AllCache
   belongs_to :district
 
-
   def to_s
     "#{position} - #{title}"
   end
-  
 end

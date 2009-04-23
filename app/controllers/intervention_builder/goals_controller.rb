@@ -105,5 +105,4 @@ class InterventionBuilder::GoalsController < ApplicationController
       move_intervention_builder_goal_path(obj,:direction=>direction)
     end
 
- 
 end

@@ -11,7 +11,7 @@
 
   <div id = "assets" >
     Attach a file or link
-    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "objective_definition"}%>
+    <%= render :partial => 'assets/asset', :collection => @objective_definition.assets , :locals => {:parent => "objective_definition"}%>
   </div>
 
   <p>

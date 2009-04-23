@@ -29,6 +29,7 @@ class ProbeDefinition < ActiveRecord::Base
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions
+  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active', 'district_id']
@@ -73,8 +74,9 @@ class ProbeDefinition < ActiveRecord::Base
 
     my_hash = ActiveSupport::OrderedHash.new()
 
-    my_hash[:unassigned_probe_definitions] = {:clusters=>{}}
-    my_hash[:unassigned_probe_definitions][:clusters][:none] = {:probes=>[]}
+    unassigned = {:clusters => {}}
+    unassigned[:clusters][:none] = {:probes=>[]}
+
     probes.each do |probe|
       if probe.intervention_definitions.any?
         probe.intervention_definitions.each do |id|
@@ -85,9 +87,10 @@ class ProbeDefinition < ActiveRecord::Base
           my_hash[od.title][:clusters][ic.title][:probes] |= [probe]
         end
       else
-        my_hash[:unassigned_probe_definitions][:clusters][:none][:probes] << probe
+        unassigned[:clusters][:none][:probes] << probe
       end
     end
+    my_hash[:unassigned_probe_definitions] = unassigned
 
     my_hash
   end

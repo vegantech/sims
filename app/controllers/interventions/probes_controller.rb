@@ -49,8 +49,8 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def destroy
-    @probe = @intervention_probe_assignment.probes.find_by_id(params[:id])
-    @probe.destroy unless @probe.blank?
+    @probe = @intervention_probe_assignment.probes.find(params[:id])
+    @probe.destroy 
 
     respond_to do |format|
       format.js {}

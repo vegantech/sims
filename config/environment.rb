@@ -86,10 +86,6 @@ Rails::Initializer.run do |config|
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )
 end
 
-ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(
-  :report => "%m/%d/%y"
-)
-
 # begin
 #   require 'ruport'
 # rescue LoadError

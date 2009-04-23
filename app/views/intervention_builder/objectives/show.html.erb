@@ -11,7 +11,7 @@
 </p>
 <p>
   <b>Updated On:</b>
-  <%=h @objective_definition.updated_at %>
+  <%=h @objective_definition.updated_at.to_s(:report) %>
 </p>
 
   <%=links_and_attachments @objective_definition, :p %>

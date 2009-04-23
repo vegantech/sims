@@ -21,12 +21,6 @@
 </p>
 
 <p>
-  <b>Recommended Monitor Preface:</b>
-  <%=h @intervention_definition.rec_mon_preface %>
-
-</p>
-
-<p>
   <b>Time length:</b>
   <%=h pluralize(@intervention_definition.time_length_num, @intervention_definition.time_length.title) %>
 </p>
@@ -43,7 +37,7 @@
 
 <p>
   <b>Updated on:</b>
-  <%=h @intervention_definition.updated_at.to_date.to_s(:long) %>
+  <%=h @intervention_definition.updated_at.to_s(:report) %>
 </p>
 
 <table>
