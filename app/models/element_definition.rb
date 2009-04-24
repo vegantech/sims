@@ -29,7 +29,7 @@ class ElementDefinition < ActiveRecord::Base
 
 
   validates_presence_of :question_definition_id, :text, :kind
-  validates_uniqueness_of :kind, :scope => :question_definition_id, :if => :applicable_kind_uniqueness?
+  validates_uniqueness_of :kind, :scope => [:question_definition_id, :deleted_at], :if => :applicable_kind_uniqueness?
 
   after_create :move_to_top, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable}
 
