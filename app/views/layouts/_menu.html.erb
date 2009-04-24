@@ -8,7 +8,7 @@
     <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
     <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
     <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
-    <%= content_tag(:li,link_to('SIMS Virtual Outbox',{:controller=>'railmail'}, {:target=>:blank})) unless defined?DEFAULT_URL %>
+    <%= content_tag(:li,link_to('SIMS Virtual Outbox','/railmail'}, {:target=>:blank})) unless defined?DEFAULT_URL %>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
       current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
 
@@ -18,8 +18,8 @@
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
 
         <% if_student_selected do %>
-          <%= li_link_to_if_authorized "<b>Student Report</b>", :controller => "reports", :action => "student_overall_options" %>
-          <%= li_link_to_if_authorized "Student Interventions", :controller => "reports", :action => "student_interventions" %>
+          <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
+          <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
         <% end %>
         <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
     <%  end %>
