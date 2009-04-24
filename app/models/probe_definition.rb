@@ -52,7 +52,7 @@ class ProbeDefinition < ActiveRecord::Base
   end
 
   def deep_clone(district)
-    k=district.probe_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    k=district.probe_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :district_id => district.id}) 
     if k
       #it already exists
    else

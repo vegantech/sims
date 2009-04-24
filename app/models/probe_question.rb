@@ -22,7 +22,7 @@ class ProbeQuestion < ActiveRecord::Base
   is_paranoid
 
   def deep_clone(pd)
-    k=pd.probe_questions.find_with_destroyed(:first,:conditions=>{:copied_from=>id}) 
+    k=pd.probe_questions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :probe_definition_id => pd.id}) 
     if k
       #it already exists
    else

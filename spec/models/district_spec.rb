@@ -138,6 +138,13 @@ describe District do
       district.goal_definitions.should_not == admin_district.goal_definitions
       district.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
       district.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
+
+      district2 = Factory(:district, :name=>"district_2", :abbrev=>"DIST2", :state => district.state)
+      district2.clone_content_from_admin
+
+      district2.goal_definitions.should_not == admin_district.goal_definitions
+      district2.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
+      district2.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
     end
 
     it 'should do updates, deletes, and handle changes like our intervention_updates document' do

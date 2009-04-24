@@ -45,7 +45,7 @@ class InterventionCluster < ActiveRecord::Base
   end
 
   def deep_clone(od)
-    k=od.intervention_clusters.find_with_destroyed(:first,:conditions=>{:copied_from=>id})
+    k=od.intervention_clusters.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :objective_definition_id => od.id})
     if k
       #exists
     else
