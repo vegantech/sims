@@ -1,6 +1,7 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end'
+  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
+  skip_before_filter :authorize, :only => [:add_benchmark]
 
   include PopulateInterventionDropdowns
 
@@ -110,7 +111,7 @@ class InterventionsController < ApplicationController
 
   def ajax_probe_assignment
     flash.keep(:custom_intervention)
-    @intervention = current_student.interventions.find(params[:intervention_id]) || Intervention.new
+    @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     if params[:id] == 'custom'
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.new if @intervention
     else
@@ -123,6 +124,13 @@ class InterventionsController < ApplicationController
     render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'
   end
 
+
+  def add_benchmark
+    @probe_definition_benchmark = ProbeDefinitionBenchmark.new
+    render :action => 'interventions/probe_assignments/add_benchmark'
+  end
+          
+  
   private
 
   def find_intervention

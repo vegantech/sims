@@ -22,12 +22,12 @@
   </table>
 
   <div id="benchmarks">
-    <% pdef.object.probe_definition_benchmarks.each_with_index do | probe_definition_benchmark, index | %>
-      <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index => index} %>
+    <% pdef.object.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
+      <%= render :partial => 'interventions/probe_assignments/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index =>"e_#{probe_definition_benchmark.id}"} %>
     <% end %>
   </div>
   <p>
-    <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
+    <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
   </p>
 
   <div id="assets" >
