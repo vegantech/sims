@@ -36,7 +36,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   end
 
   def deep_clone(gd)
-    k=gd.objective_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id})
+    k=gd.objective_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :goal_definition_id => gd.id})
     if k
       #already exists
     else

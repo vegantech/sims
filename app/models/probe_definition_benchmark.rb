@@ -24,7 +24,7 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   is_paranoid
 
   def deep_clone(pd)
-    k=pd.probe_definition_benchmarks.find_with_destroyed(:first,:conditions=>{:copied_from=>self.id}) 
+    k=pd.probe_definition_benchmarks.find_with_destroyed(:first,:conditions=>{:copied_from=>self.id, :probe_definition_id => pd.id}) 
     if k
       #it already exists
    else
