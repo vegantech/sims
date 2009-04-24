@@ -1,8 +1,17 @@
-<% for column in ProbeDefinition.content_columns %>
+<% ["title", "description", "active", "minimum_score", "maximum_score"].each do |column| %>
 <p>
-  <b><%= column.human_name %>:</b> <%=h @probe_definition.send(column.name) %>
+  <b><%= column.humanize %>:</b> <%=h @probe_definition.send(column) %>
 </p>
 <%end %>
+
+<p>
+  <b>Created on:</b> <%=h @probe_definition.created_at.to_s(:report) %>
+</p>
+
+
+<p>
+  <b>Updated on:</b> <%=h @probe_definition.updated_at.to_s(:report) %>
+</p>
 
  <% @probe_definition.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
   <p>  
