@@ -32,7 +32,7 @@ class ProbeDefinition < ActiveRecord::Base
   accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true
 
   validates_presence_of :title, :description
-  validates_uniqueness_of :title, :scope => ['active', 'district_id']
+  validates_uniqueness_of :title, :scope => ['active', 'district_id', :deleted_at]
   validates_numericality_of :maximum_score, :allow_nil => true
   validates_numericality_of :minimum_score, :allow_nil => true
   validates_associated(:probe_definition_benchmarks)

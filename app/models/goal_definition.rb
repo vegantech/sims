@@ -25,7 +25,7 @@ class GoalDefinition < ActiveRecord::Base
       x
     end
   end
-  validates_uniqueness_of :description, :scope=>[:district_id,:title]
+  validates_uniqueness_of :description, :scope=>[:district_id,:title, :deleted_at]
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id

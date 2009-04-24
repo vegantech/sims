@@ -40,7 +40,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :interventions
 
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
-  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title]
+  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title, :deleted_at]
   validates_numericality_of :frequency_multiplier, :time_length_num
 
   acts_as_reportable if defined? Ruport

@@ -24,8 +24,10 @@ module LinkAndAttachmentAssets
   end
   
   def save_assets
-    assets.each do |asset|
-      asset.save(false)
+    if !respond_to?(:deleted_at) || deleted_at.blank?
+      assets.each do |asset|
+        asset.save(false)
+      end
     end
   end 
 
