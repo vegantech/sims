@@ -40,6 +40,11 @@ describe ProbeDefinitionBenchmark do
     pdb.should be_valid
   end
 
+  it 'should not be valid when benchmark is empty and existing probe definition has a minimum score #lh238 ' do 
+    pd=ProbeDefinition.create!(:title=>'title', :description=>'desc', :minimum_score=>10)
+    pd.update_attributes(:probe_definition_benchmarks_attributes=>[:benchmark=>'', :grade_level => '']).should == false
+  end
+
 
   
 end
