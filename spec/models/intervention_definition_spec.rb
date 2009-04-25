@@ -51,6 +51,12 @@ describe InterventionDefinition do
       k.district_quicklist.should == true
     end
 
+    it 'should assign itself to the quicklist even when new' do
+      iid=Factory.build(:intervention_definition, :district_quicklist=>'1')
+      iid.save
+      
+    end
+
     it 'should remove itself from the quicklist if = false' do
       k=Factory(:intervention_definition)
       k.district_quicklist ="1"

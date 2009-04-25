@@ -45,7 +45,9 @@ class InterventionDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => 'intervention_cluster_id'
+  after_save :update_district_quicklist
   is_paranoid
+  
 
   def business_key
     "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
@@ -60,12 +62,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def district_quicklist=(arg)
-    if arg =="1"
-      quicklist_items.build(:district_id=>self.district.id) unless district_quicklist
-    elsif !new_record?
-      g=quicklist_items.find_by_district_id(self.district.id) 
-      g.destroy if district_quicklist
-    end
+    @district_quicklist_arg=(arg =='1')
   end
 
   def goal_definition
@@ -139,4 +136,15 @@ class InterventionDefinition < ActiveRecord::Base
     
     k
   end
+
+  protected
+  def update_district_quicklist
+    if @district_quicklist_arg
+      quicklist_items.create(:district_id=>self.district.id) unless district_quicklist
+    elsif !new_record?
+      g=quicklist_items.find_by_district_id(self.district.id) 
+      g.destroy if g 
+    end
+  end
+
 end
