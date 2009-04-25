@@ -50,20 +50,25 @@ class InterventionDefinitionSummary
   def to_table
     return unless defined? Ruport
 
+    
     a = InterventionDefinition.report_table(:all,
       :conditions => ["intervention_clusters.objective_definition_id = ? and custom = ? and (intervention_definitions.disabled = ?
           or intervention_definitions.disabled is null )", @obj, false, false],
       :include => {:intervention_cluster => {:only => 'title'}},
       :only => [:description],
       :methods => ['bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments'])
-
-    a.rename_columns(a.column_names,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
-    a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
-    a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
+    if a.column_names.present?
+      a.rename_columns(a.column_names,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
+      a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
+      a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
+    else
+      a.add_columns(['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ])
+      
+    end
   end
 
   def to_grouping
     @table ||= to_table
-    Ruport::Data::Grouping(@table, :by => 'Tier', :order => :name)
+      Ruport::Data::Grouping(@table, :by => 'Tier', :order => :name) 
   end
 end

@@ -24,5 +24,16 @@ Report Generated at December 12, 2008 00:00
 
 EOS
     end
+
+    it 'should render just the date when there are no interventions ' do
+      ic = Factory(:intervention_cluster, :title => 'IC-TITLE')
+      od = ic.objective_definition
+      
+      Time.stub!(:now => Date.new(2008, 12, 12).to_time)
+
+      report_body = InterventionDefinitionSummaryReport.render_text(:objective_definition => od.id)
+      report_body.should == "Report Generated at December 12, 2008 00:00\n\n"
+
+    end
   end
 end
