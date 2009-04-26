@@ -1,22 +1,39 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def li_link_to_if_authorized(name, options = {}, html_options = {})
+  def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
+     r= link_to_if_authorized(name, options, html_options, *rest)
+     content_tag :li,r if r.present?
+  end
+
+  def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
     #TODO Test then Refactor!!!     This is a spike.
+   # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
     if options.is_a?String
       url = options
-      url = "/"+url.split("/")[3..-1].join("/")if url.include?("http:") 
+      url = "/"+url.split("/")[3..-1].join("/").split('?').first unless url=~ /^\//
       hsh = ::ActionController::Routing::Routes.recognize_path url, :method => :get
     else
-      url = url_for(options)
-      hsh = ::ActionController::Routing::Routes.recognize_path url
+      if options[:controller].present?
+        #Without a leading / url_for will assume it is in the current namespace  
+        options[:controller]="/#{options[:controller]}" unless options[:controller][0] =='/'
+        options[:action] ||= 'index'
+        hsh=options
+        url=hsh
+      else
+        url = url_for(options)
+        hsh = ::ActionController::Routing::Routes.recognize_path url
+      end
     end
-
-    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
+    
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
     grp = 'write_access' if ctrl.write_actions.include?(hsh[:action])
     grp = 'read_access' if ctrl.read_actions.include?(hsh[:action])
-    content_tag :li, link_to(name, url, html_options) if current_user.authorized_for?(ctrl.controller_path, grp)
+    
+    link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path, grp)
+    
+
+ 
   end
 
   def breadcrumbs
