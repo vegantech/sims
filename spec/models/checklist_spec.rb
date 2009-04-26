@@ -49,27 +49,76 @@ describe Checklist do
 
     describe 'associated with a student' do
       describe 'and student has valid values' do
-        it 'should populate values' do
-          cd = Factory(:checklist_definition)
-          tier = Factory(:tier)
-          @s.should_receive(:checklist_definition).and_return(cd)
-          @s.should_receive(:max_tier).and_return(tier)
+        before do
+          @cd = Factory(:checklist_definition)
+          @tier = Factory(:tier)
+          @s.should_receive(:checklist_definition).and_return(@cd)
+          @s.should_receive(:max_tier).and_return(@tier)
           @s.should_receive(:district_id).and_return(15)
-
-          Student.should_receive(:find).with(@s.id, {:conditions=>nil, :readonly=>nil, :select=>nil, :include=>nil}).and_return(@s)
-
-
-          cl = @s.checklists.new_from_teacher(@t)
-
-          cl.student.should == @s
-          cl.should_not be_nil
-          cl.checklist_definition.should == cd
-          cl.tier.should == tier
-          cl.district_id.should == 15
+          Student.should_receive(:find).with(@s.id, {:conditions => nil, :readonly => nil, :select => nil, :include => nil}).and_return(@s)
         end
-      end
 
-      describe 'and student has a since-deleted checklist_definition' do
+        describe 'and the student checklist we are copying still exists' do
+          before do
+            @old_cl = mock_checklist(:answers => [Factory(:answer)], :score_results => 'Score Results')
+            Checklist.should_receive(:find_by_checklist_definition_id).and_return(@old_cl)
+          end
+
+          describe 'and the student checklist says to show score' do
+            it 'should populate values and copy student checklist attributes' do
+              @old_cl.should_receive(:show_score?).with(false).and_return(true)
+              @old_cl.should_receive(:score_checklist)
+
+              cl = @s.checklists.new_from_teacher(@t)
+
+              cl.student.should == @s
+              cl.should_not be_nil
+              cl.checklist_definition.should == @cd
+              cl.tier.should == @tier
+              cl.district_id.should == 15
+
+              # check the copied attributes
+              cl.answers.size.should == @old_cl.answers.size
+              cl.score_results.should == 'Score Results'
+            end
+          end
+
+          describe 'and the student checklist says to not show score' do
+            it 'should populate values and copy student checklist attributes but not call score_checklist' do
+              @old_cl.should_receive(:show_score?).with(false).and_return(false)
+
+              cl = @s.checklists.new_from_teacher(@t)
+
+              cl.student.should == @s
+              cl.should_not be_nil
+              cl.checklist_definition.should == @cd
+              cl.tier.should == @tier
+              cl.district_id.should == 15
+
+              # check the copied attributes
+              cl.answers.size.should == @old_cl.answers.size
+              cl.score_results.should == 'Score Results'
+            end
+          end
+        end
+
+        describe 'and student has a since-deleted checklist_definition' do
+          it 'should not copy student checklist attributes' do
+            Checklist.should_receive(:find_by_checklist_definition_id).and_return(nil)
+
+            cl = @s.checklists.new_from_teacher(@t)
+
+            cl.student.should == @s
+            cl.should_not be_nil
+            cl.checklist_definition.should == @cd
+            cl.tier.should == @tier
+            cl.district_id.should == 15
+
+            # there should be no copied attributes
+            cl.answers.size.should == 0
+            cl.score_results.should be_nil
+          end
+        end
       end
     end
   end
