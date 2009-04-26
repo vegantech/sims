@@ -124,8 +124,9 @@ class Intervention < ActiveRecord::Base
   end
 
   def intervention_probe_assignment=(params)
-    intervention_probe_assignments.update_all(:enabled => false)
-    return if params.blank? or params[:probe_definition_id].blank?
+    intervention_probe_assignments.update_all(:enabled => false) #disable all others
+    params.symbolize_keys!
+    return if params.blank? or (params[:probe_definition_id].blank? and params[:probe_definition].blank?)
    
     if params[:probe_definition_id] == 'custom'
       params[:probe_definition_id] = nil
@@ -133,12 +134,12 @@ class Intervention < ActiveRecord::Base
     @ipa = intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
 
     
-    if params[:probe_definition_id].nil?
+    if params[:probe_definition_id].blank?
       params[:probe_definition]=@ipa.build_probe_definition(params[:probe_definition])
     end
     @ipa.attributes = params.merge(:enabled => true)
-    @ipa.first_date = Date.civil(params["first_date(1i)"].to_i,params["first_date(2i)"].to_i,params["first_date(3i)"].to_i)
-    @ipa.end_date = Date.civil(params["end_date(1i)"].to_i,params["end_date(2i)"].to_i,params["end_date(3i)"].to_i)
+    @ipa.first_date = Date.civil(params[:"first_date(1i)"].to_i,params[:"first_date(2i)"].to_i,params[:"first_date(3i)"].to_i)
+    @ipa.end_date = Date.civil(params[:"end_date(1i)"].to_i,params[:"end_date(2i)"].to_i,params[:"end_date(3i)"].to_i)
   end
 
   def intervention_probe_assignment(probe_definition_id = nil)
