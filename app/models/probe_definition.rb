@@ -24,18 +24,18 @@
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
-  has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy
+  has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions
-  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true
+  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active', 'district_id', :deleted_at]
   validates_numericality_of :maximum_score, :allow_nil => true
   validates_numericality_of :minimum_score, :allow_nil => true
-  validates_associated(:probe_definition_benchmarks)
+  #validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
   is_paranoid

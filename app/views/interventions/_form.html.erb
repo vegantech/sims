@@ -73,5 +73,5 @@
     <% end %>
   <% end %>
   <br class="brclear" />
-    <%= form.hidden_field :intervention_definition_id %>
+    <%= form.hidden_field :intervention_definition_id  unless @intervention.intervention_definition.new_record?%>
  

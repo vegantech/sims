@@ -153,3 +153,8 @@ end
 Factory.define :frequency do |f|
   f.title 'Freq Title'
 end
+
+Factory.define :probe_definition do |f|
+  f.title 'Probe Title'
+  f.description 'Probe Description'
+end

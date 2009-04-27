@@ -62,6 +62,8 @@ Feature: Sims Demo Walkthrough
     Then I follow "Enter/view scores"
     Then I select "2007" from "intervention_intervention_probe_assignment_new_probes__administered_at_1i"
     Then I fill in "Score" with "15"
+     
+
     
     Then I press "Save"
     Then I follow "Edit/Add Comment"

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090420215806) do
+ActiveRecord::Schema.define(:version => 20090428193630) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -273,8 +273,8 @@ ActiveRecord::Schema.define(:version => 20090420215806) do
     t.integer  "probe_definition_id"
     t.integer  "frequency_multiplier"
     t.integer  "frequency_id"
-    t.datetime "first_date"
-    t.datetime "end_date"
+    t.date     "first_date"
+    t.date     "end_date"
     t.boolean  "enabled",              :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
