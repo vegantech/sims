@@ -48,6 +48,7 @@ class InterventionsController < ApplicationController
       populate_goals
       @intervention=i
       #end code to make validation work
+      flash.keep(:custom_intervention)
       render :action => "new"
     end       
   end
