@@ -9,3 +9,8 @@ Then /^it should not save$/ do
   @i.save.should == false
 end
 
+Then /^it should save when fixed$/ do
+  @i.intervention_probe_assignment.probe_definition.maximum_score=200
+  @i.save.should == true
+end
+

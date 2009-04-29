@@ -121,7 +121,6 @@ class Intervention < ActiveRecord::Base
     end
     @ipa = intervention_probe_assignments.find_by_probe_definition_id(params['probe_definition_id']) || intervention_probe_assignments.build
     @ipa.attributes = params.merge(:enabled => true)
-    raise params.inspect if @ipa.first_date.blank?
   end
 
   def intervention_probe_assignment(probe_definition_id = nil)

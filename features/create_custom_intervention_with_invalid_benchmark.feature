@@ -4,4 +4,5 @@ Feature: Test saving custom intervention with custom probe and invalid benchmark
     Given load demo data 
     And Create Custom Probe
     Then it should not save
+    And it should save when fixed
 
