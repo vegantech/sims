@@ -1,8 +1,9 @@
 class InterventionBuilder::ObjectivesController < ApplicationController
+  include SpellCheck
   
 
   helper_method :move_path
-  before_filter(:get_goal_definition)#,:authorize)
+  before_filter :get_goal_definition, :except => :suggestions
 
   # GET /objective_definitions
   def index
@@ -34,6 +35,8 @@ class InterventionBuilder::ObjectivesController < ApplicationController
   # POST /objective_definitions
   def create
     @objective_definition = @goal_definition.objective_definitions.build(params[:objective_definition])
+    spellcheck [@objective_definition.title,@objective_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
+    
     respond_to do |format|
       if @objective_definition.save
         flash[:notice] = 'Objective was successfully created.'
@@ -46,9 +49,11 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
   # PUT /objective_definitions/1
   def update
+    @objective_definition.attributes=params[:objective_definition]
+    spellcheck [@objective_definition.title,@objective_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
     respond_to do |format|
-      if @objective_definition.update_attributes(params[:objective_definition])
+      if @objective_definition.save
         flash[:notice] = 'Objective was successfully updated.'
         format.html { redirect_to intervention_builder_objectives_url }
       else
