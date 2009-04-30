@@ -1,0 +1,32 @@
+need way for sims to import from districts
+   students
+   system flags (or data to create them)
+   student groupings
+
+
+need way for sims to export
+   ??? 
+   Wisconsin Longitudinal System???
+   Other student information systems
+
+
+first round
+csv bulk update (all at once)
+csv required fields, any order
+
+
+goals.   be able to import
+
+student- , firstname, lastname, id_state or id_district  id_state needed for interdistrict xfer
+enrollment grade, school (id_district or id_state), student (id_district or id_state)
+flags
+
+
+
+
+
+
+
+   
+
+
