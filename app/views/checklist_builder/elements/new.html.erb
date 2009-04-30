@@ -4,6 +4,8 @@
   <%= render :partial => 'form', :locals => { :f => f, :element_definition => @element_definition } %>
   <p>
     <%= submit_tag "Create" %>
+    <%= spell_check_submit
   </p>
 <%- end -%>
+<%= render :partial => 'spell_check/spelling'  %>
 <p><%= link_to 'Back', checklist_builder_checklists_path(@checklist_definition) %></p>

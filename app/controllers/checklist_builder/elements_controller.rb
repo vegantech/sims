@@ -1,5 +1,6 @@
 class ChecklistBuilder::ElementsController < ApplicationController
-  before_filter :load_checklist_definition, :load_question_definition
+  include SpellCheck
+  before_filter :load_checklist_definition, :load_question_definition, :except => :suggestions
 
   def index
     @element_definitions = @question_definition.element_definitions
@@ -39,6 +40,7 @@ class ChecklistBuilder::ElementsController < ApplicationController
 
   def create
     @element_definition = @question_definition.element_definitions.build(params[:element_definition])
+    spellcheck [@element_definition.text].join(" ") and render :action => :new and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @element_definition.save
@@ -56,6 +58,9 @@ class ChecklistBuilder::ElementsController < ApplicationController
 
   def update
     @element_definition = @question_definition.element_definitions.find(params[:id])
+
+    a = request.xhr? ? :spell_fail : :edit
+    spellcheck [@element_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @element_definition.update_attributes(params[:element_definition])
