@@ -1,5 +1,6 @@
 class InterventionBuilder::ProbesController < ApplicationController
-  skip_before_filter :authorize, :only => [:add_benchmark]
+  include SpellCheck
+  skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   additional_read_actions :add_benchmark
 
   def index
@@ -22,6 +23,7 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def create
     @probe_definition = current_district.probe_definitions.build(params[:probe_definition])
+    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
      if @probe_definition.save
        flash[:notice]= 'Probe Definition was successfully created'
@@ -33,8 +35,10 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def update
     @probe_definition = current_district.probe_definitions.find(params[:id])
+    @probe_definition.attributes = params[:probe_definition]
+    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
-     if @probe_definition.update_attributes(params[:probe_definition])
+     if @probe_definition.save
        flash[:notice]= 'Probe Definition was successfully updated'
        redirect_to intervention_builder_probe_url(@probe_definition)
      else

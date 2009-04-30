@@ -1,5 +1,6 @@
 class InterventionBuilder::InterventionsController < ApplicationController
-  before_filter(:get_intervention_cluster)
+  include SpellCheck
+  before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
   # GET /intervention_definitions
   def index
@@ -31,6 +32,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # POST /intervention_definitions
   def create
     @intervention_definition = @intervention_cluster.intervention_definitions.build(params[:intervention_definition])
+    spellcheck [@intervention_definition.title,@intervention_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @intervention_definition.save
@@ -44,12 +46,16 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   # PUT /intervention_definitions/1
   def update
+    @intervention_definition.attributes=params[:intervention_definition]
+    spellcheck [@intervention_definition.title,@intervention_definition.description].join(" ") and edit and  render :action=>:edit and return unless params[:spellcheck].blank?
+    
     respond_to do |format|
-      if @intervention_definition.update_attributes(params[:intervention_definition])
+      if @intervention_definition.save
         flash[:notice] = 'Intervention was successfully updated.'
-        @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
+        setup_parent_instance_variables
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
+
         format.html { edit;render :action => "edit" }
       end
     end
@@ -64,7 +70,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to intervention_builder_interventions_url }
+      format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end
   end
 
@@ -73,7 +79,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
     @intervention_definition.disable!
 
     respond_to do |format|
-      format.html { redirect_to intervention_builder_interventions_url }
+      format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end
   end
 
@@ -105,5 +111,10 @@ class InterventionBuilder::InterventionsController < ApplicationController
     else
       url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
     end
+  end
+
+  def setup_parent_instance_variables
+        @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
+        true #meeded for spellcheck call
   end
 end
