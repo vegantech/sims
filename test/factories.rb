@@ -65,6 +65,11 @@ Factory.define :element_definition do |e|
   e.answer_definitions {|ad| [ad.association(:answer_definition)]}
 end
 
+Factory.define :answer do |a|
+  a.association :answer_definition
+  a.text "Answer"
+end
+
 Factory.define :answer_definition do |a|
   a.value 0
 end
@@ -147,4 +152,9 @@ end
 
 Factory.define :frequency do |f|
   f.title 'Freq Title'
+end
+
+Factory.define :probe_definition do |f|
+  f.title 'Probe Title'
+  f.description 'Probe Description'
 end

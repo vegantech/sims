@@ -1,0 +1,4 @@
+page.insert_html :bottom, :benchmarks, :partial => 'interventions/probe_assignments/benchmark_fields',
+  :locals => { :probe_definition_benchmark => @probe_definition_benchmark, :index => params[:index] }
+
+page.replace :add_benchmark_link, :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => { :index => (params[:index].to_i + 1) }

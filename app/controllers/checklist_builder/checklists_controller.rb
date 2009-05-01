@@ -1,4 +1,5 @@
 class ChecklistBuilder::ChecklistsController < ApplicationController
+  include SpellCheck
   additional_read_actions :preview
   additional_write_actions :new_from_this
   
@@ -48,6 +49,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
   def create
     @checklist_definition = current_district.checklist_definitions.build(params[:checklist_definition])
+    spellcheck [@checklist_definition.text,@checklist_definition.directions].join(" ") and render :action=>:new and return unless params[:spellcheck].blank? 
 
     @checklist_definitions = current_district.checklist_definitions
     respond_to do |format|
@@ -67,6 +69,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   def update
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
     @checklist_definition.attributes = params[:checklist_definition]
+    spellcheck [@checklist_definition.text,@checklist_definition.directions].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank? 
 
 
     respond_to do |format|

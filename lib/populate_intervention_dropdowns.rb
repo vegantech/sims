@@ -3,7 +3,7 @@ protected
   def values_from_session
     { :user_id => session[:user_id],
       :selected_ids => selected_students_ids,
-      :school_id => session[:school_id],
+      :school_id => session[:school_id]
     }
   end
 

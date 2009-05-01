@@ -24,8 +24,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
-  validates_associated :probes
+  validates_associated :probes #,:probe_definition
   validate :last_date_must_be_after_first_date
+
+  accepts_nested_attributes_for :probe_definition
 
   RECOMMENDED_FREQUENCY = 2
 

@@ -137,6 +137,8 @@ describe InterventionsController do
       end
       it "should expose a newly created but unsaved intervention as @intervention" do
         @intervention.should_receive(:save).and_return(false)
+        controller.should_receive(:flash).and_return(mf=mock_object)
+        mf.should_receive(:keep).with(:custom_intervention)
         post :create, :intervention => {:these => 'params'}
         assigns(:intervention).should equal(@intervention)
       end

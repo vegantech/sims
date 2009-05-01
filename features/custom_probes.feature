@@ -8,30 +8,56 @@ Feature: Create Custom Probes
     Given common data
 
     And I am on student profile page
-    Then I complete "Assign New Intervention"
-
-    And I am now pending
-    And I follow "Assign Monitors"
-    And I follow "Assign Custom Probe"
-    And I press "Create"
-    Then I should see "Title can't be blank"
-    
-    And I fill in "Title" with "Custom Probe Title1"
-    And I fill in "Description" with "Custom Description"
-    And I fill in "Min score" with "1"
-    And I fill in "Max score" with "10"
-    And I press "Create"
-    
-    Then I should see "Assign Custom Probe"
-    Then the "Custom Probe Title1" checkbox should be checked
-    Then I follow "Back"
-    Then I follow "Back"
-   
-    When I follow "Select New Intervention and Progress Monitor from Menu"
+    Then I follow "Create New Custom Intervention and Progress Monitor"
     And I select "Some Goal" from "goal_definition_id"
     And I press "Choose Goal"
+
     And I select "Some Objective" from "objective_definition_id"
     And I press "Choose Objective"
+
     And I select "Some Category" from "intervention_cluster_id"
     And I press "Choose Category"
-    Then I should see "Custom Probe Title1"
+
+    And I fill in "Title" with "Custom Intervention Name"
+    And I fill in "Description" with "Custom Description"
+    And I select "2" from "Frequency"
+    And I select "2" from "Duration"
+    And I select "Some Tier" from "Tier"
+
+    # and anything else that isn't already there or derivable Intervention definition gets created
+    # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
+    And I select "Custom" from "Assign Progress Monitor"
+    When I press "Save"
+    #It should be invalid, but allow me to enter scores now
+    Then I should see "Min score"
+    When I fill in "intervention_intervention_probe_assignment_probe_definition_attributes_title" with "PTitle1"
+    And I fill in "intervention_intervention_probe_assignment_probe_definition_attributes_description" with "PDesc1"
+    And I fill in "Min score" with "100"
+    And I fill in "Max score" with "0"
+    And I press "Save"
+    #scores are invalid
+    Then I should see "Min score"
+    And I fill in "Max score" with "100"
+    And I fill in "Min score" with "0"
+    And I press "Save"
+    Then I should not see "Min score"
+  
+    
+    # And I go Back to student profile screen
+    And I follow "Select New Intervention and Progress Monitor from Menu"
+
+    And I select "Some Goal" from "goal_definition_id"
+    And I press "Choose Goal"
+
+    And I select "Some Objective" from "objective_definition_id"
+    And I press "Choose Objective"
+
+    And I select "Some Category" from "intervention_cluster_id"
+    And I press "Choose Category"
+    
+    And I select "Custom Intervention Name" from "intervention_definition_id"
+    And I press "Choose Intervention"
+
+    Then page should contain "PTitle1"
+
+

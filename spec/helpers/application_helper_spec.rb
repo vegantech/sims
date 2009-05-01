@@ -52,4 +52,49 @@ describe ApplicationHelper do
     helper.should_not_receive(:render)
     helper.render_with_empty(options).should == "EMPTY RESULT"
   end
+
+  describe 'li_link_to_if_authorized' do
+    it 'should be empty if not authorized' do
+      helper.should_receive(:link_to_if_authorized).and_return nil
+      helper.li_link_to_if_authorized('Shawn').should be_nil
+    end
+    it 'should wrap the link in li tags if authorized' do
+      
+      helper.should_receive(:link_to_if_authorized).and_return 'zzz'
+      helper.li_link_to_if_authorized('Shawn').should == '<li>zzz</li>'
+    end
+  end
+
+  describe 'link_to_if_authorized' do
+    it 'should go to a url if authorized' do
+      helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
+      helper.link_to_if_authorized('rauknauk','/railmail').should == helper.link_to('rauknauk','/railmail')
+    end
+
+    it 'should be nil if not authorized' do
+      helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>false))
+      helper.link_to_if_authorized('rauknauk','/railmail').should be_nil
+
+    end
+
+    it 'should link to a hash based path' do
+      helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
+      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail')
+      
+    end
+
+    it 'should prepend a / to the controller to fix 236' do
+      helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
+      helper.should_receive(:link_to).with("rauknauk", {:controller=>"/railmail", :action=>"index"}, {}).and_return('eeeeeeee')
+      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  'eeeeeeee'
+
+    end
+    
+
+    
+      
+
+  end
+
+  
 end

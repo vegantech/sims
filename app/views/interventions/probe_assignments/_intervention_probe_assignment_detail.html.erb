@@ -5,7 +5,7 @@
       <%= ipa.hidden_field :probe_definition_id %>
       <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition %>
       <%= error_messages_for(:object => @intervention_probe_assignment, :object_name => 'Probe Assignment') %>
-      <%= render(:partial => 'interventions/probe_assignments/custom_probe_definition', :locals => {:ipa => ipa}) if flash[:custom_intervention] && @intervention_probe_assignment.probe_definition.blank? %>
+      <%= render(:partial => 'interventions/probe_assignments/custom_probe_definition', :locals => {:ipa => ipa}) if flash[:custom_intervention] && @intervention_probe_assignment.probe_definition.new_record? %>
 
       <div class="form_row_wrap_label">
         <%= ipa.label :frequency_multiplier, 'Frequency:' %>

@@ -2,7 +2,7 @@
   <%= render :partial=>f %>
 <% end %>
   
-  <%= render :partial => 'spell_check/spelling'  %>
+  <%= render :partial => 'spell_check/spelling'  ,:locals=>{:prefix => dom_id(@student_comment)} %>
 
   <%= link_to_function 'cancel',{:href=> url_for(current_student)} do |page| 
     page[dom_id(@student_comment)].replace_html(:partial=>'student_comments/comment', :object=>@student_comment)

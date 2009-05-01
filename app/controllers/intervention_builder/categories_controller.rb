@@ -1,8 +1,9 @@
 class InterventionBuilder::CategoriesController < ApplicationController
+  include SpellCheck
   helper_method :move_path
   
   # GET /intervention_clusters
-  before_filter(:get_objective_definition)
+  before_filter(:get_objective_definition, :except=>:suggestions)
   def index
     @intervention_clusters = @objective_definition.intervention_clusters.find(:all)
 
@@ -31,6 +32,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
   # POST /intervention_clusters
   def create
     @intervention_cluster = @objective_definition.intervention_clusters.build(params[:intervention_cluster])
+    spellcheck [@intervention_cluster.title,@intervention_cluster.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @intervention_cluster.save
@@ -44,9 +46,10 @@ class InterventionBuilder::CategoriesController < ApplicationController
 
   # PUT /intervention_clusters/1
   def update
-
+    @intervention_cluster.attributes= params[:intervention_cluster]
+    spellcheck [@intervention_cluster.title,@intervention_cluster.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
     respond_to do |format|
-      if @intervention_cluster.update_attributes(params[:intervention_cluster])
+      if @intervention_cluster.save
         flash[:notice] = 'Category was successfully updated.'
         format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else

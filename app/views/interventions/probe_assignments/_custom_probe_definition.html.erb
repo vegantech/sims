@@ -1,0 +1,39 @@
+<% ipa.fields_for :probe_definition do |pdef| %>
+  <table width="98%">
+  <!--[form:probe_definition]-->
+    <tr>
+      <td width="15%"><%= pdef.label :title %></td>
+      <td colspan="3"><%= pdef.text_field :title, :size => 51 %></td>
+    </tr>
+    <tr>
+      <td width="15%"><%= pdef.label :description %></td>
+      <td colspan="3"><%= pdef.text_area :description, :cols => 50, :rows => 5 %></td>
+    </tr>
+    <tr>
+      <td width="15%"><%= pdef.label :minimum_score, 'Min score' %></td>
+      <td><%= pdef.text_field :minimum_score, :size => 5 %></td>
+
+      <td width="15%"><%= pdef.label :maximum_score, 'Max score' %></td>
+      <td width="35%"><%= pdef.text_field :maximum_score, :size => 5 %></td>
+    </tr>
+    <tr>
+    </tr>
+  <!--[eoform:probe_definition]-->
+  </table>
+
+  <div id="benchmarks">
+    <% pdef.object.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
+      <%= render :partial => 'interventions/probe_assignments/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index =>"e_#{probe_definition_benchmark.id}"} %>
+    <% end %>
+  </div>
+  <p>
+    <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
+  </p>
+
+  <div id="assets" >
+    <%= render :partial => 'assets/asset', :collection => pdef.object.assets, :locals => {:parent => 'probe_definition'} %>
+  </div>
+  <p>
+    <%= add_asset_link 'Add a file or link', 'probe_definition' %>
+  </p>
+<% end %>

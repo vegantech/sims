@@ -8,7 +8,7 @@
     <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
     <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
     <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
-    <%= content_tag(:li,link_to('SIMS Virtual Outbox','/railmail', {:target=>:blank})) unless defined?DEFAULT_URL %>
+    <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL %>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
       current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
 
@@ -30,7 +30,7 @@
     <li><%= render :partial => 'login/logout' %></li>
   <% elsif !defined?DEFAULT_URL %>
     <li>Please login.</li>
-    <% if @districts.blank? or @districts.size < 4 %>
+    <% if @districts.blank? or @districts.size < 14 %>
       <li>For this demo, use oneschool as the username and password</li>
       <li>or twoschools for the name and password</li>
       <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>

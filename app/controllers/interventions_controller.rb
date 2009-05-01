@@ -1,6 +1,7 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end'
+  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
+  skip_before_filter :authorize, :only => [:add_benchmark]
 
   include PopulateInterventionDropdowns
 
@@ -46,6 +47,7 @@ class InterventionsController < ApplicationController
       @intervention_definition = @intervention.intervention_definition
       populate_goals
       @intervention=i
+      flash.keep(:custom_intervention)
       #end code to make validation work
       render :action => "new"
     end       
@@ -97,27 +99,44 @@ class InterventionsController < ApplicationController
     end
   end
 
-  def quicklist #post
-    #FIXME scope this somehow
+  def quicklist # post
+    # FIXME scope this somehow
     @intervention_definition = InterventionDefinition.find(params[:quicklist_item][:intervention_definition_id])
     @intervention_cluster = @intervention_definition.intervention_cluster
     @objective_definition = @intervention_cluster.objective_definition
     @goal_definition = @objective_definition.goal_definition
 
-    redirect_to new_intervention_url(:goal_id=>@goal_definition,:objective_id=>@objective_definition,
-           :category_id=>@intervention_cluster,:definition_id=>@intervention_definition, :quicklist=>true)
+    redirect_to new_intervention_url(:goal_id => @goal_definition, :objective_id => @objective_definition,
+           :category_id => @intervention_cluster, :definition_id => @intervention_definition, :quicklist => true)
   end
 
   def ajax_probe_assignment
     flash.keep(:custom_intervention)
-    @intervention = current_student.interventions.find(params[:intervention_id]) || Intervention.new
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) 
-    unless @intervention_probe_assignment
-      rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
-      @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
+    @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
+    if params[:id] == 'custom'
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.build if @intervention
+      if @intervention_probe_assignment and  @intervention_probe_assignment.probe_definition.blank?
+        @intervention_probe_assignment.build_probe_definition
+        @intervention_probe_assignment.probe_definition.assets.build
+        @intervention_probe_assignment.probe_definition.probe_definition_benchmarks.build
+      end
+    else
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
+      unless @intervention_probe_assignment
+        rec_mon = RecommendedMonitor.find_by_probe_definition_id(params[:id])
+        @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
+      end
     end
     render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'
   end
+
+
+  def add_benchmark
+    @probe_definition_benchmark = ProbeDefinitionBenchmark.new
+    render :action => 'interventions/probe_assignments/add_benchmark'
+  end
+          
+  
   private
 
   def find_intervention

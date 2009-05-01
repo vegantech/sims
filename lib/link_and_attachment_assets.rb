@@ -8,7 +8,7 @@ module LinkAndAttachmentAssets
  
   def new_asset_attributes=(asset_attributes)
     asset_attributes.each do |attributes|
-      assets.build(attributes)
+      a=assets.build(attributes) unless attributes.values.all?(&:blank?)
     end
   end
   
@@ -26,7 +26,7 @@ module LinkAndAttachmentAssets
   def save_assets
     if !respond_to?(:deleted_at) || deleted_at.blank?
       assets.each do |asset|
-        asset.save(false) unless asset.frozen?
+        asset.save(false) unless asset.frozen? 
       end
     end
   end 
