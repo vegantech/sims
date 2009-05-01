@@ -1,4 +1,6 @@
 class NewsItemsController < ApplicationController
+  include SpellCheck
+
   # GET /news_items/new
   # GET /news_items/new.xml
   def new
@@ -19,6 +21,7 @@ class NewsItemsController < ApplicationController
   # POST /news_items.xml
   def create
     @news_item = current_district.administers.news.build(params[:news_item])
+    spellcheck [@news_item.text].join(" ") and render :action => :new and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @news_item.save
@@ -36,9 +39,11 @@ class NewsItemsController < ApplicationController
   # PUT /news_items/1.xml
   def update
     @news_item = current_district.administers.news.find(params[:id])
+    @news_item.attributes = params[:news_item]
+    spellcheck [@news_item.text].join(" ") and render :action => :edit and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
-      if @news_item.update_attributes(params[:news_item])
+      if @news_item.save
         flash[:notice] = 'NewsItem was successfully updated.'
         format.html { redirect_to(root_url) }
         format.xml  { head :ok }

@@ -54,12 +54,13 @@ class ChecklistBuilder::AnswersController < ApplicationController
 
   def update
     @answer_definition = AnswerDefinition.find(params[:id])
+    @answer_definition.attributes = params[:answer_definition]
 
     a = request.xhr? ? :spell_fail : :edit
     spellcheck [@answer_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
-      if @answer_definition.update_attributes(params[:answer_definition])
+      if @answer_definition.save
         flash[:notice] = 'Answer Definition was successfully updated.'
         format.html { redirect_to checklist_builder_answer_url(@checklist_definition, @question_definition, @element_definition, @answer_definition) }
         format.js

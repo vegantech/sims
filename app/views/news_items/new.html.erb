@@ -6,9 +6,11 @@
     <%= f.label :text %><br />
     <%= f.text_area :text %>
   </p>
-    <p>
+  <p>
     <%= f.submit "Create" %>
+    <%= spell_check_submit %>
   </p>
 <% end %>
+<%= render :partial => 'spell_check/spelling' %>
 
 <%= link_to 'Back', news_items_path %>
