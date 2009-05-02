@@ -70,6 +70,8 @@ class ProbeDefinition < ActiveRecord::Base
 
   def self.group_by_cluster_and_objective
     #This will work better
+
+    #refactor this to use recommended monitors?
     probes = find(:all, :order =>:position)
 
     my_hash = ActiveSupport::OrderedHash.new()
@@ -90,7 +92,8 @@ class ProbeDefinition < ActiveRecord::Base
         unassigned[:clusters][:none][:probes] << probe
       end
     end
-    my_hash[:unassigned_probe_definitions] = unassigned
+    unassigned[:clusters][:none][:probes]=  unassigned[:clusters][:none][:probes].sort_by{|e| e.title}
+    my_hash[:unassigned_progress_monitors] = unassigned
 
     my_hash
   end

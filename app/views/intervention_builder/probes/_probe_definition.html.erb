@@ -1,5 +1,14 @@
 <% content_tag_for :tr, probe_definition do %>
-  <td>
+   <td>
+    <%= link_to 'Show', intervention_builder_probe_path(probe_definition)  %> <br />
+        <%= link_to 'Edit', edit_intervention_builder_probe_path(probe_definition)  %>   <br />
+    <%= link_to (probe_definition.active? ? 'Disable' : 'Enable'), disable_intervention_builder_probe_path(probe_definition) , 
+      :confirm => 'Are you sure?', :method => :put %> <br />
+    <%= link_to 'Delete', intervention_builder_probe_path(probe_definition),
+      :confirm => 'Are you sure?  This will permanently remove this progress monitor definition', :method => :delete unless probe_definition.probes.count >0 %> <br />
+    <%=link_to 'Recommend Int Defs', url_for(:controller=>"intervention_builder/recommended_monitors",:action=>"assign_interventions_to_probe",:id=>probe_definition) %>  <br />
+  </td>
+ <td>
       <%='(Deactivated) ' unless probe_definition.active? %> 
       <%=h probe_definition.title %>
   </td>
@@ -13,14 +22,5 @@
      <%=  probe_definition.updated_at.to_s(:report) %>
   </td>
 
-  <td>
-    <%= link_to 'Display', intervention_builder_probe_path(probe_definition)  %>
-        <%= link_to 'Edit', edit_intervention_builder_probe_path(probe_definition)  %>  
-        <%=link_to 'Recommend Int Defs', url_for(:controller=>"intervention_builder/recommended_monitors",:action=>"assign_interventions_to_probe",:id=>probe_definition) %>  <br />
-    <%= link_to (probe_definition.active? ? 'Deactivate' : 'Reactivate'), disable_intervention_builder_probe_path(probe_definition) , 
-      :confirm => 'Are you sure?', :method => :put %>
-    <%= link_to 'Delete', intervention_builder_probe_path(probe_definition),
-      :confirm => 'Are you sure?  This will permanently remove this probe definition', :method => :delete unless probe_definition.probes.count >0 %>
-  </td>
 <% end %>
 

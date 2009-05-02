@@ -16,7 +16,7 @@
     <td><%=h question_definition.rank %></td>
     <td><%= link_to 'Show', question_definition_path(@checklist_definition, question_definition) %></td>
     <td><%= link_to 'Edit', edit_question_definition_path(@checklist_definition, question_definition) %></td>
-    <td><%= link_to 'Destroy', question_definition_path(@checklist_definition, question_definition), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete', question_definition_path(@checklist_definition, question_definition), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <%- end -%>
 </table>
