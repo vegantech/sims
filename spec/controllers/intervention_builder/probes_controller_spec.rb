@@ -163,7 +163,7 @@ describe InterventionBuilder::ProbesController do
     it 'should fail gracefully if probe no longer exists' do
       @district.should_receive(:find_probe_definition).with("37").and_return(nil)
       put :disable, :id=> "37"
-      flash[:notice].should == "Probe Definition no longer exists."
+      flash[:notice].should == "Progress Monitor Definition no longer exists."
       response.should redirect_to(intervention_builder_probes_url)
 
     end
@@ -190,7 +190,7 @@ describe InterventionBuilder::ProbesController do
       @district.should_receive(:find_probe_definition).with("37").and_return(mpd=mock_probe_definition)
       mpd.stub_association!(:probes,:count=>1)
       delete :destroy, :id=>"37"
-      flash[:notice].should =='Probe Definition could not be deleted, it is in use.'
+      flash[:notice].should =='Progress Monitor Definition could not be deleted, it is in use.'
       response.should redirect_to(intervention_builder_probes_url)
       
     end

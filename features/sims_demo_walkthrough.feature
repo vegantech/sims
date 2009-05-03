@@ -219,14 +219,14 @@ Feature: Sims Demo Walkthrough
     And I press "Login"
     Then I should see "Wisconsin Administration"
     And I follow "Manage Districts"
-    And I follow "Destroy"
+    And I follow "Delete"
     And I should see "Have the district admin remove the schools first."
     And I follow "New district"
     And I fill in "Name" with "Cucumber"
     And I fill in "Abbrev" with "cuke"
     And I press "Create"
     And I should see "District was successfully created"
-    And I follow "Destroy" within #cuke_tr
+    And I follow "Delete" within #cuke_tr
     And I should not see "Have the district admin remove the schools first."
     And I should not see "cuke"
     
