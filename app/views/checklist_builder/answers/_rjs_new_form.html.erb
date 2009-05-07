@@ -5,9 +5,12 @@
   <%= render :partial => 'form', :locals => { :f => f, :answer_definition => answer_definition } %>
   <p>
     <%= submit_tag "Create" %> |
+    <%= spell_check_submit %> |
+
     <%= link_to_function "Cancel", nil do |page|
       page.remove_content dom_id(element_definition, "new_answer_definition")
       page.change_link dom_id(element_definition, "add_answer_definition_link"), "Add Answer"
     end %>
   </p>
 <%- end -%>
+<%= render :partial => 'spell_check/spelling'  %>

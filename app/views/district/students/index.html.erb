@@ -28,7 +28,7 @@
     <td><%=h student.birthdate %></td>
     <td><%= link_to 'Show', district_student_path(student) %></td>
     <td><%= link_to 'Edit', edit_district_student_path(student) %></td>
-    <td><%= link_to 'Destroy', district_student_path(student), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete', district_student_path(student), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

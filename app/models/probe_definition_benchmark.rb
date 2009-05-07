@@ -43,11 +43,11 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
     
     if probe_definition && benchmark.present?
       if self.probe_definition.minimum_score && benchmark < self.probe_definition.minimum_score
-        errors.add(:benchmark, "must be greater than the minimum score. for the probe definition")
+        errors.add(:benchmark, "must be greater than the minimum score. for the progress monitor definition")
       end
       
       if self.probe_definition.maximum_score && benchmark > self.probe_definition.maximum_score
-        errors.add(:benchmark, "must be less than the maximum score. for the probe definition")
+        errors.add(:benchmark, "must be less than the maximum score. for the progress monitor definition")
       end
   end
 

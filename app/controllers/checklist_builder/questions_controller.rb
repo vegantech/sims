@@ -1,6 +1,7 @@
 class ChecklistBuilder::QuestionsController < ApplicationController
   include SpellCheck
   before_filter :load_checklist_definition, :except => :suggestions
+
   def index
     @question_definitions = @checklist_definition.question_definitions
 
@@ -55,9 +56,10 @@ class ChecklistBuilder::QuestionsController < ApplicationController
 
   def update
     @question_definition = QuestionDefinition.find(params[:id])
-    @question_definition.attributes=params[:question_definition]
-    a=request.xhr? ? :spell_fail : :edit
-    spellcheck [@question_definition.text].join(" ") and render :action=>a and return unless params[:spellcheck].blank? 
+    @question_definition.attributes = params[:question_definition]
+
+    a = request.xhr? ? :spell_fail : :edit
+    spellcheck [@question_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @question_definition.save
