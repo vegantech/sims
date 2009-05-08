@@ -26,6 +26,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :principal_overrides, :member => {:undo=> :put}
 
+  map.download_file '/file/:filename', :controller=>'file', :action=>'download'
+
 
 
 

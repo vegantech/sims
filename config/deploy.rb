@@ -69,8 +69,8 @@ role :db,  "vegantech.com", :primary => true
 
 
 
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note
-after "deploy:cold", :load_fixtures, :create_intervention_pdfs
+after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
+after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory
 
 
 
@@ -119,6 +119,20 @@ desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
 end
+
+
+desc 'create authenticated file directory' 
+task create_file_directory do
+   run "mkdir #{deploy_to}/files"
+
+end
+
+desc 'link_file_directory'
+task :link_file_directory do
+  run "ln -nfs #{deploy_to}/files #{release_path}/files"
+end
+
+
 
 task :overwrite_login_pilot_note do
   put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", :mode=>0755, :via=>:scp)
