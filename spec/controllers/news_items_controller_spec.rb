@@ -75,19 +75,19 @@ describe NewsItemsController do
     describe "with valid params" do
 
       it "should update the requested news_item" do
-        NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
-        mock_news_item.should_receive(:update_attributes).with({'these' => 'params'})
+        NewsItem.should_receive(:find).with("37").and_return(mock_news_item(:save=>true))
+        mock_news_item.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 
       it "should expose the requested news_item as @news_item" do
-        NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => true))
+        NewsItem.stub!(:find).and_return(mock_news_item(:save => true, :attributes= => false))
         put :update, :id => "1"
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should redirect to the news_item" do
-        NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => true))
+        NewsItem.stub!(:find).and_return(mock_news_item(:save => true, :attributes= => false))
         put :update, :id => "1"
         response.should redirect_to(root_url)
       end
@@ -97,19 +97,19 @@ describe NewsItemsController do
     describe "with invalid params" do
 
       it "should update the requested news_item" do
-        NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
-        mock_news_item.should_receive(:update_attributes).with({'these' => 'params'})
+        NewsItem.should_receive(:find).with("37").and_return(mock_news_item(:save=>false))
+        mock_news_item.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 
       it "should expose the news_item as @news_item" do
-        NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => false))
+        NewsItem.stub!(:find).and_return(mock_news_item(:save => false, :attributes= => false))
         put :update, :id => "1"
         assigns(:news_item).should equal(mock_news_item)
       end
 
       it "should re-render the 'edit' template" do
-        NewsItem.stub!(:find).and_return(mock_news_item(:update_attributes => false))
+        NewsItem.stub!(:find).and_return(mock_news_item(:save => false, :attributes= => false))
         put :update, :id => "1"
         response.should render_template('edit')
       end
