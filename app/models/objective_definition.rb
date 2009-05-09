@@ -25,6 +25,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title, :deleted_at]
   acts_as_list :scope => :goal_definition_id
   is_paranoid
+  include DeepClone
 
   def disable!
     intervention_clusters.each(&:disable!)
@@ -35,18 +36,15 @@ class ObjectiveDefinition < ActiveRecord::Base
     title
   end
 
-  def deep_clone(gd)
-    k=gd.objective_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :goal_definition_id => gd.id})
-    if k
-      #already exists
-    else
-      k=clone
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.goal_definition=gd
-      k.save! if k.valid?
-    end
-    k.intervention_clusters << intervention_clusters.collect{|o| o.deep_clone(k)}
-    k
+ private
+
+  def deep_clone_parent_field
+    'goal_definition_id'
   end
+
+  def deep_clone_children
+    %w{intervention_clusters}
+  end
+
+
 end

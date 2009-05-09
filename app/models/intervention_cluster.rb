@@ -30,6 +30,7 @@ class InterventionCluster < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
   acts_as_list :scope=>:objective_definition
   is_paranoid
+  include DeepClone
 
   def disable!
     intervention_definitions.each(&:disable!)
@@ -44,19 +45,14 @@ class InterventionCluster < ActiveRecord::Base
     title
   end
 
-  def deep_clone(od)
-    k=od.intervention_clusters.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :objective_definition_id => od.id})
-    if k
-      #exists
-    else
-      k=clone
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.objective_definition = od 
-      k.save!
-    end
-    k.intervention_definitions << intervention_definitions.collect{|o| o.deep_clone(k)}
-    k
+  private
+  def deep_clone_parent_field
+    'objective_definition_id'
   end
+
+  def deep_clone_children
+    %w{intervention_definitions}
+  end
+
 
 end

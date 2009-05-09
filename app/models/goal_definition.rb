@@ -30,6 +30,7 @@ class GoalDefinition < ActiveRecord::Base
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
   is_paranoid
+  include DeepClone
 
   def disable!
     objective_definitions.each(&:disable!)
@@ -40,22 +41,14 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
-  def deep_clone(district)
-    k=district.goal_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :district_id => district.id}) 
-    if k
-      #it already exists
-   else
-      k=clone
-      k.district=district
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.save! if k.valid?
-    end
-     
-    k.objective_definitions << objective_definitions.collect{|o| o.deep_clone(k)}
-    k
+  private
+  def deep_clone_parent_field
+    'district_id'
   end
 
-  
+  def deep_clone_children
+    %w{objective_definitions}
+  end
+
   
 end
