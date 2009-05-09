@@ -11,6 +11,7 @@ describe FileController do
  
     it "should generate params for #show" do
       params_from(:get, "/file/shawn").should == {:controller => "file", :action => "download", :filename => "shawn"}
+      params_from(:get, "/file/shawn.zip").should == {:controller => "file", :action => "download", :filename => "shawn.zip"}
     end
   end
 end
