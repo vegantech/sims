@@ -122,7 +122,7 @@ end
 
 
 desc 'create authenticated file directory' 
-task create_file_directory do
+task :create_file_directory do
    run "mkdir #{deploy_to}/files"
 
 end
