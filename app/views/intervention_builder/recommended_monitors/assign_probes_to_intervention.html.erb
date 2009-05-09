@@ -23,9 +23,14 @@ If you want to remove a recommended monitor, be sure to uncheck it everywhere it
       <%= content_tag :h4, k unless k==:none%>
       <% ic[:probes].each do |probe|  %>
 
+
         <%=check_box_tag("probes[]", probe.id,@intervention_definition.probe_definitions.include?(probe),
           :onclick=>"select_others(this);", :id=>probe.id) %>
+
+        <span onmouseover = "return overlib('<%= escape_javascript probe.description %>');"
+                    onmouseout = "return nd();">
           <%= label_tag probe.id, probe.title %> <br />
+        </span>
       <% end %>
 
     <% end %>
