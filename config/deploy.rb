@@ -123,13 +123,13 @@ end
 
 desc 'create authenticated file directory' 
 task :create_file_directory do
-   run "mkdir #{deploy_to}/files"
+   run "mkdir #{deploy_to}/file"
 
 end
 
 desc 'link_file_directory'
 task :link_file_directory do
-  run "ln -nfs #{deploy_to}/files #{release_path}/files"
+  run "ln -nfs #{deploy_to}/file #{release_path}/files"
 end
 
 
