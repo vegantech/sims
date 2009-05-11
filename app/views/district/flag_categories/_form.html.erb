@@ -10,13 +10,5 @@
     <%= form.text_field :threshold %>
   </p>
 
-  <div id = "assets" >
-    Attach a file or link <br />
-    <%= render :partial => 'assets/asset', :collection => form.object.assets , :locals => {:parent => "flag_category"}%>
-  </div>
-
-  <p>
-    <%= add_asset_link "Add a file or link", "flag_category" %>
-  </p>
-  
+  <%= render :partial => 'assets/asset_form', :locals => {:form=>form, :parent =>'flag_category'}  %>
 
