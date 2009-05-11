@@ -33,6 +33,7 @@ class InterventionsController < ApplicationController
 
   # POST /interventions
   def create
+    params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
     @intervention = build_from_session_and_params
 
     if @intervention.save
