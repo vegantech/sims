@@ -8,6 +8,7 @@ module LinkAndAttachmentAssets
  
   def new_asset_attributes=(asset_attributes)
     asset_attributes.each do |attributes|
+#      attributes={:document=>attributes} unless attributes.respond_to?(:values)    #needed for webrat attach_file?
       a=assets.build(attributes) unless attributes.values.all?(&:blank?)
     end
   end
