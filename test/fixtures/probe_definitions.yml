@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325230037
+# Schema version: 20090428193630
 #
 # Table name: probe_definitions
 #

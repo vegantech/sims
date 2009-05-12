@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325230037
+# Schema version: 20090428193630
 #
 # Table name: intervention_probe_assignments
 #
@@ -8,8 +8,8 @@
 #  probe_definition_id  :integer
 #  frequency_multiplier :integer
 #  frequency_id         :integer
-#  first_date           :datetime
-#  end_date             :datetime
+#  first_date           :date
+#  end_date             :date
 #  enabled              :boolean
 #  created_at           :datetime
 #  updated_at           :datetime

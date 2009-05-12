@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325230037
+# Schema version: 20090428193630
 #
 # Table name: intervention_definitions
 #
@@ -17,7 +17,6 @@
 #  school_id               :integer
 #  disabled                :boolean
 #  position                :integer
-#  rec_mon_preface         :string(255)
 #  created_at              :datetime
 #  updated_at              :datetime
 #  deleted_at              :datetime
