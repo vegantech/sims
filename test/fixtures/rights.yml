@@ -178,6 +178,12 @@ district_builder_flag_categories:
   read_access: true
   write_access: true
 
+district_builder_tiers:
+  role: district_builder
+  controller: 'tiers'
+  read_access: true
+  write_access: true
+
 
 regular_railmail:
   role: regular_user

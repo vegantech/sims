@@ -14,7 +14,9 @@
 class Tier < ActiveRecord::Base
   @@all_cache_order = "position"
   include AllCache
+  
   belongs_to :district
+  acts_as_list :scope=>'district_id'
 
   def to_s
     "#{position} - #{title}"

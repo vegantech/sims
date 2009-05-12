@@ -1,0 +1,24 @@
+<h1>Listing tiers</h1>
+
+<table>
+  <tr>
+    <th>District</th>
+    <th>Title</th>
+    <th>Position</th>
+  </tr>
+
+<% @tiers.each do |tier| %>
+  <tr>
+    <td><%=h tier.district_id %></td>
+    <td><%=h tier.title %></td>
+    <td><%=h tier.position %></td>
+    <td><%= link_to 'Show', tier %></td>
+    <td><%= link_to 'Edit', edit_tier_path(tier) %></td>
+    <td><%= link_to 'Destroy', tier, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New tier', new_tier_path %>
