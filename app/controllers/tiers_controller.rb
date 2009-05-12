@@ -44,6 +44,8 @@ class TiersController < ApplicationController
   # POST /tiers.xml
   def create
     @tier = current_district.tiers.build(params[:tier])
+    spellcheck @tier.title and render :action=>:new and return unless params[:spellcheck].blank?
+
 
     respond_to do |format|
       if @tier.save
@@ -61,9 +63,12 @@ class TiersController < ApplicationController
   # PUT /tiers/1.xml
   def update
     @tier = current_district.tiers.find(params[:id])
+    @tier.attributes=params[:tier]
 
+    spellcheck @tier.title and render :action=>:edit and return unless params[:spellcheck].blank?
+  
     respond_to do |format|
-      if @tier.update_attributes(params[:tier])
+      if @tier.save
         flash[:notice] = 'Tier was successfully updated.'
         format.html { redirect_to(@tier) }
         format.xml  { head :ok }
@@ -85,4 +90,23 @@ class TiersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def move
+    @tier = current_district.tiers.find(params[:id])
+
+    if params[:direction]
+      @tier.move_higher if params[:direction].to_s == "up"
+      @tier.move_lower if params[:direction].to_s == "down"
+    end
+    respond_to do |format|
+      format.html {redirect_to tiers_url}
+      format.js {@tiers=current_district.tiers}
+    end
+  end
+
+ protected
+  def move_path(obj,direction)
+    move_tier_path(obj,:direction=>direction)
+  end
+
 end

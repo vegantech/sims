@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :quicklist_items
 
 
-  map.resources :tiers
+  map.resources :tiers, :member=>{:move => :put }
 
   map.resources :user_school_assignments
 
