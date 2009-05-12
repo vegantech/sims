@@ -1,11 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
 
+
   map.download_file '/file/:filename', :controller=>'file', :action=>'download',   :requirements => { :filename => %r([^/;,?]+) }
 
   map.resources :help
   map.resources :quicklist_items
 
 
+  map.resources :tiers, :member=>{:move => :put }
 
   map.resources :user_school_assignments
 

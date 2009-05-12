@@ -1,0 +1,16 @@
+<h1>Listing tiers</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+  </tr>
+  </thead>
+  <tbody id="tiers">
+    <%= render :partial => 'tier', :collection => @tiers %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New tier', new_tier_path %>
