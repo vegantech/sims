@@ -50,7 +50,7 @@ class TiersController < ApplicationController
     respond_to do |format|
       if @tier.save
         flash[:notice] = 'Tier was successfully created.'
-        format.html { redirect_to(@tier) }
+        format.html { redirect_to tiers_url }
         format.xml  { render :xml => @tier, :status => :created, :location => @tier }
       else
         format.html { render :action => "new" }
@@ -70,7 +70,7 @@ class TiersController < ApplicationController
     respond_to do |format|
       if @tier.save
         flash[:notice] = 'Tier was successfully updated.'
-        format.html { redirect_to(@tier) }
+        format.html { redirect_to tiers_url }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

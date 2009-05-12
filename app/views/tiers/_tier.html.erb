@@ -1,9 +1,8 @@
 <% content_tag_for :tr, tier do %>
   <td align="left"><%= move_up_down_buttons tier %></td>
   <td align="center"> 
-    <%= link_to 'Show', tier %> <br />
     <%= link_to 'Edit', edit_tier_path(tier) %> <br />
-    <%= link_to 'Destroy', tier, :confirm => 'Are you sure?', :method => :delete %> 
+    <%= link_to 'Delete', tier, :confirm => 'Are you sure?', :method => :delete %> 
   </td>
   <td><%=h tier.title %></td>
 <% end %>

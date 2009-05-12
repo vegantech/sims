@@ -59,7 +59,7 @@ describe TiersController do
       it "redirects to the created tier" do
         Tier.stub!(:build).and_return(mock_tier(:save => true))
         post :create, :tier => {}
-        response.should redirect_to(tier_url(mock_tier))
+        response.should redirect_to(tiers_url)
       end
     end
     
@@ -83,39 +83,39 @@ describe TiersController do
     
     describe "with valid params" do
       it "updates the requested tier" do
-        Tier.should_receive(:find).with("37").and_return(mock_tier)
-        mock_tier.should_receive(:update_attributes).with({'these' => 'params'})
+        Tier.should_receive(:find).with("37").and_return(mock_tier(:save => true))
+        mock_tier.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :tier => {:these => 'params'}
       end
 
       it "assigns the requested tier as @tier" do
-        Tier.stub!(:find).and_return(mock_tier(:update_attributes => true))
+        Tier.stub!(:find).and_return(mock_tier(:attributes= => true, :save => true))
         put :update, :id => "1"
         assigns[:tier].should equal(mock_tier)
       end
 
-      it "redirects to the tier" do
-        Tier.stub!(:find).and_return(mock_tier(:update_attributes => true))
+      it "redirects to the tiers" do
+        Tier.stub!(:find).and_return(mock_tier(:attributes= => true, :save => true))
         put :update, :id => "1"
-        response.should redirect_to(tier_url(mock_tier))
+        response.should redirect_to(tiers_url)
       end
     end
     
     describe "with invalid params" do
       it "updates the requested tier" do
-        Tier.should_receive(:find).with("37").and_return(mock_tier)
-        mock_tier.should_receive(:update_attributes).with({'these' => 'params'})
+        Tier.should_receive(:find).with("37").and_return(mock_tier(:save => false))
+        mock_tier.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :tier => {:these => 'params'}
       end
 
       it "assigns the tier as @tier" do
-        Tier.stub!(:find).and_return(mock_tier(:update_attributes => false))
+        Tier.stub!(:find).and_return(mock_tier(:attributes= => false, :save => false))
         put :update, :id => "1"
         assigns[:tier].should equal(mock_tier)
       end
 
       it "re-renders the 'edit' template" do
-        Tier.stub!(:find).and_return(mock_tier(:update_attributes => false))
+        Tier.stub!(:find).and_return(mock_tier(:attributes= => false, :save => false))
         put :update, :id => "1"
         response.should render_template('edit')
       end
