@@ -10,10 +10,13 @@ Feature: Progress Monitor Builder
     When I follow "Create New Progress Monitor"
     And I fill in "Title" with "test_spellcheck_with_attachment"
     And I fill in "Description" with "test_spellcheck_with_attachment"
-    And I attach the file at "README" to "probe_definition_new_asset_attributes__document"
-    And I am pending until I can figure out why attach_file behavior differs from browser
+    #And I attach the file at "README" to "probe_definition_new_asset_attributes__document"
+    And I attach the file at "README" to "asset"
+    #And I attach the file at "README" to "probe_definition_new_asset_attributes__document"
+    And I am pending until webrat bug in ticket 198 (on webrat lighthouse) is fixed
     When I press "Create"
     Then I should see "README"
+    And I am pending until I can figure out why attach_file behavior differs from browser
 
 
 
