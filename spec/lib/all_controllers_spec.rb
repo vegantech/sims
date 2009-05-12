@@ -20,8 +20,8 @@ describe AllControllers do
         interventions login main news_items
         principal_overrides quicklist_items recommendations reports 
         school/students
-        schools 
-        states student_comments students
+        schools
+        states student_comments students tiers
       }
       AllControllers.names.should ==  static_list
     end
