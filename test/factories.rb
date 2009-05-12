@@ -8,7 +8,7 @@ end
 
 Factory.define :checklist do |c|
   c.association :student
-  c.association :teacher, :factory=>:user
+  c.association :teacher, :factory => :user
   c.association :tier
   c.association :checklist_definition
 end

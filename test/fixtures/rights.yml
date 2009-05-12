@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325230037
+# Schema version: 20090428193630
 #
 # Table name: rights
 #
@@ -175,6 +175,12 @@ district_builder_recommended_monitors:
 district_builder_flag_categories:
   role: district_builder
   controller: 'district/flag_categories'
+  read_access: true
+  write_access: true
+
+district_builder_tiers:
+  role: district_builder
+  controller: 'tiers'
   read_access: true
   write_access: true
 

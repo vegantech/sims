@@ -10,8 +10,7 @@ module Spec
           super(method,*args,&blk)
         end
       end
-
-   end
+    end
   end
 
   module Mocks
@@ -25,8 +24,4 @@ module Spec
       end
     end
   end
-
-
-
 end
-

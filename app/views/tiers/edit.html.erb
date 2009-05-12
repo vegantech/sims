@@ -1,0 +1,19 @@
+<h1>Editing tier</h1>
+
+<% form_for(@tier) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  
+  <p>
+    <%= f.submit 'Update' %>
+    <%= spell_check_submit %>
+  </p>
+        <%= render :partial => 'spell_check/spelling'  %>
+
+<% end %>
+
+<%= link_to 'Back', tiers_path %>

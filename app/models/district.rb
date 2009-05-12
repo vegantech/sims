@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090325230037
+# Schema version: 20090428193630
 #
 # Table name: districts
 #
@@ -32,7 +32,7 @@ class District < ActiveRecord::Base
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
   has_many :recommended_monitors, :through => :probe_definitions
-  has_many :tiers
+  has_many :tiers, :order => 'position'
   has_many :schools, :order => :name
   has_many :students
   has_many :special_user_groups
