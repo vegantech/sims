@@ -4,7 +4,10 @@
   <%= render :partial => 'form', :locals => { :f => f, :question_definition => @question_definition } %>
   <p>
     <%= submit_tag "Update" %>
+    <%= spell_check_submit %>
   </p>
 <%- end -%>
+<%= render :partial => 'spell_check/spelling'  %>
+
 <%= link_to 'Show', question_definition_path(@checklist_definition, @question_definition) %> |
 <%= link_to 'Back', checklist_definition_path(@checklist_definition) %>

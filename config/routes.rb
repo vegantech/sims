@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.download_file '/file/:filename', :controller=>'file', :action=>'download',   :requirements => { :filename => %r([^/;,?]+) }
+
   map.resources :help
   map.resources :quicklist_items
 
@@ -25,6 +27,7 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.resources :principal_overrides, :member => {:undo=> :put}
+
 
 
 

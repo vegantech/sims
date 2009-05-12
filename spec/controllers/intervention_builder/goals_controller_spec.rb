@@ -103,19 +103,19 @@ describe InterventionBuilder::GoalsController do
     describe "with valid params" do
 
       it "should update the requested goal_definition" do
-        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal)
-        mock_goal.should_receive(:update_attributes).with({'these' => 'params'})
+        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>true))
+        mock_goal.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :goal_definition => {:these => 'params'}
       end
 
       it "should expose the requested goal as @goal_definition" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:update_attributes => true))
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save => true, :attributes= =>true))
         put :update, :id => "1"
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should redirect to the goal" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:update_attributes => true))
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save => true, :attributes= => true))
         put :update, :id => "1"
         response.should redirect_to(intervention_builder_goals_url)
       end
@@ -125,19 +125,19 @@ describe InterventionBuilder::GoalsController do
     describe "with invalid params" do
 
       it "should update the requested goal" do
-        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal)
-        mock_goal.should_receive(:update_attributes).with({'these' => 'params'})
+        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>false))
+        mock_goal.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :goal_definition => {:these => 'params'}
       end
 
       it "should expose the goal as @goal_definition" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:update_attributes => false))
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save =>false,:attributes= => false))
         put :update, :id => "1"
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should re-render the 'edit' template" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:update_attributes => false))
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save =>false,:attributes= => false))
         put :update, :id => "1"
         response.should render_template('edit')
       end

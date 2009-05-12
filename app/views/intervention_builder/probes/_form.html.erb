@@ -32,11 +32,4 @@
   <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => @probe_definition.probe_definition_benchmarks.size } %>
 </p>
 
-<div id = "assets" >
-  Attach a file or link <br />
-  <%= render :partial => 'assets/asset', :collection => form.object.assets, :locals => {:parent => "probe_definition"} %>
-</div>
-
-<p>
-  <%= add_asset_link "Add a file or link", "probe_definition" %>
-</p>
+<%= render :partial => '/assets/asset_form', :locals => {:form=>form, :parent =>'probe_definition'}  %>

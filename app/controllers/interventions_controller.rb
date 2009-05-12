@@ -33,6 +33,7 @@ class InterventionsController < ApplicationController
 
   # POST /interventions
   def create
+    params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
     @intervention = build_from_session_and_params
 
     if @intervention.save
@@ -47,6 +48,7 @@ class InterventionsController < ApplicationController
       @intervention_definition = @intervention.intervention_definition
       populate_goals
       @intervention=i
+      flash.keep(:custom_intervention)
       #end code to make validation work
       render :action => "new"
     end       
@@ -113,7 +115,12 @@ class InterventionsController < ApplicationController
     flash.keep(:custom_intervention)
     @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     if params[:id] == 'custom'
-      @intervention_probe_assignment = @intervention.intervention_probe_assignments.new if @intervention
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.build if @intervention
+      if @intervention_probe_assignment and  @intervention_probe_assignment.probe_definition.blank?
+        @intervention_probe_assignment.build_probe_definition
+        @intervention_probe_assignment.probe_definition.assets.build
+        @intervention_probe_assignment.probe_definition.probe_definition_benchmarks.build
+      end
     else
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.find_by_probe_definition_id(params[:id]) if @intervention
       unless @intervention_probe_assignment

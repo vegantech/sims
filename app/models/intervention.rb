@@ -38,7 +38,10 @@ class Intervention < ActiveRecord::Base
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
+  #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
+  accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
+  
 
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
@@ -47,6 +50,9 @@ class Intervention < ActiveRecord::Base
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
   attr_reader :autoassign_message
 
+  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
+  delegate :objective_definition, :to => :intervention_cluster
+  delegate :goal_definition, :to => :objective_definition
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
 
@@ -55,31 +61,16 @@ class Intervention < ActiveRecord::Base
   def self.build_and_initialize(args)
     # TODO Refactor
 
-    if k = args["intervention_definition"] and !k.is_a?(InterventionDefinition)
-      int_def_args = (args.delete("intervention_definition"))
-    end
+    # if k = args["intervention_definition"] and !k.is_a?(InterventionDefinition)
+    #  int_def_args = (args.delete("intervention_definition"))
+    #end
 
     int = self.new(args)
-    int.build_intervention_definition(int_def_args) if int_def_args
-
-    if int.intervention_definition.new_record? 
-      # This represents a custom intervention, passing in a new intervention definition as a param
-      int.intervention_definition.school_id = int.school_id
-      int.intervention_definition.custom = true
-      int.intervention_definition.user_id = int.user_id
-      int.intervention_definition.time_length = int.time_length
-      int.intervention_definition.time_length_num = int.time_length_number
-      int.intervention_definition.frequency = int.frequency
-      int.intervention_definition.frequency_multiplier = int.frequency_multiplier
-    end
+    int.intervention_definition.set_values_from_intervention(int)
+    
 
     int.start_date ||= Time.now
-    if int.intervention_definition
-      int.frequency ||= int.intervention_definition.frequency
-      int.frequency_multiplier ||= int.intervention_definition.frequency_multiplier
-      int.time_length ||= int.intervention_definition.time_length
-      int.time_length_number ||= int.intervention_definition.time_length_num
-    end
+    int.set_missing_values_from_intervention_definition
     int.time_length ||= TimeLength.first
 
     int.time_length_number ||= 1
@@ -89,9 +80,6 @@ class Intervention < ActiveRecord::Base
     int
   end
 
-  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
-  delegate :objective_definition, :to => :intervention_cluster
-  delegate :goal_definition, :to => :objective_definition
 
   def end(ended_by)
     self.ended_by_id = ended_by
@@ -125,28 +113,23 @@ class Intervention < ActiveRecord::Base
 
   def intervention_probe_assignment=(params)
     intervention_probe_assignments.update_all(:enabled => false) #disable all others
-    params.symbolize_keys!
-    return if params.blank? or (params[:probe_definition_id].blank? and params[:probe_definition].blank?)
-   
-    if params[:probe_definition_id] == 'custom'
-      params[:probe_definition_id] = nil
+    params.stringify_keys!
+    return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
+  
+    if params['probe_definition_id'] == 'custom'
+      params['probe_definition_id'] = nil
     end
-    @ipa = intervention_probe_assignments.find_by_probe_definition_id(params[:probe_definition_id]) || intervention_probe_assignments.build
-
-    
-    if params[:probe_definition_id].blank?
-      params[:probe_definition]=@ipa.build_probe_definition(params[:probe_definition])
-    end
+    @ipa = intervention_probe_assignments.find_by_probe_definition_id(params['probe_definition_id']) || intervention_probe_assignments.build
     @ipa.attributes = params.merge(:enabled => true)
-    @ipa.first_date = Date.civil(params[:"first_date(1i)"].to_i,params[:"first_date(2i)"].to_i,params[:"first_date(3i)"].to_i)
-    @ipa.end_date = Date.civil(params[:"end_date(1i)"].to_i,params[:"end_date(2i)"].to_i,params[:"end_date(3i)"].to_i)
   end
 
   def intervention_probe_assignment(probe_definition_id = nil)
     if probe_definition_id
       intervention_probe_assignments.find_or_initialize_by_probe_definition_id(probe_definition_id)
     else
-      @ipa || intervention_probe_assignments.active.first
+      p=@ipa || intervention_probe_assignments.active.first
+      p.build_probe_definition if p && p.probe_definition.blank?
+      p
     end
   end
 
@@ -160,6 +143,15 @@ class Intervention < ActiveRecord::Base
 
   def report_summary
     "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
+  end
+
+  def set_missing_values_from_intervention_definition
+    if intervention_definition
+      frequency ||= intervention_definition.frequency
+      frequency_multiplier ||= intervention_definition.frequency_multiplier
+      time_length ||= intervention_definition.time_length
+      time_length_number ||= intervention_definition.time_length_num
+    end
   end
 
   protected

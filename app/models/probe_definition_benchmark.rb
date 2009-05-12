@@ -22,35 +22,32 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
   is_paranoid
-
-  def deep_clone(pd)
-    k=pd.probe_definition_benchmarks.find_with_destroyed(:first,:conditions=>{:copied_from=>self.id, :probe_definition_id => pd.id}) 
-    if k
-      #it already exists
-   else
-      k=clone
-      k.probe_definition =pd
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.save! if k.valid?
-    end
-    k
-  end
-
+  include DeepClone
 
   protected
   def validate_within_probe_definition_range
     
     if probe_definition && benchmark.present?
       if self.probe_definition.minimum_score && benchmark < self.probe_definition.minimum_score
-        errors.add(:benchmark, "must be greater than the minimum score. for the probe definition")
+        errors.add(:benchmark, "must be greater than the minimum score. for the progress monitor definition")
       end
       
       if self.probe_definition.maximum_score && benchmark > self.probe_definition.maximum_score
-        errors.add(:benchmark, "must be less than the maximum score. for the probe definition")
+        errors.add(:benchmark, "must be less than the maximum score. for the progress monitor definition")
       end
   end
 
   end
+
+  private
+  def deep_clone_parent_field
+    'probe_definition_id'
+  end
+
+  def deep_clone_children
+    []
+  end
+
+
 
 end

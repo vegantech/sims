@@ -1,4 +1,5 @@
 class InterventionBuilder::GoalsController < ApplicationController
+  include SpellCheck
   additional_write_actions :regenerate_intervention_pdfs
   helper_method :move_path
 
@@ -38,6 +39,8 @@ class InterventionBuilder::GoalsController < ApplicationController
   # POST /goal_definitions
   def create
     @goal_definition = current_district.goal_definitions.build(params[:goal_definition])
+    spellcheck [@goal_definition.title,@goal_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
+    
 
     respond_to do |format|
       if @goal_definition.save
@@ -52,9 +55,12 @@ class InterventionBuilder::GoalsController < ApplicationController
   # PUT /goal_definitions/1
   def update
     @goal_definition = current_district.goal_definitions.find(params[:id])
+    @goal_definition.attributes=params[:goal_definition]
+    spellcheck [@goal_definition.title,@goal_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
     respond_to do |format|
-      if @goal_definition.update_attributes(params[:goal_definition])
+      if @goal_definition.save
+        #update_attributes(params[:goal_definition])
         flash[:notice] = 'Goal was successfully updated.'
         format.html { redirect_to intervention_builder_goals_url }
       else

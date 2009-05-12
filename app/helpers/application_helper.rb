@@ -1,6 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def spell_check_submit prefix=nil
+    hidden_field_tag("spellcheck", nil, :id=>"#{prefix}spellcheck") +
+    submit_tag("Spellcheck", :name=>"spellcheck",:onclick =>"$('#{prefix}spellcheck').value='Spellcheck'")
+  end
+
+  
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
      content_tag :li,r if r.present?
@@ -108,10 +114,6 @@ module ApplicationHelper
     end)
   end
 
-  def spell_check_submit
-    hidden_field_tag("spellcheck",nil) + 
-    submit_tag("Spellcheck", :name=>"spellcheck",:onclick =>"$('spellcheck').value='Spellcheck'")
-  end
 
   def previous_answers(checklist, answer_definition, &block)
     return if checklist.student.blank?

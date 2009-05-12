@@ -96,19 +96,19 @@ describe InterventionBuilder::ObjectivesController do
     describe "with valid params" do
 
       it "should update the requested objective_definition" do
-        ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective)
-        mock_objective.should_receive(:update_attributes).with({'these' => 'params'})
+        ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective(:save=>true))
+        mock_objective.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :objective_definition => {:these => 'params'}, :goal_id=>"44"
       end
 
       it "should expose the requested objective as @objective_definition" do
-        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:update_attributes => true))
+        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:attributes= => true, :save=>true))
         put :update, :id => "1", :goal_id=>"44"
         assigns(:objective_definition).should equal(mock_objective)
       end
 
       it "should redirect to the objective" do
-        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:update_attributes => true))
+        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:attributes= => true, :save=>true))
         put :update, :id => "1", :goal_id=>"44"
         response.should redirect_to(intervention_builder_objectives_url)
       end
@@ -118,19 +118,19 @@ describe InterventionBuilder::ObjectivesController do
     describe "with invalid params" do
 
       it "should update the requested objective" do
-        ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective)
-        mock_objective.should_receive(:update_attributes).with({'these' => 'params'})
+        ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective(:save=>false))
+        mock_objective.should_receive(:attributes=).with({'these' => 'params'})
         put :update, :id => "37", :objective_definition => {:these => 'params'}, :goal_id=>"44"
       end
 
       it "should expose the objective as @objective_definition" do
-        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:update_attributes => false))
+        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:attributes= => false,:save=>false))
         put :update, :id => "1", :goal_id=>"44"
         assigns(:objective_definition).should equal(mock_objective)
       end
 
       it "should re-render the 'edit' template" do
-        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:update_attributes => false))
+        ObjectiveDefinition.stub!(:find).and_return(mock_objective(:attributes= => false,:save=>false))
         put :update, :id => "1", :goal_id=>"44"
         response.should render_template('edit')
       end

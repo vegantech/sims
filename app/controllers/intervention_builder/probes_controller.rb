@@ -1,5 +1,6 @@
 class InterventionBuilder::ProbesController < ApplicationController
-  skip_before_filter :authorize, :only => [:add_benchmark]
+  include SpellCheck
+  skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   additional_read_actions :add_benchmark
 
   def index
@@ -22,9 +23,10 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def create
     @probe_definition = current_district.probe_definitions.build(params[:probe_definition])
+    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
      if @probe_definition.save
-       flash[:notice]= 'Probe Definition was successfully created'
+       flash[:notice]= 'Progress Monitor Definition was successfully created'
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
        render :action=>"new"
@@ -33,9 +35,11 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def update
     @probe_definition = current_district.probe_definitions.find(params[:id])
+    @probe_definition.attributes = params[:probe_definition]
+    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
-     if @probe_definition.update_attributes(params[:probe_definition])
-       flash[:notice]= 'Probe Definition was successfully updated'
+     if @probe_definition.save
+       flash[:notice]= 'Progress Monitor Definition was successfully updated'
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
        render :action=>"edit"
@@ -52,7 +56,7 @@ class InterventionBuilder::ProbesController < ApplicationController
     if probe_definition
       probe_definition.toggle!(:active)
     else
-      flash[:notice] = 'Probe Definition no longer exists.'
+      flash[:notice] = 'Progress Monitor Definition no longer exists.'
     end
     redirect_to intervention_builder_probes_url
   end
@@ -60,7 +64,7 @@ class InterventionBuilder::ProbesController < ApplicationController
   def destroy
     probe_definition=current_district.find_probe_definition((params[:id]))
     if probe_definition && probe_definition.probes.count > 0
-      flash[:notice]='Probe Definition could not be deleted, it is in use.'
+      flash[:notice]='Progress Monitor Definition could not be deleted, it is in use.'
     else
       probe_definition.destroy if probe_definition
     end

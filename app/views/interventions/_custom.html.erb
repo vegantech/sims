@@ -1,8 +1,5 @@
-<% @intervention_definition = @intervention.intervention_definition %>
-<% form.fields_for(@intervention_definition) do |int_def| %>
-  <%=# debug int_def
-  %>
-  <%= error_messages_for(:intervention_definition) %>
+<%  form.fields_for :intervention_definition do |int_def|  %>
+  <%= int_def.error_messages %>
   <p>
     <%= int_def.label :title %> 
     <%= int_def.text_field :title %> 

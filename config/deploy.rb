@@ -15,7 +15,7 @@ set :application, "sims-open"
 
 
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
-If you\'re looking for the pilot, it\'s at <%=link_to "https://www.simspilot.org", "https://www.simspilot.org %> <br /> The data in this demo gets reset weekly. '
+If you\'re looking for the pilot, it\'s at <%=link_to "https://www.simspilot.org", "https://www.simspilot.org" %> <br /> The data in this demo gets reset weekly. '
 
 
 desc ":wip for work in progress demo"
@@ -69,8 +69,8 @@ role :db,  "vegantech.com", :primary => true
 
 
 
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note
-after "deploy:cold", :load_fixtures, :create_intervention_pdfs
+after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
+after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory
 
 
 
@@ -113,12 +113,26 @@ task :setup_default_url do
 end
 
 task :change_railmail_to_smtp do
-  run "cd #{release_path}/config/ && sed -i  -e 's/railmail/none/' environment.rb "
+  run "cd #{release_path}/config/ && sed -i  -e 's/railmail/smtp/' environment.rb "
 end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
 end
+
+
+desc 'create authenticated file directory' 
+task :create_file_directory do
+   run "mkdir #{deploy_to}/file"
+
+end
+
+desc 'link_file_directory'
+task :link_file_directory do
+  run "ln -nfs #{deploy_to}/file #{release_path}/file"
+end
+
+
 
 task :overwrite_login_pilot_note do
   put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", :mode=>0755, :via=>:scp)

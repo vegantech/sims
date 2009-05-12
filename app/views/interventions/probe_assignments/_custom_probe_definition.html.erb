@@ -1,4 +1,4 @@
-<% ipa.fields_for :probe_definition, ProbeDefinition.new do |pdef| %>
+<% ipa.fields_for :probe_definition do |pdef| %>
   <table width="98%">
   <!--[form:probe_definition]-->
     <tr>
@@ -29,11 +29,6 @@
   <p>
     <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
   </p>
-
-  <div id="assets" >
-    <%= render :partial => 'assets/asset', :collection => pdef.object.assets, :locals => {:parent => 'probe_definition'} %>
-  </div>
-  <p>
-    <%= add_asset_link 'Add a file or link', 'probe_definition' %>
-  </p>
+    
+  <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
 <% end %>

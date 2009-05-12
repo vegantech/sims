@@ -4,7 +4,13 @@ class Interventions::GoalsController < ApplicationController
   def select
     flash.keep(:custom_intervention)
     respond_to do |format|
-      format.html { redirect_to interventions_objectives_url(params[:goal_definition][:id])}
+      format.html do
+        if params[:goal_definition][:id].present?
+          redirect_to interventions_objectives_url(params[:goal_definition][:id])
+        else
+          redirect_to :back
+        end
+      end
       format.js {
         populate_objectives
      }

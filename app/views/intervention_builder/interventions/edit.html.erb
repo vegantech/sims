@@ -4,7 +4,7 @@
 
 <%= error_messages_for :intervention_definition %>
 
-<% form_for(:intervention_definition, :url => intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition), :html => { :method => :put, :multipart => true }) do |f| %>
+<% form_for(:intervention_definition,@intervention_definition, :url => intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,@intervention_definition), :html => { :method => :put, :multipart => true }) do |f| %>
 
   <p>
     <b>Goal-Objective-Cluster</b><br />

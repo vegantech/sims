@@ -37,17 +37,14 @@
   </p>
 
   <br class='brclear' />
- 
-  <div id = "assets" >
-    Attach a file or link <br />
-    <%= render :partial => 'assets/asset', :collection => @intervention_definition.assets , :locals => {:parent => "intervention_definition"}%>
-  </div>
 
-  <p>
-    <%= add_asset_link "Add a file or link", "intervention_definition" %>
-  </p>
+  <%= render :partial => 'assets/asset_form', :locals => {:form=>form, :parent =>'intervention_definition'}  %>
+
 
   <p>
     <%= submit_tag submit_name , :class =>"submit"%>
+    <%= spell_check_submit %>
   </p>
+  <%= render :partial => 'spell_check/spelling'  %>
+
 </div>

@@ -1,5 +1,5 @@
 <div id="probe_definition_benchmark_<%=index %>">
-<% fields_for 'intervention[intervention_probe_assignment][probe_definition][probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
+<% fields_for 'intervention[intervention_probe_assignment][probe_definition_attributes][probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
 <table width="98%">
   <tr>
     <td width="15%"><%= form.label :benchmark %></td>

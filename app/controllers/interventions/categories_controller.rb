@@ -9,7 +9,13 @@ class Interventions::CategoriesController < ApplicationController
   def select
     flash.keep(:custom_intervention)
     respond_to do |format|
-      format.html {redirect_to interventions_definitions_url(params[:goal_id],params[:objective_id],params[:intervention_cluster][:id])}
+      format.html do
+        if params[:intervention_cluster][:id].present?
+          redirect_to interventions_definitions_url(params[:goal_id],params[:objective_id],params[:intervention_cluster][:id])
+        else
+          redirect_to :back
+        end
+      end
       format.js {
         populate_definitions
      }

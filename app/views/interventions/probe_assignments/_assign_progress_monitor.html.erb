@@ -1,18 +1,22 @@
 <% readonly = false if readonly.nil? %>
 <br class="brclear" />
 <p>
-  <%= label :intervention_probe_assignment,:probe_definition_id, "Assign Progress Monitor" %>
+  <%= label 'intervention[intervention_probe_assignment]',:probe_definition_id, "Assign Progress Monitor" %>
   <% if readonly %>
     <%= @intervention.assigned_probes %>
-  <% elsif @recommended_monitors.size == 1 && @intervention.new_record?  %>
+  <% elsif @recommended_monitors.size == 1 && @intervention.new_record? && !flash[:custom_intervention] %>
     <% @intervention_probe_assignment ||=@intervention.intervention_probe_assignment(@recommended_monitors.first.probe_definition_id) if (@recommended_monitors.first.probe_definition) %>
     <%= @intervention_probe_assignment.title if @intervention_probe_assignment %>
   <% else %>
     <% options = @recommended_monitors.map {|element| [element.send(:title), element.send(:probe_definition_id)]} %>
-    <% options << ['Custom', 'custom'] if flash[:custom_intervention]  and false%>
+    <% options << ['Custom', 'custom'] if flash[:custom_intervention]  %>
     <% ipa = @intervention.intervention_probe_assignment ?  @intervention.intervention_probe_assignment.probe_definition_id : nil %> 
+    <% @intervention_probe_assignment = @intervention.intervention_probe_assignment if params[:custom_probe] %>
+    <% ipa='custom' if @intervention_probe_assignment and @intervention_probe_assignment.probe_definition and @intervention_probe_assignment.probe_definition.new_record? %>
 
-    <%= select('intervention[intervention_probe_assignment]', :probe_definition_id, options, {:include_blank => true, :selected => ipa}, {:onchange => remote_function(:update => 'intervention_probe_assignment', :url => ajax_probe_assignment_interventions_url, :method => :get, :with => "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before => "$('spinnerassign_progress').show()", :success => "$('spinnerassign_progress').hide();"), :class => "fixed_width"}) %>
+    <%= select('intervention[intervention_probe_assignment]', :probe_definition_id, options, {:include_blank => true, 
+:selected => ipa }, 
+{:onchange => remote_function(:update => 'intervention_probe_assignment', :url => ajax_probe_assignment_interventions_url, :method => :get, :with => "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", :before => "$('spinnerassign_progress').show()", :success => "$('spinnerassign_progress').hide();"), :class => "fixed_width"}) %>
 
     <%= spinner("assign_progress") %>
   <% end %>

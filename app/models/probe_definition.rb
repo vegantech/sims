@@ -24,21 +24,23 @@
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
-  has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy
+  has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions
-  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true
+  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active', 'district_id', :deleted_at]
   validates_numericality_of :maximum_score, :allow_nil => true
   validates_numericality_of :minimum_score, :allow_nil => true
-  validates_associated(:probe_definition_benchmarks)
+  #validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
   is_paranoid
+  include DeepClone
+
   
   def validate
     #TODO this can be refactored out using rails 2.x changes
@@ -51,25 +53,10 @@ class ProbeDefinition < ActiveRecord::Base
     intervention_probe_assignments
   end
 
-  def deep_clone(district)
-    k=district.probe_definitions.find_with_destroyed(:first,:conditions=>{:copied_from=>id, :district_id => district.id}) 
-    if k
-      #it already exists
-   else
-      k=clone
-      k.district=district
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.save! if k.valid?
-    end
-     
-    k.probe_definition_benchmarks << probe_definition_benchmarks.collect{|o| o.deep_clone(k)}
-    k.probe_questions << probe_questions.collect{|o| o.deep_clone(k)}
-    k
-  end
-
   def self.group_by_cluster_and_objective
     #This will work better
+
+    #refactor this to use recommended monitors?
     probes = find(:all, :order =>:position)
 
     my_hash = ActiveSupport::OrderedHash.new()
@@ -90,8 +77,20 @@ class ProbeDefinition < ActiveRecord::Base
         unassigned[:clusters][:none][:probes] << probe
       end
     end
-    my_hash[:unassigned_probe_definitions] = unassigned
+    unassigned[:clusters][:none][:probes]=  unassigned[:clusters][:none][:probes].sort_by{|e| e.title}
+    my_hash[:unassigned_progress_monitors] = unassigned
 
     my_hash
   end
+
+  private
+  def deep_clone_parent_field
+    'district_id'
+  end
+
+  def deep_clone_children
+    %w{probe_definition_benchmarks probe_questions}
+  end
+
+
 end

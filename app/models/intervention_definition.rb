@@ -122,21 +122,22 @@ class InterventionDefinition < ActiveRecord::Base
 
   end
   
-  def deep_clone(ic)
-    k=ic.intervention_definitions.find_with_destroyed(:first, :conditions => {:copied_from => id, :intervention_cluster_id => ic.id})
-    if k
-      #exists
-    else
-      k=clone
-      k.copied_at=Time.now
-      k.copied_from = id
-      k.intervention_cluster = ic
-      #      k.save! if k.valid?
+  def set_values_from_intervention(int)
+    #Used only for custom interventions
+    if new_record?
+      self.school_id = int.school_id
+      self.custom = true
+      self.user_id = int.user_id
+      self.time_length = int.time_length
+      self.time_length_num = int.time_length_number
+      self.frequency = int.frequency
+      self.frequency_multiplier = int.frequency_multiplier
     end
-    
-    k
   end
 
+
+
+  
   protected
   def update_district_quicklist
     if @district_quicklist_arg
@@ -146,5 +147,16 @@ class InterventionDefinition < ActiveRecord::Base
       g.destroy if g 
     end
   end
+
+  private
+  def deep_clone_parent_field
+    'intervention_cluster_id'
+  end
+
+  def deep_clone_children
+    %w{intervention_definitions}
+  end
+
+
 
 end
