@@ -59,7 +59,7 @@ class ChecklistBuilder::QuestionsController < ApplicationController
     @question_definition.attributes = params[:question_definition]
 
     a = request.xhr? ? :spell_fail : :edit
-    spellcheck [@question_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank? 
+    spellcheck [@question_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @question_definition.save

@@ -1,4 +1,5 @@
 class InterventionsController < ApplicationController
+  include SpellCheck
   additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :authorize, :only => [:add_benchmark]
@@ -18,6 +19,7 @@ class InterventionsController < ApplicationController
     flash.keep(:custom_intervention)
     flash[:custom_intervention] ||= params[:custom_intervention]
     @quicklist = true if params[:quicklist]
+    @intervention_comment = InterventionComment.new
 
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
@@ -29,39 +31,64 @@ class InterventionsController < ApplicationController
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
     @users = current_school.users.collect{|e| [e.fullname, e.id]}
+    @intervention_comment = InterventionComment.new
   end
 
   # POST /interventions
   def create
     params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
+
     @intervention = build_from_session_and_params
+
+    unless params[:spellcheck].blank?
+      @quicklist = true if params[:quicklist]
+      @users = current_school.users.collect{|e| [e.fullname, e.id]}
+      debugger
+      spellcheck [@intervention.comments.last.comment].join(" ")
+      @intervention_comment = @intervention.comments.last
+      # populate_goals
+      render :action => :new
+      return
+    end
 
     if @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
-      #This is to make validation work
-      i=@intervention
+      # This is to make validation work
+      i = @intervention
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition
       @intervention_cluster = @intervention.intervention_cluster
       @intervention_definition = @intervention.intervention_definition
       populate_goals
-      @intervention=i
+      @intervention = i
       flash.keep(:custom_intervention)
-      #end code to make validation work
+      # end code to make validation work
       render :action => "new"
     end       
   end
 
   # PUT /interventions/1
   def update
-    params[:intervention][:participant_user_ids] ||=[] if params[:intervention]
-    params[:intervention][:intervention_probe_assignment] ||= {} if params[:intervention]
+    if params[:intervention]
+      params[:intervention][:participant_user_ids] ||=[]
+      params[:intervention][:intervention_probe_assignment] ||= {}
+    end
+
+    unless params[:spellcheck].blank?
+      spellcheck [params[:intervention][:comment][:comment]].join(" ")
+      @intervention_comment = InterventionComment.new(params[:intervention][:comment])
+      @users = current_school.users.collect{|e| [e.fullname, e.id]}
+      a = request.xhr? ? :spell_fail : :edit
+      render :action => a
+      return
+    end
+
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(student_url(current_student, :tn=>0, :ep=>0)) }
+        format.html { redirect_to(student_url(current_student, :tn => 0, :ep => 0)) }
       else
         format.html { edit and render :action => "edit" }
       end
@@ -131,24 +158,22 @@ class InterventionsController < ApplicationController
     render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'
   end
 
-
   def add_benchmark
     @probe_definition_benchmark = ProbeDefinitionBenchmark.new
     render :action => 'interventions/probe_assignments/add_benchmark'
   end
-          
-  
+
   private
 
   def find_intervention
     if current_student.blank?
-     #alternate entry point
+     # alternate entry point
       intervention = Intervention.find(params[:id])
       if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
-        student=intervention.student
+        student = intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
-        session[:selected_student]=student.id
-        session[:selected_students]=[student.id]
+        session[:selected_student] = student.id
+        session[:selected_students] = [student.id]
         @intervention = intervention
       else
         flash[:notice] = 'Intervention not available'
