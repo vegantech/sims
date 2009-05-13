@@ -76,9 +76,7 @@ class InterventionsController < ApplicationController
       params[:intervention][:intervention_probe_assignment] ||= {}
     end
 
-puts "A params: #{params.inspect}"
     unless params[:spellcheck].blank?
-puts "B"
       spellcheck [params[:intervention][:comment][:comment]].join(" ")
       @intervention_comment = InterventionComment.new(params[:intervention][:comment])
       @users = current_school.users.collect{|e| [e.fullname, e.id]}
@@ -86,7 +84,7 @@ puts "B"
       render :action => a
       return
     end
-puts "C"
+
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
