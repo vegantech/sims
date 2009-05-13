@@ -248,6 +248,23 @@ When /^I follow "(.*)" within (.*)$/ do |link, scope|
   click_link_within(scope,link)
 end
 
+When /^I press within (.*)$/ do | scope|
+  within(scope) do |scoped|
+    scoped.click_button
+  end
+end
+
+Given /^I should see "(.*)" within (.*)$/ do |see,scope|
+  within(scope) do |scoped|
+    scoped.should contain(see)
+
+  end
+
+end
+
+
+
+
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district

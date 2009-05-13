@@ -22,6 +22,14 @@ Feature: Tier Builder
     Then I follow "Delete"
     Then I should not see "Incorrect"
 
+    When I follow "New Tier"
+    And I fill in "Title" with "Spelled Inkorrect"
+    And I press "Create"
 
-    And I am pending until  I can test move
-
+    When I follow "New Tier"
+    And I fill in "Title" with "Spelled Correctly"
+    And I press "Create"
+    And I should see "Spelled Inkorrect" within tr.tier:first-of-type
+  
+    And I press within tr.tier:last-of-type
+    And I should see "Spelled Inkorrect" within tr.tier:last-of-type
