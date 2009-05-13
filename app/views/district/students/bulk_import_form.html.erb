@@ -1,0 +1,5 @@
+<% form_tag bulk_import_district_students_path do %>
+  <%= label_tag 'student_file', 'Students File' %>
+  <%= file_field_tag 'student_file'%>
+  <%= submit_tag 'Import' %>
+<% end %>

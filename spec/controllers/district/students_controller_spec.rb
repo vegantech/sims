@@ -9,11 +9,18 @@ describe District::StudentsController do
   end
 
   before do
-    @district=mock_district(:students=>Student)
-    controller.stub!(:current_district=>@district)
-
+    @district = mock_district(:students => Student)
+    controller.stub!(:current_district => @district)
   end
   
+  describe 'responding to GET bulk_import_form' do
+    it 'should run' do
+      get :bulk_import_form
+      response.should render_template('bulk_import_form')
+      response.should be_success
+    end
+  end
+
   describe "responding to GET index" do
     before do
       @district.stub_association!(:students,:paged_by_last_name=>@mock_students=[mock_student])
@@ -23,9 +30,6 @@ describe District::StudentsController do
       get :index
       assigns[:students].should == [mock_student]
     end
-
-   
-
   end
 
   describe "responding to GET show" do
