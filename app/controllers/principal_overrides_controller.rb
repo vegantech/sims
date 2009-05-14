@@ -24,6 +24,7 @@ class PrincipalOverridesController < ApplicationController
   # Principal response
   def edit
     @principal_override = PrincipalOverride.find(params[:id])
+    @tiers=current_district.tiers
     @principal_override.setup_response_for_edit(params[:response]) #accept or reject
   end
 
@@ -53,6 +54,7 @@ class PrincipalOverridesController < ApplicationController
         format.js {}
         format.html { redirect_to(principal_overrides_url) }
       else
+        @tiers=current_district.tiers
         format.js { render :action => "edit" }
         format.html { render :action => "edit" }
       end
