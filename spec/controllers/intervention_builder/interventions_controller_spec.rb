@@ -16,7 +16,8 @@ describe InterventionBuilder::InterventionsController do
     @objective_definition.stub!(:find => @objective_definition)
     @goal_definition = mock_goal_definition(:objective_definitions => @objective_definition)
     @goal_definition.stub!(:find => @goal_definition)
-    controller.stub_association!(:current_district,:goal_definitions => @goal_definition, :intervention_clusters=>[1,2,3])
+    controller.stub_association!(:current_district,:goal_definitions => @goal_definition, :intervention_clusters=>[1,2,3],
+        :tiers=>[mock_tier])
   end
   
   describe "responding to GET index" do

@@ -22,11 +22,13 @@ class InterventionBuilder::InterventionsController < ApplicationController
   def new
     @intervention_definition = @intervention_cluster.intervention_definitions.build
     @intervention_definition.assets.build
+    @tiers = current_district.tiers
   end
 
   # GET /intervention_definitions/1;edit
   def edit
     @intervention_clusters = current_district.intervention_clusters
+    @tiers = current_district.tiers
   end
 
   # POST /intervention_definitions
@@ -39,7 +41,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
         flash[:notice] = 'Intervention was successfully created.'
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
-        format.html { render :action => "new" }
+        format.html {@tiers=current_district.tiers; render :action => "new" }
       end
     end
   end
@@ -115,6 +117,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   def setup_parent_instance_variables
         @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
+        @tiers=current_district.tiers
         true #meeded for spellcheck call
   end
 end
