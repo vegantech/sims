@@ -35,6 +35,9 @@ describe PrincipalOverridesController do
   end
 
   describe "responding to GET edit" do
+    before do
+      controller.stub_association!(:current_district, :tiers=>[mock_tier])
+    end
     describe 'with valid id' do
       it "should expose the requested principal_override as @principal_override" do
         PrincipalOverride.should_receive(:find).with("37").and_return(@override)
@@ -125,6 +128,9 @@ describe PrincipalOverridesController do
     
     describe "with invalid params" do
 
+      before do
+        controller.stub_association!(:current_district, :tiers=>[mock_tier])
+      end
       it "should update the requested principal_override" do
         pending
         PrincipalOverride.should_receive(:find).with("37").and_return(mock_principal_override)
