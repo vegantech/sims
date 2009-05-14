@@ -12,12 +12,10 @@
 #
 
 class Tier < ActiveRecord::Base
-  @@all_cache_order = "position"
-  include AllCache
   
   belongs_to :district
-    acts_as_list :scope=>'district_id'
-    validates_presence_of :title
+  acts_as_list :scope=>'district_id'
+  validates_presence_of :title
 
   def to_s
     "#{position} - #{title}"
