@@ -13,7 +13,7 @@
 
   <p>
     <%= form.label :tier_id, 'Tier' %>
-    <%= form.collection_select(:tier_id, Tier.all_cache, :id, :title) %>
+    <%= form.collection_select(:tier_id, @tiers, :id, :title) %>
   </p>
 
   <br class='brclear' />
