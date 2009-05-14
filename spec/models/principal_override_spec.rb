@@ -31,4 +31,28 @@ describe PrincipalOverride do
   it "should create a new instance given valid attributes" do
     PrincipalOverride.create!(@valid_attributes)
   end
+
+  describe 'max_tier' do
+    it 'should return nil when there are no checklists' do
+      PrincipalOverride.max_tier.should be_nil
+    end
+    
+    it 'should return the tier of the highest promoted Principal Override' do
+      po1= PrincipalOverride.create!(@valid_attributes)
+      PrincipalOverride.approved.should ==[]
+
+      po1.status=PrincipalOverride::APPROVED_NOT_SEEN
+      po1.end_tier=Tier.new(:title=>"Tier 2")
+      po1.principal_response='test response'
+      po1.action="accept"
+      po1.save!
+
+      PrincipalOverride.approved.should ==[po1]
+
+      PrincipalOverride.max_tier.should == po1.end_tier
+      
+
+    end
+  end
+
 end

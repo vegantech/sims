@@ -14,10 +14,15 @@
 class Tier < ActiveRecord::Base
   
   belongs_to :district
-  acts_as_list :scope=>'district_id'
+  acts_as_list :scope=> :district
   validates_presence_of :title
 
   def to_s
     "#{position} - #{title}"
   end
+
+  def <=>(b)
+    position <=> b.position
+  end
+    
 end

@@ -38,6 +38,7 @@ class PrincipalOverride < ActiveRecord::Base
   validates_presence_of :principal_response, :message => "Reason must be provided", :unless => Proc.new{|p| p.status == NEW_REQUEST}
   after_create :email_principals
   named_scope :pending, :conditions=>{:status=>NEW_REQUEST}
+  named_scope :approved, :conditions=>{:status=>[APPROVED_SEEN,APPROVED_NOT_SEEN]}
 
 
   def self.pending_for_principal(user)
@@ -45,6 +46,10 @@ class PrincipalOverride < ActiveRecord::Base
     pnd.select do |p|
       !p.student.blank? && p.student.principals.include?(user) 
     end
+  end
+
+  def self.max_tier
+    approved.collect(&:end_tier).compact.max
   end
   
   def setup_response_for_edit(action)

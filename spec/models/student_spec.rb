@@ -96,6 +96,37 @@ describe Student do
 
   end
 
+  describe 'max_tier' do
+    before do
+      @district=@student.district
+    end
+
+    it 'should return null if there are no tiers in the district' do
+      Tier.create(:title=>'ok')
+      @student.max_tier.should be_nil
+    end
+
+    it 'should return the lowest tier in the district if there are no checklists, recommendations, or principal overrides' do
+      low_tier=@district.tiers.create!(:title=>'Low')
+      middle_tier=@district.tiers.create!(:title=>'Middle')
+      @student.max_tier.should == low_tier
+    end
+
+    it 'should return highest tier from checklists, recommendations, or principal overrides' do
+      low_tier=@district.tiers.create!(:title=>'Low')
+      middle_tier=@district.tiers.create!(:title=>'Middle')
+      high_tier=@district.tiers.create!(:title=>'High')
+      Recommendation.should_receive(:max_tier).twice.and_return(middle_tier)
+      PrincipalOverride.should_receive(:max_tier).twice.and_return(low_tier)
+      @student.max_tier.should == middle_tier
+
+      Checklist.should_receive(:max_tier).and_return(high_tier)
+      @student.max_tier.should == high_tier
+    end
+  
+
+  end
+
 
  
      

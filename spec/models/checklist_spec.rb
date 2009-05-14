@@ -347,4 +347,15 @@ describe Checklist do
       pending
     end
   end
+
+
+  describe 'max_tier' do
+    it 'should return nil when there are no checklists' do
+      Checklist.max_tier.should be_nil
+    end
+    
+    it 'should return the tier of the highest promoted checklist' do
+      pending
+    end
+  end
 end

@@ -80,6 +80,10 @@ class Checklist < ActiveRecord::Base
      checklist_definition.new_record?  || checklist_definition.blank?
    end
 
+   def self.max_tier
+   end
+
+
   def self.new_from_teacher(teacher)
     checklist = Checklist.new(:teacher => teacher)
     return nil unless checklist.student

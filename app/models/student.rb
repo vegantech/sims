@@ -67,26 +67,19 @@ class Student < ActiveRecord::Base
     latest_checklist.checklist_definition
   end
 
+
   def max_tier
-    l_tier = Tier.last
-    if principal_overrides.exists?(:end_tier_id => l_tier)
-      return l_tier
-    elsif recommendations.exists?(:promoted => true)
-      return l_tier
-    else
-      return Tier.first
-    end
+    #Return the students highest unlocked tier, defaults to lowest tier in district
+    district_tier= district.present? ? district.tiers.first : nil
 
-    unless recommendations.blank?
-      # TODO Tiers should be specific to district
-      Tier.first
-      # FIXME, should only be promoted 
-#      district.tiers.find_by_position(recommendations.last.tier.position+1) || district.tiers.find_by_position(recommendations.last.tier.position)
-    else
-      Tier.first
-    end
+    [
+      district_tier, 
+      checklists.max_tier,
+      recommendations.max_tier, 
+      principal_overrides.max_tier
+    ].compact.max
   end
-
+  
   def self.find_flagged_students(flagtypes=[])
     flagtype = Array(flagtypes)
     stitypes = []

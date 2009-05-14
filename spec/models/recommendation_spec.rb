@@ -46,5 +46,15 @@ describe Recommendation do
 
   end
 
+  describe 'max_tier' do
+    it 'should return nil when there are no checklists' do
+      Recommendation.max_tier.should be_nil
+    end
+
+    it 'should return the tier of the highest promoted recommendation' do
+      pending
+    end
+  end
+
 
 end

@@ -112,6 +112,15 @@ class Recommendation < ActiveRecord::Base
     find(:all, :conditions => "checklist_id is null")
   end
 
+  def self.max_tier
+    m=find_all_by_promoted(true).collect(&:tier).compact.max
+    if m
+      m.district.tiers.find_by_position(m.position +1) || m
+    else
+      nil
+    end
+  end
+
   protected
 
   def after_initialize
