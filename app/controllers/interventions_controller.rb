@@ -20,6 +20,7 @@ class InterventionsController < ApplicationController
     flash[:custom_intervention] ||= params[:custom_intervention]
     @quicklist = true if params[:quicklist]
     @intervention_comment = InterventionComment.new
+    @tiers=current_district.tiers
 
     respond_to do |format|
       format.html { populate_goals }# new.html.erb
@@ -32,6 +33,7 @@ class InterventionsController < ApplicationController
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
     @users = current_school.users.collect{|e| [e.fullname, e.id]}
     @intervention_comment = InterventionComment.new
+    @tiers=current_district.tiers
   end
 
   # POST /interventions
@@ -39,6 +41,7 @@ class InterventionsController < ApplicationController
     params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
 
     @intervention = build_from_session_and_params
+    @tiers=current_district.tiers
 
     unless params[:spellcheck].blank?
       @quicklist = true if params[:quicklist]
@@ -75,6 +78,7 @@ class InterventionsController < ApplicationController
       params[:intervention][:participant_user_ids] ||=[]
       params[:intervention][:intervention_probe_assignment] ||= {}
     end
+    @tiers=current_district.tiers
 
     unless params[:spellcheck].blank?
       spellcheck [params[:intervention][:comment][:comment]].join(" ")

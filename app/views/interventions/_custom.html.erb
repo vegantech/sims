@@ -13,6 +13,6 @@
   <p>
     <%= int_def.hidden_field :intervention_cluster_id %>
     <%= int_def.label :tier_id, "Tier" %> 
-    <%= int_def.collection_select(:tier_id, Tier.all, :id, :title) %>
+    <%= int_def.collection_select(:tier_id, @tiers, :id, :title) %>
   </p>
 <% end %>

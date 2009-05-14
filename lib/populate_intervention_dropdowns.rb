@@ -28,6 +28,7 @@ protected
     find_intervention_definition
     if flash[:custom_intervention] 
       @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
+      @tiers=current_district.tiers
     else
       @intervention_definitions = @intervention_cluster.intervention_definitions if @intervention_cluster
     end

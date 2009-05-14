@@ -97,6 +97,8 @@ describe "Populate Intervention Dropdowns Module" do
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
       InterventionDefinition.should_receive(:build).and_return "1"
       self.should_receive(:populate_intervention)
+      current_district.should_receive(:tiers).and_return([mock_tier])
+
       populate_definitions
     end
   end

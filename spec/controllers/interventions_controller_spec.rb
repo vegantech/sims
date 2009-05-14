@@ -17,6 +17,7 @@ describe InterventionsController do
     controller.stub!(:current_student=>@student)
     # build_from_session_and_params and populate_dropdowns are unit tested
     controller.stub!(:build_from_session_and_params=>@intervention)
+    controller.stub_association!(:current_district, :tiers=>[mock_tier])
   end
 
   describe 'find_intervention' do
