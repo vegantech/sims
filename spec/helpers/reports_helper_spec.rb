@@ -6,8 +6,8 @@ describe ReportsHelper do
   describe 'subreport_selected' do
     describe 'passed "1"' do
       it 'should execute passed in code block' do
-        m = 'mock'
-        m.should_receive(:message)
+        m = mock_object
+        m.should_receive(:message).and_return(false)
         subreport_selected('1') {m.message}
       end
     end
