@@ -110,7 +110,7 @@ class InterventionDefinition < ActiveRecord::Base
 
   def recommended_monitors_with_custom
     if custom
-      all_rec=RecommendedMonitor.all(:joins=>:intervention_definition, :conditions =>{:intervention_definitions=>{:intervention_cluster_id=>self.intervention_cluster_id}})
+      all_rec=RecommendedMonitor.all(:joins => :intervention_definition, :conditions => {:intervention_definitions => {:intervention_cluster_id=>self.intervention_cluster_id}})
       res=all_rec.inject([]) do |result, i|
         result << i unless !result.blank? && result.detect{|s| s.probe_definition_id == i.probe_definition_id}
         result

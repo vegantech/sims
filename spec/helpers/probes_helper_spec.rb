@@ -12,7 +12,8 @@ describe ProbesHelper do
   describe 'probe_graph' do
     it 'should show a graph when the intervention_probe_assignment has probes' do
       ipa=InterventionProbeAssignment.new
-      ipa.should_receive(:student_grade).and_return('03')
+
+      #ipa.should_receive(:student_grade).and_return('03')
       ipa.probe_definition=Factory.build(:probe_definition)
       ipa.end_date=Time.now
       ipa.first_date=1.day.ago

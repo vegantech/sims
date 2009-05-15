@@ -46,7 +46,6 @@ class InterventionsController < ApplicationController
     unless params[:spellcheck].blank?
       @quicklist = true if params[:quicklist]
       @users = current_school.users.collect{|e| [e.fullname, e.id]}
-      debugger
       spellcheck [@intervention.comments.last.comment].join(" ")
       @intervention_comment = @intervention.comments.last
       # populate_goals

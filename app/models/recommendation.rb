@@ -85,7 +85,7 @@ class Recommendation < ActiveRecord::Base
 
   def answers
     recommendation_definition.recommendation_answer_definitions.each do |ad|
-      self.recommendation_answers.build(:recommendation_answer_definition=>ad) unless recommendation_answers.any?{|a| a.recommendation_answer_definition == ad}
+      self.recommendation_answers.build(:recommendation_answer_definition => ad) unless recommendation_answers.any?{|a| a.recommendation_answer_definition == ad}
     end
     self.recommendation_answers
   end
@@ -115,7 +115,7 @@ class Recommendation < ActiveRecord::Base
   def self.max_tier
     m=find_all_by_promoted(true).collect(&:tier).compact.max
     if m
-      m.district.tiers.find_by_position(m.position +1) || m
+      m.district.tiers.find_by_position(1+m.position) || m
     else
       nil
     end
