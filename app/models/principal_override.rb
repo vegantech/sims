@@ -77,7 +77,7 @@ class PrincipalOverride < ActiveRecord::Base
   protected
 
   def after_initialize
-    self.start_tier = student.max_tier if start_tier.blank?
+    self.start_tier = student.max_tier if start_tier.blank? and !student.blank?
 
   end
 
