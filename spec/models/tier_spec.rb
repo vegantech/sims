@@ -31,8 +31,6 @@ describe Tier do
       obj.send(:create_without_callbacks)
       obj
     end
-      
-
     
     before do
       Tier.destroy_all
@@ -83,6 +81,32 @@ describe Tier do
 
       #order doesn't matter
       @tier.used_by.to_set.should == [recommendation,intervention_definition].to_set
+    end
+  end
+
+  describe 'delete_successor method' do
+    describe 'when there are no more tiers' do
+      it 'should return nil' do
+        Tier.delete_all
+        tier = Factory(:tier).delete_successor.should be_nil
+      end
+    end
+
+    describe 'when there exists a greater tier' do
+      it 'should return the next greater tier' do
+        t0 = Factory(:tier)
+        t1 = Factory(:tier)
+        t2 = Factory(:tier)
+        t1.delete_successor.should == t2
+      end
+    end
+
+    describe 'when there only exists a lesser tier' do
+      it 'should return the lesser tier' do
+        t0 = Factory(:tier)
+        t1 = Factory(:tier)
+        t1.delete_successor.should == t0
+      end
     end
   end
 end

@@ -38,5 +38,13 @@ class Tier < ActiveRecord::Base
     result = nil if result.empty?
     result
   end
+
+  def delete_successor
+    if last?
+      higher_item
+    else
+      lower_item
+    end
+  end
     
 end
