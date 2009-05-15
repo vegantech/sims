@@ -31,7 +31,7 @@ class Checklist < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
 
- STATUS = {
+  STATUS = {
           :unknown => "UNKNOWN_STATUS",
           :draft => "Draft, make changes and submit",
           :missing_rec => "Submitted, but missing recommendation",
@@ -44,10 +44,11 @@ class Checklist < ActiveRecord::Base
           :optional_checklist => "Optional Checklist Completed"
         }
 
-#  has_many :answers_with_includes, :class_name => "Answer", 
- # :include => {:answer_definition=>:element_definition}
- attr_accessor :score_results, :deletable, :needs_recommendation, :fake_edit
+  #  has_many :answers_with_includes, :class_name => "Answer", 
+  # :include => {:answer_definition=>:element_definition}
+  attr_accessor :score_results, :deletable, :needs_recommendation, :fake_edit
   @checklist_definition = {}
+
   def checklist_definition_cache
     return checklist_definition   #
     if @skip_cache then

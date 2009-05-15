@@ -67,9 +67,9 @@ class Student < ActiveRecord::Base
     latest_checklist.checklist_definition
   end
 
-
   def max_tier
-    #Return the students highest unlocked tier, defaults to lowest tier in district
+    # Return the student's highest unlocked tier, defaults to lowest tier in district
+    # this will be the highest permitted intervention tier for this student.
     district_tier= district.present? ? district.tiers.first : nil
 
     [
