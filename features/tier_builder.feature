@@ -35,13 +35,24 @@ Feature: Tier Builder
     And I should see "Spelled Inkorrect" within tr.tier:last-of-type
 
   Scenario: Remove Tier in use
-    Given I do same stuff as above for awhile
-    And the tiers are in use
-    Then I should see an additional confirmation form
-    And I should see 1 Principal Override
-    And I should see 1 Recommendation
-    And I should see 1 Checklist
-    And I press 'Delete'
-    Then I should see 'Records have been moved moved to the next lowest tier'
+    Given load demo data 
+    And I go to the home page
+    And I select "WI Test District" from "District"
+    And I fill in "Login" with "content_builder"
+    And I fill in "Password" with "content_builder"
+    And I press "Login"
+
+    And I follow "Tier Builder"
+
+    Then I follow "Delete" within tr.tier:first-of-type
+    And I should see "This tier is in use.  Are you sure you want to move everything to 2 - Targeted?"
+    And I follow "Cancel"
+    And I should see "Broad"
+    
+    Then I follow "Delete" within tr.tier:first-of-type
+    And I should see "This tier is in use.  Are you sure you want to move everything to 2 - Targeted?"
+    And I press "Delete"
+    And I should not see "Broad"
+    And I should see "Records have been moved to the 2 - Targeted tier"
     And maybe I should confirm this or just trust my unit tests
     

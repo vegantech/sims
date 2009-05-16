@@ -82,12 +82,18 @@ class TiersController < ApplicationController
   # DELETE /tiers/1
   # DELETE /tiers/1.xml
   def destroy
+    #really_destroy if confirm is true or used_at_all?
     @tier = current_district.tiers.find(params[:id])
-    @tier.destroy
+    if params[:delete_confirmation] or !@tier.used_at_all?
+      flash[:notice] = "Records have been moved to the #{@tier.delete_successor} tier" if params[:delete_confirmation]
+      @tier.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(tiers_url) }
-      format.xml  { head :ok }
+      respond_to do |format|
+        format.html { redirect_to(tiers_url) }
+        format.xml  { head :ok }
+      end 
+    else
+      flash[:notice]='Tier in use'
     end
   end
 
