@@ -139,6 +139,7 @@ class InterventionDefinition < ActiveRecord::Base
   
   protected
   def update_district_quicklist
+    return true if intervention_cluster.blank?   #TODO fix delegation
     if @district_quicklist_arg
       quicklist_items.create(:district_id=>self.district.id) unless district_quicklist
     elsif !new_record?

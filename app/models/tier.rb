@@ -20,6 +20,7 @@ class Tier < ActiveRecord::Base
   has_many :principal_override_requests, :class_name=>'PrincipalOverride', :foreign_key=>:start_tier_id
   has_many :principal_override_acceptances, :class_name=>'PrincipalOverride', :foreign_key=>:end_tier_id
 
+  before_destroy :move_children_to_delete_successor, :if => Proc.new { |t| t.used_at_all? }
   acts_as_list :scope => :district
   validates_presence_of :title
 
@@ -31,7 +32,13 @@ class Tier < ActiveRecord::Base
     position <=> b.position
   end
 
-  def used_by
+  def used_at_all?
+    Tier.reflect_on_all_associations(:has_many).any? do |child_association|
+      self.send(child_association.name).exists?
+    end
+  end
+
+  def not_needed_anymore?
     result = self.checklists | self.recommendations | 
               self.intervention_definitions | self.principal_override_requests |
               self.principal_override_acceptances
@@ -46,5 +53,17 @@ class Tier < ActiveRecord::Base
       lower_item
     end
   end
-    
+
+  private
+
+  def move_children_to_delete_successor
+    successor_id = delete_successor.id
+    #reflect on all associations
+    #update all where options[:foreign_key] = self.id
+
+    Tier.reflect_on_all_associations(:has_many).each do |child_association|
+      for_key= child_association.options[:foreign_key] || 'tier_id'
+      self.send(child_association.name).update_all(for_key => successor_id)
+    end
+  end
 end
