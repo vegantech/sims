@@ -15,3 +15,10 @@ end
 
 require 'cucumber/rails/rspec'
 require 'webrat/core/matchers'
+class TiersController < ApplicationController
+  def check_spelling (comment, command)
+    ['dog']
+  end
+end
+
+
