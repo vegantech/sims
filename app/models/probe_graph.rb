@@ -4,6 +4,13 @@ class ProbeGraph
 
 
   CSS_CLASSES= %w[one two three four five six seven eight nine ten]
+  GRAPH_HEIGHT = 165
+  SCALE_MAX = 80
+  SCALE_MIN = 40
+  BAR_OFFSET = 90
+  BAR_INCREMENT = 70
+
+
   def initialize(ipa, graph_index=0)
     @bars=[]
     @benchmarks=[]
@@ -46,9 +53,8 @@ private
 
    
   def setup_width_and_height
-    @width= @bars.size * 70
+    @width= @bars.size * BAR_INCREMENT
     @line_width = @width + 48
-    @height = 165
     @floor_cutoff = 24
   end
 
@@ -67,79 +73,55 @@ private
  def sims_bar_graph(count)
    setup_width_and_height
    setup_data_min_and_data_max
-   data_benchmark = benchmark[:score]
 
    data_min=@data_min
    data_max=@data_max
 
-   
+   scaled_min = scale_graph_value(data_min, data_max, SCALE_MAX)
+    
+    pos_bottom = SCALE_MIN + scaled_min
+        pos_max = pos_bottom + scale_graph_value(data_max,data_max,SCALE_MAX)
+    
     html = <<-"HTML"
-    <style>
-    #vertgraph_#{count} {
-          width: #{@width}px; 
-          height: #{@height}px; 
-      }
-    HTML
-
-    bar_offset = 90
-    bar_increment = 70
-    scaled_min = scale_graph_value(data_min, data_max, 80)
-    
-    scaled_benchmark = scale_graph_value(data_benchmark, data_max, 80)
-    pos_bottom = 40 + scaled_min
-    if data_benchmark != 'N/A' && data_benchmark >= 0
-      pos_benchmark = 40 + scaled_min + scaled_benchmark
-    else
-      pos_benchmark = 40 + scaled_min - scaled_benchmark
-    end
-    
-    pos_max = 40 + scaled_min + scale_graph_value(data_max,data_max,80)
-    
-    @bars.each_with_index do |bar, index|
-      scaled_value = scale_graph_value(bar.score, data_max, 80)
-      bar_left = bar_offset + (bar_increment * index)
-      label_left = bar_left - 10
-      neg_bottom = (40 + scaled_min) - scaled_value
-      
-      html += <<-HTML
-      #vertgraph_#{count} dl dd.#{bar.css_class} { left: #{bar_left}px; background-color: #5A799D;  bottom: #{pos_bottom}px !important; }
-      #vertgraph_#{count} dl dd.bottom_#{bar.css_class} { left: #{bar_left}px; background-color: #8DACD0; bottom: #{neg_bottom}px !important; }
-      #vertgraph_#{count} dl dt.#{bar.css_class} { left: #{label_left}px; bottom: 0px !important; }
-        
-      HTML
-    end
-    
-    html += <<-"HTML"
-      </style>
-      
       <div style="border: thin solid #5A799D;margin-left: 10px; margin-bottom: 5px;">
         <p style="text-align:center;">
         
           Current scores for "#{@title}"<br />
           Benchmark: #{@benchmark[:score]} at grade level #{@benchmark[:grade_level]}
         </p>
-      <div id="vertgraph_#{count}" class="vertgraph">
+      <div id="vertgraph_#{count}" class="vertgraph" style="width: #{@width}px; height: #{GRAPH_HEIGHT}px;">
       
         <dl>
     HTML
     
     @bars.each_with_index do |bar, index|
-      scaled_value = scale_graph_value(bar.score, data_max, 80)
-      zero = "white" if scaled_value == 0
+      scaled_value = scale_graph_value(bar.score, data_max, SCALE_MAX)
+
+
+      bar_left = BAR_OFFSET + (BAR_INCREMENT * index)
+      label_left = bar_left - 10
+      neg_bottom = (SCALE_MIN + scaled_min) - scaled_value
+      if scaled_value == 0
+        zero = "white" 
+      else
+        zero = "#5A799D"
+      end
+
       if bar.score >= 0
+        zero = "#5A799D"
         negative = "hidden"
         positive = "visible"
       else
+        zero = "#8DACD0"
         negative = "visible"
         positive = "hidden"
       end
      
-      
       html += <<-"HTML"
       
-      <dt class="#{bar.css_class}">#{bar.date}<br />#{bar.score.to_s}</dt>
-      <dd class="#{bar.css_class}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{positive};" title="#{bar.score}">#{scaled_value < @floor_cutoff ? '' : bar.score}</dd>
-      <dd class="bottom_#{bar.css_class}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{negative}" title="#{bar.score}">#{scaled_value < @floor_cutoff ? '' : bar.score}</dd>
+      <dt class="#{bar.css_class}" style="left: #{label_left}px; bottom: 0px !important;">#{bar.date}<br />#{bar.score.to_s}</dt>
+      <dd class="#{bar.css_class}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{positive}; left: #{bar_left}px; bottom: #{pos_bottom}px !important;" title="#{bar.score}">#{scaled_value < @floor_cutoff ? '' : bar.score}</dd>
+      <dd class="bottom_#{bar.css_class}" style="height: #{scaled_value}px; background-color: #{zero}; visibility: #{negative}; left: #{bar_left}px;  bottom: #{neg_bottom}px !important; " title="#{bar.score}">#{scaled_value < @floor_cutoff ? '' : bar.score}</dd>
       
       HTML
     end
@@ -152,16 +134,8 @@ private
       </div>
       
     HTML
-    if data_benchmark != 'N/A'
-    
-    html += <<-"HTML" 
-    <div id="benchmark_line" style="position: absolute; bottom: #{pos_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;">&nbsp;Benchmark
-      </div>
-      
-    HTML
-    
-    end
 
+    html += benchmark_line(pos_bottom)
     
     html += <<-"HTML"
 
@@ -180,7 +154,35 @@ private
   def scale_graph_value(data_value, data_max, max)
     ((data_value.to_f.abs / data_max.to_f) * max).round
   end
- 
+
+  def benchmark_line(pos_bottom)
+
+    html =''
+    data_benchmark = @benchmark[:score]
+    scaled_benchmark = scale_graph_value(data_benchmark, @data_max, SCALE_MAX)
+
+    if data_benchmark != 'N/A' && data_benchmark >= 0
+      pos_benchmark = pos_bottom + scaled_benchmark
+    else
+      pos_benchmark = pos_bottom - scaled_benchmark
+    end
+    
+
+
+
+    if data_benchmark != 'N/A'
+    
+    html += <<-"HTML" 
+    <div id="benchmark_line" style="position: absolute; bottom: #{pos_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;">&nbsp;Benchmark
+      </div>
+      
+    HTML
+    
+    end
+
+    html
+
+  end
 
 
  
