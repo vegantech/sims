@@ -1,14 +1,11 @@
 class ProbeGraph
 
-  attr_accessor :benchmark, :minimum, :maximum,:bars
+  attr_accessor :benchmark, :minimum, :maximum,:bars, :data_max,:scaled_min, :pos_bottom
 
 
-  CSS_CLASSES= %w[one two three four five six seven eight nine ten]
   GRAPH_HEIGHT = 165
   SCALE_MAX = 80
   SCALE_MIN = 40
-  BAR_OFFSET = 90
-  BAR_INCREMENT = 70
 
 
   def initialize(ipa, graph_index=0)
@@ -43,30 +40,42 @@ private
   end
 
   def setup_bars(ipa)
-    probes_collection = ipa.probes.for_graph.reverse
-    probes_collection.each_with_index do |probe,index|
-      @bars << ProbeBar.new(:css_class=>CSS_CLASSES[index],
+     probes_collection = ipa.probes.reject{|e| e.administered_at.blank? || e.score.blank?}.sort_by(&:administered_at)[0..8].reverse #.for_graph.reverse
+    
+    
+    probes_collection.each_with_index do |probe, index|
+      @bars << ProbeBar.new(:index=>index,
                            :date=> probe.administered_at.to_s(:report),
-                           :score => probe.score)
+                           :score => probe.score, :graph =>self)
     end
   end
 
    
   def setup_width_and_height
-    @width= @bars.size * BAR_INCREMENT
+    @width= @bars.size * ProbeBar::INCREMENT
     @line_width = @width + 48
-    @floor_cutoff = 24
   end
+
+  def get_minimum_or_zero_from_bars
+    ([0] | @bars.collect{|bar| bar.score}).compact.min
+  end
+
+
 
   def setup_data_min_and_data_max
     #defaults
     puts @bars.inspect
-    @data_min = (@minimum || @bars.collect{|bar| bar.score}.compact.min).to_i
+    @data_min = (@minimum || get_minimum_or_zero_from_bars).to_i
     if @maximum
       @data_max = @maximum- @data_min
     else
       @data_max = (@bars.collect{|bar| bar.score}.compact.max || 10).to_i 
     end
+
+
+   @scaled_min = scale_graph_value(@data_min, @data_max, SCALE_MAX)
+   @pos_bottom = SCALE_MIN  + @scaled_min
+   @pos_max = @pos_bottom  + scale_graph_value(@data_max,@data_max,SCALE_MAX)
 
   end
   
@@ -74,13 +83,7 @@ private
    setup_width_and_height
    setup_data_min_and_data_max
 
-   data_min=@data_min
-   data_max=@data_max
-
-   scaled_min = scale_graph_value(data_min, data_max, SCALE_MAX)
     
-    pos_bottom = SCALE_MIN + scaled_min
-        pos_max = pos_bottom + scale_graph_value(data_max,data_max,SCALE_MAX)
     
     html = <<-"HTML"
       <div style="border: thin solid #5A799D;margin-left: 10px; margin-bottom: 5px;">
@@ -93,6 +96,10 @@ private
       
         <dl>
     HTML
+
+    html += @bars.collect(&:to_html).join("\n")
+
+=begin    
     
     @bars.each_with_index do |bar, index|
       scaled_value = scale_graph_value(bar.score, data_max, SCALE_MAX)
@@ -100,7 +107,7 @@ private
 
       bar_left = BAR_OFFSET + (BAR_INCREMENT * index)
       label_left = bar_left - 10
-      neg_bottom = (SCALE_MIN + scaled_min) - scaled_value
+      neg_bottom = (SCALE_MIN + @scaled_min) - scaled_value
       if scaled_value == 0
         zero = "white" 
       else
@@ -125,12 +132,12 @@ private
       
       HTML
     end
-        
+=end        
     html += <<-"HTML"
         </dl>
         
       
-        <div id="zero_line" style="position:absolute; bottom: #{pos_bottom}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid black;">&nbsp;0
+        <div id="zero_line" style="position:absolute; bottom: #{@pos_bottom}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid black;">&nbsp;0
       </div>
       
     HTML
@@ -139,7 +146,7 @@ private
     
     html += <<-"HTML"
 
-<div id="max_line" style="position: absolute; bottom: #{pos_max}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px dotted #888888;">&nbsp;#{data_max}
+<div id="max_line" style="position: absolute; bottom: #{@pos_max}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px dotted #888888;">&nbsp;#{@data_max}
       </div>
       
     
