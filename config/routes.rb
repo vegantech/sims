@@ -103,7 +103,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:quicklist_options =>:get,:quicklist=>:post, :ajax_probe_assignment => :get} do |intervention|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
-    intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put} do |probe_assignment|
+    intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put}, :member => {:preview_graph =>:get} do |probe_assignment|
       probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>"", 
         :collection=>{:new_assessment=>:get, :update_assessment=>:get,:save_assessment=>:post}
     end

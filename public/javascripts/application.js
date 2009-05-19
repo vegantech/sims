@@ -140,3 +140,25 @@ function toggle_visibility(id) {
           e.style.display = 'inline';
     }
 
+
+function new_probe_scores() {
+  var scores=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][score]\"]');
+  var i1=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(1i)]\"]');
+  var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
+  var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
+
+  var s="";
+
+  var arLen=scores.length;
+  for ( var i=0, len=arLen; i<len; ++i ){
+    s=s + 'probes[' +i+ '][score]=' + scores[i].getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1[i].getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2[i].getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3[i].getValue() + '&' ;
+  }
+
+  return s;
+
+
+}
+
