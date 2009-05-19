@@ -1,9 +1,7 @@
 class Interventions::ProbeAssignmentsController < ApplicationController
-  skip_before_filter :authorize, :only => :preview_graph  #Temporary
-
   before_filter :load_intervention
   after_filter :remove_probes, :only => :preview_graph
-  additional_write_actions  'disable_all'
+  additional_write_actions  'disable_all', 'preview_graph'
   
   def index
     #need t odo something with probe definition id (that's the active one, and might need building)
