@@ -1,6 +1,6 @@
 class ProbeGraph
 
-  attr_accessor :benchmark, :minimum, :maximum,:bars, :data_max,:scaled_min, :pos_bottom
+  attr_accessor :benchmark, :minimum, :maximum,:bars, :data_max,:scaled_min, :pos_bottom, :line_width
 
 
   GRAPH_HEIGHT = 165
@@ -11,10 +11,11 @@ class ProbeGraph
   def initialize(ipa, graph_index=0)
     @bars=[]
     @benchmarks=[]
-    setup_graph(ipa)
+    @ipa=ipa
   end
 
   def display_graph(index=0)
+    setup_graph(@ipa)
     sims_bar_graph(index)
   end
 
@@ -30,7 +31,12 @@ private
     #student_grade = intervention_probe_assignment.student_grade
     #     ProbeDefinitionBenchmark.find_benchmark_data(student_grade, 
  #     intervention_probe_assignment.probe_definition)
-    @benchmark={:score => 'N/A', :grade_level => 'N/A'}
+    @benchmarks=ipa.probe_definition.probe_definition_benchmarks
+    if @benchmarks.present?
+      @benchmark = {:score=>@benchmarks.first.benchmark, :grade_level => @benchmarks.first.grade_level}
+    else
+      @benchmark={:score => 'N/A', :grade_level => 'N/A'}
+    end
   end
 
   def setup_max_min_and_title(ipa)
@@ -142,7 +148,7 @@ private
       
     HTML
 
-    html += benchmark_line(pos_bottom)
+    html += benchmark_line
     
     html += <<-"HTML"
 
@@ -162,7 +168,22 @@ private
     ((data_value.to_f.abs / data_max.to_f) * max).round
   end
 
-  def benchmark_line(pos_bottom)
+
+
+  def benchmark_line
+    if @benchmark[:score] == 'N/A'
+      ''
+    else
+      score=@benchmark[:score].to_i
+      sign=score/score.abs
+      scaled_benchmark = sign*scale_graph_value(@benchmark[:score].to_i,@data_max,SCALE_MAX) + @pos_bottom
+     "<div style=\"position: absolute; bottom: #{scaled_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;\">&nbsp;#{score}</div>"
+    end
+  end
+
+
+  
+  def benchmark_line2
 
     html =''
     data_benchmark = @benchmark[:score]
