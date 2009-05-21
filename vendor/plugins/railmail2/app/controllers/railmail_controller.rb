@@ -1,4 +1,5 @@
 class RailmailController < ApplicationController
+  unloadable
   layout 'railmail'
   
   if Railmail::ActionMailer::InstanceMethods.railmail_settings[:before_filter]
