@@ -21,4 +21,4 @@ class TiersController < ApplicationController
   end
 end
 
-
+require 'email_spec/cucumber'
