@@ -36,6 +36,7 @@ class Student < ActiveRecord::Base
   has_many :custom_flags
   has_many :ignore_flags
   has_many :flags
+  has_many :team_consultations
 
   has_attached_file  :extended_profile
   attr_reader :delete_extended_profile

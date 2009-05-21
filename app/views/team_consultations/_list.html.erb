@@ -1,0 +1,5 @@
+<ul>
+  <%=render :partial=>"team_consultations/team_consultation", :collection=>student.team_consultations %>
+</ul>
+&nbsp;<%=link_to_remote_degrades "Create Team Consultation Form",:url=>new_team_consultation_url %>
+

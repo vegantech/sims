@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :team_consultations
+
 
 
   map.download_file '/file/:filename', :controller=>'file', :action=>'download',   :requirements => { :filename => %r([^/;,?]+) }

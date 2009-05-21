@@ -100,6 +100,14 @@ regular_student_comments:
   read_access: true
   write_access: true
 
+
+regular_team_consultations:
+  controller: 'team_consultations'
+  role: regular_user
+  read_access: true
+  write_access: true
+
+
 regular_probes:
   controller: 'interventions/probes'
   role: regular_user

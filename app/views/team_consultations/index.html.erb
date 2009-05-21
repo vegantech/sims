@@ -1,0 +1,24 @@
+<h1>Listing team_consultations</h1>
+
+<table>
+  <tr>
+    <th>Student</th>
+    <th>Requestor</th>
+    <th>Recipient</th>
+  </tr>
+
+<% @team_consultations.each do |team_consultation| %>
+  <tr>
+    <td><%=h team_consultation.student %></td>
+    <td><%=h team_consultation.requestor %></td>
+    <td><%=h team_consultation.recipient %></td>
+    <td><%= link_to 'Show', team_consultation %></td>
+    <td><%= link_to 'Edit', edit_team_consultation_path(team_consultation) %></td>
+    <td><%= link_to 'Destroy', team_consultation, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New team_consultation', new_team_consultation_path %>

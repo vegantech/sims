@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090428193630) do
+ActiveRecord::Schema.define(:version => 20090521020122) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -464,7 +464,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.string   "subject",    :limit => 1024
     t.datetime "sent_at"
     t.datetime "read_at"
-    t.string   "raw",        :limit => 10485760
+    t.string   "raw",        :limit => 8000
   end
 
   create_table "recommendation_answer_definitions", :force => true do |t|
@@ -478,7 +478,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.integer  "copied_from"
   end
 
-  add_index "recommendation_answer_definitions", ["recommendation_definition_id"], :name => "index_recommendation_answer_definitions_on_recommendation_definition_id"
+  add_index "recommendation_answer_definitions", ["recommendation_definition_id"], :name => "rec_def_id"
 
   create_table "recommendation_answers", :force => true do |t|
     t.integer  "recommendation_id"
@@ -488,7 +488,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.datetime "updated_at"
   end
 
-  add_index "recommendation_answers", ["recommendation_answer_definition_id"], :name => "index_recommendation_answers_on_recommendation_answer_definition_id"
+  add_index "recommendation_answers", ["recommendation_answer_definition_id"], :name => "rec_ans_def_id"
   add_index "recommendation_answers", ["recommendation_id"], :name => "index_recommendation_answers_on_recommendation_id"
 
   create_table "recommendation_definitions", :force => true do |t|
@@ -649,6 +649,14 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
   end
 
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
+
+  create_table "team_consultations", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "requestor_id"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tiers", :force => true do |t|
     t.integer  "district_id"
