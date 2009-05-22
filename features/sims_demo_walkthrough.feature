@@ -59,20 +59,7 @@ Feature: Sims Demo Walkthrough
     Then page should contain "<td>Reading one</td>"
     Then I press "Save"
 
-    # lighthouse ticket #272 begin
-    When I follow "Edit/Add Comment"
-    And I follow "Enter/view scores"
-    And I fill in "Score" with "fifteen"
-    And I fill in "Add new comment about the intervention plan and progress" with "A comment with a text score triggers bug 272."
-    And I press "Save"
-    Then I should not see "NoMethodError"
-    And the "Add new comment about the intervention plan and progress" field should contain "A comment with a text score triggers bug 272."
-    # Then I follow "Enter/view scores"
-    # And the "Score" field should contain "fifteen"
-    # lighthouse ticket #272 end
-
-    # We are already in Edit/Add Comment mode.  Just with validation errors showing...
-    # Then I follow "Edit/Add Comment"
+    Then I follow "Edit/Add Comment"
     Then I follow "Enter/view scores"
     Then I select "2007" from "intervention_intervention_probe_assignment_new_probes__administered_at_1i"
     Then I fill in "Score" with "15"
@@ -85,6 +72,26 @@ Feature: Sims Demo Walkthrough
     Then I follow "Edit Score"
     Then I fill in "Score" with "25"
     Then I press "Save"
+
+    # lighthouse ticket #272 begin
+    Then I follow "Alpha_Third Grader"
+    When I follow "Edit/Add Comment"
+    And I follow "Enter/view scores"
+    And I fill in "Score" with "fifteen"
+    And I fill in "Add new comment about the intervention plan and progress" with "A comment with a text score triggers bug 272."
+    And I press "Save"
+    Then I should not see "NoMethodError"
+    And the "Add new comment about the intervention plan and progress" field should contain "A comment with a text score triggers bug 272."
+    And I display body
+    #Fix redisplay of score    
+    
+
+    # Then I follow "Enter/view scores"
+    # And the "Score" field should contain "fifteen"
+
+    # lighthouse ticket #272 end
+
+
 
 
     Then I follow "Alpha_Third Grader"
