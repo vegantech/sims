@@ -56,7 +56,7 @@ describe TeamConsultationsController do
 
       it "redirects back to the student profile" do
         TeamConsultation.stub!(:new).and_return(mock_team_consultation(:save => true))
-        post :create, :team_consultation => {}
+        post :create, :team_consultation => {}, :format => 'html'
         response.should redirect_to(student_url(@mock_student))
       end
     end
