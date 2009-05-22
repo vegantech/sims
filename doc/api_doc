@@ -17,9 +17,34 @@ csv required fields, any order
 
 goals.   be able to import
 
-student- , firstname, lastname, id_state or id_district  id_state needed for interdistrict xfer
+student- , firstname, lastname, id_state or id_district  id_state needed for interdistrict xfer  DOB, ESL, special_ed
+
+
 enrollment grade, school (id_district or id_state), student (id_district or id_state)
 flags
+
+
+1. upload students.csv
+process students.csv          edit existing records if there are changes, add new ones, delete (unset district) remainder
+
+
+2. upload file.zip containing students.csv
+process students.csv
+
+3. process file.zip asynchronously,  don't tie up browser session
+
+4. process upload of file.zip asynchronously
+
+5. add enrollments.csv to zip
+
+6. add extended_profiles.zip
+
+
+
+
+
+A district admin should be able to
+upload a zip file containing students.csv
 
 
 
