@@ -55,34 +55,45 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Category"
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
-  
+
     Then page should contain "<td>Reading one</td>"
     Then I press "Save"
-    Then I follow "Edit/Add Comment"
+
+    # lighthouse ticket #272 begin
+    When I follow "Edit/Add Comment"
+    And I follow "Enter/view scores"
+    And I fill in "Score" with "fifteen"
+    And I fill in "Add new comment about the intervention plan and progress" with "A comment with a text score triggers bug 272."
+    And I press "Save"
+    Then I should not see "NoMethodError"
+    And the "Add new comment about the intervention plan and progress" field should contain "A comment with a text score triggers bug 272."
+    # Then I follow "Enter/view scores"
+    # And the "Score" field should contain "fifteen"
+    # lighthouse ticket #272 end
+
+    # We are already in Edit/Add Comment mode.  Just with validation errors showing...
+    # Then I follow "Edit/Add Comment"
     Then I follow "Enter/view scores"
     Then I select "2007" from "intervention_intervention_probe_assignment_new_probes__administered_at_1i"
     Then I fill in "Score" with "15"
-     
-
-    
     Then I press "Save"
+
+
     Then I follow "Edit/Add Comment"
     Then I follow "Enter/View scores"
     Then I should see ", 2007"
     Then I follow "Edit Score"
     Then I fill in "Score" with "25"
     Then I press "Save"
+
+
     Then I follow "Alpha_Third Grader"
     Then I follow "Edit/Add Comment"
     Then I follow "Delete"
     
 
-   
 
-
- 
-
-    #intervention ticket #185
+    # intervention ticket #185
     Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
     Then I press "Choose Goal"
@@ -93,11 +104,11 @@ Feature: Sims Demo Walkthrough
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
     
-    #And I should see "value=\"777239083\" selected=\"selected\""
-    #Fact interview A
-    #And I select "" from "Assign Progress Monitor"
+    # And I should see "value=\"777239083\" selected=\"selected\""
+    # Fact interview A
+    # And I select "" from "Assign Progress Monitor"
     
-    #change some options here?
+    # change some options here?
     Then I press "Save"
     Then I should see "Please assign a progress monitor"
     Then I follow "Edit/Add Comment"
