@@ -26,6 +26,7 @@ class TeamConsultationsController < ApplicationController
   # GET /team_consultations/new.xml
   def new
     @team_consultation = TeamConsultation.new
+    @team_consultation.build_consultation_form if @team_consultation.consultation_form.blank?
 
     respond_to do |format|
       format.js

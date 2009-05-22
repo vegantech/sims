@@ -13,3 +13,9 @@
   <%=h @team_consultation.recipient %>
 </p>
 
+<% form_for(@team_consultation) do |f| %>
+  <% f.fields_for :consultation_form do |consultation_form| %> 
+    <%= render :partial => 'consultation_form', :object => consultation_form %>
+  <% end %>
+
+<% end %>

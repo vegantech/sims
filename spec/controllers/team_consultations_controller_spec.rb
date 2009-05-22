@@ -27,6 +27,7 @@ describe TeamConsultationsController do
 
   describe "GET new" do
     it "assigns a new team_consultation as @team_consultation" do
+      mock_team_consultation.stub!(:build_consultation_form => true, :consultation_form=>1)
       TeamConsultation.should_receive(:new).and_return(mock_team_consultation)
       get :new
       assigns[:team_consultation].should equal(mock_team_consultation)

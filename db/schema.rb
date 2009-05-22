@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090521020122) do
+ActiveRecord::Schema.define(:version => 20090522032319) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -88,6 +88,28 @@ ActiveRecord::Schema.define(:version => 20090521020122) do
   add_index "checklists", ["district_id"], :name => "index_checklists_on_district_id"
   add_index "checklists", ["student_id"], :name => "index_checklists_on_student_id"
   add_index "checklists", ["user_id"], :name => "index_checklists_on_user_id"
+
+  create_table "consultation_form_concerns", :force => true do |t|
+    t.integer  "area"
+    t.integer  "consultation_form_id"
+    t.boolean  "checked"
+    t.text     "strengths"
+    t.text     "concerns"
+    t.text     "recent_changes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "consultation_forms", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "team_consultation_id"
+    t.text     "do_differently"
+    t.text     "parent_notified"
+    t.text     "not_in_sims"
+    t.text     "desired_outcome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "countries", :force => true do |t|
     t.string   "name"

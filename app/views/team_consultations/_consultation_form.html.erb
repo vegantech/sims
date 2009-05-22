@@ -1,0 +1,22 @@
+<%= render :partial => 'concerns_form', :object => consultation_form %>
+
+<p>
+  <%= consultation_form.label :do_differently, 'What would you have the student do differently?' %>
+  <%= consultation_form.text_area :do_differently %>
+</p>
+
+<p>
+  <%= consultation_form.label :parent_notified, 'Has the parent been notified of the concern?  If so how?' %>
+  <%= consultation_form.text_area :parent_notified %>
+</p>
+
+<p>
+  <%= consultation_form.label :not_in_sims, 'What interventions have been tried that are not documented in SIMS?' %>
+  <%= consultation_form.text_area :not_in_sims %>
+</p>
+
+<p>
+  <%= consultation_form.label :desired_outcome, 'What is the desired outcome from the team consultation?' %>
+  <%= consultation_form.text_area :desired_outcome %>
+</p>
+

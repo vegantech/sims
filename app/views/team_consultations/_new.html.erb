@@ -1,7 +1,11 @@
 <% remote_form_for(@team_consultation) do |f| %>
   <%= f.error_messages %>
+  <% f.fields_for :consultation_form do |consultation_form| %> 
+    <%= render :partial => 'consultation_form', :object => consultation_form %>
+  <% end %>
 
   <p>
+
     <%= f.submit 'Save' %>
     <%= link_to :cancel, current_student %>
 
