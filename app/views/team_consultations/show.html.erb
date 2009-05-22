@@ -1,18 +1,4 @@
-<p>
-  <b>Student:</b>
-  <%=h @team_consultation.student %>
-</p>
-
-<p>
-  <b>Requestor:</b>
-  <%=h @team_consultation.requestor %>
-</p>
-
-<p>
-  <b>Recipient:</b>
-  <%=h @team_consultation.recipient %>
-</p>
-
+<%= render :partial => 'show' %>
 
 <%= link_to 'Edit', edit_team_consultation_path(@team_consultation) %> |
 <%= link_to 'Back', team_consultations_path %>

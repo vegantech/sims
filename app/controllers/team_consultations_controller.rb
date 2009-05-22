@@ -16,6 +16,7 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
 
     respond_to do |format|
+      format.js
       format.html # show.html.erb
       format.xml  { render :xml => @team_consultation }
     end
@@ -27,6 +28,7 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.new
 
     respond_to do |format|
+      format.js
       format.html # new.html.erb
       format.xml  { render :xml => @team_consultation }
     end
@@ -48,10 +50,12 @@ class TeamConsultationsController < ApplicationController
       if @team_consultation.save
         
         msg="<p>The concern note has been sent to #{TeamConsultation::CONCERN_NOTE_RECIPIENT_NAME}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
-
+        
+        format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.xml  { render :xml => @team_consultation, :status => :created, :location => @team_consultation }
       else
+        format.js { render :action => "new" }
         format.html { render :action => "new" }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end

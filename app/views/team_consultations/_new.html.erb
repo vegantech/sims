@@ -1,0 +1,9 @@
+<% remote_form_for(@team_consultation) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Save' %>
+    <%= link_to :cancel, current_student %>
+
+  </p>
+<% end %>

@@ -1,0 +1,4 @@
+  page.replace_html("team_consultations",:partial=>"list", :locals => {:student=>current_student})
+  page.replace_html("studentflags", "#{status_display current_student, true}")
+  page.visual_effect :pulsate, 'studentflags'
+

@@ -1,0 +1,1 @@
+page.replace_html("#{dom_id(@team_consultation)}", :partial=>"show")
