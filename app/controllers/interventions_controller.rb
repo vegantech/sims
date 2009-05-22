@@ -95,7 +95,7 @@ class InterventionsController < ApplicationController
       else
         format.html do
           edit
-          @intervention_comment = InterventionComment.new(params[:intervention][:comment])
+          @intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
           render :action => "edit"
         end
       end
