@@ -44,7 +44,23 @@ process students.csv
 
 
 A district admin should be able to
-upload a zip file containing students.csv
+upload a zip file containing students.csv  password zip file?
+
+
+
+give  each district them ssh cert, user?
+job scp's zip file district.zip to home directory    
+poll filesystem and look for changes,   or some other scp hook
+give ssh key or cert for unattendended xfer
+encryption, unattended, asynchronous
+email if problems
+
+neg
+pain to setup and maintain,  needs vendor buyin (potentially)
+
+
+
+
 
 
 
@@ -53,5 +69,17 @@ upload a zip file containing students.csv
 
 
    
+
+
+processing large files
+ideas
+
+could be offloaded to another server
+look at field order in csv
+get another csv from db in same order
+sort original csv in same order as db server
+do diff
+handle insertions, deletions and updates from diff file
+
 
 
