@@ -33,7 +33,7 @@ class InterventionsController < ApplicationController
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
     @users = current_school.users.collect{|e| [e.fullname, e.id]}
     @intervention_comment = InterventionComment.new
-    @tiers=current_district.tiers
+    @tiers = current_district.tiers
   end
 
   # POST /interventions
@@ -77,7 +77,7 @@ class InterventionsController < ApplicationController
       params[:intervention][:participant_user_ids] ||=[]
       params[:intervention][:intervention_probe_assignment] ||= {}
     end
-    @tiers=current_district.tiers
+    @tiers = current_district.tiers
 
     unless params[:spellcheck].blank?
       spellcheck [params[:intervention][:comment][:comment]].join(" ")
@@ -93,7 +93,11 @@ class InterventionsController < ApplicationController
         flash[:notice] = 'Intervention was successfully updated.'
         format.html { redirect_to(student_url(current_student, :tn => 0, :ep => 0)) }
       else
-        format.html { edit and render :action => "edit" }
+        format.html do
+          edit
+          @intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
+          render :action => "edit"
+        end
       end
     end
   end
