@@ -107,6 +107,12 @@ regular_team_consultations:
   read_access: true
   write_access: true
 
+regular_consultation_forms:
+  controller: 'consultation_forms'
+  role: regular_user
+  read_access: true
+  write_access: true
+
 
 regular_probes:
   controller: 'interventions/probes'

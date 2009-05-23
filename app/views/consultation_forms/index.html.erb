@@ -1,0 +1,18 @@
+<h1>Listing consultation_forms</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% @consultation_forms.each do |consultation_form| %>
+  <tr>
+    <td><%= link_to 'Show', consultation_form %></td>
+    <td><%= link_to 'Edit', edit_consultation_form_path(consultation_form) %></td>
+    <td><%= link_to 'Destroy', consultation_form, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New consultation_form', new_consultation_form_path %>
