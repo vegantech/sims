@@ -1,0 +1,22 @@
+<h1>Listing team_schedulers</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>School</th>
+  </tr>
+
+<% @team_schedulers.each do |team_scheduler| %>
+  <tr>
+    <td><%=h team_scheduler.user %></td>
+    <td><%=h team_scheduler.school %></td>
+    <td><%= link_to 'Show', team_scheduler %></td>
+    <td><%= link_to 'Edit', edit_team_scheduler_path(team_scheduler) %></td>
+    <td><%= link_to 'Destroy', team_scheduler, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New team_scheduler', new_team_scheduler_path %>
