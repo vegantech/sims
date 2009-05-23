@@ -28,6 +28,7 @@ describe TeamConsultationsController do
   describe "GET new" do
     it "assigns a new team_consultation as @team_consultation" do
       mock_team_consultation.stub!(:build_consultation_form => true, :consultation_form=>1)
+      controller.stub_association!(:current_school, :team_schedulers => [])
       TeamConsultation.should_receive(:new).and_return(mock_team_consultation)
       get :new
       assigns[:team_consultation].should equal(mock_team_consultation)
@@ -46,17 +47,18 @@ describe TeamConsultationsController do
     before do
       @mock_student = mock_student
       controller.stub!(:current_student_id => '2', :current_user_id => '3', :current_student => @mock_student)
+      controller.stub_association!(:current_school, :team_schedulers => [])
     end
     
     describe "with valid params" do
       it "assigns a newly created team_consultation as @team_consultation" do
-        TeamConsultation.should_receive(:new).with({'these' => 'params', 'student_id' => '2', 'requestor_id' => '3'}).and_return(mock_team_consultation(:save => true))
+        TeamConsultation.should_receive(:new).with({'these' => 'params', 'student_id' => '2', 'requestor_id' => '3'}).and_return(mock_team_consultation(:save => true, :recipient => 'Bob'))
         post :create, :team_consultation => {:these => 'params'}
         assigns[:team_consultation].should equal(mock_team_consultation)
       end
 
       it "redirects back to the student profile" do
-        TeamConsultation.stub!(:new).and_return(mock_team_consultation(:save => true))
+        TeamConsultation.stub!(:new).and_return(mock_team_consultation(:save => true, :recipient => 'Bob'))
         post :create, :team_consultation => {}, :format => 'html'
         response.should redirect_to(student_url(@mock_student))
       end

@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
   has_many :rights, :through => :roles
   has_many :student_comments
   has_many :intervention_participants
+  has_many :team_schedulers
 
   attr_accessor :password, :all_students_in_district
 

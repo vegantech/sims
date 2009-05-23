@@ -7,12 +7,17 @@ Feature: Concern Note
     Given common data
     And I am on the student profile page
 
+  Scenario: Create Team Consultation Form without any team_schedulers
+    When I follow "Create Team Consultation Form"
+    Then I should see "Please have the school admin or secretary assign team schedulers to this school."
+
 
   Scenario: Create Team Consultation Form
-    Given I follow "Create Team Consultation Form"
+    Given Shawn Balestracci is a team scheduler
+    When I follow "Create Team Consultation Form"
     #And I should see some sort of forma
     And I press "Save"
-    Then I should see "The concern note has been sent to Shawn Balestracci (temporary recipient)."
+    Then I should see "The concern note has been sent to Shawn Balestracci."
     And I should see "A discussion about this student will occur at an upcoming team meeting."
     And I should receive an email
     When I open the email
