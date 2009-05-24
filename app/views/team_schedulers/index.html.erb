@@ -1,22 +1,23 @@
-<h1>Listing team_schedulers</h1>
-
+<% form_tag do %>
 <table>
-  <tr>
-    <th>User</th>
-    <th>School</th>
-  </tr>
-
-<% @team_schedulers.each do |team_scheduler| %>
-  <tr>
-    <td><%=h team_scheduler.user %></td>
-    <td><%=h team_scheduler.school %></td>
-    <td><%= link_to 'Show', team_scheduler %></td>
-    <td><%= link_to 'Edit', edit_team_scheduler_path(team_scheduler) %></td>
-    <td><%= link_to 'Destroy', team_scheduler, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <thead>
+  </thead>
+  <tbody>
+    <% @users_in_groups.each do |user_row| %>
+      <tr>
+        <%user_row.each do |user| %>
+          <td>
+            <%= check_box_tag 'user_ids[]',user.id, checked = current_school.team_scheduler_user_ids.include?(user.id), :id => dom_id(user) %>
+            <%= label_tag dom_id(user), user.to_s %>
+            <%#= %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br />
+<%= submit_tag %>
+<% end %>
 
-<%= link_to 'New team_scheduler', new_team_scheduler_path %>
+
