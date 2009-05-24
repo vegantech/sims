@@ -266,6 +266,12 @@ groups_admin:
   read_access: true
   write_access: true
 
+team_scheduler_admin:
+  role: school_admin
+  controller: team_schedulers
+  read_access: true
+  write_access: true
+
 
 quicklists_admin:
   role: school_admin
