@@ -1,0 +1,27 @@
+<h1>New consultation_form_request</h1>
+
+<% form_for(@consultation_form_request) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :student %><br />
+    <%= f.text_field :student %>
+  </p>
+  <p>
+    <%= f.label :requestor %><br />
+    <%= f.text_field :requestor %>
+  </p>
+  <p>
+    <%= f.label :team %><br />
+    <%= f.text_field :team %>
+  </p>
+  <p>
+    <%= f.label :all_student_scheduled_staff %><br />
+    <%= f.check_box :all_student_scheduled_staff %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', consultation_form_requests_path %>

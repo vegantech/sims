@@ -1,0 +1,2 @@
+module ConsultationFormRequestsHelper
+end

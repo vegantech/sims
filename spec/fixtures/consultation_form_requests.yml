@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  student: 
+  requestor: 
+  team: 
+  all_student_scheduled_staff: false
+
+two:
+  student: 
+  requestor: 
+  team: 
+  all_student_scheduled_staff: false
