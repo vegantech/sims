@@ -12,6 +12,6 @@
   </div>
 
   <div id="consultation_forms" >
-   <%= render :partial => 'consultation_forms/list' %>
+   <%= render :partial => 'consultation_forms/list' ,:locals => {:student => @student}%>
   </div>
 </div>

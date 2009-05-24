@@ -1,3 +1,5 @@
-TeamReferrals#gather_information_request
+<%=@student.fullname %> has been discussed at our team meeting.  
+Please share information based on your perspective by going to <%=url_for(@url_opts.merge(:controller=>'student', :action=>'show', :id => @student.id) ) %>, then click on Respond to Request for Information under the Team Notes heading.
 
-Find me in app/views/team_referrals/gather_information_request.erb
+
+Requested by: <%=@requestor.fullname %>

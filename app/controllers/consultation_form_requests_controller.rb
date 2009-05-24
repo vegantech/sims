@@ -27,6 +27,7 @@ class ConsultationFormRequestsController < ApplicationController
     @consultation_form_request = ConsultationFormRequest.new
 
     respond_to do |format|
+      format.js
       format.html # new.html.erb
       format.xml  { render :xml => @consultation_form_request }
     end
@@ -40,13 +41,15 @@ class ConsultationFormRequestsController < ApplicationController
   # POST /consultation_form_requests
   # POST /consultation_form_requests.xml
   def create
-    @consultation_form_request = ConsultationFormRequest.new(params[:consultation_form_request])
+    @consultation_form_request = ConsultationFormRequest.new(params[:consultation_form_request].merge(:student=>current_student,
+    :requestor => current_user))
 
     respond_to do |format|
       if @consultation_form_request.save
-        flash[:notice] = 'ConsultationFormRequest was successfully created.'
-        format.html { redirect_to(@consultation_form_request) }
-        format.xml  { render :xml => @consultation_form_request, :status => :created, :location => @consultation_form_request }
+        msg= 'Your request for information has been sent.'
+        format.js { flash.now[:notice] = msg}
+        format.html { flash[:notice]=msg; redirect_to(current_student) }
+        format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @consultation_form_request.errors, :status => :unprocessable_entity }

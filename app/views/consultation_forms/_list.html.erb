@@ -1,5 +1,6 @@
 <ul>
-    <%=render :partial =>"consultation_forms/consultation_form_summary" , :collection => @student.consultation_forms%>
+    <%=render :partial =>"consultation_forms/consultation_form_summary" , :collection => student.consultation_forms%>
 </ul>
+&nbsp;<%=link_to_remote_degrades "Gather Information from Staff",:url=>new_consultation_form_request_url %>
 &nbsp;<%=link_to_remote_degrades "Respond to Request for Information",:url=>new_consultation_form_url %>
 

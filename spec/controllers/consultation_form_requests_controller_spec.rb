@@ -41,24 +41,29 @@ describe ConsultationFormRequestsController do
   end
 
   describe "POST create" do
+    before do
+      @student=mock_student
+      @user = mock_user
+      controller.stub!(:current_student=>@student, :current_user => @user)
+    end
     
     describe "with valid params" do
       it "assigns a newly created consultation_form_request as @consultation_form_request" do
-        ConsultationFormRequest.should_receive(:new).with({'these' => 'params'}).and_return(mock_consultation_form_request(:save => true))
+        ConsultationFormRequest.should_receive(:new).with({'these' => 'params', 'requestor'=>@user, 'student' =>@student }).and_return(mock_consultation_form_request(:save => true))
         post :create, :consultation_form_request => {:these => 'params'}
         assigns[:consultation_form_request].should equal(mock_consultation_form_request)
       end
 
       it "redirects to the created consultation_form_request" do
         ConsultationFormRequest.stub!(:new).and_return(mock_consultation_form_request(:save => true))
-        post :create, :consultation_form_request => {}
-        response.should redirect_to(consultation_form_request_url(mock_consultation_form_request))
+        post :create, :consultation_form_request => {}, :format => 'html'
+        response.should redirect_to(student_url(@student))
       end
     end
     
     describe "with invalid params" do
       it "assigns a newly created but unsaved consultation_form_request as @consultation_form_request" do
-        ConsultationFormRequest.stub!(:new).with({'these' => 'params'}).and_return(mock_consultation_form_request(:save => false))
+        ConsultationFormRequest.stub!(:new).with({'these' => 'params',  'requestor'=>@user, 'student' =>@student }).and_return(mock_consultation_form_request(:save => false))
         post :create, :consultation_form_request => {:these => 'params'}
         assigns[:consultation_form_request].should equal(mock_consultation_form_request)
       end

@@ -8,6 +8,6 @@ describe ConsultationFormRequest do
   end
 
   it "should create a new instance given valid attributes" do
-    ConsultationFormRequest.create!(@valid_attributes)
+    ConsultationFormRequest.create!(@valid_attributes.merge( :requestor => User.new, :student=>Student.new))
   end
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090523221949) do
+ActiveRecord::Schema.define(:version => 20090524185436) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(:version => 20090523221949) do
   create_table "consultation_form_requests", :force => true do |t|
     t.integer  "student_id"
     t.integer  "requestor_id"
+    t.integer  "team_id"
+    t.boolean  "all_student_scheduled_staff"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -608,6 +610,19 @@ ActiveRecord::Schema.define(:version => 20090523221949) do
 
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
+
+  create_table "school_teams", :force => true do |t|
+    t.integer  "school_id"
+    t.string   "name"
+    t.boolean  "anonymous"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_teams_users", :id => false, :force => true do |t|
+    t.integer "school_team_id"
+    t.integer "school_id"
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"

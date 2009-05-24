@@ -1,0 +1,23 @@
+<% remote_form_for(@consultation_form_request) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    Who do you want to gather information from?
+  </p>
+
+  <p>
+    <%=f.radio_button :whom, :all_staff_for_student %>
+    <%= f.label :whom_all_staff_for_student, 'staff and administrator listed on student’s schedule' %>   <br />
+  
+    <%=f.radio_button :whom, :predetermined_teams %>
+    <%= f.label :whom_predetermined_teams, 'predetermined team' %>   <br />
+  
+    <%=f.radio_button :whom, :other %>
+    <%= f.label :whom_other, 'other' %>   <br />
+
+  </p>
+
+  <p>
+    <%= f.submit 'Save' %>
+  </p>
+<% end %>
+
