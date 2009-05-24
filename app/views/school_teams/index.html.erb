@@ -1,0 +1,24 @@
+<h1>Listing school_teams</h1>
+
+<table>
+  <tr>
+    <th>School</th>
+    <th>Name</th>
+    <th>Anonymous</th>
+  </tr>
+
+<% @school_teams.each do |school_team| %>
+  <tr>
+    <td><%=h school_team.school %></td>
+    <td><%=h school_team.name %></td>
+    <td><%=h school_team.anonymous %></td>
+    <td><%= link_to 'Show', school_team %></td>
+    <td><%= link_to 'Edit', edit_school_team_path(school_team) %></td>
+    <td><%= link_to 'Destroy', school_team, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New school_team', new_school_team_path %>
