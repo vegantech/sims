@@ -19,21 +19,21 @@ describe ProbeGraph do
 
     end
     it 'should be empty_string if N/A' do
-      @probe_graph.benchmark =  {:score => 'N/A', :grade_level => 'N/A'}
+      @probe_graph.benchmarks= []
       @probe_graph.send(:benchmark_line).should == ''
     end
 
     describe 'with a single benchmark of 10' do
       it 'should return a line' do
         @probe_graph.should_receive(:scale_graph_value).and_return(10)
-        @probe_graph.benchmark =  {:score => '10'}
+        @probe_graph.benchmarks =  [{:score => '10'}]
         @probe_graph.send(:benchmark_line).should == '<div style="position: absolute; bottom: 10px !important; height: 15px; width: 52px; border-bottom: 1px solid orange;">&nbsp;10</div>'
       end
     end
 
     it 'should return a line for a benchmark of 11' do
         @probe_graph.should_receive(:scale_graph_value).and_return(11)
-      @probe_graph.benchmark =  {:score => '11'}
+      @probe_graph.benchmarks =  [{:score => '11'}]
       @probe_graph.send(:benchmark_line).should == '<div style="position: absolute; bottom: 11px !important; height: 15px; width: 52px; border-bottom: 1px solid orange;">&nbsp;11</div>'
     end
   end
