@@ -1,20 +1,7 @@
 <h1>New school_team</h1>
 
 <% form_for(@school_team) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :school %><br />
-    <%= f.text_field :school %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :anonymous %><br />
-    <%= f.check_box :anonymous %>
-  </p>
+  <%= render :partial => 'form' %>
   <p>
     <%= f.submit 'Create' %>
   </p>

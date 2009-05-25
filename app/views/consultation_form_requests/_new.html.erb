@@ -9,10 +9,19 @@
     <%= f.label :whom_all_staff_for_student, 'staff and administrator listed on student’s schedule' %>   <br />
   
     <%=f.radio_button :whom, :predetermined_teams %>
-    <%= f.label :whom_predetermined_teams, 'predetermined team' %>   <br />
+    <%= f.label :whom_predetermined_teams, 'predetermined team' %>   <%= f.collection_select :team_id, @teams, :id, :name %><br />
   
     <%=f.radio_button :whom, :other %>
-    <%= f.label :whom_other, 'other' %>   <br />
+    <%= f.label :whom_other, 'other' %>   
+    <%= f.collection_select(:user_ids, @users, :id, :to_s, {}, {:multiple => true, :size=>5}) %>
+      <br />
+
+
+
+
+
+
+<br />
 
   </p>
 

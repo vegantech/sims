@@ -279,6 +279,13 @@ team_scheduler_admin:
   read_access: true
   write_access: true
 
+school_team_admin:
+  role: school_admin
+  controller: school_teams
+  read_access: true
+  write_access: true
+  
+
 
 quicklists_admin:
   role: school_admin

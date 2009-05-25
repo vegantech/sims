@@ -7,6 +7,10 @@ describe SchoolTeamsController do
   def mock_school_team(stubs={})
     @mock_school_team ||= mock_model(SchoolTeam, stubs)
   end
+
+  before do
+    controller.stub_association!(:current_school, :school_teams =>SchoolTeam, :users=>[1,2,3,4])
+  end
   
   describe "GET index" do
     it "assigns all school_teams as @school_teams" do
@@ -44,27 +48,27 @@ describe SchoolTeamsController do
     
     describe "with valid params" do
       it "assigns a newly created school_team as @school_team" do
-        SchoolTeam.should_receive(:new).with({'these' => 'params'}).and_return(mock_school_team(:save => true))
+        SchoolTeam.should_receive(:build).with({'these' => 'params'}).and_return(mock_school_team(:save => true))
         post :create, :school_team => {:these => 'params'}
         assigns[:school_team].should equal(mock_school_team)
       end
 
       it "redirects to the created school_team" do
-        SchoolTeam.stub!(:new).and_return(mock_school_team(:save => true))
+        SchoolTeam.stub!(:build).and_return(mock_school_team(:save => true))
         post :create, :school_team => {}
-        response.should redirect_to(school_team_url(mock_school_team))
+        response.should redirect_to(school_teams_url)
       end
     end
     
     describe "with invalid params" do
       it "assigns a newly created but unsaved school_team as @school_team" do
-        SchoolTeam.stub!(:new).with({'these' => 'params'}).and_return(mock_school_team(:save => false))
+        SchoolTeam.stub!(:build).with({'these' => 'params'}).and_return(mock_school_team(:save => false))
         post :create, :school_team => {:these => 'params'}
         assigns[:school_team].should equal(mock_school_team)
       end
 
       it "re-renders the 'new' template" do
-        SchoolTeam.stub!(:new).and_return(mock_school_team(:save => false))
+        SchoolTeam.stub!(:build).and_return(mock_school_team(:save => false))
         post :create, :school_team => {}
         response.should render_template('new')
       end
@@ -77,7 +81,7 @@ describe SchoolTeamsController do
     describe "with valid params" do
       it "updates the requested school_team" do
         SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-        mock_school_team.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_school_team.should_receive(:update_attributes).with({'these' => 'params', "user_ids"=>[]})
         put :update, :id => "37", :school_team => {:these => 'params'}
       end
 
@@ -90,14 +94,14 @@ describe SchoolTeamsController do
       it "redirects to the school_team" do
         SchoolTeam.stub!(:find).and_return(mock_school_team(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(school_team_url(mock_school_team))
+        response.should redirect_to(school_teams_url)
       end
     end
     
     describe "with invalid params" do
       it "updates the requested school_team" do
         SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-        mock_school_team.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_school_team.should_receive(:update_attributes).with({'these' => 'params', "user_ids"=>[]})
         put :update, :id => "37", :school_team => {:these => 'params'}
       end
 

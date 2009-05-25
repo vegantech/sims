@@ -614,14 +614,14 @@ ActiveRecord::Schema.define(:version => 20090524185436) do
   create_table "school_teams", :force => true do |t|
     t.integer  "school_id"
     t.string   "name"
-    t.boolean  "anonymous"
+    t.boolean  "anonymous",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "school_teams_users", :id => false, :force => true do |t|
     t.integer "school_team_id"
-    t.integer "school_id"
+    t.integer "user_id"
   end
 
   create_table "schools", :force => true do |t|

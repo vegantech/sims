@@ -1,0 +1,25 @@
+<%= form.error_messages %>
+
+<p>
+  <%= form.label :name %><br />
+  <%= form.text_field :name %>
+</p>
+
+<table>
+  <thead>
+  </thead>
+  <tbody>
+    <% @users_in_groups.each do |user_row| %>
+      <tr>
+        <%user_row.each do |user| %>
+          <td>
+            <%= check_box_tag 'school_team[user_ids][]',user.id, @school_team.users.include?(user), :id => dom_id(user,"team_school") %>
+            <%= label_tag dom_id(user, "team_school"), user.to_s %>
+            <%#= %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

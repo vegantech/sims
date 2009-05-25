@@ -1,9 +1,9 @@
 class CreateSchoolTeams < ActiveRecord::Migration
   def self.up
-    create_table :school_teams do |t|
+    create_table :school_teams, :force => true do |t|
       t.belongs_to :school
       t.string :name
-      t.boolean :anonymous
+      t.boolean :anonymous, :default => false
 
       t.timestamps
     end
