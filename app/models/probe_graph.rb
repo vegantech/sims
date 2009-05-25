@@ -1,6 +1,6 @@
 class ProbeGraph
 
-  attr_accessor :benchmark, :minimum, :maximum,:bars, :data_max,:scaled_min, :pos_bottom, :line_width
+  attr_accessor :benchmarks, :minimum, :maximum,:bars, :data_max,:scaled_min, :pos_bottom, :line_width
 
 
   GRAPH_HEIGHT = 165
@@ -33,9 +33,9 @@ private
  #     intervention_probe_assignment.probe_definition)
     @benchmarks=ipa.probe_definition.probe_definition_benchmarks
     if @benchmarks.present?
-      @benchmark = {:score=>@benchmarks.first.benchmark, :grade_level => @benchmarks.first.grade_level}
+      @benchmarks = @benchmarks.collect{|b| {:score=>b.benchmark, :grade_level => b.grade_level}}
     else
-      @benchmark={:score => 'N/A', :grade_level => 'N/A'}
+      @benchmarks=[{:score => 'N/A', :grade_level => 'N/A'}]
     end
   end
 
@@ -70,13 +70,14 @@ private
 
   def setup_data_min_and_data_max
     #defaults
-    puts @bars.inspect
     @data_min = (@minimum || get_minimum_or_zero_from_bars).to_i
     if @maximum
       @data_max = @maximum- @data_min
     else
       @data_max = (@bars.collect{|bar| bar.score}.compact.max || 10).to_i 
     end
+
+    @data_max = 10 if @data_max == @data_min && @data_min == 0
 
 
    @scaled_min = scale_graph_value(@data_min, @data_max, SCALE_MAX)
@@ -96,7 +97,17 @@ private
         <p style="text-align:center;">
         
           Current scores for "#{@title}"<br />
-          Benchmark: #{@benchmark[:score]} at grade level #{@benchmark[:grade_level]}
+    HTML
+
+    @benchmarks.each do |benchmark|
+    html += <<-"HTML"
+
+          Benchmark: #{benchmark[:score]} at grade level #{benchmark[:grade_level]} <br />
+
+    HTML
+    end
+
+    html += <<-"HTML"
         </p>
       <div id="vertgraph_#{count}" class="vertgraph" style="width: #{@width}px; height: #{GRAPH_HEIGHT}px;">
       
@@ -171,46 +182,20 @@ private
 
 
   def benchmark_line
-    if @benchmark[:score] == 'N/A'
-      ''
-    else
-      score=@benchmark[:score].to_i
-      sign=score/score.abs
-      scaled_benchmark = sign*scale_graph_value(@benchmark[:score].to_i,@data_max,SCALE_MAX) + @pos_bottom
-     "<div style=\"position: absolute; bottom: #{scaled_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;\">&nbsp;#{score}</div>"
+
+    e=@benchmarks.collect do |benchmark|
+      if benchmark[:score] == 'N/A'
+        ''
+      else
+        score=benchmark[:score].to_i
+        sign=score/score.abs
+        scaled_benchmark = sign*scale_graph_value(benchmark[:score].to_i,@data_max,SCALE_MAX) + @pos_bottom
+       "<div style=\"position: absolute; bottom: #{scaled_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;\">&nbsp;#{score}</div>"
+      end 
     end
+    e.join(" ")
   end
 
-
-  
-  def benchmark_line2
-
-    html =''
-    data_benchmark = @benchmark[:score]
-    scaled_benchmark = scale_graph_value(data_benchmark, @data_max, SCALE_MAX)
-
-    if data_benchmark != 'N/A' && data_benchmark >= 0
-      pos_benchmark = pos_bottom + scaled_benchmark
-    else
-      pos_benchmark = pos_bottom - scaled_benchmark
-    end
-    
-
-
-
-    if data_benchmark != 'N/A'
-    
-    html += <<-"HTML" 
-    <div id="benchmark_line" style="position: absolute; bottom: #{pos_benchmark}px !important; height: 15px; width: #{@line_width}px; border-bottom: 1px solid orange;">&nbsp;Benchmark
-      </div>
-      
-    HTML
-    
-    end
-
-    html
-
-  end
 
 
  

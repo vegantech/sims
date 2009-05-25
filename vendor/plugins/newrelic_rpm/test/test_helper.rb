@@ -18,6 +18,7 @@ module NewRelic
   end
 end
 
+=begin
 # This is a mixin for hacking the select method
 if defined? ActiveRecord::ConnectionAdapters
   class ActiveRecord::ConnectionAdapters::MysqlAdapter
@@ -36,3 +37,4 @@ if defined? ActiveRecord::ConnectionAdapters
     end
   end
 end
+=end

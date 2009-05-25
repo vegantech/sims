@@ -57,11 +57,62 @@ class AgentTests < ActiveSupport::TestCase
     @agent.shutdown
   end
   
+  def test_classloading_patch
+    require 'new_relic/agent/patch_const_missing'
+    ClassLoadingWatcher.set_background_thread(Thread.current)
+    
+    NewRelic::Config.instance.log.expects(:error).at_least_once.with{|args| args =~ /Agent background thread.*:FooBar/}
+    NewRelic::Config.instance.log.expects(:error).with{|args| args =~ /Agent background thread.*:FooBaz/}.never
+    
+    ClassLoadingWatcher.enable_warning
+    assert_raise NameError do
+      FooBar::Bat
+    end
+    ClassLoadingWatcher.disable_warning
+    assert_raise NameError do
+      FooBaz::Bat
+    end
+  end
+
+  def test_require
+    require 'new_relic/agent/patch_const_missing'
+    ClassLoadingWatcher.set_background_thread(Thread.current)
+    
+    # try loading some non-existent class
+    NewRelic::Config.instance.log.expects(:error).at_least_once.with{|args| args =~ /Agent background thread.*net/}
+    NewRelic::Config.instance.log.expects(:error).with{|args| args =~ /Agent background thread.*net/}.never
+    
+    ClassLoadingWatcher.enable_warning
+    
+    require 'net/http'
+
+    ClassLoadingWatcher.disable_warning
+
+    require 'net/http'
+  end
+  
+  def test_load
+    require 'new_relic/agent/patch_const_missing'
+    ClassLoadingWatcher.set_background_thread(Thread.current)
+    
+    # try loading some non-existent class
+    NewRelic::Config.instance.log.expects(:error).at_least_once.with{|args| args =~ /Agent background thread.*/}
+    NewRelic::Config.instance.log.expects(:error).with{|args| args =~ /Agent background thread.*/}.never
+    
+    ClassLoadingWatcher.enable_warning
+    
+    load 'net/http.rb'
+
+    ClassLoadingWatcher.disable_warning
+
+    load 'net/http.rb'
+  end
+
   def test_info
     props = NewRelic::Config.instance.app_config_info
     list = props.assoc('Plugin List').last.sort
-    assert_equal 4, (list & %w[active_merchant active_scaffold acts_as_list acts_as_state_machine ]).size, list.join("\n")
-    assert_equal 'mysql', props.assoc('Database adapter').last
+    assert_not_nil list # can't really guess what might be in here.  
+    assert_match /jdbc|postgres|mysql|sqlite/, props.assoc('Database adapter').last
   end
   def test_version
     assert_match /\d\.\d\.\d+/, NewRelic::VERSION::STRING

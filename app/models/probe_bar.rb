@@ -6,7 +6,7 @@ class ProbeBar
   INCREMENT = 70
 
   def initialize(opts={})
-    @score=opts[:score]
+    @score=opts[:score].to_i
     @date=opts[:date]
     @index=opts[:index]
     @graph=opts[:graph]

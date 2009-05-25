@@ -1,7 +1,6 @@
 
 module NewRelic::Agent
   
-  
   class TransactionSampler
     include Synchronize
     
@@ -28,28 +27,27 @@ module NewRelic::Agent
       end
     end
     
+    def current_sample_id
+      b=builder
+      b and b.sample_id
+    end
+
     def disable
       NewRelic::Agent.instance.stats_engine.remove_scope_stack_listener self
     end
     
     
     def default_sql_obfuscator(sql)
-#      puts "obfuscate: #{sql}"
-      
-      # remove escaped strings
-      sql = sql.gsub("''", "?")
-      
-      # replace all string literals
-      sql = sql.gsub(/'[^']*'/, "?")
-      
+      sql = sql.dup
+      # This is hardly readable.  Use the unit tests.
+      # remove single quoted strings:
+      sql.gsub!(/'(.*?[^\\'])??'(?!')/, '?')
+      # remove double quoted strings:
+      sql.gsub!(/"(.*?[^\\"])??"(?!")/, '?')
       # replace all number literals
-      sql = sql.gsub(/\d+/, "?")
-      
-#      puts "result: #{sql}"
-      
+      sql.gsub!(/\d+/, "?")
       sql
     end
-    
     
     def notice_first_scope_push(time)
       if Thread::current[:record_tt] == false
@@ -71,13 +69,13 @@ module NewRelic::Agent
       if NewRelic::Config.instance.developer_mode?
         segment = builder.current_segment
         if segment
-          # NOTE we manually inspect stack traces to determine that the 
-          # agent consumes the last 8 frames.  Review after we make changes
-          # to transaction sampling or stats engine to make sure this remains
-          # a true assumption
-          trace = caller(8)
+          # Strip stack frames off the top that match /new_relic/agent/
+          trace = caller
+          while trace.first =~/\/lib\/new_relic\/agent\//
+            trace.shift
+          end
           
-          trace = trace[0..40] if trace.length > 40
+          trace = trace[0..39] if trace.length > 40
           segment[:backtrace] = trace
         end
       end
@@ -201,6 +199,10 @@ module NewRelic::Agent
       @sample = NewRelic::TransactionSample.new(time)
       @sample_start = time
       @current_segment = @sample.root_segment
+    end
+
+    def sample_id
+      @sample.sample_id
     end
 
     def trace_entry(metric_name, time)

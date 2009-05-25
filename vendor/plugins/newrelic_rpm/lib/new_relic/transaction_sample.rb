@@ -150,7 +150,7 @@ module NewRelic
       # and only within the slowest transaction in a report period, selected for shipment to RPM
       def explain_sql        
         sql = params[:sql]
-        return nil if sql.nil?
+        return nil unless sql && params[:connection_config]
         statements = sql.split(";\n")
         explanations = []
         statements.each do |statement|
@@ -329,7 +329,7 @@ module NewRelic
         next if k == :path
         s << "  #{k}: " <<
         case v
-          when Enumerable: v.map(&:to_s).sort.join("; ")
+          when Enumerable; v.map(&:to_s).sort.join("; ")
         else
           v
         end << "\n"
