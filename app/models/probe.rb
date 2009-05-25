@@ -80,13 +80,17 @@ def calculate_score(params)
 
 
   def score_in_range
-    unless score.blank? || self.probe_definition.blank?||  self.probe_definition.maximum_score.blank? ||
-       self.probe_definition.minimum_score.blank?
-      unless  (self.probe_definition.minimum_score..self.probe_definition.maximum_score).include?(score)
-      errors.add(:score, "must be between the minimum(#{self.probe_definition.minimum_score})
-              and the maximum (#{self.probe_definition.maximum_score})")
+    if score.present? and self.probe_definition.present?
+      if probe_definition.minimum_score.present? and score < probe_definition.minimum_score
+        errors.add(:score, "below minimum") and return false
       end
+
+      if probe_definition.maximum_score.present? and score > probe_definition.maximum_score
+        errors.add(:score, "above maximum") and return false
+      end
+
     end
+        
   end
 end
 
