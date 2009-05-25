@@ -14,7 +14,7 @@ module NewRelic
       # Note: log won't be available yet.
       @identifier = nil
       @environment = :unknown
-      environments = %w[merb jruby webrick mongrel thin litespeed passenger daemon]
+      environments = %w[merb jruby webrick thin mongrel litespeed passenger fastcgi daemon]
       while environments.any? && @identifier.nil?
         send 'check_for_'+(environments.shift)
       end
@@ -22,33 +22,50 @@ module NewRelic
     def to_s
       "LocalEnvironment[#{environment}:#{identifier}]"
     end
+    def check_for_fastcgi
+      return unless defined? FCGI
+      @environment = :fastcgi
+      @identifier = 'fastcgi'
+    end
     def check_for_merb
       if config.app == :merb
         @identifier = 'merb'
       end
     end
     def check_for_webrick
-      if defined?(OPTIONS) && OPTIONS.respond_to?(:fetch) 
+      # Some indication this is causing problems.  To be fixed in 2.9.0
+      return
+      # This will not succeed on rails 2.2 and later
+      if defined?(WEBrick) && defined?(OPTIONS) && ::OPTIONS.respond_to?(:fetch) 
         # OPTIONS is set by script/server 
+        @identifier = default_port unless @identifier
         @identifier = OPTIONS.fetch(:port)
-        @environment = :webrick
       end
     end
-    
     # this case covers starting by mongrel_rails
     def check_for_mongrel
-      if defined? Mongrel::HttpServer
-        ObjectSpace.each_object(Mongrel::HttpServer) do |mongrel|
-          next if not mongrel.respond_to? :port
-          @environment = :mongrel
-          @identifier = mongrel.port
+      return unless defined?(Mongrel::HttpServer) 
+      @environment = :mongrel
+      
+      # Get the port from the server if it's started
+      ObjectSpace.each_object(Mongrel::HttpServer) do |mongrel|
+        next if not mongrel.respond_to? :port
+        @identifier = mongrel.port.to_s
+      end
+      
+      # Get the port from the configurator if one was created
+      if @identifier.nil? && defined?(Mongrel::Configurator)
+        ObjectSpace.each_object(Mongrel::Configurator) do |mongrel|
+          @identifier = mongrel.defaults[:port] && mongrel.defaults[:port].to_s
         end
       end
+      
+      # Still can't find the port.  Let's look at ARGV to fall back
+      @identifier = default_port if @identifier.nil?
     end
-    
-    def check_for_thin
+    def check_for_thin    
       if defined? Thin::Server
-        # This case covers the thin web server
+        # This case covers the thin web dispatcher
         # Same issue as above- we assume only one instance per process
         ObjectSpace.each_object(Thin::Server) do |thin_server|
           @environment = :thin
@@ -63,6 +80,10 @@ module NewRelic
             raise "Unknown thin backend: #{backend}"
           end
         end # each thin instance
+      end
+      if defined?(Thin::VERSION) && !@identifier
+        @environment = :thin
+        @identifier = default_port
       end
     end
     
@@ -86,7 +107,7 @@ module NewRelic
     end
     
     def check_for_passenger
-      if defined? Passenger::AbstractServer || defined? IN_PHUSION_PASSENGER 
+      if defined?(Passenger::AbstractServer) || defined?(IN_PHUSION_PASSENGER) 
         @environment = :passenger
         @identifier = 'passenger'
         @identifier += ":#{config['app_name']}" if config['app_name']
@@ -103,6 +124,17 @@ module NewRelic
     private 
     def config
       NewRelic::Config.instance
+    end
+    
+    def default_port
+      require 'optparse'
+      # If nothing else is found, use the 3000 default
+      default_port = 3000
+      OptionParser.new do |opts|
+        opts.on("-p", "--port=port", String) { | default_port | }
+        opts.parse(ARGV.clone) rescue nil
+      end
+      default_port
     end
   end
 end

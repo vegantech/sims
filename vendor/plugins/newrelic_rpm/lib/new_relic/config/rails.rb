@@ -3,7 +3,7 @@ class NewRelic::Config::Rails < NewRelic::Config
   def app; :rails; end
   
   def env
-    RAILS_ENV
+    @env ||= RAILS_ENV
   end
   def root
     RAILS_ROOT
@@ -17,24 +17,20 @@ class NewRelic::Config::Rails < NewRelic::Config
   end
   
   def start_plugin(rails_config=nil)
-    if !tracers_enabled?
+    if !tracers_enabled? || !start_agent
       require 'new_relic/shim_agent'
-      return
+    else
+      install_developer_mode rails_config if developer_mode?
     end
-    app_config_info
-    start_agent
-    install_developer_mode rails_config if developer_mode?
   end
   
   def install_developer_mode(rails_config)
     controller_path = File.join(newrelic_root, 'ui', 'controllers')
     helper_path = File.join(newrelic_root, 'ui', 'helpers')
-    $LOAD_PATH << controller_path
-    $LOAD_PATH << helper_path
- 
+
     if defined? ActiveSupport::Dependencies
-      ActiveSupport::Dependencies.load_paths << controller_path
-      ActiveSupport::Dependencies.load_paths << helper_path
+      Dir["#{helper_path}/*.rb"].each { |f| require f }
+      Dir["#{controller_path}/*.rb"].each { |f| require f }
     elsif defined? Dependencies.load_paths
       Dependencies.load_paths << controller_path
       Dependencies.load_paths << helper_path
@@ -43,20 +39,8 @@ class NewRelic::Config::Rails < NewRelic::Config
       return
     end
     
-    # This is a monkey patch to inject the developer tool route into the
-    # parent app without requiring users to modify their routes. Of course this 
-    # has the effect of adding a route indiscriminately which is frowned upon by 
-    # some: http://www.ruby-forum.com/topic/126316#563328
-    ActionController::Routing::RouteSet.class_eval do
-      next if defined? draw_with_newrelic_map
-      def draw_with_newrelic_map
-        draw_without_newrelic_map do | map |
-          map.named_route 'newrelic_developer', '/newrelic/:action/:id', :controller => 'newrelic' unless NewRelic::Config.instance['skip_developer_route']
-          yield map        
-        end
-      end
-      alias_method_chain :draw, :newrelic_map
-    end
+    install_devmode_route
+    
     
     # If we have the config object then add the controller path to the list.
     # Otherwise we have to assume the controller paths have already been
@@ -67,7 +51,7 @@ class NewRelic::Config::Rails < NewRelic::Config
     else
       current_paths = ActionController::Routing.controller_paths
       if current_paths.nil? || current_paths.empty?
-        to_stderr "ERROR: The controller paths has not been set.  Make sure you are invoking newrelic after the Initializer finishes."
+        to_stderr "WARNING: Unable to modify the routes in this version of Rails.  Developer mode not available."
       end
       current_paths << controller_path
     end
@@ -78,12 +62,30 @@ class NewRelic::Config::Rails < NewRelic::Config
     # a webserver process
     if local_env.identifier
       port = local_env.identifier.to_s =~ /^\d+/ ? ":#{local_env.identifier}" : ":port" 
-      to_stderr "NewRelic Agent (Developer Mode) enabled."
+      to_stderr "NewRelic Agent Developer Mode enabled."
       to_stderr "To view performance information, go to http://localhost#{port}/newrelic"
     end
   end
   
   protected 
+  
+  def install_devmode_route
+    # This is a monkey patch to inject the developer tool route into the
+    # parent app without requiring users to modify their routes. Of course this 
+    # has the effect of adding a route indiscriminately which is frowned upon by 
+    # some: http://www.ruby-forum.com/topic/126316#563328
+    ActionController::Routing::RouteSet.class_eval do
+      return false if self.instance_methods.include? 'draw_with_newrelic_map'
+      def draw_with_newrelic_map
+        draw_without_newrelic_map do | map |
+          map.named_route 'newrelic_developer', '/newrelic/:action/:id', :controller => 'newrelic' unless NewRelic::Config.instance['skip_developer_route']
+          yield map        
+        end
+      end
+      alias_method_chain :draw, :newrelic_map
+    end
+    return true
+  end
   
   # Collect the Rails::Info into an associative array as well as the list of plugins
   def gather_info
@@ -99,8 +101,7 @@ class NewRelic::Config::Rails < NewRelic::Config
       log.debug "Unable to get the Rails info: #{e.inspect}"
     end
     
-    # Would like to get this from config, but how?
-    plugins = Dir[File.join(File.expand_path(__FILE__+"/../../../../.."),"/*")].collect { |p| File.basename p }
+    plugins = Dir[File.expand_path(File.join(RAILS_ROOT,"vendor","plugins","*"))].collect { |p| File.basename p }
     i << ['Plugin List', plugins]
     
     # Look for a capistrano file indicating the current revision:
