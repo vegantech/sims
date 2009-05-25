@@ -37,4 +37,21 @@ describe ProbeGraph do
       @probe_graph.send(:benchmark_line).should == '<div style="position: absolute; bottom: 11px !important; height: 15px; width: 52px; border-bottom: 1px solid orange;">&nbsp;11</div>'
     end
   end
+
+  describe 'setup_data_min_and_data_max' do
+    it 'should have other tests' do
+      pending
+    end
+
+    it 'should work when there is no minimum or maximum, and a single bar at 0' do
+      ipa=InterventionProbeAssignment.new
+      @probe_graph=ProbeGraph.new(ipa)
+      @probe_graph.bars << ProbeBar.new(:index=>1, :score => 0)
+      @probe_graph.minimum=nil
+      @probe_graph.maximum=nil
+      @probe_graph.send(:setup_data_min_and_data_max)
+    end
+    
+
+  end
 end

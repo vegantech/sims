@@ -70,13 +70,14 @@ private
 
   def setup_data_min_and_data_max
     #defaults
-    puts @bars.inspect
     @data_min = (@minimum || get_minimum_or_zero_from_bars).to_i
     if @maximum
       @data_max = @maximum- @data_min
     else
       @data_max = (@bars.collect{|bar| bar.score}.compact.max || 10).to_i 
     end
+
+    @data_max = 10 if @data_max == @data_min && @data_min == 0
 
 
    @scaled_min = scale_graph_value(@data_min, @data_max, SCALE_MAX)
