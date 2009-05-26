@@ -1,13 +1,12 @@
 <p>
-  <b>Student:</b>
-  <%=h @consultation_form.student %>
-</p>
-
-<p>
   <b>User:</b>
   <%=h @consultation_form.user %>
 </p>
 
+<p>
+  <b>Date:</b>
+  <%=h @consultation_form.created_at.to_date %>
+</p>
 
 <% form_for(@consultation_form) do |f| %>
   <%= render :partial => 'consultation_forms/consultation_form', :object => f %>

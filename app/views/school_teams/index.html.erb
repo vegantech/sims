@@ -1,21 +1,23 @@
-<h1>Listing school_teams</h1>
+<h1>Listing School Teams</h1>
 
 <table>
   <tr>
+    <th></th>
+    <th></th>
     <th>Name</th>
-    <th>User</th>
+    <th>Members</th>
   </tr>
 
 <% @school_teams.each do |school_team| %>
   <tr>
-    <td><%=h school_team.name %></td>
-    <td><%=h school_team.users.collect(&:to_s).join(", ") %></td>
     <td><%= link_to 'Edit', edit_school_team_path(school_team) %></td>
-    <td><%= link_to 'Destroy', school_team, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete', school_team, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><b><%=h school_team.name %></b></td>
+    <td><%=h school_team.users.collect(&:to_s).join(", ") %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New school_team', new_school_team_path %>
+<%= link_to 'New School Team', new_school_team_path %>

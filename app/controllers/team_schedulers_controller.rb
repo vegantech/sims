@@ -12,6 +12,7 @@ class TeamSchedulersController < ApplicationController
   # POST /team_schedulers
   def create
     current_school.team_scheduler_user_ids = params[:user_ids].to_a
+    flash[:notice] = "The team schedulers have been assigned."
     redirect_to(team_schedulers_url) 
   end
 end
