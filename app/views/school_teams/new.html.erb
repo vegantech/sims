@@ -1,7 +1,7 @@
-<h1>New school_team</h1>
+<h1>New School Team</h1>
 
 <% form_for(@school_team) do |f| %>
-  <%= render :partial => 'form' %>
+  <%= render :partial => 'form', :object => f %>
   <p>
     <%= f.submit 'Create' %>
   </p>

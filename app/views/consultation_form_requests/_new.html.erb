@@ -12,8 +12,8 @@
     <%= f.label :whom_predetermined_teams, 'predetermined team' %>   <%= f.collection_select :team_id, @teams, :id, :name %><br />
   
     <%=f.radio_button :whom, :other %>
-    <%= f.label :whom_other, 'other' %>   
-    <%= f.collection_select(:user_ids, @users, :id, :to_s, {}, {:multiple => true, :size=>5}) %>
+    <%= f.label :whom_other, 'other' %>   <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;<%= f.collection_select(:user_ids, @users, :id, :to_s, {}, {:multiple => true, :size=>5}) %>
       <br />
 
 

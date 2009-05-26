@@ -4,7 +4,7 @@
       <th>Area of concern</th>
       <th>Strengths</th>
       <th>Concerns</th>
-      <th>Recent Changes or contributing factors</th>
+      <th>Recent Changes or<br /> contributing factors</th>
     </tr>
   </thead>
   <tbody>
@@ -17,13 +17,13 @@
           <%= concern_fields.label :checked, concern_fields.object.area_text %>
         </td>
         <td>
-          <%= concern_fields.text_area :strengths %>
+          <%= concern_fields.text_area :strengths, :size => ConsultationFormConcern::FIELD_SIZE %>
         </td>
         <td>
-          <%= concern_fields.text_area :concerns %>
+          <%= concern_fields.text_area :concerns, :size => ConsultationFormConcern::FIELD_SIZE %>
         </td>
         <td>
-          <%= concern_fields.text_area :recent_changes %>
+          <%= concern_fields.text_area :recent_changes, :size => ConsultationFormConcern::FIELD_SIZE %>
         </td>
 
       </tr>
