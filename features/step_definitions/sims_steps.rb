@@ -257,13 +257,8 @@ end
 Given /^I should see "(.*)" within (.*)$/ do |see,scope|
   within(scope) do |scoped|
     scoped.should contain(see)
-
   end
-
 end
-
-
-
 
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
