@@ -96,12 +96,12 @@ class Notifications < ActionMailer::Base
   end
 
   def self.setup_ending_reminders
-    #select interventions where end_date = 1 week from today
+    interventions_ending_this_week.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
+  end
+
+  def self.interventions_ending_this_week
     interventions = Intervention.active.find(:all, :conditions=>{"end_date" =>(Date.today..7.day.from_now.to_date)})
-    interventions.reject!{|i| i.student.blank?}
-
-    interventions.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
-
+    interventions.reject{|i| i.student.blank?}
   end
 
 end
