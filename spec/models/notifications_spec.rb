@@ -49,6 +49,7 @@ describe Notifications do
 
   def test_intervention_ending_reminder
     pending
+    #be sure to test conditions where the student, author, or participant no longer exists
     @expected.subject = 'Notifications#intervention_ending_reminder'
     @expected.body    = read_fixture('intervention_ending_reminder')
     @expected.date    = Time.now
@@ -72,6 +73,10 @@ describe Notifications do
     @expected.date    = Time.now
 
     assert_equal @expected.encoded, Notifications.create_intervention_participant_added(@expected.date).encoded
+  end
+
+  describe 'setup_ending_intervention_reninder' do
+    it 'should have specs' 
   end
 
 end

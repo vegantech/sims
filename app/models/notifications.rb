@@ -21,6 +21,18 @@ class Notifications < ActionMailer::Base
     end
   end
 
+  def url_opts
+    h={}
+    if defined?SIMS_DOMAIN
+      h[:host]=SIMS_DOMAIN
+      h[:protocol]=SIMS_PROTO
+      h[:only_path] = false
+    else
+      h[:only_path] = true
+    end
+    h
+  end
+
 
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'
@@ -53,13 +65,15 @@ class Notifications < ActionMailer::Base
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end
 
-  def intervention_ending_reminder(sent_at = Time.now)
-    subject    'Notifications#intervention_ending_reminder'
-    recipients ''
-    from       ''
+  def intervention_ending_reminder(intervention, sent_at = Time.now)
+    participants = intervention.participants_with_author
+    subject    '[SIMS] Student Intervention Ending This Week'
+    recipients participants.collect(&:email).compact.uniq.join(',')
+    from       'SIMS <sims@simspilot.org>'
     sent_on    sent_at
-    
-    body       :greeting => 'Hi,'
+   
+    setup_url(intervention.student.district)
+    body       :greeting => 'Hi,', :participants => participants, :intervention => intervention, :url_opts => url_opts
   end
 
   def intervention_reminder(sent_at = Time.now)
@@ -79,6 +93,15 @@ class Notifications < ActionMailer::Base
     sent_on    Time.now
     body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author,
                 :interventions=> [intervention_person.intervention],:participant => intervention_person
+  end
+
+  def self.setup_ending_reminders
+    #select interventions where end_date = 1 week from today
+    interventions = Intervention.active.find(:all, :conditions=>{"end_date" =>(Date.today..7.day.from_now.to_date)})
+    interventions.reject!{|i| i.student.blank?}
+
+    interventions.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
+
   end
 
 end
