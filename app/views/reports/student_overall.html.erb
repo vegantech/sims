@@ -54,4 +54,11 @@
       </div>
     <% end %>
   <% end %>
+
+  <% subreport_selected @opts[:consultation_forms] do %>
+    <% if @student.consultation_forms.empty? %>
+      Student has no consultation forms
+    <% else %>
+    <% end %>
+  <% end %>
 </div>
