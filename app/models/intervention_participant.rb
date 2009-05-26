@@ -17,7 +17,7 @@ class InterventionParticipant < ActiveRecord::Base
   belongs_to :user
   belongs_to :intervention
 
-  delegate :email, :fullname, :to => :user
+  delegate :email, :fullname, :to => '(user or return nil)'
   attr_writer :skip_email
 
   after_create :send_new_participant_email
