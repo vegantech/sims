@@ -15,7 +15,7 @@
   <table border ="1">
     <thead>
       <th></th>
-      <% most_answers=question_definition.element_definitions.max{|a,b| a.answer_definitions.count <=> b.answer_definitions.count}
+      <% most_answers=element_definitions.max{|a,b| a.answer_definitions.count <=> b.answer_definitions.count}
       max_count=1
          max_count = most_answers.answer_definitions.count if most_answers
         
