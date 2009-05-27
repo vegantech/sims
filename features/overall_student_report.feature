@@ -1,6 +1,6 @@
-Feature: Student Report
+Feature: Overall Student Report
   In order to See well organized information on a student
-  As an administrator
+  As a user
   I want to see the student report
 
   Background:
