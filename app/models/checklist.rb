@@ -130,7 +130,7 @@ class Checklist < ActiveRecord::Base
       checklist.is_draft=!!params[:save_draft]
       params[:element_definition].each do |element_definition_id, answer|
         element_definition = ElementDefinition.find(element_definition_id)
-        if ['scale','decision','applicable'].include?(element_definition.kind)
+        if ['scale','applicable'].include?(element_definition.kind)
           checklist.answers.build({:checklist => checklist,
                                     :answer_definition_id => answer.to_i})
         elsif ['comment','sa'].include?(element_definition.kind)

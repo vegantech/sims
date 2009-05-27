@@ -21,6 +21,12 @@ class ChecklistsController < ApplicationController
       redirect_to current_student and return
     end
 
+    if current_district.tiers.blank?
+      flash[:notice] = "No tiers available.  Using the checklist requires at least one tier."
+      redirect_to current_student and return
+    end
+
+
     respond_to do |format|
       format.html # new.html.erb
     end
