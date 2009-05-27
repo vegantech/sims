@@ -24,7 +24,7 @@
 
   <% subreport_selected @opts[:intervention_summary] do %>
     <% if @student.interventions.empty? %>
-      Student has no interventions
+      Student has no interventions<br/>
     <% else %>
     <h2>Interventions</h2>
     <h3 class="intervention_summary"><span>Active Interventions</span></h3>
@@ -59,6 +59,12 @@
     <% if @student.consultation_forms.empty? %>
       Student has no consultation forms
     <% else %>
+      Consultation Forms:<br/>
+      <div id="consultation_forms">
+        <div>
+          <%= render :partial => "/consultation_forms/show", :collection => @student.consultation_forms %>
+        </div>
+      </div>
     <% end %>
   <% end %>
 </div>

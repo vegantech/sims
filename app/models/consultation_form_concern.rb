@@ -1,12 +1,27 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: consultation_form_concerns
+#
+#  id                   :integer         not null, primary key
+#  area                 :integer
+#  consultation_form_id :integer
+#  checked              :boolean
+#  strengths            :text
+#  concerns             :text
+#  recent_changes       :text
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 class ConsultationFormConcern < ActiveRecord::Base
-  AREAS=['Academics', 'Attendance', 'Behavior', 'Social/Emotional', 
+  AREAS = ['Academics', 'Attendance', 'Behavior', 'Social/Emotional',
     "Life Stressors", 'Health', "Interactions with peers"]
 
-  FIELD_SIZE='18x3'
+  FIELD_SIZE = '18x3'
   belongs_to :consultation_form
 
   def area_text
     AREAS[area]
   end
-  
 end

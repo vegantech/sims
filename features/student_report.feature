@@ -9,6 +9,16 @@ Feature: Student Report
     And I follow "Student Report"
     Then I should see "Choose Sections for Student Report Common Last"
 
+  Scenario: Student with one consultation form owned directly by the student and one team consultation with a consultation form
+    Given student "Common Last" directly owns consultation form for date "2009-05-26" with concern "1"
+    When I check "Consultation Forms"
+    And I press "Generate Report"
+    Then I should see "2009-05-26"
+    And I should see "Strengths 1"
+    And I should see "Concerns 1"
+    And I should see "Recent changes 1"
+    And I show page
+
   Scenario Outline: Section Checkboxes Trigger Section Display
     When I check "<label>"
     And I press "Generate Report"
@@ -21,10 +31,9 @@ Feature: Student Report
      | Intervention summary | Student has no interventions      |
      | Consultation forms   | Student has no consultation forms |
    # | Checklists and/or recommendations | Checklists and Recommendations |
-   # | Extended profile                  | ?                              |
+   # | Extended profile                  | ?  What should we be seeing ?? |
 
   Scenario: Student Without Consultation Forms
     When I check "Consultation Forms"
     And I press "Generate Report"
     Then I should see "Student has no consultation forms"
-    # When I show page

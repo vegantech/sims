@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: consultation_forms
+#
+#  id                   :integer         not null, primary key
+#  user_id              :integer
+#  team_consultation_id :integer
+#  do_differently       :text
+#  parent_notified      :text
+#  not_in_sims          :text
+#  desired_outcome      :text
+#  created_at           :datetime
+#  updated_at           :datetime
+#  student_id           :integer
+#
+
 class ConsultationForm < ActiveRecord::Base
   belongs_to :user
   belongs_to :team_consultation

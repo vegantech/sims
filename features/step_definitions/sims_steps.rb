@@ -280,7 +280,7 @@ end
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   unauthorized_student = Factory(:student, :district => @student.district)  #will create a student in same district
-  unauthorized_student.enrollments.create!(:grade=>"ZZ", :school=>@student.enrollments.first.school)
+  unauthorized_student.enrollments.create!(:grade => "ZZ", :school => @student.enrollments.first.school)
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
@@ -297,3 +297,14 @@ When /^page should contain "(.*)"$/ do |arg1|
   response.body.should =~ /#{arg1}/
 end
 
+Given /^student "([^\"]*)" directly owns consultation form for date "([^\"]*)" with concern "([^\"]*)"$/ do |student_name, consultation_date, concern_label|
+  first_name, last_name = student_name.split
+  student = Student.find_by_first_name_and_last_name(first_name, last_name)
+  consultation_form = Factory(:consultation_form, :created_at => consultation_date.to_date)
+
+  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+
+  consultation_form.consultation_form_concerns << concern
+  student.consultation_forms << consultation_form
+end

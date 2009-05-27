@@ -13,6 +13,12 @@ Factory.define :checklist do |c|
   c.association :checklist_definition
 end
 
+Factory.define :consultation_form do |cf|
+end
+
+Factory.define :consultation_form_concern do |cfc|
+end
+
 Factory.define :country do |c|
   c.abbrev {Factory.next(:abbrev)}
   c.name {|c| "#{c} Country"}
