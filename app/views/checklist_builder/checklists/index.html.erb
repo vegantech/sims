@@ -6,6 +6,7 @@
 </div>
 <p>
 <%= link_to  "Add New Checklist Definition" , new_checklist_builder_checklist_path %>
+<%= link_to( "New Checklist From State Defaults" ,  new_from_this_checklist_builder_checklist_path(@state_checklist),  :method => :post) if @state_checklist %>
 </p>
 <div id="new_checklist_definition_notice" style="display:none"></div>
 <div id="new_checklist_definition" style="display:none"></div>
