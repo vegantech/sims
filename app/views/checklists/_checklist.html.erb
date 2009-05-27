@@ -1,5 +1,5 @@
 <ul>
-  <li>Checklist completed by <%= checklist.teacher.fullname %> on <%= checklist.updated_at.to_s %>
+  <li>Checklist completed by <%= checklist.teacher.fullname %> on <%= checklist.updated_at.to_date.to_s %>
   <br /> 
   Status: <%=checklist.status%>
  

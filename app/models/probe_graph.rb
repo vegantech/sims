@@ -46,7 +46,7 @@ private
   end
 
   def setup_bars(ipa)
-     probes_collection = ipa.probes.reject{|e| e.administered_at.blank? || e.score.blank?}.sort_by(&:administered_at)[0..8].reverse #.for_graph.reverse
+     probes_collection = ipa.probes.reject{|e| e.administered_at.blank? || e.score.blank?}.sort_by(&:administered_at) #.for_graph.reverse
     
     
     probes_collection.each_with_index do |probe, index|
