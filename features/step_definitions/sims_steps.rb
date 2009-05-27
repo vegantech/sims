@@ -257,13 +257,8 @@ end
 Given /^I should see "(.*)" within (.*)$/ do |see,scope|
   within(scope) do |scoped|
     scoped.should contain(see)
-
   end
-
 end
-
-
-
 
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
@@ -285,7 +280,7 @@ end
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   unauthorized_student = Factory(:student, :district => @student.district)  #will create a student in same district
-  unauthorized_student.enrollments.create!(:grade=>"ZZ", :school=>@student.enrollments.first.school)
+  unauthorized_student.enrollments.create!(:grade => "ZZ", :school => @student.enrollments.first.school)
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
@@ -302,3 +297,27 @@ When /^page should contain "(.*)"$/ do |arg1|
   response.body.should =~ /#{arg1}/
 end
 
+Given /^student "([^\"]*)" directly owns consultation form with team consultation concern "([^\"]*)"$/ do |student_name, concern_label|
+  first_name, last_name = student_name.split
+  student = Student.find_by_first_name_and_last_name(first_name, last_name)
+  consultation_form = Factory(:consultation_form)
+
+  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+
+  consultation_form.consultation_form_concerns << concern
+  team_consultation = Factory(:team_consultation, :consultation_form => consultation_form)
+  student.team_consultations << team_consultation
+end
+
+Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*)"$/ do |student_name, concern_label|
+  first_name, last_name = student_name.split
+  student = Student.find_by_first_name_and_last_name(first_name, last_name)
+  consultation_form = Factory(:consultation_form)
+
+  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+
+  consultation_form.consultation_form_concerns << concern
+  student.consultation_forms << consultation_form
+end

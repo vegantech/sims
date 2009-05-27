@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: consultation_form_requests
+#
+#  id                          :integer         not null, primary key
+#  student_id                  :integer
+#  requestor_id                :integer
+#  team_id                     :integer
+#  all_student_scheduled_staff :boolean
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#
+
 class ConsultationFormRequest < ActiveRecord::Base
   belongs_to :student
   belongs_to :requestor, :class_name => 'User'

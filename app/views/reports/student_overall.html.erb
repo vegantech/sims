@@ -24,7 +24,7 @@
 
   <% subreport_selected @opts[:intervention_summary] do %>
     <% if @student.interventions.empty? %>
-      Student has no interventions
+      Student has no interventions<br/>
     <% else %>
     <h2>Interventions</h2>
     <h3 class="intervention_summary"><span>Active Interventions</span></h3>
@@ -51,6 +51,21 @@
           <%= recommendation.updated_at.to_s(:chatty) %> </p>
           <%= render :partial => 'recommendations/view', :locals => {:recommendation => recommendation} %>
         <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% subreport_selected @opts[:consultation_forms] do %>
+    <% if @student.consultation_forms.empty? and @student.team_consultations.empty? %>
+      Student has no consultation forms
+    <% else %>
+      Consultation Forms:<br/>
+      <div id="consultation_forms">
+        <%= render :partial => "/consultation_forms/show", :collection => @student.consultation_forms %>
+      </div>
+      Team Consultations:<br/>
+      <div id="team_consultation_forms">
+        <%= render :partial => "/team_consultations/show", :collection => @student.team_consultations %>
       </div>
     <% end %>
   <% end %>

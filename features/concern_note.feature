@@ -26,6 +26,5 @@ Feature: Concern Note
     And I should see "by \(default user\)" in the email
     And I should see "Please schedule an initial discussion at an upcoming team meeting" in the email
 
-    
-
-  
+    When I follow "default user on _CHANGE_TO_VARIABLE_" "TODAY"
+    Then I should see "Strength"
