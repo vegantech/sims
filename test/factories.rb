@@ -13,6 +13,9 @@ Factory.define :checklist do |c|
   c.association :checklist_definition
 end
 
+Factory.define :team_consultation do |tc|
+end
+
 Factory.define :consultation_form do |cf|
 end
 

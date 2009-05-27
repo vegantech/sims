@@ -297,10 +297,23 @@ When /^page should contain "(.*)"$/ do |arg1|
   response.body.should =~ /#{arg1}/
 end
 
-Given /^student "([^\"]*)" directly owns consultation form for date "([^\"]*)" with concern "([^\"]*)"$/ do |student_name, consultation_date, concern_label|
+Given /^student "([^\"]*)" directly owns consultation form with team consultation concern "([^\"]*)"$/ do |student_name, concern_label|
   first_name, last_name = student_name.split
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
-  consultation_form = Factory(:consultation_form, :created_at => consultation_date.to_date)
+  consultation_form = Factory(:consultation_form)
+
+  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+
+  consultation_form.consultation_form_concerns << concern
+  team_consultation = Factory(:team_consultation, :consultation_form => consultation_form)
+  student.team_consultations << team_consultation
+end
+
+Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*)"$/ do |student_name, concern_label|
+  first_name, last_name = student_name.split
+  student = Student.find_by_first_name_and_last_name(first_name, last_name)
+  consultation_form = Factory(:consultation_form)
 
   concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
     :recent_changes => "Recent changes #{concern_label}", :area => 3)

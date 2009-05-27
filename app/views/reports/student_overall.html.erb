@@ -56,14 +56,16 @@
   <% end %>
 
   <% subreport_selected @opts[:consultation_forms] do %>
-    <% if @student.consultation_forms.empty? %>
+    <% if @student.consultation_forms.empty? and @student.team_consultations.empty? %>
       Student has no consultation forms
     <% else %>
       Consultation Forms:<br/>
       <div id="consultation_forms">
-        <div>
-          <%= render :partial => "/consultation_forms/show", :collection => @student.consultation_forms %>
-        </div>
+        <%= render :partial => "/consultation_forms/show", :collection => @student.consultation_forms %>
+      </div>
+      Team Consultations:<br/>
+      <div id="team_consultation_forms">
+        <%= render :partial => "/team_consultations/show", :collection => @student.team_consultations %>
       </div>
     <% end %>
   <% end %>
