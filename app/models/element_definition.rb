@@ -28,17 +28,18 @@ class ElementDefinition < ActiveRecord::Base
   is_paranoid
 
 
-  validates_presence_of :question_definition_id, :text, :kind
+  validates_presence_of :question_definition_id,  :kind
+  validates_presence_of :text, :unless =>:applicable_kind?
   validates_uniqueness_of :kind, :scope => [:question_definition_id, :deleted_at], :if => :applicable_kind_uniqueness?
 
-  after_create :move_to_top, :if => lambda{|e| !e.kind.blank? && e.kind.to_sym == :applicable}
+  after_create :move_to_top, :if => :applicable_kind?
 
-  KINDS_OF_ELEMENTS = {  #:mcsa => "Multiple-Choice, Single Answer",
+  KINDS_OF_ELEMENTS = { 
     :scale => "Scale",
     :sa => "Short Answer",
     :comment => "Comment",
-  :decision => "Decision" ,
-  :applicable => "Applicable Choice"}
+    :applicable => "Applicable Choice"
+  }
 
   def self.kinds_of_elements
     KINDS_OF_ELEMENTS
@@ -64,8 +65,12 @@ class ElementDefinition < ActiveRecord::Base
   end
 
   def applicable_kind_uniqueness?
-    !kind.blank?  && kind.to_sym == :applicable && (!question_definition || !question_definition.new_record?)
+    applicable_kind? && (!question_definition || !question_definition.new_record?)
   end 
+
+  def applicable_kind?
+    !kind.blank?  && kind.to_sym == :applicable 
+  end
 
 end
 

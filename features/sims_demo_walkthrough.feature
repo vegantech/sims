@@ -82,7 +82,6 @@ Feature: Sims Demo Walkthrough
     And I press "Save"
     Then I should not see "NoMethodError"
     And the "Add new comment about the intervention plan and progress" field should contain "A comment with a text score triggers bug 272."
-    And I display body
     #Fix redisplay of score    
     
 

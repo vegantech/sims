@@ -37,6 +37,7 @@ describe ChecklistsController do
   describe "responding to GET new" do
   
     it "should expose a new checklist as @checklist" do
+      controller.stub_association!(:current_district,:tiers => [1])
       Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>false))
       get :new
       assigns[:checklist].should equal(mock_checklist)
@@ -55,6 +56,15 @@ describe ChecklistsController do
       flash[:notice].should == "No checklist available.  Have the content builder create one."
       response.should redirect_to(student_url(@current_student))
     end
+
+    it 'shoudl redirect to current_student if there are no tiers defined in the district' do
+      controller.stub_association!(:current_district,:tiers => [])
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>false))
+      get :new
+      flash[:notice].should == "No tiers available.  Using the checklist requires at least one tier."
+      response.should redirect_to(student_url(@current_student))
+    end
+      
 
   end
 

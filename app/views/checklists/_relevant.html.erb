@@ -1,11 +1,15 @@
-<ol style="list-style-type: upper-alpha">
+<table>
   <%- radio_button_group(@checklist,relevant) do |answer_definition, is_checked| %>
-    <li>
-  <%= radio_button_tag "element_definition[#{relevant.id}]", answer_definition.id, is_checked%>
-  <label for="<%="element_definition_#{relevant.id}_#{answer_definition.id}"%>"> 
-    <%= markdown_with_span(answer_definition.text) %>
+    <tr>
+  <td>
+<%= check_box_tag "element_definition[#{relevant.id}]", answer_definition.id, is_checked if answer_definition.value == "0" %>
+</td>
+  <td>
+<label for="<%="element_definition[#{relevant.id}]" %>">
+    <%= (answer_definition.text) %>
   </label>
-  </li>
+
+</td></tr>
   <%- end -%>
-</ol>
+</table>
 
