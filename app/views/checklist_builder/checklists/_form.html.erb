@@ -11,7 +11,7 @@
   </p>
 
   Assigned Recommendation (Blank will mean the checklist is optional: <br />
-  <%= f.collection_select(:recommendation_definition_id, @checklist_definition.district.recommendation_definitions,:id,:text, :include_blank=>true) %>
+  <%= f.collection_select(:recommendation_definition_id, @checklist_definition.district.recommendation_definitions_with_state,:id,:text, :include_blank=>true) %>
 
   <div>
     <%= f.label(:document, 'Attach Document') %>
