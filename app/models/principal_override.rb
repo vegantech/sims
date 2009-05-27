@@ -23,6 +23,7 @@ class PrincipalOverride < ActiveRecord::Base
   belongs_to :end_tier, :class_name => 'Tier'
   belongs_to :student
   attr_accessor :action
+  attr_reader :unavailable_reason
 
   STATUS=["Awaiting approval","Approved","Rejected*","Rejected","Approved*"]
 
@@ -74,6 +75,21 @@ class PrincipalOverride < ActiveRecord::Base
 
   end
 
+
+  def can_create?
+    @unavailable_reason = ''
+    if self.start_tier.blank?
+      @unavailable_reason += "Overrides unavailable, no tiers defined."
+    end
+
+    if student.principals.blank?
+      @unavailable_reason += "There are no principals assigned to this student"
+    end
+
+    
+    @unavailable_reason.blank?
+  end
+
   protected
 
   def after_initialize
@@ -82,7 +98,7 @@ class PrincipalOverride < ActiveRecord::Base
 
 
   def email_principals
-    Notifications.deliver_principal_override_request(self)
+    Notifications.deliver_principal_override_request(self) if student.principals.present?
   end
 
   def before_validation_on_update

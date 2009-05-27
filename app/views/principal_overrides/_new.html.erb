@@ -1,4 +1,5 @@
-<% if @principal_override.start_tier %>
+<% if @principal_override.can_create? %>
+
 
 <% form_remote_for(:principal_override,:url=>principal_overrides_path) do |f| %>
   <%= f.error_messages %>
@@ -15,7 +16,7 @@
   </p>
 <% end  %>
 <% else %>
-  Overrides unavailable, no tiers defined.
+  <%= @principal_override.unavailable_reason %>
 <% end %>
 
 <%= link_to 'Cancel', @principal_override.student %>
