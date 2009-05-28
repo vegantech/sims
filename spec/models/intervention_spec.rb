@@ -103,10 +103,9 @@ describe Intervention do
   end
 
   it "should end an intervention" do
-    i = Factory(:intervention)
-    i = Intervention.find(:first)
+    i = Factory(:intervention, :start_date => 2.days.ago, :end_date => Date.today)
+    
     i.end(1)
-    i.reload
     i.active.should ==(false)
     i.ended_by_id.should ==(1)
     i.ended_at.should == Date.today
@@ -122,5 +121,61 @@ describe Intervention do
     i.start_date = 5.days.since
     i.should_not be_valid
     i.errors_on(:end_date).should_not be_nil
+  end
+
+  describe 'building a new intervention' do
+    it 'should default to starting today' do
+      Intervention.new.start_date.should == Date.today
+    end
+
+    describe 'without an intervention definition' do
+      it 'should have the frequency set to 2 times weekly' do
+        Frequency.create!(:title=>'Daily')
+        Frequency.create!(:title=>'Weekly')
+        Frequency.create!(:title=>'Monthly')
+
+        Intervention.new.frequency_multiplier.should == InterventionDefinition::DEFAULT_FREQUENCY_MULTIPLIER
+        Intervention.new.frequency.should == Frequency.find_by_title('Weekly')
+      end
+    
+      it 'should have the time length set to 4 weeks' do
+        TimeLength.create!(:days=>1, :title => 'Day')
+        TimeLength.create!(:days=>7, :title => 'Week')
+        TimeLength.create!(:days=>30, :title => 'Month')
+        Intervention.new.time_length_number.should == InterventionDefinition::DEFAULT_TIME_LENGTH_NUMBER
+        Intervention.new.time_length.should == TimeLength.find_by_title('Week')
+
+      end
+
+      it 'should set the end date based on the start date and time length' do
+        tl=TimeLength.new(:days => 3, :title => 'Triad')
+        attrs = {:time_length => tl, :time_length_number => 5, :start_date =>"2006-05-05"}
+        Intervention.new(attrs).end_date.should == "2006-05-20".to_date
+
+      end
+    end
+
+    describe 'with an intervention definition' do
+      it 'should set the frequency and time lengh based on the intervention definition' do
+        f1=Frequency.create!(:title=>'Daily')
+        tl1=TimeLength.create!(:days=>30, :title => 'Month')
+
+        id_attrs = {:frequency => f1, :time_length => tl1, :frequency_multiplier => 60, :time_length_num => 7}
+        int_def = Factory(:intervention_definition, id_attrs)
+
+        intervention=int_def.interventions.build_with_default
+
+        intervention.start_date.should == Date.today
+        intervention.frequency.should == f1
+        intervention.time_length.should == tl1
+        intervention.frequency_multiplier.should == 60
+        intervention.time_length_number.should == 7
+        intervention.end_date.should == 210.days.since.to_date
+      end
+    end
+      
+
+    
+
   end
 end
