@@ -19,7 +19,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  district: wi_test
+  district: wi_admin
   active: true
   text: MyText
   score_options: 1

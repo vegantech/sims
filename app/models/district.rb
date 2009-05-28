@@ -79,6 +79,11 @@ class District < ActiveRecord::Base
     checklist_definitions.find_by_active(true) or state_district.checklist_definitions.find_by_active(true) or ChecklistDefinition.new
   end
 
+  def recommendation_definitions_with_state
+    recommendation_definitions | state_district.recommendation_definitions
+  end
+  
+
 
   def find_intervention_definition_by_id(id)
     InterventionDefinition.find(id,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>self.id})

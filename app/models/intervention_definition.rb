@@ -25,6 +25,10 @@
 #
 
 class InterventionDefinition < ActiveRecord::Base
+
+  DEFAULT_FREQUENCY_MULTIPLIER = 2
+  DEFAULT_TIME_LENGTH_NUMBER = 4
+  
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   belongs_to :intervention_cluster
@@ -36,7 +40,27 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :recommended_monitors, :order => :position, :dependent => :destroy
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
-  has_many :interventions
+  has_many :interventions do
+
+    def build_with_default(opts={})
+      i=self.build(opts.reverse_merge(:frequency => proxy_owner.frequency, 
+                                              :frequency_multiplier => proxy_owner.frequency_multiplier, 
+                                              :time_length_number => proxy_owner.time_length_num, 
+                                              :time_length => proxy_owner.time_length)
+                         )
+      if proxy_owner.new_record?
+        proxy_owner.frequency = i.frequency
+        proxy_owner.frequency_multiplier = i.frequency_multiplier
+        proxy_owner.time_length_num = i.time_length_number
+        proxy_owner.time_length = i.time_length
+        proxy_owner.school_id = i.school_id
+        proxy_owner.custom = true
+        proxy_owner.user_id = i.user_id
+      end
+      i
+        
+    end
+  end
 
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title, :deleted_at]
