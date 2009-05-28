@@ -80,7 +80,7 @@
           </div>
           <% else %>
           <%= link_to 'Chat', 'http://vegantech.com/cgi-bin/sims-chat/csChatRBox.cgi', :target =>"_blank"  %>
-          <%= link_to('SIMS Pilot Survey' ,'http://www.surveymonkey.com/s.aspx?sm=tC8eKixTQQHyvaC_2bqEglFA_3d_3d') if defined?SIMS_DOMAIN && SIMS_DOMAIN == 'simspilot.org' %>
+          <%= link_to('SIMS Pilot Survey' ,'http://www.surveymonkey.com/s.aspx?sm=tC8eKixTQQHyvaC_2bqEglFA_3d_3d', :target =>"_blank") if defined?SIMS_DOMAIN && SIMS_DOMAIN == 'simspilot.org' %>
         <% end %> 
       </div>
     </div>
