@@ -82,4 +82,17 @@ do diff
 handle insertions, deletions and updates from diff file
 
 
+--------------- File formats
+students.csv   id_state, id_district, first_name, last_name, [middle_name], [suffix], birthdate, number
+
+
+enrollments.csv student_id_state, school_id_state, grade, [year]
+
+
+notes
+[middle_name] [suffix] not currently in SIMS, will probably need to be added.
+
+[year]  we'll need a way to distinguish enrollments by year, staff may need to work with their current set of students, or the next set of students   
+
+
 
