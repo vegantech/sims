@@ -10,7 +10,7 @@
       end
   %>
 
-  <%= link_to_remote 'Preview Graph', :url => preview_graph_intervention_probe_assignment_path(:intervention_id=>probe_assignment.intervention_id, :id=>probe_assignment.id, :count => probe_assignment_counter), :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"}, :with => "new_probe_scores()" %>
+  <%= link_to_remote 'Preview Graph', :url => preview_graph_intervention_probe_assignment_path(:intervention_id=>probe_assignment.intervention_id, :id=>probe_assignment.id, :count => probe_assignment_counter), :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"}, :with => "new_probe_scores()"  unless probe_assignment.new_record?%>
 
 <% end %>
 <% else %>
