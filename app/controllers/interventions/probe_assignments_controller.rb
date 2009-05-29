@@ -24,11 +24,16 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   end
 
   def preview_graph
-    @ipa=InterventionProbeAssignment.find(params[:id])
+    if params[:id]
+      @ipa = InterventionProbeAssignment.find(params[:id])
+    else
+      @ipa = @intervention.intervention_probe_assignments.build(:probe_definition_id=>params[:probe_definition_id])
+    end
+
 #    render :text=> params[:intervention][:intervention_probe_assignment][:new_probes].inspect and return
-    @probes=@ipa.probes.build(params[:probes].values)
+    @probes = @ipa.probes.build(params[:probes].values)
 #    render :text => @ipa.probes.size.to_s and return
-    @count =params[:count].to_i
+    @count = params[:count].to_i
     render :layout => false
   end
 

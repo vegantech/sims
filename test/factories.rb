@@ -155,6 +155,13 @@ Factory.define :frequency do |f|
 end
 
 Factory.define :probe_definition do |f|
-  f.title 'Probe Title'
+  f.title {"#{Factory.next(:abbrev)} Title"}
   f.description 'Probe Description'
+end
+
+Factory.define :intervention_probe_assignment do |f|
+  f.association :probe_definition
+  f.association :intervention
+  f.first_date "2005-01-01"
+  f.end_date "2006-01-01"
 end
