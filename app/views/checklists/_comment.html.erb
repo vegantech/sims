@@ -4,12 +4,12 @@ text_of_comment = nil
 text_of_comment = @checklist.answers.detect {|e| e.answer_definition.element_definition_id == element_definition.id}   if view or edit
 text_of_comment = text_of_comment.text if text_of_comment
 -%>
-<th><em style="margin-left:2em" <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> >
-    <%= markdown_with_span(element_definition.text) -%> <%= reason_if_wrong_element(@checklist,question_definition,element_definition) %></em></th>
-    <td colspan="<%=max_count%>">
+<th><h5 <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> >
+    <%= markdown_with_span(element_definition.text) -%> <%= reason_if_wrong_element(@checklist,question_definition,element_definition) %></h5></th>
+    <td colspan="<%= max_count %>">
 <span>
   <%= hidden_field_tag "element_definition[#{element_definition.id}][id]", element_definition.answer_definitions[0].id %>
-  <%= text_area_tag "element_definition[#{element_definition.id}][text]", text_of_comment, :size => "30x2" %></span>
+  <%= text_area_tag "element_definition[#{element_definition.id}][text]", text_of_comment, :size => "60x4" %></span>
 <% unless view %>
 <%- previous_answers(@checklist, element_definition.answer_definitions[0]) do |answer| -%>
   <div style="color:gray;margin-left:1em">By <%= answer.checklist.teacher.fullname %> on <%= answer.created_at.to_s(:chatty) %>:</div><div style="color:gray;margin-left:2em"><%= answer.text %></div>

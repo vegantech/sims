@@ -1,0 +1,4 @@
+PATH=/opt/ruby/bin
+
+#every Sunday
+0 0 * * 0 RAILS_ENV=production ruby /www/simspilots/current/script/runner InterventionMailer.setup_ending_reminder

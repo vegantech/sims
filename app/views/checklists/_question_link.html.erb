@@ -1,0 +1,7 @@
+<p>
+ <a href="#<%= dom_id(question_definition,'link') %>" class="questionLink" name="<%= dom_id(question_definition,'link') %>">
+
+   <span <%=highlight_if_wrong_question(@checklist,question_definition)%>><%= "#{question_definition.position}. #{question_definition.text}" %></span>
+</a>
+</p>
+

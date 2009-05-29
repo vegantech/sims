@@ -3,29 +3,29 @@ module NewRelic::Agent::CollectionHelper
   # strings
   def normalize_params(params)
     case params
-      when Symbol, FalseClass, TrueClass, nil:
-      params
+      when Symbol, FalseClass, TrueClass, nil
+        params
       when Numeric
-      truncate(params.to_s, 256)
+        truncate(params.to_s)
       when String
-      truncate(params, 256)
-      when Hash:
-      new_params = {}
-      params.each do | key, value |
-        new_params[truncate(normalize_params(key),32)] = normalize_params(value)
-      end
-      new_params
-      when Enumerable:
-      params.to_a.first(20).collect { | v | normalize_params(v)}
+        truncate(params)
+      when Hash
+        new_params = {}
+        params.each do | key, value |
+          new_params[truncate(normalize_params(key),32)] = normalize_params(value)
+        end
+        new_params
+      when Array
+        params.first(20).map{|item| normalize_params(item)}
     else
-      truncate(flatten(params), 256)
+      truncate(flatten(params))
     end
   end
   
   # Return an array of strings (backtrace), cleaned up for readability
   # Return nil if there is no backtrace
   
-  def clean_backtrace(backtrace)
+  def strip_nr_from_backtrace(backtrace)
     if backtrace
       # strip newrelic from the trace
       backtrace = backtrace.reject {|line| line =~ /new_relic\/agent\// }
@@ -58,7 +58,7 @@ module NewRelic::Agent::CollectionHelper
     s
   end
   
-  def truncate(string, len)
+  def truncate(string, len=256)
     if string.instance_of? Symbol
       string
     elsif string.nil?

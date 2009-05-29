@@ -36,7 +36,7 @@ class Intervention < ActiveRecord::Base
 
   has_many :intervention_probe_assignments, :dependent => :destroy 
   validates_numericality_of :time_length_number, :frequency_multiplier
-  validates_presence_of :intervention_definition
+  validates_presence_of :intervention_definition, :start_date, :end_date
   validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
@@ -66,15 +66,8 @@ class Intervention < ActiveRecord::Base
     #end
 
     int = self.new(args)
-    int.intervention_definition.set_values_from_intervention(int)
-    
+    int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
 
-    int.start_date ||= Time.now
-    int.set_missing_values_from_intervention_definition
-    int.time_length ||= TimeLength.first
-
-    int.time_length_number ||= 1
-    int.end_date ||= (int.start_date + (int.time_length_number*int.time_length.days).days)
     int.selected_ids = nil if int.selected_ids.size == 1
 
     int
@@ -147,10 +140,10 @@ class Intervention < ActiveRecord::Base
 
   def set_missing_values_from_intervention_definition
     if intervention_definition
-      frequency ||= intervention_definition.frequency
-      frequency_multiplier ||= intervention_definition.frequency_multiplier
-      time_length ||= intervention_definition.time_length
-      time_length_number ||= intervention_definition.time_length_num
+      self.frequency ||= intervention_definition.frequency
+      self.frequency_multiplier ||= intervention_definition.frequency_multiplier
+      self.time_length ||= intervention_definition.time_length
+      self.time_length_number ||= intervention_definition.time_length_num
     end
   end
 
@@ -225,4 +218,26 @@ class Intervention < ActiveRecord::Base
     errors.add(:end_date, "Must be after start date") and return false if end_date.blank? || start_date.blank? || end_date < start_date
     true
   end
+
+  def default_end_date
+    (start_date + (time_length_number*time_length.days).days) if time_length_number and time_length
+  end
+
+  def after_initialize
+    return unless new_record?
+    self.start_date ||= Date.today
+   
+    if intervention_definition.blank? || intervention_definition.new_record?
+      self.frequency ||= Frequency.find_by_title('Weekly')
+      self.frequency_multiplier ||= 2
+      self.time_length_number ||= 4
+      self.time_length ||= TimeLength.find_by_title('Week')
+      #  intervention_definition.set_values_from_intervention(self) if intervention_definition
+    else
+      set_missing_values_from_intervention_definition
+    end
+    
+    self.end_date ||= default_end_date 
+  end
+  
 end

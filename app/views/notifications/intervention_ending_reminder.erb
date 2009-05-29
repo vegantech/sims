@@ -1,3 +1,17 @@
-Notifications#intervention_ending_reminder
+<% d = DateTime.now %><%= d.strftime("%B %d, %Y") %>
 
-Find me in app/views/notifications/intervention_ending_reminder.erb
+Dear <%= @participants.collect(&:user).join(",") %>
+
+The following intervention is scheduled to end in one week:
+
+Intervention: <%= @intervention.title %>
+Student:      <%= @intervention.student %> 
+End Date:     <%= @intervention.end_date %>.
+
+Please login to SIMS to view intervention details and update this student's progress monitoring data: 
+<%= link_to @intervention.title, url_for(@url_opts.merge(:controller=>'interventions', :action=>'edit', :id => @intervention.id) ) %>
+
+
+Thank you.
+
+

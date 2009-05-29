@@ -2,7 +2,7 @@
 
 <% content_tag_for :tr, comment do %>
   <td>
-    <%= h comment.comment %> by <%= h comment.user%> on <%= h comment.updated_at.to_date.to_s} %>
+    <%= h comment.comment %> by <%= h comment.user%> on <%= h comment.updated_at.to_date.to_s  %>
   </td>
     <% if current_user == comment.user and !readonly %>
       <td>

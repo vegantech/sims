@@ -16,6 +16,11 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
   def index
     @checklist_definitions = current_district.checklist_definitions
+   
+    #move
+    @state_checklist = current_district.admin_district.active_checklist_definition
+    @state_checklist = nil if @state_checklist.new_record?
+
 
     respond_to do |format|
       format.html
@@ -99,8 +104,18 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   end
 
   def new_from_this
-    @new_checklist_definition = current_district.checklist_definitions.find(params[:id]).deep_clone
-    @new_checklist_definition.save!
+
+    @old_checklist_definition = ChecklistDefinition.find(params[:id])
+    if @old_checklist_definition.district == current_district
+      @new_checklist_definition = @old_checklist_definition.deep_clone
+    elsif @old_checklist_definition.district == current_district.admin_district
+      @new_checklist_definition = @old_checklist_definition.deep_clone
+      @new_checklist_definition.district = current_district
+    else
+      raise 'eee'
+      redirect_to checklist_builder_checklists_url 
+    end
+    @new_checklist_definition.save! if @new_checklist_definition
     redirect_to checklist_builder_checklists_url 
   end
 end
