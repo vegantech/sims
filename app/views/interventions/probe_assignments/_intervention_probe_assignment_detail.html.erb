@@ -41,7 +41,7 @@
       <div class="form_row">
         <div class="fake_label">Scores:</div>
         <div id="enter_view_score_link"> 
-          <%=link_to_remote "Enter/view scores", {:url => intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :loading => "$('spinnerscore_link').show();"}, {:href => "?enter_score=true"} unless params[:enter_score] %>
+          <%=link_to_remote "Enter/view scores", {:url => intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :loading => "$('spinnerscore_link').show();"}, {:href => "?enter_score=true", :id => 'enter_view_scores_link'} unless params[:enter_score] %>
           <%= spinner 'score_link' %>
         </div>
       </div>

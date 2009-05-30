@@ -12,4 +12,6 @@ coverage.data
 rcovrt.so
 .screenrc
 file/
+public/javascripts/all.js
+public/system
 sims_open.tmproj
