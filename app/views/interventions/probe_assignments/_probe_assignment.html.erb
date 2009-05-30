@@ -14,7 +14,7 @@
   <%= link_to_remote 'Preview Graph',
       preview_graph_url(:intervention_id => @intervention.id, :id => probe_assignment.id, :probe_definition_id => probe_assignment.probe_definition_id),
       :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
-      :with => "new_probe_scores()" unless false && probe_assignment.new_record?%>
+      :with => "new_probe_scores()" %>
 
 <% end %>
 <% else %>
