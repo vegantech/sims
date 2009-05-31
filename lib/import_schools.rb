@@ -17,4 +17,9 @@ def parse_school(sch_section)
   hsh 
 end
   
-  
+def collection_of_things_I_want_to_remember
+  #@district = mmsd_district
+  mmsd_schools=@schools.select{|e| e.inner_text =~ /3269/}
+  mmsd_schools.each {|o| h=parse_school(o);@district.schools.create!(:name => h[:name], :id_state=>h[:id_state])}    
+ 
+end
