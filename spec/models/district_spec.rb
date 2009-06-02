@@ -154,16 +154,28 @@ describe District do
 
   describe 'admin district' do
     it 'should return the state admin district for a leaf (normal) district' do
-      pending
+      @local_district.admin_district.should == @state_district
     end
 
     it 'should return the country admin district for a state admin district' do
-      pending
+      country_admin_district = @local_district.country.admin_district
+      @state_district.admin_district.should == country_admin_district
     end
 
 
-    it 'should return nil for the coutnry admin district'  do
-      pending
+    it 'should return the system admin district for a country admin' do
+      admin_country = Factory(:country, :admin => true)
+      country_admin_district = @state_district.admin_district
+      
+      country_admin_district.admin_district.should == System.admin_district
+
     end
+    
+    it 'should return nil for the system admin district'  do
+      admin_country = Factory(:country, :admin => true)
+      System.admin_district.admin_district.should be_nil
+    end
+
+
   end
 end

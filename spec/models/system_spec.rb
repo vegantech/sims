@@ -10,4 +10,10 @@ describe System do
 
   end
 
+  it 'should have admin district' do
+    f=Factory(:country,:admin=>true)
+    System.admin_district.should == f.admin_district
+
+  end
+
 end
