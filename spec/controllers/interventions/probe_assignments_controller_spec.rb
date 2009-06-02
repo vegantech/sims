@@ -38,5 +38,10 @@ describe Interventions::ProbeAssignmentsController do
     end
   end
 
+  describe 'probe_graph_preview' do
+    it 'should have a spec for an id passed in'
+    it 'should have a spec for a new intervention probe assignment'
+  end
+
 
 end

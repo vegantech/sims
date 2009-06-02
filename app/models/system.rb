@@ -24,4 +24,8 @@ class System
 
   end
 
+  def self.admin_district
+    Country.admin.first.admin_district
+  end
+
 end

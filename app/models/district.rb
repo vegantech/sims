@@ -193,8 +193,17 @@ class District < ActiveRecord::Base
 
 
   def admin_district
-    puts "CHANGE THIS"
-    state_district
+    if admin?
+      if system_admin?
+        nil
+      elsif country_admin?
+        System.admin_district
+      else
+        country.admin_district
+      end
+    else
+      state.admin_district
+    end
   end
 
 private

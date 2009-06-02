@@ -2,11 +2,12 @@ Feature: Create Intervention
   In order to use custom interventions
   A SIMS USER
   Should be able to create and select an interventon
+  
+  Background:
+    Given common data
 
   Scenario: Create
-
-    Given common data
-    And I am on student profile page
+    Given I am on student profile page
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
     # same as intervention
@@ -20,7 +21,50 @@ Feature: Create Intervention
     And I press "Choose Category"
 
     And I fill in "Add new comment about the intervention plan and progress" with "test cucumber comment"
+    And I should not see "Edit/view scores"
     And I press "Save"
     When I follow "Edit/Add Comment"
     Then I should see "test cucumber comment"
+
+  Scenario: Edit an existing intervention with no progress monitors available
+    Given an intervention with no progress monitors
+    Given I am on student profile page
+    When I follow "Edit/Add Comment"
+    Then I should not see "Enter/view scores"
+
+  Scenario: Edit an existing intervention with a progress monitor selected
+    And I need to figure out why this isn't working it is more of a testing issue
+    Given an intervention with one progress monitor chosen but no recommended monitors
+    Given I am on student profile page
+    When I follow "Edit/Add Comment"
+    Then I should see "Enter/view scores"
+    When I follow "Enter/view scores"
+    Then I should see "preview graph"
+
+  Scenario: Edit an existing intervention with a progress monitor selected, but no recommended monitors
+    And I need to figure out why this isn't working it's ticket 283
+    Given an intervention with one progress monitor chosen and one recommended monitor
+    Given I am on student profile page
+    When I follow "Edit/Add Comment"
+    Then I should see "Assign Progress Monitor"
+    Then I should see "Enter/view scores"
+    
+    When I follow "Enter/view scores"
+    Then I should see "preview graph"
+
+  Scenario: Edit an existing intervention with progress monitors available but none selected
+    Given an intervention with two progress monitors but none selected
+    Given I am on student profile page
+
+    When I follow "Edit/Add Comment"
+    And I should see onchange for "Assign Progress Monitor" that updates intervention_probe_assignment 
+
+    And I select "First Progress Monitor" from "Assign Progress Monitor"
+    And xhr "onchange" "Assign Progress Monitor"
+
+    Then I should see "Enter/view scores"
+    And xhr "onclick" "enter_view_score_link"
+    Then I should see "Preview Graph"
+    And I show page
+
 
