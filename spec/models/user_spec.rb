@@ -18,7 +18,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-    @user = Factory(:user,:username=>"oneschool")
+    @user = Factory(:user, :username => "oneschool")
   end
 
   it 'should include FullName' do

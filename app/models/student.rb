@@ -52,10 +52,6 @@ class Student < ActiveRecord::Base
   before_validation :clear_extended_profile
 
 
-  def fullname_last_first
-    last_name.to_s + ', ' + first_name.to_s
-  end
-
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
   end
