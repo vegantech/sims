@@ -21,6 +21,14 @@ describe User do
     @user = Factory(:user,:username=>"oneschool")
   end
 
+  it 'should include FullName' do
+    User.included_modules.should include(FullName)
+  end
+
+  it 'should have a middle_name' do
+    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+  end
+
   describe 'authenticate' do
     it 'should find user with valid login and password' do
       u = User.authenticate('oneschool', 'oneschool')

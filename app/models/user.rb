@@ -15,6 +15,7 @@
 #
 
 class User < ActiveRecord::Base
+  include FullName
   after_update :save_user_school_assignments
 
   belongs_to :district
@@ -135,11 +136,6 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(password.downcase)
   end
   
-	
-  def fullname 
-    first_name.to_s + ' ' + last_name.to_s
-  end
-
   def authorized_for?(controller, action_group)
     roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
   end
@@ -153,10 +149,6 @@ class User < ActiveRecord::Base
     end
 
     overrides
-  end
-
-  def to_s
-    fullname
   end
 
   def password=(pass)
