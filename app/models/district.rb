@@ -206,6 +206,10 @@ class District < ActiveRecord::Base
     end
   end
 
+  def key
+    ''
+  end
+
 private
   def make_sure_there_are_no_schools
     if schools.blank?

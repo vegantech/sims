@@ -123,17 +123,17 @@ class User < ActiveRecord::Base
   def self.authenticate(username, password)
     @user = self.find_by_username(username)
     if @user
-      expected_password=encrypted_password(password)
+      expected_password=encrypted_password(password,@user.salt, @user.district.key)
       if @user.passwordhash_before_type_cast != expected_password
-         @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
+         @user = nil 
       end
       @user
     end
   end
 
 
-  def self.encrypted_password(password)
-    Digest::SHA1.hexdigest(password.downcase)
+  def self.encrypted_password(password, salt=nil, district_key=nil, system_key=System::PASS_KEY)
+    Digest::SHA1.hexdigest("#{system_key}#{password.downcase}#{salt}#{district_key}")
   end
   
   def authorized_for?(controller, action_group)
@@ -199,6 +199,10 @@ class User < ActiveRecord::Base
     usa_attributes.each do |attributes|
       user_school_assignments.build(attributes)
     end
+  end
+
+  def salt
+
   end
 
 protected
