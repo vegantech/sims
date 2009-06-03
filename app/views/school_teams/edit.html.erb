@@ -1,0 +1,10 @@
+<h1>Editing School Team</h1>
+
+<% form_for(@school_team) do |f| %>
+  <%= render :partial => 'form', :object=>f %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', school_teams_path %>

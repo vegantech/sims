@@ -1,0 +1,9 @@
+
+<% remote_form_for(@consultation_form) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>

@@ -1,0 +1,31 @@
+<table border ="1">
+  <thead>
+    <tr>
+      <th>Area of concern</th>
+      <th>Strengths</th>
+      <th>Concerns</th>
+      <th>Recent Changes or<br /> contributing factors</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% concerns_form.object.build_concerns %>
+    <% concerns_form.fields_for :consultation_form_concerns do |concern_fields| %>
+      <tr>
+        <td>
+          <%= concern_fields.hidden_field :area %>
+          <%= concern_fields.check_box :checked %>
+          <%= concern_fields.label :checked, concern_fields.object.area_text %>
+        </td>
+        <td>
+          <%= concern_fields.text_area :strengths, :size => ConsultationFormConcern::FIELD_SIZE %>
+        </td>
+        <td>
+          <%= concern_fields.text_area :concerns, :size => ConsultationFormConcern::FIELD_SIZE %>
+        </td>
+        <td>
+          <%= concern_fields.text_area :recent_changes, :size => ConsultationFormConcern::FIELD_SIZE %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
