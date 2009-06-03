@@ -10,21 +10,23 @@
 
 <table>
   <tr>
-    <th>Last name</th>
-    <th>First name</th>
+    <th>First Name</th>
+    <th>Middle Name</th>
+    <th>Last Name</th>
+    <th>Suffix</th>
     <th>Number</th>
-    <th>Id district</th>
-    <th>Id state</th>
+    <th>Id District</th>
     <th>Birthdate</th>
   </tr>
 
 <% for student in @students %>
   <tr>
-    <td><%=h student.last_name %></td>
     <td><%=h student.first_name %></td>
+    <td><%=h student.middle_name %></td>
+    <td><%=h student.last_name %></td>
+    <td><%=h student.suffix %></td>
     <td><%=h student.number %></td>
     <td><%=h student.id_district %></td>
-    <td><%=h student.id_state %></td>
     <td><%=h student.birthdate %></td>
     <td><%= link_to 'Show', district_student_path(student) %></td>
     <td><%= link_to 'Edit', edit_district_student_path(student) %></td>
@@ -34,6 +36,5 @@
 </table>
 
 <br />
-
 
 <%= link_to 'New student', new_district_student_path %>
