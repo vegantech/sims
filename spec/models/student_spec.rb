@@ -74,6 +74,11 @@ describe Student do
     end
   end
 
+  describe 'fullname' do
+    it 'should include middle initial' do
+      Student.new(:first_name => 'John', :middle_name => 'Alfred', :last_name => 'Martin').fullname.should == 'John A. Martin'
+    end
+  end
 
   describe 'full_name_last_first' do
     Student.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")

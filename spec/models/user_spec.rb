@@ -18,7 +18,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-    @user = Factory(:user,:username=>"oneschool")
+    @user = Factory(:user, :username => "oneschool")
+  end
+
+  it 'should include FullName' do
+    User.included_modules.should include(FullName)
+  end
+
+  it 'should have a middle_name' do
+    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
   end
 
   describe 'authenticate' do

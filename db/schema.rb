@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090428193630) do
+ActiveRecord::Schema.define(:version => 20090602225830) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -88,6 +88,38 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
   add_index "checklists", ["district_id"], :name => "index_checklists_on_district_id"
   add_index "checklists", ["student_id"], :name => "index_checklists_on_student_id"
   add_index "checklists", ["user_id"], :name => "index_checklists_on_user_id"
+
+  create_table "consultation_form_concerns", :force => true do |t|
+    t.integer  "area"
+    t.integer  "consultation_form_id"
+    t.boolean  "checked"
+    t.text     "strengths"
+    t.text     "concerns"
+    t.text     "recent_changes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "consultation_form_requests", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "requestor_id"
+    t.integer  "team_id"
+    t.boolean  "all_student_scheduled_staff"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "consultation_forms", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "team_consultation_id"
+    t.text     "do_differently"
+    t.text     "parent_notified"
+    t.text     "not_in_sims"
+    t.text     "desired_outcome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "student_id"
+  end
 
   create_table "countries", :force => true do |t|
     t.string   "name"
@@ -464,7 +496,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.string   "subject",    :limit => 1024
     t.datetime "sent_at"
     t.datetime "read_at"
-    t.string   "raw",        :limit => 10485760
+    t.string   "raw",        :limit => 8000
   end
 
   create_table "recommendation_answer_definitions", :force => true do |t|
@@ -478,7 +510,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.integer  "copied_from"
   end
 
-  add_index "recommendation_answer_definitions", ["recommendation_definition_id"], :name => "index_recommendation_answer_definitions_on_recommendation_definition_id"
+  add_index "recommendation_answer_definitions", ["recommendation_definition_id"], :name => "rec_def_id"
 
   create_table "recommendation_answers", :force => true do |t|
     t.integer  "recommendation_id"
@@ -488,7 +520,7 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.datetime "updated_at"
   end
 
-  add_index "recommendation_answers", ["recommendation_answer_definition_id"], :name => "index_recommendation_answers_on_recommendation_answer_definition_id"
+  add_index "recommendation_answers", ["recommendation_answer_definition_id"], :name => "rec_ans_def_id"
   add_index "recommendation_answers", ["recommendation_id"], :name => "index_recommendation_answers_on_recommendation_id"
 
   create_table "recommendation_definitions", :force => true do |t|
@@ -579,6 +611,19 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
 
+  create_table "school_teams", :force => true do |t|
+    t.integer  "school_id"
+    t.string   "name"
+    t.boolean  "anonymous",  :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_teams_users", :id => false, :force => true do |t|
+    t.integer "school_team_id"
+    t.integer "user_id"
+  end
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "id_district"
@@ -646,9 +691,26 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.string   "extended_profile_content_type"
     t.integer  "extended_profile_file_size"
     t.datetime "extended_profile_updated_at"
+    t.string   "middle_name"
+    t.string   "suffix"
   end
 
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
+
+  create_table "team_consultations", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "requestor_id"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "team_schedulers", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tiers", :force => true do |t|
     t.integer  "district_id"
@@ -698,6 +760,8 @@ ActiveRecord::Schema.define(:version => 20090428193630) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
+    t.string   "middle_name"
+    t.string   "suffix"
   end
 
   add_index "users", ["district_id"], :name => "index_users_on_district_id"

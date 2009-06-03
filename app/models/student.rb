@@ -23,6 +23,8 @@
 #
 
 class Student < ActiveRecord::Base
+
+  include FullName
   belongs_to :district
   has_and_belongs_to_many :groups
   has_many :checklists
@@ -49,14 +51,6 @@ class Student < ActiveRecord::Base
   after_update :save_system_flags, :save_enrollments
   before_validation :clear_extended_profile
 
-  # This is duplicated in user
-  def fullname 
-    first_name.to_s + ' ' + last_name.to_s
-  end
-
-  def fullname_last_first
-    last_name.to_s + ', ' + first_name.to_s
-  end
 
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
@@ -106,10 +100,6 @@ class Student < ActiveRecord::Base
 
     principals |= special_group_principals
     principals.flatten.uniq
-  end
-
-  def to_s
-    fullname
   end
 
   def self.paged_by_last_name(last_name="", page="1")
