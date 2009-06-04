@@ -20,7 +20,7 @@ describe AllControllers do
         interventions/probe_assignments interventions/probes
         interventions login main news_items
         principal_overrides quicklist_items recommendations reports 
-        school/students school_teams
+        school_teams
         schools
         states student_comments students team_consultations team_schedulers tiers 
       }

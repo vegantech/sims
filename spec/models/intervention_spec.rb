@@ -163,7 +163,7 @@ describe Intervention do
         id_attrs = {:frequency => f1, :time_length => tl1, :frequency_multiplier => 60, :time_length_num => 7}
         int_def = Factory(:intervention_definition, id_attrs)
 
-        intervention=int_def.interventions.build_with_default
+        intervention=Intervention.build_and_initialize(:intervention_definition => int_def)
 
         intervention.start_date.should == Date.today
         intervention.frequency.should == f1

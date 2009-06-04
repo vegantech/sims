@@ -1,5 +1,5 @@
 Feature: Create Intervention
-  In order to use custom interventions
+  In order to use interventions
   A SIMS USER
   Should be able to create and select an interventon
   
