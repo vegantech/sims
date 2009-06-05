@@ -40,6 +40,26 @@ describe User do
       before do
         System::HASH_KEY='mms'
       end
+
+      describe 'allowed_password_hashes' do
+        it 'should cover all possibilities'  do
+          district = Factory(:district, :key => dk='ddd_kk')
+          u = Factory(:user, :district => district)
+          password='zow#3vVc'.downcase
+
+          pnn = Digest::SHA1.hexdigest(password)
+          pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}")
+          pdn = Digest::SHA1.hexdigest("#{password}#{dk}") 
+          pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}")
+          u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds]
+        end
+      end
+
+      it 'should return a user when the password matches an allowed' do
+      end
+
+      it 'should return nil when the password does not match' do
+      end
       
       it 'should return a user when the password matches the hash and the system key is nil' do
         u = User.new(:username => 'user1',:passwordhash => User.encrypted_password('test', nil, nil))

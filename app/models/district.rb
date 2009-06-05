@@ -206,11 +206,8 @@ class District < ActiveRecord::Base
     end
   end
 
-  def key
-    ''
-  end
-
 private
+
   def make_sure_there_are_no_schools
     if schools.blank?
       schools.destroy_all
@@ -227,7 +224,6 @@ private
       errors.add_to_base("Have the district admin remove the schools first.") 
       false
     end
-
   end
 
 

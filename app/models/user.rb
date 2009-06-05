@@ -134,13 +134,15 @@ class User < ActiveRecord::Base
   end
 
   def allowed_password_hashes(password)
-    bare = User.encrypted_password(password,nil,nil)
-    with_sys_key_and_no_district_key = User.encrypted_password(password,nil)
-    with_district_key_and_no_system_key = encrypted_password(password,nil)
-    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key]
+    # pnn, pns, pdn, pds
+    bare = User.encrypted_password(password, nil, nil)
+    with_sys_key_and_no_district_key = User.encrypted_password(password, nil)
+    with_district_key_and_no_system_key = encrypted_password(password, nil)
+    with_district_key_and_system_key = encrypted_password(password)
+    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key]
   end
 
-  def encrypted_password(password, system_hash = nil)
+  def encrypted_password(password, system_hash = System::HASH_KEY)
     district_key = district.key if district
     User.encrypted_password(password, district_key, system_hash)
   end
