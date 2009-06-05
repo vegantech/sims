@@ -52,6 +52,7 @@ Given /^I log in as content_builder$/ do
   r.rights.create!(:controller=>"intervention_builder/interventions", :read_access=>true, :write_access=>true)
   r.rights.create!(:controller=>"intervention_builder/probes", :read_access=>true, :write_access=>true)
   r.rights.create!(:controller=>"tiers", :read_access=>true, :write_access=>true)
+  r.rights.create!(:controller=>"checklist_builder/checklists", :read_access=>true, :write_access=>true)
 
   visit '/'
   fill_in 'Login', :with => 'content_builder'

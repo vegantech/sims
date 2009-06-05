@@ -14,8 +14,6 @@
 #
 
 class School < ActiveRecord::Base
-  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-
   after_update :save_user_school_assignments
 
   belongs_to :district

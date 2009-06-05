@@ -28,3 +28,11 @@ Feature: Concern Note
 
     When I follow "default user on _CHANGE_TO_VARIABLE_" "TODAY"
     Then I should see "Strength"
+
+  Scenario: Create Consultation Form as Response to Request
+    When I follow "Respond to Request for Information"
+    And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
+    And I press "Create"
+    When I follow "default user on _CHANGE_TO_VARIABLE_" "TODAY"
+    Then I should see "Spinach"
+

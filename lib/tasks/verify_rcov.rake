@@ -37,7 +37,7 @@ end
 
 RCov::VerifyTask.new('verify_rcov_integration') do |t|
   t.require_exact_threshold=false
-  t.threshold = 68.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 70.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = 'test/coverage/integration/index.html'
 end
 task "default" => ["test:coverage"]
