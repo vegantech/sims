@@ -106,16 +106,18 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   def new_from_this
 
     @old_checklist_definition = ChecklistDefinition.find(params[:id])
-    if @old_checklist_definition.district == current_district
-      @new_checklist_definition = @old_checklist_definition.deep_clone
-    elsif @old_checklist_definition.district == current_district.admin_district
+    districts=[current_district, current_district.admin_district]
+    if districts.include?(@old_checklist_definition.district)
       @new_checklist_definition = @old_checklist_definition.deep_clone
       @new_checklist_definition.district = current_district
-    else
-      raise 'eee'
-      redirect_to checklist_builder_checklists_url 
     end
-    @new_checklist_definition.save! if @new_checklist_definition
+
+    if @new_checklist_definition && @new_checklist_definition.save
+      flash[:notice] = "Checklist Definition was successfully copied"
+    else
+      flash[:notice] = "Checklist Definition could not be copied"
+    end
+
     redirect_to checklist_builder_checklists_url 
   end
 end
