@@ -6,16 +6,15 @@ rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
 end
   def default_rcov_params_for_unit   
-    '-i "app\/reports" -x "app\/controllers","\/Applications\/","\/Library\/","spec\/","stories\/","gem\/ruby\/1.8\/gems\/","'+ "#{ENV['GEM_HOME']}"  + '"'
-
+    '-i "app\/reports" -x "app\/controllers",'+global_exclude
   end  
   
   def default_rcov_params_for_functional   
-    ' -x  "app\/reports","app\/models","app\/helpers","lib/","\/Applications\/","\/Library\/","spec\/","stories\/","gem\/ruby\/1.8\/gems\/","' +"#{ENV['GEM_HOME']}" + '"'
+    ' -x  "app\/reports","app\/models","app\/helpers","lib/",'+global_exclude
   end
   
   def default_rcov_params_for_integration
-    ' -x "features\/","\/Applications\/","\/Library\/","spec\/","stories\/","gem\/ruby\/1.8\/gems\/","' +"#{ENV['GEM_HOME']}" + '"'
+    ' -x "features\/",' + global_exclude
   end
 
   def specs_corresponding_to_unit
@@ -31,6 +30,11 @@ end
   def specs_corresponding_to_integration
     "stories/all.rb"
     
+  end
+
+  def global_exclude
+    '"rubygems/","\/Applications\/","\/Library\/","spec\/","stories\/","gem\/ruby\/1.8\/gems\/","' +"#{ENV['GEM_HOME']}" + '"'
+
   end
 
   def remove_coverage_data
