@@ -134,14 +134,21 @@ class User < ActiveRecord::Base
   end
 
   def allowed_password_hashes(password)
-    bare = User.encrypted_password(password,nil)
-    with_sys_key = User.encrypted_password(password)
-    [bare, with_sys_key]
+    bare = User.encrypted_password(password,nil,nil)
+    with_sys_key_and_no_district_key = User.encrypted_password(password,nil)
+    with_district_key_and_no_system_key = encrypted_password(password,nil)
+    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key]
   end
 
-  def self.encrypted_password(password, system_hash = System::HASH_KEY)
-    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}")
+  def encrypted_password(password, system_hash = nil)
+    district_key = district.key if district
+    User.encrypted_password(password, district_key, system_hash)
   end
+
+  def self.encrypted_password(password, district_key=nil, system_hash = System::HASH_KEY)
+    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}")
+  end
+  
   
   def authorized_for?(controller, action_group)
     roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
