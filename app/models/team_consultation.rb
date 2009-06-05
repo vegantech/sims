@@ -16,7 +16,8 @@ class TeamConsultation < ActiveRecord::Base
   belongs_to :requestor, :class_name =>'User'
   belongs_to :recipient, :class_name => 'User'
   has_one :consultation_form
-
+  
+  delegate :district,  :to => '(student or team_consultation or return nil)'
   accepts_nested_attributes_for :consultation_form
 
   after_create :email_concern_recipient

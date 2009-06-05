@@ -20,6 +20,8 @@ class ConsultationForm < ActiveRecord::Base
   belongs_to :team_consultation
   belongs_to :student
   has_many :consultation_form_concerns
+  
+  delegate :district,  :to => '(student or team_consultation or return nil)'
 
   accepts_nested_attributes_for :consultation_form_concerns
 
