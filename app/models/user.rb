@@ -134,21 +134,24 @@ class User < ActiveRecord::Base
   end
 
   def allowed_password_hashes(password)
-    # pnn, pns, pdn, pds
-    bare = User.encrypted_password(password, nil, nil)
-    with_sys_key_and_no_district_key = User.encrypted_password(password, nil)
-    with_district_key_and_no_system_key = encrypted_password(password, nil)
-    with_district_key_and_system_key = encrypted_password(password)
-    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key]
-  end
-
-  def encrypted_password(password, system_hash = System::HASH_KEY)
     district_key = district.key if district
-    User.encrypted_password(password, district_key, system_hash)
+    next_key = self.district.next_key if self.district
+    
+    bare = User.encrypted_password(password,salt, nil, nil)
+    with_sys_key_and_no_district_key = User.encrypted_password(password,salt, nil)
+
+    with_district_key_and_no_system_key = User.encrypted_password(password, salt, district_key, nil)
+    with_district_key_and_system_key = User.encrypted_password(password, salt, district_key)
+
+    with_next_district_key_and_no_system_key = User.encrypted_password(password, salt,  next_key, nil)
+    with_next_district_key_and_system_key = User.encrypted_password(password, salt, next_key, System::HASH_KEY)
+
+    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key,
+      with_next_district_key_and_no_system_key,  with_next_district_key_and_system_key ]
   end
 
-  def self.encrypted_password(password, district_key=nil, system_hash = System::HASH_KEY)
-    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}")
+  def self.encrypted_password(password,salt=nil, district_key = nil, system_hash = System::HASH_KEY)
+    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}#{salt}")
   end
   
   
@@ -217,9 +220,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def salt
-
-  end
 
 protected
   def district_special_groups

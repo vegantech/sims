@@ -43,15 +43,19 @@ describe User do
 
       describe 'allowed_password_hashes' do
         it 'should cover all possibilities'  do
-          district = Factory(:district, :key => dk='ddd_kk')
-          u = Factory(:user, :district => district)
+          district = Factory(:district, :key => dk='ddd_kk', :next_key => next_dk = 'eee_ll')
+          salt = 'Salt'
+          u = Factory(:user, :district => district, :salt => salt)
           password='zow#3vVc'.downcase
 
-          pnn = Digest::SHA1.hexdigest(password)
-          pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}")
-          pdn = Digest::SHA1.hexdigest("#{password}#{dk}") 
-          pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}")
-          u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds]
+          pnn = Digest::SHA1.hexdigest("#{password}#{salt}")
+          pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{salt}")
+          ppn = Digest::SHA1.hexdigest("#{password}#{next_dk}#{salt}") 
+          pps = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{next_dk}#{salt}")
+          pdn = Digest::SHA1.hexdigest("#{password}#{dk}#{salt}") 
+          pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}#{salt}")
+          
+          u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds, ppn, pps]
         end
       end
 
@@ -63,45 +67,12 @@ describe User do
         
       end
 
-      it 'should return nil when the password does not match' do
-      end
       
-      it 'should return a user when the password matches the hash and the system key is nil' do
-        u = User.new(:username => 'user1',:passwordhash => User.encrypted_password('test', nil, nil))
-        u.send(:create_without_callbacks)
-        User.authenticate('user1','test').should == u
-      end
-
-      it 'should return a user when the system key and password matches the hash' do
-        u = User.new(:username => 'user2', :passwordhash => User.encrypted_password('test', nil))
-        u.send(:create_without_callbacks)
-        User.authenticate('user2','test').should == u
-      end
-
       it 'should store new users passwords including system hash_key when present' do
         u = Factory(:user, :password => 'test')
-        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test",nil,nil)
+        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test",nil,nil,nil)
       end
 
-      it 'should return a user created without a district or system key but both are now present' do
-        u = Factory(:user)
-        u.passwordhash = User.encrypted_password('test',nil)
-        e=u.district
-        e.key='district_key'
-        e.save!
-        u.save!
-        User.authenticate(u.username,'test').should == u
-      end
-
-      it 'should return a user created with district_key' do
-        u = Factory(:user)
-        e=u.district
-        e.key='district_key'
-        e.save!
-        u.passwordhash = User.encrypted_password("test#{u.district.key}", nil)
-        u.save!
-        User.authenticate(u.username, 'test').should == u
-      end
     end
   end
 
@@ -124,7 +95,7 @@ describe User do
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
-      @user.passwordhash.should == User.encrypted_password('oneschool', nil, nil)
+      @user.passwordhash.should == User.encrypted_password('oneschool', nil,nil, nil)
     end
   end
   
