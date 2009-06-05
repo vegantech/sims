@@ -1,0 +1,214 @@
+need way for sims to import from districts
+   students
+   system flags (or data to create them)
+   student groupings
+
+
+need way for sims to export
+   ??? 
+   Wisconsin Longitudinal System???
+   Other student information systems
+
+
+first round
+csv bulk update (all at once)
+csv required fields, any order
+
+
+goals.   be able to import
+
+student- , firstname, lastname, id_state or id_district  id_state needed for interdistrict xfer  DOB, ESL, special_ed
+
+
+enrollment grade, school (id_district or id_state), student (id_district or id_state)
+flags
+
+
+1. upload students.csv
+process students.csv          edit existing records if there are changes, add new ones, delete (unset district) remainder
+
+
+2. upload file.zip containing students.csv
+process students.csv
+
+3. process file.zip asynchronously,  don't tie up browser session
+
+4. process upload of file.zip asynchronously
+
+5. add enrollments.csv to zip
+
+6. add extended_profiles.zip
+
+
+
+
+
+A district admin should be able to
+upload a zip file containing students.csv  password zip file?
+
+
+
+give  each district them ssh cert, user?
+job scp's zip file district.zip to home directory    
+poll filesystem and look for changes,   or some other scp hook
+give ssh key or cert for unattendended xfer
+encryption, unattended, asynchronous
+email if problems
+
+neg
+pain to setup and maintain,  needs vendor buyin (potentially)
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+processing large files
+ideas
+
+could be offloaded to another server
+look at field order in csv
+get another csv from db in same order
+sort original csv in same order as db server
+do diff
+handle insertions, deletions and updates from diff file
+
+
+--------------- File formats
+students.csv   id_state, id_district, first_name, last_name, [middle_name], [suffix], birthdate, number
+
+
+enrollments.csv student_id_state, school_id_state, grade, [year]
+
+
+notes
+[middle_name] [suffix] not currently in SIMS, will probably need to be added.
+
+
+---------
+
+students-   add suffix, and middlename (and just fullname methods)
+users- add suffix, and middlename (and just fullname methods)
+Shawn A Balestracci Jr
+Balestracci, Shawn A., Jr.
+
+school- id_state, id_district, name
+enrollments- student_id_state, student_id_district, school_id_state, school_id_district, grade, endyear  (add endyear)
+
+
+user- add suffix, middlename....   
+id_district, first_name, last_name, middle, suffix, passwordhash, salt, email (booleans for "district_admin", "school_admin", "district_builder", "regular_user", "news_admin")
+
+
+
+district- add key and next_key (which takes effect when users are uploaded)
+passwordhash- Sha1.hex(shared_key + district_key + data + salt)
+
+
+Flag(id: integer, category: string, user_id: integer, district_id: integer, student_id: integer, reason: text, type: string, created_at: datetime, updated_at: datetime)
+(wipe existing system flags, then just import new)
+
+flag- category[ one of {attendance languagearts math suspension}], student_id_district,student_id_state, reason_text
+
+extended_profile named id_district.xpr    (one for each student, zipped up) suggest directory structure if there are going to be over 9999 files in directory
+
+
+
+in builder, offer template for extended profile,   set of pre tags initially
+
+extended_profile,  they can generate their own file, or they do extended_profile.csv  for freetext,   we can eventually add addresses.   
+
+extended_extra.csv
+id_student,html_blob
+1,"<pre>This is the best student evah, I cannot use enough commas to,
+fully, describe, how, great, they're.</pre><blink>
+""This"", is blinking.
+</blink>
+"
+2,
+
+
+flags (system)
+extended profiles
+
+
+group title, school_id_district or school_id_state [add group_id_district]   school cannot be nil
+
+
+District 12
+course_id, name
+1, Proctology 101
+
+neigbhorhood_id, name
+1, Mr. Rogers
+
+Groups
+1, Proctology 101
+1, Mr. Rogers
+
+student_id, course_id, school_id
+007, course-1,  school1
+008, neighborhood-1,  school2
+
+District 27
+course_id, name
+1, French Literature
+
+
+
+district_group_id will probably be table-pk
+
+students_groups
+student_id_district, student_id_state, district_group_id_with_table
+
+user_groups
+user_id_district, district_group_id_with_table, is_principal_boolean
+
+
+special_user_groups remove_integer
+For users with access to all student in district
+
+all_students_in_district.csv
+user_id_district, is_principal (if they're the princpal for everyone.), grade (probably don't need.)
+
+all_students_in_school.csv
+user_id_district, school_id_district, is_principal, grade
+is_principal if user is the principal for that group,   grade if limited to a certain grade
+
+
+user_schools
+school_id_district, user_id_district, admin(boolean)
+Admin means they can create/delete groups, or the school quicklist.  Most likely a school secretary
+
+
+
+
+
+
+
+
+
+enrollment.rb
+student.rb
+system_flag.rb
+group.rb
+school.rb
+user_group_assignment.rb
+special_user_group.rb
+user.rb
+user_school_assignment.rb
+
+
+country.rb
+district.rb
+state.rb
+
+

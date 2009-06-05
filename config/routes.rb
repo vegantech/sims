@@ -26,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
-    district.resources :students
+    district.resources :students, :collection=>{:bulk_import_form => :get, :bulk_import =>:post}
     district.resources :flag_categories, :name_prefix=>nil
   end
 

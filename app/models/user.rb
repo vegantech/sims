@@ -139,7 +139,6 @@ class User < ActiveRecord::Base
     [bare, with_sys_key]
   end
 
-
   def self.encrypted_password(password, system_hash = System::HASH_KEY)
     Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}")
   end
@@ -207,6 +206,10 @@ class User < ActiveRecord::Base
     usa_attributes.each do |attributes|
       user_school_assignments.build(attributes)
     end
+  end
+
+  def salt
+
   end
 
 protected
