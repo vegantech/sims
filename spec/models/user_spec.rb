@@ -55,7 +55,12 @@ describe User do
         end
       end
 
-      it 'should return a user when the password matches an allowed' do
+      it 'should call allowed passwordhashes' do
+        @user.should_receive(:allowed_password_hashes).with('fail').and_return([])
+        User.should_receive(:find_by_username).with('oneschool').and_return(@user)
+        # User.any_instance.should_receive(:allowed_password_hashes).with('fail')
+        User.authenticate('oneschool','fail')
+        
       end
 
       it 'should return nil when the password does not match' do
