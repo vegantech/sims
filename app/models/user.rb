@@ -124,18 +124,24 @@ class User < ActiveRecord::Base
 
   def self.authenticate(username, password)
     @user = self.find_by_username(username)
+
     if @user
-      expected_password=encrypted_password(password)
-      if @user.passwordhash_before_type_cast != expected_password
+      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast))
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
       end
       @user
     end
   end
 
+  def allowed_password_hashes(password)
+    bare = User.encrypted_password(password,nil)
+    with_sys_key = User.encrypted_password(password)
+    [bare, with_sys_key]
+  end
 
-  def self.encrypted_password(password)
-    Digest::SHA1.hexdigest(password.downcase)
+
+  def self.encrypted_password(password, system_hash = System::HASH_KEY)
+    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}")
   end
   
   def authorized_for?(controller, action_group)

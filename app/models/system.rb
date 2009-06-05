@@ -1,5 +1,6 @@
 class System
   RESERVED_SUBDOMAINS = %w{ www asset demo asset2 asset1 asset0 mail staging }
+  HASH_KEY=nil
   def self.news
     NewsItem.system
   end
@@ -18,10 +19,7 @@ class System
       r=Role.create!(:name=>"country_admin")
       r.rights.create!(:controller=>"countries", :read_access=>true, :write_access=>true)
       Country.first.admin_district.users.first.roles << r
-
     end
-
-
   end
 
   def self.admin_district

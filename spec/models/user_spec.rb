@@ -18,15 +18,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-    @user = Factory(:user, :username => "oneschool")
-  end
-
-  it 'should include FullName' do
-    User.included_modules.should include(FullName)
-  end
-
-  it 'should have a middle_name' do
-    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+    @user = User.find_by_username 'oneschool' || Factory(:user, :username => "oneschool")
   end
 
   describe 'authenticate' do
@@ -42,18 +34,52 @@ describe User do
     it 'should not allow bad login' do
       User.authenticate('doesnotexist', 'ignored').should be_nil
     end
+
+    describe 'additional hash keys and salts' do
+      before do
+        System::HASH_KEY='mms'
+      end
+      
+      it 'should return a user when the password matches the hash and the system key is nil' do
+        u=User.new(:username=>'user1',:passwordhash=>User.encrypted_password('test',nil))
+        u.send(:create_without_callbacks)
+        User.authenticate('user1','test').should == u
+      end
+
+      it 'should return a user when the system key and password matches the hash' do
+        u=User.new(:username=>'user2',:passwordhash=>User.encrypted_password('test'))
+        u.send(:create_without_callbacks)
+        User.authenticate('user2','test').should == u
+      end
+
+      it 'should store new users passwords including system hash_key when present' do
+        u = Factory(:user, :password => 'test')
+        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test",nil)
+      end
+    end
   end
+
+  describe 'encrypted_password' do
+    it 'should create a hash with a nil system key and district key and salt' do
+      pending
+      # User.encrypted_password('e')
+
+      # set up user1 with password the old way
+      # verify user1 password works
+
+      # set new user2 up with new way
+      # verify new password for user2 works
+
+      # verify user1 password still works
+    end
+
+  end
+  
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
-      @user.passwordhash.should == User.encrypted_password('oneschool')
+      @user.passwordhash.should == User.encrypted_password('oneschool',nil)
     end
-  end
-  
-  describe 'full_name' do
-    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
-    u.fullname.should == ("0First. noschools")
-    u.to_s.should == ("0First. noschools")
   end
   
   describe 'password=' do
@@ -66,6 +92,20 @@ describe User do
     end
   end
 
+  it 'should include FullName' do
+    User.included_modules.should include(FullName)
+  end
+
+  it 'should have a middle_name' do
+    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+  end
+
+  describe 'full_name' do
+    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
+    u.fullname.should == ("0First. noschools")
+    u.to_s.should == ("0First. noschools")
+  end
+  
   describe 'authorized_groups_for_school' do
     it 'should return school groups when user is a member of all groups in school' do
       u=User.new
@@ -111,8 +151,6 @@ describe User do
       s=Factory(:school)
       @user.filtered_groups_by_school(s,:grade=>'E',:user=>5 ).should == []
     end
-    
-    
   end
  
   describe 'filtered_members_by_school' do
@@ -151,22 +189,13 @@ describe User do
     it 'should call check for read rights when group is read' do
       Role.should_receive(:has_controller_and_action_group?).with('test_controller','read').and_return(true)
       User.new.authorized_for?('test_controller','read').should == true
-      
-      
     end
 
     it 'should call check for write rights when group is write' do
-      
       Role.should_receive(:has_controller_and_action_group?).with('test_controller','write').and_return(true)
       User.new.authorized_for?('test_controller','write').should == true
- 
     end
-    
   end
-
-
-
-
 
   describe "principal?" do
     it 'should return true if principal of a group or special user group and false if not' do
@@ -178,10 +207,7 @@ describe User do
       u.principal?.should == false
       u.special_user_groups.create!(:is_principal => true ,:grouptype=>2, :district_id => 11)
       u.principal?.should == true
-
     end
-    
-
   end
 
   describe 'grouped_principal_overrides' do
@@ -196,8 +222,6 @@ describe User do
       PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
       @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"], 
           :pending_requests => ["Pending For Principal"]}
-      
-
     end
   end
 
@@ -228,12 +252,6 @@ describe User do
       @user.authorized_schools.should == [s1,s3]
       @user.authorized_schools(s1.id).should == [s1]
       @user.authorized_schools(s2.id).should == []
-
     end
-
-
-
   end
-
-
 end
