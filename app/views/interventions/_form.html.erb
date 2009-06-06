@@ -36,7 +36,7 @@
       <%= @intervention.start_date %>
     <% else %>
       <%= form.label :start_date , 'Start Date:' %>
-      <%= form.date_select :start_date ,{}, {:onchange => "change_date('#{@intervention.new_record?}');"}%>
+      <%= form.unobtrusive_date_picker :start_date ,{:order=>[:month,:day,:year]}, {:onchange => "change_date('#{@intervention.new_record?}');"}%>
     <% end %>
   </div>
   <br class="brclear" />
@@ -46,7 +46,7 @@
      <%= @intervention.end_date %>
     <% else %>
       <%= form.label :end_date, 'End Date:' %>
-      <%= form.date_select :end_date %>
+      <%= form.unobtrusive_date_picker :end_date, {:order => [:month,:day,:year]} %>
     <% end %>
   </div>
 
