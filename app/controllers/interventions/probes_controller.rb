@@ -11,9 +11,10 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def new
-    @probe = @intervention_probe_assignment.probes.new
+    @probe = @intervention_probe_assignment.probes.build
 
     respond_to do |format|
+      format.js
       format.html # new.html.erb
     end
   end

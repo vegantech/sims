@@ -38,7 +38,7 @@ describe Interventions::ProbesController do
     describe "responding to GET new and set other instance vars" do
     
       it "should expose a new probe as @probe" do
-        @intervention_probe_assignment.stub_association!(:probes,:new=>mock_probe)
+        @intervention_probe_assignment.stub_association!(:probes,:build=>mock_probe)
         get :new
        assigns(:intervention).should == @intervention
        assigns(:intervention_probe_assignment).should == @intervention_probe_assignment

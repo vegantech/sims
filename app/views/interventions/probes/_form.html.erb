@@ -2,9 +2,9 @@
 <p>
 <%=form.label :administered_at,"Date progress monitor administered" %>
 <% if defined? @probe and !@probe.new_record? %>
-  <%= form.date_select :administered_at %>
+  <%= form.unobtrusive_date_picker :administered_at, :order => [:month, :day, :year] %>
 <% else %>
-  <%=form.date_select :administered_at, :index=>[] %>
+  <%= form.unobtrusive_date_picker :administered_at, :index=>[], :order => [:month, :day, :year], :index=>index %>
 <% end %>
 </p>
 <br class="brclear" />
