@@ -4,7 +4,7 @@
 <% if defined? @probe and !@probe.new_record? %>
   <%= form.unobtrusive_date_picker :administered_at, :order => [:month, :day, :year] %>
 <% else %>
-  <%= form.unobtrusive_date_picker :administered_at, :index=>[], :order => [:month, :day, :year], :index=>index %>
+  <%= form.unobtrusive_date_picker :administered_at,  :order => [:month, :day, :year], :index=>index %>
 <% end %>
 </p>
 <br class="brclear" />
