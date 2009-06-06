@@ -70,7 +70,45 @@ describe User do
       
       it 'should store new users passwords including system hash_key when present' do
         u = Factory(:user, :password => 'test')
-        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test",nil,nil,nil)
+        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test", u.salt, nil, nil)
+      end
+
+      it 'should generate a salt when a user sets a password' do
+        d = Factory(:district, :key => 'DisKye')
+        u = Factory(:user, :password => 'motest', :district => d)
+        u.salt.should_not be_blank
+      end
+
+      it 'should generate different salts for 2 different users' do
+        u1 = Factory(:user)
+        u2 = Factory(:user)
+        u1.salt.should_not == u2.salt
+      end
+
+      it 'should change the salt when a password is changed on an existing record if a different salt has not been passed in' do
+        u1 = Factory(:user)
+        oldsalt = u1.salt
+
+        u1.password='SOEMWEWEE'
+        u1.salt.should_not == oldsalt
+      end
+
+      it 'should not change the salt when a password is changed at the same time a salt is explicitly passed in' do
+        u1 = Factory(:user)
+        oldsalt = u1.salt
+
+        u1.update_attributes(:password => 'SOEMWEWEE', :salt => 'my_new_Salty_Salt_2')
+        u1.salt.should == 'my_new_Salty_Salt_2'
+      end
+
+      it 'should use the generated salt, system key, and district key' do
+        d = Factory(:district, :key => 'DisKye')
+        
+        u = Factory(:user, :district => d)
+        u.password = 'motest'
+        u.password_confirmation = 'motest'
+        u.save!
+        u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
       end
 
     end
@@ -95,7 +133,7 @@ describe User do
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
-      @user.passwordhash.should == User.encrypted_password('oneschool', nil,nil, nil)
+      @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
     end
   end
   

@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
       with_next_district_key_and_no_system_key,  with_next_district_key_and_system_key ]
   end
 
-  def self.encrypted_password(password,salt=nil, district_key = nil, system_hash = System::HASH_KEY)
+  def self.encrypted_password(password, salt=nil, district_key = nil, system_hash = System::HASH_KEY)
     Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}#{salt}")
   end
   
@@ -175,10 +175,15 @@ class User < ActiveRecord::Base
       @password_confirmation=@password=pass
     else
       @password = pass
-  #    salt = [Array.new(6){rand(256).chr}.join].pack("m").chomp
-   #   self.password_salt, self.password_hash = salt, Digest::SHA256.hexdigest(pass + salt)a
-      self.passwordhash = User.encrypted_password(pass)
+      puts "district is #{pp district}" if @password == 'motest'
+      self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
+      set_passwordhash pass
     end
+  end
+
+  def set_passwordhash(pass)
+    district_key = self.district.key if self.district
+    self.passwordhash = User.encrypted_password(pass, self.salt, district_key)
   end
 
   def reset_password!
