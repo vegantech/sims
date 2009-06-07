@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090602225830) do
+ActiveRecord::Schema.define(:version => 20090607152637) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(:version => 20090602225830) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.string   "marked_state_goal_ids"
+    t.string   "key",                   :default => ""
+    t.string   "next_key",              :default => ""
   end
 
   add_index "districts", ["state_id"], :name => "index_districts_on_state_id"
@@ -166,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20090602225830) do
     t.string   "grade",      :limit => 16
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "end_year"
   end
 
   add_index "enrollments", ["school_id"], :name => "index_enrollments_on_school_id"
@@ -762,6 +765,7 @@ ActiveRecord::Schema.define(:version => 20090602225830) do
     t.string   "email"
     t.string   "middle_name"
     t.string   "suffix"
+    t.string   "salt",         :default => ""
   end
 
   add_index "users", ["district_id"], :name => "index_users_on_district_id"
