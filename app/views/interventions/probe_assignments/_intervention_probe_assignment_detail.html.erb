@@ -24,7 +24,7 @@
         <% if readonly %>
           <%= @intervention_probe_assignment.first_date %>
         <% else %>
-          <%= ipa.date_select :first_date ,{}, {} %>
+          <%= ipa.unobtrusive_date_picker :first_date ,{:order=>[:month,:day,:year]}, {} %>
         <% end %>
       </div>
       <br class="brclear" />
@@ -34,7 +34,7 @@
         <% if readonly %>
           <%= @intervention_probe_assignment.end_date %>
         <% else %>
-          <%= ipa.date_select :end_date %>
+          <%= ipa.unobtrusive_date_picker :end_date, {:order=>[:month,:day,:year]}, {} %>
         <% end %>
       </div>
     <% unless @intervention.new_record? %>

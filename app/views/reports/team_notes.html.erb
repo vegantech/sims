@@ -1,11 +1,13 @@
 <h2>Team Notes</h2>
 
 <% form_tag do %><br/ >
-  <%= label_tag :start_date_month, 'Start Date:' %><br/>
-  <%= select_date @start_date, :id => :start_date, :order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date' %><br/><br/>
 
-  <%= label_tag :end_date_month, 'End Date:' %><br/>
-  <%= select_date @end_date, :id => :end_date, :order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'end_date' %><br/><br/>
+  <%= label_tag 'start_date-mm', 'Start Date:' %><br/>
+  <%= unobtrusive_date_picker_tags Date.current,{:order => [:month,:day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date'  } %> <br / >
+
+
+  <%= label_tag 'end_date-mm', 'End Date:' %><br/>
+  <%= unobtrusive_date_picker_tags @end_date, {:order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'end_date'} %><br/><br/>
 
   <%= label_tag :report_params_format, 'Format:' %><br/>
   <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %><br/><br/>

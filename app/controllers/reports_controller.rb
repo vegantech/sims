@@ -55,7 +55,7 @@ class ReportsController < ApplicationController
 
     if request.post?
       @start_date = build_date(params[:start_date])
-      @end_date   = build_date(params[  :end_date])
+      @end_date   = build_date(params[:end_date])
     else
       @start_date = @end_date = @today
     end

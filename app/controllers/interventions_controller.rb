@@ -163,7 +163,11 @@ class InterventionsController < ApplicationController
         @intervention_probe_assignment = rec_mon.build_intervention_probe_assignment if rec_mon
       end
     end
-    render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'
+    respond_to do |format|
+      format.js
+      format.html {render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'}
+    end
+      
   end
 
   def add_benchmark

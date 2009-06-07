@@ -1,4 +1,6 @@
 page.remove "intervention"
+page << "datePickerController.cleanUp();"
 page.remove "definitions"
 page.replace "categories", :partial=>"interventions/categories/select"
+page << "datePickerController.create();"
 page.hide 'spinnerobjectives'
