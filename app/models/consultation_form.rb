@@ -19,7 +19,7 @@ class ConsultationForm < ActiveRecord::Base
   belongs_to :user
   belongs_to :team_consultation
   belongs_to :student
-  has_many :consultation_form_concerns
+  has_many :consultation_form_concerns, :dependent => :destroy
   
   delegate :district,  :to => '(student or team_consultation or return nil)'
 
