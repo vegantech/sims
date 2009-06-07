@@ -44,6 +44,7 @@ class StudentsController < ApplicationController
 
       @groups=current_user.filtered_groups_by_school(current_school)
       @users=current_user.filtered_members_by_school(current_school)
+      @years = current_school.enrollment_years
    else
       if params['search_criteria']
         session[:search] = params['search_criteria'] ||{}

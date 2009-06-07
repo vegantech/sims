@@ -122,6 +122,7 @@ describe StudentsController do
       it 'should set @grades and render search template' do
         user=mock_user
         school=mock_school
+        school.should_receive(:enrollment_years).and_return([1,2,3])
         controller.stub!(:current_school => school)
         controller.stub!(:current_user => user)
         school.should_receive(:grades_by_user).with(user).and_return ['*','1','2']

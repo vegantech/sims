@@ -15,6 +15,35 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Enrollment do
 
+  describe 'year_search' do
+    before do
+      @e1=Enrollment.create!(:grade=>2)
+      @e2=Enrollment.create!(:grade=>2,:end_year=>2)
+      @e3=Enrollment.create!(:grade=>2, :end_year => 2)
+      @e4=Enrollment.create!(:grade=>2, :end_year => 3)
+      @scope = Enrollment.send(:scoped,nil)
+    end
+
+    it 'should return the given scope if there is no year' do
+      Enrollment.send(:year_search,nil,@scope).should == @scope
+    end
+
+    it 'should return the given scope if the year is *' do
+      Enrollment.send(:year_search,'*', @scope).should == @scope
+    end
+
+    it 'should return just the filtered items' do
+      Enrollment.send(:year_search,'', @scope).should == [@e1]
+      Enrollment.send(:year_search,'2', @scope).should == [@e2,@e3]
+      Enrollment.send(:year_search,'3', @scope).should == [@e4]
+      Enrollment.send(:year_search,'4', @scope).should == []
+    end
+
+
+    
+
+  end
+
   describe 'search class method' do
     it 'should contain and maintain scope' do
       school=Factory.create(:school)
@@ -22,6 +51,14 @@ describe Enrollment do
       school.enrollments.create!(:student_id=>999,:grade=>"XX")
       school.enrollments.size.should ==(1)
       Enrollment.search({:school_id=>school.id,:search_type=>'list_all'}).size.should == 1
+    end
+
+    describe 'with year' do
+      it 'should have call year_search' do
+        Enrollment.should_receive(:scoped).and_return(s=mock_object(:scoped=>s))
+        Enrollment.should_receive(:year_search).with('*',s).and_return(s)
+        Enrollment.search({:year=>'*', :search_type => 'list_all'})
+      end
     end
 
     describe 'with student group' do 
