@@ -29,7 +29,7 @@ Feature: Assign Participants to Intervention
 
   Scenario: Add Participant to new Intervention
     Given common data
-    And there are "0" emails
+    And a clear email queue
     And I am on student profile page
     When I follow "Select New Intervention and Progress Monitor from Menu"
     And I select "Some Goal" from "goal_definition_id"
