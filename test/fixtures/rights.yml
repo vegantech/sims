@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: rights
 #
@@ -99,6 +99,27 @@ regular_student_comments:
   role: regular_user
   read_access: true
   write_access: true
+
+
+regular_team_consultations:
+  controller: 'team_consultations'
+  role: regular_user
+  read_access: true
+  write_access: true
+
+regular_consultation_forms:
+  controller: 'consultation_forms'
+  role: regular_user
+  read_access: true
+  write_access: true
+
+regular_consultation_form_requests:
+  controller: 'consultation_form_requests'
+  role: regular_user
+  read_access: true
+  write_access: true
+
+
 
 regular_probes:
   controller: 'interventions/probes'
@@ -251,6 +272,19 @@ groups_admin:
   controller: groups
   read_access: true
   write_access: true
+
+team_scheduler_admin:
+  role: school_admin
+  controller: team_schedulers
+  read_access: true
+  write_access: true
+
+school_team_admin:
+  role: school_admin
+  controller: school_teams
+  read_access: true
+  write_access: true
+  
 
 
 quicklists_admin:

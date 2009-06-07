@@ -1,9 +1,9 @@
 module StudentsHelper
   def selected_navigation
     if multiple_selected_students?
-      index=selected_students_ids.index(current_student_id)
+      index = selected_students_ids.index(current_student_id)
       ret = "Student #{index+1} of #{selected_students_ids.size} &nbsp;&nbsp; "
-      
+
       unless index == 0
         ret += link_to('<<', student_url(selected_students_ids.first))
         ret += "&nbsp;&nbsp;"
@@ -17,17 +17,14 @@ module StudentsHelper
         ret += link_to('>>', student_url(selected_students_ids.last))
       end
       content_tag :p, ret
-        
     end
   end
-
 
   def intervention_group_checkbox(grp)
     '<div class="small_bump_right">' +
     check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") + 
       label_tag(dom_id(grp), grp.title) +
     "</div>"
-
   end
 
   def active_intervention_select
@@ -39,14 +36,13 @@ module StudentsHelper
   "District identifier for this #{obj_text} (the #{obj_text}_id or primary_key in your SIS)"
   end
 
-
   def id_state_desc(obj)
-    obj_text=obj.class.name.downcase
+    obj_text = obj.class.name.downcase
     "State identifier for this #{obj_text} (the id used by your state DPI)"
   end
 
   def id_country_desc(obj)
-    obj_text=obj.class.name.downcase
+    obj_text = obj.class.name.downcase
     "National identifier for this #{obj_text} (the ID used by the Deptartment of Education)"
   end
 
@@ -70,5 +66,4 @@ module StudentsHelper
   def inactive_interventions_count(student)
     "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
   end
-
 end

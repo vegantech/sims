@@ -1,0 +1,4 @@
+<% content_tag_for :li, consultation_form_summary  do %>
+  <%= link_to_remote_degrades "#{consultation_form_summary.user} on #{consultation_form_summary.created_at.to_date}",
+    {:url => consultation_form_summary, :method => :get} %>
+<% end %>

@@ -34,6 +34,13 @@ Given /^I should see onchange for "(.*)" that updates (.*)$/ do |observed_field,
   field_labeled(observed_field).element.to_s.should match(/#{target_fields}/)
 end
 
+
+When /^I should see onchange for "([^\"]*)" that calls "([^\"]*)"$/ do |observed_field, target|
+  field_labeled(observed_field).element.to_s.should match(/onchange/)
+  field_labeled(observed_field).element.to_s.should match(/#{target}/)
+end
+
+
 When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
 
   case event

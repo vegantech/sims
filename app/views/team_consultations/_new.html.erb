@@ -1,0 +1,25 @@
+<% unless @recipients.blank? %>
+<% remote_form_for(@team_consultation) do |f| %>
+  <%= f.error_messages %>
+  <% f.fields_for :consultation_form do |consultation_form| %> 
+    <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
+  <% end %>
+
+
+  <p>
+    <%= f.label :recipient_id, 'Recipient' %>
+    <%= f.collection_select :recipient_id, @recipients, :user_id, :to_s %>
+
+  </p>
+  <p>
+
+  
+    <%= f.submit 'Save' %>
+    <%= link_to :cancel, current_student %>
+
+  </p>
+<% end %>
+
+<% else %>
+Please have the school admin or secretary assign team schedulers to this school.
+<% end %>

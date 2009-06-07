@@ -59,8 +59,8 @@ Feature: Create Custom Intervention
     And I select "Some Category" from "intervention_cluster_id"
     And I press "Choose Category"
 
-    And I select "2008" from "intervention_end_date_1i"
-    And I select "2010" from "intervention_start_date_1i"
+    And I select "2008" from "intervention_end_date"
+    And I select "2010" from "intervention_start_date"
 
     When I press "Save"
     And I should see "Must be after start date"

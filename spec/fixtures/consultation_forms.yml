@@ -1,0 +1,24 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: consultation_forms
+#
+#  id                   :integer         not null, primary key
+#  user_id              :integer
+#  team_consultation_id :integer
+#  do_differently       :text
+#  parent_notified      :text
+#  not_in_sims          :text
+#  desired_outcome      :text
+#  created_at           :datetime
+#  updated_at           :datetime
+#  student_id           :integer
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value

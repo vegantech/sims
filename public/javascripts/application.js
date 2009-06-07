@@ -142,7 +142,7 @@ function toggle_visibility(id) {
 
 
 function new_probe_scores() {
-  var scores=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][score]\"]');
+  var scores=$$('div#new_probe_forms input[type="text"]');
   var i1=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(1i)]\"]');
   var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
   var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
@@ -151,10 +151,16 @@ function new_probe_scores() {
 
   var arLen=scores.length;
   for ( var i=0, len=arLen; i<len; ++i ){
+    dates= scores[i].up().previousSiblings()[1].childElements();
+    i1=dates[3];
+    i2=dates[1];
+    i3=dates[2];
+
+
     s=s + 'probes[' +i+ '][score]=' + scores[i].getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1[i].getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2[i].getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3[i].getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1.getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2.getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3.getValue() + '&' ;
   }
 
   return s;

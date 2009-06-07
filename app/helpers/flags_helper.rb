@@ -9,9 +9,19 @@ module FlagsHelper
   def status_display(student, changeable = false)
     str = intervention_status(student)
     str += current_flags(student, changeable)
+    str += team_concerns(student)
     str += ignore_flags(student)
     str += custom_flags(student)
   end
+
+  def team_concerns(student)
+    if student.team_consultations.present?
+      image_tag('comments.png', :alt=>'Team Consultations')
+    else
+      ''
+    end
+  end
+  
 
   def custom_flags(student)
     unless student.custom_flags.blank?

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: schools
 #
@@ -14,8 +14,6 @@
 #
 
 class School < ActiveRecord::Base
-  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-
   after_update :save_user_school_assignments
 
   belongs_to :district
@@ -26,6 +24,10 @@ class School < ActiveRecord::Base
   has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
   has_many :quicklist_items, :dependent => :destroy
+  has_many :team_schedulers
+  has_many :team_scheduler_users, :through => :team_schedulers, :class_name => 'User', :source => :user
+  has_many :school_teams
+
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 

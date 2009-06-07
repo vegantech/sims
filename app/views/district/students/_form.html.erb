@@ -38,7 +38,7 @@
 
 <p>
   <%= form.label :birthdate %><br />
-  <%= form.date_select :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago%>
+  <%= form.unobtrusive_date_picker :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago, :order => [:month, :day, :year]%>
   </p>
   
   <p>

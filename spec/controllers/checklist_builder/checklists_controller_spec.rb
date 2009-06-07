@@ -67,7 +67,53 @@ describe ChecklistBuilder::ChecklistsController do
     response.should redirect_to(checklist_builder_checklist_path(assigns(:checklist_definition)))
     ChecklistDefinition.count should ==  old_count+1
   end
- 
+
+   describe 'new_from_this' do
+
+     it 'should set the flash and not save if the checklist is not available to the current district' do
+       d=Factory(:district)
+       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>-1)
+       controller.stub!(:current_district).and_return(d)
+       post :new_from_this, :id=>a.id
+       assigns[:new_checklist_definition].should be_nil
+       flash[:notice].should == "Checklist Definition could not be copied"
+       response.should redirect_to(checklist_builder_checklists_url)
+     end
+
+     it 'should set the flas and save if the old checklist belongs to the district' do
+       d=Factory(:district)
+       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>d.id)
+       controller.stub!(:current_district).and_return(d)
+       post :new_from_this, :id=>a.id
+       assigns[:new_checklist_definition].new_record?.should be_false
+       flash[:notice].should == "Checklist Definition was successfully copied"
+       response.should redirect_to(checklist_builder_checklists_url)
+
+     end
+
+     it 'should set the flas and save if the old checklist belongs to the state_district' do
+       d=Factory(:district)
+       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>d.admin_district.id)
+       controller.stub!(:current_district).and_return(d)
+       post :new_from_this, :id=>a.id
+       assigns[:new_checklist_definition].new_record?.should be_false
+       flash[:notice].should == "Checklist Definition was successfully copied"
+       response.should redirect_to(checklist_builder_checklists_url)
+     end
+   end
+
+
+   describe 'destroy' do
+     it 'should destroy the selected checklist' do
+       d=Factory(:district)
+       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>d.id)
+       controller.stub!(:current_district).and_return(d)
+       proc{delete :destroy, :id => a.id}.should change(ChecklistDefinition, :count).by(-1)
+
+
+     end
+
+   end
     
 
     

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: interventions
 #
@@ -68,7 +68,7 @@ class Intervention < ActiveRecord::Base
     int = self.new(args)
     int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
 
-    int.selected_ids = nil if int.selected_ids.size == 1
+    int.selected_ids = nil if int.selected_ids.to_a.size == 1
 
     int
   end

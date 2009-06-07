@@ -1,0 +1,24 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: school_teams
+#
+#  id         :integer         not null, primary key
+#  school_id  :integer
+#  name       :string(255)
+#  anonymous  :boolean
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: 
+  name: MyString
+  anonymous: false
+
+two:
+  school: 
+  name: MyString
+  anonymous: false

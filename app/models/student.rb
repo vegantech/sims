@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: students
 #
@@ -38,6 +38,8 @@ class Student < ActiveRecord::Base
   has_many :custom_flags
   has_many :ignore_flags
   has_many :flags
+  has_many :team_consultations
+  has_many :consultation_forms
 
   has_attached_file  :extended_profile
   attr_reader :delete_extended_profile
@@ -208,4 +210,9 @@ class Student < ActiveRecord::Base
       @checklist=checklists.find(checklist_id)
     end
   end
+
+  def all_staff_for_student
+    (groups.collect(&:users) | special_group_principals).flatten.compact.uniq
+  end
+    
 end

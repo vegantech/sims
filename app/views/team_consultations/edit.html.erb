@@ -1,0 +1,24 @@
+<h1>Editing team_consultation</h1>
+
+<% form_for(@team_consultation) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :student %><br />
+    <%= f.text_field :student %>
+  </p>
+  <p>
+    <%= f.label :requestor %><br />
+    <%= f.text_field :requestor %>
+  </p>
+  <p>
+    <%= f.label :recipient %><br />
+    <%= f.text_field :recipient %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @team_consultation %> |
+<%= link_to 'Back', team_consultations_path %>

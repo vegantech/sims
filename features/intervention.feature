@@ -1,5 +1,5 @@
 Feature: Create Intervention
-  In order to use custom interventions
+  In order to use interventions
   A SIMS USER
   Should be able to create and select an interventon
   
@@ -57,7 +57,7 @@ Feature: Create Intervention
     Given I am on student profile page
 
     When I follow "Edit/Add Comment"
-    And I should see onchange for "Assign Progress Monitor" that updates intervention_probe_assignment 
+    And I should see onchange for "Assign Progress Monitor" that calls "ajax_probe_assignment"
 
     And I select "First Progress Monitor" from "Assign Progress Monitor"
     And xhr "onchange" "Assign Progress Monitor"

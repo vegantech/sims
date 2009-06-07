@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: users
 #
@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   has_many :rights, :through => :roles
   has_many :student_comments
   has_many :intervention_participants
+  has_many :team_schedulers
+  has_and_belongs_to_many :school_teams
 
   attr_accessor :password, :all_students_in_district
 

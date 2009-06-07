@@ -11,7 +11,8 @@ describe AllControllers do
       # Once we trust it, we could use subset? instead to keep it from breaking ALL the time...
       static_list = %w{ application
         checklist_builder/answers checklist_builder/checklists checklist_builder/elements checklist_builder/questions
-        checklists countries custom_flags district/flag_categories district/schools district/students district/users districts 
+        checklists consultation_form_requests consultation_forms
+        countries custom_flags district/flag_categories district/schools district/students district/users districts 
         file groups help
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
@@ -19,9 +20,9 @@ describe AllControllers do
         interventions/probe_assignments interventions/probes
         interventions login main news_items
         principal_overrides quicklist_items recommendations reports 
-        school/students
+        school_teams
         schools
-        states student_comments students tiers
+        states student_comments students team_consultations team_schedulers tiers 
       }
       AllControllers.names.should ==  static_list
     end

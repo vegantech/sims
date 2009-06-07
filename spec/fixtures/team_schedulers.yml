@@ -1,0 +1,21 @@
+# == Schema Information
+# Schema version: 20090524185436
+#
+# Table name: team_schedulers
+#
+#  id         :integer         not null, primary key
+#  user_id    :integer
+#  school_id  :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user: 
+  school: 
+
+two:
+  user: 
+  school: 

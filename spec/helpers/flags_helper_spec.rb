@@ -10,11 +10,25 @@ describe FlagsHelper do
 
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
       self.should_receive(:current_flags).with(student,change).and_return('CURRENT FLAGS ')
+      self.should_receive(:team_concerns).with(student).and_return('TEAM CONCERNS ')
       self.should_receive(:ignore_flags).with(student).and_return('IGNORE FLAGS ')
       self.should_receive(:custom_flags).with(student).and_return('CUSTOM FLAGS')
 
-      status_display(student,change).should == 'INTERVENTION STATUS CURRENT FLAGS IGNORE FLAGS CUSTOM FLAGS'
+      status_display(student,change).should == 'INTERVENTION STATUS CURRENT FLAGS TEAM CONCERNS IGNORE FLAGS CUSTOM FLAGS'
     end
+  end
+
+  describe 'team_concerns' do
+    it 'should return an empty string when there are no concerns' do
+      team_concerns(Student.new).should == ''
+    end
+    
+    it 'should return an image when there is  concern' do
+      student=Student.new
+      student.team_consultations.build
+      team_concerns(student).should == image_tag('/images/comments.png', :alt => 'Team Consultations')
+    end
+
   end
 
   describe 'image_with_popup' do

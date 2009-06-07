@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090428193630
+# Schema version: 20090524185436
 #
 # Table name: intervention_probe_assignments
 #
@@ -58,6 +58,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def new_probes=(params)
+    params=params.values
     params.each do |param|
       @new_probe = probes.build(param) unless param['score'].blank?
     end
