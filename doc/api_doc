@@ -83,15 +83,23 @@ handle insertions, deletions and updates from diff file
 
 
 --------------- File formats
-students.csv   id_state, id_district, first_name, last_name, [middle_name], [suffix], birthdate, number
+students.csv   id_state, id_district, first_name, last_name, [middle_name], [suffix], birthdate, number, esl, special_ed
+school.csv  id_district, name
+enrollments.csv student_id_district, school_id_district, grade, end_year
 
 
-enrollments.csv student_id_state, school_id_state, grade, [year]
 
 
 notes
 [middle_name] [suffix] not currently in SIMS, will probably need to be added.
 
+
+
+--MMSD PROGRESS
+students,  missing esl and special_ed
+school OK
+enrollments OK
+users TOO MANY (probably includes parents)  missing roles
 
 ---------
 
@@ -105,7 +113,7 @@ enrollments- student_id_state, student_id_district, school_id_state, school_id_d
 
 
 user- add suffix, middlename....   
-id_district, first_name, last_name, middle, suffix, passwordhash, salt, email (booleans for "district_admin", "school_admin", "district_builder", "regular_user", "news_admin")
+id_district, username, first_name, last_name, middle, suffix, passwordhash, salt, email (booleans for "district_admin", "school_admin", "district_builder", "regular_user", "news_admin")
 
 
 

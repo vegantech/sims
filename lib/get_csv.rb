@@ -1,6 +1,21 @@
 require 'fastercsv'
 
 
+
+def load_users_from_mmsd
+  #.to_i(16).to_s(16)
+end
+
+
+def load_schools_from_mmsd
+  @district = District.find_by_abbrev 'mmsd'
+  schools=@district.schools
+  
+  
+
+end
+
+
 def load_enrollments_from_mmsd
 
 
@@ -11,8 +26,8 @@ def load_enrollments_from_mmsd
   district_students = Student.find_all_by_district_id(@district.id, :select => "id_district,id" )
   student_ids_by_id_district= district_students.inject({}){|hash, student| hash[student.id_district]=student.id;hash}
 
-  schools=School.find_all_by_district_id(@district.id, :select => "id_state, id")
-  school_ids_by_id_state= schools.inject({}){|hash, school| hash[school.id_state]=school.id; hash}
+  schools=School.find_all_by_district_id(@district.id, :select => "id_district, id")
+  school_ids_by_id_district= schools.inject({}){|hash, school| hash[school.id_district]=school.id; hash}
 
   enrollment_lines = FasterCSV.read("/home/shawn/enrollments.csv")
 
@@ -22,9 +37,8 @@ def load_enrollments_from_mmsd
 
   @enrollment_lines.each do |enrollment_line|
     grade = enrollment_line[0].to_s.strip
-    school_id = school_ids_by_id_state[enrollment_line[1].strip.to_i]
+    school_id = school_ids_by_id_district[enrollment_line[1].strip.to_i]
     student_id = student_ids_by_id_district[enrollment_line[2].strip.to_i]
-    
 
     Enrollment.create!(:school_id => school_id, :student_id => student_id, :grade => grade) if valid_school_ids.include? school_id
   end
