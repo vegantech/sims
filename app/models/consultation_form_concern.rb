@@ -15,8 +15,8 @@
 #
 
 class ConsultationFormConcern < ActiveRecord::Base
-  AREAS = ['Academics', 'Attendance', 'Behavior', 'Social/Emotional',
-    "Life Stressors", 'Health', "Interactions with peers"]
+  AREAS = ['Reading / Language Arts','Math', 'Attendance', 'Behavior', 'Social/Emotional',
+    "Life Stressors", 'Health']
 
   FIELD_SIZE = '18x3'
   belongs_to :consultation_form

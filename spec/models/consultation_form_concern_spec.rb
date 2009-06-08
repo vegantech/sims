@@ -20,7 +20,6 @@ describe ConsultationFormConcern do
   before(:each) do
     @valid_attributes = {
       :area => 1,
-      :checked => false,
       :strengths => "value for strengths",
       :concerns => "value for concerns",
       :recent_changes => "value for recent_changes"

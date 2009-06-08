@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090607152637) do
+ActiveRecord::Schema.define(:version => 20090608144341) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(:version => 20090607152637) do
   create_table "consultation_form_concerns", :force => true do |t|
     t.integer  "area"
     t.integer  "consultation_form_id"
-    t.boolean  "checked"
     t.text     "strengths"
     t.text     "concerns"
     t.text     "recent_changes"
