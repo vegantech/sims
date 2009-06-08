@@ -13,8 +13,7 @@
       <tr>
         <td>
           <%= concern_fields.hidden_field :area %>
-          <%= concern_fields.check_box :checked %>
-          <%= concern_fields.label :checked, concern_fields.object.area_text %>
+          <%= concern_fields.label :area, concern_fields.object.area_text %>
         </td>
         <td>
           <%= concern_fields.text_area :strengths, :size => ConsultationFormConcern::FIELD_SIZE %>
