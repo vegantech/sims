@@ -21,6 +21,8 @@ class DailyJobs
     PrincipalOverride.destroy_all
     StudentComment.destroy_all
     RailmailDelivery.destroy_all if defined?RailmailDelivery
+    ConsultationForm.destroy_all
+    ConsultationFormRequest.destroy_all
     puts "Reset Demo"
   end
 

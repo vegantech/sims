@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090603021222) do
+ActiveRecord::Schema.define(:version => 20090607152637) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20090603021222) do
     t.string   "grade",      :limit => 16
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "end_year"
   end
 
   add_index "enrollments", ["school_id"], :name => "index_enrollments_on_school_id"

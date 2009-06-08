@@ -90,4 +90,10 @@ class School < ActiveRecord::Base
       user_school_assignment.save(false)
     end
   end
+
+
+
+  def enrollment_years 
+    enrollments.all(:select=>'distinct end_year', :order =>'end_year').collect{|e| e.end_year.to_s}.unshift(["All","*"])
+  end
 end
