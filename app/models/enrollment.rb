@@ -29,7 +29,10 @@ class Enrollment < ActiveRecord::Base
     
     scope = self.scoped(:conditions => conditions)
 
-    
+
+    scope = year_search(search_hash[:year], scope)
+
+   
     
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
@@ -117,5 +120,20 @@ class Enrollment < ActiveRecord::Base
 
   def self.grades
      find(:all,:select=>"distinct grade").collect(&:grade)
+  end
+
+  private
+
+  def self.year_search(year,scope)
+    if year  && year !='*'
+      if year == ''
+        end_year = nil
+      else
+        end_year = year.to_i
+      end
+      scope=scope.scoped(:conditions => {:end_year => end_year})
+    end
+
+    scope
   end
 end

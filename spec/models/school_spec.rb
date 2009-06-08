@@ -85,4 +85,25 @@ describe School do
      end
    end
 
+   describe 'enrollment_years' do
+     it 'should return all when empty' do
+       School.new.enrollment_years.should == [['All','*']]
+     end
+
+    it 'should return the years' do
+      sch=Factory(:school)
+      sch.enrollments.create!(:grade=>2)
+      sch.enrollments.create!(:grade=>2,:end_year => 2009)
+      sch.enrollments.create!(:grade=>2,:end_year => 2009)
+      sch.enrollments.create!(:grade=>2,:end_year => 2008)
+      sch.enrollments.create!(:grade=>2,:end_year => 2009)
+      sch.enrollments.create!(:grade=>2,:end_year => 2010)
+      sch.enrollments.create!(:grade=>2,:end_year => 2007)
+      sch.enrollment_years.should == [['All','*'],'','2007','2008','2009','2010']
+
+
+    end
+     
+   end
+
 end

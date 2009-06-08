@@ -113,6 +113,16 @@ Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)"$/ do |first, las
 	create_student first, last, student_grade, school
 end
 
+Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" in (\d+)$/ do |first, last, student_grade, school_name, year|
+	school = School.find_by_name(school_name)
+	s= create_student first, last, student_grade, school
+  s.enrollments.first.update_attribute(:end_year,year)
+  
+end
+
+
+
+
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with ignore_flag for "(.*)" with reason "(.*)"$/ do
   |first, last, student_grade, school_name, ignore_type, reason|
 	school = School.find_by_name(school_name)

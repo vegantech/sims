@@ -1,6 +1,11 @@
   <% form_tag({}, {:name => "student_search_form"}) do %>
     <fieldset>
       <div class="form_row">
+        <label for="search_criteria_year" class="fake_label">Year</label>
+        <%= select(:search_criteria,:year,@years) %>
+      </div>
+ 
+      <div class="form_row">
         <label for="search_criteria_grade" class="fake_label">Grade</label>
         <%= select(:search_criteria,:grade,@grades) %>
         <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade'%>

@@ -10,6 +10,8 @@
     <%= enrollment_form.collection_select(:school_id, current_district.schools, :id, :to_s ) %>
     <%=enrollment_form.label :grade %> 
     <%= enrollment_form.text_field :grade , :size=>5%>
+    <%=enrollment_form.label :end_year %> 
+    <%= enrollment_form.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %>
   </p>
   <% end %>
 
