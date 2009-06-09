@@ -220,3 +220,43 @@ district.rb
 state.rb
 
 
+
+
+
+
+--------------------
+User import
+
+(Constrained to a district)
+Import new users
+update existing
+remove ones not present (except where id_district is null)
+
+roles?
+
+
+
+
+
+split roles into separate files
+
+district_admin, regular_user, news_admin, content_admin, school_admin
+each file contains id_district
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

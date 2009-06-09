@@ -1,8 +1,48 @@
-require 'fastercsv'
-
-
 #students took 7 minutes
 #enrollments took 11 minutes,    db creates are 10 minutes of that
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def load_users_from_mmsd
 
