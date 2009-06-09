@@ -24,6 +24,7 @@ task :wip do
 If you\'re looking for the pilot, it\'s at <%=link_to "https://www.simspilot.org", "https://www.simspilot.org" %> <br /> The data in this demo gets reset weekly. '
   set :application, "sims-wip"
   set :domain, 'sims-wip.vegantech.com'
+  set :branch, 'master'
 
 end
 
@@ -31,7 +32,7 @@ desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
   set :application, "simspilot"
-  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
+  set :login_note, '<p>Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> </p> <p> If you need assistance, there is a chat link at the bottom of each page.  The System Admin (Shawn) will be online during the pilot sessions.</p> <p style="color: green;"> Please complete the survey, it is at the bottom of the screen, next to the chat link.  Thank you. </p>  '
 end
 
 desc "pilot2 for pilot on rimuhosting"
@@ -43,7 +44,7 @@ task :pilot2 do
   set :domain, 'simspilot.org'
   set :default_url, 'https://www.simspilot.org'
   set :application, "simspilot"
-  set :login_note, 'Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
+  set :login_note, '<p>Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> </p> <p> If you need assistance, there is a chat link at the bottom of each page.  The System Admin (Shawn) will be online during the pilot sessions.</p> <p style="color: green;"> Please complete the survey, it is at the bottom of the screen, next to the chat link.  Thank you. </p>  '
 
   after  :setup_domain_constant, :setup_default_url, :change_railmail_to_smtp 
 end
