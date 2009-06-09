@@ -1,8 +1,35 @@
 require 'fastercsv'
 
 
+#students took 7 minutes
+#enrollments took 11 minutes,    db creates are 10 minutes of that
 
 def load_users_from_mmsd
+
+#id_district,username,first_name,last_name,middle_name,suffix,email,passwordhash,salt    
+  
+  @district = District.find_by_abbrev 'mmsd'
+  users=@district.users
+  user_lines = FasterCSV.read("tmp/e/users.csv")
+  @user_lines = user_lines[2..-3]
+
+  #id_district, name
+  @user_lines.each do |user_line|
+    id_district = user_line[0].to_s.strip.to_i
+    username=user_line[1].strip.downcase
+    first=user_line[2].strip
+    last=user_line[3].strip
+    middle=user_line[4].strip
+    suffix=user_line[5].strip
+    email=user_line[6].strip
+    passwordhash=user_line[7].strip.to_i(16).to_s(16)
+    salt=user_line[8].strip
+    u=@district.users.build(:id_district => id_district, :username => username, :first_name => first, :middle_name => middle, 
+    :last_name => last, :suffix => suffix, :email => email, :passwordhash => passwordhash, :salt => salt)
+    u.send(:create_without_callbacks) 
+    
+  end
+ 
   #.to_i(16).to_s(16)
 end
 
@@ -10,6 +37,17 @@ end
 def load_schools_from_mmsd
   @district = District.find_by_abbrev 'mmsd'
   schools=@district.schools
+  school_lines = FasterCSV.read("tmp/e/schools.csv")
+  @school_lines = school_lines[2..-3]
+
+  #id_district, name
+  @school_lines.each do |school_line|
+    id_district = school_line[0].to_s.strip.to_i
+    name=school_line[1].strip
+    @district.schools.create!(:id_district => id_district, :name => name)
+  end
+  
+  
   
   
 
@@ -29,7 +67,7 @@ def load_enrollments_from_mmsd
   schools=School.find_all_by_district_id(@district.id, :select => "id_district, id")
   school_ids_by_id_district= schools.inject({}){|hash, school| hash[school.id_district]=school.id; hash}
 
-  enrollment_lines = FasterCSV.read("/home/shawn/enrollments.csv")
+  enrollment_lines = FasterCSV.read("tmp/e/enrollments.csv")
 
   valid_school_ids = @district.school_ids
 
@@ -37,10 +75,11 @@ def load_enrollments_from_mmsd
 
   @enrollment_lines.each do |enrollment_line|
     grade = enrollment_line[0].to_s.strip
+    year = enrollment_line[3].to_s.strip
     school_id = school_ids_by_id_district[enrollment_line[1].strip.to_i]
     student_id = student_ids_by_id_district[enrollment_line[2].strip.to_i]
 
-    Enrollment.create!(:school_id => school_id, :student_id => student_id, :grade => grade) if valid_school_ids.include? school_id
+    Enrollment.new(:school_id => school_id, :student_id => student_id, :grade => grade, :end_year => year) if valid_school_ids.include? school_id and student_id.present?
   end
   
 
@@ -56,9 +95,9 @@ def load_students_from_mmsd
     students_by_id_state[s.id_state] = s
   end
 
-  student_lines = FasterCSV.read("/home/shawn/students.csv");nil
+  student_lines = FasterCSV.read("tmp/e/students.csv");nil
   @student_header = student_lines.first
-  #["id_state       ", "id_district", "number         ", "last_name                               ", "first_name                         ", "birthdate           "]
+  #["id_state       ", "id_district", "number         ", "last_name                               ", "first_name                         ", "birthdate           ", "middle_name", "suffix"]
    
   @student_lines = student_lines[2..-3]
 
@@ -74,6 +113,8 @@ def load_students_from_mmsd
      number = student_line[2].strip
      last_name = student_line[3].strip
      first_name = student_line[4].strip
+     middle_name = student_line[6].strip
+     suffix = student_line[7].strip
      if student_line[5].strip == 'NULL'
        birthdate = nil
      else
@@ -102,6 +143,8 @@ def load_students_from_mmsd
      student.last_name = last_name
      student.first_name = first_name
      student.birthdate=birthdate
+     student.middle_name = middle_name
+     student.suffix = suffix
 
      student.save(false)
      student_ids_in_csv << student.id
