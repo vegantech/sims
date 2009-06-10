@@ -1,0 +1,10 @@
+When deleting a user,student,????  via dump or builder
+destroy if they didn't do anything 
+otherwise for user just make their password invalid
+
+delete_or_disable(if_associations)
+
+
+60% csv integrity threshold.   Manual intervention or flag required when lines < District.model.count*.6 and District.model.count > 6yy
+
+
