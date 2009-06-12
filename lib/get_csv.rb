@@ -74,25 +74,6 @@ def load_users_from_mmsd
 end
 
 
-def load_schools_from_mmsd
-  @district = District.find_by_abbrev 'mmsd'
-  schools=@district.schools
-  school_lines = FasterCSV.read("tmp/e/schools.csv")
-  @school_lines = school_lines[2..-3]
-
-  #id_district, name
-  @school_lines.each do |school_line|
-    id_district = school_line[0].to_s.strip.to_i
-    name=school_line[1].strip
-    @district.schools.create!(:id_district => id_district, :name => name)
-  end
-  
-  
-  
-  
-
-end
-
 
 def load_enrollments_from_mmsd
 

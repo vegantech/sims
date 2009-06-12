@@ -1,5 +1,7 @@
 class DistrictsController < ApplicationController
-  additional_write_actions :reset_password, :recreate_admin
+  additional_write_actions :reset_password, :recreate_admin, :bulk_import
+  additional_read_actions :bulk_import_form
+  
   # GET /districts
   def index
     @state = current_district.state
@@ -74,5 +76,29 @@ class DistrictsController < ApplicationController
     flash[:notice]= @district.recreate_admin!
     redirect_to(districts_url)
   end
+
+
+  def bulk_import_form
+    
+  end
+
+  def bulk_import
+    file = params[:import_file]
+    base_file_name = File.basename(file.original_filename).downcase 
+   
+    
+    if base_file_name == "users.csv"
+      ImportCSV::load_users_from_csv file.path,current_district
+      flash[:notice]= "Your import was successful"
+    elsif base_file_name =~ /\.zip$/
+      flash[:notice] = ImportCSV::process_zip file.path,current_district
+    else
+      flash[:notice] = "Unknown file"
+    end
+
+    
+    redirect_to root_url
+  end
+
 
 end

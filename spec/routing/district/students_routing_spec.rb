@@ -26,14 +26,6 @@ describe District::StudentsController do
       route_for(:controller => "district/students", :action => "destroy", :id => "1").should == {:path => "/district/students/1", :method => :delete}
     end
 
-    it 'should map #bulk_import_form' do
-      route_for(:controller => 'district/students', :action => 'bulk_import_form').should == {:path => '/district/students/bulk_import_form', :method => :get}
-    end
-
-    it 'should map #bulk_import' do
-      route_for(:controller => 'district/students', :action => 'bulk_import').should == {:path => '/district/students/bulk_import', :method => :post}
-    end
-
     
   end
 
@@ -64,14 +56,6 @@ describe District::StudentsController do
   
     it "should generate params for #destroy" do
       params_from(:delete, "/district/students/1").should == {:controller => "district/students", :action => "destroy", :id => "1"}
-    end
-
-    it 'should generate params for #bulk_import_form' do
-      params_from(:get, '/district/students/bulk_import_form').should == {:controller => 'district/students', :action => 'bulk_import_form'}
-    end
-
-    it 'should generate params for #bulk_import' do
-      params_from(:post, '/district/students/bulk_import').should == {:controller => 'district/students', :action => 'bulk_import'}
     end
 
   end

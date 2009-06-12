@@ -1,6 +1,4 @@
 class District::StudentsController < ApplicationController
-  additional_write_actions :bulk_import
-  additional_read_actions :bulk_import_form
 
   # GET /district_students
   # GET /district_students.xml
@@ -87,11 +85,4 @@ class District::StudentsController < ApplicationController
     end
   end
 
-  def bulk_import_form
-    
-  end
-
-  def bulk_import
-    redirect_to district_students_url
-  end
 end

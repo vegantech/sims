@@ -70,6 +70,7 @@ Given /^I am a district admin$/ do
   role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/students", :read_access=>true, :write_access=>true)
+  role.rights.create!(:controller=>"districts", :read_access=>true, :write_access=>true)
   default_user.roles=[role]
 end
 

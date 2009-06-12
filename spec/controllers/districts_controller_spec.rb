@@ -13,6 +13,15 @@ describe DistrictsController do
     controller.stub!(:current_district=>@district)
   end
 
+  describe 'responding to GET bulk_import_form' do
+    it 'should run' do
+      get :bulk_import_form
+      response.should render_template('bulk_import_form')
+      response.should be_success
+    end
+  end
+
+
   it 'should show index' do
     get :index
     response.should be_success

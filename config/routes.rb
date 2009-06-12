@@ -26,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
-    district.resources :students, :collection=>{:bulk_import_form => :get, :bulk_import =>:post}
+    district.resources :students
     district.resources :flag_categories, :name_prefix=>nil
   end
 
@@ -75,7 +75,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
 
 
-  map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put }
+  map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put }, :collection=>{:bulk_import_form => :get, :bulk_import =>:post}
 
   map.resources :states, :member => {:reset_password => :put, :recreate_admin => :put }
 

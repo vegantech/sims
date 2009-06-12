@@ -13,14 +13,6 @@ describe District::StudentsController do
     controller.stub!(:current_district => @district)
   end
   
-  describe 'responding to GET bulk_import_form' do
-    it 'should run' do
-      get :bulk_import_form
-      response.should render_template('bulk_import_form')
-      response.should be_success
-    end
-  end
-
   describe "responding to GET index" do
     before do
       @district.stub_association!(:students,:paged_by_last_name=>@mock_students=[mock_student])

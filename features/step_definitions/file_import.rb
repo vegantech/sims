@@ -31,3 +31,9 @@ end
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
    District.find_by_name(district_name).users.authenticate(username, password).should be_true
 end
+
+Then /^there should be (\d+) users in the district$/ do |num_users|
+    @district ||= @default_user.district
+    @district.users.count.should == num_users.to_i
+end
+  
