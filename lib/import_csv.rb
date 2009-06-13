@@ -8,6 +8,7 @@ class ImportCSV
   SCHOOL_HEADERS=[:id_district,:name].to_set
   STUDENT_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed].to_set
   ENROLLMENT_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year].to_set
+  ROLE_HEADERS = [:id_district].to_set
   
   STRIP_FILTER = lambda{ |field| field.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
@@ -84,6 +85,16 @@ class ImportCSV
       load_students_from_csv file_name
     when 'enrollments.csv'
       load_enrollments_from_csv file_name
+    when 'district_admins.csv'
+      load_user_roles_from_csv file_name, 'district_admin'
+    when 'news_admins.csv'
+      load_user_roles_from_csv file_name, 'news_admin'
+    when 'content_admins.csv'
+      load_user_roles_from_csv file_name, 'district_builder'
+    when 'school_admins.csv'
+      load_user_roles_from_csv file_name, 'school_admin'
+    when 'regular_users.csv'
+      load_user_roles_from_csv file_name, 'regular_user'
     else
       msg = "Unknown file #{base_file_name}"
     end
@@ -92,45 +103,23 @@ class ImportCSV
 
   end
       
-
-  def self.clean_users file_name
-  
-    input = File.open 'tmp/e/users.csv', 'r'
-    output = File.open 'tmp/e/clean_users.csv', 'w'
-    FasterCSV.filter input, output, DEFAULT_OPDEFAULT_CSV_OPTS do |row|
-
-         row.delete_if {true}   if row[0] =~  /^-+|\(\d+ rows affected\)$/   
-    end
-    input.close
-    output.close
-
-  end
-
-  def self.load_district_admins_from_csv file_name, district
-    @role=Role.find_by_name 'district_admin'
-    @existing_users = @role.users.all(:conditions => ["district_id = ? and id_district is not null", district.id],:select => "id, id_district")
-    id_districts_for_admins=[166669, 182393].compact
-         
-    @desired_users = district.users(true).all(:select => "id, id_district", 
-    :conditions => ["district_id = ? and id_district is not null and id_district in (?) ", district.id,
-    id_districts_for_admins])
-
-    #insert desired - existing
-    @role.users << (@desired_users  -@existing_users)
+  def load_user_roles_from_csv file_name, role
+    @role=Role.find_by_name(role) or return false
+    @existing_users = @role.users.all(:conditions => ["district_id = ? and id_district is not null", @district.id],:select => "id, id_district")
     
-    #remove existing - desired
-    @role.users.delete(@existing_users - @desired_users)
-  end
-
-  def load_schools_from_csv  file_name
-    @schools=School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh}
-    if load_from_csv file_name,  "school"
-      @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
-      bulk_update 'School'
-      bulk_insert 'School'
-    else
-      false
+    if load_from_csv file_name, "role"
+      @desired_users = district.users(true).all(:select => "id, id_district", 
+        :conditions => ["district_id = ? and id_district is not null and id_district in (?) ", @district.id,
+        @ids.compact]
+        )
+      
+      #insert desired - existing
+      @role.users << (@desired_users  -@existing_users)
+      
+      #remove existing - desired
+      @role.users.delete(@existing_users - @desired_users)
     end
+      
   end
 
 
@@ -203,8 +192,6 @@ class ImportCSV
    has_many.each{|e| table_names << e.table_name}
    habtm.each{|e| table_names << e.options[:join_table]}
    table_names.uniq!
-   
-
    
     Student.all( 
       :group => 'students.id',
@@ -388,6 +375,11 @@ class ImportCSV
     found_student = @students[line[:id_state].to_i] || @district.students.build
     process_line line, found_student
   end
+
+  def process_role_line line
+    @ids << line[:id_district]
+  end
+
 
   def process_line line,obj
     begin
