@@ -4,7 +4,9 @@ end
 
 When /^I import_users_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
   @district = District.find_by_name(district_name)
-  @command_return_val = ImportCSV::load_users_from_csv(filename,@district)
+  i=ImportCSV.new(filename, @district)
+  i.import
+  @command_return_val = i.messages.join(", ")
 end
 
 Given /^"([^\"]*)" should have "([^\"]*)" users*$/ do |district_name, num_users|
@@ -12,11 +14,11 @@ Given /^"([^\"]*)" should have "([^\"]*)" users*$/ do |district_name, num_users|
 end
 
 Then /^the command should have failed$/ do
-  @command_return_val.should_not be_true
+  @command_return_val.should_not match(/Successful import/)
 end
 
 Then /^the command should have succeeded$/ do
-  @command_return_val.should be_true
+  @command_return_val.should match(/Successful import/)
 end
 
 Then /^there should be a user with username "([^\"]*)"$/ do |username|

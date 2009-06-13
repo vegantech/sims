@@ -83,20 +83,9 @@ class DistrictsController < ApplicationController
   end
 
   def bulk_import
-    file = params[:import_file]
-    base_file_name = File.basename(file.original_filename).downcase 
-   
-    
-    if base_file_name == "users.csv"
-      ImportCSV::load_users_from_csv file.path,current_district
-      flash[:notice]= "Your import was successful"
-    elsif base_file_name =~ /\.zip$/
-      flash[:notice] = ImportCSV::process_zip file.path,current_district
-    else
-      flash[:notice] = "Unknown file"
-    end
-
-    
+    importer= ImportCSV.new params[:import_file], current_district
+    x=Benchmark.measure{importer.import}
+    flash[:notice]= "#{importer.messages.join(", ")} #{x}"
     redirect_to root_url
   end
 

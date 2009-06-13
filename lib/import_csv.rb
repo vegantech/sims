@@ -1,4 +1,4 @@
-module ImportCSV
+class ImportCSV
   require 'fastercsv'
  
   DELETE_COUNT_THRESHOLD = 5
@@ -8,52 +8,95 @@ module ImportCSV
   SCHOOL_HEADERS=[:id_district,:name].to_set
   STUDENT_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed].to_set
   
-  @strip = lambda{ |field| field.strip}
-  @nullify = lambda{ |field| field == "NULL" ? nil : field}
-  @hexify = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
+  STRIP_FILTER = lambda{ |field| field.strip}
+  NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
+  HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
 
-  @opts={:skip_blanks=>true, :headers =>true, :header_converters => [@strip,:symbol], :converters => [@strip,@nullify,@hexify]}
-
-
+  DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
 
 
-  def self.process_file file_name, district
+  FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv']
+
+  attr_reader :district, :messages, :filenames
+  
+  def initialize file, district
+    @district=district
+    @messages = []
+    @file = file
+    @f_path = "tmp/import_files/#{district.id}"
+  end
+
+  def import
+    identify_and_unzip
+    @filenames.sort_by {|e| ImportCSV::FILE_ORDER.index(e.downcase) || ImportCSV::FILE_ORDER.length + 1}.each {|f| process_file f}
+    
+    FileUtils.rm_rf @f_path
+  end
+
+  private
+
+  def identify_and_unzip
+    FileUtils.mkdir_p(@f_path)
+    if @file.respond_to?(:original_filename)
+      try_to_unzip(@file.path, @file.original_filename) or move_to_import_directory
+    else  #passed in a string
+      try_to_unzip(@file, @file) or @filenames =[@file]
+    end
+  end
+
+  def move_to_import_directory
+    base_filename = File.basename(@file.original_filename)
+    new_filename= File.join(@f_path,base_filename)
+    FileUtils.mv @file.path,new_filename
+    @filenames = [new_filename]
+  end
+
+  #string nonzip 
+  #string zip
+  #file nonzip
+  #file zip
+
+
+  def try_to_unzip filename, originalname
+    if originalname =~ /\.zip$/ 
+      @messages << "Problem with zipfile #{originalname}" unless
+        system "unzip  -qq -o #{filename} -d #{@f_path}"
+      @filenames = Dir.glob(File.join(@f_path, "*.csv")).collect
+    else
+      false
+    end
+
+  end
+
+
+
+
+  def process_file file_name
     base_file_name = File.basename(file_name)
 
-    msg ="Processed #{base_file_name}"
-    case base_file_name
+    case base_file_name.downcase
     when 'users.csv'
-      load_users_from_csv file_name, district
+      load_users_from_csv file_name
+    when 'schools.csv'
+      load_schools_from_csv file_name
+    when 'students.csv'
+      load_students_from_csv file_name
+    when 'enrollments.csv'
+      load_enrollments_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
 
-    msg
+    @messages << msg
 
   end
       
-   
-
-  def self.process_zip file_name, district
-    f_path = "tmp/import_files/#{district.id}"
-    FileUtils.mkdir_p(File.dirname(f_path))
-    system "unzip  -qq -o #{file_name} -d #{f_path}"
-
-    res=Dir.glob(File.join(f_path, "*.csv")).collect do |file|
-      process_file file, district
-    end
-
-    FileUtils.rm_rf f_path
-
-    res.join("\n")
-    
-  end
 
   def self.clean_users file_name
   
     input = File.open 'tmp/e/users.csv', 'r'
     output = File.open 'tmp/e/clean_users.csv', 'w'
-    FasterCSV.filter input, output, @opts do |row|
+    FasterCSV.filter input, output, DEFAULT_OPDEFAULT_CSV_OPTS do |row|
 
          row.delete_if {true}   if row[0] =~  /^-+|\(\d+ rows affected\)$/   
     end
@@ -63,13 +106,11 @@ module ImportCSV
   end
 
   def self.load_district_admins_from_csv file_name, district
-
-
     @role=Role.find_by_name 'district_admin'
     @existing_users = @role.users.all(:conditions => ["district_id = ? and id_district is not null", district.id],:select => "id, id_district")
     id_districts_for_admins=[166669, 182393].compact
          
-    @desired_users = district.users.all(:select => "id, id_district", 
+    @desired_users = district.users(true).all(:select => "id, id_district", 
     :conditions => ["district_id = ? and id_district is not null and id_district in (?) ", district.id,
     id_districts_for_admins])
 
@@ -78,36 +119,51 @@ module ImportCSV
     
     #remove existing - desired
     @role.users.delete(@existing_users - @desired_users)
-   
-    
-    
-
-    
-    
   end
 
-  def self.load_schools_from_csv  file_name, district
-    @schools=School.find_all_by_district_id(district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh}
-    if load_from_csv file_name, district, "school"
-      district.schools.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+  def load_schools_from_csv  file_name
+    @schools=School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh}
+    if load_from_csv file_name,  "school"
+      @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+      bulk_update 'School'
+      bulk_insert 'School'
     else
       false
     end
   end
+
+  def load_enrollments_from_csv  file_name
+    @schools = School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh}
+    @students = Student.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
+    if load_from_csv file_name,  "school"
+      @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+      bulk_update 'School'
+      bulk_insert 'School'
+    else
+      false
+    end
+  end
+
+
 
   
  
-  def self.load_students_from_csv file_name, district
-    @students = district.students.inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
-    if load_from_csv file_name, district, "student"
-      district.students.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+  def load_students_from_csv file_name
+    #136.140547037125 new import, 88 running it again
+    
+    @students = Student.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
+    if load_from_csv file_name, "student"
+      #TODO deletion should only occur for students that have no activity
+      @district.students.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+      bulk_update 'Student'
+      bulk_insert 'Student'
     else
       false
     end
   end
     
 
-  def self.load_users_from_csv file_name, district
+  def load_users_from_csv file_name
 
     #with db
     #=> #<Benchmark::Tms:0x4344ffc8 @real=1669.30910181999, @utime=1398.7, @cstime=0.0, @cutime=0.0, @label="", @total=1593.06, @stime=194.36>
@@ -120,43 +176,104 @@ module ImportCSV
     # all in a transactiona
     # @real=96.9692440032959 same as above, but in development.       all tests so far are using sqlite3
 
+    #46 seconds when redoing duplicate file
+    #131.687636852264 seconds for full update
     
-    
-    @users = User.find_all_by_district_id(district.id).inject({}) {|hsh,obj| hsh[obj.username]=obj; hsh}
-    if load_from_csv file_name, district, "user"
-      #  @updates.each{|i| i.send(:update_without_callbacks); puts 'update'}
-        district.users.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all  #delete
+    @users = User.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.username]=obj; hsh}
+    if load_from_csv file_name,  "user"
+      
+        @district.users.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all  #delete
+        #TODO deletion should only occur for users that have no activity
         #delete must be before insert, since they don't have ids yet
-        
-        User.transaction do
-          @inserts.each do |i|
-           i.send(:create_without_callbacks)
-         end
-        end
+
+        bulk_update 'User'  #update
+        bulk_insert 'User'
     else
       false
     end
   end
 
-  def self.load_from_csv file_name, district, model_name
-    
-    constant_name = "#{model_name.upcase}_HEADERS"
-    puts "invalid object" and return false unless ImportCSV.const_defined?(constant_name)
-    
-    constant = "ImportCSV::#{constant_name}".constantize
+  def bulk_insert klass_name
+    klass_name.constantize.transaction do
+      @inserts.each do |i|
+        i.send(:create_without_callbacks)
+      end
+    end
 
-    if File.exist?(file_name)
-      lines = FasterCSV.read(file_name, @opts)
+  end
+
+  def bulk_update klass_name
+    klass_name.constantize.transaction do
+      @updates.each do |obj|
+        obj.send(:update_without_callbacks) if obj.changed?
+      end
+    end
+  end
+  
+
+
+  def get_constant model_name
+    constant_name = "#{model_name.upcase}_HEADERS"
+     if ImportCSV.const_defined?(constant_name) 
+      "ImportCSV::#{constant_name}".constantize
+     else
+      @messages <<  "invalid object #{model_name}" 
+      false 
+    end
+   
+  end
+  
+  def file_exists? file_name,model_name
     
-      
-      if constant.to_set ==lines.headers.to_set  #expected headers are present in any order with no extra ones
-        model_count = district.send(model_name.pluralize).count
-        
-        if lines.length < (model_count * DELETE_PERCENT_THRESHOLD  ) && model_count > DELETE_COUNT_THRESHOLD
-          puts "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
-          return false
-        end
+    if File.exist?(file_name)
+      true
+    else
+      @messages << "#{file_name} did not exist when attempting to load #{model_name.pluralize} from csv"
+      false
+    end
+
+  end
+
+  def validate_params_and_set_constant file_name, model_name
+    if  file_exists? file_name,model_name
+      @constant=get_constant model_name
+    end
+  end
+
+  def valid_lines? lines, model_name
+    headers_match?(lines) and reasonable_size?(lines, model_name)
+  end
+
+  def reasonable_size?(lines, model_name)
+    model_count = @district.send(model_name.pluralize).count
+    if lines.length < (model_count * DELETE_PERCENT_THRESHOLD  ) && model_count > DELETE_COUNT_THRESHOLD
+      @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
+      false
+    else
+      true
+    end
  
+  end
+
+  def headers_match? lines
+    if @constant.to_set ==lines.headers.to_set  #expected headers are present in any order with no extra ones
+      true
+    else
+      @messages <<  "invalid header #{lines.headers.inspect} it should be #{@constant.to_set.inspect}"
+      false
+    end
+        
+  end
+    
+  
+  def load_from_csv file_name, model_name
+   
+    validate_params_and_set_constant file_name, model_name
+    
+    if @constant
+      lines = FasterCSV.read(file_name, DEFAULT_CSV_OPTS)
+      return false unless valid_lines?(lines, model_name)
+
         @ids= []
         @updates = []
         @inserts = []
@@ -164,36 +281,33 @@ module ImportCSV
         lines.each do |line|
           next  if line[0] =~  /^-+|\(\d+ rows affected\)$/   
          #some CSV such as sql server appends a blank line and a rowcount
-          self.send("process_#{model_name}_line", district, line)
+          self.send("process_#{model_name}_line", line)
         end
-      else
-        puts "invalid header #{lines.headers.inspect}"
-        return false
-      end
-    else
-      puts("#{file_name} did not exist when attempting to load #{model_name.pluralize} from csv")
-      return false
+
+      @messages << "Successful import of #{File.basename(file_name)}"
     end
-    true
   end
   
-  def self.process_user_line district, line
-    found_user = @users[line[:username]]  || district.users.build
+  def process_user_line  line
+    found_user = @users[line[:username]]  || @district.users.build
     process_line line, found_user
   end
 
-  def self.process_school_line district,line
-    found_school = @schools[line[:id_district].to_i] || district.schools.build
+  def process_school_line line
+    found_school = @schools[line[:id_district].to_i] || @district.schools.build
     process_line line, found_school
   end
 
-  def self.process_student_line district,line
-    found_student = @students[line[:id_state].to_i] || district.students.build
+  def process_student_line line
+    found_student = @students[line[:id_state].to_i] || @district.students.build
     process_line line, found_student
-
   end
 
-  def self.process_line line,obj
+  def process_enrollment_line
+    found_enrollment = @enrollments[line[:id_district].to_i] || Enrollment.new
+  end
+
+  def process_line line,obj
     begin
       obj.attributes = line.to_hash
     rescue
@@ -204,9 +318,9 @@ module ImportCSV
       obj.created_at = Time.now if obj.respond_to?(:created_at)
       @inserts.push obj
     else
-      obj.send(:update_without_callbacks) if obj.changed?
+      @updates.push obj
+      @ids << obj.id
     end
-    @ids << obj.id
 
 
   end
