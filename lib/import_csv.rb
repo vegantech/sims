@@ -7,6 +7,7 @@ class ImportCSV
   USER_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt].to_set
   SCHOOL_HEADERS=[:id_district,:name].to_set
   STUDENT_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed].to_set
+  ENROLLMENT_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year].to_set
   
   STRIP_FILTER = lambda{ |field| field.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
@@ -20,7 +21,7 @@ class ImportCSV
   attr_reader :district, :messages, :filenames
   
   def initialize file, district
-    @district=district
+    @district = district
     @messages = []
     @file = file
     @f_path = "tmp/import_files/#{district.id}"
@@ -132,15 +133,63 @@ class ImportCSV
     end
   end
 
+
+  def ids_by_id_district klass
+    klass.connection.select_all("select id, id_district from #{klass.table_name} where district_id = #{@district.id}").inject({}) do |hsh,obj| 
+      hsh[obj["id_district"].to_i]=obj["id"].to_i
+      
+       hsh
+    end
+  end
+
+  
   def load_enrollments_from_csv  file_name
-    @schools = School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh}
-    @students = Student.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
-    if load_from_csv file_name,  "school"
-      @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
-      bulk_update 'School'
-      bulk_insert 'School'
+    enrollments_from_db = Enrollment.all(:select => 'students.id_district as student_id_district, schools.id_district as school_id_district, enrollments.*',:joins=>[:student,:school],
+    :conditions => ["schools.id_district is not null and schools.district_id = :district_id and students.id_district is not null and students.district_id = :district_id",
+    {:district_id => @district.id}])
+
+    
+
+    @enrollments = enrollments_from_db.inject({}) do |hsh,obj| 
+        hash_key_array = [obj[:student_id_district].to_i,obj[:school_id_district].to_i,obj[:end_year],obj[:grade]]
+        
+        hsh[ hash_key_array ] = obj[:id] ; hsh
+      end
+    
+
+    @school_ids_by_id_district = ids_by_id_district School
+  
+
+    puts " @school_ids_by_id_district is #{ @school_ids_by_id_district.inspect}"
+    
+    @student_ids_by_id_district = ids_by_id_district Student
+
+    puts " @studentids_by_id_district is #{ @student_ids_by_id_district.inspect}"
+    if load_from_csv file_name, "enrollment"
+      #delete from search above where id not in @updates
+      deletes = @enrollments.values - @updates
+      Enrollment.delete(deletes)
+
+      bulk_insert 'Enrollment'
+    end
+        
+  end
+
+  def process_enrollment_line line
+    student_id_district =  line[:student_id_district].to_i
+    school_id_district =  line[:school_id_district].to_i
+    grade = line[:grade]
+    end_year = line[:end_year].to_i
+    hash_key= [student_id_district, school_id_district, end_year, grade]
+
+    
+    found_enrollment_id = @enrollments[hash_key]
+    if found_enrollment_id
+      @updates << found_enrollment_id
     else
-      false
+      student_id = @student_ids_by_id_district[student_id_district]
+      school_id = @school_ids_by_id_district[school_id_district]
+      @inserts << Enrollment.new(:student_id => student_id, :school_id =>school_id, :grade => grade, :end_year => end_year)
     end
   end
 
@@ -272,7 +321,10 @@ class ImportCSV
     
     if @constant
       lines = FasterCSV.read(file_name, DEFAULT_CSV_OPTS)
-      return false unless valid_lines?(lines, model_name)
+      if model_name != "enrollment"  #TODO THIS IS A HACK FOR NOW
+        return false unless valid_lines?(lines, model_name) 
+      end
+      
 
         @ids= []
         @updates = []
@@ -301,10 +353,6 @@ class ImportCSV
   def process_student_line line
     found_student = @students[line[:id_state].to_i] || @district.students.build
     process_line line, found_student
-  end
-
-  def process_enrollment_line
-    found_enrollment = @enrollments[line[:id_district].to_i] || Enrollment.new
   end
 
   def process_line line,obj

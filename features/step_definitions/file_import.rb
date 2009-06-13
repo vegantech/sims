@@ -38,4 +38,32 @@ Then /^there should be (\d+) users in the district$/ do |num_users|
     @district ||= @default_user.district
     @district.users.count.should == num_users.to_i
 end
+
+
+Given /^a student "([^\"]*)"$/ do |arg1|
+  @student = Factory(:student,:district => @district, :id_district => 31337)
+end
+
+Given /^a school "([^\"]*)"$/ do |arg1|
+  @school = Factory(:school,:district=> @district, :id_district => 42)
+end
+
+Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |arg1, arg2, grade|
+  @student.enrollments.create(:school=>@school, :grade=>grade, :end_year => 2009)
+end
+
+When /^I import_enrollments_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district|
+  i=ImportCSV.new(filename, @district)
+  i.import
+  @command_return_val = i.messages.join(", ")
+end
+
+Then /^"([^\"]*)" should have "([^\"]*)" enrollments$/ do |arg1, enrollment_count|
+  @school.enrollments.count.should ==  enrollment_count.to_i
+end
+
+Then /^"([^\"]*)" has \[(.*)\] for grades$/ do |arg1, grades|
+  @school.enrollments.collect(&:grade).sort.join(", ").should == grades
+end
+            
   
