@@ -144,6 +144,10 @@ class ImportCSV
 
   
   def load_enrollments_from_csv  file_name
+    #<Benchmark::Tms:0x430d52a8 @real=144.996875047684, @utime=141.65, @cstime=0.0, @cutime=0.0, @label="", @total=144.78, @stime=3.13>  all insert
+    #<Benchmark::Tms:0x45067ecc @real=74.2686920166016, @utime=73.64, @cstime=0.0, @cutime=0.0, @label="", @total=74.14, @stime=0.5>  noop
+    #<Benchmark::Tms:0x450a3b70 @real=149.988860845566, @utime=148.22, @cstime=0.0, @cutime=0.0, @label="", @total=149.86, @stime=1.64> 1/2 insert 1/2 update
+    
     enrollments_from_db = Enrollment.all(:select => 'students.id_district as student_id_district, schools.id_district as school_id_district, enrollments.*',:joins=>[:student,:school],
     :conditions => ["schools.id_district is not null and schools.district_id = :district_id and students.id_district is not null and students.district_id = :district_id",
     {:district_id => @district.id}])
@@ -158,13 +162,8 @@ class ImportCSV
     
 
     @school_ids_by_id_district = ids_by_id_district School
-  
-
-    puts " @school_ids_by_id_district is #{ @school_ids_by_id_district.inspect}"
-    
     @student_ids_by_id_district = ids_by_id_district Student
 
-    puts " @studentids_by_id_district is #{ @student_ids_by_id_district.inspect}"
     if load_from_csv file_name, "enrollment"
       #delete from search above where id not in @updates
       deletes = @enrollments.values - @updates
@@ -195,6 +194,28 @@ class ImportCSV
 
 
 
+  def student_ids_with_associations ids=[]
+   has_many = Student.reflect_on_all_associations(:has_many).select{|e| e.source_reflection.blank?}
+   habtm = Student.reflect_on_all_associations(:has_and_belongs_to_many)
+
+   table_names = []
+
+   has_many.each{|e| table_names << e.table_name}
+   habtm.each{|e| table_names << e.options[:join_table]}
+   table_names.uniq!
+   
+
+   
+    Student.all( 
+      :group => 'students.id',
+      :select => "students.id", 
+      :joins => table_names.collect{|tn| "left outer join #{tn} on students.id = #{tn}.student_id"}.join(" "), 
+      :having => table_names.collect{|tn| "count(#{tn}.student_id) >0"}.join(" or "),
+      :conditions => {:id => ids}
+      ).collect(&:id)
+
+  end
+
   
  
   def load_students_from_csv file_name
@@ -203,8 +224,20 @@ class ImportCSV
     @students = Student.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
     if load_from_csv file_name, "student"
       #TODO deletion should only occur for students that have no activity
-      @district.students.scoped(:conditions => ["id_district is not null and id not in (?)", @ids]).destroy_all
+      #Student.scoped(:conditions => ["district_id = ? and id_district is not null and id not in (?)",@district.id, @ids]).destroy_all
       bulk_update 'Student'
+      students_ids = @students.values.collect(&:id)
+
+      # Student.delete(students_ids - @ids)
+      to_delete_or_disable = (students_ids - @ids)
+
+      to_disable =student_ids_with_associations to_delete_or_disable
+      to_delete = to_delete_or_disable - to_disable
+      #      ,to_delete = to_delete_or_disable.partition{|i| Enrollment.exists?(:student_id => i)}
+
+      Student.delete(to_delete)
+      Student.update_all("district_id = null, id_district = null", "id in (#{to_disable})")
+      #      Student.connection.execute "update students set (district_id, id_district) = (null, null) where students.id in (#{to_disable})"
       bulk_insert 'Student'
     else
       false
@@ -255,6 +288,7 @@ class ImportCSV
     klass_name.constantize.transaction do
       @updates.each do |obj|
         obj.send(:update_without_callbacks) if obj.changed?
+        @ids << obj.id
       end
     end
   end

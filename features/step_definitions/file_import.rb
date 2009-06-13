@@ -41,7 +41,7 @@ end
 
 
 Given /^a student "([^\"]*)"$/ do |arg1|
-  @student = Factory(:student,:district => @district, :id_district => 31337)
+  @student = Factory(:student,:district => @district, :id_district => 31337, :id_state => 33)
 end
 
 Given /^a school "([^\"]*)"$/ do |arg1|
@@ -65,5 +65,20 @@ end
 Then /^"([^\"]*)" has \[(.*)\] for grades$/ do |arg1, grades|
   @school.enrollments.collect(&:grade).sort.join(", ").should == grades
 end
-            
+
+When /^I import_csv with "([^\"]*)"$/ do |filename|
+  i=ImportCSV.new(filename, @district)
+  i.import
+  @command_return_val = i.messages.join(", ")
+end
+
+ 
+Then /^there should be "([^\"]*)" students*$/ do |count|
+  @district.students(reload=true).count.should == count.to_i 
+end
+  
+Then /^the system should have "([^\"]*)" students not assigned to districts$/ do |count|
+  Student.scoped_by_district_id(nil).count.should == count.to_i
+
+end
   
