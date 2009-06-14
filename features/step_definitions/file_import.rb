@@ -82,3 +82,8 @@ Then /^the system should have "([^\"]*)" students not assigned to districts$/ do
 
 end
   
+
+
+Given /^no other students$/ do
+   Student.delete_all
+end

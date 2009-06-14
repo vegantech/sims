@@ -33,5 +33,17 @@ describe ImportCSV do
     end
 
   end
+
+  describe 'sort_files' do
+    # ['schools.csv', 'students.csv', 'users.csv']
+    
+    it 'should sort with the required files first' do
+      i=ImportCSV.new '', District.new
+      i.send(:sorted_filenames, ['dog.csv', 'users.csv','schools.csv']).should == ['schools.csv', 'users.csv', 'dog.csv']
+      i.send(:sorted_filenames, ['/tmp/Dog.csv', '/a/users.csv','/b/SChOOls.csv']).should == ['/b/SChOOls.csv', '/a/users.csv', '/tmp/Dog.csv']
+    end
+  end
+
+
 end
 

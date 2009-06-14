@@ -20,7 +20,9 @@ Feature: CSV Import of Students
   #  Then it should delete the student (not destroy, and this should be done in bulk)  #also for district admin builder
 
   Scenario: Import where student is deleted but has tables referencing them
-    Given a student "Ignored Parameter"
+    Given no other students
+    And a student "Ignored Parameter"
+    And the system should have "0" students not assigned to districts
     And enrollment "Ignored Parameter" in "Ignored Parameter" for grade "change_me"
     When I import_csv with "test/csv/students/empty/students.csv"
     Then the command should have succeeded

@@ -9,6 +9,10 @@ class ImportCSV
   STUDENT_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed].to_set
   ENROLLMENT_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year].to_set
   ROLE_HEADERS = [:id_district].to_set
+  SYSTEM_FLAG_HEADERS = [:student_id_district, :category, :reason]
+
+  
+  SKIP_SIZE_COUNT = ['enrollment','system_flag','role']
   
   STRIP_FILTER = lambda{ |field| field.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
@@ -30,12 +34,19 @@ class ImportCSV
 
   def import
     identify_and_unzip
-    @filenames.sort_by {|e| ImportCSV::FILE_ORDER.index(e.downcase) || ImportCSV::FILE_ORDER.length + 1}.each {|f| process_file f}
+    sorted_filenames.each {|f| process_file f}
     
     FileUtils.rm_rf @f_path
   end
 
   private
+
+  def sorted_filenames filenames=@filenames
+    filenames.sort_by do |f|
+      FILE_ORDER.index(File.basename(f.downcase))  ||
+      FILE_ORDER.length + 1
+    end
+  end
 
   def identify_and_unzip
     FileUtils.mkdir_p(@f_path)
@@ -79,7 +90,7 @@ class ImportCSV
     case base_file_name.downcase
     when 'users.csv'
       load_users_from_csv file_name
-    when 'schools.csv'
+      when 'schools.csv'
       load_schools_from_csv file_name
     when 'students.csv'
       load_students_from_csv file_name
@@ -95,6 +106,8 @@ class ImportCSV
       load_user_roles_from_csv file_name, 'school_admin'
     when 'regular_users.csv'
       load_user_roles_from_csv file_name, 'regular_user'
+      #    when 'system_flags.csv'
+      #load_system_flags_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
@@ -102,7 +115,8 @@ class ImportCSV
     @messages << msg
 
   end
-      
+
+     
   def load_user_roles_from_csv file_name, role
     @role=Role.find_by_name(role) or return false
     @existing_users = @role.users.all(:conditions => ["district_id = ? and id_district is not null", @district.id],:select => "id, id_district")
@@ -129,6 +143,22 @@ class ImportCSV
       
        hsh
     end
+  end
+
+  def load_system_flags_from_csv file_name
+    @student_ids_by_id_district = ids_by_id_district Student
+
+    if load_from_csv file_name, 'system_flag'
+      
+      SystemFlag.scoped(:include => :student, :conditions => ["students.district_id => ? and students.id_district is not null", @district.id]).delete_all
+      bulk_insert 'SystemFlag'
+      
+      
+    
+
+    end
+    
+
   end
 
   
@@ -183,6 +213,21 @@ class ImportCSV
 
 
 
+  def process_system_flags_line
+    category = line[:category].downcase
+    student_id_district =  line[:student_id_district].to_i
+    if flag:FLAGTYPES.keys.include?(category)
+      student_id = @student_ids_by_id_district[student_id_district]
+      @inserts << SystemFlag.new(:student_id => student_id, :category => category, :reason => line[:reason])
+      
+      
+    end
+  end
+
+
+
+  
+
   def student_ids_with_associations ids=[]
    has_many = Student.reflect_on_all_associations(:has_many).select{|e| e.source_reflection.blank?}
    habtm = Student.reflect_on_all_associations(:has_and_belongs_to_many)
@@ -230,6 +275,15 @@ class ImportCSV
       false
     end
   end
+ 
+  def load_schools_from_csv file_name
+    @schools = School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh }
+    if load_from_csv file_name, 'school'
+      @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all
+      bulk_update 'School'
+      bulk_insert 'School'
+    end
+  end
     
 
   def load_users_from_csv file_name
@@ -251,11 +305,11 @@ class ImportCSV
     @users = User.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.username]=obj; hsh}
     if load_from_csv file_name,  "user"
       
+        bulk_update 'User'  #update
         @district.users.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all  #delete
         #TODO deletion should only occur for users that have no activity
         #delete must be before insert, since they don't have ids yet
 
-        bulk_update 'User'  #update
         bulk_insert 'User'
     else
       false
@@ -275,7 +329,6 @@ class ImportCSV
     klass_name.constantize.transaction do
       @updates.each do |obj|
         obj.send(:update_without_callbacks) if obj.changed?
-        @ids << obj.id
       end
     end
   end
@@ -311,7 +364,7 @@ class ImportCSV
   end
 
   def valid_lines? lines, model_name
-    headers_match?(lines) and reasonable_size?(lines, model_name)
+    headers_match?(lines) and (SKIP_SIZE_COUNT.include?(model_name) or reasonable_size?(lines, model_name))
   end
 
   def reasonable_size?(lines, model_name)
@@ -366,6 +419,7 @@ class ImportCSV
     process_line line, found_user
   end
 
+
   def process_school_line line
     found_school = @schools[line[:id_district].to_i] || @district.schools.build
     process_line line, found_school
@@ -380,12 +434,11 @@ class ImportCSV
     @ids << line[:id_district]
   end
 
-
   def process_line line,obj
     begin
       obj.attributes = line.to_hash
     rescue
-      puts line.inspect
+      @messages <<  "problem with #{line.inspect}, not imported"
     end
     if obj.new_record?
       obj.updated_at = Time.now if obj.respond_to?(:updated_at)
