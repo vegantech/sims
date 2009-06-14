@@ -1,5 +1,16 @@
 <h1>Listing users</h1>
 
+<% form_tag district_users_path, :method=>:get do %>
+  <%=label_tag :last_name, "Last Name, Any part"%>
+  <%=text_field_tag :last_name %>
+  <%=submit_tag "Search by Last Name", :name=>nil %>
+<% end %>
+
+<%= will_paginate @students %>
+
+
+
+
 <table>
   <tr>
     <th>Username</th>

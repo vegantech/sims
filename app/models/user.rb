@@ -85,6 +85,14 @@ class User < ActiveRecord::Base
 
   end
 
+  def self.paged_by_last_name(last_name="", page="1")
+    paginate :per_page => 25, :page => page, 
+      :conditions=> ['last_name like ?', "%#{last_name}%"],
+      :order => 'last_name'
+  end
+
+
+  
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
   #default prompt is "*-Filter by Group Member"
@@ -135,7 +143,7 @@ class User < ActiveRecord::Base
 
   def allowed_password_hashes(password)
     district_key = district.key if district
-    next_key = self.district.next_key if self.district
+    next_key = self.district.previous_key if self.district
     
     bare = User.encrypted_password(password,salt, nil, nil)
     with_sys_key_and_no_district_key = User.encrypted_password(password,salt, nil)

@@ -1,7 +1,8 @@
 <h2>Roles</h2>
   <% current_district.available_roles.each do |role| %>
       <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
-      <%=label_tag dom_id(role), role%>
+      <%=label_tag dom_id(role), role.to_s.titleize%>
+      <%= help_popup(Role::SYSTEM_ROLES[role.name]) %>
 <% end %>
 <%=hidden_field_tag "user[role_ids][]",""%>
 

@@ -43,7 +43,7 @@ describe User do
 
       describe 'allowed_password_hashes' do
         it 'should cover all possibilities'  do
-          district = Factory(:district, :key => dk='ddd_kk', :next_key => next_dk = 'eee_ll')
+          district = Factory(:district, :key => dk='ddd_kk', :previous_key => next_dk = 'eee_ll')
           salt = 'Salt'
           u = Factory(:user, :district => district, :salt => salt)
           password='zow#3vVc'.downcase

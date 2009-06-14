@@ -4,9 +4,14 @@
   <%= render :partial => f %>
 
   <p>
+    <%= f.label :key, 'Password Hash Key' %>
+    <%= f.text_field :key %>
+  </p>
+  <p>
     <%= f.label :logo, 'Attach or replace logo 200x40px ' %>
     <%= f.file_field :logo %>
   </p>
+
   <%- if @district.logo? -%>
     <div>
       <%= f.label(:delete_logo, 'Delete logo') %>

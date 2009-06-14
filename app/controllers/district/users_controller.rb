@@ -2,11 +2,10 @@ class District::UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = current_district.users
+    @users = current_district.users.paged_by_last_name(params[:last_name],params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @users }
     end
   end
 
@@ -19,7 +18,6 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @user }
     end
   end
 
@@ -38,11 +36,9 @@ class District::UsersController < ApplicationController
       if @user.save
         flash[:notice] = 'User was successfully created.'
         format.html { redirect_to(district_users_url)}
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         @schools = current_district.schools
         format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -58,11 +54,9 @@ class District::UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         flash[:notice] = 'User was successfully updated.'
         format.html { redirect_to(district_users_url)}
-        format.xml  { head :ok }
       else
         @schools = current_district.schools
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -75,7 +69,6 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(district_users_url) }
-      format.xml  { head :ok }
     end
   end
 end

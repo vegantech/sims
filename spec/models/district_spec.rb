@@ -178,4 +178,33 @@ describe District do
 
 
   end
+
+  describe 'key validation' do
+    it 'should fail validation if there is a previous key and the key is changed' do
+      @local_district.previous_key = 'different'
+      @local_district.key = nil
+      @local_district.save!
+
+      @local_district.key = 'dog'
+      @local_district.should_not be_valid
+
+      @local_district.previous_key = ''
+      @local_district.should be_valid
+
+      @local_district.save
+      @local_district.key= 'cat'
+      @local_district.save
+
+      @local_district.previous_key.should == 'dog'
+
+      
+      
+      
+
+      
+      
+
+    end
+
+  end
 end

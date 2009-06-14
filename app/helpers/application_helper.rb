@@ -83,7 +83,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();")
+    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();") unless msg.blank?
   end
 
   def spinner(suffix = nil)

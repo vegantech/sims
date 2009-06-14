@@ -34,12 +34,17 @@
   <%= form.text_field :suffix %>
 </p>
 
-
-
 <p>
   <%= form.label :email %><br />
   <%= form.text_field :email %>
 </p>
+
+<p>
+  <%= form.label :id_district, "Primary key in your Student Information System" %><br />
+  <%= form.text_field :id_district %>
+</p>
+
+
 
 
 <%= render :partial => 'roles', :locals => {:form => form} %>

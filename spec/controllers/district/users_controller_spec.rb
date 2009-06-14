@@ -15,21 +15,15 @@ describe District::UsersController do
   end
 
   describe "responding to GET index" do
+    before do
+      @district.stub_association!(:users,:paged_by_last_name=>[mock_user])
+    end
+
     it "should expose all users as @users" do
-      @district.should_receive(:users).and_return([mock_user]) 
       get :index
       assigns[:users].should == [mock_user]
     end
 
-    describe "with mime type of xml" do
-      it "should render all users as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        @district.should_receive(:users).and_return(users = mock("Array of Users"))
-        users.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    end
   end
 
   describe "responding to GET new" do

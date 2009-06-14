@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090608185201) do
+ActiveRecord::Schema.define(:version => 20090614175117) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(:version => 20090608185201) do
     t.datetime "logo_updated_at"
     t.string   "marked_state_goal_ids"
     t.string   "key",                   :default => ""
-    t.string   "next_key",              :default => ""
+    t.string   "previous_key",          :default => ""
   end
 
   add_index "districts", ["state_id"], :name => "index_districts_on_state_id"
