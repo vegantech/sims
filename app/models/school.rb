@@ -26,9 +26,9 @@ class School < ActiveRecord::Base
   has_many :user_school_assignments, :dependent => :destroy
   has_many :users, :through=> :user_school_assignments
   has_many :quicklist_items, :dependent => :destroy
-  has_many :team_schedulers
+  has_many :team_schedulers, :dependent => :destroy
   has_many :team_scheduler_users, :through => :team_schedulers, :class_name => 'User', :source => :user
-  has_many :school_teams
+  has_many :school_teams, :dependent => :destroy
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
