@@ -1,25 +1,46 @@
-<p>
-  <%= form.label :name %><br />
-  <%= form.text_field :name %>
-</p>
-<p>
-  <%= form.label :id_district, id_district_desc(form.object) %><br />
-  <%= form.text_field :id_district %>
-</p>
-<p>
-  <%= form.label :id_state, id_state_desc(form.object) %><br />
-  <%= form.text_field :id_state %>
-</p>
-<p>
-  <%= form.label :id_country, id_country_desc(form.object) %><br />
-  <%= form.text_field :id_country %>
-</p>
+<div class = "new_form" >
+  <%= form.error_messages %>
+  <fieldset>
 
-<h2>Explicit User Assignments</h2>
-  (All students in district implies regular access to all schools)
-<div id="user_school_assignments">
-  <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>
+  <div class = "form_row">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class = "form_row">
+    <%= form.label :id_district, "SIS Primary Key" %>
+    <%= form.text_field :id_district %>
+    <%= help_popup("The primary key used in your Student Information System for the school.  #{id_district_desc(form.object)}") %>
+  </div>
+  <div class = "form_row">
+    <%= form.label :id_state, "DPI school id" %>
+    <%= form.text_field :id_state %>
+    <%= help_popup("#{id_state_desc(form.object)}.  It probably isn't required." ) %>
+    
+  </div>
+<!--
+  <div class = "form_row">
+    <%= form.label :id_country, id_country_desc(form.object) %><br />
+    <%= form.text_field :id_country %>
+  </div>
+-->
+
+
+  <h2>Explicit User Assignments</h2>
+    (All students in district implies regular access to all schools)  The format of this may change.    Be sure to hit update after adding, changing, or removing user school assignments.
+  <table>
+    <thead>
+      <tr><th>User</th>
+      <th>School Admin
+      <%= help_popup("A school admin can administer the quicklist, create groups, and assign students and users to groups for this school.   The user must also have the school_admin role assigned") %> </th>
+      
+    </thead>
+    <tbody id = "user_school_assignments">
+        <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= add_user_school_assignment_link "Add a user" %>
+  </div>
+  </fieldset>
 </div>
-<p>
-  <%= add_user_school_assignment_link "Add a user" %>
-</p>

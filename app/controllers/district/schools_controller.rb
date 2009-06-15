@@ -18,7 +18,7 @@ class District::SchoolsController < ApplicationController
     # uncomment this to start off creating a user:
     # @school.user_school_assignments.build
 
-    @users = current_district.users
+    @users = current_district.users unless current_district.users.count > 100
 
     respond_to do |format|
       format.html # new.html.erb
@@ -29,7 +29,7 @@ class District::SchoolsController < ApplicationController
   # GET /district_schools/1/edit
   def edit
     @school = current_district.schools.find(params[:id])
-    @users = current_district.users
+    @users = current_district.users unless current_district.users.count > 100
   end
 
   # POST /district_schools
@@ -41,7 +41,7 @@ class District::SchoolsController < ApplicationController
       flash[:notice] = "Successfully created school."
       redirect_to district_schools_path
     else
-      @users = current_district.users
+      @users = current_district.users unless current_district.users.count > 100
       render :action => 'new'
     end
   end
@@ -57,7 +57,8 @@ class District::SchoolsController < ApplicationController
       flash[:notice] = "Successfully updated school and user assignments."
       redirect_to district_schools_path
     else
-      @users = current_district.users
+       @users = current_district.users unless current_district.users.count > 100
+       
       render :action => 'edit'
     end
   end
