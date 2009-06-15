@@ -1,28 +1,42 @@
 <h1>Editing district</h1>
 
-<% form_for(@district, :html=> {:multipart => true}) do |f| %>
-  <%= render :partial => f %>
+<div class = "new_form">
+  <% form_for(@district, :html=> {:multipart => true}) do |f| %>
+    <fieldset>
+      <%= render :partial => f %>
 
-  <p>
-    <%= f.label :key, 'Password Hash Key' %>
-    <%= f.text_field :key %>
-  </p>
-  <p>
-    <%= f.label :logo, 'Attach or replace logo 200x40px ' %>
-    <%= f.file_field :logo %>
-  </p>
+      <div class = "form_row">
+        <%= f.label :key, 'Password Hash Key' %>
+        <%= f.text_field :key %>
+        <%= help_popup "This key is part of the filter that converts plaintext passwords to hashes stored in the database.   It should match the key used when you generate the users.csv.  When users login, the same conversion occurs and the hashes are compared.   If you've changed this key twice already, the system will prevent you from doing so again, as it could potentially lock out your users.  " 
+        %>
+      </div>
+      <div class ="form_row">
+        <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} " %>
+        <%= f.file_field :logo %>
+        <%= help_popup "Attach a png, gif, or jpg of your district's logo.  It will be scaled to #{District::LOGO_SIZE}, 
+              so you may want to adjust the image size to that to avoid distortion."  %>
+      </div>
+      <br clear ="both">
 
-  <%- if @district.logo? -%>
-    <div>
-      <%= f.label(:delete_logo, 'Delete logo') %>
-      <%= image_tag(@district.logo.url, :alt => 'Photo', :title => 'Current logo') %>
-      <%= f.check_box(:delete_logo) %>
-    </div>
+      <%- if @district.logo? -%>
+        <div class ="form_row" id="existing_logo" >
+          <%= f.label :logo %>
+          <%= image_tag(@district.logo.url, :alt => 'Photo', :title => 'Current logo', :size => District::LOGO_SIZE) %>
+          <%= link_to_function 'Remove Logo' do |page|
+            f.object.delete_logo = 1
+            page.replace_html 'existing_logo', hidden_field_tag('district[delete_logo]',"1")
+            page.insert_html :bottom, 'existing_logo', "Your logo will be removed when you hit update."
+            end %>
+
+        <%= help_popup "You don't need to delete the logo if you want to replace it.   Use this if you want to remove the logo and return to the district name in the upper left corner of the page instead of an image." %> 
+        </div>
+      <% end %>
+
+      <div class="form_row center_submit">
+        <%= f.submit "Update" %>
+      </div>
+  </fieldset>
   <% end %>
-
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
-
+</div>
 <%= link_to 'Back', root_url %>

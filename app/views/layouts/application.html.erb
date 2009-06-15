@@ -20,7 +20,7 @@
       <div id="header">
         <div id ="left_header">
           <% if current_district && current_district.logo.url != "/logos/original/missing.png" %>
-            <%=image_tag current_district.logo.url, :size=>"200x40", :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
+          <%=image_tag current_district.logo.url, :size=>District::LOGO_SIZE, :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
           <% else %>
             <%=current_district%>
           <% end %>

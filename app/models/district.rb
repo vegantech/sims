@@ -20,6 +20,7 @@
 
 class District < ActiveRecord::Base
   ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+  LOGO_SIZE = "200x40"
 
   belongs_to :state
   has_many :users, :order => :username
@@ -239,7 +240,7 @@ private
   end
 
   def clear_logo
-    self.logo=nil if @delete_logo && !logo_changed?
+    self.logo=nil if @delete_logo && !logo.dirty?
   end
 
   def check_keys

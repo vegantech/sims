@@ -1,10 +1,11 @@
 <h1>New district</h1>
 
-<% form_for(@district) do |f| %>
-  <%= render :partial => f %>
-  <p>
-     <%= f.submit "Create" %>
-  </p>
-<% end %>
-
+<div class = "new_form">
+  <% form_for(@district) do |f| %>
+    <%= render :partial => f %>
+    <div class = "form_row center_submit">
+       <%= f.submit "Create" %>
+    </div>
+  <% end %>
+</div>
 <%= link_to 'Back', districts_path %>
