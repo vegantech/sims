@@ -92,7 +92,7 @@ class ImportCSV
     when 'news_admins.csv'
       load_user_roles_from_csv file_name, 'news_admin'
     when 'content_admins.csv'
-      load_user_roles_from_csv file_name, 'district_builder'
+      load_user_roles_from_csv file_name, 'content_admin'
     when 'school_admins.csv'
       load_user_roles_from_csv file_name, 'school_admin'
     when 'regular_users.csv'
