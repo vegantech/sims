@@ -217,5 +217,12 @@ class Student < ActiveRecord::Base
   def all_staff_for_student
     (groups.collect(&:users) | special_group_principals).flatten.compact.uniq
   end
+
+  def remove_from_district
+    #TODO delete the student if they aren't in use anymore
+    enrollments.destroy_all
+    groups.clear
+    update_attribute(:district_id,nil)
+  end
     
 end

@@ -77,7 +77,8 @@ class District::StudentsController < ApplicationController
   # DELETE /district_students/1.xml
   def destroy
     @student = current_district.students.find(params[:id])
-    @student.destroy
+    @student.remove_from_district
+    
 
     respond_to do |format|
       format.html { redirect_to(district_students_url) }

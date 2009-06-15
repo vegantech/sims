@@ -1,3 +1,8 @@
 <h2>Special District Groups</h2>
-<p><%= form.label :all_students_in_district %>  <%= form.check_box :all_students_in_district %> </p>
+<p>
+  <%= form.check_box :all_students_in_district %> 
+  <b><%= form.label :all_students_in_district %>  </b>
+  <%= help_popup "If checked this user will be able to access every stududent in the district.  You do no need to assign any schools unless you want this user 
+      to be a school administrator for a given school. " %>
+</p>
 

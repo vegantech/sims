@@ -17,6 +17,7 @@
 class User < ActiveRecord::Base
 
 
+  
   CSV_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt]
   
   include FullName
@@ -235,6 +236,15 @@ class User < ActiveRecord::Base
     usa_attributes.each do |attributes|
       user_school_assignments.build(attributes)
     end
+  end
+
+  def remove_from_district
+    #TODO delete the student if they aren't in use anymore
+    user_school_assignments.destroy_all
+    special_user_groups.destroy_all
+    user_group_assignments.destroy_all
+    roles.clear
+    update_attribute(:district_id,nil)
   end
 
 

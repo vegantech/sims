@@ -65,7 +65,7 @@ class District::UsersController < ApplicationController
   # DELETE /users/1.xml
   def destroy
     @user = current_district.users.find(params[:id])
-    @user.destroy
+    @user.remove_from_district
 
     respond_to do |format|
       format.html { redirect_to(district_users_url) }

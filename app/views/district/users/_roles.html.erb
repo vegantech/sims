@@ -1,8 +1,14 @@
 <h2>Roles</h2>
-  <% current_district.available_roles.each do |role| %>
-      <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
-      <%=label_tag dom_id(role), role.to_s.titleize%>
-      <%= help_popup(Role::SYSTEM_ROLES[role.name]) %>
-<% end %>
+  <table>
+    <tbody>
+      <% current_district.available_roles.in_groups_of(2,false).each do |role| %>
+        <tr>
+          <td><%= render :partial => 'role',:object => role[0] %></td>
+          <td><%= render :partial => 'role',:object => role[1]  if role[1] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <%=hidden_field_tag "user[role_ids][]",""%>
+
 

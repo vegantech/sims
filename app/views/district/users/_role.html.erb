@@ -1,0 +1,5 @@
+  <%=check_box_tag "user[role_ids][]", role.id,@user.roles.include?(role), {:id=>dom_id(role)}%> 
+  <b>
+    <%=label_tag dom_id(role), role.to_s.titleize %>
+    <%= help_popup(Role::SYSTEM_ROLES[role.name]) %>
+  </b>

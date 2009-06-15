@@ -21,7 +21,7 @@ class Role < ActiveRecord::Base
                   "district_admin" => 'Add a logo, set the district key, add users, add schools, 
                   assign roles, add students, enroll students, import files, set district abbreviation',
                   "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
-                  "district_builder" => 'Setup Goals, Objectives, Categories, Interventions, Tiers, Checklists, and Progress Monitors', 
+                  "content_admin" => 'Setup Goals, Objectives, Categories, Interventions, Tiers, Checklists, and Progress Monitors', 
                   "regular_user" => 'Regular user of SIMS', 
                   "news_admin"  => 'Create and edit news items that appear on the left' , 
                   "state_admin" => 'Creates and edits states',
