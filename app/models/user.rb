@@ -15,6 +15,10 @@
 #
 
 class User < ActiveRecord::Base
+
+
+  CSV_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt]
+  
   include FullName
   after_update :save_user_school_assignments
 

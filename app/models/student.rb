@@ -24,6 +24,8 @@
 
 class Student < ActiveRecord::Base
 
+  CSV_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
+  
   include FullName
   belongs_to :district
   has_and_belongs_to_many :groups

@@ -14,6 +14,8 @@
 #
 
 class School < ActiveRecord::Base
+  CSV_HEADERS=[:id_district,:name]
+
   after_update :save_user_school_assignments
 
   belongs_to :district

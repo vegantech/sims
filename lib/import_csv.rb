@@ -3,25 +3,16 @@ class ImportCSV
  
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.6
-
-  USER_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt].to_set
-  SCHOOL_HEADERS=[:id_district,:name].to_set
-  STUDENT_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed].to_set
-  ENROLLMENT_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year].to_set
-  ROLE_HEADERS = [:id_district].to_set
-  SYSTEM_FLAG_HEADERS = [:student_id_district, :category, :reason]
-
-  
-  SKIP_SIZE_COUNT = ['enrollment','system_flag','role']
-  
   STRIP_FILTER = lambda{ |field| field.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
 
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
-
-
   FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv']
+  SKIP_SIZE_COUNT = ['enrollment','system_flag','role']
+  
+ 
+
 
   attr_reader :district, :messages, :filenames
   
@@ -336,14 +327,13 @@ class ImportCSV
 
 
   def get_constant model_name
-    constant_name = "#{model_name.upcase}_HEADERS"
-     if ImportCSV.const_defined?(constant_name) 
-      "ImportCSV::#{constant_name}".constantize
-     else
+    begin
+      obj = Kernel.const_get model_name.downcase.classify
+      obj.const_get('CSV_HEADERS')
+    rescue NameError
       @messages <<  "invalid object #{model_name}" 
       false 
     end
-   
   end
   
   def file_exists? file_name,model_name

@@ -27,6 +27,10 @@ class Role < ActiveRecord::Base
                   "state_admin" => 'Creates and edits states',
                   "country_admin" => 'Creates and edits countries'
                 }
+
+  CSV_HEADERS = [:id_district]
+
+
   include LinkAndAttachmentAssets
 
   belongs_to :district
