@@ -114,19 +114,6 @@ module ApplicationHelper
     end)
   end
 
-
-  def previous_answers(checklist, answer_definition, &block)
-    return if checklist.student.blank?
-    if block_given?
-      if (answers = checklist.previous_answers_for(answer_definition)).any?
-        concat "<div style=\"color:gray\">Previous Answers:</div>", block.binding
-        answers.each do |answer|
-          concat(capture(answer, &block),block.binding)
-        end
-      end
-    end
-  end
-
   def description(obj, name="Description")
     "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
   end
