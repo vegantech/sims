@@ -5,6 +5,6 @@
   <%=content_tag(:li,link_to('Add/Remove Users', district_users_url)) if @show_users%>
   <%=content_tag(:li,link_to('Add/Remove Students', district_students_url)) if @show_students%>
   <%=content_tag(:li,link_to('Edit your district', edit_district_url(@current_district))) if @show_district%>
-  <%=content_tag(:li,link_to('Import from CSV', bulk_import_form_districts_url)) if @show_district%>
+  <%#=content_tag(:li,link_to('Import from CSV', bulk_import_form_districts_url)) if @show_district%>
   </ul>
 <% end %>
