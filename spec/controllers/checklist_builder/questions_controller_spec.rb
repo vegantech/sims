@@ -63,9 +63,9 @@ describe ChecklistBuilder::QuestionsController do
 
   describe "GET 'destroy'" do
     it "should be successful" do
-    pending
-      get 'destroy'
-      response.should be_success
+      QuestionDefinition.should_receive(:find).with("37").and_return(mock_question_definition(:destroy=>true))
+      get 'destroy' , :id => '37'
+      response.should redirect_to(checklist_builder_checklist_url(@checklist_definition))
     end
   end
 

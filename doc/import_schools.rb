@@ -1,4 +1,4 @@
-
+#This is for reference in case I want to reimport the DPI school listing
 def import_schools
 require 'nokogiri'
 require 'open-uri'
