@@ -1,6 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ImportCSV do
+  describe 'invalid file' do
+    it 'should return messages' do
+      i= ImportCSV.new('invalid', District.new)
+      i.import
+      i.messages.should == ['Unknown file invalid']
+    end
+
+  end
+
   describe 'starts_with?' do
     before do
       @expected_head = ['first','second','third']
