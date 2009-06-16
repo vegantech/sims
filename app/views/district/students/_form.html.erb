@@ -1,69 +1,89 @@
-<p>
-  <%= form.label :last_name %><br />
-  <%= form.text_field :last_name %>
-</p>
-<p>
-  <%= form.label :first_name %><br />
-  <%= form.text_field :first_name %>
-</p>
+<div class ="new_form">
+  <fieldset>
 
-<p>
-  <%= form.label :middle_name %><br />
-  <%= form.text_field :middle_name %>
-</p>
+    <%= form.error_messages %>
+  <div class="form_row">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+  <div class="form_row">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
 
-<p>
-  <%= form.label :suffix %><br />
-  <%= form.text_field :suffix %>
-</p>
+  <div class="form_row">
+    <%= form.label :middle_name %>
+    <%= form.text_field :middle_name %>
+  </div>
 
-
-
-<p>
-  <%= form.label :number %><br />
-  <%= form.text_field :number %>
-
-  <p>
-    <%= form.label :id_district, id_district_desc(form.object) %><br />
-    <%= form.text_field :id_district %>
-  </p>
-  <p>
-    <%= form.label :id_state, id_state_desc(form.object) %><br />
-    <%= form.text_field :id_state %>
-  </p>
-  <p>
-    <%= form.label :id_country, id_country_desc(form.object) %><br />
-    <%= form.text_field :id_country %>
-  </p>
-
-<p>
-  <%= form.label :birthdate %><br />
-  <%= form.unobtrusive_date_picker :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago, :order => [:month, :day, :year]%>
-  </p>
-  
-  <p>
-  <%= form.label :esl, "ESL" %><br />
-  <%= form.check_box :esl %>
-  </p>
-  
-  <p>
-  <%= form.label :special_ed, "Special Education" %><br />
-  <%= form.check_box :special_ed %>
-  </p>
+  <div class="form_row">
+    <%= form.label :suffix %>
+    <%= form.text_field :suffix %>
+  </div>
 
 
 
-  <p>
-  <%=form.label :extended_profile, 'Add student profile html or csv' %><br/>
-  <%=form.file_field :extended_profile %>
-  </p>
+  <div class="form_row">
+    <%= form.label :number %>
+    <%= form.text_field :number %>
+
+    <div class="form_row">
+      <%= form.label :id_district, "District ID"  %>
+      <%= form.text_field :id_district %>
+      <%= help_popup id_district_desc(form.object) %>
+    </div>
+    <div class="form_row">
+      <%= form.label :id_state, "State ID"  %>
+      <%= form.text_field :id_state %>
+      <%= help_popup id_state_desc(form.object) %>
+    </div>
+
+  <div class="form_row">
+      <%= form.label :id_country, "National ID" %>
+      <%= form.text_field :id_country %>
+      <%= help_popup id_country_desc(form.object) %>
+  </div>
+
+   <div class="form_row">
+      <%= form.label :birthdate %>
+      <%= form.unobtrusive_date_picker :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago, :order => [:month, :day, :year]%>
+    </div>
+    
+    <div class="form_row">
+      <div class = "fake_label">
+        <%= form.check_box :esl %>
+      </div>
+      <%= form.label :esl, "ESL" , :class => "checkbox_label" %>
+    </div>
+    
+    <div class="form_row">
+      <div class ="fake_label">
+        <%= form.check_box :special_ed %>
+      </div>
+      <%= form.label :special_ed, "Special Education" , :class => "checkbox_label" %>
+    </div>
+
+
+
+    <div class="form_row">
+      <%=form.label :extended_profile, 'Add student profile html' %>
+      <%=form.file_field :extended_profile %>
+    </div>
+  </fieldset>
+
+</div>
   <%- if @student.extended_profile? -%>
+  <div id ="extended_profile">
   <fieldset class="other">
     <legend>Extended Profile</legend>
       <%= extended_profile(@student) %>
-      <%=form.label(:delete_extended_profile, 'Delete Profile') %>
-      <%=form.check_box(:delete_extended_profile) %>
     </fieldset>
+  </div>
+       <%= link_to_function 'Remove Extended Profile' do |page|
+            page.replace_html 'extended_profile', hidden_field_tag('student[delete_extended_profile]',"1")
+            page.insert_html :bottom, 'extended_profile', "The extended profile will be removed when you save."
+            end %>
+
   <% end %>
 
 
@@ -72,7 +92,7 @@
  </div>
 
   <%=link_to_function 'Add Enrollment' do |page|
-   page.insert_html :bottom, :enrollments, :partial => 'enrollment' , :object => Enrollment.new
+   page.insert_html :bottom, :enrollments, :partial => 'enrollment' , :object => Enrollment.new(:end_year => Date.today.year)
   end %>
 
 

@@ -133,74 +133,74 @@ regular_probe_assignments:
   read_access: true
   write_access: true
 
-district_builder_answers:
-  role: district_builder
+content_admin_answers:
+  role: content_admin
   controller: 'checklist_builder/answers'
   read_access: true
   write_access: true
 
-district_builder_checklists:
-  role: district_builder
+content_admin_checklists:
+  role: content_admin
   controller: 'checklist_builder/checklists'
   read_access: true
   write_access: true
 
-district_builder_elements:
-  role: district_builder
+content_admin_elements:
+  role: content_admin
   controller: 'checklist_builder/elements'
   read_access: true
   write_access: true
 
-district_builder_questions:
-  role: district_builder
+content_admin_questions:
+  role: content_admin
   controller: 'checklist_builder/questions'
   read_access: true
   write_access: true
 
-district_builder_categories:
-  role: district_builder
+content_admin_categories:
+  role: content_admin
   controller: 'intervention_builder/categories'
   read_access: true
   write_access: true
 
-district_builder_goals:
-  role: district_builder
+content_admin_goals:
+  role: content_admin
   controller: 'intervention_builder/goals'
   read_access: true
   write_access: true
 
-district_builder_interventions:
-  role: district_builder
+content_admin_interventions:
+  role: content_admin
   controller: 'intervention_builder/interventions'
   read_access: true
   write_access: true
 
-district_builder_objectives:
-  role: district_builder
+content_admin_objectives:
+  role: content_admin
   controller: 'intervention_builder/objectives'
   read_access: true
   write_access: true
 
-district_builder_probes:
-  role: district_builder
+content_admin_probes:
+  role: content_admin
   controller: 'intervention_builder/probes'
   read_access: true
   write_access: true
 
-district_builder_recommended_monitors:
-  role: district_builder
+content_admin_recommended_monitors:
+  role: content_admin
   controller: 'intervention_builder/recommended_monitors'
   read_access: true
   write_access: true
 
-district_builder_flag_categories:
-  role: district_builder
+content_admin_flag_categories:
+  role: content_admin
   controller: 'district/flag_categories'
   read_access: true
   write_access: true
 
-district_builder_tiers:
-  role: district_builder
+content_admin_tiers:
+  role: content_admin
   controller: 'tiers'
   read_access: true
   write_access: true
@@ -219,8 +219,8 @@ regular_custom_probes:
   write_access: true
 
 
-district_builder_railmail:
-  role: district_builder
+content_admin_railmail:
+  role: content_admin
   controller: 'railmail'
   read_access: true
   write_access: true

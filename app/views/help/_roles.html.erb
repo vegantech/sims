@@ -1,0 +1,6 @@
+<dl>
+  <% Role::SYSTEM_ROLES.each do |role, desc| %>
+    <dt> <%= role.titleize %>: </dt>
+    <dd> <%= desc %> </dd>
+  <% end %>
+</dl>

@@ -25,6 +25,8 @@ describe District::StudentsController do
     it "should map #destroy" do
       route_for(:controller => "district/students", :action => "destroy", :id => "1").should == {:path => "/district/students/1", :method => :delete}
     end
+
+    
   end
 
   describe "route recognition" do
@@ -55,5 +57,6 @@ describe District::StudentsController do
     it "should generate params for #destroy" do
       params_from(:delete, "/district/students/1").should == {:controller => "district/students", :action => "destroy", :id => "1"}
     end
+
   end
 end

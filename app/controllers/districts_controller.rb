@@ -1,5 +1,7 @@
 class DistrictsController < ApplicationController
-  additional_write_actions :reset_password, :recreate_admin
+  additional_write_actions :reset_password, :recreate_admin, :bulk_import
+  additional_read_actions :bulk_import_form
+  
   # GET /districts
   def index
     @state = current_district.state
@@ -74,5 +76,18 @@ class DistrictsController < ApplicationController
     flash[:notice]= @district.recreate_admin!
     redirect_to(districts_url)
   end
+
+
+  def bulk_import_form
+    
+  end
+
+  def bulk_import
+    importer= ImportCSV.new params[:import_file], current_district
+    x=Benchmark.measure{importer.import}
+    flash[:notice]= "#{importer.messages.join(", ")} #{x}"
+    redirect_to root_url
+  end
+
 
 end

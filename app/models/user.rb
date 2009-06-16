@@ -15,15 +15,20 @@
 #
 
 class User < ActiveRecord::Base
+
+
+  
+  CSV_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt]
+  
   include FullName
   after_update :save_user_school_assignments
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
   has_many :schools, :through => :user_school_assignments, :order => "name"
-  has_many :special_user_groups
+  has_many :special_user_groups, :dependent => :destroy
   has_many :special_schools, :through => :special_user_groups, :source=>:school
-  has_many :user_group_assignments
+  has_many :user_group_assignments, :dependent => :destroy
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
@@ -85,6 +90,14 @@ class User < ActiveRecord::Base
 
   end
 
+  def self.paged_by_last_name(last_name="", page="1")
+    paginate :per_page => 25, :page => page, 
+      :conditions=> ['last_name like ?', "%#{last_name}%"],
+      :order => 'last_name'
+  end
+
+
+  
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
   #default prompt is "*-Filter by Group Member"
@@ -124,19 +137,36 @@ class User < ActiveRecord::Base
 
   def self.authenticate(username, password)
     @user = self.find_by_username(username)
+
     if @user
-      expected_password=encrypted_password(password)
-      if @user.passwordhash_before_type_cast != expected_password
+      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast))
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
       end
       @user
     end
   end
 
+  def allowed_password_hashes(password)
+    district_key = district.key if district
+    next_key = self.district.previous_key if self.district
+    
+    bare = User.encrypted_password(password,salt, nil, nil)
+    with_sys_key_and_no_district_key = User.encrypted_password(password,salt, nil)
 
-  def self.encrypted_password(password)
-    Digest::SHA1.hexdigest(password.downcase)
+    with_district_key_and_no_system_key = User.encrypted_password(password, salt, district_key, nil)
+    with_district_key_and_system_key = User.encrypted_password(password, salt, district_key)
+
+    with_next_district_key_and_no_system_key = User.encrypted_password(password, salt,  next_key, nil)
+    with_next_district_key_and_system_key = User.encrypted_password(password, salt, next_key, System::HASH_KEY)
+
+    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key,
+      with_next_district_key_and_no_system_key,  with_next_district_key_and_system_key ]
   end
+
+  def self.encrypted_password(password, salt=nil, district_key = nil, system_hash = System::HASH_KEY)
+    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}#{salt}")
+  end
+  
   
   def authorized_for?(controller, action_group)
     roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
@@ -158,10 +188,15 @@ class User < ActiveRecord::Base
       @password_confirmation=@password=pass
     else
       @password = pass
-  #    salt = [Array.new(6){rand(256).chr}.join].pack("m").chomp
-   #   self.password_salt, self.password_hash = salt, Digest::SHA256.hexdigest(pass + salt)a
-      self.passwordhash = User.encrypted_password(pass)
+      puts "district is #{pp district}" if @password == 'motest'
+      self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
+      set_passwordhash pass
     end
+  end
+
+  def set_passwordhash(pass)
+    district_key = self.district.key if self.district
+    self.passwordhash = User.encrypted_password(pass, self.salt, district_key)
   end
 
   def reset_password!
@@ -202,6 +237,16 @@ class User < ActiveRecord::Base
       user_school_assignments.build(attributes)
     end
   end
+
+  def remove_from_district
+    #TODO delete the student if they aren't in use anymore
+    user_school_assignments.destroy_all
+    special_user_groups.destroy_all
+    user_group_assignments.destroy_all
+    roles.clear
+    update_attribute(:district_id,nil)
+  end
+
 
 protected
   def district_special_groups

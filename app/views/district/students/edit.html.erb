@@ -1,7 +1,6 @@
 <h1>Editing student</h1>
 
 <% form_for(@student, :url=>district_student_path(@student), :method=>:put ,:html=> {:multipart => true})  do |f| %>
-  <%= f.error_messages %>
   <%= render :partial => f %>
 
   <p>
@@ -9,5 +8,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', district_student_path(@student) %> |
 <%= link_to 'Back', district_students_path %>

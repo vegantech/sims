@@ -24,6 +24,8 @@
 
 class Student < ActiveRecord::Base
 
+  CSV_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
+  
   include FullName
   belongs_to :district
   has_and_belongs_to_many :groups
@@ -40,6 +42,7 @@ class Student < ActiveRecord::Base
   has_many :flags
   has_many :team_consultations
   has_many :consultation_forms
+  has_many :consultation_form_requests
 
   has_attached_file  :extended_profile
   attr_reader :delete_extended_profile
@@ -213,6 +216,13 @@ class Student < ActiveRecord::Base
 
   def all_staff_for_student
     (groups.collect(&:users) | special_group_principals).flatten.compact.uniq
+  end
+
+  def remove_from_district
+    #TODO delete the student if they aren't in use anymore
+    enrollments.destroy_all
+    groups.clear
+    update_attribute(:district_id,nil)
   end
     
 end

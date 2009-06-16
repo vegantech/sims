@@ -100,7 +100,7 @@ content_builder:
   district: wi_test
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
-  roles: district_builder
+  roles: content_admin
 
 system_admin:
   first_name: System
@@ -151,7 +151,7 @@ wi_content_builder:
   district: wi_mmsd
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
-  roles: district_builder
+  roles: content_admin
 
 wi_alphaprin:
   username: alphaprin

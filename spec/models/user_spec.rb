@@ -18,15 +18,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-    @user = Factory(:user, :username => "oneschool")
-  end
-
-  it 'should include FullName' do
-    User.included_modules.should include(FullName)
-  end
-
-  it 'should have a middle_name' do
-    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+    @user = User.find_by_username 'oneschool' 
+    @user ||= Factory(:user, :username => "oneschool")
   end
 
   describe 'authenticate' do
@@ -42,18 +35,106 @@ describe User do
     it 'should not allow bad login' do
       User.authenticate('doesnotexist', 'ignored').should be_nil
     end
+
+    describe 'additional hash keys and salts' do
+      before do
+        System::HASH_KEY='mms'
+      end
+
+      describe 'allowed_password_hashes' do
+        it 'should cover all possibilities'  do
+          district = Factory(:district, :key => dk='ddd_kk', :previous_key => next_dk = 'eee_ll')
+          salt = 'Salt'
+          u = Factory(:user, :district => district, :salt => salt)
+          password='zow#3vVc'.downcase
+
+          pnn = Digest::SHA1.hexdigest("#{password}#{salt}")
+          pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{salt}")
+          ppn = Digest::SHA1.hexdigest("#{password}#{next_dk}#{salt}") 
+          pps = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{next_dk}#{salt}")
+          pdn = Digest::SHA1.hexdigest("#{password}#{dk}#{salt}") 
+          pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}#{salt}")
+          
+          u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds, ppn, pps]
+        end
+      end
+
+      it 'should call allowed passwordhashes' do
+        @user.should_receive(:allowed_password_hashes).with('fail').and_return([])
+        User.should_receive(:find_by_username).with('oneschool').and_return(@user)
+        # User.any_instance.should_receive(:allowed_password_hashes).with('fail')
+        User.authenticate('oneschool','fail')
+        
+      end
+
+      
+      it 'should store new users passwords including system hash_key when present' do
+        u = Factory(:user, :password => 'test')
+        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test", u.salt, nil, nil)
+      end
+
+      it 'should generate a salt when a user sets a password' do
+        d = Factory(:district, :key => 'DisKye')
+        u = Factory(:user, :password => 'motest', :district => d)
+        u.salt.should_not be_blank
+      end
+
+      it 'should generate different salts for 2 different users' do
+        u1 = Factory(:user)
+        u2 = Factory(:user)
+        u1.salt.should_not == u2.salt
+      end
+
+      it 'should change the salt when a password is changed on an existing record if a different salt has not been passed in' do
+        u1 = Factory(:user)
+        oldsalt = u1.salt
+
+        u1.password='SOEMWEWEE'
+        u1.salt.should_not == oldsalt
+      end
+
+      it 'should not change the salt when a password is changed at the same time a salt is explicitly passed in' do
+        u1 = Factory(:user)
+        oldsalt = u1.salt
+
+        u1.update_attributes(:password => 'SOEMWEWEE', :salt => 'my_new_Salty_Salt_2')
+        u1.salt.should == 'my_new_Salty_Salt_2'
+      end
+
+      it 'should use the generated salt, system key, and district key' do
+        d = Factory(:district, :key => 'DisKye')
+        
+        u = Factory(:user, :district => d)
+        u.password = 'motest'
+        u.password_confirmation = 'motest'
+        u.save!
+        u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
+      end
+
+    end
   end
+
+  describe 'encrypted_password' do
+    it 'should create a hash with a nil system key and district key and salt' do
+      pending
+      # User.encrypted_password('e')
+
+      # set up user1 with password the old way
+      # verify user1 password works
+
+      # set new user2 up with new way
+      # verify new password for user2 works
+
+      # verify user1 password still works
+    end
+
+  end
+  
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
-      @user.passwordhash.should == User.encrypted_password('oneschool')
+      @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
     end
-  end
-  
-  describe 'full_name' do
-    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
-    u.fullname.should == ("0First. noschools")
-    u.to_s.should == ("0First. noschools")
   end
   
   describe 'password=' do
@@ -66,6 +147,20 @@ describe User do
     end
   end
 
+  it 'should include FullName' do
+    User.included_modules.should include(FullName)
+  end
+
+  it 'should have a middle_name' do
+    Factory(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+  end
+
+  describe 'full_name' do
+    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
+    u.fullname.should == ("0First. noschools")
+    u.to_s.should == ("0First. noschools")
+  end
+  
   describe 'authorized_groups_for_school' do
     it 'should return school groups when user is a member of all groups in school' do
       u=User.new
@@ -73,7 +168,6 @@ describe User do
 
       u.stub_association!(:special_user_groups,:all_students_in_school? =>true )
       u.authorized_groups_for_school(s).should == s.groups
-
     end
 
     it 'should call groups.by_school when user is not a member of all groups in school' do
@@ -111,8 +205,6 @@ describe User do
       s=Factory(:school)
       @user.filtered_groups_by_school(s,:grade=>'E',:user=>5 ).should == []
     end
-    
-    
   end
  
   describe 'filtered_members_by_school' do
@@ -151,22 +243,13 @@ describe User do
     it 'should call check for read rights when group is read' do
       Role.should_receive(:has_controller_and_action_group?).with('test_controller','read').and_return(true)
       User.new.authorized_for?('test_controller','read').should == true
-      
-      
     end
 
     it 'should call check for write rights when group is write' do
-      
       Role.should_receive(:has_controller_and_action_group?).with('test_controller','write').and_return(true)
       User.new.authorized_for?('test_controller','write').should == true
- 
     end
-    
   end
-
-
-
-
 
   describe "principal?" do
     it 'should return true if principal of a group or special user group and false if not' do
@@ -178,10 +261,7 @@ describe User do
       u.principal?.should == false
       u.special_user_groups.create!(:is_principal => true ,:grouptype=>2, :district_id => 11)
       u.principal?.should == true
-
     end
-    
-
   end
 
   describe 'grouped_principal_overrides' do
@@ -196,8 +276,6 @@ describe User do
       PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
       @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"], 
           :pending_requests => ["Pending For Principal"]}
-      
-
     end
   end
 
@@ -228,12 +306,6 @@ describe User do
       @user.authorized_schools.should == [s1,s3]
       @user.authorized_schools(s1.id).should == [s1]
       @user.authorized_schools(s2.id).should == []
-
     end
-
-
-
   end
-
-
 end

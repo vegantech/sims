@@ -15,21 +15,15 @@ describe District::UsersController do
   end
 
   describe "responding to GET index" do
+    before do
+      @district.stub_association!(:users,:paged_by_last_name=>[mock_user])
+    end
+
     it "should expose all users as @users" do
-      @district.should_receive(:users).and_return([mock_user]) 
       get :index
       assigns[:users].should == [mock_user]
     end
 
-    describe "with mime type of xml" do
-      it "should render all users as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        @district.should_receive(:users).and_return(users = mock("Array of Users"))
-        users.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
-    end
   end
 
   describe "responding to GET new" do
@@ -125,12 +119,12 @@ describe District::UsersController do
   describe "responding to DELETE destroy" do
     it "should destroy the requested user" do
       User.should_receive(:find).with("37").and_return(mock_user)
-      mock_user.should_receive(:destroy)
+      mock_user.should_receive(:remove_from_district)
       delete :destroy, :id => "37"
     end
 
     it "should redirect to the users list" do
-      User.stub!(:find).and_return(mock_user(:destroy => true))
+      User.stub!(:find).and_return(mock_user(:remove_from_district => true))
       delete :destroy, :id => "1"
       response.should redirect_to(district_users_url)
     end

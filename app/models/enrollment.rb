@@ -12,6 +12,8 @@
 #
 
 class Enrollment < ActiveRecord::Base
+
+  CSV_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year]
   belongs_to :student
   belongs_to :school
 
@@ -107,7 +109,7 @@ class Enrollment < ActiveRecord::Base
 
     if search_hash.delete(:index_includes)
       ids=scope.collect(&:id)
-      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user} ]})
+      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user},:team_consultations ]})
     else
 
       scope#=scope.scoped #:include => :student

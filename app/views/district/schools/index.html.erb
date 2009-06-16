@@ -1,26 +1,32 @@
 <h1>Listing schools</h1>
 
 <table>
+  <thead>
   <tr>
-    <th>Name</th>
-    <th>id_district</th>
-    <th>id_state</th>
-    <th>id_country</th>
+    
+    <th class="sortable">Name</th>
+    <th class="sortable">id_district</th>
+    <th></th>
   </tr>
+  </thead>
+  <tbody>
 
 <% for school in @schools %>
   <tr>
     <td><%= h school.name %></td>
     <td><%= h school.id_district %></td>
-    <td><%= h school.id_state %></td>
-    <td><%= h school.id_country %></td>
 
-    <td><%= link_to 'Edit', edit_district_school_path(school) %></td>
-    <td><%= link_to 'Delete', district_school_path(school), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to 'Edit', edit_district_school_path(school) %>
+      <%= link_to 'Delete', district_school_path(school), :confirm => 'Are you sure?', :method => :delete %>
+    </td>
   </tr>
 <% end %>
+</tbody>
 </table>
 
 <br />
 
 <%= link_to 'New school', new_district_school_path %>
+<%= javascript_include_tag 'tablesort' %>
+

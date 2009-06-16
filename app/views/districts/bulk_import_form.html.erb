@@ -1,0 +1,7 @@
+<% form_tag bulk_import_districts_path, {:multipart=>true} do %>
+  <%= label_tag 'import_file', 'File to Import' %>
+  <%= file_field_tag 'import_file'%>
+  <%= submit_tag 'Import' %>
+<% end %>
+
+The file should be a csv or a zip file containing csv's.

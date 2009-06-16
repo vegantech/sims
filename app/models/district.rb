@@ -20,6 +20,7 @@
 
 class District < ActiveRecord::Base
   ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+  LOGO_SIZE = "200x40"
 
   belongs_to :state
   has_many :users, :order => :username
@@ -56,10 +57,12 @@ class District < ActiveRecord::Base
   validates_uniqueness_of :state_id,  :if=>lambda{|d| d.state && d.state.admin?}  #only 1 district per admin state
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
+  validate_on_update :check_keys
                                          
   before_destroy :make_sure_there_are_no_schools
   before_validation :clear_logo
   after_create :create_admin_user
+  before_update :backup_key
 
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
 
@@ -207,6 +210,7 @@ class District < ActiveRecord::Base
   end
 
 private
+
   def make_sure_there_are_no_schools
     if schools.blank?
       schools.destroy_all
@@ -223,7 +227,6 @@ private
       errors.add_to_base("Have the district admin remove the schools first.") 
       false
     end
-
   end
 
 
@@ -238,6 +241,20 @@ private
 
   def clear_logo
     self.logo=nil if @delete_logo && !logo.dirty?
+  end
+
+  def check_keys
+    if key_changed? and key.present? and previous_key.present?
+      errors.add(:key, "Please contact the system administrator if you need to change your district key again.  
+      The district key is a part of the password hash generated for each user.  
+      Changing it (again) could prevent any user in your district from accessing SIMS, as the key used to generate the hash may not match what is in SIMS.")
+
+      false
+    end
+  end
+
+  def backup_key
+    self.previous_key = key_was if key_changed? and key.present?
   end
 end
 

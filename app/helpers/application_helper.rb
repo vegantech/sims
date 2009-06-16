@@ -83,7 +83,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();")
+    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();") unless msg.blank?
   end
 
   def spinner(suffix = nil)
@@ -112,19 +112,6 @@ module ApplicationHelper
         capture(&blk)
       end
     end)
-  end
-
-
-  def previous_answers(checklist, answer_definition, &block)
-    return if checklist.student.blank?
-    if block_given?
-      if (answers = checklist.previous_answers_for(answer_definition)).any?
-        concat "<div style=\"color:gray\">Previous Answers:</div>", block.binding
-        answers.each do |answer|
-          concat(capture(answer, &block),block.binding)
-        end
-      end
-    end
   end
 
   def description(obj, name="Description")

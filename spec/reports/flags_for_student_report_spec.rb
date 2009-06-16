@@ -6,7 +6,7 @@ describe FlagsForStudentReport do
       now = Date.new(2008, 12, 12).to_time
       Time.stub!(:now => now)
 
-      d = mock_district
+      d = mock_district(:key=>'D#')
       user = User.create!(:district => d, :username => 'username', :first_name => 'First', :last_name => 'Last', :password => 'pword')
       flag1 = CustomFlag.create!(:category => 'math', :reason => 'Does not know addition tables.', :updated_at => now, :user => user)
       flag2 = SystemFlag.create!(:category => 'languagearts', :reason => 'Reading below grade level', :updated_at => now, :user => user)

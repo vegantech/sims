@@ -12,10 +12,11 @@
     <%= enrollment_form.text_field :grade , :size=>5%>
     <%=enrollment_form.label :end_year %> 
     <%= enrollment_form.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %>
+
+    <%= link_to_function "Remove", "$(this).up('.enrollment').remove()" %>
   </p>
   <% end %>
 
-  <%= link_to_function "Remove", "$(this).up('.enrollment').remove()" %>
 </p>
 </div>
 

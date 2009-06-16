@@ -5,6 +5,8 @@ class ProbeBar
   OFFSET = 90
   INCREMENT = 70
 
+  delegate :scale_graph_value, :to => :graph
+
   def initialize(opts={})
     @score=opts[:score].to_i
     @date=opts[:date]
@@ -49,7 +51,4 @@ class ProbeBar
     end
  
 
-  def scale_graph_value(data_value, data_max, max)
-    ((data_value.to_f.abs / data_max.to_f) * max).round
-  end
 end

@@ -11,6 +11,7 @@ Feature: Student Maintenance
   Scenario: District admin should be able to add/create Students
     Given I am a district admin
     And I go to the home page
+    And I show page
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     Then I fill in "First Name" with "George"
@@ -19,9 +20,6 @@ Feature: Student Maintenance
     Then I fill in "Suffix" with "Jr IV"
     Then I press "Create"
     Then I should not see "Create"
-    And I should see "Harrelson"
-    And I should see "Jr IV"
-    When I follow "Back"
     And I should see "Harrelson"
     And I should see "Jr IV"
     

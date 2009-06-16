@@ -1,4 +1,5 @@
 class District::StudentsController < ApplicationController
+
   # GET /district_students
   # GET /district_students.xml
   def index
@@ -7,17 +8,6 @@ class District::StudentsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @district_students }
-    end
-  end
-
-  # GET /district_students/1
-  # GET /district_students/1.xml
-  def show
-    @student = current_district.students.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @student }
     end
   end
 
@@ -44,8 +34,8 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        flash[:notice] = 'District::Student was successfully created.'
-        format.html { redirect_to(district_student_url(@student)) }
+        flash[:notice] = "#{@student} was successfully created."
+        format.html { redirect_to(district_students_url) }
         format.xml  { render :xml => @student, :status => :created, :location => @student }
       else
         format.html { render :action => "new" }
@@ -62,8 +52,8 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] = 'District::Student was successfully updated.'
-        format.html { redirect_to(district_student_url(@student)) }
+        flash[:notice] = "#{@student} was successfully updated."
+        format.html { redirect_to(district_students_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -76,11 +66,13 @@ class District::StudentsController < ApplicationController
   # DELETE /district_students/1.xml
   def destroy
     @student = current_district.students.find(params[:id])
-    @student.destroy
+    @student.remove_from_district
+    
 
     respond_to do |format|
       format.html { redirect_to(district_students_url) }
       format.xml  { head :ok }
     end
   end
+
 end

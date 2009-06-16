@@ -21,7 +21,7 @@ regular_user:
   name: $LABEL
   position: 1
 
-district_builder:
+content_admin:
   name: $LABEL
   position: 2
 

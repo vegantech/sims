@@ -70,6 +70,7 @@ Given /^I am a district admin$/ do
   role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
   role.rights.create!(:controller=>"district/students", :read_access=>true, :write_access=>true)
+  role.rights.create!(:controller=>"districts", :read_access=>true, :write_access=>true)
   default_user.roles=[role]
 end
 
@@ -314,7 +315,7 @@ Given /^student "([^\"]*)" directly owns consultation form with team consultatio
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
   consultation_form = Factory(:consultation_form)
 
-  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+  concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
     :recent_changes => "Recent changes #{concern_label}", :area => 3)
 
   consultation_form.consultation_form_concerns << concern
@@ -327,7 +328,7 @@ Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
   consultation_form = Factory(:consultation_form)
 
-  concern = Factory(:consultation_form_concern, :checked => 1, :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
+  concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
     :recent_changes => "Recent changes #{concern_label}", :area => 3)
 
   consultation_form.consultation_form_concerns << concern

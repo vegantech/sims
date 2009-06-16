@@ -4,13 +4,13 @@
 
   <% fields_for prefix, user_school_assignment do |f| -%>
     <p>
-      <%= f.label 'school_id', 'School:' %>
+      <b><%= f.label 'school_id', 'School:' %></b>
       <%= f.collection_select('school_id', @schools, :id, :to_s) %>
 
-      <%= f.label :admin %>
+      <b><%= f.label :admin %></b>
       <%= f.select :admin, [['No', false], ['Yes', true]] %>
       
-      <%= f.label :all_students %>
+      <b><%= f.label :all_students %></b>
       <%= f.select :all_students, [['No', false], ['Yes', true]] %>
 
       <%= link_to_function "Remove", "$(this).up('.user_school_assignment').remove()" %>

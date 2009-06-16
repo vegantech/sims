@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090607152637) do
+ActiveRecord::Schema.define(:version => 20090614175117) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(:version => 20090607152637) do
   create_table "consultation_form_concerns", :force => true do |t|
     t.integer  "area"
     t.integer  "consultation_form_id"
-    t.boolean  "checked"
     t.text     "strengths"
     t.text     "concerns"
     t.text     "recent_changes"
@@ -143,7 +142,7 @@ ActiveRecord::Schema.define(:version => 20090607152637) do
     t.datetime "logo_updated_at"
     t.string   "marked_state_goal_ids"
     t.string   "key",                   :default => ""
-    t.string   "next_key",              :default => ""
+    t.string   "previous_key",          :default => ""
   end
 
   add_index "districts", ["state_id"], :name => "index_districts_on_state_id"
@@ -766,6 +765,7 @@ ActiveRecord::Schema.define(:version => 20090607152637) do
     t.string   "middle_name"
     t.string   "suffix"
     t.string   "salt",         :default => ""
+    t.integer  "id_district"
   end
 
   add_index "users", ["district_id"], :name => "index_users_on_district_id"

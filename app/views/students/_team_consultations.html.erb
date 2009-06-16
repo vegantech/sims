@@ -1,3 +1,11 @@
-<div id="team_consultations">
+<h2 class="team_notes_header", ondblclick = "$('team_consultation_request').toggle();" > Team Consultation Request </h2>
+<%= link_to_function "Show/Hide Team Consultation Request" , "$('team_consultation_request').toggle()" %>
+
+<div id = "team_consultation_request">
+  <div id="team_consultations">
     <%= render :partial => "team_consultations/list", :locals => {:student => @student} %>
+  </div>
+ <div id="consultation_forms">
+   <%= render :partial => 'consultation_forms/list', :locals => {:student => @student} %>
+  </div>
 </div>
