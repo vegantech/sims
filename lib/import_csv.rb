@@ -139,18 +139,10 @@ class ImportCSV
 
   def load_system_flags_from_csv file_name
     @student_ids_by_id_district = ids_by_id_district Student
-
     if load_from_csv file_name, 'system_flag'
-      
       SystemFlag.scoped(:include => :student, :conditions => ["students.district_id => ? and students.id_district is not null", @district.id]).delete_all
       bulk_insert SystemFlag
-      
-      
-    
-
     end
-    
-
   end
 
   
@@ -162,9 +154,7 @@ class ImportCSV
     enrollments_from_db = Enrollment.all(:select => 'students.id_district as student_id_district, schools.id_district as school_id_district, enrollments.*',:joins=>[:student,:school],
     :conditions => ["schools.id_district is not null and schools.district_id = :district_id and students.id_district is not null and students.district_id = :district_id",
     {:district_id => @district.id}])
-
     
-
     @enrollments = enrollments_from_db.inject({}) do |hsh,obj| 
         hash_key_array = [obj[:student_id_district].to_i,obj[:school_id_district].to_i,obj[:end_year],obj[:grade]]
         
