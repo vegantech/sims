@@ -101,7 +101,4 @@ class ChecklistBuilder::QuestionsController < ApplicationController
     @checklist_definition = current_district.checklist_definitions.find(params[:checklist_id])
   end
 
-  def show_options
-    @checklist_definition_options = true
-  end
 end

@@ -77,6 +77,10 @@ class ImportCSV
 
   def process_file file_name
     base_file_name = File.basename(file_name)
+    if Kernel.const_defined?'SIMS_DOMAIN' and ::SIMS_DOMAIN == 'simspilot.org'
+      @messages = 'Still working on imports.'
+      return false
+    end
 
     case base_file_name.downcase
     when 'users.csv'
