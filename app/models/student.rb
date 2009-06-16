@@ -43,19 +43,26 @@ class Student < ActiveRecord::Base
   has_many :team_consultations
   has_many :consultation_forms
   has_many :consultation_form_requests
-
+  
   has_attached_file  :extended_profile
   attr_reader :delete_extended_profile
 
   validates_presence_of :first_name, :last_name, :district_id
-  validates_uniqueness_of :id_district, :scope => :district_id, :unless => lambda {|e| e.id_district.blank?}
+  validates_uniqueness_of :id_district, :scope => :district_id, :allow_blank => true
+  #validates_uniqueness_of :id_state, :allow_nil => true 
+  validate :unique_id_state_by_state
 
+  delegate :state_id, :to => '(district or return nil)'
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
   before_validation :clear_extended_profile
 
+
+  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
+    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
+  }
 
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
@@ -224,5 +231,13 @@ class Student < ActiveRecord::Base
     groups.clear
     update_attribute(:district_id,nil)
   end
-    
+
+  def unique_id_state_by_state
+    if id_state.present? and state_id.present?
+      other_student = Student.by_state_id_and_id_state(state_id, id_state).first
+      if other_student
+        errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
+      end
+    end
+  end
 end

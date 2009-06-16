@@ -26,10 +26,32 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Student do
   before do
-    @student = Factory(:student)
+    @student = Factory(:student, :id_state => 1234)
   end
 
-  it "should be valid" do 
+  it "should be valid"  
+
+  describe 'named_scope' do
+    describe 'by_state_and_id_state' do
+      it 'should return matches with same state and id_state' do
+        Student.by_state_id_and_id_state(@student.state_id, 1234).first.should == @student
+      end
+    end
+  end
+
+  describe 'id_state' do
+    it 'should be unique but scoped to state' do
+      district_in_same_state=Factory(:district, :state_id => @student.state_id)
+      student_in_same_state = Factory.build(:student, :district => district_in_same_state, :id_state => 1234)
+      @student.state_id.should == student_in_same_state.state_id
+      student_in_same_state.should_not be_valid
+      student_in_same_state.errors_on(:id_state).should == ["Student with #{@student.id_state} already exists in #{@student.district}"]
+    end
+
+    it 'can be the same if in different states' do
+      student_in_different_state = Factory.build(:student, :id_state => 1234)
+      student_in_different_state.should be_valid
+    end
   end
 
   describe "principals" do
@@ -37,7 +59,6 @@ describe Student do
       pending
     end
   end
-
 
   describe 'belongs_to_user?' do
     

@@ -265,7 +265,6 @@ class ImportCSV
     
 
   def load_users_from_csv file_name
-
     #with db
     #=> #<Benchmark::Tms:0x4344ffc8 @real=1669.30910181999, @utime=1398.7, @cstime=0.0, @cutime=0.0, @label="", @total=1593.06, @stime=194.36>
     #without db
