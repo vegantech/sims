@@ -119,12 +119,12 @@ describe District::UsersController do
   describe "responding to DELETE destroy" do
     it "should destroy the requested user" do
       User.should_receive(:find).with("37").and_return(mock_user)
-      mock_user.should_receive(:destroy)
+      mock_user.should_receive(:remove_from_district)
       delete :destroy, :id => "37"
     end
 
     it "should redirect to the users list" do
-      User.stub!(:find).and_return(mock_user(:destroy => true))
+      User.stub!(:find).and_return(mock_user(:remove_from_district => true))
       delete :destroy, :id => "1"
       response.should redirect_to(district_users_url)
     end

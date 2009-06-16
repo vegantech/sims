@@ -24,28 +24,6 @@ describe District::StudentsController do
     end
   end
 
-  describe "responding to GET show" do
-
-    it "should expose the requested student as @student" do
-      Student.should_receive(:find).with("37").and_return(mock_student)
-      get :show, :id => "37"
-      assigns[:student].should equal(mock_student)
-    end
-    
-    describe "with mime type of xml" do
-
-      it "should render the requested student as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
-  end
-
   describe "responding to GET new" do
   
     it "should expose a new student as @student" do
@@ -79,7 +57,7 @@ describe District::StudentsController do
       it "should redirect to the created student" do
         Student.stub!(:build).and_return(mock_student(:save => true))
         post :create, :student => {}
-        response.should redirect_to(district_student_url(mock_student))
+        response.should redirect_to(district_students_url)
       end
       
     end
@@ -121,7 +99,7 @@ describe District::StudentsController do
       it "should redirect to the student" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => true))
         put :update, :id => "1", :student => {}
-        response.should redirect_to(district_student_url(mock_student))
+        response.should redirect_to(district_students_url)
       end
 
     end
@@ -154,12 +132,12 @@ describe District::StudentsController do
 
     it "should destroy the requested student" do
       Student.should_receive(:find).with("37").and_return(mock_student)
-      mock_student.should_receive(:destroy)
+      mock_student.should_receive(:remove_from_district)
       delete :destroy, :id => "37"
     end
   
     it "should redirect to the district_students list" do
-      Student.stub!(:find).and_return(mock_student(:destroy => true))
+      Student.stub!(:find).and_return(mock_student(:remove_from_district => true))
       delete :destroy, :id => "1"
       response.should redirect_to(district_students_url)
     end
