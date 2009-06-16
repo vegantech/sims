@@ -34,7 +34,7 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:notice] = 'User was successfully created.'
+        flash[:notice] = "#{@user} was successfully created."
         format.html { redirect_to(district_users_url)}
       else
         @schools = current_district.schools
@@ -52,7 +52,7 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = 'User was successfully updated.'
+        flash[:notice] = "#{@user} was successfully updated."
         format.html { redirect_to(district_users_url)}
       else
         @schools = current_district.schools
