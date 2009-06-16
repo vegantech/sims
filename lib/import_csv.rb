@@ -1,5 +1,6 @@
 class ImportCSV
   require 'fastercsv'
+  require 'hash_by'
  
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.6
@@ -14,6 +15,7 @@ class ImportCSV
  
 
 
+
   attr_reader :district, :messages, :filenames
   
   def initialize file, district
@@ -26,7 +28,6 @@ class ImportCSV
   def import
     identify_and_unzip
     sorted_filenames.each {|f| process_file f}
-    
     FileUtils.rm_rf @f_path
   end
 
@@ -133,11 +134,7 @@ class ImportCSV
 
 
   def ids_by_id_district klass
-    klass.connection.select_all("select id, id_district from #{klass.table_name} where district_id = #{@district.id}").inject({}) do |hsh,obj| 
-      hsh[obj["id_district"].to_i]=obj["id"].to_i
-      
-       hsh
-    end
+    klass.connection.select_all("select id, id_district from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>true)
   end
 
   def load_system_flags_from_csv file_name
@@ -146,7 +143,7 @@ class ImportCSV
     if load_from_csv file_name, 'system_flag'
       
       SystemFlag.scoped(:include => :student, :conditions => ["students.district_id => ? and students.id_district is not null", @district.id]).delete_all
-      bulk_insert 'SystemFlag'
+      bulk_insert SystemFlag
       
       
     
@@ -183,7 +180,7 @@ class ImportCSV
       deletes = @enrollments.values - @updates
       Enrollment.delete(deletes)
 
-      bulk_insert 'Enrollment'
+      bulk_insert Enrollment
     end
         
   end
@@ -243,16 +240,16 @@ class ImportCSV
 
   end
 
-  
  
+
   def load_students_from_csv file_name
     #136.140547037125 new import, 88 running it again
     
-    @students = Student.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_state]=obj; hsh }
+    @students = Student.find_all_by_district_id(@district.id).hash_by(:id_state)
     if load_from_csv file_name, "student"
       #TODO deletion should only occur for students that have no activity
       #Student.scoped(:conditions => ["district_id = ? and id_district is not null and id not in (?)",@district.id, @ids]).destroy_all
-      bulk_update 'Student'
+      bulk_update Student
       students_ids = @students.values.collect(&:id)
 
       # Student.delete(students_ids - @ids)
@@ -265,18 +262,18 @@ class ImportCSV
       Student.delete(to_delete)
       Student.update_all("district_id = null, id_district = null", "id in (#{to_disable})")
       #      Student.connection.execute "update students set (district_id, id_district) = (null, null) where students.id in (#{to_disable})"
-      bulk_insert 'Student'
+      bulk_insert Student
     else
       false
     end
   end
  
   def load_schools_from_csv file_name
-    @schools = School.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.id_district]=obj; hsh }
+    @schools = School.find_all_by_district_id(@district.id).hash_by(:id_district)
     if load_from_csv file_name, 'school'
       @district.schools.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all
-      bulk_update 'School'
-      bulk_insert 'School'
+      bulk_update School
+      bulk_insert School
     end
   end
     
@@ -297,22 +294,22 @@ class ImportCSV
     #46 seconds when redoing duplicate file
     #131.687636852264 seconds for full update
     
-    @users = User.find_all_by_district_id(@district.id).inject({}) {|hsh,obj| hsh[obj.username]=obj; hsh}
+    @users = User.find_all_by_district_id(@district.id).hash_by(:username)
     if load_from_csv file_name,  "user"
       
-        bulk_update 'User'  #update
+        bulk_update User  #update
         @district.users.scoped(:conditions => ["id_district is not null and id not in (?)",@ids]).destroy_all  #delete
         #TODO deletion should only occur for users that have no activity
         #delete must be before insert, since they don't have ids yet
 
-        bulk_insert 'User'
+        bulk_insert User
     else
       false
     end
   end
 
-  def bulk_insert klass_name
-    klass_name.constantize.transaction do
+  def bulk_insert klass
+    klass.transaction do
       @inserts.each do |i|
         i.send(:create_without_callbacks)
       end
@@ -320,8 +317,8 @@ class ImportCSV
 
   end
 
-  def bulk_update klass_name
-    klass_name.constantize.transaction do
+  def bulk_update klass
+    klass.transaction do
       @updates.each do |obj|
         obj.send(:update_without_callbacks) if obj.changed?
       end
