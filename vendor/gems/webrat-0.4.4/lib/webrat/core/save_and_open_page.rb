@@ -23,6 +23,8 @@ module Webrat
         `rundll32 url.dll,FileProtocolHandler #{path.gsub("/", "\\\\")}`
       elsif platform =~ /darwin/
         `open #{path}`
+      elsif ENV['STY']
+        `screen lynx #{path}`
       end
     end
     
