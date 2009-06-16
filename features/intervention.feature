@@ -65,6 +65,6 @@ Feature: Create Intervention
     Then I should see "Enter/view scores"
     And xhr "onclick" "enter_view_score_link"
     Then I should see "Preview Graph"
-    And I show page
+#    And I show page
 
 
