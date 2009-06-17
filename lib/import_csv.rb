@@ -189,22 +189,15 @@ class ImportCSV
     end
   end
 
-
-
   def process_system_flags_line
     category = line[:category].downcase
     student_id_district =  line[:student_id_district].to_i
+
     if flag:FLAGTYPES.keys.include?(category)
       student_id = @student_ids_by_id_district[student_id_district]
       @inserts << SystemFlag.new(:student_id => student_id, :category => category, :reason => line[:reason])
-      
-      
     end
   end
-
-
-
-  
 
   def student_ids_with_associations ids=[]
    has_many = Student.reflect_on_all_associations(:has_many).select{|e| e.source_reflection.blank?}
@@ -216,17 +209,14 @@ class ImportCSV
    habtm.each{|e| table_names << e.options[:join_table]}
    table_names.uniq!
    
-    Student.all( 
+   Student.all( 
       :group => 'students.id',
       :select => "students.id", 
       :joins => table_names.collect{|tn| "left outer join #{tn} on students.id = #{tn}.student_id"}.join(" "), 
       :having => table_names.collect{|tn| "count(#{tn}.student_id) >0"}.join(" or "),
       :conditions => {:id => ids}
-      ).collect(&:id)
-
+   ).collect(&:id)
   end
-
- 
 
   def load_students_from_csv file_name
     #136.140547037125 new import, 88 running it again

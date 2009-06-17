@@ -11,7 +11,6 @@ Feature: Student Maintenance
   Scenario: District admin should be able to add/create Students
     Given I am a district admin
     And I go to the home page
-    And I show page
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     Then I fill in "First Name" with "George"
@@ -24,7 +23,39 @@ Feature: Student Maintenance
     And I should see "Jr IV"
     
     Then I follow "Edit"
+    And page should not contain "onblur"
     And the "Last name" field should contain "Harrelson"
     And the "Suffix" field should contain "Jr IV"
 
     And pending testing enrollment flags and extended profile
+
+  Scenario: District admin attempts to enter a student that belongs to a district
+    Given I am a district admin
+    And student exists with id_state of 1234
+    And I go to the home page
+    Then I follow "Add/Remove Students"
+    Then I follow "New Student"
+    And I fill in "State ID" with "1234"
+    And page should contain "onblur"
+    And I call ajax check_id_state with "1234"
+    Then I should see an alert
+    When I fill in "State ID" with ""
+    And I call ajax check_id_state with ""
+    Then I should not see an alert
+
+  Scenario: District admin attempts to enter a student that does not belong to any district
+    Given I am a district admin
+    And student exists with no district and id_state of 1234
+    And I go to the home page
+    Then I follow "Add/Remove Students"
+    Then I follow "New Student"
+    And I fill in "State ID" with "1234"
+    And I call ajax check_id_state with "1234"
+    # Then I should see a popup that the student was found  
+    Then I should see an alert
+    # Then I show page
+    And I should see "Claim First Last for your district"
+    When I magically visit "Claim First Last for your district"
+    Then I should see "Student is now in your district, remove them if you want to undo"
+    And I should see "1234"
+

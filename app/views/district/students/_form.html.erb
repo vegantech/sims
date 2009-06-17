@@ -2,6 +2,23 @@
   <fieldset>
 
     <%= form.error_messages %>
+
+    <div class="form_row">
+      <%= form.label :id_state, "State ID"  %>
+      <% if form.object.new_record? %>
+        <%= form.text_field :id_state, :onblur =>remote_function(:url => {:action=>'check_id_state'}, 
+                                    :with => 'Form.Element.serialize(this)',
+                                    :before => "$('spinnerid_state').show()",
+                                    :complete => "$('spinnerid_state').hide()"
+                                    )  %>
+      <% else %>
+        <%= form.text_field :id_state %>
+      <% end %>
+      <%= spinner('id_state') %>
+      <%= help_popup id_state_desc(form.object) %>
+    </div>
+
+
   <div class="form_row">
     <%= form.label :last_name %>
     <%= form.text_field :last_name %>
@@ -32,12 +49,6 @@
       <%= form.text_field :id_district %>
       <%= help_popup id_district_desc(form.object) %>
     </div>
-    <div class="form_row">
-      <%= form.label :id_state, "State ID"  %>
-      <%= form.text_field :id_state %>
-      <%= help_popup id_state_desc(form.object) %>
-    </div>
-
   <div class="form_row">
       <%= form.label :id_country, "National ID" %>
       <%= form.text_field :id_country %>

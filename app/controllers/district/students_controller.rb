@@ -1,4 +1,6 @@
 class District::StudentsController < ApplicationController
+  additional_read_actions :check_id_state
+  additional_write_actions :claim
 
   # GET /district_students
   # GET /district_students.xml
@@ -73,6 +75,33 @@ class District::StudentsController < ApplicationController
       format.html { redirect_to(district_students_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def check_id_state
+    @student = Student.find_by_id_state(params['student']['id_state']) if params['student']['id_state'].present?
+
+    render :update do |page|
+      if @student
+        if  @student.district
+          page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
+        else
+          page.alert('Follow the link if you want to claim this student for your district')
+          page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
+        end
+      end
+    end
+  end
+
+  def claim
+    @student = Student.find_by_district_id_and_id(nil,params[:id])
+     if @student
+       @student.update_attribute(:district_id, current_district.id)
+       flash[:notice] = 'Student is now in your district, remove them if you want to undo'
+       redirect_to edit_district_student_url(@student)
+     else
+       flash[:notice] = 'Student could not be claimed'
+       redirect_to :back 
+     end
   end
 
 end

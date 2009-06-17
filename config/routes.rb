@@ -26,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
-    district.resources :students
+    district.resources :students, :collection => {:check_id_state => :get}
     district.resources :flag_categories, :name_prefix=>nil
   end
 

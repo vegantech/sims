@@ -1,5 +1,7 @@
 <h1>New student</h1>
 
+<div id="claim_student"></div>
+
 <% form_for(@student, :url=>district_students_url, :method=>:post, :html=> {:multipart => true}) do |f| %>
 
   <%= render :partial => f %>

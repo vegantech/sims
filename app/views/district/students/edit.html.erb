@@ -9,3 +9,4 @@
 <% end %>
 
 <%= link_to 'Back', district_students_path %>
+<%= link_to 'Remove from district', district_student_path(@student), :confirm => 'Are you sure?', :method => :delete %>
