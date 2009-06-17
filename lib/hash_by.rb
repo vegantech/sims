@@ -9,7 +9,7 @@ module Enumerable
 
       if opts[:to_i]
         val=val.to_i
-        key=obj[key].to_i
+        hash_key=obj[key].to_i
       else
         hash_key=obj[key]
       end

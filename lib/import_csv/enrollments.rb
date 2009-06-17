@@ -9,7 +9,7 @@ module ImportCSV::Enrollments
     {:district_id => @district.id}])
     
     @enrollments = enrollments_from_db.inject({}) do |hsh,obj| 
-        hash_key_array = [obj[:student_id_district].to_i,obj[:school_id_district].to_i,obj[:end_year],obj[:grade]]
+        hash_key_array = [obj[:student_id_district].to_i,obj[:school_id_district].to_i,obj[:end_year].to_i,obj[:grade]]
         
         hsh[ hash_key_array ] = obj[:id] ; hsh
       end
