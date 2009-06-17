@@ -13,8 +13,8 @@ Feature: CSV Import of Enrollments
     And enrollment "Bob Smith" in "Fish School" for grade "delete_me"
     And enrollment "Bob Smith" in "Fish School" for grade "noop"
     When I import_enrollments_from_csv with "test/csv/enrollments/telophia/enrollments.csv", "Telophia"
-    Then "Telophia" should have "3" enrollments
-    And "Bob Smith" has [change_me, insert_me, noop] for grades 
+    Then "Bob Smith" has [change_me, insert_me, noop] for grades 
+    And "Telophia" should have "3" enrollments
     #changing may not make sense since we're matching on all fields
 
 

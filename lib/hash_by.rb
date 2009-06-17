@@ -9,10 +9,12 @@ module Enumerable
 
       if opts[:to_i]
         val=val.to_i
-        key=key.to_i
+        key=obj[key].to_i
+      else
+        key=obj[key]
       end
 
-      hsh[obj[key]] = val
+      hsh[key] = val
       hsh
     end
   end
