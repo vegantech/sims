@@ -69,7 +69,6 @@ class District::StudentsController < ApplicationController
   def destroy
     @student = current_district.students.find(params[:id])
     @student.remove_from_district
-    
 
     respond_to do |format|
       format.html { redirect_to(district_students_url) }
