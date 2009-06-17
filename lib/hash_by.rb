@@ -11,10 +11,10 @@ module Enumerable
         val=val.to_i
         key=obj[key].to_i
       else
-        key=obj[key]
+        hash_key=obj[key]
       end
 
-      hsh[key] = val
+      hsh[hash_key] = val
       hsh
     end
   end
