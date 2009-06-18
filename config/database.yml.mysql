@@ -2,7 +2,8 @@ defaults: &defaults
   adapter: mysql
   encoding: utf8
   username: root
-  socket: /var/run/mysqld/mysqld.sock
+  socket: /tmp/mysql.sock
+#  socket: /var/run/mysqld/mysqld.sock
 #  password: root
 #  socket: /opt/local/var/run/mysql5/mysqld.sock
 

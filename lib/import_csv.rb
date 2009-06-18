@@ -65,8 +65,8 @@ class ImportCSV
       load_user_roles_from_csv file_name, 'school_admin'
     when 'regular_users.csv'
       load_user_roles_from_csv file_name, 'regular_user'
-      #    when 'system_flags.csv'
-      #load_system_flags_from_csv file_name
+    when 'system_flags.csv'
+      load_system_flags_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end

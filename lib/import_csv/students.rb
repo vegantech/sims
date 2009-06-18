@@ -36,7 +36,7 @@ module ImportCSV::Students
       #      ,to_delete = to_delete_or_disable.partition{|i| Enrollment.exists?(:student_id => i)}
 
       Student.delete(to_delete)
-      Student.update_all("district_id = null, id_district = null", "id in (#{to_disable})")
+      Student.update_all("district_id = null, id_district = null", "id in (#{to_disable})") unless to_disable.empty?
       #      Student.connection.execute "update students set (district_id, id_district) = (null, null) where students.id in (#{to_disable})"
       bulk_insert Student
     else
