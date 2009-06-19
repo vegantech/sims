@@ -38,6 +38,8 @@ class ImportCSV
   include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
   include  ImportCSV::Groups
+  include  ImportCSV::UserGroups
+  include  ImportCSV::StudentGroups
 
 
   def process_file file_name
@@ -70,6 +72,8 @@ class ImportCSV
       load_system_flags_from_csv file_name
     when 'groups.csv'
       load_groups_from_csv file_name
+    when 'user_groups.csv'
+      load_user_groups_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
