@@ -15,14 +15,15 @@ module CSVImporter
         drop_temporary_table
       end
 
-      @messages
+      @messages.join(", ")
     end
+
 
 
   protected
     def clean_file
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
-      system "tail -n +3 #{@file_name} |head -n -2| sed -e 's/ [ ]*//g' > #{@clean_file}"
+      system "tail -n +3 #{@file_name} |head -n -2| sed -e 's/ [ ]*//g -e ' -e 's/\r//' > #{@clean_file}"
     end
 
     def confirm_header
@@ -72,8 +73,8 @@ module CSVImporter
     end
 
     def add_indexes
-      index_options.each do |e|
-        ActiveRecord::Migration.add_index 'csv_importer', *e
+      index_options.each_with_index do |e,idx|
+         ActiveRecord::Migration.add_index 'csv_importer', e, :name=>"temporary_index_#{idx}"
       end
     end
 

@@ -21,7 +21,6 @@ module CSVImporter
     end
 
     def insert
-      inserts = csv_headers.join(", ")
       query=("insert into groups
       (title,school_id,id_district, created_at, updated_at)
       select tg.name , s.id, tg.district_group_id , CURDATE(), CURDATE() from csv_importer tg inner join schools s  
