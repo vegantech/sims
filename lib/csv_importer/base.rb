@@ -2,7 +2,7 @@ module CSVImporter
   class Base
 
     def initialize file_name, district
-      @district=district
+      @district = district
       @file_name = file_name
       @messages = []
       @clean_file = nil
@@ -18,12 +18,11 @@ module CSVImporter
       @messages.join(", ")
     end
 
-
-
   protected
+
     def clean_file
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
-      system "tail -n +3 #{@file_name} |head -n -2| sed -e 's/ [ ]*//g -e ' -e 's/\r//' > #{@clean_file}"
+      system "tail -n +3 #{@file_name} |head -n -2| sed -e 's/ [ ]*//g' -e 's/\r//' > #{@clean_file}"
     end
 
     def confirm_header
@@ -35,12 +34,9 @@ module CSVImporter
       end
     end
 
-
     def populate_temporary_table
       ActiveRecord::Base.connection.execute load_data_infile
     end
-
-
 
     def load_data_infile
       <<-EOF
@@ -51,10 +47,6 @@ module CSVImporter
             ;
         EOF
     end
-
-
-
-    
     
     def insert_update_delete
       #override this for a different order
@@ -83,7 +75,6 @@ module CSVImporter
         ActiveRecord::Migration.remove_index 'csv_importer', *e
       end
     end
-      
 
     def create_temporary_table 
       ActiveRecord::Migration.create_table 'csv_importer', :id => false, :temporary => true do |t|

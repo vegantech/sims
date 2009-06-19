@@ -16,7 +16,19 @@ module CSVImporter
       t.string :name
     end
 
+    def update
+
+
+    end
+
+    def insert_update_delete
+      delete
+      update
+      insert
+    end
+
     def delete
+      puts 'FIX DELETE, you do not actually want to delete everyone'
       Group.delete_all
     end
 

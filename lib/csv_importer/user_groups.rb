@@ -17,6 +17,7 @@ module CSVImporter
     end
 
     def delete
+      puts 'Fix DELETE, you do not actually want to delete everyone!!!'
       UserGroupAssignment.delete_all
     end
 
