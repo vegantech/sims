@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614175117) do
+ActiveRecord::Schema.define(:version => 20090619001027) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -225,8 +225,10 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "id_district"
   end
 
+  add_index "groups", ["id_district"], :name => "index_groups_on_id_district"
   add_index "groups", ["school_id"], :name => "index_groups_on_school_id"
 
   create_table "groups_students", :id => false, :force => true do |t|
@@ -714,6 +716,20 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
     t.datetime "updated_at"
   end
 
+  create_table "temporary_users", :id => false, :force => true do |t|
+    t.integer "id_district"
+    t.string  "username"
+    t.string  "first_name"
+    t.string  "last_name"
+    t.string  "middle_name"
+    t.string  "suffix"
+    t.string  "email"
+    t.string  "passwordhash"
+    t.string  "salt"
+  end
+
+  add_index "temporary_users", ["id_district"], :name => "index_temporary_users_on_id_district"
+
   create_table "tiers", :force => true do |t|
     t.integer  "district_id"
     t.string   "title"
@@ -769,5 +785,6 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
   end
 
   add_index "users", ["district_id"], :name => "index_users_on_district_id"
+  add_index "users", ["id_district"], :name => "index_users_on_id_district"
 
 end
