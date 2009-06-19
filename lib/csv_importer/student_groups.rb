@@ -1,7 +1,6 @@
-module ImportCSV::StudentGroups
-  class StudentGroupAssignment
+module CSVImporter
+  class StudentGroup
     CSV_HEADERS = [:district_student_id, :district_group_id]
-  end
   def load_student_groups_from_csv  file_name
    #<Benchmark::Tms:0x41da63f8 @real=1328.59576916695, @utime=0.0200000000000005, @cstime=0.77, @cutime=20.16, @label="", @total=20.97, @stime=0.02>
     if confirm_student_groups_header file_name
@@ -39,7 +38,7 @@ module ImportCSV::StudentGroups
 
 
   def create_temporary_student_groups_table
-     ActiveRecord::Migration.create_table :temporary_student_groups,  :id => false  , :temporary => false, :force=>true do |t|
+     ActiveRecord::Migration.create_table :temporary_student_groups,  :id => false  , :temporary => true do |t|
        t.integer :district_student_id
        t.string :district_group_id
      end
@@ -84,4 +83,5 @@ module ImportCSV::StudentGroups
     system "tail -n +3 #{file_name} |head -n -2| sed -e 's/ [ ]*//g' -e 's/\r//' > /tmp/clean_student_groups.csv"
   end
   
+end
 end

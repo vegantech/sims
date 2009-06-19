@@ -37,9 +37,8 @@ class ImportCSV
   include  ImportCSV::Roles
   include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
-  include  ImportCSV::Groups
   include  ImportCSV::UserGroups
-  include  ImportCSV::StudentGroups
+  #  include  ImportCSV::StudentGroups
 
 
   def process_file file_name
@@ -71,7 +70,7 @@ class ImportCSV
     when 'system_flags.csv'
       load_system_flags_from_csv file_name
     when 'groups.csv'
-      load_groups_from_csv file_name
+      msg= CSVImporter::Groups.new file_name, @district
     when 'user_groups.csv'
       load_user_groups_from_csv file_name
     else
