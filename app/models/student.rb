@@ -25,7 +25,7 @@
 class Student < ActiveRecord::Base
 
   CSV_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
-  
+  EXTENDED_PROFILE_PATH = "#{RAILS_ROOT}/file/extended_profiles/%s/%s" #% [district_id, id]
   include FullName
   belongs_to :district
   has_and_belongs_to_many :groups
