@@ -31,6 +31,48 @@ describe Student do
 
   it "should be valid"  
 
+  describe 'extended_profile?' do
+    before do
+      dir = "tmp/#{@student.district.id}/extended_profiles"
+      FileUtils.mkdir_p(dir)
+      @path = "tmp/#{@student.district.id}/extended_profiles/#{@student.id}"
+    end
+
+    describe 'when file exists' do
+      it 'should return true' do
+        File.open(@path, 'w'){|f| f<< 'some content'}
+        @student.extended_profile?.should be_true
+      end
+    end
+    describe 'when file does not exist' do
+      it 'should return false' do
+        FileUtils.rm_f(@path)
+        @student.extended_profile?.should be_false
+      end
+    end
+  end
+
+  describe 'extended_profile' do
+    before do
+      dir = "tmp/#{@student.district.id}/extended_profiles"
+      FileUtils.mkdir_p(dir)
+      @path = "tmp/#{@student.district.id}/extended_profiles/#{@student.id}"
+    end
+
+    describe 'when file exists' do
+      it 'should return file contents' do
+        File.open(@path, 'w'){|f| f<< 'some content'}
+        @student.extended_profile.should == 'some content'
+      end
+    end
+    describe 'when file does not exist' do
+      it 'should return nil' do
+        FileUtils.rm_f(@path)
+        @student.extended_profile.should be_nil
+      end
+    end
+  end
+
   describe 'named_scope' do
     describe 'by_state_and_id_state' do
       it 'should return matches with same state and id_state' do

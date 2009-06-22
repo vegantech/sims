@@ -2,6 +2,31 @@ Given /^a district "([^\"]*)"$/ do |district_name|
    @district = Factory(:district,:name => district_name)
 end
 
+When /^I import_extended_profiles_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
+  @district = District.find_by_name(district_name)
+  i = ImportCSV.new(filename, @district)
+  i.import
+  @command_return_val = i.messages.join(", ")
+end
+
+Then /^"([^\"]*)" should have "([^\"]*)" extended profiles$/ do |district_name, num|
+  @district ||= District.find_by_name(district_name)
+  puts @district.students.collect(&:extended_profile?).inspect
+  num_extended_profiles_in_district = @district.students.inject(0) do |num_extended_profiles, student|
+    if student.extended_profile?
+      num_extended_profiles + 1
+    else
+      num_extended_profiles
+    end
+  end
+  num_extended_profiles_in_district.should == num.to_i
+end
+
+Then /^there should be an extended_profile for student "([^\"]*)"$/ do |student_name|
+  pending
+end
+
+
 When /^I import_users_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
   @district = District.find_by_name(district_name)
   i=ImportCSV.new(filename, @district)

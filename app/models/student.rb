@@ -44,8 +44,8 @@ class Student < ActiveRecord::Base
   has_many :consultation_forms
   has_many :consultation_form_requests
   
-  has_attached_file  :extended_profile
-  attr_reader :delete_extended_profile
+  # has_attached_file  :extended_profile
+  # attr_reader :delete_extended_profile
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :allow_blank => true
@@ -57,12 +57,24 @@ class Student < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
-  before_validation :clear_extended_profile
+  #  before_validation :clear_extended_profile
 
 
   named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
     {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
   }
+
+  def extended_profile?
+    File.exists?(extended_profile_path)
+  end
+
+  def extended_profile
+    if extended_profile?
+      File.read(extended_profile_path)
+    else
+      nil
+    end
+  end
 
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
@@ -239,5 +251,11 @@ class Student < ActiveRecord::Base
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
     end
+  end
+
+  protected
+
+  def extended_profile_path
+    "tmp/qqq/#{self.district_id}/extended_profiles/#{id}"
   end
 end
