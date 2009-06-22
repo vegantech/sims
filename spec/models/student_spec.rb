@@ -31,11 +31,14 @@ describe Student do
 
   it "should be valid"  
 
+
+  def setup_extended_profile_test
+      FileUtils.mkdir_p(File.dirname(@student.send :extended_profile_path))
+      @path = @student.send :extended_profile_path
+  end
   describe 'extended_profile?' do
     before do
-      dir = "tmp/#{@student.district.id}/extended_profiles"
-      FileUtils.mkdir_p(dir)
-      @path = "tmp/#{@student.district.id}/extended_profiles/#{@student.id}"
+      setup_extended_profile_test
     end
 
     describe 'when file exists' do
@@ -52,11 +55,23 @@ describe Student do
     end
   end
 
+  describe 'extended_profile=' do
+    it 'should set the extended profile for the student on save' do
+      student = Factory.build(:student)
+      @extended_profile = File.open(__FILE__)
+      student.extended_profile = @extended_profile
+      student.save
+      student.extended_profile.should match(/should set the extended profile for the student on save/)
+      puts student.extended_profile
+      
+    end
+
+  end
+  
+
   describe 'extended_profile' do
     before do
-      dir = "tmp/#{@student.district.id}/extended_profiles"
-      FileUtils.mkdir_p(dir)
-      @path = "tmp/#{@student.district.id}/extended_profiles/#{@student.id}"
+      setup_extended_profile_test
     end
 
     describe 'when file exists' do

@@ -44,8 +44,6 @@ class Student < ActiveRecord::Base
   has_many :consultation_forms
   has_many :consultation_form_requests
   
-  # has_attached_file  :extended_profile
-  # attr_reader :delete_extended_profile
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :allow_blank => true
@@ -57,6 +55,7 @@ class Student < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
+  after_save :save_extended_profile
   #  before_validation :clear_extended_profile
 
 
@@ -74,6 +73,10 @@ class Student < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def extended_profile= file
+    @extended_profile = file
   end
 
   def latest_checklist
@@ -218,10 +221,6 @@ class Student < ActiveRecord::Base
     @delete_extended_profile = !value.to_i.zero?
   end
   
-  def clear_extended_profile
-    self.extended_profile=nil if @delete_extended_profile && !extended_profile.dirty?
-  end
-
 
   def find_checklist(checklist_id, show=true)
     if show
@@ -247,7 +246,7 @@ class Student < ActiveRecord::Base
   def unique_id_state_by_state
     if id_state.present? and state_id.present?
       other_student = Student.by_state_id_and_id_state(state_id, id_state).first
-      if other_student
+      if other_student && other_student != self
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
     end
@@ -256,6 +255,24 @@ class Student < ActiveRecord::Base
   protected
 
   def extended_profile_path
-    "tmp/qqq/#{self.district_id}/extended_profiles/#{id}"
+    EXTENDED_PROFILE_PATH % [district_id, id]
+  end
+
+  def save_extended_profile
+    
+    if @extended_profile
+      FileUtils.mkdir_p(File.dirname(extended_profile_path))
+      File.open((extended_profile_path), "w") do |f|
+        f.write(@extended_profile.read)
+      end
+      @extended_profile.close
+      @extended_profile=nil
+    end
+
+    if @delete_extended_profile
+      FileUtils.rm(extended_profile_path)
+      @delete_extended_profile = nil
+    end
+
   end
 end

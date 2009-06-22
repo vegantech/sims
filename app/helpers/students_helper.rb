@@ -48,10 +48,7 @@ module StudentsHelper
 
   def extended_profile(student)
     if student.extended_profile?
-      file = student.extended_profile.to_file 
-      p = file.readlines
-      file.close
-      p
+      student.extended_profile
     end
   end
 

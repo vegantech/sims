@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090619001027) do
+ActiveRecord::Schema.define(:version => 20090622204931) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -691,10 +691,6 @@ ActiveRecord::Schema.define(:version => 20090619001027) do
     t.date     "birthdate"
     t.boolean  "esl"
     t.boolean  "special_ed"
-    t.string   "extended_profile_file_name"
-    t.string   "extended_profile_content_type"
-    t.integer  "extended_profile_file_size"
-    t.datetime "extended_profile_updated_at"
     t.string   "middle_name"
     t.string   "suffix"
   end
