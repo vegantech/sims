@@ -10,19 +10,15 @@ module ImportCSV::Roles
         @ids.compact]
         )
       
-      #insert desired - existing
+      # insert desired - existing
       @role.users << (@desired_users  -@existing_users)
       
-      #remove existing - desired
+      # remove existing - desired
       @role.users.delete(@existing_users - @desired_users)
     end
-      
   end
 
   def process_role_line line
     @ids << line[:id_district]
   end
-
-
 end
-

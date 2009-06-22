@@ -9,7 +9,7 @@ class ImportCSV
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
 
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
-  SKIP_SIZE_COUNT = ['enrollment','system_flag','role']
+  SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
  
   @@file_handler={}
 
@@ -32,6 +32,7 @@ class ImportCSV
 
   include  ImportCSV::FileHandling
   include  ImportCSV::Enrollments
+  include  ImportCSV::ExtendedProfiles
   include  ImportCSV::Students
   include  ImportCSV::Users
   include  ImportCSV::Roles
@@ -68,11 +69,13 @@ class ImportCSV
     when 'system_flags.csv'
       load_system_flags_from_csv file_name
     when 'groups.csv'
-      msg= CSVImporter::Groups.new file_name, @district
+      msg= CSVImporter::Groups.new(file_name, @district).import
     when 'user_groups.csv'
-      msg= CSVImporter::UserGroups.new file_name, @district
+      msg= CSVImporter::UserGroups.new(file_name, @district).import
     when 'student_groups.csv'
-      msg= CSVImporter::StudentGroups.new file_name, @district
+      msg= CSVImporter::StudentGroups.new(file_name, @district).import
+    when 'arbitraries.csv'
+      load_arbitrary_extended_profile_content_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
@@ -127,8 +130,8 @@ class ImportCSV
   end
 
   def validate_params_and_set_constant file_name, model_name
-    if  file_exists? file_name,model_name
-      @constant=get_constant model_name
+    if file_exists? file_name, model_name
+      @constant = get_constant model_name
     end
   end
 
@@ -154,30 +157,26 @@ class ImportCSV
       @messages <<  "invalid header #{lines.headers.inspect} it should be #{@constant.to_set.inspect}"
       false
     end
-        
   end
-    
   
   def load_from_csv file_name, model_name
-   
     validate_params_and_set_constant file_name, model_name
     
     if @constant
       lines = FasterCSV.read(file_name, DEFAULT_CSV_OPTS)
-      if model_name != "enrollment"  #TODO THIS IS A HACK FOR NOW
+      if model_name != "enrollment"  # TODO THIS IS A HACK FOR NOW
         return false unless valid_lines?(lines, model_name) 
       end
       
+      @ids= []
+      @updates = []
+      @inserts = []
 
-        @ids= []
-        @updates = []
-        @inserts = []
-
-        lines.each do |line|
-          next  if line[0] =~  /^-+|\(\d+ rows affected\)$/   
-         #some CSV such as sql server appends a blank line and a rowcount
-          self.send("process_#{model_name}_line", line)
-        end
+      lines.each do |line|
+        next  if line[0] =~  /^-+|\(\d+ rows affected\)$/   
+       # some CSV such as sql server appends a blank line and a rowcount
+        self.send("process_#{model_name}_line", line)
+      end
 
       @messages << "Successful import of #{File.basename(file_name)}"
     end
