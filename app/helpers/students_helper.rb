@@ -47,7 +47,7 @@ module StudentsHelper
   end
 
   def extended_profile(student)
-    if student.extended_profile?
+    if !student.new_record? && student.extended_profile?
       student.extended_profile
     end
   end

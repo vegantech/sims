@@ -23,7 +23,8 @@ Then /^"([^\"]*)" should have "([^\"]*)" extended profiles$/ do |district_name, 
 end
 
 Then /^there should be an extended_profile for student "([^\"]*)"$/ do |student_name|
-  pending
+  first,last = student_name.split(' ')
+  Student.find_by_first_name_and_last_name(first,last).extended_profile?.should be_true
 end
 
 
@@ -65,8 +66,9 @@ Then /^there should be (\d+) users in the district$/ do |num_users|
 end
 
 
-Given /^a student "([^\"]*)"$/ do |arg1|
-  @student = Factory(:student,:district => @district, :id_district => 31337, :id_state => 33)
+Given /^a student "([^\"]*)"$/ do |fullname|
+  first,last = fullname.split(' ')
+  @student = Factory(:student,:district => @district, :id_district => 31337, :id_state => 33, :first_name => first, :last_name => last)
 end
 
 Given /^a school "([^\"]*)"$/ do |arg1|

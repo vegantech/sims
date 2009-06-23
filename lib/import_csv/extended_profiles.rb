@@ -26,6 +26,7 @@ module ImportCSV::ExtendedProfiles
 
   def load_extended_profiles_from_csv file_name
     lines = FasterCSV.read(file_name, ImportCSV::DEFAULT_CSV_OPTS)
+    FileUtils.rm_rf(File.dirname(Student::EXTENDED_PROFILE_PATH % [@district.id, nil]))
     lines.each do |line|
       # some CSV such as sql server appends a blank line and a rowcount
       next  if line[0] =~  /^-+|\(\d+ rows affected\)$/
@@ -37,13 +38,11 @@ module ImportCSV::ExtendedProfiles
   end
 
   def process_extended_profile_line line
-    puts "Now processing line with #{line[:id_district]} and #{line[:arbitrary]}"
     id_district = line[:id_district].to_i
     #    puts Student.find_by_id_district.inspect
     student_id = @students[id_district] #|| 'add_some_students_to_your_scenario'
-    puts "You should create a file somewhere #{@district.id}/#{student_id}"
-    path = "tmp/qqq/#{@district.id}/extended_profiles/"
-    FileUtils.mkdir_p(path)
-    File.open("#{path}/#{student_id}", 'w+') {|f| f << 'fubar'}
+    path = Student::EXTENDED_PROFILE_PATH  % [@district.id, student_id]
+    FileUtils.mkdir_p(File.dirname(path))
+    File.open("#{path}", 'w+') {|f| f << line[:arbitrary]}
   end
 end

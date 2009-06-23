@@ -32,7 +32,7 @@ class ImportCSV
 
   include  ImportCSV::FileHandling
   include  ImportCSV::Enrollments
-  #  include  ImportCSV::ExtendedProfiles
+  include  ImportCSV::ExtendedProfiles
   include  ImportCSV::Students
   include  ImportCSV::Users
   include  ImportCSV::Roles
