@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: states
 #
-#  id         :integer         not null, primary key
+#  id         :integer(4)      not null, primary key
 #  name       :string(255)
 #  abbrev     :string(255)
-#  country_id :integer
+#  country_id :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
-#  admin      :boolean
+#  admin      :boolean(1)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

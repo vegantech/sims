@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: answers
 #
-#  id                   :integer         not null, primary key
-#  checklist_id         :integer
-#  answer_definition_id :integer
+#  id                   :integer(4)      not null, primary key
+#  checklist_id         :integer(4)
+#  answer_definition_id :integer(4)
 #  text                 :text
 #  created_at           :datetime
 #  updated_at           :datetime

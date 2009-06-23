@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: checklists
 #
-#  id                      :integer         not null, primary key
-#  checklist_definition_id :integer
-#  from_tier               :integer
-#  student_id              :integer
-#  promoted                :boolean
-#  user_id                 :integer
-#  is_draft                :boolean         default(TRUE)
-#  district_id             :integer
+#  id                      :integer(4)      not null, primary key
+#  checklist_definition_id :integer(4)
+#  from_tier               :integer(4)
+#  student_id              :integer(4)
+#  promoted                :boolean(1)
+#  user_id                 :integer(4)
+#  is_draft                :boolean(1)      default(TRUE)
+#  district_id             :integer(4)
 #  created_at              :datetime
 #  updated_at              :datetime
 #

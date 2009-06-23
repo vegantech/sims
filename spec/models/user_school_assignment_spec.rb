@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: user_school_assignments
 #
-#  id         :integer         not null, primary key
-#  school_id  :integer
-#  user_id    :integer
-#  admin      :boolean
+#  id         :integer(4)      not null, primary key
+#  school_id  :integer(4)
+#  user_id    :integer(4)
+#  admin      :boolean(1)
 #  created_at :datetime
 #  updated_at :datetime
 #

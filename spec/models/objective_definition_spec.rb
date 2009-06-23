@@ -1,19 +1,19 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: objective_definitions
 #
-#  id                 :integer         not null, primary key
+#  id                 :integer(4)      not null, primary key
 #  title              :string(255)
 #  description        :text
-#  goal_definition_id :integer
-#  position           :integer
-#  disabled           :boolean
+#  goal_definition_id :integer(4)
+#  position           :integer(4)
+#  disabled           :boolean(1)
 #  created_at         :datetime
 #  updated_at         :datetime
 #  deleted_at         :datetime
 #  copied_at          :datetime
-#  copied_from        :integer
+#  copied_from        :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

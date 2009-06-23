@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: news_items
 #
-#  id          :integer         not null, primary key
+#  id          :integer(4)      not null, primary key
 #  text        :text
-#  system      :boolean
-#  district_id :integer
-#  school_id   :integer
-#  state_id    :integer
-#  country_id  :integer
+#  system      :boolean(1)
+#  district_id :integer(4)
+#  school_id   :integer(4)
+#  state_id    :integer(4)
+#  country_id  :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
 #

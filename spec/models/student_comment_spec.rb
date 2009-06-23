@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: student_comments
 #
-#  id         :integer         not null, primary key
-#  student_id :integer
-#  user_id    :integer
+#  id         :integer(4)      not null, primary key
+#  student_id :integer(4)
+#  user_id    :integer(4)
 #  body       :text
 #  created_at :datetime
 #  updated_at :datetime

@@ -1,16 +1,15 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: special_user_groups
 #
-#  id           :integer         not null, primary key
-#  user_id      :integer
-#  district_id  :integer
-#  school_id    :integer
-#  grouptype    :integer
+#  id           :integer(4)      not null, primary key
+#  user_id      :integer(4)
+#  district_id  :integer(4)
+#  school_id    :integer(4)
+#  grouptype    :integer(4)
 #  grade        :string(255)
-#  integer      :string(255)
-#  is_principal :boolean
+#  is_principal :boolean(1)
 #  created_at   :datetime
 #  updated_at   :datetime
 #

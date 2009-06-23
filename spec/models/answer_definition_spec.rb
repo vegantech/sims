@@ -1,19 +1,19 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: answer_definitions
 #
-#  id                    :integer         not null, primary key
-#  element_definition_id :integer
+#  id                    :integer(4)      not null, primary key
+#  element_definition_id :integer(4)
 #  text                  :text
 #  value                 :string(255)
-#  position              :integer
-#  autoset_others        :boolean
+#  position              :integer(4)
+#  autoset_others        :boolean(1)
 #  created_at            :datetime
 #  updated_at            :datetime
 #  deleted_at            :datetime
 #  copied_at             :datetime
-#  copied_from           :integer
+#  copied_from           :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

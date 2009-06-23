@@ -1,14 +1,15 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: enrollments
 #
-#  id         :integer         not null, primary key
-#  school_id  :integer
-#  student_id :integer
+#  id         :integer(4)      not null, primary key
+#  school_id  :integer(4)
+#  student_id :integer(4)
 #  grade      :string(16)
 #  created_at :datetime
 #  updated_at :datetime
+#  end_year   :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

@@ -1,13 +1,13 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: consultation_form_requests
 #
-#  id                          :integer         not null, primary key
-#  student_id                  :integer
-#  requestor_id                :integer
-#  team_id                     :integer
-#  all_student_scheduled_staff :boolean
+#  id                          :integer(4)      not null, primary key
+#  student_id                  :integer(4)
+#  requestor_id                :integer(4)
+#  team_id                     :integer(4)
+#  all_student_scheduled_staff :boolean(1)
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #

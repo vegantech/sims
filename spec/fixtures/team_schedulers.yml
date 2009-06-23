@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: team_schedulers
 #
-#  id         :integer         not null, primary key
-#  user_id    :integer
-#  school_id  :integer
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)
+#  school_id  :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
 #

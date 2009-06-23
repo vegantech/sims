@@ -1,25 +1,23 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: students
 #
-#  id                            :integer         not null, primary key
-#  district_id                   :integer
-#  last_name                     :string(255)
-#  first_name                    :string(255)
-#  number                        :string(255)
-#  id_district                   :integer
-#  id_state                      :integer
-#  id_country                    :integer
-#  created_at                    :datetime
-#  updated_at                    :datetime
-#  birthdate                     :date
-#  esl                           :boolean
-#  special_ed                    :boolean
-#  extended_profile_file_name    :string(255)
-#  extended_profile_content_type :string(255)
-#  extended_profile_file_size    :integer
-#  extended_profile_updated_at   :datetime
+#  id          :integer(4)      not null, primary key
+#  district_id :integer(4)
+#  last_name   :string(255)
+#  first_name  :string(255)
+#  number      :string(255)
+#  id_district :integer(4)
+#  id_state    :integer(4)
+#  id_country  :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  birthdate   :date
+#  esl         :boolean(1)
+#  special_ed  :boolean(1)
+#  middle_name :string(255)
+#  suffix      :string(255)
 #
 
 class Student < ActiveRecord::Base

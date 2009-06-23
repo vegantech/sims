@@ -1,9 +1,9 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: frequencies
 #
-#  id         :integer         not null, primary key
+#  id         :integer(4)      not null, primary key
 #  title      :string(255)
 #  created_at :datetime
 #  updated_at :datetime

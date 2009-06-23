@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: tiers
 #
-#  id          :integer         not null, primary key
-#  district_id :integer
+#  id          :integer(4)      not null, primary key
+#  district_id :integer(4)
 #  title       :string(255)
-#  position    :integer
+#  position    :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
 #

@@ -1,19 +1,19 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: probe_questions
 #
-#  id                  :integer         not null, primary key
-#  probe_definition_id :integer
-#  number              :integer
+#  id                  :integer(4)      not null, primary key
+#  probe_definition_id :integer(4)
+#  number              :integer(4)
 #  operator            :string(255)
-#  first_digit         :integer
-#  second_digit        :integer
+#  first_digit         :integer(4)
+#  second_digit        :integer(4)
 #  created_at          :datetime
 #  updated_at          :datetime
 #  deleted_at          :datetime
 #  copied_at           :datetime
-#  copied_from         :integer
+#  copied_from         :integer(4)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

@@ -1,14 +1,14 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: flag_categories
 #
-#  id          :integer         not null, primary key
-#  district_id :integer
+#  id          :integer(4)      not null, primary key
+#  district_id :integer(4)
 #  category    :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  threshold   :integer         default(100)
+#  threshold   :integer(4)      default(100)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
