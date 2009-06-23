@@ -74,7 +74,7 @@ class Student < ActiveRecord::Base
   end
 
   def extended_profile= file
-    @extended_profile = file
+    @extended_profile = file unless file.blank?
   end
 
   def latest_checklist
@@ -257,7 +257,6 @@ class Student < ActiveRecord::Base
   end
 
   def save_extended_profile
-    
     if @extended_profile
       FileUtils.mkdir_p(File.dirname(extended_profile_path))
       File.open((extended_profile_path), "w") do |f|
