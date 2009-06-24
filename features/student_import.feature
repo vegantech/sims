@@ -8,11 +8,13 @@ Feature: CSV Import of Students
 
 
   Scenario: Import student where id_state is not in system
+    Given no other students
     When I import_csv with "test/csv/students/single/students.csv"
     Then the command should have succeeded
     And there should be "1" student
 
   Scenario: Import where student is deleted and have no other tables referencing them
+    Given no other students
     Given a student "Ignored Parameter"
     When I import_csv with "test/csv/students/empty/students.csv"
     Then the command should have succeeded

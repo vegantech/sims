@@ -1,6 +1,6 @@
 class ImportCSV
-  require 'fastercsv'
   require 'hash_by'
+  require 'fastercsv'
  
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.6
@@ -33,7 +33,7 @@ class ImportCSV
   include  ImportCSV::FileHandling
   include  ImportCSV::Enrollments
   include  ImportCSV::ExtendedProfiles
-  include  ImportCSV::Students
+  #  include  ImportCSV::Students
   include  ImportCSV::Users
   include  ImportCSV::Roles
   include  ImportCSV::Schools
@@ -50,10 +50,10 @@ class ImportCSV
     case base_file_name.downcase
     when 'users.csv'
       load_users_from_csv file_name
-      when 'schools.csv'
-      load_schools_from_csv file_name
+    when 'schools.csv'
+      load_schools_from_csv  file_name
     when 'students.csv'
-      load_students_from_csv file_name
+      msg= CSVImporter::Students.new(file_name, @district).import
     when 'enrollments.csv'
       load_enrollments_from_csv file_name
     when 'district_admins.csv'

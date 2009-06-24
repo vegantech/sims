@@ -1,5 +1,6 @@
 Given /^a district "([^\"]*)"$/ do |district_name|
-   @district = Factory(:district,:name => district_name)
+   @district = District.find_by_name(district_name) 
+   @district ||= Factory(:district,:name => district_name)
 end
 
 When /^I import_extended_profiles_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
@@ -11,7 +12,6 @@ end
 
 Then /^"([^\"]*)" should have "([^\"]*)" extended profiles$/ do |district_name, num|
   @district ||= District.find_by_name(district_name)
-  puts @district.students.collect(&:extended_profile?).inspect
   num_extended_profiles_in_district = @district.students.inject(0) do |num_extended_profiles, student|
     if student.extended_profile?
       num_extended_profiles + 1
