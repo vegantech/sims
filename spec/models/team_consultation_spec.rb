@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: team_consultations
 #
-#  id           :integer         not null, primary key
-#  student_id   :integer
-#  requestor_id :integer
-#  recipient_id :integer
+#  id           :integer(4)      not null, primary key
+#  student_id   :integer(4)
+#  requestor_id :integer(4)
+#  recipient_id :integer(4)
 #  created_at   :datetime
 #  updated_at   :datetime
 #

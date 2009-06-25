@@ -1,17 +1,17 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: recommendation_answer_definitions
 #
-#  id                           :integer         not null, primary key
-#  recommendation_definition_id :integer
-#  position                     :integer
+#  id                           :integer(4)      not null, primary key
+#  recommendation_definition_id :integer(4)
+#  position                     :integer(4)
 #  text                         :text
 #  created_at                   :datetime
 #  updated_at                   :datetime
 #  deleted_at                   :datetime
 #  copied_at                    :datetime
-#  copied_from                  :integer
+#  copied_from                  :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

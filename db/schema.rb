@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614175117) do
+ActiveRecord::Schema.define(:version => 20090623023153) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -225,8 +225,10 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "id_district"
   end
 
+  add_index "groups", ["id_district"], :name => "index_groups_on_id_district"
   add_index "groups", ["school_id"], :name => "index_groups_on_school_id"
 
   create_table "groups_students", :id => false, :force => true do |t|
@@ -644,7 +646,6 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
     t.integer  "school_id"
     t.integer  "grouptype"
     t.string   "grade"
-    t.string   "integer"
     t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -689,10 +690,6 @@ ActiveRecord::Schema.define(:version => 20090614175117) do
     t.date     "birthdate"
     t.boolean  "esl"
     t.boolean  "special_ed"
-    t.string   "extended_profile_file_name"
-    t.string   "extended_profile_content_type"
-    t.integer  "extended_profile_file_size"
-    t.datetime "extended_profile_updated_at"
     t.string   "middle_name"
     t.string   "suffix"
   end

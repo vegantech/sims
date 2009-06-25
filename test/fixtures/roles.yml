@@ -1,17 +1,17 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: roles
 #
-#  id                 :integer         not null, primary key
+#  id                 :integer(4)      not null, primary key
 #  name               :string(255)
-#  district_id        :integer
-#  position           :integer
+#  district_id        :integer(4)
+#  position           :integer(4)
 #  created_at         :datetime
 #  updated_at         :datetime
 #  asset_file_name    :string(255)
 #  asset_content_type :string(255)
-#  asset_file_size    :integer
+#  asset_file_size    :integer(4)
 #  asset_updated_at   :datetime
 #
 

@@ -1,13 +1,14 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: groups
 #
-#  id         :integer         not null, primary key
-#  title      :string(255)
-#  school_id  :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer(4)      not null, primary key
+#  title       :string(255)
+#  school_id   :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  id_district :string(255)
 #
 
 class Group < ActiveRecord::Base

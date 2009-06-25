@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: time_lengths
 #
-#  id         :integer         not null, primary key
+#  id         :integer(4)      not null, primary key
 #  title      :string(255)
-#  days       :integer
+#  days       :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
 #

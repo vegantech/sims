@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: checklist_definitions
 #
-#  id                           :integer         not null, primary key
+#  id                           :integer(4)      not null, primary key
 #  text                         :text
 #  directions                   :text
-#  active                       :boolean
-#  district_id                  :integer
+#  active                       :boolean(1)
+#  district_id                  :integer(4)
 #  created_at                   :datetime
 #  updated_at                   :datetime
-#  recommendation_definition_id :integer
+#  recommendation_definition_id :integer(4)
 #  document_file_name           :string(255)
 #  document_content_type        :string(255)
-#  document_file_size           :integer
+#  document_file_size           :integer(4)
 #  document_updated_at          :datetime
 #  deleted_at                   :datetime
 #  copied_at                    :datetime
-#  copied_from                  :integer
+#  copied_from                  :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

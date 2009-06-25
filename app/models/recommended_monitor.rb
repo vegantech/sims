@@ -1,18 +1,18 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: recommended_monitors
 #
-#  id                         :integer         not null, primary key
-#  intervention_definition_id :integer
-#  probe_definition_id        :integer
+#  id                         :integer(4)      not null, primary key
+#  intervention_definition_id :integer(4)
+#  probe_definition_id        :integer(4)
 #  note                       :string(255)
-#  position                   :integer
+#  position                   :integer(4)
 #  created_at                 :datetime
 #  updated_at                 :datetime
 #  deleted_at                 :datetime
 #  copied_at                  :datetime
-#  copied_from                :integer
+#  copied_from                :integer(4)
 #
 
 class RecommendedMonitor < ActiveRecord::Base

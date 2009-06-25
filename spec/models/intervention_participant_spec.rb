@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: intervention_participants
 #
-#  id              :integer         not null, primary key
-#  intervention_id :integer
-#  user_id         :integer
-#  role            :integer         default(1)
+#  id              :integer(4)      not null, primary key
+#  intervention_id :integer(4)
+#  user_id         :integer(4)
+#  role            :integer(4)      default(1)
 #  created_at      :datetime
 #  updated_at      :datetime
 #

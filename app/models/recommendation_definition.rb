@@ -1,19 +1,19 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: recommendation_definitions
 #
-#  id                      :integer         not null, primary key
-#  district_id             :integer
-#  active                  :boolean
+#  id                      :integer(4)      not null, primary key
+#  district_id             :integer(4)
+#  active                  :boolean(1)
 #  text                    :text
-#  checklist_definition_id :integer
-#  score_options           :integer
+#  checklist_definition_id :integer(4)
+#  score_options           :integer(4)
 #  created_at              :datetime
 #  updated_at              :datetime
 #  deleted_at              :datetime
 #  copied_at               :datetime
-#  copied_from             :integer
+#  copied_from             :integer(4)
 #
 
 class RecommendationDefinition < ActiveRecord::Base

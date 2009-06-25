@@ -207,11 +207,14 @@ Admin means they can create/delete groups, or the school quicklist.  Most likely
 enrollment.rb
 student.rb
 system_flag.rb
-group.rb
 school.rb
+user.rb
+
+
+
+group.rb
 user_group_assignment.rb
 special_user_group.rb
-user.rb
 user_school_assignment.rb
 
 

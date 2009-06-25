@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: intervention_probe_assignments
 #
-#  id                   :integer         not null, primary key
-#  intervention_id      :integer
-#  probe_definition_id  :integer
-#  frequency_multiplier :integer
-#  frequency_id         :integer
+#  id                   :integer(4)      not null, primary key
+#  intervention_id      :integer(4)
+#  probe_definition_id  :integer(4)
+#  frequency_multiplier :integer(4)
+#  frequency_id         :integer(4)
 #  first_date           :date
 #  end_date             :date
-#  enabled              :boolean
+#  enabled              :boolean(1)
 #  created_at           :datetime
 #  updated_at           :datetime
 #

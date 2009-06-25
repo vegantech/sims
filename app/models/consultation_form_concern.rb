@@ -1,12 +1,11 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: consultation_form_concerns
 #
-#  id                   :integer         not null, primary key
-#  area                 :integer
-#  consultation_form_id :integer
-#  checked              :boolean
+#  id                   :integer(4)      not null, primary key
+#  area                 :integer(4)
+#  consultation_form_id :integer(4)
 #  strengths            :text
 #  concerns             :text
 #  recent_changes       :text

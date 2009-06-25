@@ -47,11 +47,8 @@ module StudentsHelper
   end
 
   def extended_profile(student)
-    if student.extended_profile?
-      file = student.extended_profile.to_file 
-      p = file.readlines
-      file.close
-      p
+    if !student.new_record? && student.extended_profile?
+      student.extended_profile
     end
   end
 

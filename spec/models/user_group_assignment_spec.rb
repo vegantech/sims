@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: user_group_assignments
 #
-#  id           :integer         not null, primary key
-#  user_id      :integer
-#  group_id     :integer
-#  is_principal :boolean
+#  id           :integer(4)      not null, primary key
+#  user_id      :integer(4)
+#  group_id     :integer(4)
+#  is_principal :boolean(1)
 #  created_at   :datetime
 #  updated_at   :datetime
 #

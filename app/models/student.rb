@@ -1,31 +1,29 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: students
 #
-#  id                            :integer         not null, primary key
-#  district_id                   :integer
-#  last_name                     :string(255)
-#  first_name                    :string(255)
-#  number                        :string(255)
-#  id_district                   :integer
-#  id_state                      :integer
-#  id_country                    :integer
-#  created_at                    :datetime
-#  updated_at                    :datetime
-#  birthdate                     :date
-#  esl                           :boolean
-#  special_ed                    :boolean
-#  extended_profile_file_name    :string(255)
-#  extended_profile_content_type :string(255)
-#  extended_profile_file_size    :integer
-#  extended_profile_updated_at   :datetime
+#  id          :integer(4)      not null, primary key
+#  district_id :integer(4)
+#  last_name   :string(255)
+#  first_name  :string(255)
+#  number      :string(255)
+#  id_district :integer(4)
+#  id_state    :integer(4)
+#  id_country  :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  birthdate   :date
+#  esl         :boolean(1)
+#  special_ed  :boolean(1)
+#  middle_name :string(255)
+#  suffix      :string(255)
 #
 
 class Student < ActiveRecord::Base
 
   CSV_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
-  
+  EXTENDED_PROFILE_PATH = "#{RAILS_ROOT}/file/extended_profiles/%s/%s" #% [district_id, id]
   include FullName
   belongs_to :district
   has_and_belongs_to_many :groups
@@ -44,8 +42,6 @@ class Student < ActiveRecord::Base
   has_many :consultation_forms
   has_many :consultation_form_requests
   
-  has_attached_file  :extended_profile
-  attr_reader :delete_extended_profile
 
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :id_district, :scope => :district_id, :allow_blank => true
@@ -57,12 +53,29 @@ class Student < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
-  before_validation :clear_extended_profile
+  after_save :save_extended_profile
+  #  before_validation :clear_extended_profile
 
 
   named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
     {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
   }
+
+  def extended_profile?
+    File.exists?(extended_profile_path)
+  end
+
+  def extended_profile
+    if extended_profile?
+      File.read(extended_profile_path)
+    else
+      nil
+    end
+  end
+
+  def extended_profile= file
+    @extended_profile = file unless file.blank?
+  end
 
   def latest_checklist
     checklists.find(:first ,:order => "created_at DESC")
@@ -206,10 +219,6 @@ class Student < ActiveRecord::Base
     @delete_extended_profile = !value.to_i.zero?
   end
   
-  def clear_extended_profile
-    self.extended_profile=nil if @delete_extended_profile && !extended_profile.dirty?
-  end
-
 
   def find_checklist(checklist_id, show=true)
     if show
@@ -235,9 +244,32 @@ class Student < ActiveRecord::Base
   def unique_id_state_by_state
     if id_state.present? and state_id.present?
       other_student = Student.by_state_id_and_id_state(state_id, id_state).first
-      if other_student
+      if other_student && other_student != self
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
     end
+  end
+
+  protected
+
+  def extended_profile_path
+    EXTENDED_PROFILE_PATH % [district_id, id]
+  end
+
+  def save_extended_profile
+    if @extended_profile
+      FileUtils.mkdir_p(File.dirname(extended_profile_path))
+      File.open((extended_profile_path), "w") do |f|
+        f.write(@extended_profile.read)
+      end
+      @extended_profile.close
+      @extended_profile=nil
+    end
+
+    if @delete_extended_profile
+      FileUtils.rm(extended_profile_path)
+      @delete_extended_profile = nil
+    end
+
   end
 end

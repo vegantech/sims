@@ -1,14 +1,14 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: schools
 #
-#  id          :integer         not null, primary key
+#  id          :integer(4)      not null, primary key
 #  name        :string(255)
-#  id_district :integer
-#  id_state    :integer
-#  id_country  :integer
-#  district_id :integer
+#  id_district :integer(4)
+#  id_state    :integer(4)
+#  id_country  :integer(4)
+#  district_id :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
 #

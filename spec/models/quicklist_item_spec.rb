@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: quicklist_items
 #
-#  id                         :integer         not null, primary key
-#  school_id                  :integer
-#  district_id                :integer
-#  intervention_definition_id :integer
+#  id                         :integer(4)      not null, primary key
+#  school_id                  :integer(4)
+#  district_id                :integer(4)
+#  intervention_definition_id :integer(4)
 #  created_at                 :datetime
 #  updated_at                 :datetime
 #

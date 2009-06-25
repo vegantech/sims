@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20090524185436
+# Schema version: 20090623023153
 #
 # Table name: recommendations
 #
-#  id                           :integer         not null, primary key
-#  progress                     :integer
-#  recommendation               :integer
-#  checklist_id                 :integer
-#  user_id                      :integer
+#  id                           :integer(4)      not null, primary key
+#  progress                     :integer(4)
+#  recommendation               :integer(4)
+#  checklist_id                 :integer(4)
+#  user_id                      :integer(4)
 #  reason                       :text
-#  should_advance               :boolean
+#  should_advance               :boolean(1)
 #  created_at                   :datetime
 #  updated_at                   :datetime
-#  recommendation_definition_id :integer
-#  draft                        :boolean
-#  district_id                  :integer
-#  tier_id                      :integer
-#  student_id                   :integer
-#  promoted                     :boolean
+#  recommendation_definition_id :integer(4)
+#  draft                        :boolean(1)
+#  district_id                  :integer(4)
+#  tier_id                      :integer(4)
+#  student_id                   :integer(4)
+#  promoted                     :boolean(1)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
