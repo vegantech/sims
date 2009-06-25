@@ -26,6 +26,7 @@ module CSVImporter
   
   class Students < CSVImporter::Base
     #13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
+    #19.3717708587646,
 =begin
     def import
      #use the existing temporary table
@@ -152,7 +153,7 @@ module CSVImporter
       
       
       puts 'You still need to prune the existing students at some point'
-      @messages << 'Shawn still needs to prune the existing students that are not in districts'
+      #      @messages << 'Shawn still needs to prune the existing students that are not in districts'
 
       #remove_students_in_district_not_in_temporary_table #delete_or_disable?  or just disable
       #Student.delete_all(:district_id => @district.id)
