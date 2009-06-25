@@ -79,14 +79,18 @@ class DistrictsController < ApplicationController
 
 
   def bulk_import_form
-    
+     @uuid = (0..29).to_a.map {|x| rand(10)}
   end
 
   def bulk_import
-    importer= ImportCSV.new params[:import_file], current_district
-    x=Benchmark.measure{importer.import}
-    flash[:notice]= "#{importer.messages.join(", ")} #{x}"
-    redirect_to root_url
+    if request.post?
+      importer= ImportCSV.new params[:import_file], current_district
+      x=Benchmark.measure{importer.import}
+
+      @results = "#{importer.messages.join(", ")} #{x}"
+      #redirect_to root_url
+    end
+
   end
 
 

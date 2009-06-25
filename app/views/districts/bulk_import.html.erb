@@ -1,0 +1,16 @@
+<div id="import_results">
+                      <%=@results %>
+                    </div>
+
+
+<script>
+try
+      {
+  if (self.parent.frames.length != 0)
+          var top_progress = window.top.document.getElementById('form_import_results');
+          Element.update(top_progress , $('import_results').innerHTML);
+                  }
+                      catch (Exception) {}
+
+                    </script>
+
