@@ -33,6 +33,9 @@ module ImportCSV::FileHandling
 
   def try_to_unzip filename, originalname
     if originalname =~ /\.zip$/ 
+      @messages << "Trying to unzip #{originalname}"
+      update_memcache
+
       @messages << "Problem with zipfile #{originalname}" unless
         system "unzip  -qq -o #{filename} -d #{@f_path}"
       @filenames = Dir.glob(File.join(@f_path, "*.csv")).collect

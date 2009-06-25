@@ -84,11 +84,24 @@ class DistrictsController < ApplicationController
 
   def bulk_import
     if request.post?
-      importer= ImportCSV.new params[:import_file], current_district
-      x=Benchmark.measure{importer.import}
+      spawn do
+        importer= ImportCSV.new params[:import_file], current_district
+        x=Benchmark.measure{importer.import}
 
-      @results = "#{importer.messages.join(", ")} #{x}"
-      #redirect_to root_url
+        @results = "#{importer.messages.join(", ")} #{x}"
+        #request redirect_to root_url
+      end
+      render :layout => 'bulk_import'
+    else
+      if defined?MEMCACHE
+        @results =  MEMCACHE.get("#{current_district.id}_import")
+        if request.xhr?
+          render :text => @results and return
+        end
+          
+      else
+        redirect_to root_url and return
+      end
     end
 
   end

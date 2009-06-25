@@ -23,9 +23,13 @@ class ImportCSV
   end
 
   def import
-    identify_and_unzip
-    sorted_filenames.each {|f| process_file f}
-    FileUtils.rm_rf @f_path
+    b= Benchmark.measure do 
+      identify_and_unzip
+      sorted_filenames.each {|f| process_file f}
+      FileUtils.rm_rf @f_path
+    end
+    @messages << b
+    update_memcache
   end
 
   private
@@ -39,6 +43,12 @@ class ImportCSV
   include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
 
+  def update_memcache
+    if defined?MEMCACHE
+      MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "))
+    end
+
+  end
 
   def process_file file_name
     base_file_name = File.basename(file_name)
@@ -46,6 +56,8 @@ class ImportCSV
       @messages << 'Still working on imports.'
       return false
     end
+    @messages << "Processing file: #{base_file_name}"
+    update_memcache
 
     case base_file_name.downcase
     when 'users.csv'
@@ -81,6 +93,7 @@ class ImportCSV
     end
 
     @messages << msg
+    update_memcache
   end
 
   def ids_by_id_district klass
