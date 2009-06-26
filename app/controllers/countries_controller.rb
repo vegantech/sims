@@ -1,5 +1,6 @@
 class CountriesController < ApplicationController
   additional_write_actions :reset_password, :recreate_admin
+  before_filter :system_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
   # GET /countries
   # GET /countries.xml
   def index
@@ -85,4 +86,11 @@ class CountriesController < ApplicationController
     flash[:notice]= @country.admin_district.recreate_admin!
     redirect_to(countries_url)
   end
+
+  private
+  def system_admin?
+    current_district.system_admin?
+  end
+
+  
 end

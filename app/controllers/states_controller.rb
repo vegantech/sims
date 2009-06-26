@@ -1,5 +1,6 @@
 class StatesController < ApplicationController
   additional_write_actions :reset_password, :recreate_admin
+  before_filter :country_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
   # GET /states
   def index
     @country = current_district.country
@@ -75,5 +76,10 @@ class StatesController < ApplicationController
     @state=State.find(params[:id])
     flash[:notice]= @state.admin_district.recreate_admin!
     redirect_to(states_url)
+  end
+
+  private
+  def country_admin?
+    current_district.country_admin?
   end
 end

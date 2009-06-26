@@ -74,6 +74,11 @@ Given /^I am a district admin$/ do
   default_user.roles=[role]
 end
 
+Given /^I am a state admin$/ do
+  Given "I am a district admin"
+  @user.district.update_attribute(:admin , true)
+end
+
 Given /^I enter default student url$/ do
   visit "/students/#{@student.id}"
 end

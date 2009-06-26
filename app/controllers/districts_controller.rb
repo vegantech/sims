@@ -1,7 +1,8 @@
 class DistrictsController < ApplicationController
   additional_write_actions :reset_password, :recreate_admin, :bulk_import
   additional_read_actions :bulk_import_form
-  
+  before_filter :state_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
+
   # GET /districts
   def index
     @state = current_district.state
@@ -106,5 +107,11 @@ class DistrictsController < ApplicationController
 
   end
 
-
+private
+  def state_admin?
+    unless current_district.admin?
+      flash[:notice] = 'You do not have access to this action'
+      redirect_to root_url
+    end
+  end
 end
