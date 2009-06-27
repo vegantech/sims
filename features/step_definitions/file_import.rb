@@ -44,6 +44,7 @@ Then /^the command should have failed$/ do
 end
 
 Then /^the command should have succeeded$/ do
+  puts @command_return_val
   @command_return_val.should match(/Successful import/)
 end
 
@@ -65,14 +66,25 @@ Then /^there should be (\d+) users in the district$/ do |num_users|
     @district.users.count.should == num_users.to_i
 end
 
+Then /^I show groups$/ do
+  puts Group.all.inspect
+end
 
 Given /^a student "([^\"]*)"$/ do |fullname|
   first,last = fullname.split(' ')
   @student = Factory(:student,:district => @district, :id_district => 31337, :id_state => 33, :first_name => first, :last_name => last)
 end
 
-Given /^a school "([^\"]*)"$/ do |arg1|
-  @school = Factory(:school,:district=> @district, :id_district => 42)
+Given /^a school "([^\"]*)"$/ do |name|
+  @school = School.find_by_name (name) 
+  @school ||=  Factory(:school,:district=> @district, :id_district => 42, :name => name)
+end
+
+Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |group_title, school_name, group_id_district|
+  school = School.find_by_name(school_name)
+  group = Group.find_or_create_by_title_and_school_id(group_title, school.id)
+  group.id_district = group_id_district
+  group.save!
 end
 
 Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |arg1, arg2, grade|
@@ -117,3 +129,14 @@ end
 Given /^no other students$/ do
    Student.delete_all
 end
+
+Given /^no other groups$/ do
+  Group.delete_all
+end
+
+Then /^"([^\"]*)" should have groups (.*)$/ do |school_name, group_names|
+  group_names = Array(eval(group_names))
+  school = School.find_by_name(school_name)
+  school.groups.map(&:title).to_set.should == group_names.to_set
+end
+

@@ -37,15 +37,18 @@ class ImportCSV
   include  ImportCSV::FileHandling
   include  ImportCSV::Enrollments
   include  ImportCSV::ExtendedProfiles
-  #  include  ImportCSV::Students
   include  ImportCSV::Users
   include  ImportCSV::Roles
   include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
 
   def update_memcache
-    if defined?MEMCACHE
-      MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "))
+    begin
+      if defined?MEMCACHE
+        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "))
+      end
+    rescue 
+      nil
     end
 
   end

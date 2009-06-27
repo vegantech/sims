@@ -18,7 +18,6 @@ Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
   s.enrollments.create!(@student.enrollments.first.attributes)
   s.save!
-
 end
 
 Given /^quicklist choices (.*)$/i do |choices_array|
@@ -123,7 +122,6 @@ Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" in (\d+)$/ do |f
 	school = School.find_by_name(school_name)
 	s= create_student first, last, student_grade, school
   s.enrollments.first.update_attribute(:end_year,year)
-  
 end
 
 
@@ -160,7 +158,7 @@ end
 
 Given /group "(.*)" for school "([^\"]*)"$/ do |group_title, school_name|
   school = School.find_by_name(school_name)
-  group = Group.create!(:title => group_title, :school => school)
+  group = Group.find_or_create_by_title_and_school_id(group_title, school.id)
 end
 
 Given /group "(.*)" for school "(.*)" with student "([^\"]*)"$/ do |group_title, school_name, student_name|
@@ -338,4 +336,9 @@ Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*
 
   consultation_form.consultation_form_concerns << concern
   student.consultation_forms << consultation_form
+end
+
+Then /^"([^\"]*)" should have "([^\"]*)" groups$/ do |school_name, num_groups|
+  school = School.find_by_name(school_name)
+  school.groups.size.should == num_groups.to_i
 end

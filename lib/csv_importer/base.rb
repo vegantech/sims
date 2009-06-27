@@ -41,8 +41,11 @@ module CSVImporter
   end
 
     def clean_file
+
       @line_count = 0
+      
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
+      system "sed -e 's/  *,/,/' -e 's/  *$//' -e 's/  *\r/\r/' -i #{@file_name}"  #trailing space after quoted fields,  change faster csv to accomodate
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
       output = FasterCSV.open(@clean_file, "w")
      
