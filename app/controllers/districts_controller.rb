@@ -84,6 +84,8 @@ class DistrictsController < ApplicationController
   end
 
   def bulk_import
+    Spawn::method :yield, 'test'
+
     if request.post?
       spawn do
         importer= ImportCSV.new params[:import_file], current_district

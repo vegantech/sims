@@ -39,7 +39,7 @@ class ImportCSV
   include  ImportCSV::ExtendedProfiles
   include  ImportCSV::Users
   include  ImportCSV::Roles
-  include  ImportCSV::Schools
+  #  include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
 
   def update_memcache
@@ -66,7 +66,7 @@ class ImportCSV
     when 'users.csv'
       load_users_from_csv file_name
     when 'schools.csv'
-      load_schools_from_csv  file_name
+      msg = CSVImporter::Schools.new(file_name, @district).import
     when 'students.csv'
       msg= CSVImporter::Students.new(file_name, @district).import
     when 'enrollments.csv'
