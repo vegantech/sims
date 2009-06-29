@@ -45,7 +45,7 @@ class ImportCSV
   def update_memcache
     begin
       if defined?MEMCACHE
-        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "))
+        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "), 30.minutes)
       end
     rescue 
       nil
