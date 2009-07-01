@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  team: 
+  user: 
+  contact: false
+
+two:
+  team: 
+  user: 
+  contact: false

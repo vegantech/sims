@@ -421,6 +421,16 @@ h2.team_notes_header
   background: #bce5e7;
 }
 
+h3.team_notes_header
+{
+  text-align: center;
+  line-height: 110%;
+}
+h3.team_notes_header span
+{
+  background: #bce5e7;
+}
+
 h2.intervention_summary
 {
   background: #ffe9ad;

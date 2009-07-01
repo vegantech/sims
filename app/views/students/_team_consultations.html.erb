@@ -1,11 +1,35 @@
-<h2 class="team_notes_header", ondblclick = "$('team_consultation_request').toggle();" > Team Consultation Request </h2>
-<%= link_to_function "Show/Hide Team Consultation Request" , "$('team_consultation_request').toggle()" %>
+<h2 class="team_notes_header", ondblclick = "$('consultations_group').toggle();" > Team Consultations</h2>
+<%= link_to_function "Show/Hide Team Consultations" , "$('consultations_group').toggle()" %>
+<div id = "consultations_group">
+  <h3 class="team_notes_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
+  <%= link_to_function "Show/Hide New Team Consult" , "$('team_consultation_request').toggle()" %>
+  <div id = "team_consultation_request">
+    <%= render :partial => "team_consultations/commands" %>
+    <div id ="consultation_form"></div>
 
-<div id = "team_consultation_request">
-  <div id="team_consultations">
-    <%= render :partial => "team_consultations/list", :locals => {:student => @student} %>
+
   </div>
- <div id="consultation_forms">
-   <%= render :partial => 'consultation_forms/list', :locals => {:student => @student} %>
+
+  <h3 class="team_notes_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
+  <%= link_to_function "Show/Hide Pending Team Consultation" , "$('pending_consultations').toggle()" %>
+  <div id = "pending_consultations">
+   <div id="team_consultations">
+      <%= render :partial => "team_consultations/list", :locals => {:student => @student} %>
+      Pending and complete need to be split
+    <h3 class="team_notes_header">Responses to Request For Information</h3>
+
+      <div id="consultation_forms">
+       <%= render :partial => 'consultation_forms/list', :locals => {:student => @student} %>
+      </div>
+   </div>
   </div>
+  <h3 class="team_notes_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
+  <%= link_to_function "Show/Hide Team Consult Completed" , "$('completed_consultations').toggle()" %>
+  <div id = "completed_consultations">
+  </div>
+
+
+
+
+
 </div>

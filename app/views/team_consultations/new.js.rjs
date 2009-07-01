@@ -1,1 +1,1 @@
-  page.replace_html("team_consultations", :partial=>"new")
+  page.replace_html("consultation_form", :partial=>"new")

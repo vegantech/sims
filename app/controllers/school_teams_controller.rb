@@ -36,7 +36,7 @@ class SchoolTeamsController < ApplicationController
   # GET /school_teams/1/edit
   def edit
     @school_team = current_school.school_teams.find(params[:id])
-    @users_in_groups = current_school.users.in_groups_of(3, false)
+    set_users_in_groups
   end
 
   # POST /school_teams
@@ -90,6 +90,7 @@ class SchoolTeamsController < ApplicationController
 
   private 
   def set_users_in_groups
-    @users_in_groups = current_school.users.in_groups_of(3, false)
+    @users = current_school.users
+    @users_in_groups = @users.in_groups_of(3, false)
   end
 end

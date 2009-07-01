@@ -13,7 +13,7 @@
     <td><%= link_to 'Edit', edit_school_team_path(school_team) %></td>
     <td><%= link_to 'Delete', school_team, :confirm => 'Are you sure?', :method => :delete %></td>
     <td><b><%=h school_team.name %></b></td>
-    <td><%=h school_team.users.collect(&:to_s).join(", ") %></td>
+    <td><%=school_team.school_team_memberships.collect(&:to_s).join(", ") %></td>
   </tr>
 <% end %>
 </table>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090623234234) do
+ActiveRecord::Schema.define(:version => 20090701193849) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -615,17 +615,20 @@ ActiveRecord::Schema.define(:version => 20090623234234) do
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
 
+  create_table "school_team_memberships", :force => true do |t|
+    t.integer  "school_team_id"
+    t.integer  "user_id"
+    t.boolean  "contact",        :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "school_teams", :force => true do |t|
     t.integer  "school_id"
     t.string   "name"
     t.boolean  "anonymous",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "school_teams_users", :id => false, :force => true do |t|
-    t.integer "school_team_id"
-    t.integer "user_id"
   end
 
   create_table "schools", :force => true do |t|
@@ -697,22 +700,6 @@ ActiveRecord::Schema.define(:version => 20090623234234) do
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
   add_index "students", ["id_district"], :name => "index_students_on_id_district"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
-
-  create_table "students_546713874_importer", :id => false, :force => true do |t|
-    t.integer "id_state"
-    t.integer "id_district"
-    t.string  "number"
-    t.string  "last_name"
-    t.string  "first_name"
-    t.date    "birthdate"
-    t.string  "middle_name"
-    t.string  "suffix"
-    t.boolean "esl"
-    t.boolean "special_ed"
-  end
-
-  add_index "students_546713874_importer", ["id_district"], :name => "temporary_index_1"
-  add_index "students_546713874_importer", ["id_state"], :name => "temporary_index_0"
 
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"

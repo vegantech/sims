@@ -13,8 +13,35 @@
 
 class SchoolTeam < ActiveRecord::Base
   belongs_to :school
-  has_and_belongs_to_many :users
+  has_many :school_team_memberships
+  has_many :users, :through => :school_team_memberships
 
   named_scope :named, {:conditions => {:anonymous => false }}
   validates_presence_of :name, :unless => :anonymous?
+  after_save :update_contact
+
+  def contact
+    c= school_team_memberships.find_by_contact(true)
+    if c.present?
+      c.user.id
+    else
+      nil
+    end
+  end
+
+  def contact=(contact_id)
+    @contact = contact_id.to_i
+    c=school_team_memberships.find_by_user_id(contact_id) || school_team_memberships.build(:user_id => contact_id)
+    c.contact = true
+  end
+
+  private
+  def update_contact
+    if @contact
+      school_team_memberships.update_all("contact=false","user_id != #{@contact}")
+
+    end
+  end
+
+
 end

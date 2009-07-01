@@ -41,7 +41,8 @@ class User < ActiveRecord::Base
   has_many :student_comments
   has_many :intervention_participants
   has_many :team_schedulers
-  has_and_belongs_to_many :school_teams
+  has_many :school_team_memberships
+  has_many :school_teams, :through => :school_team_memberships
 
   attr_accessor :password, :all_students_in_district
 

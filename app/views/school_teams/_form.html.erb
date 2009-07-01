@@ -5,7 +5,10 @@
   <%= form.text_field :name %>
 </p>
 
-
+<p>
+  <%= form.label :contact %>
+  <%= form.collection_select(:contact, @users, :id, :fullname) %>
+</p>
 <p></p>
 Members
 
