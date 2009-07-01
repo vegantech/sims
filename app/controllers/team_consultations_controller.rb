@@ -27,7 +27,7 @@ class TeamConsultationsController < ApplicationController
   def new
     @team_consultation = TeamConsultation.new
     @team_consultation.build_consultation_form if @team_consultation.consultation_form.blank?
-    @recipients = current_school.team_schedulers
+    @teams = current_school.school_teams
 
     respond_to do |format|
       format.js
@@ -51,7 +51,7 @@ class TeamConsultationsController < ApplicationController
     respond_to do |format|
       if @team_consultation.save
         
-        msg="<p>The concern note has been sent to #{@team_consultation.recipient}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+        msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
         
         format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }

@@ -14,7 +14,7 @@
 class TeamConsultation < ActiveRecord::Base
   belongs_to :student
   belongs_to :requestor, :class_name =>'User'
-  belongs_to :recipient, :class_name => 'User'
+  belongs_to :school_team, :foreign_key => 'team_id'
   has_one :consultation_form, :dependent => :destroy
   
   delegate :district,  :to => '(student or team_consultation or return nil)'
@@ -26,5 +26,9 @@ class TeamConsultation < ActiveRecord::Base
     if student && requestor
       TeamReferrals.deliver_concern_note_created(self)
     end
+  end
+
+  def recipient
+    User.find(school_team.contact)
   end
 end

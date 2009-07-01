@@ -15,6 +15,7 @@ class SchoolTeam < ActiveRecord::Base
   belongs_to :school
   has_many :school_team_memberships
   has_many :users, :through => :school_team_memberships
+  has_many :team_consultations
 
   named_scope :named, {:conditions => {:anonymous => false }}
   validates_presence_of :name, :unless => :anonymous?
@@ -33,6 +34,10 @@ class SchoolTeam < ActiveRecord::Base
     @contact = contact_id.to_i
     c=school_team_memberships.find_by_user_id(contact_id) || school_team_memberships.build(:user_id => contact_id)
     c.contact = true
+  end
+
+  def to_s
+    name
   end
 
   private

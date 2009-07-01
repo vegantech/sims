@@ -40,7 +40,6 @@ class User < ActiveRecord::Base
   has_many :rights, :through => :roles
   has_many :student_comments
   has_many :intervention_participants
-  has_many :team_schedulers
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
 

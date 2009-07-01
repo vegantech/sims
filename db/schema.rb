@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090701193849) do
+ActiveRecord::Schema.define(:version => 20090701211359) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -704,16 +704,10 @@ ActiveRecord::Schema.define(:version => 20090701193849) do
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"
     t.integer  "requestor_id"
-    t.integer  "recipient_id"
+    t.integer  "team_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "team_schedulers", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "school_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "complete",     :default => false
   end
 
   create_table "tiers", :force => true do |t|
