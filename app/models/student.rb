@@ -39,8 +39,9 @@ class Student < ActiveRecord::Base
   has_many :ignore_flags
   has_many :flags
   has_many :team_consultations
-  has_many :consultation_forms
   has_many :consultation_form_requests
+
+
   
 
   validates_presence_of :first_name, :last_name, :district_id
@@ -248,6 +249,10 @@ class Student < ActiveRecord::Base
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
     end
+  end
+
+  def pending_consultation_forms
+    ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id}})
   end
 
   protected

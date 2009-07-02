@@ -15,12 +15,16 @@ class TeamConsultation < ActiveRecord::Base
   belongs_to :student
   belongs_to :requestor, :class_name =>'User'
   belongs_to :school_team, :foreign_key => 'team_id'
-  has_one :consultation_form, :dependent => :destroy
+  has_many :consultation_forms, :dependent => :destroy
   
   delegate :district,  :to => '(student or team_consultation or return nil)'
-  accepts_nested_attributes_for :consultation_form
+  accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
+  named_scope :complete, :conditions => {:complete=>true}
+  named_scope :pending, :conditions => {:complete=>false}
+
+  
 
   def email_concern_recipient
     if student && requestor
@@ -29,6 +33,10 @@ class TeamConsultation < ActiveRecord::Base
   end
 
   def recipient
-    User.find(school_team.contact)
+    User.find_by_id(school_team.contact) if school_team.present?
+  end
+
+  def complete!
+    update_attribute(:complete, true)
   end
 end

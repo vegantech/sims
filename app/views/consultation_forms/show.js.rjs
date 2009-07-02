@@ -1,1 +1,2 @@
-page.replace_html("#{dom_id(@consultation_form)}", :partial=>"show")
+page.insert_html(:after, "#{dom_id(@consultation_form)}", :partial=>"show")
+page.replace_html("show_hide_view_#{dom_id(@consultation_form)}", link_to_function("Show/Hide" , "$('show_#{dom_id(@consultation_form)}').toggle()") )

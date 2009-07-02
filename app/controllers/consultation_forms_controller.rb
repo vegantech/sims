@@ -3,7 +3,7 @@ class ConsultationFormsController < ApplicationController
  # GET /consultation_forms/1.xml
   def show
     @consultation_form = ConsultationForm.find(params[:id])
-    @consultation_form = nil unless @consultation_form.district == current_district
+    @consultation_form = nil unless @consultation_form.school_team.school.district == current_district
 
     respond_to do |format|
       format.js
@@ -30,6 +30,7 @@ class ConsultationFormsController < ApplicationController
     @consultation_form = ConsultationForm.new(params[:consultation_form])
     @consultation_form.user = current_user
     @consultation_form.student = current_student
+    @consultation_form.school = current_school
 
     respond_to do |format|
       if @consultation_form.save

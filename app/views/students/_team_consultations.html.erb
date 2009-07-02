@@ -5,7 +5,6 @@
   <%= link_to_function "Show/Hide New Team Consult" , "$('team_consultation_request').toggle()" %>
   <div id = "team_consultation_request">
     <%= render :partial => "team_consultations/commands" %>
-    <div id ="consultation_form"></div>
 
 
   </div>
@@ -14,18 +13,19 @@
   <%= link_to_function "Show/Hide Pending Team Consultation" , "$('pending_consultations').toggle()" %>
   <div id = "pending_consultations">
    <div id="team_consultations">
-      <%= render :partial => "team_consultations/list", :locals => {:student => @student} %>
-      Pending and complete need to be split
+      <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
+   </div>
     <h3 class="team_notes_header">Responses to Request For Information</h3>
+    <%= link_to_function "Show/Hide" , "$('consultation_forms').toggle()" %>
 
       <div id="consultation_forms">
-       <%= render :partial => 'consultation_forms/list', :locals => {:student => @student} %>
+       <%= render :partial => 'consultation_forms/list', :locals => {:consultation_forms => @student.pending_consultation_forms} %>
       </div>
    </div>
-  </div>
   <h3 class="team_notes_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
   <%= link_to_function "Show/Hide Team Consult Completed" , "$('completed_consultations').toggle()" %>
   <div id = "completed_consultations">
+    <%= render :partial => "team_consultations/complete", :locals => {:team_consultations => @student.team_consultations.complete} %>
   </div>
 
 

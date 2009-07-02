@@ -3,8 +3,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :consultation_form_requests
 
-  map.resources :team_schedulers
-
   map.resources :consultation_forms
 
   map.resources :team_consultations

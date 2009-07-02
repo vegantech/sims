@@ -14,8 +14,12 @@ module FlagsHelper
     str += custom_flags(student)
   end
 
+  def team_concerns?(student = current_student)
+    student.team_consultations.pending.present?
+    
+  end
   def team_concerns(student)
-    if student.team_consultations.present?
+    if team_concerns?(student)
       image_tag('comments.png', :alt=>'Team Consultations')
     else
       ''

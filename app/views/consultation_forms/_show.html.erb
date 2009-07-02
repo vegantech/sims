@@ -1,15 +1,8 @@
 <% consultation_form ||= @consultation_form || show %>
-
-<p>
-  <b>User:</b>
-  <%=h consultation_form.user %>
-</p>
-
-<p>
-  <b>Date:</b>
-  <%=h consultation_form.created_at.to_date %>
-</p>
-
+<% content_tag_for :tr, consultation_form, "show" do %>
+<td colspan="6">
 <% form_for(consultation_form) do |f| %>
   <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
+<% end %>
+</td>
 <% end %>

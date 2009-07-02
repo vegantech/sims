@@ -1,7 +1,7 @@
 <% unless @teams.blank? %>
 <% remote_form_for(@team_consultation) do |f| %>
   <%= f.error_messages %>
-  <% f.fields_for :consultation_form do |consultation_form| %> 
+  <% f.fields_for :consultation_forms do |consultation_form| %> 
     <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
   <% end %>
 

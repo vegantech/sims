@@ -1,3 +1,20 @@
-<% content_tag_for :li, team_consultation  do %>
-<%= link_to_remote_degrades "#{team_consultation.requestor} on #{ team_consultation.created_at.to_date }" , {:url =>team_consultation, :method => :get} %>
+<% content_tag_for :tr, team_consultation  do %>
+  <td> <%= team_consultation.school_team %> </td>
+  <td> <%= team_consultation.recipient %> </td>
+  <td> <%= team_consultation.requestor %> </td>
+  <td> <%= team_consultation.created_at.to_date %> </td>
+  <% if team_consultation.complete? %>
+    <td> <%= 'Collection of responses' %> </td>
+  <% end %>
+  
+  <td>
+    Edit 
+    <% if team_consultation.recipient == current_user %>
+        Schedule 
+      &nbsp;<%#=# link_to_remote_degrades "Gather Information from Staff (only for team schedulers)", :url => new_consultation_form_request_url %>
+   
+      complete
+    <% end %>
+  </td>
+  <%# link_to_remote_degrades "view"#{team_consultation.requestor} on #{ team_consultation.created_at.to_date }" , {:url =>team_consultation, :method => :get} %>
 <% end %>

@@ -1,2 +1,4 @@
-  page.replace_html("consultation_forms",:partial=>"list", :locals => {:student=>current_student})
-  page.insert_html(:top, "consultation_forms", flash[:notice])
+  page.replace_html("consultation_forms", :partial => "consultation_forms/list", :locals =>  {:consultation_forms => current_student.pending_consultation_forms})
+  page.replace_html("consultation_form", flash[:notice])
+
+

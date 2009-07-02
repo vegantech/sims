@@ -1,4 +1,13 @@
-<ul>
-    <%= render :partial => "consultation_forms/consultation_form_summary", :collection => student.consultation_forms %>
-</ul>
-&nbsp;<%= link_to_remote_degrades "Gather Information from Staff (only for team schedulers)", :url => new_consultation_form_request_url %>
+<table>
+  <thead>
+    <tr>
+      <th>Team Name</th>
+      <th>Submitted by</th>
+      <th>Date</th>
+      <th>&nbsp;</th>
+    <tr>
+  </thead>
+  <tbody>
+    <%= render :partial => "consultation_forms/consultation_form_summary", :collection => consultation_forms %>
+  </tbody>
+</table>
