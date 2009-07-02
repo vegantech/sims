@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :consultation_forms
 
-  map.resources :team_consultations
+  map.resources :team_consultations, :member => {:complete => :put}
 
 
 

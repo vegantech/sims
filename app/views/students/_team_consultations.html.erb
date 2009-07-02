@@ -15,6 +15,7 @@
    <div id="team_consultations">
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
    </div>
+    <div id = "consultation_form_request"></div>
     <h3 class="team_notes_header">Responses to Request For Information</h3>
     <%= link_to_function "Show/Hide" , "$('consultation_forms').toggle()" %>
 
@@ -23,7 +24,7 @@
       </div>
    </div>
   <h3 class="team_notes_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
-  <%= link_to_function "Show/Hide Team Consult Completed" , "$('completed_consultations').toggle()" %>
+  <%= link_to_function "Show/Hide" , "$('completed_consultations').toggle()" %>
   <div id = "completed_consultations">
     <%= render :partial => "team_consultations/complete", :locals => {:team_consultations => @student.team_consultations.complete} %>
   </div>

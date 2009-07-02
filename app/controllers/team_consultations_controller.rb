@@ -1,4 +1,5 @@
 class TeamConsultationsController < ApplicationController
+  additional_write_actions :complete
   # GET /team_consultations
   # GET /team_consultations.xml
   def index
@@ -92,5 +93,16 @@ class TeamConsultationsController < ApplicationController
       format.html { redirect_to(team_consultations_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def complete
+    @team_consultation = TeamConsultation.find(params[:id])
+    @team_consultation.complete! and flash[:notice] = "Marked complete" if @team_consultation.recipient == current_user
+    
+    respond_to do |format|
+      format.js
+    end
+    
+
   end
 end

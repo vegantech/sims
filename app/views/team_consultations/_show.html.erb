@@ -1,21 +1,14 @@
 <% team_consultation ||= @team_consultation || show %>
 
-<p>
-  <b>Requestor:</b>
-  <%= h team_consultation.requestor %>
-</p>
+<% content_tag_for :tr, team_consultation  do%>
+  <td colspan = "6">
+    <% team_consultation.consultation_forms.each do |cf| %>
+      <% form_for(cf) do |consultation_form| %>
+        <%=h cf.user %> <%= cf.created_at.to_date %>
+        <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
+      <% end %>
+    <% end %>
 
-<p>
-  <b>Recipient:</b>
-  <%= h team_consultation.recipient %>
-</p>
-
-<p>
-  <b>Date:</b>
-  <%= h team_consultation.created_at.to_date %>
-</p>
-<% form_for(team_consultation) do |f| %>
-  <% f.fields_for :consultation_form do |consultation_form| %>
-    <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
-  <% end %>
+  </td>
 <% end %>
+

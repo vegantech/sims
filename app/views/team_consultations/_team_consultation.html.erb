@@ -4,17 +4,23 @@
   <td> <%= team_consultation.requestor %> </td>
   <td> <%= team_consultation.created_at.to_date %> </td>
   <% if team_consultation.complete? %>
-    <td> <%= 'Collection of responses' %> </td>
+    <td> <%= team_consultation.consultation_forms.collect(&:user).compact.join('<br />') %> </td>
   <% end %>
   
   <td>
+  <% if team_consultation.complete? %>
+    <%content_tag_for :span, team_consultation, "show_hide_view" do %>
+      <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>
+    <% end %>
+  <% else %>
     Edit 
     <% if team_consultation.recipient == current_user %>
         Schedule 
-      &nbsp;<%#=# link_to_remote_degrades "Gather Information from Staff (only for team schedulers)", :url => new_consultation_form_request_url %>
-   
-      complete
+      &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>
+      <%= link_to_remote_degrades "Complete", :confirm => "Are you Sure?", :url => complete_team_consultation_path(team_consultation), :method => :put %>
     <% end %>
+  <% end %>
   </td>
-  <%# link_to_remote_degrades "view"#{team_consultation.requestor} on #{ team_consultation.created_at.to_date }" , {:url =>team_consultation, :method => :get} %>
 <% end %>
+
+
