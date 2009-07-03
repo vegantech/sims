@@ -1,0 +1,24 @@
+<h1>Listing team_agendas</h1>
+
+<table>
+  <tr>
+    <th>Team</th>
+    <th>Date</th>
+    <th>Notes</th>
+  </tr>
+
+<% @team_agendas.each do |team_agenda| %>
+  <tr>
+    <td><%=h team_agenda.team %></td>
+    <td><%=h team_agenda.date %></td>
+    <td><%=h team_agenda.notes %></td>
+    <td><%= link_to 'Show', team_agenda %></td>
+    <td><%= link_to 'Edit', edit_team_agenda_path(team_agenda) %></td>
+    <td><%= link_to 'Destroy', team_agenda, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New team_agenda', new_team_agenda_path %>

@@ -1,0 +1,18 @@
+<p>
+  <b>Team:</b>
+  <%=h @team_agenda.team %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%=h @team_agenda.date %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%=h @team_agenda.notes %>
+</p>
+
+
+<%= link_to 'Edit', edit_team_agenda_path(@team_agenda) %> |
+<%= link_to 'Back', team_agendas_path %>

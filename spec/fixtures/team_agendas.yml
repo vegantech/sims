@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  team: 
+  date: 2009-07-03
+  notes: MyText
+
+two:
+  team: 
+  date: 2009-07-03
+  notes: MyText

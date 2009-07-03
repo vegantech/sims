@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :team_agendas
+
   map.resources :school_teams
 
   map.resources :consultation_form_requests

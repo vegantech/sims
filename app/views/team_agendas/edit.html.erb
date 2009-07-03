@@ -1,0 +1,24 @@
+<h1>Editing team_agenda</h1>
+
+<% form_for(@team_agenda) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :team %><br />
+    <%= f.text_field :team %>
+  </p>
+  <p>
+    <%= f.label :date %><br />
+    <%= f.date_select :date %>
+  </p>
+  <p>
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @team_agenda %> |
+<%= link_to 'Back', team_agendas_path %>
