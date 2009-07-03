@@ -8,7 +8,7 @@ describe CountriesController do
 
   before do
     @country=mock_country
-    controller.stub_association!(:current_district,:country=>@country)
+    controller.stub_association!(:current_district,:country=>@country, :system_admin? => true)
   end
 
   def test_should_get_index

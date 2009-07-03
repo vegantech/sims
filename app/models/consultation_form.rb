@@ -20,7 +20,7 @@ class ConsultationForm < ActiveRecord::Base
   belongs_to :team_consultation
   
   has_many :consultation_form_concerns, :dependent => :destroy
-  #  delegate :district,  :to => '(student or team_consultation or return nil)'
+  delegate :district,  :to => '(team_consultation or return nil)'
   delegate :school_team,  :to => '(team_consultation or return nil)'
   attr_writer :school, :student
 

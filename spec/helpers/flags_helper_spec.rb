@@ -24,8 +24,8 @@ describe FlagsHelper do
     end
     
     it 'should return an image when there is  concern' do
-      student=Student.new
-      student.team_consultations.build
+      student=Factory(:student)
+      student.team_consultations.create!
       team_concerns(student).should == image_tag('/images/comments.png', :alt => 'Team Consultations')
     end
 
