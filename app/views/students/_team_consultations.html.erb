@@ -2,7 +2,7 @@
 <%= link_to_function "Show/Hide Team Consultations" , "$('consultations_group').toggle()" %>
 <div id = "consultations_group">
   <h3 class="team_notes_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
-  <%= link_to_function "Show/Hide New Team Consult" , "$('team_consultation_request').toggle()" %>
+  <%= link_to_function "Show/Hide" , "$('team_consultation_request').toggle()" %>
   <div id = "team_consultation_request">
     <%= render :partial => "team_consultations/commands" %>
 
@@ -10,7 +10,7 @@
   </div>
 
   <h3 class="team_notes_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
-  <%= link_to_function "Show/Hide Pending Team Consultation" , "$('pending_consultations').toggle()" %>
+  <%= link_to_function "Show/Hide" , "$('pending_consultations').toggle()" %>
   <div id = "pending_consultations">
    <div id="team_consultations">
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
