@@ -10,15 +10,6 @@ Feature: Overall Student Report
     Then I should see "Choose Sections for Student Report Common Last"
 
   Scenario: Student with one consultation form owned directly by the student and one team consultation with a consultation form
-    Given student "Common Last" directly owns consultation form with team consultation concern "2"
-    When I check "Consultation Forms"
-    And I press "Generate Report"
-    Then I should not see "Student has no consultation forms"
-    And I should see "Strengths 2"
-    And I should see "Concerns 2"
-    And I should see "Recent changes 2"
-
-  Scenario: Student with one consultation form owned directly by the student and one team consultation with a consultation form
     Given student "Common Last" directly owns consultation form with concern "1"
     When I check "Consultation Forms"
     And I press "Generate Report"
