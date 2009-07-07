@@ -158,7 +158,7 @@ vertical-align: text-top;
   text-align: center;
 }
 
-body, p, ol, ul, td {
+body, p, ol, ul, td, .consultation_forms textarea {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size:   13px;
   line-height: 18px;
@@ -430,6 +430,24 @@ h3.team_notes_header span
 {
   background: #bce5e7;
 }
+
+h2.team_consultations_header
+{
+  background: #ffff99;
+}
+
+h3.team_consultations_header
+{
+  text-align: center;
+  line-height: 110%;
+}
+h3.team_consultations_header span
+{
+  background: #ffff99;
+}
+
+
+
 
 h2.intervention_summary
 {
