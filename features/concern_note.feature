@@ -7,17 +7,17 @@ Feature: Concern Note
     Given common data
     And I am on the student profile page
 
-  Scenario: Create Team Consultation Form without any team_schedulers
+  Scenario: Create Team Consultation Form without any teams
     When I follow "Create Team Consultation Form"
-    Then I should see "Please have the school admin or secretary assign team schedulers to this school."
+    Then I should see "Please have the school admin or secretary assign teams for this school."
 
 
   Scenario: Create Team Consultation Form
-    Given Shawn Balestracci is a team scheduler
+    Given Shawn Balestracci is a team contact for "Cucumber"
     When I follow "Create Team Consultation Form"
     #And I should see some sort of forma
     And I press "Save"
-    Then I should see "The concern note has been sent to Shawn Balestracci."
+    Then I should see "The concern note has been sent to Cucumber."
     And I should see "A discussion about this student will occur at an upcoming team meeting."
     And I should receive an email
     When I open the email
@@ -26,13 +26,18 @@ Feature: Concern Note
     And I should see "by \(default user\)" in the email
     And I should see "Please schedule an initial discussion at an upcoming team meeting" in the email
 
-    When I follow "default user on _CHANGE_TO_VARIABLE_" "TODAY"
+    When I follow "view"
     Then I should see "Strength"
 
   Scenario: Create Consultation Form as Response to Request
+    Given I should not see "Respond to Request for Information"
+    And Shawn Balestracci is a team contact for "Cucumber"
+    When I follow "Create Team Consultation Form"
+    #And I should see some sort of forma
+    And I press "Save"
     When I follow "Respond to Request for Information"
     And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
     And I press "Create"
-    When I follow "default user on _CHANGE_TO_VARIABLE_" "TODAY"
+    When I follow "view" within tr.consultation_form:last-of-type
     Then I should see "Spinach"
 

@@ -1,6 +1,8 @@
-Given /^Shawn Balestracci is a team scheduler$/ do
+Given /^Shawn Balestracci is a team contact for "([^\"]*)"$/ do |team_name|
   u = Factory(:user, :first_name => 'Shawn', :last_name => 'Balestracci', :email => 'b723176@madison.k12.wi.us')
-  @school.team_schedulers.create!(:user => u)
+  st=@school.school_teams.find_or_create_by_name(team_name)
+  st.contact = u.id
+  st.save!
 end
 
 When /^I follow "([^\"]*)" "([^\"]*)"$/ do |arg1, arg2|

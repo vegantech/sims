@@ -22,7 +22,7 @@ describe AllControllers do
         principal_overrides quicklist_items recommendations reports 
         school_teams
         schools
-        states student_comments students team_consultations team_schedulers tiers 
+        states student_comments students team_consultations tiers 
       }
       AllControllers.names.should ==  static_list
     end

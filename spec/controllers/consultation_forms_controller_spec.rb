@@ -30,7 +30,7 @@ describe ConsultationFormsController do
     describe "with valid params" do
       it "assigns a newly created consultation_form as @consultation_form" do
         ConsultationForm.should_receive(:new).with({'these' => 'params'}).and_return(mock_consultation_form(:save => true))
-        mock_consultation_form.stub!(:user= => true, :student= =>true)
+        mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         post :create, :consultation_form => {:these => 'params'}
         assigns[:consultation_form].should equal(mock_consultation_form)
       end
@@ -38,7 +38,7 @@ describe ConsultationFormsController do
       it "redirects to the student" do
         ConsultationForm.stub!(:new).and_return(mock_consultation_form(:save => true))
         controller.stub!(:current_student => m=mock_student )
-        mock_consultation_form.stub!(:user= => true, :student= =>true)
+        mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         post :create, :consultation_form => {}, :format=>'html'
         response.should redirect_to(student_url(m))
       end
@@ -47,14 +47,14 @@ describe ConsultationFormsController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved consultation_form as @consultation_form" do
         ConsultationForm.stub!(:new).with({'these' => 'params'}).and_return(mock_consultation_form(:save => false))
-        mock_consultation_form.stub!(:user= => true, :student= =>true)
+        mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         post :create, :consultation_form => {:these => 'params'}
         assigns[:consultation_form].should equal(mock_consultation_form)
       end
 
       it "re-renders the 'new' template" do
         ConsultationForm.stub!(:new).and_return(mock_consultation_form(:save => false))
-        mock_consultation_form.stub!(:user= => true, :student= =>true)
+        mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         post :create, :consultation_form => {}
         response.should render_template('new')
       end

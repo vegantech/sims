@@ -5,8 +5,9 @@ describe TeamReferrals do
      
       user=Factory(:user, :email => 'bob@e.fg')
       student = Factory(:student, :district => user.district)
+      team = SchoolTeam.create!(:name => 'Testing', :contact => user.id)
 
-      note = TeamConsultation.new(:student=>student,:requestor => user, :recipient => user )
+      note = TeamConsultation.new(:student=>student,:requestor => user, :school_team => team )
 
 
       proc{@mail=TeamReferrals.deliver_concern_note_created(note)}.should change(ActionMailer::Base.deliveries,:size).by(1)

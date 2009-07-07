@@ -316,7 +316,8 @@ end
 Given /^student "([^\"]*)" directly owns consultation form with team consultation concern "([^\"]*)"$/ do |student_name, concern_label|
   first_name, last_name = student_name.split
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
-  consultation_form = Factory(:consultation_form)
+  tc=nil
+  consultation_form = Factory(:consultation_form, :team_consultation => tc)
 
   concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
     :recent_changes => "Recent changes #{concern_label}", :area => 3)
@@ -329,13 +330,13 @@ end
 Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*)"$/ do |student_name, concern_label|
   first_name, last_name = student_name.split
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
-  consultation_form = Factory(:consultation_form)
+  tc=TeamConsultation.create!(:student=>student)
+  consultation_form = Factory(:consultation_form, :team_consultation => tc)
 
   concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
     :recent_changes => "Recent changes #{concern_label}", :area => 3)
 
   consultation_form.consultation_form_concerns << concern
-  student.consultation_forms << consultation_form
 end
 
 Then /^"([^\"]*)" should have "([^\"]*)" groups$/ do |school_name, num_groups|

@@ -1,29 +1,29 @@
-<h2 class="team_notes_header", ondblclick = "$('consultations_group').toggle();" > Team Consultations</h2>
+<h2 class="team_consultations_header", ondblclick = "$('consultations_group').toggle();" > Team Consultations</h2>
 <%= link_to_function "Show/Hide Team Consultations" , "$('consultations_group').toggle()" %>
 <div id = "consultations_group">
-  <h3 class="team_notes_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
-  <%= link_to_function "Show/Hide New Team Consult" , "$('team_consultation_request').toggle()" %>
+  <h3 class="team_consultations_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
+  <%= link_to_function "Show/Hide" , "$('team_consultation_request').toggle()" %>
   <div id = "team_consultation_request">
     <%= render :partial => "team_consultations/commands" %>
 
 
   </div>
 
-  <h3 class="team_notes_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
-  <%= link_to_function "Show/Hide Pending Team Consultation" , "$('pending_consultations').toggle()" %>
+  <h3 class="team_consultations_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
+  <%= link_to_function "Show/Hide" , "$('pending_consultations').toggle()" %>
   <div id = "pending_consultations">
    <div id="team_consultations">
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
    </div>
     <div id = "consultation_form_request"></div>
-    <h3 class="team_notes_header">Responses to Request For Information</h3>
+    <h3 class="team_consultations_header">Responses to Request For Information</h3>
     <%= link_to_function "Show/Hide" , "$('consultation_forms').toggle()" %>
 
       <div id="consultation_forms">
        <%= render :partial => 'consultation_forms/list', :locals => {:consultation_forms => @student.pending_consultation_forms} %>
       </div>
    </div>
-  <h3 class="team_notes_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
+  <h3 class="team_consultations_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
   <%= link_to_function "Show/Hide" , "$('completed_consultations').toggle()" %>
   <div id = "completed_consultations">
     <%= render :partial => "team_consultations/complete", :locals => {:team_consultations => @student.team_consultations.complete} %>

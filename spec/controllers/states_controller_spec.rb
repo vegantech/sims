@@ -9,7 +9,7 @@ describe StatesController do
     
     @state=mock_state
     @country = mock_country
-    controller.stub_association!(:current_district, :state=>@state, :country => @country)
+    controller.stub_association!(:current_district, :state=>@state, :country => @country, :country_admin? => true)
 
   end
 

@@ -1,6 +1,6 @@
 <% team_consultation ||= @team_consultation || show %>
 
-<% content_tag_for :tr, team_consultation  do%>
+<% content_tag_for :tr, team_consultation, 'show'  do%>
   <td colspan = "6">
     <% team_consultation.consultation_forms.each do |cf| %>
       <% form_for(cf) do |consultation_form| %>

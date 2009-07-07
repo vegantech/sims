@@ -3,8 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe SchoolTeamMembership do
   before(:each) do
     @valid_attributes = {
-      :team => ,
-      :user => ,
       :contact => false
     }
   end

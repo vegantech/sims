@@ -18,8 +18,8 @@ module CSVImporter
 
     def delete
       puts 'FixDelete, you do not want to delete everyone'
-      ActiveRecord::Base.connection.execute('truncate table groups_students;')
-      UserGroupAssignment.delete_all
+      #   ActiveRecord::Base.connection.execute('truncate table groups_students;')
+      #UserGroupAssignment.delete_all
     end
 
     def insert

@@ -5,7 +5,7 @@ describe ImportCSV do
     it 'should return messages' do
       i= ImportCSV.new('invalid', District.new)
       i.import
-      i.messages.should == ['Unknown file invalid']
+      i.messages.should include('Unknown file invalid')
     end
 
   end

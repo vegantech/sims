@@ -58,7 +58,7 @@ class TeamConsultationsController < ApplicationController
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.xml  { render :xml => @team_consultation, :status => :created, :location => @team_consultation }
       else
-        @recipients = current_school.team_schedulers
+        @recipients = current_school.school_teams
         format.js { render :action => "new" }
         format.html { render :action => "new" }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }

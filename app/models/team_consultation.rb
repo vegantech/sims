@@ -17,7 +17,7 @@ class TeamConsultation < ActiveRecord::Base
   belongs_to :school_team, :foreign_key => 'team_id'
   has_many :consultation_forms, :dependent => :destroy
   
-  delegate :district,  :to => '(student or team_consultation or return nil)'
+  delegate :district,  :to => '(student or return nil)'
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
