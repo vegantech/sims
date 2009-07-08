@@ -10,8 +10,8 @@ Feature: Search By Intervention Flags
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister"]
     And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		And I choose "List all students"
 
 		When I press "Search for Students"
@@ -28,8 +28,8 @@ Feature: Search By Intervention Flags
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart"]
     And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
     And I check "flag_ignored"
 		When I press "Search for Students"
@@ -44,8 +44,8 @@ Feature: Search By Intervention Flags
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Wood"]
     And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
     And I check "flag_custom"
 		When I press "Search for Students"
@@ -62,8 +62,8 @@ Feature: Search By Intervention Flags
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart", "Has Both", "Has More"]
     And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
 		When I press "Search for Students"
     And I should see "More, Has"
@@ -78,8 +78,8 @@ Feature: Search By Intervention Flags
 		And group "Whatta Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
 		And I have access to "Whatta Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
 		And I check "flag_attendance"
 

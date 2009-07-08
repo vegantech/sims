@@ -5,6 +5,28 @@ describe SchoolsController do
   it_should_behave_like "an authorized controller"
 
   describe 'index' do
+    describe 'with a single school' do
+      before do
+        controller.stub_association!(:current_user,:authorized_schools =>[mock_school(:id=>'MOCK SCHOOL', :name => 'Mock Elementary')])
+      end
+  
+      it 'should automatically redirect when the flash is not already set'  do
+        get :index
+        session[:school_id].should == 'MOCK SCHOOL'
+        flash[:notice].should == 'Mock Elementary has been automatically selected'
+        response.should redirect_to(search_students_url)
+        
+      end
+      it 'should not redirect if the flash was previously set' do
+        flash[:notice]= 'Exists'
+        get :index
+        flash[:notice].should == 'Exists'
+        response.should_not redirect_to(search_students_url)
+        
+      end
+        
+
+    end
     it 'should set @schools instance variable' do
       controller.stub_association!(:current_user,:authorized_schools =>[1,2,3])
       get :index

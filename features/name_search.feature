@@ -10,8 +10,8 @@ Feature: Search By Student Last Name
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
 		And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		# And I am on the search page
 
 		When I fill in "Last Name" with "Aagard"

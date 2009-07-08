@@ -12,8 +12,8 @@ Feature: Sims Demo Walkthrough
     And I should not see "news_item"
     And I should not see "WI Test District Administration"
     Then I follow "School Selection"
-    And I should see "Alpha Elementary"
-    Then I press "Choose School"
+#    And I should see "Alpha Elementary"
+#    Then I press "Choose School"
     And I choose "List only students in an active intervention"
 
     #lighthouse #162
@@ -261,8 +261,8 @@ Feature: Sims Demo Walkthrough
     Then I press "Login"
     And I should see "Logout"
     Then I follow "School Selection"
-    And I should see "Alpha Elementary"
-    Then I press "Choose School"
+#    And I should see "Alpha Elementary"
+#    Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3","6"]
     And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","1First. oneschool","2Second. twoschools"]
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Class where oneschool and twoschools have students" , "Homeroom where oneschool is not a member","Homeroom- Oneschool"]
@@ -280,8 +280,8 @@ Feature: Sims Demo Walkthrough
     And I fill in "Password" with "alphagradethree"
     Then I press "Login"
     Then I follow "School Selection"
-    And I should see "Alpha Elementary"
-    Then I press "Choose School"
+#    And I should see "Alpha Elementary"
+#    Then I press "Choose School"
     And I should see select box with id of "search_criteria_grade" and contains ["3"]
     Then I press "Search for Students"
     And I should not see "Grader, Alpha_First"
@@ -346,8 +346,8 @@ Feature: Sims Demo Walkthrough
     And I fill in "Password" with "nogroups"
     Then I press "Login"
     Then I follow "School Selection"
-    And I should see "Alpha Elementary"
-    Then I press "Choose School"
+#    And I should see "Alpha Elementary"
+#    Then I press "Choose School"
     And I should see "User doesn't have access to any students at Alpha Elementary"
     And page should contain "Choose School"
     
