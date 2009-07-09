@@ -41,7 +41,6 @@
   <%= submit_tag 'Import', :onclick => "setup_progress_iframe(this);" %>
 <% end %>
 
-The file should be a csv or a zip file containing csv's.
 
 <div id='progress' style="display:none">
   File upload in progress (Step 1, then there is some processing on the server)
@@ -53,4 +52,15 @@ The file should be a csv or a zip file containing csv's.
 <div id='form_import_results' style="color: green">
 </div>
 
-
+<div id='file_formats'>
+  The following files are available.  You can upload them individually, or you can include them all in a .zip file (this is preferred)
+  <dl>
+    <lh>File Formats</lh>
+    <dt>schools.csv</dt>
+    <dd>id_district, name</dd>
+    <dt>students.csv</dt>
+    <dd>id_state, id_district, first_name, last_name, middle_name, suffix, birthdate, number, esl, special_ed</dt>
+    <dt>enrollments.csv</dt>
+    <dd>student_id_district, school_id_district, grade, end_year</dd>
+  </dl>
+</div>

@@ -11,7 +11,7 @@ class ImportCSV
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
  
-  @@file_handler={}
+  @@file_handlers={}
 
   attr_reader :district, :messages, :filenames
   
@@ -35,11 +35,9 @@ class ImportCSV
   private
 
   include  ImportCSV::FileHandling
-  include  ImportCSV::Enrollments
   include  ImportCSV::ExtendedProfiles
   include  ImportCSV::Users
   include  ImportCSV::Roles
-  #  include  ImportCSV::Schools
   include  ImportCSV::SystemFlags
 
   def update_memcache
@@ -61,16 +59,12 @@ class ImportCSV
     end
     @messages << "Processing file: #{base_file_name}"
     update_memcache
+    f = base_file_name.downcase
+    
 
     case base_file_name.downcase
     when 'users.csv'
       load_users_from_csv file_name
-    when 'schools.csv'
-      msg = CSVImporter::Schools.new(file_name, @district).import
-    when 'students.csv'
-      msg= CSVImporter::Students.new(file_name, @district).import
-    when 'enrollments.csv'
-      load_enrollments_from_csv file_name
     when 'district_admins.csv'
       load_user_roles_from_csv file_name, 'district_admin'
     when 'news_admins.csv'
@@ -83,12 +77,8 @@ class ImportCSV
       load_user_roles_from_csv file_name, 'regular_user'
     when 'system_flags.csv'
       load_system_flags_from_csv file_name
-    when 'groups.csv'
-      msg= CSVImporter::Groups.new(file_name, @district).import
-    when 'user_groups.csv'
-      msg= CSVImporter::UserGroups.new(file_name, @district).import
-    when 'student_groups.csv'
-      msg= CSVImporter::StudentGroups.new(file_name, @district).import
+    when *csv_importers(file_name)
+      csv_importer file_name
     when 'arbitraries.csv'
       load_arbitrary_extended_profile_content_from_csv file_name
     else
@@ -98,6 +88,20 @@ class ImportCSV
     @messages << msg
     update_memcache
   end
+
+  def csv_importers file_name
+    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv"]
+  end
+
+  def csv_importer file_name
+    
+    base_file_name = File.basename(file_name)
+    c="CSVImporter/#{base_file_name.sub(/.csv/,'')}".classify.pluralize
+    puts c
+    @messages << c.constantize.new(file_name,@district).import
+  end
+    
+    
 
   def ids_by_id_district klass
     klass.connection.select_all("select id, id_district from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>true)
