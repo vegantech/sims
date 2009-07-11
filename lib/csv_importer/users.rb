@@ -1,6 +1,5 @@
 module CSVImporter
   class Users < CSVImporter::Base
-    puts 'THIS DOES NOT WORK YET'
 
   private
     def index_options
@@ -26,15 +25,15 @@ module CSVImporter
 
     def update
     updates=csv_headers.collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
-    User.connection.execute("update users u
-      inner join csv_importer tu
+    query = ("update users u
+      inner join #{temporary_table_name} tu
       on u.id_district = tu.id_district and u.id_district is not null
       set u.updated_at=CURDATE(), 
       #{updates}
     where district_id = #{@district.id}"
-    
     )
 
+    User.connection.execute query
 
     end
 
@@ -47,7 +46,7 @@ module CSVImporter
     def delete
       query = "delete  from u
       using users u 
-      left outer join csv_importer tu 
+      left outer join #{temporary_table_name} tu 
       on u.id_district = tu.id_district
       where u.id_district is not null and u.district_id = #{@district.id}
       and tu.id_district is null"
@@ -58,7 +57,7 @@ module CSVImporter
       inserts = csv_headers.join(", ")
       query=("insert into users 
       (#{inserts}, created_at, updated_at, district_id)
-      select tu.* , CURDATE(), CURDATE(), #{@district.id} from csv_importer tu left outer join users u  
+      select tu.* , CURDATE(), CURDATE(), #{@district.id} from #{temporary_table_name} tu left outer join users u  
       on tu.id_district = u.id_district
       and u.district_id = #{@district.id}  
       where
@@ -66,7 +65,21 @@ module CSVImporter
       and tu.id_district is not null
       "
       )
+      User.connection.execute query
     end
+
+
+    def confirm_count?
+      model_name = "user"
+      model_count = @district.send(model_name.tableize).count
+        if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
+          @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
+          false
+        else
+          true
+        end
+    end
+                                                                    
   end
 end
 

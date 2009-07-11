@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090701211359) do
+ActiveRecord::Schema.define(:version => 20090710012535) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -641,7 +641,7 @@ ActiveRecord::Schema.define(:version => 20090701211359) do
     t.datetime "updated_at"
   end
 
-  add_index "schools", ["district_id"], :name => "index_schools_on_district_id"
+  add_index "schools", ["district_id", "id_district"], :name => "index_schools_on_district_id_and_id_district"
 
   create_table "special_user_groups", :force => true do |t|
     t.integer  "user_id"
@@ -764,6 +764,6 @@ ActiveRecord::Schema.define(:version => 20090701211359) do
     t.integer  "id_district"
   end
 
-  add_index "users", ["district_id"], :name => "index_users_on_district_id"
+  add_index "users", ["district_id", "id_district"], :name => "index_users_on_district_id_and_id_district"
 
 end
