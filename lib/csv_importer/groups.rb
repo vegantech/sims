@@ -22,7 +22,6 @@ module CSVImporter
       Group
     end
 
-
     def update
       query=("update groups
         inner join  #{temporary_table_name} tg on tg.district_group_id = groups.id_district
@@ -36,8 +35,8 @@ module CSVImporter
 
     def insert_update_delete
       delete
-      update
-      insert
+            update
+            insert
     end
 
     def delete

@@ -7,7 +7,7 @@ class ImportCSV
   STRIP_FILTER = lambda{ |field| field.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
-
+  CLEAN_CSV_OPTS ={:converters => [STRIP_FILTER,:symbol]}
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
  
@@ -36,7 +36,6 @@ class ImportCSV
 
   include  ImportCSV::FileHandling
   include  ImportCSV::ExtendedProfiles
-  include  ImportCSV::Users
   include  ImportCSV::Roles
   include  ImportCSV::SystemFlags
 
@@ -63,8 +62,6 @@ class ImportCSV
     
 
     case base_file_name.downcase
-    when 'users.csv'
-      load_users_from_csv file_name
     when 'district_admins.csv'
       load_user_roles_from_csv file_name, 'district_admin'
     when 'news_admins.csv'
@@ -90,7 +87,7 @@ class ImportCSV
   end
 
   def csv_importers file_name
-    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv"]
+    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv"]
   end
 
   def csv_importer file_name

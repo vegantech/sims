@@ -36,7 +36,8 @@ When /^I import_users_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, distr
 end
 
 Given /^"([^\"]*)" should have "([^\"]*)" users*$/ do |district_name, num_users|
-   District.find_by_name(district_name).users.count.should == num_users.to_i
+  district =  District.find_by_name(district_name)
+   district.users.count.should == num_users.to_i
 end
 
 Then /^the command should have failed$/ do
@@ -54,7 +55,8 @@ end
 
 Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |username, district_name, password|
   district = District.find_by_name(district_name)
-  Factory(:user, :district=>district, :password => password, :username => username, :id_district => rand(50000))
+  user = district.users.authenticate(username, password)
+  user ||= Factory(:user, :district=>district, :password => password, :username => username, :id_district => rand(50000))
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
