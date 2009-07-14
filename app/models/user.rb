@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
       users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}).uniq
     end
     users=users.sort_by{|u| u.to_s}
-    prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group Member").split("-",2)
+    prompt_id,prompt_text=(opts["prompt"] || "*-All Staff").split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
 

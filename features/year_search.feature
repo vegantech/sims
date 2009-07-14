@@ -2,6 +2,9 @@ Feature: Search By Student Last Name
   In order to pick students to manage
   A SIMS user
   Should be able to find students by enrollment year
+
+  Background:
+    Given no other schools
   
   Scenario: Search by year
     Given school "Glenn Stephens"

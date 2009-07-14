@@ -85,6 +85,7 @@ module CSVImporter
           LOAD DATA INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
             (#{csv_headers.join(", ")})
             ;
         EOF

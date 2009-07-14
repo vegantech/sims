@@ -13,7 +13,7 @@ describe SchoolsController do
       it 'should automatically redirect when the flash is not already set'  do
         get :index
         session[:school_id].should == 'MOCK SCHOOL'
-        flash[:notice].should == 'Mock Elementary has been automatically selected'
+        flash[:notice].should == 'Mock Elementary has been automatically selected.'
         response.should redirect_to(search_students_url)
         
       end

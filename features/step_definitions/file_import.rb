@@ -122,7 +122,14 @@ Then /^the system should have "([^\"]*)" students not assigned to districts$/ do
   Student.scoped_by_district_id(nil).count.should == count.to_i
 
 end
-  
+
+Given /^no other enrollments$/ do
+   Enrollment.delete_all
+end
+
+Given /^no other schools$/ do
+   User.delete_all
+end
 
 Given /^no other users$/ do
    User.delete_all

@@ -4,6 +4,7 @@ Feature: Search By Student Last Name
   Should be able to find students by last name
   
   Scenario: Search by First Grade
+    Given no other schools
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens"
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
