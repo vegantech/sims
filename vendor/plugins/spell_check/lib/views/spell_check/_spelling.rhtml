@@ -1,22 +1,27 @@
 <% prefix=nil if prefix.blank? %>
 <% unless @spelling_errors.blank? %>
   <%=pluralize(@spelling_errors.size, "Spelling error") %> detected. Click for spelling suggestions:
-  <table>
-  <tr>
-  <td valign="top">
-  <span>
-  <h2>Errors</h2>
-  <ul>
-     <%=render :partial=>"spell_check/spelling_error", :collection=>@spelling_errors, :locals=>{:prefix=>prefix}%>
-  </ul>
-  <% else%>
-    <%if @spelling_msg %>
-      <%= @spelling_msg%> 
-    <% end %>
+<% end %>
+ <table>
+    <tr>
+      <td valign="top">
+
+  <% unless @spelling_errors.blank? %>
+        <span>
+          <h2>Errors</h2>
+          <ul>
+            <%=render :partial=>"spell_check/spelling_error", :collection=>@spelling_errors, :locals=>{:prefix=>prefix}%>
+          </ul>
+        </span>
+      
+<% else%>
+  <%if @spelling_msg %>
+    <%= @spelling_msg%> 
   <% end %>
+<% end %>
   </td>
   <td valign="top">
      <span id="<%=prefix%>suggestions"></span>
   </td>
   </tr>
-  </table>
+</table>

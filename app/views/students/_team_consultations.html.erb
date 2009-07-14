@@ -1,6 +1,6 @@
 <h2 class="team_consultations_header", ondblclick = "$('consultations_group').toggle();" > Team Consultations</h2>
 <%= link_to_function "Show/Hide Team Consultations" , "$('consultations_group').toggle()" %>
-<div id = "consultations_group">
+<div id = "consultations_group" style="display:none">
   <h3 class="team_consultations_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
   <%= link_to_function "Show/Hide" , "$('team_consultation_request').toggle()" %>
   <div id = "team_consultation_request">

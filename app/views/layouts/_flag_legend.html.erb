@@ -3,6 +3,38 @@
 
 <div class="newsGroup">
   <table cellspacing="3" cellpadding="3">
+   <tr>
+      <td><%= image_tag("green-dot.gif") %></td>
+      <td>
+        Active Intervention:
+      </td>
+    </tr>
+    <tr>
+      <td><%= image_tag("gray-dot.gif") %></td>
+      <td>
+        Previously Ended Intervention
+      </td>
+    </tr>
+	<tr>
+      <td><%= image_tag("I.gif") %></td>
+      <td>
+        Ignored: One or more flags are ignored. 
+      </td>
+    </tr>
+	<tr>
+      <td><%= image_tag("C.gif") %></td>
+      <td>
+        Custom Flag
+      </td>
+    </tr>
+	<tr>
+      <td><%= image_tag("comments.png") %></td>
+      <td>
+        Team Consultation Request
+      </td>
+    </tr>
+
+
     <tr>
       <td><%= image_tag("A.gif") %></td>
       <td>
@@ -27,40 +59,7 @@
       Language Arts:  
       </td>
     </tr>
-    <tr>
-      <td><%= image_tag("green-dot.gif") %></td>
-      <td>
-        Active: One or more interventions currently implemented. 
-      </td>
-    </tr>
-    <tr>
-      <td><%= image_tag("gray-dot.gif") %></td>
-      <td>
-        Ended: Previous interventions are not active.
-      </td>
-    </tr>
-	<tr>
-      <td><%= image_tag("I.gif") %></td>
-      <td>
-        Ignored: One or more flags are ignored. 
-      </td>
-    </tr>
-	<tr>
-      <td><%= image_tag("C.gif") %></td>
-      <td>
-        Custom: One or more flags have been added by a user of SIMS to indicate a need for intervention that is not reflected in the data.
-
-      </td>
-    </tr>
-	<tr>
-      <td><%= image_tag("comments.png") %></td>
-      <td>
-        Team Consultation: One or more requests for a team consultation.
-
-      </td>
-    </tr>
-
-
+ 
 	<tr><td colspan="2">Hover over the flag icon to see specific student data.</td></tr>
   </table>
   

@@ -45,32 +45,32 @@ module CSVImporter
       @line_count = 0
       
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
-      system "sed -e 's/  *,/,/' -e 's/  *$//' -e 's/  *\r/\r/' -i #{@file_name}"  #trailing space after quoted fields,  change faster csv to accomodate
+      #pop off header
+      head= `head -n 1 #{@file_name}`
+      return false unless confirm_header head
+      
+      system "tail -n +2 #{@file_name} > #{@clean_file}"
+      remove_dashes = '/^\-\-\+/ d'
+      remove_count = '/\([0-9] rows affected\)/ d'
+      hexify = 's/0[xX]\([a-fA-F0-9]\{40\}\)/\1/'
+
+
+      
+      a =  "sed -e 's/, ([jjSs]r)/ \1/' -e 's/NULL//' -e 's/  *,/,/' -e 's/  *$//' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
+      system a
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
-      output = FasterCSV.open(@clean_file, "w")
-     
-      @header_checked=false
-      FasterCSV.foreach(@file_name, ImportCSV::DEFAULT_CSV_OPTS) do |row|
-        unless @header_checked
-          break unless h=confirm_header(row)
-          @header_checked = true
-        end
-        
-        unless row[0] =~  /^-+|\(\d+ rows affected\)$/
-          output << row
-          @line_count = @line_count +1
-        end
-      end
-      output.close
-      @header_checked
+
+      @line_count = `wc -l #{@clean_file}`.to_i
+
     end
 
        
     def confirm_header row
-      h= row.headers
+      h= row.split(",").collect(&:strip).collect(&:to_sym)
       if h.join(",") == csv_headers.join(",")
         return h
       else
+        puts row.inspect
         @messages << "Invalid file,  file must have headers #{ csv_headers.join(",")}"
         return false
       end
@@ -85,6 +85,7 @@ module CSVImporter
           LOAD DATA INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
             (#{csv_headers.join(", ")})
             ;
         EOF

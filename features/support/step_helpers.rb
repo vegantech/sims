@@ -6,19 +6,22 @@ def go_to_page page_name
   else
     log_in
     # flunk response.body
-    click_link 'School Selection'
+    click_link 'School Selection' if response.body.include?('School Selection')
 
     page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
     case page_name
     when 'search'
-      click_button 'Choose School'
+      click_button 'Choose School' unless response.body.include?("Default School has been automatically selected.")
+      puts response.body unless response.body.include?('Search')
     when 'school selection'
     when 'new role'
     when 'student profile'
       # search
-      select("Default School")
-      click_button "Choose School"
+      unless response.body.include?("Default School has been automatically selected.")
+        select("Default School")
+        click_button "Choose School"
+      end
       click_button "Search for Students"
       click_all_name_id_brackets
       click_button "select for problem solving"

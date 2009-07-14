@@ -25,6 +25,10 @@ module CSVImporter
       end
     end
 
+    def temporary_table?
+      false
+    end
+
     def delete
       query ="
        delete from e using  enrollments e 
@@ -37,6 +41,7 @@ module CSVImporter
         )
         and sch.id_district is not null and stu.id_district is not null
         "
+        puts query
       ActiveRecord::Base.connection.execute query
     end
 
@@ -52,11 +57,12 @@ module CSVImporter
       and e.school_id is null and stu.id_district is not null and sch.id_district is not null
       "
       )
+        puts query
       ActiveRecord::Base.connection.execute query
     end
    def confirm_count?
-      model_name = sims_model.name
-    model_count = @district.send(model_name.tableize).count
+    model_name = sims_model.name
+    model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
     if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
       @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
       false

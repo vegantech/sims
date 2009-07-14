@@ -10,8 +10,8 @@ Feature: Search Page
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		# And I am on the search page
 
     # When I select "*" from "students_grade"
@@ -29,8 +29,8 @@ Feature: Search Page
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
 		And I am on the school selection page
-		And I select "Glenn Stephens" from "school_id"
-		And I press "Choose School"
+#		And I select "Glenn Stephens" from "school_id"
+#		And I press "Choose School"
 		# And I am on the search page
 
     When I select "1" from "Grade"

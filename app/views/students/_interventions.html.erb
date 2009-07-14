@@ -1,5 +1,6 @@
 <h2 class="intervention_summary",  ondblclick="$('interventions').toggle();">Intervention and Progress Monitoring</h2>
-<div id="interventions">
+<%= link_to_function "Show/Hide" , "$('interventions').toggle()" %> (<%=@student.interventions.count %>)
+<div id="interventions" style="display:none">
 <h3 class="intervention_summary"><span>Assign New Intervention and Progress Monitor</span></h3>
 
   <%=content_tag :span, link_to("Select New Intervention and Progress Monitor from Menu ", new_intervention_path)%> <br />

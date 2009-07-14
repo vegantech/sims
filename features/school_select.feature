@@ -46,3 +46,12 @@ Feature: School Selection
 
     Then I should see "User doesn't have access to any students at East High"
     And page should contain "Choose School"
+
+  Scenario: Auto Select School
+    Given school "Glenn Stephens"
+		#And school "Velma Hamilton"
+
+    When I go to the school selection page
+    Then I should see "User doesn't have access to any students at Glenn Stephens"
+
+

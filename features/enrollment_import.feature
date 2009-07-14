@@ -7,12 +7,15 @@ Feature: CSV Import of Enrollments
     Given a district "Telophia"
 
   Scenario: Import enrollments csv with 1 change, 1 deletion, 1 insert and 1 noop
+    Given no other students
+    And no other enrollments
     Given a student "Bob Smith"
     And a school "Fish School"
     And enrollment "Bob Smith" in "Fish School" for grade "change_me"
     And enrollment "Bob Smith" in "Fish School" for grade "delete_me"
     And enrollment "Bob Smith" in "Fish School" for grade "noop"
     When I import_enrollments_from_csv with "test/csv/enrollments/telophia/enrollments.csv", "Telophia"
+    Then the command should have succeeded
     Then "Bob Smith" has [change_me, insert_me, noop] for grades 
     And "Telophia" should have "3" enrollments
     #changing may not make sense since we're matching on all fields
