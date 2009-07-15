@@ -1,0 +1,2 @@
+<label for="agenda_notes">Notes</label>
+<%= in_place_editor_field('agenda', 'notes', {},{:rows=>4, :with=>"$('agenda_form').serialize() +'&' + Form.serialize(form)"}) %>

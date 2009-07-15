@@ -1,0 +1,1 @@
+page.replace_html 'agenda_for_day',  :partial => 'agenda_day' 

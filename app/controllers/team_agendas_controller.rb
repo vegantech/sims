@@ -1,10 +1,11 @@
 class TeamAgendasController < ApplicationController
   skip_before_filter :authorize
-  in_place_edit_for :other
   # GET /team_agendas
   # GET /team_agendas.xml
   def index
     @team_agendas = TeamAgenda.all
+    @agenda = TeamAgenda.find_or_initialize_by_date(Date.today)
+    @agenda.notes = 'No notes yet' if @agenda.new_record?
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,9 +16,15 @@ class TeamAgendasController < ApplicationController
   # GET /team_agendas/1
   # GET /team_agendas/1.xml
   def show
-    @team_agenda = TeamAgenda.find(params[:id])
+    
+    d=params[:date]
+    date=Date.civil(d["year"].to_i,d["month"].to_i, d["day"].to_i)
+    @agenda = TeamAgenda.find_or_initialize_by_date(date)
 
+    @agenda.notes = 'No notes yet' if @agenda.new_record?
     respond_to do |format|
+      format.js
+    
       format.html # show.html.erb
       format.xml  { render :xml => @team_agenda }
     end
@@ -83,5 +90,14 @@ class TeamAgendasController < ApplicationController
       format.html { redirect_to(team_agendas_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def set_agenda_notes
+    d=params[:date]
+    date=Date.civil(d["year"].to_i,d["month"].to_i, d["day"].to_i)
+    @agenda = TeamAgenda.find_or_initialize_by_date(date)
+    @agenda.notes = params[:value]
+    @agenda.save
+    render :text => params[:value]
   end
 end

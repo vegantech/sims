@@ -157,6 +157,10 @@ module UnobtrusiveDatePicker
         html_classes << "divider-#{parse_divider_option(options[:divider])}"
       end
 
+      if options[:inline]
+        html_classes << "display-inline"
+      end
+
       html_classes
     end
 
