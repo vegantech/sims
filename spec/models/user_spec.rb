@@ -218,13 +218,13 @@ describe User do
     end
     
      it 'should return all authorized_members if prompt is blank' do
-        User.should_receive(:new).with(:id=>"*", :first_name =>"Filter", :last_name => "by Group Member").any_number_of_times.and_return(@g1)
+        User.should_receive(:new).with(:id=>"*", :first_name =>"All", :last_name => "Staff").any_number_of_times.and_return(@g1)
         @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra", "Elephant", "Tiger"])
         @user.filtered_members_by_school('s1').should == [@g1,'Elephant', 'Tiger', 'Zebra']
       end
 
     it 'should return one authorized group with prompt depending on special user groups' do
-      User.should_receive(:new).with(:id=>"*", :first_name =>"Filter", :last_name => "by Group Member").any_number_of_times.and_return(@g1)
+      User.should_receive(:new).with(:id=>"*", :first_name =>"All", :last_name => "Staff").any_number_of_times.and_return(@g1)
       @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra"])
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
       @user.filtered_members_by_school('s1').should == ['Zebra']

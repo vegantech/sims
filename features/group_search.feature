@@ -50,7 +50,7 @@ Feature: Search By Student Groups
     And "Other_Guy" has access to ["Blue Team", "Yellow Team", "Green Team"]
     And I am on search page
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Green Team","Red Team", "Yellow Team"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy","default user"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy","default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     When I select "3" from "search_criteria_grade"
@@ -73,7 +73,7 @@ Feature: Search By Student Groups
     And I am on search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
-    And I should see select box with id of "search_criteria_user_id" and contains ["Filter by Group Member","Other Guy", "default user"]
+    And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy", "default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
     And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]
