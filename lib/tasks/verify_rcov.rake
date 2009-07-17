@@ -41,6 +41,6 @@ RCov::VerifyTask.new('verify_rcov_integration') do |t|
   t.index_html = 'test/coverage/integration/index.html'
 end
 task "default" => ["test:coverage"]
-
+task "cruise" => ["default"]
 rescue LoadError
 end

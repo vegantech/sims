@@ -82,7 +82,7 @@ module CSVImporter
 
     def load_data_infile
       <<-EOF
-          LOAD DATA INFILE "#{@clean_file}" 
+          LOAD DATA LOCAL INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
