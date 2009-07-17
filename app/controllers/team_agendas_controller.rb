@@ -4,10 +4,12 @@ class TeamAgendasController < ApplicationController
   # GET /team_agendas.xml
   def index
     @team_agendas = TeamAgenda.all
+    @team_consultation = TeamConsultation.find(params[:consultation_id])
     @agenda = TeamAgenda.find_or_initialize_by_date(Date.today)
     @agenda.notes = 'No notes yet' if @agenda.new_record?
 
     respond_to do |format|
+      format.js
       format.html # index.html.erb
       format.xml  { render :xml => @team_agendas }
     end

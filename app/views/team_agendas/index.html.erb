@@ -19,24 +19,7 @@
 <% end %>
 </table>
 
-<table>
-  <tbody>
-  <tr>
-    <td>
-<% form_tag( {} , :id=>'agenda_form') do %>
-<%= unobtrusive_date_picker_tags Date.today , {:order=>[:month,:day,:year],:inline => true}   %>
-<%=observe_form('agenda_form', :frequency =>0.25, :url => team_agenda_url(1), :method => :get )%>
-
-<% end %>
-</td>
-
-    <td id="agenda_for_day">
-      
-      <%= render :partial => 'agenda_day' %>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<%= render :partial => 'index' %>
 
 
 <br />

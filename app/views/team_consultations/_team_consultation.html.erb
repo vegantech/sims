@@ -15,7 +15,7 @@
   <% else %>
  <!--   Edit  -->
     <% if team_consultation.recipient == current_user %>
-      <%= link_to_remote_degrades "Schedule", :url => team_agendas_url %>
+      <%= link_to_remote_degrades "Schedule", {:url => team_agendas_url(:consultation_id=>team_consultation.id), :method=>:get} %>
         <!-- Schedule  -->
       &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>
       <%= link_to_remote_degrades "Complete", :confirm => "Are you Sure?", :url => complete_team_consultation_path(team_consultation), :method => :put %>
