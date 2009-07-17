@@ -26,7 +26,7 @@ module CSVImporter
     end
 
     def temporary_table?
-      false
+      true
     end
 
     def delete
