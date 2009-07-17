@@ -11,6 +11,7 @@ Feature: CSV Import of Extended Profiles
     Then "Telophia" should have "0" extended profiles
 
   Scenario: Import single extended_profile csv when all are new
+    Given no other students
     Given a student "Sammy Homework"
     When I import_extended_profiles_from_csv with "test/csv/extended_profiles/single/arbitraries.csv", "Telophia"
     Then "Telophia" should have "1" extended profiles

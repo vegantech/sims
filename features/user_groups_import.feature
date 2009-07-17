@@ -8,6 +8,7 @@ Feature: CSV Import of UserGroups
     And no other groups
 
   Scenario: Import groups csv with 1 change, 1 deletion, 1 insert and 1 noop
+    And I am pending
     Given a school "Fish School"
     And group "No Change" for school "Fish School" with id_district "neih1"
     And group "Should Delete" for school "Fish School"
