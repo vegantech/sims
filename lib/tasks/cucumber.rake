@@ -14,7 +14,7 @@ begin
     target = "integration"
     t.cucumber_opts = "--format progress"
     t.rcov = true
-    t.rcov_opts << "-o test/coverage/#{target}"
+    t.rcov_opts << "-o #{index_base_path}/#{target}"
     t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort coverage"
     t.rcov_opts << send("default_rcov_params_for_#{target}")
 

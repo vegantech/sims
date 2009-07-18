@@ -5,6 +5,11 @@ begin
 rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
 end
+
+
+  def index_base_path
+    (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') 
+  end
   def default_rcov_params_for_unit   
     '-i "app\/reports" -x "app\/controllers",'+global_exclude
   end  
