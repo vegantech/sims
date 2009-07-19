@@ -50,10 +50,11 @@ module CSVImporter
     end
 
     def migration t
-      cols = sims_model.columns.inject({}){|hash, col| hash[col.name.to_sym] = col.type; hash}
+      @cols = sims_model.columns.inject({}){|hash, col| hash[col.name.to_sym] = col.type; hash}
+      @cols[:special_ed]=:string
 
       csv_headers.each do |col|
-        t.column col, cols[col]
+        t.column col, @cols[col]
       end
     end
 
@@ -61,7 +62,20 @@ module CSVImporter
       true
     end
 
+    def postprocess_uploaded_csv
+      to_strip=csv_headers.select{|col| @cols[col] == :string || @cols[col] == :text}
+      s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')},  
+        special_ed = case special_ed when 'Y' then true when 'N' then false when 'n' then false when NULL then NULL else true end"
+      
+      
+      
+      ActiveRecord::Base.connection.execute(s)
+      #" 
+
+    end
+
     def insert_update_delete
+      postprocess_uploaded_csv
       #update students s inner join students_546713874_importer ts on ts.id_state = s.id_state set district_id = 546713874 where s.district_id is null and ts.id_state is not null;
 
       ActiveRecord::Base.connection.execute("update #{temporary_table_name} set id_state = null where id_state = ''")

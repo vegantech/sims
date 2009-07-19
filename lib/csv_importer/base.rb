@@ -56,7 +56,7 @@ module CSVImporter
 
 
       
-      a =  "sed -e 's/, ([jjSs]r)/ \1/' -e 's/NULL//' -e 's/  *,/,/' -e 's/  *$//' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
+      a =  "sed -e 's/, ([jjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
 
