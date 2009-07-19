@@ -12,6 +12,7 @@
   <h3 class="team_consultations_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
   <%= link_to_function "Show/Hide" , "$('pending_consultations').toggle()" %>
   <div id = "pending_consultations">
+    <div id="team_agenda"></div>
    <div id="team_consultations">
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
    </div>
