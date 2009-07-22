@@ -1,0 +1,19 @@
+<h1>Flag Descriptions</h1>
+
+<div class="new_form">
+<% form_for(@flag_description) do |f| %>
+  <%= f.error_messages %>
+
+  <% Flag::FLAGTYPES.each do |flag,values| %>
+    <div class="form_row">
+      <%= f.label flag, values[:humanize] %>
+      <%= f.text_area flag , :size => "40x2"%>
+    </div>
+  <% end %>
+
+ <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+</div>

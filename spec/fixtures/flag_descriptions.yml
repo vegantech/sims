@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  district: 
+  languagearts: MyText
+  math: MyText
+  suspension: MyText
+  attendance: MyText
+
+two:
+  district: 
+  languagearts: MyText
+  math: MyText
+  suspension: MyText
+  attendance: MyText
