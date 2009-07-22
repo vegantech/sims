@@ -84,7 +84,8 @@ module FlagsHelper
   end
 
   def display_flag_legend?(&block)
-    yield if controller.controller_name == "students"
+    flag_legend_controllers = ["students","flag_descriptions", "flag_categories"]
+    @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id) and yield if flag_legend_controllers.include? controller.controller_name
   end
 
   def intervention_status(student)

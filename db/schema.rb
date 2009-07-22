@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090710012535) do
+ActiveRecord::Schema.define(:version => 20090721224035) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -182,6 +182,16 @@ ActiveRecord::Schema.define(:version => 20090710012535) do
   end
 
   add_index "flag_categories", ["district_id"], :name => "index_flag_categories_on_district_id"
+
+  create_table "flag_descriptions", :force => true do |t|
+    t.integer  "district_id"
+    t.text     "languagearts"
+    t.text     "math"
+    t.text     "suspension"
+    t.text     "attendance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "flags", :force => true do |t|
     t.string   "category"
@@ -700,6 +710,14 @@ ActiveRecord::Schema.define(:version => 20090710012535) do
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
   add_index "students", ["id_district"], :name => "index_students_on_id_district"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
+
+  create_table "team_agendas", :force => true do |t|
+    t.integer  "team_id"
+    t.date     "date"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"

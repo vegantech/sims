@@ -19,8 +19,9 @@ class AdministrationCell < Cell::Base
     @show_users = @opts[:user].authorized_for?('district/users', :write_access)
     @show_students =@opts[:user].authorized_for?('district/students',:write_access)
     @show_district= @opts[:user].authorized_for?('districts',:write_access)
+    @show_flag_descriptions= @opts[:user].authorized_for?('flag_descriptions',:write_access)
     
-    @show = @show_schools || @show_users || @show_students || @show_district
+    @show = @show_schools || @show_users || @show_students || @show_district || @show_flag_descriptions
 
   end
 

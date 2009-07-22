@@ -261,6 +261,12 @@ district_students_admin:
   read_access: true
   write_access: true
 
+flag_descriptions_admin:
+  role: district_admin
+  controller: 'flag_descriptions'
+  read_access: true
+  write_access: true
+
 users_admin:
   role: district_admin
   controller: 'district/users'
