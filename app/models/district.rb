@@ -41,6 +41,7 @@ class District < ActiveRecord::Base
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
   has_many :roles
+  has_many :principal_override_reasons
 
 
   has_attached_file  :logo

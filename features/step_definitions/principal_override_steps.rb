@@ -5,6 +5,8 @@ end
 Given /^I am the principal$/ do
   @default_user.user_group_assignments.update_all(:is_principal => true)
   @default_user.update_attribute(:email, "sims_cucumber_principal@example.com")
+  @default_user.update_attribute(:district_id, @district.id)
+  Student.update_all(:district_id => @district.id)
 end
 
 Given /^there is a principal override request$/ do
@@ -15,4 +17,18 @@ Given /^there is a principal override request$/ do
   po.save!
   #  pending
 end
+
+Given /^Principal Override Reason "([^\"]*)" "([^\"]*)"$/ do |reason, autopromote|
+  autopromote = (autopromote == "autopromote")
+  @district.principal_override_reasons.create!(:reason=>reason, :autopromote => autopromote)
+end
+
+Given /^tiers \["([^\"]*)", "([^\"]*)", "([^\"]*)"\]$/ do |arg1, arg2, arg3|
+    @district.tiers.delete_all
+    @district.tiers.create!(:title => arg1)
+    @district.tiers.create!(:title => arg2)
+    @district.tiers.create!(:title => arg3)
+end
+  
+  
     

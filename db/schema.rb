@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090721224035) do
+ActiveRecord::Schema.define(:version => 20090726014949) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -387,6 +387,14 @@ ActiveRecord::Schema.define(:version => 20090721224035) do
   end
 
   add_index "objective_definitions", ["goal_definition_id"], :name => "index_objective_definitions_on_goal_definition_id"
+
+  create_table "principal_override_reasons", :force => true do |t|
+    t.integer  "district_id"
+    t.text     "reason"
+    t.boolean  "autopromote", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "principal_overrides", :force => true do |t|
     t.integer  "teacher_id"

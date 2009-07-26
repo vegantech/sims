@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  district: 
+  reason: MyText
+  autopromote: false
+
+two:
+  district: 
+  reason: MyText
+  autopromote: false

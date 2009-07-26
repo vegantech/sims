@@ -104,6 +104,7 @@ class PrincipalOverride < ActiveRecord::Base
     case self.action
     when 'accept':
       self.status=APPROVED_NOT_SEEN
+      check_autopromote
     when 'reject':
       self.status=REJECTED_NOT_SEEN
     when 'undo'
@@ -113,6 +114,16 @@ class PrincipalOverride < ActiveRecord::Base
       self.status=-1
     end
     true
+
+  end
+
+  def check_autopromote
+    if student and student.district 
+      auto_texts = student.district.principal_override_reasons.find_all_by_autopromote(true).collect(&:reason)
+      if auto_texts.present? and auto_texts.include? principal_response
+        self.end_tier = student.district.tiers.last
+      end
+    end
 
   end
 

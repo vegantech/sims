@@ -6,9 +6,21 @@
     <%= f.hidden_field :action %>
   </p>
   <p>
-  <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this  Request" %> <br />
-    <%= f.text_area :principal_response, :rows=>6, :cols=>50%>
-    </p>
+    
+    <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this  Request" %> <br />
+    <% if @principal_override.action == "accept" && current_district.principal_override_reasons.present? %>
+      <% current_district.principal_override_reasons.each do |por| %>
+        <%= f.radio_button :principal_response, por[:reason] %>
+        <%= f.label "principal_response_#{por[:reason].gsub(/ /,'_')}", por[:reason] %> <br />
+      <% end %>
+    <% else %>
+      <%= f.text_area :principal_response, :rows=>6, :cols=>50%>
+    <% end %>
+  </p>
+
+
+
+
     <% if @principal_override.action == "accept" %>
       <p>
       <%= f.label :end_tier %>
