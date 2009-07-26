@@ -15,7 +15,7 @@
 
 module EmailHelpers
   def current_email_address
-    "b723176@madison.k12.wi.us" # Replace with your a way to find your current_email. e.g current_user.email
+    @user.email || 'b723176@madison.k12.wi.us' # Replace with your a way to find your current_email. e.g current_user.email
   end
 end
 World(EmailHelpers)

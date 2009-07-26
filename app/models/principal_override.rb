@@ -23,7 +23,7 @@ class PrincipalOverride < ActiveRecord::Base
   belongs_to :end_tier, :class_name => 'Tier'
   belongs_to :student
   attr_accessor :action
-  attr_reader :unavailable_reason
+  attr_reader :unavailable_reason, :send_email
 
   STATUS=["Awaiting approval","Approved","Rejected*","Rejected","Approved*"]
 
@@ -37,7 +37,6 @@ class PrincipalOverride < ActiveRecord::Base
   validates_inclusion_of :action, :in =>['accept','reject'], :unless => Proc.new{|p| p.status == NEW_REQUEST} 
   validates_presence_of :teacher_request, :message => "reason must be provided"
   validates_presence_of :principal_response, :message => "Reason must be provided", :unless => Proc.new{|p| p.status == NEW_REQUEST}
-  after_create :email_principals
   named_scope :pending, :conditions=>{:status=>NEW_REQUEST}
   named_scope :approved, :conditions=>{:status=>[APPROVED_SEEN,APPROVED_NOT_SEEN]}
 
@@ -56,7 +55,7 @@ class PrincipalOverride < ActiveRecord::Base
   def setup_response_for_edit(action)
     #TODO Autoset to next or max tier
 
-    self.action=action
+    @action=action
     self.end_tier=self.start_tier
 
   end
@@ -70,7 +69,7 @@ class PrincipalOverride < ActiveRecord::Base
     self.principal_response=nil
     self.end_tier=nil
     self.status=NEW_REQUEST
-    self.action="undo"
+    @action="undo"
     self.save!
 
   end
@@ -97,9 +96,6 @@ class PrincipalOverride < ActiveRecord::Base
   end
 
 
-  def email_principals
-    Notifications.deliver_principal_override_request(self) if student.principals.present?
-  end
 
   def before_validation_on_update
     #TODO make sure the principal is actually a principal for this student
@@ -118,10 +114,6 @@ class PrincipalOverride < ActiveRecord::Base
     end
     true
 
-  end
-
-  def after_update
-    Notifications.deliver_principal_override_response(self) if @send_email
   end
 
 

@@ -62,6 +62,7 @@ def create_user user_name='first_last', password=user_name
     :first_name => user_name.split("_").first || 'First',
     :last_name => user_name.split("_").last || 'Last',
     :password=> password
+    
 end
 
 def create_school school_name
