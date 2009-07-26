@@ -52,5 +52,4 @@ Feature: Principal Override Accept and Reject
     And I choose "predefined reason 2"
     And I press "Accept"
     Then I should see "3 - tier3"
-    And I show page
 

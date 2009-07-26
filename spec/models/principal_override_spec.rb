@@ -23,7 +23,7 @@ describe PrincipalOverride do
     @valid_attributes = {
       :status => 0,
       :teacher_request => "value for fufillment_reason",
-      :student=>mock_student(:max_tier=>Tier.new(:title=>"TIER 1"), :principals=>[User.new], :fullname => "Test Student"),
+      :student=>mock_student(:max_tier=>Tier.new(:title=>"TIER 1"), :principals=>[User.new], :fullname => "Test Student", :district => Factory(:district)),
       :teacher=>User.new
     }
   end
