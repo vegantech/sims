@@ -1,5 +1,5 @@
 
-task "cruise" => ["default", "metrics:all"] do
+task "cruise" => ["db:migrate","default", "metrics:all"] do
   #    out = ENV['CC_BUILD_ARTIFACTS']
   #    mkdir_p out unless File.directory? out if out
   #    puts out if out
