@@ -1,3 +1,4 @@
+<% checklist ||= @checklist %>
 <%= render :partial => '/checklists/question_link' , :locals => {:question_definition => question_definition }%>
 <div class="questionDiv" <%='style="display:none"' unless view %>>
   <% #pop off the first element if it is a relevance element  
