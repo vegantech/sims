@@ -33,7 +33,7 @@ class Recommendation < ActiveRecord::Base
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id, 
   validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
-  attr_accessor :request_referral
+  attr_accessor :request_referral, :school
   attr_accessor :other
 
   RECOMMENDATION={

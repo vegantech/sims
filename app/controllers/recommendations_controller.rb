@@ -18,9 +18,9 @@ class RecommendationsController < ApplicationController
     params[:recommendation][:user_id]=current_user[:id]
     if params[:checklist_id]
       @checklist = current_student.checklists.find(params[:checklist_id])
-      @recommendation = @checklist.build_recommendation(params[:recommendation])
+      @recommendation = @checklist.build_recommendation(params[:recommendation].merge(:school => current_school))
     else
-      @recommendation = current_student.recommendations.build(params[:recommendation].merge(:student=>current_student))
+      @recommendation = current_student.recommendations.build(params[:recommendation].merge(:student=>current_student, :school => current_school))
     end
     if @recommendation.save
       redirect_to current_student
