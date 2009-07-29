@@ -46,7 +46,10 @@ class InterventionsController < ApplicationController
     unless params[:spellcheck].blank?
       @quicklist = true if params[:quicklist]
       @users = current_school.users.collect{|e| [e.fullname, e.id]}
-      spellcheck [@intervention.comments.last.comment].join(" ")
+      comment = @intervention.comments.last
+      comment = comment ? comment.comment : ""
+      
+      spellcheck [comment].join(" ")
       @intervention_comment = @intervention.comments.last
       # populate_goals
       render :action => :new
