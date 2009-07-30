@@ -87,7 +87,8 @@ class ImportCSV
   end
 
   def csv_importers file_name
-    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", "all_schools.csv"]
+    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
+    "all_schools.csv", "all_students_in_district.csv"]
   end
 
   def csv_importer file_name
