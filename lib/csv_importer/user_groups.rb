@@ -9,12 +9,13 @@ module CSVImporter
     end
 
     def csv_headers
-      [:district_user_id, :district_group_id]
+      [:district_user_id, :district_group_id, :principal]
     end
 
     def migration t
       t.integer :district_user_id
       t.string :district_group_id
+      t.boolean :principal
     end
 
     def delete
@@ -34,8 +35,8 @@ extra ="      where not exists (
 
     def insert
       query=("insert into user_group_assignments
-      (user_id,group_id, created_at, updated_at)
-      select u.id , g.id, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
+      (user_id,group_id, is_principal, created_at, updated_at)
+      select u.id , g.id, principal, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
       users u on u.id_district = tug.district_user_id
       inner join groups g
       on tug.district_group_id = g.id_district
