@@ -132,7 +132,7 @@ class Recommendation < ActiveRecord::Base
       self.tier_id ||= checklist.from_tier
     else
       self.recommendation_definition=RecommendationDefinition.find_by_active(true)
-      self.tier_id ||= self.student.max_tier if student
+      self.tier_id ||= self.student.max_tier.id if student
     end
   end
 

@@ -10,10 +10,12 @@ class ImportMMSD
   #intervention_definition, interventions
   #intervention_comments, student_comments
 
+  #probe_definitions, recommended_monitors, intervention_probe_assignment, probe, probe_definition_benchmarks
 
 
   #checklists, answers, recommendations, recommendation_answers
-  
+ 
+  #principal_overrides
   #(intervention requires school and user), so does probe_definitions
   
   def initialize
@@ -32,12 +34,19 @@ class ImportMMSD
   def import_file table_name
     arr=[]
     headers = nil
-    e=FasterCSV.foreach "k/#{table_name}.csv", {:headers=>true} do |row|
+    if table_name == "intervention_probe_assignments"
+      filename = "intervention_probe_definitions"
+    else
+      filename = table_name
+    end
+    e=FasterCSV.foreach "k/#{filename}.csv", {:headers=>true} do |row|
       unless headers
         headers = row.headers
         headers.delete("district_id")
-        headers.delete("#{table_name.singularize}_id")
+        headers.delete("#{filename.singularize}_id")
         @ids_to_map= headers.select{|h| (h=="from_tier" || h =~ /id$/ ) && table_name.classify.constantize.column_names.include?(h)}
+        @ids_to_map << "intervention_probe_assignment_id" if table_name == "probes"
+        
         @cols_to_map= (headers - table_name.classify.constantize.column_names)
         @cols_to_map.each{|c| headers.delete(c)}
         map_ids 
@@ -47,16 +56,29 @@ class ImportMMSD
       vals.merge!(:district_id => ImportMMSD.district) if table_name.classify.constantize.column_names.include?("district_id")
       @ids_to_map.each{|idm| vals.merge!(idm=>@id_mapping[idm][row[idm].to_i])}
       @cols_to_map.each{|col_to_map| vals.merge!(map_column(row,col_to_map, table_name))}
-      puts vals.inspect
+      #      puts vals.inspect
       n=table_name.classify.constantize.new(vals)
       n.type = row["type"] if headers.include?("type")
       unless n.valid?
         next if n.errors.on("student_id")
-        next if n.errors.on("other") && n.class == Recommendation
-        raise n.errors.inspect
+        if n.errors.on("other") && n.class == Recommendation
+          #ignore
+        elsif n.errors.on("description") && n.class == ProbeDefinition
+          n.description = ""
+        elsif n.errors.on("title") && n.class == ProbeDefinition
+          #ignore
+        elsif n.errors.on("end_date") && n.class == InterventionProbeAssignment
+          n.first_date = row["first_date"].to_date
+        elsif n.errors.on("action") && n.class == PrincipalOverride
+          #ignore
+        elsif n.errors.on("benchmark")
+          #ignore
+        else
+          raise n.errors.inspect
+        end
       end
       n.send(:create_without_callbacks)
-      arr << [row["#{table_name.singularize}_id"].to_i, n.id]
+      arr << [row["#{filename.singularize}_id"].to_i, n.id]
     end
     FasterCSV.open("k/map/#{table_name}.csv","w") do |row|
       arr.each {|arr_row| row << arr_row}
@@ -77,6 +99,8 @@ class ImportMMSD
           @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
         elsif id_to_map == "user_id"
           @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+        elsif id_to_map == "principal_id"
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
 
         else
           if id_to_map == "from_tier"
@@ -89,10 +113,82 @@ class ImportMMSD
         end
       end
     end
+          @ids_to_map.delete("intervention_probe_assignment_id")
   end
 
   def map_column row,col,tab
 
+    if tab == "principal_overrides"
+       return case col
+    when "calendar_id"
+      {}
+    when "request_reason"
+      {"teacher_request" => row["request_reason"]} 
+    when "accept_reason","rejection_reason"
+      {"principal_response" => (row["accept_reason"].to_s + row["rejection_reason"].to_s)}
+    when "from_tier"
+      unless @id_mapping["tier_id"]
+          z=FasterCSV.read("k/map/tiers.csv",:converters=>:numeric)
+          @id_mapping["tier_id"] = Hash[*z.flatten]
+      end
+    
+        if row["status"]=="1"
+          end_tier = @id_mapping["tier_id"][(1+row["from_tier"].to_i)]
+          puts "highest tier???" and end_tier=@id_mapping["tier_id"][row["from_tier"].to_i]  if end_tier.blank?
+        end
+        puts end_tier
+        {"start_tier_id" => @id_mapping["tier_id"][row["from_tier"].to_i], 'end_tier_id' => end_tier}
+    else
+      raise "#{col}???"
+    end
+  end
+  
+    if tab == "intervention_probe_assignments"
+      return case col
+    when "frequency"
+      {}
+    when "last_date"
+      {"end_date" => row["last_date"].to_date}
+    when "disabled"
+      {"enabled" => row["disabled"].to_i !=1}
+    else
+      raise "#{col}???"
+    end
+  end
+    if tab == "probes"
+
+    return case col
+    when "date_probe_administered"
+        {"administered_at" => row["date_probe_administered"].to_date}
+    when "updated_on"
+        {"updated_at" => row["updated_on"]}
+    when "assessment_type","transaction"
+        {}
+    when "intervention_probe_definition_id"
+        {"intervention_probe_assignment_id" => @id_mapping['intervention_probe_assignment_id'][row["intervention_probe_definition_id"].to_i]}
+    else
+      raise "#{col}???"
+    end
+    end
+
+
+
+    
+    if tab == "probe_definitions"
+
+      return case col
+    when "author_id"
+        {"user_id" => row["author_id"] ? find_user(row["author_id"]) : nil}
+    when "updated_on"
+        {"updated_at" => row["updated_on"]}
+    when "calendarID"
+      {}
+    when "my_parent_id"
+      {}
+    else
+      raise "#{col}???"
+    end
+    end
 
     if tab == "flags"
       return case col

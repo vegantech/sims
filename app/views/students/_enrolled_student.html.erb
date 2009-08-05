@@ -3,7 +3,7 @@
     <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
   </td>
 
-  <td style="text-align:center;">
+  <td style="text-align:left;">
     <%= label_tag(dom_id(enrolled_student.student),"#{enrolled_student.student.last_name}, #{enrolled_student.student.first_name}") %>
   </td>
   <td style="text-align: center;">
