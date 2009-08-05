@@ -7,7 +7,12 @@ class ImportMMSD
   #tier
   #recommendation_definition, #recommendation_answer_definition, checklist_definition, quetion_definition, element_definition, answer_definition
   #goal_definition, objective_definition, intervention_cluster
-  
+  #intervention_definition, interventions
+  #intervention_comments, student_comments
+
+
+
+  #checklists, answers, recommendations, recommendation_answers
   
   #(intervention requires school and user), so does probe_definitions
   
@@ -32,7 +37,7 @@ class ImportMMSD
         headers = row.headers
         headers.delete("district_id")
         headers.delete("#{table_name.singularize}_id")
-        @ids_to_map= headers.select{|h| h =~ /id$/}
+        @ids_to_map= headers.select{|h| (h=="from_tier" || h =~ /id$/ ) && table_name.classify.constantize.column_names.include?(h)}
         @cols_to_map= (headers - table_name.classify.constantize.column_names)
         @cols_to_map.each{|c| headers.delete(c)}
         map_ids 
@@ -42,7 +47,15 @@ class ImportMMSD
       vals.merge!(:district_id => ImportMMSD.district) if table_name.classify.constantize.column_names.include?("district_id")
       @ids_to_map.each{|idm| vals.merge!(idm=>@id_mapping[idm][row[idm].to_i])}
       @cols_to_map.each{|col_to_map| vals.merge!(map_column(row,col_to_map, table_name))}
-      n=table_name.classify.constantize.create!(vals)
+      puts vals.inspect
+      n=table_name.classify.constantize.new(vals)
+      n.type = row["type"] if headers.include?("type")
+      unless n.valid?
+        next if n.errors.on("student_id")
+        next if n.errors.on("other") && n.class == Recommendation
+        raise n.errors.inspect
+      end
+      n.send(:create_without_callbacks)
       arr << [row["#{table_name.singularize}_id"].to_i, n.id]
     end
     FasterCSV.open("k/map/#{table_name}.csv","w") do |row|
@@ -56,19 +69,74 @@ class ImportMMSD
   def map_ids
     @ids_to_map.each do |id_to_map|
       unless @id_mapping[id_to_map]
-        z=FasterCSV.read("k/map/#{id_to_map.sub(/_id$/,'')}s.csv",:converters=>:numeric)
-        @id_mapping[id_to_map] = Hash[*z.flatten]
+        if id_to_map == 'student_id'
+          @id_mapping[id_to_map]=Hash[*Student.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+        elsif id_to_map == 'teacher_id'
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+        elsif id_to_map == "author_id"
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+        elsif id_to_map == "user_id"
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+
+        else
+          if id_to_map == "from_tier"
+            filename = "tiers"
+          else
+            filename = id_to_map.sub(/_id$/,'s')
+          end
+          z=FasterCSV.read("k/map/#{filename}.csv",:converters=>:numeric)
+          @id_mapping[id_to_map] = Hash[*z.flatten]
+        end
       end
     end
   end
 
   def map_column row,col,tab
 
-     ["default_option", "measurement", "created_by", "SchoolName", "grade_level", "url", "updated_on"]
+
+    if tab == "flags"
+      return case col
+    when "person_id"
+        {'student_id' => row["person_id"] ? find_student(row["person_id"]) : nil}
+    when "flagtype"
+        {'category' => row["flagtype"] }
+      when "teacher_id"
+        {"user_id" => row["teacher_id"] ? find_user(row["teacher_id"]) : nil}
+      when "severity"
+        {}
+    else
+      raise "#{col}???"
+    end
+  end
+
+
+    
+    if tab == "recommendations"
+      return case col
+    when "teacher_id"
+      {}
+    else
+      raise "#{col}???"
+    end
+  end
+
+    if tab == "interventions"
+      return case col
+      when "teacher_id"
+        {"user_id" => row["teacher_id"] ? find_user(row["teacher_id"]) : nil}
+      when "time_length_type"
+        {"time_length_id" => row["time_length_type"] ? @id_mapping['time_length_id'][row["time_length_type"].to_i] : nil}
+      when "ended_by"
+        {"ended_by_id" => row["ended_by"] ? find_user(row["ended_by"]) : nil}
+        
+      else
+        raise "#{col}???"
+      end
+    end
     if tab == "intervention_definitions"
       return case col
       when "default_option"
-        {'custom' => (row["default_option"]=="Y")}
+        {'custom' => (row["default_option"] !="Y")}
       when *["measurement","grade_level","url"]
         {}
       when "updated_on"
@@ -80,6 +148,33 @@ class ImportMMSD
       else
         raise "#{col}???"
 
+      end
+    end
+
+    if tab == "checklists"
+      return case col
+      when "teacher_id"
+        {"user_id" => row["teacher_id"] ? find_user(row["teacher_id"]) : nil}
+      when "calendar_id"
+        {}
+      else
+        raise "#{col}???"
+
+      end
+    end
+        
+
+    if tab == "student_comments" or tab == "intervention_comments"
+      return case col
+      when "personID"
+        {'student_id' => row["personID"] ? find_student(row["personID"]) : nil}
+      when "author_id"
+        {"user_id" => row["author_id"] ? find_user(row["author_id"]) : nil}
+      when "private"
+        {}
+        
+      else 
+        raise "#{col}???"
       end
     end
 
@@ -98,13 +193,19 @@ class ImportMMSD
 
   def find_user old_id
     @id_mapping['user_id'] ||={}
-    @id_mapping['user_id'][old_id] ||= User.find_by_id_district_and_district_id(old_id,@@district).id
+    @id_mapping['user_id'][old_id] ||= (User.find_by_id_district_and_district_id(old_id,ImportMMSD.district)||User.new).id
+  end
+
+  def find_student old_id
+    @id_mapping['student_id'] ||={}
+    @id_mapping['student_id'][old_id] ||= (Student.find_by_id_district_and_district_id(old_id,ImportMMSD.district)||Student.new).id
+
   end
 
   def find_school_by_name name
     @id_mapping['school_name'] ||={}
-    
-    sch=@id_mapping['school_name'][name] ||= School.find_by_name_and_district_id(name,@@district)
+    name.sub!(/  [0-9][0-9]-[0-9][0-9]$/,'') 
+    sch=@id_mapping['school_name'][name] ||= School.find_by_name_and_district_id(name,ImportMMSD.district)
     raise name if sch.blank?
     sch.id
     
