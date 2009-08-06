@@ -27,6 +27,8 @@ class School < ActiveRecord::Base
   has_many :users, :through=> :user_school_assignments
   has_many :quicklist_items, :dependent => :destroy
   has_many :school_teams, :dependent => :destroy
+  has_many :staff_assignments
+  has_many :staff, :through => :staff_assignments, :source => :user
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
@@ -91,9 +93,16 @@ class School < ActiveRecord::Base
     end
   end
 
-
-
   def enrollment_years 
     enrollments.all(:select=>'distinct end_year', :order =>'end_year').collect{|e| e.end_year.to_s}.unshift(["All","*"])
+  end
+
+  def assigned_users
+    s= staff.find(:all,:order=>'last_name,first_name') 
+    if s.blank?
+      users.find(:all,:order=>'last_name,first_name')
+    else 
+      s
+    end
   end
 end

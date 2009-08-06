@@ -4,7 +4,7 @@ class Interventions::ParticipantsController < ApplicationController
   # GET /intervention_participants/new.xml
   def new
     @intervention_participant = @intervention.intervention_participants.build
-    @users = current_school.users
+    @users = current_school.assigned_users
 
     respond_to do |format|
       format.html # new.html.erb
@@ -26,7 +26,7 @@ class Interventions::ParticipantsController < ApplicationController
         format.html { redirect_to(@intervention) }
         format.xml  { render :xml => @intervention_participant, :status => :created, :location => @intervention_participant }
       else
-        @users = current_school.users
+        @users = current_school.assigned_users
         format.html { render :action => "new" }
         format.xml  { render :xml => @intervention_participant.errors, :status => :unprocessable_entity }
       end

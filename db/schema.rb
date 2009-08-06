@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090726014949) do
+ActiveRecord::Schema.define(:version => 20090806021143) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -676,6 +676,11 @@ ActiveRecord::Schema.define(:version => 20090726014949) do
   add_index "special_user_groups", ["school_id"], :name => "index_special_user_groups_on_school_id"
   add_index "special_user_groups", ["user_id"], :name => "index_special_user_groups_on_user_id"
 
+  create_table "staff_assignments", :force => true do |t|
+    t.integer "school_id"
+    t.integer "user_id"
+  end
+
   create_table "states", :force => true do |t|
     t.string   "name"
     t.string   "abbrev"
@@ -697,6 +702,13 @@ ActiveRecord::Schema.define(:version => 20090726014949) do
 
   add_index "student_comments", ["student_id"], :name => "index_student_comments_on_student_id"
   add_index "student_comments", ["user_id"], :name => "index_student_comments_on_user_id"
+
+  create_table "student_groups_546713874_importer", :id => false, :force => true do |t|
+    t.integer "district_student_id"
+    t.string  "district_group_id"
+  end
+
+  add_index "student_groups_546713874_importer", ["district_student_id", "district_group_id"], :name => "temporary_index_0"
 
   create_table "students", :force => true do |t|
     t.integer  "district_id"

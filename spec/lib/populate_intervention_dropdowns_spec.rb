@@ -110,7 +110,7 @@ describe "Populate Intervention Dropdowns Module" do
        params[:intervention][:intervention_definition].should be_nil
        @intervention_definition = "test"
        @intervention_definition.should_receive(:recommended_monitors_with_custom).and_return([])
-       current_school.should_receive(:users).and_return([])
+       current_school.should_receive(:assigned_users).and_return([])
        populate_intervention
        params[:intervention][:intervention_definition].should == "test"
      end

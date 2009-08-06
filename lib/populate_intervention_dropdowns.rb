@@ -21,7 +21,7 @@ protected
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
     build_from_session_and_params
-    @users = current_school.users.collect{|e| [e.fullname, e.id]}
+    @users = current_school.assigned_users.collect{|e| [e.fullname, e.id]}
   end
 
   def populate_definitions
