@@ -2,6 +2,9 @@ class ScriptedController < ApplicationController
   skip_before_filter  :authorize
   
   def referral_report
+    response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
+    response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
+     
     subdomains
     authenticate
     @students = Student.connection.select_all("select s.id_district,r.id, r.created_at from students s left outer join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5  where s.district_id = #{current_district.id}")
