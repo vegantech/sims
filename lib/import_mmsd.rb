@@ -17,6 +17,8 @@ class ImportMMSD
  
   #principal_overrides
   #(intervention requires school and user), so does probe_definitions
+
+  #import_assets
   
   def initialize
     @id_mapping={
@@ -28,6 +30,46 @@ class ImportMMSD
   end
   def self.district
     @@district ||= District.find_by_state_dpi_num(3269).id
+  end
+
+  def import_assets
+    k=FasterCSV.table("k/links.csv")
+    @ids_to_map=["probe_definition_id", "intervention_definition_id"]
+    map_ids
+
+    k.each do |row|
+      obj = row[:linkable_type].tableize.singularize + "_id"
+      Asset.create!(:name=>row[:name], :url => row[:url], :attachable_type => row[:linkable_type], :attachable_id => @id_mapping[obj][row[:linkable_id]])
+    end
+
+
+    k= FasterCSV.table("k/attachments.csv")
+    k.each do |row|
+      dir =  sprintf("%04d",row[:attachment_id])
+      obj = row[:attachable_type].tableize.singularize + "_id"
+      a=Asset.new(:attachable_type => row[:attachable_type], :attachable_id => @id_mapping[obj][row[:attachable_id]])
+      File.open("k/attach/#{dir}/#{row[:filename]}"){ |att| a.document = att }
+      a.save!
+    end
+   
+    k= FasterCSV.table("k/probe_definitions.csv")
+    m=[]
+    k.each {|r| m << r if  r[:my_parent_id] > 0}
+    k=m
+    k.each do |row|
+      parent = ProbeDefinition.find(@id_mapping['probe_definition_id'][row[:my_parent_id]])
+      child = ProbeDefinition.find(@id_mapping['probe_definition_id'][row[:probe_definition_id]])
+
+      parent.assets.each do |a|
+        new_asset=child.assets.build(a.attributes)
+        File.open(a.document.path){ |att| new_asset.document = att }
+        new_asset.save!
+      end
+    end
+        
+      
+
+
   end
 
 
