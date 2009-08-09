@@ -4,6 +4,9 @@ describe InterventionsHelper do
   include InterventionsHelper
 
   describe 'tiered_intervention_select' do
+    before do
+      self.should_receive(:current_district).and_return(mock_district('lock_tier?' => false))
+    end
     it 'should have select tag with default blank' do
       tiered_intervention_definition_select([Factory(:intervention_definition)]).should have_tag("select#intervention_definition_id.fixed_width[onchange=?][name=?]",
         "$('spinnerdefinitions').show();form.onsubmit()" ,'intervention_definition[id]') do

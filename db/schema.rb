@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090806021143) do
+ActiveRecord::Schema.define(:version => 20090809213025) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20090806021143) do
     t.string   "marked_state_goal_ids"
     t.string   "key",                   :default => ""
     t.string   "previous_key",          :default => ""
+    t.boolean  "lock_tier",             :default => false
   end
 
   add_index "districts", ["state_id"], :name => "index_districts_on_state_id"
