@@ -95,6 +95,17 @@ class Notifications < ActionMailer::Base
                 :interventions=> [intervention_person.intervention],:participant => intervention_person
   end
 
+  def special_ed_referral rec, user_name, user_email, student
+    @subject = 'SIMS- Checklist Completed'
+    @body['recommendation'] = rec  unless rec.blank?
+    @body['student']=student
+    @from                     = 'SIMS <b723176@madison.k12.wi.us>'
+    @headers = {}
+    @body['user_name']= user_name
+    @recipients = user_email
+    
+  end
+
   def self.setup_ending_reminders
     interventions_ending_this_week.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
   end

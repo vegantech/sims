@@ -138,6 +138,7 @@ class Recommendation < ActiveRecord::Base
 
   def request_referral
     @request_referral ||= (should_advance && recommendation == 5)
+    @request_referral &&= (recommendation == 5)
   end
 
   def should_advance
