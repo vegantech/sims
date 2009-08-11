@@ -12,6 +12,10 @@
         %>
       </div>
       <div class ="form_row">
+        <%= f.label :lock_tier, 'Restrict tiers?' %>
+        <%= f.check_box :lock_tier %>
+        <%= help_popup "Some interventions are assigned certain tiers.  If this option is checked, then they will be limited to the current tier (and below) of the selected student.  Student tiers change via checklists, recommendations, and principal overrides." %>
+      <div class ="form_row">
         <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} " %>
         <%= f.file_field :logo %>
         <%= help_popup "Attach a png, gif, or jpg of your district's logo.  It will be scaled to #{District::LOGO_SIZE}, 

@@ -5,6 +5,7 @@ describe ApplicationController do
     @flash ||= {}
   end
 
+  describe 'mock_request' do
   before do
     @req=mock_object(:subdomains=>[])
     controller.stub!(:request).and_return(@req)
@@ -149,7 +150,14 @@ describe ApplicationController do
     end
 
   end
-  
+ 
+  end
+
+    # Rails 2.3 and above 
+  it 'should not throw an exception on OPTIONS request (from ms office protocol discovery)' do
+    process '/any/goofy/path', nil, nil, nil, 'OPTIONS'
+    response.should be_success
+  end 
 
 
 

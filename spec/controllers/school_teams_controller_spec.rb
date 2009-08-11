@@ -9,7 +9,7 @@ describe SchoolTeamsController do
   end
 
   before do
-    controller.stub_association!(:current_school, :school_teams =>SchoolTeam, :users=>[1,2,3,4])
+    controller.stub_association!(:current_school, :school_teams =>SchoolTeam, :assigned_users=>[1,2,3,4])
   end
   
   describe "GET index" do

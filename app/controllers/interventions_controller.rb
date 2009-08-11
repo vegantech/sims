@@ -31,7 +31,7 @@ class InterventionsController < ApplicationController
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment 
-    @users = current_school.users.collect{|e| [e.fullname, e.id]}
+    @users = current_school.assigned_users.collect{|e| [e.fullname, e.id]}
     @intervention_comment = InterventionComment.new
     @tiers = current_district.tiers
   end
@@ -45,8 +45,11 @@ class InterventionsController < ApplicationController
 
     unless params[:spellcheck].blank?
       @quicklist = true if params[:quicklist]
-      @users = current_school.users.collect{|e| [e.fullname, e.id]}
-      spellcheck [@intervention.comments.last.comment].join(" ")
+      @users = current_school.assigned_users.collect{|e| [e.fullname, e.id]}
+      comment = @intervention.comments.last
+      comment = comment ? comment.comment : ""
+      
+      spellcheck [comment].join(" ")
       @intervention_comment = @intervention.comments.last
       # populate_goals
       render :action => :new
@@ -82,7 +85,7 @@ class InterventionsController < ApplicationController
     unless params[:spellcheck].blank?
       spellcheck [params[:intervention][:comment][:comment]].join(" ")
       @intervention_comment = InterventionComment.new(params[:intervention][:comment])
-      @users = current_school.users.collect{|e| [e.fullname, e.id]}
+      @users = current_school.assigned_users.collect{|e| [e.fullname, e.id]}
       a = request.xhr? ? :spell_fail : :edit
       render :action => a
       return
