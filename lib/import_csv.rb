@@ -54,8 +54,8 @@ class ImportCSV
   def process_file file_name
     base_file_name = File.basename(file_name)
     if Object.const_defined?'SIMS_DOMAIN' and ::SIMS_DOMAIN == 'simspilot.org'
-      @messages << 'Still working on imports.'
-      return false
+      #@messages << 'Still working on imports.'
+      #      return false
     end
     @messages << "Processing file: #{base_file_name}"
     update_memcache
