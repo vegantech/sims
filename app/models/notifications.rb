@@ -106,6 +106,14 @@ class Notifications < ActionMailer::Base
     
   end
 
+  def district_upload_results msg, admin_email
+    @subject = 'SIMS Upload Results'
+    @from                     = 'SIMS <b723176@madison.k12.wi.us>'
+    @recipients = admin_email
+    @body['msg'] = msg
+    
+  end
+
   def self.setup_ending_reminders
     interventions_ending_this_week.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
   end

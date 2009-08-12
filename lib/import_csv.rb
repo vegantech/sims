@@ -27,6 +27,7 @@ class ImportCSV
       identify_and_unzip
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
+      @messages << "No csv files uploaded" if sorted_filenames.blank? 
     end
     @messages << b
     update_memcache
