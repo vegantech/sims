@@ -62,7 +62,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.xml
   def show
-    @student = Student.find(params[:id])
+        @student = Student.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,6 +90,7 @@ class StudentsController < ApplicationController
       session[:selected_student]=params[:id]
       return true
     else
+     return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
         session[:school_id] = (student.schools & current_user.schools).first
@@ -108,5 +109,11 @@ class StudentsController < ApplicationController
       :school_id => current_school_id,
       :user => current_user,
       :index_includes =>index_includes))
+  end
+
+  def ic_entry
+      session[:user_id]= nil if current_user.id_district.to_s != params[:personID]
+      session[:requested_url]= student_url(current_district.students.find_by_id_district(params[:contextID]),:username => params[:username])
+      redirect_to session[:requested_url] and return false
   end
 end

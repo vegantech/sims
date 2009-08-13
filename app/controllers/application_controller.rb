@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
     unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
       session[:requested_url] = request.url
-      redirect_to root_url
+      redirect_to root_url(:username => params[:username])
       return false
     end
     true
