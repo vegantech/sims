@@ -31,7 +31,7 @@ class Student < ActiveRecord::Base
   has_many :recommendations
   has_many :enrollments, :dependent => :destroy
   has_many :schools, :through => :enrollments
-  has_many :comments, :class_name => "StudentComment"
+  has_many :comments, :class_name => "StudentComment", :order => 'created_at desc'
   has_many :principal_overrides
   has_many :interventions
   has_many :system_flags

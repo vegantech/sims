@@ -102,6 +102,11 @@ select.fixed_width, textarea.fixed_width {
   width: 60%;
 }
 
+
+select.full_width, textarea.full_width {
+  width: 99%;
+}
+
 th {
 vertical-align: text-top;
 }

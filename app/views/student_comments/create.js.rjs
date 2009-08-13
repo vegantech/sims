@@ -1,4 +1,4 @@
-page.insert_html(:before, :new_team_note, :partial=>'comment', :object=>@student_comment)
+page.insert_html(:top, :team_notes, :partial=>'comment', :object=>@student_comment)
 page.replace_html('new_team_note', :partial=>'students/add_note_link')
 page.select('#no_team_notes').each do |value|
   value.hide()
