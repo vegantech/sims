@@ -53,8 +53,8 @@ class Intervention < ActiveRecord::Base
   delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
-  named_scope :active, :conditions => {:active => true}
-  named_scope :inactive, :conditions => {:active => false}
+  named_scope :active, :conditions => {:active => true}, :order => 'created_at desc'
+  named_scope :inactive, :conditions => {:active => false}, :order => 'created_at desc'
 
   acts_as_reportable # if defined? Ruport
 

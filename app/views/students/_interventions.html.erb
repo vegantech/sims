@@ -1,6 +1,5 @@
 <h2 class="intervention_summary",  ondblclick="$('interventions').toggle();">Intervention and Progress Monitoring</h2>
-<%= link_to_function "Show/Hide" , "$('interventions').toggle()" %> (<%=@student.interventions.count %>)
-<div id="interventions" style="display:none">
+<div id="interventions" >
 <h3 class="intervention_summary"><span>Assign New Intervention and Progress Monitor</span></h3>
 
   <%=content_tag :span, link_to("Select New Intervention and Progress Monitor from Menu ", new_intervention_path)%> <br />
@@ -9,7 +8,6 @@
     <span id="quicklist"> </span>
 
 <h3 class="intervention_summary"><span>Active Interventions</span></h3>
-<%= link_to_function "Show/Hide" , "$('active_interventions').toggle()" %> <%=active_interventions_count(@student) %>
 <div id='active_interventions'>
   <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.active} %>
 </div>
