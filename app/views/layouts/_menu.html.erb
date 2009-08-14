@@ -18,6 +18,8 @@
         <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
 
+        <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
+            interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
         <% if_student_selected do %>
           <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
           <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>

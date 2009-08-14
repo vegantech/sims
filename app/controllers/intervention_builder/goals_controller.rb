@@ -1,11 +1,15 @@
 class InterventionBuilder::GoalsController < ApplicationController
   include SpellCheck
-  additional_write_actions :regenerate_intervention_pdfs
+  additional_write_actions :regenerate_intervention_pdfs, :interventions_without_recommended_monitors
   helper_method :move_path
 
   def regenerate_intervention_pdfs
     CreateInterventionPdfs.generate(current_district)
     redirect_to :back
+  end
+
+  def interventions_without_recommended_monitors
+    @int_defs = InterventionDefinition.find(:all,:include => [:recommended_monitors,{:intervention_cluster=>{:objective_definition=>:goal_definition}}], :conditions => ["recommended_monitors.id is null and goal_definitions.district_id = ?", current_district.id])
   end
 
   # GET /goal_definitions

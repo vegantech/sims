@@ -93,7 +93,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace :intervention_builder do |intervention_builder|
     intervention_builder.resources :probes, :member=>{:disable => :put}
-    intervention_builder.resources :goals, :member=>{:disable => :put, :move=>:put},:collection=>{:regenerate_intervention_pdfs => :put} do |goal|
+    intervention_builder.resources :goals, :member=>{:disable => :put, :move=>:put},
+      :collection=>{:regenerate_intervention_pdfs => :put,  :interventions_without_recommended_monitors => :get} do |goal|
       goal.resources :objectives,  :member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" do |objective|
         objective.resources :categories,:member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" do |category|
           category.resources :interventions ,:member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" 

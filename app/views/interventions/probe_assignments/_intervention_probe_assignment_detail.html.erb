@@ -17,6 +17,7 @@
         <% end %>
         (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
       </div>
+  <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
       <br class="brclear" />
 
       <div class="form_row">
