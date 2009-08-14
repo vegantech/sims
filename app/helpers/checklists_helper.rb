@@ -1,4 +1,26 @@
 module ChecklistsHelper
+  def mmsd_eligibility_criteria menu=false
+    if current_district and current_district.state_dpi_num == 3269
+    elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
+     "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Speech_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
+       "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
+       f=elig_crit.collect do |elig_file| 
+        "<li>" +(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria") +"</li>"
+       end
+
+     if menu
+         title="Special Ed Eligibility Criteria"
+         id = title.gsub(/ /, '_')
+         "<li class = 'plus_minus' id = 'li#{id}' >" +
+         link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") + "<ul id ='ul#{id}'>" + f.join("") +"</ul></li>"
+     else
+       "<ul>#{f.join}</ul>"
+     end
+   else
+     ""
+   end
+       
+  end
   def previous_answers(checklist, answer_definition, &block)
     return if checklist.student.blank?
     if block_given?

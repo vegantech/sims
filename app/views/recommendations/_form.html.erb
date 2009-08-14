@@ -28,9 +28,7 @@
     <%= recommendation_buttons(form) %>
    
 <div id = "elig_criteria" style="display:none">
-  <ul>    
-    <li>File 1</li>
-  </ul>
+  <%=mmsd_eligibility_criteria %>
   <%=form.check_box :request_referral%> Based on early intervening services, the completion of the checklist, screening results (where appropriate) and a review of the eligibility criteria, the team feels there is reason to suspect an impairment.  Submit a referral to special education. 
 </div>
 <%= form.hidden_field :recommendation_definition_id %>

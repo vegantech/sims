@@ -12,6 +12,7 @@
     <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL %>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
       current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
+    <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
     <% plus_minus_li "Reports" do %>
         <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>

@@ -431,11 +431,6 @@ h2.team_notes_header
   background: #bce5e7;
 }
 
-h3.team_notes_header
-{
-  text-align: center;
-  line-height: 110%;
-}
 h3.team_notes_header span
 {
   background: #bce5e7;
@@ -446,11 +441,6 @@ h2.team_consultations_header
   background: #ffff99;
 }
 
-h3.team_consultations_header
-{
-  text-align: center;
-  line-height: 110%;
-}
 h3.team_consultations_header span
 {
   background: #ffff99;
@@ -464,22 +454,30 @@ h2.intervention_summary
   background: #ffe9ad;
 }
 
-h3.intervention_summary
-{
-  text-align: center;
-  line-height: 110%;
-}
 h3.intervention_summary span
 {
   background: #ffe9ad;
 }
 
-h2.checklists
+
+
+div.profile_page h3 {
+ text-align: center;
+ line-height: 110%;
+}
+
+}
+
+h3.checklists span
 {
   background: #e1ecb2;
 }
-
 h2.conclusions_and_recommendations
+{
+  background: #d7c0dd;
+}
+
+h3.conclusions_and_recommendations span
 {
   background: #d7c0dd;
 }
