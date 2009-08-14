@@ -29,8 +29,10 @@
     </div>
     <%= render(:partial => f, :locals => {:readonly => readonly}) %>
     <div class="center_submit">
-      <%= f.submit "Save" unless readonly %>
-      <%= spell_check_submit %>
+      <% unless readonly %>
+        <%= f.submit "Save"  %>
+        <%= spell_check_submit %>
+      <% end %>
     </div>
   <% end %>
 </div>

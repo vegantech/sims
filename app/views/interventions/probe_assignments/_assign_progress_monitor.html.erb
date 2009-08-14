@@ -1,7 +1,8 @@
 <% readonly = false if readonly.nil? %>
 <br class="brclear" />
 <p>
-  <%= label 'intervention[intervention_probe_assignment]',:probe_definition_id, "Assign Progress Monitor" %>
+  
+  <%= label 'intervention[intervention_probe_assignment]',:probe_definition_id, "#{readonly ? '' : 'Assign'} Progress Monitor" %>
   <% if readonly %>
     <%= @intervention.assigned_probes %>
   <% elsif @recommended_monitors.size == 1 && @intervention.new_record? && !flash[:custom_intervention] %>
