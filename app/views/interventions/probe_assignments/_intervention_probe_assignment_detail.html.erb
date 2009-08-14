@@ -17,7 +17,6 @@
         <% end %>
         (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
       </div>
-  <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
       <br class="brclear" />
 
       <div class="form_row">
@@ -38,6 +37,7 @@
           <%= ipa.unobtrusive_date_picker :end_date, {:order=>[:month,:day,:year]}, {} %>
         <% end %>
       </div>
+      <%= yield :custom_probe_assets %>
     <% unless @intervention.new_record? %>
       <div class="form_row">
         <div class="fake_label">Scores:</div>

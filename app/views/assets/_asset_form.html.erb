@@ -1,6 +1,5 @@
 <div id = "assets" >
   <%= hidden_field_tag "#{parent}[existing_asset_attributes][qqq]" ,'' %>
-  Attach a file or link <br />
   <%= render :partial => 'assets/asset', :collection => form.object.assets, :locals => {:parent => parent} %>
 </div>
 

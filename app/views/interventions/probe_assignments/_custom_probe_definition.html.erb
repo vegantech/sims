@@ -12,6 +12,8 @@
     <tr>
       <td width="15%"><%= pdef.label :minimum_score, 'Min score' %></td>
       <td><%= pdef.text_field :minimum_score, :size => 5 %></td>
+    </tr>
+    <tr>
 
       <td width="15%"><%= pdef.label :maximum_score, 'Max score' %></td>
       <td width="35%"><%= pdef.text_field :maximum_score, :size => 5 %></td>
@@ -29,5 +31,7 @@
   <p>
     <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
   </p>
-    
+  <% content_for  :custom_probe_assets do %>
+    <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
+  <% end %>
 <% end %>
