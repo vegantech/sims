@@ -481,3 +481,14 @@ h3.conclusions_and_recommendations span
 {
   background: #d7c0dd;
 }
+
+div.questionDiv label ul
+{
+    padding-left: 15px;
+    margin-left: 0px;
+    margin-top: -15px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+}
+  
