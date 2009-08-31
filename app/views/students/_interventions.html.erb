@@ -7,14 +7,18 @@
   <%=link_to_remote_degrades("Select from Intervention Quicklist", :url=>quicklist_options_interventions_path, :method => :get) %> <br />
     <span id="quicklist"> </span>
 
-<h3 class="intervention_summary"><span>Active Interventions</span></h3>
-<div id='active_interventions'>
-  <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.active} %>
-</div>
-<h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
-<%= link_to_function "Show/Hide" , "$('inactive_interventions').toggle()" %> <%=inactive_interventions_count(@student) %>
-<div id='inactive_interventions' style='display:none'>
-  <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
-</div>
+<% if @student.interventions.active.present? %>
+  <h3 class="intervention_summary"><span>Active Interventions</span></h3>
+  <div id='active_interventions'>
+    <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.active} %>
+  </div>
+<% end %>
+<% if @student.interventions.inactive.present? %>
+  <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
+  <%= link_to_function "Show/Hide" , "$('inactive_interventions').toggle()" %> <%=inactive_interventions_count(@student) %>
+  <div id='inactive_interventions' style='display:none'>
+    <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
+  </div>
+<% end %>
 </div>
 
