@@ -43,6 +43,7 @@ module ImportCSV::ExtendedProfiles
     student_id = @students[id_district] #|| 'add_some_students_to_your_scenario'
     path = Student::EXTENDED_PROFILE_PATH  % [@district.id, student_id]
     FileUtils.mkdir_p(File.dirname(path))
-    File.open("#{path}", 'w+') {|f| f << line[:arbitrary]}
+    #    File.open("#{path}", 'w+') {|f| f << line[:arbitrary]}
+    File.open("#{path}", 'w') {|f| f << line[:arbitrary]}
   end
 end
