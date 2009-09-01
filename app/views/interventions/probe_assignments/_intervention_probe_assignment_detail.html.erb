@@ -3,7 +3,20 @@
   <br class="brclear" />
   <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
       <%= ipa.hidden_field :probe_definition_id %>
-      <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition %>
+      <div class = "form_row">
+        <div class="fake_label">&nbsp;</div>
+        <div>
+          <table style="margin:-12px">
+            <tr><td>
+              <%= links_and_attachments(@intervention_probe_assignment.probe_definition, :p) if @intervention_probe_assignment.probe_definition %>
+            </td></tr>
+          </table>
+
+        </div>
+
+      </div>
+      <br class="brclear" />
+
       <%= error_messages_for(:object => @intervention_probe_assignment, :object_name => 'Probe Assignment') %>
       <%= render(:partial => 'interventions/probe_assignments/custom_probe_definition', :locals => {:ipa => ipa}) if flash[:custom_intervention] && @intervention_probe_assignment.probe_definition.new_record? %>
 

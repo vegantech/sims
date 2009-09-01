@@ -10,7 +10,7 @@
     <%= @intervention_probe_assignment.title if @intervention_probe_assignment %>
   <% else %>
     <% options = @recommended_monitors.map {|element| [element.send(:title), element.send(:probe_definition_id)]} %>
-    <% options << ['Custom', 'custom'] if flash[:custom_intervention]  %>
+    <% options << ['Create Custom', 'custom'] if flash[:custom_intervention]  %>
     <% ipa = @intervention.intervention_probe_assignment ?  @intervention.intervention_probe_assignment.probe_definition_id : nil %> 
     <% @intervention_probe_assignment = @intervention.intervention_probe_assignment if params[:custom_probe] %>
     <% ipa='custom' if @intervention_probe_assignment and @intervention_probe_assignment.probe_definition and @intervention_probe_assignment.probe_definition.new_record? %>

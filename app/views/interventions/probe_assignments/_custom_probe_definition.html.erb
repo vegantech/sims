@@ -11,12 +11,12 @@
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :minimum_score, 'Min score' %></td>
-      <td><%= pdef.text_field :minimum_score, :size => 5 %></td>
+      <td width="10%"><%= pdef.text_field :minimum_score, :size => 5 %></td>
+      <td width="15%"><%= pdef.label :maximum_score, 'Max score' %></td>
+      <td width="60%"><%= pdef.text_field :maximum_score, :size => 5 %></td>
     </tr>
     <tr>
 
-      <td width="15%"><%= pdef.label :maximum_score, 'Max score' %></td>
-      <td width="35%"><%= pdef.text_field :maximum_score, :size => 5 %></td>
     </tr>
     <tr>
     </tr>
@@ -28,10 +28,16 @@
       <%= render :partial => 'interventions/probe_assignments/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index =>"e_#{probe_definition_benchmark.id}"} %>
     <% end %>
   </div>
-  <p>
-    <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
-  </p>
+  <div class="form_row">
+    <div class="fake_label">&nbsp;</div>
+     <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
+  </div>
+  <br />
   <% content_for  :custom_probe_assets do %>
-    <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
+
+    <div class="form_row">
+      <div class="fake_label">&nbsp;</div>
+        <%= render :partial => '/assets/asset_form', :locals => {:form=>pdef, :parent =>'probe_definition'}  %>
+    </div>
   <% end %>
 <% end %>

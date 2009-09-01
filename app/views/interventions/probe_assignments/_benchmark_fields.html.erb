@@ -3,12 +3,11 @@
 <table width="98%">
   <tr>
     <td width="15%"><%= form.label :benchmark %></td>
-    <td><%= form.text_field :benchmark, 'size'=>5  %></td>
+    <td width="10%"><%= form.text_field :benchmark, 'size'=>5  %></td>
     <%= form.hidden_field :id unless probe_definition_benchmark.new_record? %>
  
-    <td><%= form.label :grade_level %></td>
-    <td><%= form.text_field :grade_level,:size=>ProbeDefinitionBenchmark::GRADE_LEVEL_SIZE %></td>
-    <td>
+    <td width="15%"><%= form.label :grade_level %></td>
+    <td><%= form.text_field :grade_level,:size=>ProbeDefinitionBenchmark::GRADE_LEVEL_SIZE %>
     <% if probe_definition_benchmark.new_record? %>
       <%= link_to_function('remove') {|page| page["probe_definition_benchmark_#{index}"].remove} %>
     <% else %>
