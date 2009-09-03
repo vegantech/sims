@@ -101,7 +101,9 @@ module ChecklistsHelper
   end
 
   def recommendation_buttons(form)
-   a=Recommendation::RECOMMENDATION.sort.collect do |k,v|
+  b=Recommendation::RECOMMENDATION.sort
+  b[1],b[2] = b[2],b[1]   #No progress at current level should be the second element 
+   a=b.collect do |k,v|
      opts={}
      opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +

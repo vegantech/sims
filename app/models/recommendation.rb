@@ -36,13 +36,15 @@ class Recommendation < ActiveRecord::Base
   attr_accessor :request_referral, :school
   attr_accessor :other
 
+
+  #there's a custom sort for this in the checklist helper
   RECOMMENDATION={
     0=>{:text=>"The student made progress and no longer requires intervention.", :readonly => true},
-    1 =>{:text=>"The student is making progress; choose new interventions from the next level to accelerate progress or address additional needs; continue to monitor progress.",:promote=>true},
-    3=>{:text => "The student has not made progress.  Choose new interventions from the current level and continue to monitor progress.",
-      :readonly => true},
+    1 =>{:text=>"The student is making progress; choose new interventions from the next level; continue to monitor progress.",:promote=>true},
+    3=>{:text => "The student is not making progress; choose new interventions from the current level; continue to monitor progress.",
+      },
     4 => {:text => "The student has not made progress.  Choose new interventions from the next level and continue to monitor progress.",:promote=>true},
-    5 => {:text => "The student has not made progress and multiple attempts at intervention have been tried.  Make a referral to special education.",:promote=>true,
+    5 => {:text => "The student has not made progress.  Make a referral to special education.",:promote=>true,
           :show_elig => true},
     6 => {:text => "Other", :require_other => true ,:promote=>true}
   
