@@ -2,6 +2,9 @@
 
 <div class ='new_form'>
   <% if @quicklist %>
+   <div class="form_row_wrap_label">
+        <div class ="fake_label">Intervention:</div> <%= @intervention.title %>
+   </div>
     <%= render :partial =>'interventions/intervention' %>
   <% else %>
     <%= render :partial =>'interventions/goals/select' %>
