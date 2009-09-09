@@ -23,7 +23,7 @@ class Group < ActiveRecord::Base
   def self.members
     #TODO tested, but it is ugly and should be refactored
     group_ids=find(:all,:select=>"groups.id")
-    User.find(:all,:joins => :groups ,:conditions=> {:groups=>{:id=>group_ids}}).uniq
+    User.find(:all,:joins => :groups ,:conditions=> {:groups=>{:id=>group_ids}}, :order => 'last_name, first_name').uniq
   end
 
   def principals
