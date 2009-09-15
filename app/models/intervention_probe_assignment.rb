@@ -50,7 +50,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def frequency_summary
-    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
+    "#{pluralize frequency_multiplier, "time"} #{frequency}"
   end
 
   def valid_score_range
