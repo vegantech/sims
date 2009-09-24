@@ -120,7 +120,7 @@ class StudentsController < ApplicationController
       session[:user_id]= nil if current_user.id_district.to_s != params[:personID]
       student = current_district.students.find_by_id_district(params[:contextID])
       if student
-        session[:requested_url]= student_url(student),:username => params[:username])
+        session[:requested_url]= student_url(student,:username => params[:username])
       else
         session[:requested_url] = root_url
         flash[:notice] = 'Student is not enrolled in this district'
