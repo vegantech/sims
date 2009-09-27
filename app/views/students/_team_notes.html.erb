@@ -2,11 +2,11 @@
 <%= link_to_function "Show/Hide Team Notes" , "$('team_notes').toggle()" %> <%=team_notes_count(@student) %>
 
 <div id="team_notes" style="display:none;">
-
-  <%= render_with_empty :partial=>"student_comments/comment", :collection => @student.comments, :empty => '', :id => "no_team_notes"
-%>
   <div id="new_team_note">
     <%= render :partial => 'add_note_link' %>
   </div>
 
+
+  <%= render_with_empty :partial=>"student_comments/comment", :collection => @student.comments, :empty => '', :id => "no_team_notes"
+%>
 </div>
