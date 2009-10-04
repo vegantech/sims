@@ -67,4 +67,12 @@ Feature: Create Intervention
     Then I should see "Preview Graph"
 #    And I show page
 
-
+  Scenario: Add a comment to an existing intervention with a different creator
+    #312, intervention comments can have different authors than intervention creator
+    Given an intervention with no progress monitors
+    Given I am on student profile page
+    When I follow "Edit/Add Comment"
+    And I fill in "Add new comment about the intervention plan and progress" with "test cucumber comment"
+    And I press "Save"
+    When I follow "Edit/Add Comment"
+    Then I should see "test cucumber comment by default user"
