@@ -60,8 +60,203 @@ class CreateTrainingDistrict
   end
 
   def self.add_extended_profile(student)
+  ep = %Q{
+<table>
+  <tbody><tr><td>Student Address: 123 Training Blvd Apt #{student.first_name[0..1]} Madison, WI 53704</td></tr>
+</tbody></table>
 
-  ep= '<pre>
+<h3>Adult Contacts</h3>
+<table>
+  <tbody><tr>
+  <td>
+    <h3>Parent</h3>
+  </td>
+  <td colspan="5">
+    <table>
+    <tbody><tr>
+      <td>Name</td>
+      <td>
+      #{student.last_name}, Plato
+      </td>
+    </tr>
+
+    <tr>
+      <td>Address</td>
+      <td>123 Training Blvd  Apt #{student.first_name[0..1]}<br>
+          Madison, WI 53704
+      </td>
+    </tr>
+
+      
+      
+      
+      
+      
+    <tr>
+      <td>
+        Telephone(s)
+      </td>
+      <td>(608)555-1212 (CELL) <br>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Entitled to Records</td>
+      <td>Yes </td>
+    </tr>
+
+  </tbody></table>
+</td>
+</tr>
+
+</tbody></table>
+
+
+  
+  <h3>Siblings</h3>
+<table border="1">
+  <tbody><tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Grade</th>
+    <th>StudentNum</th>
+  <th>School Name</th>
+  </tr>
+
+  <tr>
+  <td>
+    #{student.last_name}, Brother
+  </td>
+  <td>12</td>
+  <td>07</td>
+  <td>123456</td>
+  <td>Example Middle</td>
+  
+</tr>
+</tbody></table>
+
+<table>
+<tbody><tr><td>Race/Ethnicity: B</td></tr>
+  <tr><td>Home Language: English</td></tr>
+  <tr><td>Language Proficiency Level: 7</td></tr>
+  <tr><td>Receiving ESL services or ESL status:</td><td>No</td></tr>
+</tbody></table>
+<table>
+    <tbody><tr><td>Special Education Status: N</td></tr>
+</tbody></table>
+
+<table>
+  <tbody><tr><td>Lunch Status: F</td></tr>
+    <tr><td>Current Attendance:</td><td>94.14%</td></tr>
+  <tr><td>Previous Attendance:</td><td>94.58%</td></tr>
+  <tr><td>Suspensions In:   Out: </td></tr>
+  <tr><td>Periods Tardy: 3</td></tr>
+</tbody></table>
+  
+<table>
+  <tbody><tr><td>Student Mobility: </td>
+    <td> Years In District:</td><td>7</td></tr>
+  <tr><td></td><td>Years at Current School:</td><td>6</td></tr>
+  <tr><td></td><td>Previous School:</td><td>Emerson Elementary</td></tr>
+  <tr><td></td><td>School Changes:</td><td>2</td></tr>
+</tbody></table>
+
+
+
+
+<h2>Test Scores:</h2>
+
+<h3>Primary Math Assessment</h3>
+<table cellpadding="3">
+
+<tbody><tr>
+
+
+<td rowspan="2">
+3
+</td>
+<td rowspan="2">0005-10-06</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Total: 1-minimal</td>
+
+
+</tr>
+
+
+</tbody></table>
+
+<h3>Primary Language Arts Assessment</h3>
+<table cellpadding="3">
+
+<tbody><tr>
+
+
+<td rowspan="2">
+3
+</td>
+<td rowspan="2">0005-10-06</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Text Reading Lvl: 14</td>
+
+
+</tr>
+
+
+</tbody></table>
+
+<h3>WKCE</h3>
+<table cellpadding="3">
+
+<tbody><tr>
+
+
+<td rowspan="2">
+Grade 4
+</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Language arts: 3-proficient</td>
+<td>Math: 2-basic</td>
+</tr>
+<tr>
+<td>Science: 3-proficient</td>
+<td>Social Studies: 4-advanced</td>
+</tr>
+<tr>
+<td>Reading: 3-proficient</td>
+</tr>
+
+
+<tr>
+
+
+<td rowspan="4">
+3
+</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Math: 3-proficient</td>
+<td>Reading: 3-proficient</td>
+
+
+</tr>
+
+</tbody></table>
+
+}
+
+
+  ep2= '<pre>
   1. Parents contacts, siblings, and emergency contacts-generate
   fake data
   2. Grade-5th grade student
@@ -77,13 +272,6 @@ class CreateTrainingDistrict
 
   Years at Current School: 6 School Changes:2
   12. Tests Scores
-
-  WKCE
-  Grade 4: Language arts: 3-proficient Math: 2-basic
-
-  Science: 3-proficient Social Studies: 4-advanced Reading:
-  3-proficient
-  Grade 3: Math: 3-proficient Reading: 3-proficient
 
   Primary Math Assessment
   Grade 1: Proficient
