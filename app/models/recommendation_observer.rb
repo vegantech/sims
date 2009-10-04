@@ -13,14 +13,14 @@ class RecommendationObserver < ActiveRecord::Observer
       sch = recommendation.school
       case sch.name.upcase
       when  /HIGH$/
-        user_name ='Ted Szalkowski'
-        user_email = 'tszalkowski@madison.k12.wi.us'
+        user_name ='Scott Zimmerman'
+        user_email = 'slzimmerman@madison.k12.wi.us'
       when /MIDDLE$/
         user_name ='Scott Zimmerman'
         user_email = 'slzimmerman@madison.k12.wi.us'
       when /ELEMENTARY$/
-        user_name ='Jan Duxstad'
-        user_email = 'jduxstad@madison.k12.wi.us'
+        user_name ='Ted Szalkowski'
+        user_email = 'tszalkowski@madison.k12.wi.us'
       else
         raise sch.name + ' is unknown'
       end
