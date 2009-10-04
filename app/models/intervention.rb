@@ -47,8 +47,9 @@ class Intervention < ActiveRecord::Base
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
 
-  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email
+  attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
+
 
   delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
@@ -127,7 +128,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def comment=(txt)
-    comments.build(:comment=>txt[:comment], :user_id=>self.user_id) if !txt[:comment].blank?
+    comments.build(:comment=>txt[:comment], :user_id=>comment_author || self.user_id) if !txt[:comment].blank?
   end
 
   def assigned_probes

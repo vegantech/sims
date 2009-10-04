@@ -79,6 +79,7 @@ class InterventionsController < ApplicationController
     if params[:intervention]
       params[:intervention][:participant_user_ids] ||=[]
       params[:intervention][:intervention_probe_assignment] ||= {}
+      params[:intervention][:comment_author] = current_user.id if params[:intervention][:comment]
     end
     @tiers = current_district.tiers
 
