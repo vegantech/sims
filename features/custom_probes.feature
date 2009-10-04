@@ -26,7 +26,7 @@ Feature: Create Custom Probes
 
     # and anything else that isn't already there or derivable Intervention definition gets created
     # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
-    And I select "Custom" from "Assign Progress Monitor"
+    And I select "Create Custom" from "Assign Progress Monitor"
     When I press "Save"
     #It should be invalid, but allow me to enter scores now
     Then I should see "Min score"

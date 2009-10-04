@@ -165,8 +165,10 @@ describe StudentsController do
 
     describe 'with selected student' do
       it 'should set @student, and render show template' do
-        
-        student = mock_student()
+       
+        current_district=mock_district(:id=>5)
+        controller.stub!(:current_district => current_district)
+        student = mock_student(:district_id => current_district.id)
         Student.should_receive(:find).with(student.id.to_s).and_return(student)
         get :show, {:id => student.id}, :selected_students => ["#{student.id}"]
 

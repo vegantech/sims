@@ -1,7 +1,7 @@
 Given /^common data$/i do
   @default_user = default_user
   clear_login_dropdowns
-  @district = Factory(:district)
+  @district = default_district
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
   @default_user.schools << @school

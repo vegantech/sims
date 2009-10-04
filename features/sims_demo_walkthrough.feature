@@ -147,7 +147,7 @@ Feature: Sims Demo Walkthrough
     #principal overrides
     Then I follow "Request Principal Override to unlock next tier"
     And I fill in "Reason for Request" with "My Demo Test Reason"
-    And I press "Submit Request"
+    And I press "Submit"
     Then I should see "PrincipalOverride was successfully created and sent"
     And I should see "1 Override Request"
 

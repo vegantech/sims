@@ -61,13 +61,14 @@ def create_user user_name='first_last', password=user_name
   @user=Factory :user, :username => user_name,
     :first_name => user_name.split("_").first || 'First',
     :last_name => user_name.split("_").last || 'Last',
-    :password=> password
+    :password=> password,
+    :district_id => default_district.id
     
 end
 
 def create_school school_name
   found = School.find_by_name(school_name)
-  s = found || Factory(:school,:name => school_name)
+  s = found || Factory(:school,:name => school_name, :district_id => default_district.id)
   default_user.schools << s unless default_user.schools.include?(s)
   @school||=s
   s
@@ -88,7 +89,7 @@ def find_student first_name, last_name
 end
 
 def create_student first_name, last_name, grade, school, flag_type = nil, ignore_type = nil, ignore_reason = nil
-  s = Factory(:student, :first_name => first_name, :last_name => last_name)
+  s = Factory(:student, :first_name => first_name, :last_name => last_name, :district_id => default_district.id)
   # :grade => grade
   enrollment = s.enrollments.create! :grade => grade, :school => school
 
@@ -141,6 +142,7 @@ def clear_login_dropdowns
   District.delete_all
   State.destroy_all
   Country.destroy_all 
+  @default_district=nil
 end
 
 private
@@ -162,4 +164,8 @@ def default_user
 
   # put other stuff above this
   @default_user
+end
+
+def default_district
+  @default_district ||= Factory(:district)
 end
