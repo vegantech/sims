@@ -1,4 +1,4 @@
-<% content_tag_for :p, comment do  %>
+<% content_tag_for :span, comment do  %><p>
   <b>Author:</b>
   <%=h comment.user %>
   <br />
@@ -13,4 +13,4 @@
         <%= link_to_remote_degrades 'Edit', :url => edit_student_comment_path(comment), :method=> :get %>
         <%= link_to_remote_degrades 'Delete', :url=>comment, :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
   <% end %>
-<% end %>
+</p><% end %>
