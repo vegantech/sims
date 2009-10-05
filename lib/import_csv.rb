@@ -77,8 +77,10 @@ class ImportCSV
       load_system_flags_from_csv file_name
     when *csv_importers(file_name)
       csv_importer file_name
-    when 'arbitraries.csv'
+    when 'ext_arbitraries.csv'
       load_arbitrary_extended_profile_content_from_csv file_name
+    when 'ext_siblings.csv'
+      load_siblings_extended_profile_content_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
