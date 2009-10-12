@@ -77,10 +77,6 @@ class ImportCSV
       load_system_flags_from_csv file_name
     when *csv_importers(file_name)
       csv_importer file_name
-    when 'ext_arbitraries.csv'
-      load_arbitrary_extended_profile_content_from_csv file_name
-    when 'ext_siblings.csv'
-      load_siblings_extended_profile_content_from_csv file_name
     else
       msg = "Unknown file #{base_file_name}"
     end
@@ -91,7 +87,8 @@ class ImportCSV
 
   def csv_importers file_name
     ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
-    "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv"]
+    "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
+    "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv"]
   end
 
   def csv_importer file_name

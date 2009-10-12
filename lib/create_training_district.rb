@@ -38,15 +38,18 @@ class CreateTrainingDistrict
   end
 
   def self.generate_interventions(district)
-    gd = Factory(:goal_definition, :district => district)
+    gd = Factory(:goal_definition, :district_id => district.id)
     od = Factory(:objective_definition, :goal_definition => gd)
     ic = Factory(:intervention_cluster, :objective_definition => od)
     id = Factory(:intervention_definition, :intervention_cluster => ic)
   end
 
   def self.generate_students(district,school,group)
+    first_names = IO.readlines('test/fixtures/common_first_names.txt')
+    last_names = IO.readlines('test/fixtures/common_last_names.txt')
+    
     1.upto(30) do |i|
-      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => "#{i.to_s.rjust(2,'0')}-First", :last_name => "#{i.to_s.rjust(2,'0')}-Last")
+      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)], :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize}")
       s.enrollments.create!(:school => school, :grade => 5)
       s.groups << group
       s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
@@ -173,25 +176,115 @@ class CreateTrainingDistrict
 
 
 <td rowspan="2">
-3
+1
 </td>
-<td rowspan="2">0005-10-06</td>
+<td rowspan="2">2001-10-06</td>
 </tr>
 
 <tr>
 <td></td><td></td>
-<td>Total: 1-minimal</td>
+<td>Total: 3-proficient</td>
+
+
+</tr>
+
+<td rowspan="2">
+2
+</td>
+<td rowspan="2">2002-10-06</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Total: 2-basic</td>
 
 
 </tr>
 
 
+
+
 </tbody></table>
+
+  Grade 1: 9-26-2003
+  Editing Skills: 1-minimal Sounds Rep: 1-minimal
+  Spelling: 1-minimal Text Reading Lvl: 3
+
+  Grade 1: 5-26-2004
+  Editing Skills: 2-basic Sounds Rep: 3-proficient
+  Spelling: 2-basic Text Reading Lvl: 14
+
+  Grade 2: 10-18-2004
+  Editing Skills: 2-basic Sounds Rep: 2-basic
+  Spelling: 2-basic Text Reading Lvl: 14
+
+  Grade 2: 5-24-2005
+  Editing Skills: 2-minimal Sounds Rep: 2-basic
+  Spelling: 1-minimal Text Reading Lvl: 23
+ 
+
 
 <h3>Primary Language Arts Assessment</h3>
 <table cellpadding="3">
 
-<tbody><tr>
+<tbody>
+
+
+<tr>
+
+
+<td rowspan="2">
+K
+</td>
+<td rowspan="2">2002-09-01</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Text Reading Lvl: 1</td>
+</tr>
+<tr>
+<td>Phonemic Awareness: 2-basic </td>
+</tr>
+
+<tr>
+
+
+<td rowspan="2">
+K
+</td>
+<td rowspan="2">2003-04-01</td>
+</tr>
+
+<tr>
+<td></td><td></td>
+<td>Text Reading Lvl: 1</td>
+</tr>
+<tr>
+<td> Phonemic Awareness: 3-proficient </td>
+</tr>
+<tr>
+<td> Concepts about Print: 3-proficient </td>
+</tr>
+<tr>
+<td> Hearing Sounds in Words: 1-minimal </td>
+</tr>
+<tr>
+<td>Lower Case Letters: 2-basic  </td>
+</tr>
+<tr>
+<td>Sound Word: 2-basic </td>
+</tr>
+<tr>
+<td>Upper Case Letters: 2-basic  </td>
+</tr>
+
+
+
+
+<tr>
+
+
 
 
 <td rowspan="2">
@@ -273,37 +366,8 @@ Grade 4
   Years at Current School: 6 School Changes:2
   12. Tests Scores
 
-  Primary Math Assessment
-  Grade 1: Proficient
-  Grade 2: Basic
 
-  Primary Language Arts Assessment
-  Kindergarten: 09-01-2002
-  Phonemic Awareness: 2-basic Text Reading Lvl: 1
-
-  Kindergarten: 04-01-2003
-  Concepts about Print: 3-proficient Hearing Sounds in Words:
-  1-minimal
-  Lower Case Letters: 2-basic Phonemic Awareness: 3-proficient
-  Sound Word: 2-basic Text Reading Lvl: 1
-  Upper Case letters: 2-basic
-
-  Grade 1: 9-26-2003
-  Editing Skills: 1-minimal Sounds Rep: 1-minimal
-  Spelling: 1-minimal Text Reading Lvl: 3
-
-  Grade 1: 5-26-2004
-  Editing Skills: 2-basic Sounds Rep: 3-proficient
-  Spelling: 2-basic Text Reading Lvl: 14
-
-  Grade 2: 10-18-2004
-  Editing Skills: 2-basic Sounds Rep: 2-basic
-  Spelling: 2-basic Text Reading Lvl: 14
-
-  Grade 2: 5-24-2005
-  Editing Skills: 2-minimal Sounds Rep: 2-basic
-  Spelling: 1-minimal Text Reading Lvl: 23
-  </pre>'
+ </pre>'
 
   
   File.open("tmp/ext_p","w"){|f| f << ep}

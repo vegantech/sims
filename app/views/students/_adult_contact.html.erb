@@ -1,0 +1,49 @@
+<tr>
+  <td>
+    <h3><%=adult_contact.relationship.humanize%></h3>
+  </td>
+  <td colspan=5>
+    <table>
+    <tr>
+      <td>Name</td>
+      <td>
+        <%=adult_contact.lastName.to_s + ", " + adult_contact.firstName.to_s %>
+      </td>
+    </tr>
+<% unless adult_contact.streetAddress.nil? %>
+    <tr>
+      <td>Address</td>
+      <td><%=adult_contact.streetAddress%><br/>
+          <%=adult_contact.cityStateZip%>
+      </td>
+    </tr>
+<% end %>
+      <% phonewords = %w{homePhone workPhone cellPhone pager} 
+        phonelist="" 
+        phonewords.each do |ph| 
+        phonelist <<  "#{adult_contact[ph]} (#{ph.sub(/Phone/,'').upcase}) <br/>" unless adult_contact[ph].blank? %>
+      <% end 
+
+      unless phonelist.blank?%>
+    <tr>
+      <td>
+        Telephone(s)
+      </td>
+      <td><%=phonelist%>
+      </td>
+    </tr>
+    <% end %>
+    <tr>
+      <td>Entitled to Records</td>
+      <td><%=yes_or_no(adult_contact.guardian)%> </td>
+    </tr>
+<% unless adult_contact.email.nil? %>
+    <tr>
+      <td>Email</td>
+      <td><%=adult_contact.email%> </td>
+    </tr>
+<% end %>
+  </table>
+</td>
+</tr>
+

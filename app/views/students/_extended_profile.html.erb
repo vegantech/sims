@@ -1,7 +1,68 @@
 <h3 class="extended_profile", ondblclick="$('extended_profile').toggle();"><span>Extended Profile</span></h3>
 <% if @student.extended_profile? %>
   <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
-<% end %>
   <div id="extended_profile" style="display:none;" >
-    <%=extended_profile(@student)%>
+    <%=@student.ext_arbitrary%>
+    <%#=extended_profile(@student)%>
+
+  <% if @student.ext_adult_contacts.present? %>
+  <h3>Adult Contacts</h3>
+  <table>
+    <%= render :partial=>'adult_contact', :collection=>@student.ext_adult_contacts %>
+  </table>
+  <% end %>
+
+
+
+
+  <% if @student.ext_siblings.present? %>
+    <h3>Siblings</h3>
+  <table border=1>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Grade</th>
+      <th>StudentNum</th>
+    <th>School Name</th>
+    </tr>
+
+    <%=render :partial=>'sibling', :collection=>@student.ext_siblings %>
+  </table>
+  <% end %>
+
+
+
+  <% if @student.ext_test_scores.present? %>
+    <% @test_scores = @student.ext_test_scores.group_by{|e| [e.test_group,e.date.to_s,e.grade]}.group_by{|e| e[0][0]} %>
+    <h2>Test Scores:</h2>
+    <% @test_scores.each do |test_group| %>
+      <h3><%=ExtTestScore::TEST_GROUPS[test_group[0]] || test_group[0]%></h3>
+      <table cellpadding="3">
+      <% test_group[1].sort{|x,y| x[1]<=>y[1]}.each do |grade_group| 
+      #sorts them by date
+      %>
+        <tr>
+
+        <% scores=[]
+        grade_group[1].each_with_index{ |e,idx| scores[idx/2] = (scores[idx/2] || [] ) + [e] } %>
+        <td rowspan="<%=scores.size() +1 %>">
+        <%=grade_group[0][2]%>
+        </td>
+        <td rowspan = "<%=scores.size() +1%>"><%=grade_group[0][1].to_date unless grade_group[0][1].blank?%></td>
+        </tr>
+        <% scores.each do |score| %>
+          <tr>
+          <td></td><td></td>
+          <%=render :partial=>"extended_test_score",:collection=>score %>
+          </tr>
+       <% end %>
+       <% end %>
+
+      </table>
+    <% end  %>
+  <% end  %>
+
+
+
   </div>
+<% end %>

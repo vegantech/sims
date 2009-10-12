@@ -40,6 +40,10 @@ class Student < ActiveRecord::Base
   has_many :flags
   has_many :team_consultations
   has_many :consultation_form_requests
+  has_one :ext_arbitrary
+  has_many :ext_siblings
+  has_many :ext_adult_contacts, :order => "guardian desc"
+  has_many :ext_test_scores, :order => "date"
 
 
   
@@ -63,7 +67,7 @@ class Student < ActiveRecord::Base
   }
 
   def extended_profile?
-    File.exists?(extended_profile_path)
+    ext_arbitrary.present? || File.exists?(extended_profile_path)
   end
 
   def extended_profile

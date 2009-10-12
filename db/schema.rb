@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090809213025) do
+ActiveRecord::Schema.define(:version => 20091011222922) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -173,6 +173,54 @@ ActiveRecord::Schema.define(:version => 20090809213025) do
 
   add_index "enrollments", ["school_id"], :name => "index_enrollments_on_school_id"
   add_index "enrollments", ["student_id"], :name => "index_enrollments_on_student_id"
+
+  create_table "ext_adult_contacts", :force => true do |t|
+    t.integer  "student_id"
+    t.string   "relationship"
+    t.boolean  "guardian"
+    t.string   "firstName"
+    t.string   "lastName"
+    t.string   "homePhone"
+    t.string   "workPhone"
+    t.string   "cellPhone"
+    t.string   "pager"
+    t.string   "email"
+    t.string   "streetAddress"
+    t.string   "cityStateZip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ext_arbitraries", :force => true do |t|
+    t.integer  "student_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ext_siblings", :force => true do |t|
+    t.integer  "student_id"
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.string   "student_number"
+    t.string   "grade"
+    t.string   "school_name"
+    t.integer  "age"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ext_test_scores", :force => true do |t|
+    t.integer  "student_id"
+    t.string   "name"
+    t.date     "date"
+    t.float    "scaleScore"
+    t.string   "result"
+    t.date     "enddate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "flag_categories", :force => true do |t|
     t.integer  "district_id"
