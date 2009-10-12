@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091011222922) do
+ActiveRecord::Schema.define(:version => 20091012030340) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -207,6 +207,32 @@ ActiveRecord::Schema.define(:version => 20091011222922) do
     t.string   "grade"
     t.string   "school_name"
     t.integer  "age"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ext_summaries", :force => true do |t|
+    t.integer  "student_id"
+    t.string   "HomeLanguage"
+    t.string   "streetAddress"
+    t.string   "cityStateZip"
+    t.string   "mealstatus"
+    t.string   "englishProficiency"
+    t.string   "specialEdStatus"
+    t.string   "disability1"
+    t.string   "disability2"
+    t.boolean  "singleParent"
+    t.string   "raceEthnicity"
+    t.integer  "suspensions_in"
+    t.integer  "suspensions_out"
+    t.integer  "years_in_district"
+    t.integer  "school_changes"
+    t.integer  "years_at_current_school"
+    t.string   "previous_school_name"
+    t.float    "current_attendance_rate"
+    t.float    "previous_attendance_rate"
+    t.boolean  "esl"
+    t.integer  "tardies"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

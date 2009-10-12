@@ -3,7 +3,13 @@
   <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
   <div id="extended_profile" style="display:none;" >
     <%=@student.ext_arbitrary%>
+     <% ext_pro = @student.ext_summary || @student.build_ext_summary %>
     <%#=extended_profile(@student)%>
+
+
+<table>
+	<tr><td>Student Address: <%=ext_pro.streetAddress.to_s + " " + ext_pro.cityStateZip.to_s%></td></tr>
+</table>
 
   <% if @student.ext_adult_contacts.present? %>
   <h3>Adult Contacts</h3>
@@ -11,6 +17,36 @@
     <%= render :partial=>'adult_contact', :collection=>@student.ext_adult_contacts %>
   </table>
   <% end %>
+
+<table>
+<tr><td>Race/Ethnicity: <%=ext_pro.raceEthnicity.to_s%></td></tr>
+	<tr><td>Home Language: <%=ext_pro.HomeLanguage%></td></tr>
+	<tr><td>Language Proficiency Level: <%=ext_pro.englishProficiency.to_s%></td></tr>
+	<tr><td>Receiving ESL services or ESL status:</td><td><%=yes_or_no(ext_pro.esl)%></td></tr>
+</table>
+<table>
+		<tr><td>Special Education Status: <%=ext_pro.specialEdStatus.to_s%></td></tr>
+	<tr><td>Primary Disability: <%=ext_pro.disability1.to_s%></td></tr>
+	<tr><td>Other Disability: <%=ext_pro.disability2.to_s%></td></tr>
+
+</table>
+
+<table>
+	<tr><td>Lunch Status: <%= ext_pro.mealstatus.to_s%></td></tr>
+    <tr><td>Current Attendance:</td><td><%=ext_pro.current_attendance_rate%>%</td></tr>
+  <tr><td>Previous Attendance:</td><td><%=ext_pro.previous_attendance_rate%>%</td></tr>
+	<tr><td>Suspensions In: <%=ext_pro.suspensions_in.to_s%>  Out: <%=ext_pro.suspensions_out.to_s%></td></tr>
+	<tr><td>Periods Tardy: <%=ext_pro.tardies.to_s%></td></tr>
+</table>
+	
+<table>
+  <tr><td>Student Mobility: </td>
+    <td> Years In District:</td><td><%=ext_pro.years_in_district%></td></tr>
+  <tr><td></td><td>Years at Current School:</td><td><%=ext_pro.years_at_current_school%></td></tr>
+  <tr><td></td><td>Previous School:</td><td><%=ext_pro.previous_school_name.to_s%></td></tr>
+  <tr><td></td><td>School Changes:</td><td><%=ext_pro.school_changes%></td></tr>
+</table>
+
 
 
 

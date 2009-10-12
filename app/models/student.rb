@@ -44,6 +44,7 @@ class Student < ActiveRecord::Base
   has_many :ext_siblings
   has_many :ext_adult_contacts, :order => "guardian desc"
   has_many :ext_test_scores, :order => "date"
+  has_one :ext_summary
 
 
   
