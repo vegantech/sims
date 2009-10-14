@@ -18,9 +18,12 @@ class RecommendationObserver < ActiveRecord::Observer
       when /MIDDLE$/
         user_name ='Scott Zimmerman'
         user_email = 'slzimmerman@madison.k12.wi.us'
-      when /ELEMENTARY$/
+      when *["ALLIS ELEMENTARY", "ELVEHJEM ELEMENTARY", "EMERSON ELEMENTARY", "GLENDALE ELEMENTARY", "GOMPERS ELEMENTARY", "HAWTHORNE ELEMENTARY", "NUESTRO MUNDO ELEMENTARY", "KENNEDY ELEMENTARY", "LAKE VIEW ELEMENTARY", "LAPHAM ELEMENTARY", "LINDBERGH ELEMENTARY", "LOWELL ELEMENTARY", "MARQUETTE ELEMENTARY", "MENDOTA ELEMENTARY", "SANDBURG ELEMENTARY", "SCHENK ELEMENTARY"]
         user_name ='Ted Szalkowski'
         user_email = 'tszalkowski@madison.k12.wi.us'
+      when *["CHAVEZ ELEMENTARY", "CRESTWOOD ELEMENTARY", "FALK ELEMENTARY", "FRANKLIN ELEMENTARY", "HUEGEL ELEMENTARY", "LEOPOLD ELEMENTARY", "LINCOLN ELEMENTARY", "MIDVALE ELEMENTARY", "MUIR ELEMENTARY", "OLSON ELEMENTARY", "ORCHARD RIDGE ELEMENTARY", "RANDALL ELEMENTARY", "SHOREWOOD ELEMENTARY", "STEPHENS ELEMENTARY", "THOREAU ELEMENTARY", "VAN HISE ELEMENTARY"]
+        user_name = 'Lauri Weis'
+        user_email = "lweis@madison.k12.wi.us"
       else
         raise sch.name + ' is unknown'
       end
