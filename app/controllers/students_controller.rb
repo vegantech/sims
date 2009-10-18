@@ -98,7 +98,7 @@ class StudentsController < ApplicationController
      return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
-        session[:school_id] = (student.schools & current_user.schools).first
+        session[:school_id] = (student.schools & current_user.authorized_schools).first
         session[:selected_student]=params[:id]
         session[:selected_students]=[params[:id]]
         return true
