@@ -1,4 +1,5 @@
 class CreateTrainingDistrict
+  require 'fastercsv'
   def self.generate
     wi = State.find_by_abbrev('wi')
     d=wi.districts.find_by_abbrev('training')
@@ -27,6 +28,7 @@ class CreateTrainingDistrict
     content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
 
     self.generate_interventions(td)
+    self.generate_checklist_definition(td)
 
     Role.find_by_name("regular_user").users << [alphaprin,oneschool]
     Role.find_by_name("school_admin").users << alphaprin
@@ -38,12 +40,79 @@ class CreateTrainingDistrict
   end
 
   def self.generate_interventions(district)
-    gd = Factory(:goal_definition, :district_id => district.id)
-    od = Factory(:objective_definition, :goal_definition => gd)
-    ic = Factory(:intervention_cluster, :objective_definition => od)
-    id = Factory(:intervention_definition, :intervention_cluster => ic)
+    goalhash = {}
+    objectivehash = {}
+    clusterhash = {}
+    
+    tier = district.tiers.create!(:title=>'Test tier')
+    
+    FasterCSV.table("db/training/goal_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      newcd= district.goal_definitions.create!(ckhash)
+      goalhash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/objective_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
+      newcd= ObjectiveDefinition.create!(ckhash)
+      objectivehash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/intervention_clusters.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
+      newcd= InterventionCluster.create!(ckhash)
+      clusterhash[ck[:id]]=newcd.id
+    end
+
+    clusterhash.values.each do |ic|
+      d = Factory(:intervention_definition, :intervention_cluster_id => ic, :title => "Test #{ic}", :tier => tier)
+    end
   end
 
+  def self.generate_checklist_definition(district)
+    checklisthash = {}
+    questionhash = {}
+    elementhash = {}
+    
+    FasterCSV.table("db/training/checklist_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      newcd= district.checklist_definitions.create!(ckhash)
+      checklisthash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/question_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:checklist_definition_id]= checklisthash[ck[:checklist_definition_id]]
+      newcd= QuestionDefinition.create!(ckhash)
+      questionhash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/element_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:question_definition_id]= questionhash[ck[:question_definition_id]]
+      newcd= ElementDefinition.create!(ckhash)
+      elementhash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/answer_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:value] ||=0
+      ckhash[:element_definition_id]= elementhash[ck[:element_definition_id]]
+      newcd= AnswerDefinition.create!(ckhash)
+    end
+
+
+
+
+
+
+  end
+
+
+
+  
   def self.generate_students(district,school,group)
     first_names = IO.readlines('test/fixtures/common_first_names.txt')
     last_names = IO.readlines('test/fixtures/common_last_names.txt')

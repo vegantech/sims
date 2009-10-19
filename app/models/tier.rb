@@ -21,7 +21,7 @@ class Tier < ActiveRecord::Base
   has_many :principal_override_acceptances, :class_name=>'PrincipalOverride', :foreign_key=>:end_tier_id
 
   before_destroy :move_children_to_delete_successor, :if => :used_at_all? 
-  acts_as_list :scope => :district
+  acts_as_list :scope => :district_id
   validates_presence_of :title
 
   def to_s

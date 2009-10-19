@@ -1,0 +1,317 @@
+updated_at,text,deleted_at,copied_at,autoset_others,id,value,element_definition_id,position,copied_from,created_at
+Wed Jan 07 15:21:43 -0600 2009,A.  The interventions tried were based on data and implemented with fidelity.  This is not a primary factor in the student's learning or behavior difficulties in school.,,,false,909152171,0,837394797,1,,Wed Dec 17 11:04:39 -0600 2008
+Wed Jan 07 15:21:45 -0600 2009,B.  The fidelity of the interventions may be a factor. Our team's analysis indicates:,,,false,909152172,1,837394797,2,,Wed Dec 17 11:56:35 -0600 2008
+Wed Jan 07 15:21:55 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152173,1,837394797,3,,Wed Jan 07 14:48:52 -0600 2009
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152174,0,837394798,1,,Mon Mar 10 11:05:54 -0500 2008
+Wed Jan 07 14:57:03 -0600 2009,"The intervention selected was based on:
+* the flag in SIMS, and 
+* previous assessment information.  
+ 
+
+Progress monitoring was not attempted.
+",,,false,909152175,1,837394798,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:45:54 -0600 2009,"The intervention selected was based on:
+* the flag in SIMS
+* previous assessment information, and
+* teachers' observation of the student's performance.
+ 
+Progress monitoring was infrequently attempted.
+",,,false,909152176,2,837394798,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:46:10 -0600 2009,"The intervention selected was based on:
+* the flag in SIMS,
+* previous assessment information,
+* teachers' observation of the student's performance, and
+* ongoing classroom assessments.
+
+Progress monitoring was attempted at least at the beginning and end of the intervention.
+",,,false,909152177,3,837394798,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:46:27 -0600 2009,"The intervention selected was based on:
+* the flag in SIMS, and
+* consistently administered, frequent and varied assessments.
+
+Progress monitoring probes were frequently administered and used to determine whether the intervention was effective.
+",,,false,909152178,4,837394798,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152179,0,837394799,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:46:49 -0600 2009,"Interventions were unable to be provided with the frequency, duration, or intensity planned.
+
+The effectiveness of the intervention cannot be determined.",,,false,909152180,1,837394799,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:47:00 -0600 2009,"Interventions were inconsistently provided at the frequency intensity, and duration planned.
+
+It is likely that a diferent schedule of intervention implementation would result in better student progress.",,,false,909152181,2,837394799,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:47:11 -0600 2009,"Interventions were usually provided at the frequency intensity and duration planned for the student. 
+
+Implementation allows teams to draw conclusions regarding the effectiveness of the intervention.",,,false,909152182,3,837394799,4,,Mon Mar 10 11:05:54 -0500 2008
+Wed Dec 17 11:31:11 -0600 2008,"Interventions were consistently provided at the frequency, intensity and duration planned for the student.
+<br />
+
+Implementation allows teams to draw conclusions regarding the effectiveness of the intervention.",,,false,909152183,4,837394799,5,,Wed Dec 17 11:30:45 -0600 2008
+Sun Nov 30 17:13:21 -0600 2008,,,,,909152184,0,837394800,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,false,909152185,0,837394801,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:43:09 -0600 2009,"Concerns about the student have not been shared with the student's family.
+ 
+The school and family do not yet have a cooperative working relationship. 
+",,,false,909152186,1,837394801,2,,Mon Mar 10 11:05:54 -0500 2008
+Tue Jan 06 11:21:38 -0600 2009,"The student's family has been informed about school concerns.  They have had some opportunities to learn how the school proposes to address the concerns.
+
+
+Opportunities for the school and family to mutually problem solve have not occurred. 
+",,,false,909152187,2,837394801,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:43:53 -0600 2009,"The student's family and staff have had several opportunities to share and exchange ideas about strategies to support the student.
+  
+Mutual problem solving occurs regularly.
+
+Opportunities for the family to participate in their child's schooling are often available.
+",,,false,909152188,3,837394801,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:49:43 -0600 2009,"A variety of information
+sharing approaches have been used on a consistent basis. 
+
+Conversations between the student's family and staff consistently include mutual problem solving, information about family values, and the student's interests and experiences. 
+
+Varying opportunities for the family to participate in their child's schooling are consistently available.
+",,,false,909152189,4,837394801,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152190,0,837394802,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:50:02 -0600 2009,"Materials are not translated into the student's home language.
+
+An interpreter is not offered to the family. 
+",,,false,909152191,1,837394802,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:50:16 -0600 2009,"Some materials are translated into the student's home language.
+
+An interpreter is sometimes available and offered.  
+",,,false,909152192,2,837394802,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:50:48 -0600 2009,"Written materials are usually translated into the student's home language. 
+
+An interpreter is usually available and offered.  
+",,,false,909152193,3,837394802,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:50:23 -0600 2009,"Written materials are consistently translated into the student's home language.  
+
+An interpreter is consistently available and offered.
+",,,false,909152194,4,837394802,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,,,,,909152195,0,837394803,1,,Mon Mar 10 11:05:54 -0500 2008
+Wed Jan 07 15:02:31 -0600 2009,"A.  Information regardng the student's racial and cultural background was obtained by talking with the student and family, record review, observation and/or consultation with other staff members.  Race, culture, and unique background and experiences are not a primary factor in the student's learning or behavior difficulties in school.",,,false,909152196,0,837394804,1,,Wed Dec 17 11:23:08 -0600 2008
+Wed Jan 07 15:02:48 -0600 2009,"B.  The student's race, culture and unique background and experiences may be a factor.  Our team's analysis indicates:",,,false,909152197,1,837394804,2,,Wed Dec 17 11:27:32 -0600 2008
+Wed Jan 07 15:02:59 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152198,1,837394804,3,,Wed Jan 07 15:00:56 -0600 2009
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152199,0,837394805,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:53:19 -0600 2009,"The student has few opportunities  to share his/her life experiences with others in the classroom.
+
+The student does not see self represented in the curriculum and classroom materials.
+
+The student has few relationships with staff or peers that are trusting, reciprocal and supportive.
+",,,false,909152200,1,837394805,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:53:45 -0600 2009,"The student has occasional opportunities  to share his/her life experiences with others in the classroom.
+
+The student seldom sees self represented in the curriculum and classroom materials.
+
+The student has some relationships with staff or peers that are trusting, reciprocal and supportive.
+",,,false,909152201,2,837394805,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:54:06 -0600 2009,"The student has regular opportunities to share his/her life experiences with others in the classroom.
+
+The student occasionally sees self represented in the curriculum and classroom materials.
+
+The student has several relationships with staff or peers that are trusting, reciprocal and supportive.
+",,,false,909152202,3,837394805,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:54:28 -0600 2009,"The student has regular opportunities to share information regarding his/her life experiences with others in the classroom.  This information is considered when instructional activities are planned.
+
+The student consistently sees self represented in the curriculum and classroom materials.
+
+The student has numerous relationships with staff or peers that are trusting, reciprocal and supportive.
+",,,false,909152203,4,837394805,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152204,0,837394806,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:54:46 -0600 2009,"The student has few opportunities to build on prior knowledge and experiences. 
+  
+The student experiences a few classroom activities with varied learning style activities and interactions.
+",,,false,909152205,1,837394806,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:55:04 -0600 2009,"The student has occasional opportunities to build on prior knowledge and experiences. 
+
+The student experiences some classroom activities with varied learning style activities and interactions.  
+",,,false,909152206,2,837394806,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:55:19 -0600 2009,"The student has regular opportunities to build on prior knowledge and experiences.  
+
+The student's classroom experiences frequently incorporate varied learning style activities and interactions. 
+",,,false,909152207,3,837394806,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:55:35 -0600 2009,"The student has regular opportunities to build on prior knowledge and experiences.
+
+The student's classroom experiences are consistently connected to his/her culture via community based experiences and activities that use varied learning styles and interactions.",,,false,909152208,4,837394806,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,false,909152209,0,837394807,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:56:02 -0600 2009,"The rules and expectations are implied but not reviewed explicitly and regularly with the student.
+
+The student seldom participates in school activities designed to increase engagement and connection to school.
+
+The student seldom receives encouragement and support.
+",,,false,909152210,1,837394807,2,,Wed Aug 13 12:39:03 -0500 2008
+Sun Jan 04 14:56:20 -0600 2009,"Some rules and expectations are reviewed explicitly and regularly with the student.
+
+The student occasionally participates in school activities designed to increase engagement and connection to school.
+
+The student occasionally receives encouragement and support.
+",,,false,909152211,2,837394807,3,,Wed Aug 13 12:39:31 -0500 2008
+Sun Jan 04 14:56:41 -0600 2009,"Most of the rules and expectations are reviewed explicitly and regularly with the student.
+
+The student frequently participates in school activities designed to increase engagement and connection to school.
+
+The student frequently receives encouragement and support. 
+",,,false,909152212,3,837394807,4,,Wed Aug 13 12:39:58 -0500 2008
+Sun Jan 04 14:56:58 -0600 2009,"All rules and expectations are explicitly taught, visually displayed, and regularly reviewed to ensure the student's learning and understanding.
+
+The student consistently participates in school activities designed to increase engagement and connection to school.
+
+The student consistently receives encouragement and support.
+",,,false,909152213,4,837394807,5,,Wed Aug 13 12:40:31 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,,,,,909152214,0,837394808,1,,Thu Aug 14 12:04:24 -0500 2008
+Wed Jan 07 15:05:13 -0600 2009,A.  Language differences are not a primary factor in the student's learning or behavior difficulties in school.,,,false,909152215,0,837394809,1,,Wed Dec 17 11:33:36 -0600 2008
+Wed Jan 07 15:05:33 -0600 2009,B. Language differences may be a factor. Our team's analysis indicates:,,,false,909152216,1,837394809,2,,Wed Dec 17 11:34:57 -0600 2008
+Wed Jan 07 15:05:50 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152217,1,837394809,3,,Wed Jan 07 15:05:50 -0600 2009
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152218,0,837394810,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student's use and understanding of oral and written language is not assessed.  ,,,false,909152219,1,837394810,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student's use and understanding of oral and written language is assessed using quizzes and end of lesson tests. ,,,false,909152220,2,837394810,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student's use and understanding of oral and written language is assessed prior to the start and at the end of instruction.  ,,,false,909152221,3,837394810,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student's use and understanding of oral and written language is consistently and continually assessed. ,,,false,909152222,4,837394810,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152223,0,837394811,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 14:59:39 -0600 2009,"The student does not experience interventions to support the understanding and use of oral and written language. 
+
+The student's language level and vocabulary development is not a match to the language used in classroom instruction.
+
+The student rarely has access to texts and other curriculum materials that are rich in visuals. 
+",,,false,909152224,1,837394811,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:00:00 -0600 2009,"The student sometimes experiences interventions to support the understanding and use of oral and written language.
+
+The student's language level and vocabulary development is sometimes matched to the language used in classroom instruction.
+
+The student occasionally has access to texts and other curriculum materials that are rich in visuals.
+
+",,,false,909152225,2,837394811,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:00:18 -0600 2009,"The student usually experiences interventions to support the understanding of and use of oral and written language.
+   
+The student's language level and vocabulary development is usually matched to the language used in classroom instruction.
+
+The student usually has access to texts and other curriculum materials that are rich in visuals.  
+",,,false,909152226,3,837394811,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:00:34 -0600 2009,"The student experiences consistent and frequent interventions to support the understanding and use of oral and written language. 
+  
+The student's language level and vocabulary development is consistently matched to the language used in classroom instruction.
+
+The student consistently has access to texts and other curriculum materials that are rich in visuals.  
+",,,false,909152227,4,837394811,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152228,0,837394812,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:00:59 -0600 2009,"The student has opportunities to practice oral and written language as part of instruction for the whole class.
+
+Instructive feedback is not provided.",,,false,909152229,1,837394812,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:01:17 -0600 2009,"The student sometimes has opportunities to practice oral and written language as part of large and small group instruction. 
+ 
+Instructive feedback is occasionally provided. 
+
+",,,false,909152230,2,837394812,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:01:33 -0600 2009,"The student has frequent opportunities to practice oral and written language in large and small group instruction.  
+
+Instructive feedback is usually provided.  ",,,false,909152231,3,837394812,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:01:44 -0600 2009,"The student has consistent, ongoing opportunities to practice oral and written language skills in large and small group as well as individual instruction.  
+
+Instructive feedback is consistently provided.",,,false,909152232,4,837394812,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,,,,,909152233,0,837394813,1,,Mon Mar 10 11:05:54 -0500 2008
+Wed Jan 07 15:07:57 -0600 2009,A.  Excessive absences and/or mobility are not primary factors contributing to the student's learning or behavior difficulties in school.,,,false,909152234,0,837394814,1,,Wed Dec 17 11:40:39 -0600 2008
+Wed Jan 07 15:08:17 -0600 2009,B.  Absences and/or mobility may be a factor. Our team's analysis indicates:,,,false,909152235,1,837394814,2,,Wed Dec 17 12:00:56 -0600 2008
+Wed Jan 07 15:08:30 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152236,1,837394814,3,,Wed Jan 07 15:08:30 -0600 2009
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152237,0,837394815,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student's attendance and mobility patterns have not been investigated.,,,false,909152238,1,837394815,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:02:34 -0600 2009,"Information about the student's attendance and mobility was gathered from school records.
+
+Root causes of the observed patterns are not yet identified. 
+",,,false,909152239,2,837394815,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:02:46 -0600 2009,"A good picture of the student's attendance and mobility was gathered from school records and interviews with the student and family. 
+
+A hypothesis is formed regarding possible root causes of the observed patterns.  
+",,,false,909152240,3,837394815,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:03:01 -0600 2009,"A thorough picture of the student's attendance and mobility was gathered from school records and interviews with the student and family. 
+
+Root causes of the observed patterns are well understood. 
+",,,false,909152241,4,837394815,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152242,0,837394816,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:03:19 -0600 2009,"The student has not yet experienced interventions to improve attendance or reduce the impact of poor attendance and/or mobility on learning and behavior.
+
+There has been no contact with the student's family.
+",,,false,909152243,1,837394816,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:03:34 -0600 2009,"The student sometimes experiences interventions that address the root cause of poor attendance and reduce the impact on learning and behavior. 
+
+The new student and family have received initial information to help in the transition to a new environment
+",,,false,909152244,2,837394816,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:03:48 -0600 2009,"The student often experiences interventions that address the root cause of poor attendance and reduce the impact on learning and behavior. 
+
+The new student and family often receive support to adjust to school and build relationships with peers.
+",,,false,909152245,3,837394816,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:04:00 -0600 2009,"The student consistently experiences interventions to resolve issues that address the root cause of poor attendance and accelerate the student's progress in learning and behavior. 
+
+The new student and family consistently experience support to adjust to school and build relationships with peers.
+",,,false,909152246,4,837394816,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152247,0,837394817,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student has not yet experienced opportunities to participate in activities that increase his/her connection to school.,,,false,909152248,1,837394817,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student has some opportunities and receives some encouragement to participate in activities and events that will increase his/her connection to school. ,,,false,909152249,2,837394817,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,The student has frequent opportunities and receives frequent encouragement to participate in activities and events that will increase his/her connection to school. ,,,false,909152250,3,837394817,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,"The student consistently has opportunities and receives encouragement to participate in activities and events that will increase his/her connection to school, including personal contact to invite involvement.",,,false,909152251,4,837394817,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,,,,,909152252,0,837394818,1,,Mon Mar 10 11:05:54 -0500 2008
+Wed Jan 07 15:09:37 -0600 2009,A.  Life stressors are not a primary factor contributing to the student's learning or behavior difficulties in school.,,,false,909152253,0,837394819,1,,Wed Dec 17 11:43:30 -0600 2008
+Wed Jan 07 15:09:47 -0600 2009,B.  Life stressors may be a factor.  Our team's analysis of life stressors indicates:,,,false,909152254,1,837394819,2,,Wed Dec 17 11:44:09 -0600 2008
+Wed Jan 07 15:09:58 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152255,1,837394819,3,,Wed Jan 07 15:09:58 -0600 2009
+Sun Nov 30 17:13:21 -0600 2008,No information available at this time.,,,,909152256,0,837394820,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,Information about potential life stressors has not yet been gathered.,,,false,909152257,1,837394820,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:05:15 -0600 2009,"The student and family provided some information about life stressors. 
+
+The lack of a trusting relationship between school and home limited the data available.",,,false,909152258,2,837394820,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:05:27 -0600 2009,"The student and family provided some information about life stressors that may have impacted the student's performance in the past. 
+
+Incomplete data is available about current potential life stressors.  
+",,,false,909152259,3,837394820,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:21 -0600 2008,"There is consistent ongoing communication between the student, family and school about the impact of life stressors on the student's performance, including a complete history.",,,false,909152260,4,837394820,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,No information available at this time.,,,,909152261,0,837394821,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student has not yet received Interventions to reduce the impact of the life stressor.,,,false,909152262,1,837394821,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student has received some interventions to reduce the impact of the life stressor.,,,false,909152263,2,837394821,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student has received frequent Interventions to reduce the impact of the life stressor. ,,,false,909152264,3,837394821,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,"The student has consistently received interventions to minimize the impact of the life stressor. 
+
+",,,false,909152265,4,837394821,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,No information available at this time.,,,,909152266,0,837394822,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student and family have not yet been provided with information about community resources that might help them cope with the identified life stressor.,,,false,909152267,1,837394822,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student and family have been provided with print material about community resources that might help them cope with the identified life stressor.,,,false,909152268,2,837394822,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:05:59 -0600 2009,"The student and family have had explanations about available community resources.
+
+Staff have provided some assistance to help the student and/or family access community supports.",,,false,909152269,3,837394822,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:06:11 -0600 2009,"The student and family have received regular, direct assistance to access community supports. 
+
+Family, school and community work together to support the success of the student.
+",,,false,909152270,4,837394822,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,,,,,909152271,0,837394823,1,,Mon Mar 10 11:05:54 -0500 2008
+Wed Jan 07 15:11:38 -0600 2009,A.  Socio-economic status is not a primary factor contributing to the student's learning or behavior difficulties in school.,,,false,909152272,0,837394824,1,,Wed Dec 17 11:47:08 -0600 2008
+Wed Jan 07 15:11:46 -0600 2009,B.  Socio-economic status may be a factor.  Our team's analysis indicates:,,,false,909152273,1,837394824,2,,Wed Dec 17 11:47:55 -0600 2008
+Wed Jan 07 15:12:00 -0600 2009,"(If ""A"" applies, check the box.  If ""B"" applies, complete the rubric.) 
+",,,false,909152274,1,837394824,3,,Wed Jan 07 15:12:00 -0600 2009
+Sun Nov 30 17:13:22 -0600 2008,No information available at this time.,,,,909152275,0,837394825,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,Information about the family's socio-economic status and how it impacts the student's performance in school has not yet been considered.,,,false,909152276,1,837394825,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:06:57 -0600 2009,"The family provided some information about their socio-economic status and how it impacts the student's performance. 
+
+The lack of a trusting relationship between school and home limits the information available.
+",,,false,909152277,2,837394825,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:07:10 -0600 2009,"The family provided some information about their socio-economic status that may have impacted the student's performance in the past. 
+
+Incomplete data is available about current status.  
+",,,false,909152278,3,837394825,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,There is consistent ongoing communication between the family and school about how socio-economic status impacts the student's performance in school.,,,false,909152279,4,837394825,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,No information available at this time.,,,,909152280,0,837394826,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student has not yet participated in interventions to reduce the impact of the family's socio-economic status on his/her success in school.  ,,,false,909152281,1,837394826,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student has experienced some interventions to reduce the impact of the family's socio-economic status on his/her success in school.,,,false,909152282,2,837394826,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student often experiences interventions to reduce the impact of the family's socio-economic status on his/her success in school.,,,false,909152283,3,837394826,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The student consistently experiences interventions to reduce the impact of the family's socio-economic status on his/her success in school.,,,false,909152284,4,837394826,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,No information available at this time.,,,,909152285,0,837394827,1,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The family has not yet been provided with information about available community resources.,,,false,909152286,1,837394827,2,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,The family has been provided with print material about available community resources. ,,,false,909152287,2,837394827,3,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:07:36 -0600 2009,"The family has received explanations about available community resources. 
+
+Some assistance to help the family access community supports has been provided. 
+",,,false,909152288,3,837394827,4,,Mon Mar 10 11:05:54 -0500 2008
+Sun Jan 04 15:07:49 -0600 2009,"The family has received regular, direct assistance to access community supports.
+
+Family, school and community work together to support the success of the student.
+",,,false,909152289,4,837394827,5,,Mon Mar 10 11:05:54 -0500 2008
+Sun Nov 30 17:13:22 -0600 2008,,,,,909152290,0,837394828,1,,Mon Mar 10 11:05:54 -0500 2008

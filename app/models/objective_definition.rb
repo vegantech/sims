@@ -26,6 +26,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   acts_as_list :scope => :goal_definition_id
   is_paranoid
   include DeepClone
+  acts_as_reportable if defined? Ruport
 
   def disable!
     intervention_clusters.each(&:disable!)
