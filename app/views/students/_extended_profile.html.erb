@@ -2,7 +2,6 @@
 <% if @student.extended_profile? %>
   <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
   <div id="extended_profile" style="display:none;" >
-    <%=@student.ext_arbitrary%>
      <% ext_pro = @student.ext_summary || @student.build_ext_summary %>
     <%#=extended_profile(@student)%>
 
@@ -99,6 +98,7 @@
   <% end  %>
 
 
+    <%=@student.ext_arbitrary%>
 
   </div>
 <% end %>

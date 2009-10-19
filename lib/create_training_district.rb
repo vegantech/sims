@@ -5,6 +5,7 @@ class CreateTrainingDistrict
     d=wi.districts.find_by_abbrev('training')
     if d.present?
       d.schools.destroy_all
+      d.tiers.delete_all
       d.destroy
     end
     td=wi.districts.create!(:abbrev=>'training', :name => 'Training')
@@ -43,6 +44,7 @@ class CreateTrainingDistrict
     goalhash = {}
     objectivehash = {}
     clusterhash = {}
+    definitionhash = {}
     
     tier = district.tiers.create!(:title=>'Test tier')
     
@@ -66,9 +68,17 @@ class CreateTrainingDistrict
       clusterhash[ck[:id]]=newcd.id
     end
 
-    clusterhash.values.each do |ic|
-      d = Factory(:intervention_definition, :intervention_cluster_id => ic, :title => "Test #{ic}", :tier => tier)
+    FasterCSV.table("db/training/intervention_definitions.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:intervention_cluster_id]= clusterhash[ck[:objective_definition_id]]
+      newcd= InterventionDefinition.create(ckhash.merge(:tier_id => tier.id))
+      definitionhash[ck[:id]]=newcd.id
     end
+
+    definitionhash
+    
+
+
   end
 
   def self.generate_checklist_definition(district)
@@ -118,7 +128,8 @@ class CreateTrainingDistrict
     last_names = IO.readlines('test/fixtures/common_last_names.txt')
     
     1.upto(30) do |i|
-      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)], :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize}")
+      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",
+        :number => (i-1).to_s)
       s.enrollments.create!(:school => school, :grade => 5)
       s.groups << group
       s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
@@ -132,110 +143,48 @@ class CreateTrainingDistrict
   end
 
   def self.add_extended_profile(student)
-  ep = %Q{
-<table>
-  <tbody><tr><td>Student Address: 123 Training Blvd Apt #{student.first_name[0..1]} Madison, WI 53704</td></tr>
-</tbody></table>
+    student.create_ext_summary(
+    :streetAddress => "123 Training Blvd Apt #{student.first_name[0..1]}",
+    :cityStateZip => "Madison, WI 53704",
+    :HomeLanguage => "English",
+    :mealstatus => "F",
+    :englishProficiency => 7,
+    :specialEdStatus => "N",
+    :singleParent => false,
+    :raceEthnicity => "W",
+    :suspensions_in => 0,
+    :suspensions_out => 0,
+    :years_in_district => 7,
+    :school_changes => 2,
+    :years_at_current_school => 4,
+    :previous_school_name => "Previous Elementary",
+    :current_attendance_rate => 94.14,
+    :previous_attendance_rate => 94.58,
+    :esl => false,
+    :tardies => 3
+    )
 
-<h3>Adult Contacts</h3>
-<table>
-  <tbody><tr>
-  <td>
-    <h3>Parent</h3>
-  </td>
-  <td colspan="5">
-    <table>
-    <tbody><tr>
-      <td>Name</td>
-      <td>
-      #{student.last_name}, Plato
-      </td>
-    </tr>
-
-    <tr>
-      <td>Address</td>
-      <td>123 Training Blvd  Apt #{student.first_name[0..1]}<br>
-          Madison, WI 53704
-      </td>
-    </tr>
-
-      
-      
-      
-      
-      
-    <tr>
-      <td>
-        Telephone(s)
-      </td>
-      <td>(608)555-1212 (CELL) <br>
-      </td>
-    </tr>
+    student.ext_adult_contacts.create!(
+    :relationship => "Parent",
+    :guardian => true, 
+    :firstName => "Plato", 
+    :lastName => student.last_name, 
+    :streetAddress => "123 Training Blvd Apt #{student.first_name[0..1]}",
+    :cityStateZip => "Madison, WI 53704",
+    :cellPhone => "(608)555-1212"
+    )
+   
+    student.ext_siblings.create!(
+    :first_name => "Brother", 
+    :last_name => student.last_name, 
+    :student_number => "123456",
+    :age => 12,
+    :grade => "07",
+    :school_name => "Example Middle"
+    )
     
-    <tr>
-      <td>Entitled to Records</td>
-      <td>Yes </td>
-    </tr>
-
-  </tbody></table>
-</td>
-</tr>
-
-</tbody></table>
-
-
+  ep = %Q{
   
-  <h3>Siblings</h3>
-<table border="1">
-  <tbody><tr>
-    <th>Name</th>
-    <th>Age</th>
-    <th>Grade</th>
-    <th>StudentNum</th>
-  <th>School Name</th>
-  </tr>
-
-  <tr>
-  <td>
-    #{student.last_name}, Brother
-  </td>
-  <td>12</td>
-  <td>07</td>
-  <td>123456</td>
-  <td>Example Middle</td>
-  
-</tr>
-</tbody></table>
-
-<table>
-<tbody><tr><td>Race/Ethnicity: B</td></tr>
-  <tr><td>Home Language: English</td></tr>
-  <tr><td>Language Proficiency Level: 7</td></tr>
-  <tr><td>Receiving ESL services or ESL status:</td><td>No</td></tr>
-</tbody></table>
-<table>
-    <tbody><tr><td>Special Education Status: N</td></tr>
-</tbody></table>
-
-<table>
-  <tbody><tr><td>Lunch Status: F</td></tr>
-    <tr><td>Current Attendance:</td><td>94.14%</td></tr>
-  <tr><td>Previous Attendance:</td><td>94.58%</td></tr>
-  <tr><td>Suspensions In:   Out: </td></tr>
-  <tr><td>Periods Tardy: 3</td></tr>
-</tbody></table>
-  
-<table>
-  <tbody><tr><td>Student Mobility: </td>
-    <td> Years In District:</td><td>7</td></tr>
-  <tr><td></td><td>Years at Current School:</td><td>6</td></tr>
-  <tr><td></td><td>Previous School:</td><td>Emerson Elementary</td></tr>
-  <tr><td></td><td>School Changes:</td><td>2</td></tr>
-</tbody></table>
-
-
-
-
 <h2>Test Scores:</h2>
 
 <h3>Primary Math Assessment</h3>
@@ -438,11 +387,8 @@ Grade 4
 
  </pre>'
 
+   student.create_ext_arbitrary(:content => ep)
   
-  File.open("tmp/ext_p","w"){|f| f << ep}
-  
-  student.extended_profile = File.open("tmp/ext_p","r")
-  student.save
   end
 
  
