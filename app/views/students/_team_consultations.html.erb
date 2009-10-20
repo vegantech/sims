@@ -17,7 +17,7 @@
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
    </div>
     <div id = "consultation_form_request"></div>
-    <h3 class="team_consultations_header">Responses to Request For Information</h3>
+    <h3 class="team_consultations_header"><span>Responses to Request For Information</span></h3>
     <%= link_to_function "Show/Hide" , "$('consultation_forms').toggle()" %>
 
       <div id="consultation_forms">

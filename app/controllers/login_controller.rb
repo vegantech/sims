@@ -1,6 +1,10 @@
 class LoginController < ApplicationController
   include CountryStateDistrict
-  skip_before_filter :authenticate, :authorize
+  skip_before_filter :authenticate, :authorize, :verify_authenticity_token
+
+  #There is a potential for csrf attacks for logout which would be annoying for the user, but not really harmful
+  #same for login, but there really would be no reason to trick a user into logging in as someone else.   The tradeoff here is for usability
+  #There are often errors from a logout form that get invalidated by a server restart showing an error to the user.   This should eliminate those errors
   layout 'main'
   def login
     dropdowns

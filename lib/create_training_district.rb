@@ -45,8 +45,12 @@ class CreateTrainingDistrict
     objectivehash = {}
     clusterhash = {}
     definitionhash = {}
+    probe_hash = {}
     
-    tier = district.tiers.create!(:title=>'Test tier')
+    oldtiers=[781073596, 781073597, 781073598]
+    tier = district.tiers.create!(:title=>'First tier')
+    second_tier = district.tiers.create!(:title=>'Second tier')
+    third_tier = district.tiers.create!(:title=>'Third tier')
     
     FasterCSV.table("db/training/goal_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
@@ -70,12 +74,32 @@ class CreateTrainingDistrict
 
     FasterCSV.table("db/training/intervention_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:intervention_cluster_id]= clusterhash[ck[:objective_definition_id]]
-      newcd= InterventionDefinition.create(ckhash.merge(:tier_id => tier.id))
+      ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
+      if [1037859175,1037859176,1037859177].include?(ck[:intervention_cluster_id].to_i)
+        mytier = [tier.id,second_tier.id,third_tier.id][oldtiers.index(ck[:tier_id].to_i)]
+        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier))
+      else
+        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => tier.id))
+      end
       definitionhash[ck[:id]]=newcd.id
     end
 
-    definitionhash
+
+    FasterCSV.table("db/training/probe_definitions_monitors.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      newcd= district.probe_definitions.create!(ckhash)
+      probe_hash[ck[:id]]=newcd.id
+    end
+
+    FasterCSV.table("db/training/recommended_monitors.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
+      ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
+      newcd= RecommendedMonitor.create!(ckhash)
+    end
+
+
+    
     
 
 

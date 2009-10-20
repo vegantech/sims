@@ -41,6 +41,7 @@ class ProbeDefinition < ActiveRecord::Base
   is_paranoid
   include DeepClone
 
+  acts_as_reportable if defined? Ruport
   
   def validate
     #TODO this can be refactored out using rails 2.x changes

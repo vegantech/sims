@@ -22,6 +22,7 @@ class RecommendedMonitor < ActiveRecord::Base
   delegate :title, :to=>:probe_definition
   acts_as_list :scope=>:intervention_definition_id
   is_paranoid
+  acts_as_reportable if defined? Ruport
 
   def recommended_frequency_mult
     InterventionProbeAssignment::RECOMMENDED_FREQUENCY

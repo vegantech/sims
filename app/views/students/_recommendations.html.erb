@@ -1,4 +1,4 @@
-<h3 class="conclusions_and_recommendations"  ondblclick="$('recommendations').toggle();"><span>Conclusions and Recommendations for Changing Tiers</span> </h3>
+<h3 class="conclusions_and_recommendations"  ondblclick="$('recommendations').toggle();"><span>Conclusions and Recommendations</span> </h3>
 <div id="recommendations">
   <% @student.recommendations.group_by(&:tier).each do |g,r| %>
     <%= content_tag :h4, g %>
