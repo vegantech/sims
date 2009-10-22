@@ -68,6 +68,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     subdomains
+    redirect_to logout_url() if current_district_id and current_district.blank? 
     unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
       session[:requested_url] = request.url

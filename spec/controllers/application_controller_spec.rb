@@ -24,7 +24,7 @@ describe ApplicationController do
     controller.should_receive(:root_url).and_return 'root_url'
     controller.should_receive(:redirect_to).with('root_url')
     controller.should_receive(:flash).and_return(flash)
-    controller.should_receive(:session).and_return(flash)
+    controller.should_receive(:session).at_least(:once).and_return(flash)
     controller.send(:authenticate).should == false
     flash[:notice].should_not == nil
     flash[:requested_url].should == "gopher://www.example.com/"

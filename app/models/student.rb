@@ -68,16 +68,12 @@ class Student < ActiveRecord::Base
   }
 
   def extended_profile?
-    ext_arbitrary.present? || File.exists?(extended_profile_path)
+    ext_arbitrary.present? || ext_siblings || ext_adult_contacts || ext_test_scores || ext_summary
   end
 
   def extended_profile
-    if extended_profile?
-      File.read(extended_profile_path)
-    else
-      nil
-    end
-  end
+    ext_arbitrary
+ end
 
   def extended_profile= file
     @extended_profile = file unless file.blank?
@@ -268,16 +264,12 @@ class Student < ActiveRecord::Base
 
   def save_extended_profile
     if @extended_profile
-      FileUtils.mkdir_p(File.dirname(extended_profile_path))
-      File.open((extended_profile_path), "w") do |f|
-        f.write(@extended_profile.read)
-      end
-      @extended_profile.close
-      @extended_profile=nil
+      create_ext_arbitrary(:content =>@extended_prfile.read)
+     @extended_profile=nil
     end
 
     if @delete_extended_profile
-      FileUtils.rm(extended_profile_path)
+      delete_ext_arbitrary
       @delete_extended_profile = nil
     end
 

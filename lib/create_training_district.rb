@@ -1,14 +1,22 @@
 class CreateTrainingDistrict
   require 'fastercsv'
   def self.generate
+    generate_one
+    2.upto(20){ |i| generate_one(i.to_s)}
+
+  end
+
+  def self.generate_one(num = '')
+   
+    abbrev = "training#{num}"
     wi = State.find_by_abbrev('wi')
-    d=wi.districts.find_by_abbrev('training')
+    d=wi.districts.find_by_abbrev(abbrev)
     if d.present?
       d.schools.destroy_all
       d.tiers.delete_all
       d.destroy
     end
-    td=wi.districts.create!(:abbrev=>'training', :name => 'Training')
+    td=wi.districts.create!(:abbrev=>abbrev, :name => abbrev.capitalize)
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementry')
 
@@ -18,6 +26,7 @@ class CreateTrainingDistrict
     oneschool.groups << training_homeroom
     oneschool.schools << alpha_elem
     oneschool.save!
+    training_team = alpha_elem.school_teams.create!(:name => "Training")
     
     #oneschool
     #alphaprin
@@ -26,6 +35,9 @@ class CreateTrainingDistrict
     alphaprin = td.users.create!(:username => 'alphaprin', :password => 'alphaprin', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Principal')
     alphaprin.user_school_assignments.create!(:admin => true, :school => alpha_elem)
     alphaprin.special_user_groups.create!(:school=>alpha_elem, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :is_principal => true)
+
+    training_team.school_team_memberships.create!(:user => alphaprin, :contact => true)
+    
     content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
 
     self.generate_interventions(td)
