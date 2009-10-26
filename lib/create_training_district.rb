@@ -22,9 +22,17 @@ class CreateTrainingDistrict
 
     oneschool = td.users.create!(:username => 'oneschool', :password => 'oneschool', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'User')
 
+    melody = td.users.create!(:username => 'melody', :password => 'melody', :email => 'shawn@simspilot.org', :first_name => 'Melody', :last_name => 'TrebleCleff')
+    
     training_homeroom = alpha_elem.groups.create!(:title => "Training Homeroom")
+    other_homeroom = alpha_elem.groups.create!(:title => 'Other Group')
     oneschool.groups << training_homeroom
+    oneschool.groups << other_homeroom
+
+    melody.groups << other_homeroom
     oneschool.schools << alpha_elem
+
+    
     oneschool.save!
     training_team = alpha_elem.school_teams.create!(:name => "Training")
     
@@ -48,6 +56,7 @@ class CreateTrainingDistrict
     Role.find_by_name("content_admin").users << content_admin
 
     self.generate_students(td, alpha_elem, training_homeroom)
+    self.generate_other_students(td,alpha_elem, other_homeroom)
     td
     
   end
@@ -155,6 +164,33 @@ class CreateTrainingDistrict
 
 
   end
+
+  def self.generate_other_students(district,school,group)
+    first_names = IO.readlines('test/fixtures/common_first_names.txt')
+    last_names = IO.readlines('test/fixtures/common_last_names.txt')
+    grades= ['K', '1', '2', '3', '4', '5'] 
+    
+    31.upto(60) do |i|
+      esl=rand(3) == 1
+      special_ed = rand(3) == 1
+      first_name = first_names[(i%50) -1 + 50*(i %2)].strip
+      last_name = last_names[i-1].capitalize.strip
+      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_name, :last_name => last_name,
+        :number => (i-1).to_s, :esl => esl, :special_ed => special_ed)
+      s.enrollments.create!(:school => school, :grade => grades[i%6])
+      s.groups << group
+      s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
+        comprehension strategies to independent reading") if rand(10) == 1
+      s.system_flags.create!(:category=>"math", :reason => "1- word problem assessment ") if rand(10) == 1
+      s.system_flags.create!(:category=>"suspension", :reason => "2 office referrals") if rand(10) == 1
+      s.system_flags.create!(:category=>"attendance", :reason => "3 times tardy ") if rand(10) == 1
+    end
+ 
+
+  end
+
+
+  
 
 
 

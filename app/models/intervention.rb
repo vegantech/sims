@@ -156,6 +156,7 @@ class Intervention < ActiveRecord::Base
         arr += [student.enrollments.first.grade, student.enrollments.first.school.to_s]
       else
         arr += [nil,nil]
+      end
     else
       arr +=["No longer in sims",nil, nil]
     end
