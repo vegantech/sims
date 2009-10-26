@@ -1,0 +1,18 @@
+dis = District.find_by_abbrev 'madison'
+FasterCSV.open("/home/shawn/mmsd_intervention_summarization.csv", "w") do |csv|
+ csv << ["created_on","user","student","grade","school"]
+Intervention.find(:all,:include => [:user, {:student=>{:enrollments =>:school}}], :conditions => "users.district_id = #{dis.id}").each do |int|
+csv << int.date_user_student_school_grade
+end
+nil
+end
+
+
+FasterCSV.open("/home/shawn/mmsd_team_note_summarization.csv", "w") do |csv|
+ csv << ["created_on","user","student","grade","school"]
+StudentComment.find(:all,:include => [:user, {:student=>{:enrollments =>:school}}], :conditions => "users.district_id = #{dis.id}").each do |int|
+csv << int.date_user_student_school_grade
+end
+nil
+end
+

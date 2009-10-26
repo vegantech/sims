@@ -19,4 +19,17 @@ class StudentComment < ActiveRecord::Base
   validates_presence_of :body
 
   acts_as_reportable if defined? Ruport
+
+
+  def date_user_student_school_grade
+    arr=[created_at.to_date, user.to_s]
+    if student.present?
+      arr |= [student.to_s, student.enrollments.first.grade, student.enrollments.first.school.to_s]
+    else
+      arr |=["No longer in sims",nil, nil]
+    end
+
+    arr
+
+  end
 end
