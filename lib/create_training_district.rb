@@ -254,212 +254,240 @@ class CreateTrainingDistrict
     :grade => "07",
     :school_name => "Example Middle"
     )
+
+    student.ext_test_scores.create!(
+    :name => "PMA 1 Total",
+    :date => "2001-10-06",
+    :result => 3
+    )
     
-  ep = %Q{
-  
-<h2>Test Scores:</h2>
-
-<h3>Primary Math Assessment</h3>
-<table cellpadding="3">
-
-<tbody><tr>
-
-
-<td rowspan="2">
-1
-</td>
-<td rowspan="2">2001-10-06</td>
-</tr>
-
-<tr>
-<td></td><td></td>
-<td>Total: 3-proficient</td>
-
-
-</tr>
-
-<td rowspan="2">
-2
-</td>
-<td rowspan="2">2002-10-06</td>
-</tr>
-
-<tr>
-<td></td><td></td>
-<td>Total: 2-basic</td>
-
-
-</tr>
+    student.ext_test_scores.create!(
+    :name => "PMA 2 Total",
+    :date => "2002-10-06",
+    :result => 2
+    )
 
 
 
+    student.ext_test_scores.create!(
+    :name => "WKCE 4 Language Arts",
+    :date => "2004-10-06",
+    :result => 3
+    )
 
-</tbody></table>
+    student.ext_test_scores.create!(
+    :name => "WKCE 4 Math",
+    :date => "2004-10-06",
+    :result => 2
+    )
 
-  Grade 1: 9-26-2003
-  Editing Skills: 1-minimal Sounds Rep: 1-minimal
-  Spelling: 1-minimal Text Reading Lvl: 3
 
-  Grade 1: 5-26-2004
-  Editing Skills: 2-basic Sounds Rep: 3-proficient
-  Spelling: 2-basic Text Reading Lvl: 14
+    student.ext_test_scores.create!(
+    :name => "WKCE 4 Science",
+    :date => "2004-10-06",
+    :result => 3
+    )
 
-  Grade 2: 10-18-2004
-  Editing Skills: 2-basic Sounds Rep: 2-basic
-  Spelling: 2-basic Text Reading Lvl: 14
+    student.ext_test_scores.create!(
+    :name => "WKCE 4 Social Studies",
+    :date => "2004-10-06",
+    :result => 4
+    )
 
-  Grade 2: 5-24-2005
-  Editing Skills: 2-minimal Sounds Rep: 2-basic
-  Spelling: 1-minimal Text Reading Lvl: 23
+    student.ext_test_scores.create!(
+    :name => "WKCE 4 Reading",
+    :date => "2004-10-06",
+    :result => 3
+    )
+
+    student.ext_test_scores.create!(
+    :name => "WKCE 3 Math",
+    :date => "2003-10-06",
+    :result => 3
+    )
+
+
+    student.ext_test_scores.create!(
+    :name => "WKCE 3 Reading",
+    :date => "2004-10-06",
+    :result => 3
+    )
+
+   
+
+
+
+    
+
+   
+    student.ext_test_scores.create!(
+    :name => "PLAA K Phonemic Awareness",
+    :date => "2002-09-01",
+    :result => 2
+    )
+ 
+    student.ext_test_scores.create!(
+    :name => "PLAA K Text Reading Level",
+    :date => "2002-09-01",
+    :result => 2,
+    :scaleScore => 1
+    )
+
+    student.ext_test_scores.create!(
+    :name => "PLAA K Concepts About Print",
+    :date => "2003-04-01",
+    :result => 3
+    )
+
+    student.ext_test_scores.create!(
+    :name => "PLAA K Hearing Sounds in Words",
+    :date => "2003-04-01",
+    :result => 1
+    )
+ 
+    
+    student.ext_test_scores.create!(
+    :name => "PLAA K Lower Case Letters",
+    :date => "2003-04-01",
+    :result => 2
+    )
+ 
+    
+    student.ext_test_scores.create!(
+    :name => "PLAA K Phonemic Awareness",
+    :date => "2003-04-01",
+    :result => 3
+    )
  
 
-
-<h3>Primary Language Arts Assessment</h3>
-<table cellpadding="3">
-
-<tbody>
-
-
-<tr>
-
-
-<td rowspan="2">
-K
-</td>
-<td rowspan="2">2002-09-01</td>
-</tr>
-
-<tr>
-<td></td><td></td>
-<td>Text Reading Lvl: 1</td>
-</tr>
-<tr>
-<td>Phonemic Awareness: 2-basic </td>
-</tr>
-
-<tr>
+    student.ext_test_scores.create!(
+    :name => "PLAA K Sound Word",
+    :date => "2003-04-01",
+    :result => 2
+    )
+ 
+    student.ext_test_scores.create!(
+    :name => "PLAA K Text Reading Level",
+    :date => "2003-04-01",
+    :result => 1,
+    :scaleScore => 1
+    )
+ 
+    student.ext_test_scores.create!(
+    :name => "PLAA K Upper Case Letters",
+    :date => "2003-04-01",
+    :result => 2
+    )
 
 
-<td rowspan="2">
-K
-</td>
-<td rowspan="2">2003-04-01</td>
-</tr>
+    date="2003-09-26"
+    grade = 1
 
-<tr>
-<td></td><td></td>
-<td>Text Reading Lvl: 1</td>
-</tr>
-<tr>
-<td> Phonemic Awareness: 3-proficient </td>
-</tr>
-<tr>
-<td> Concepts about Print: 3-proficient </td>
-</tr>
-<tr>
-<td> Hearing Sounds in Words: 1-minimal </td>
-</tr>
-<tr>
-<td>Lower Case Letters: 2-basic  </td>
-</tr>
-<tr>
-<td>Sound Word: 2-basic </td>
-</tr>
-<tr>
-<td>Upper Case Letters: 2-basic  </td>
-</tr>
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Editing Skills",
+    :date => date,
+    :result => 1
+    )
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Sounds Rep",
+    :date => date,
+    :result => 1
+    )
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Spelling",
+    :date => date,
+    :result => 1
+    )
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Text Reading Lvl",
+    :date => date,
+    :scaleScore => 3
+    )
 
+    date="2004-05-26"
+    grade = 1
 
-<tr>
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Editing Skills",
+    :date => date,
+    :result => 2
+    )
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Sounds Rep",
+    :date => date,
+    :result => 3
+    )
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Spelling",
+    :date => date,
+    :result => 2
+    )
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Text Reading Lvl",
+    :date => date,
+    :scaleScore => 14
+    )
+ 
+ 
+     date="2004-10-18"
+    grade = 2 
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Editing Skills",
+    :date => date,
+    :result => 2
+    )
 
-<td rowspan="2">
-3
-</td>
-<td rowspan="2">0005-10-06</td>
-</tr>
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Sounds Rep",
+    :date => date,
+    :result => 2
+    )
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Spelling",
+    :date => date,
+    :result => 2
+    )
 
-<tr>
-<td></td><td></td>
-<td>Text Reading Lvl: 14</td>
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Text Reading Lvl",
+    :date => date,
+    :scaleScore => 14
+    )
+ 
 
+    
+   date="2005-05-24"
+    grade = 2 
 
-</tr>
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Editing Skills",
+    :date => date,
+    :result => 1
+    )
 
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Sounds Rep",
+    :date => date,
+    :result => 2
+    )
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Spelling",
+    :date => date,
+    :result => 1
+    )
 
-</tbody></table>
-
-<h3>WKCE</h3>
-<table cellpadding="3">
-
-<tbody><tr>
-
-
-<td rowspan="2">
-Grade 4
-</td>
-</tr>
-
-<tr>
-<td></td><td></td>
-<td>Language arts: 3-proficient</td>
-<td>Math: 2-basic</td>
-</tr>
-<tr>
-<td>Science: 3-proficient</td>
-<td>Social Studies: 4-advanced</td>
-</tr>
-<tr>
-<td>Reading: 3-proficient</td>
-</tr>
-
-
-<tr>
-
-
-<td rowspan="4">
-3
-</td>
-</tr>
-
-<tr>
-<td></td><td></td>
-<td>Math: 3-proficient</td>
-<td>Reading: 3-proficient</td>
-
-
-</tr>
-
-</tbody></table>
-
-}
-
-
-  ep2= '<pre>
-  1. Parents contacts, siblings, and emergency contacts-generate
-  fake data
-  2. Grade-5th grade student
-  3. Race/ethnicity: White
-  4. Home language: English
-  5. Receives ESL services or ESL status: No
-  6. Special Education Status: No
-  7. Lunch Status: Free
-  8. Current attendance: 94.14%
-  9. Previous attendance: 94.58%
-  10: Suspensions: 0
-  11. Student Mobility: Years in District: 7
-
-  Years at Current School: 6 School Changes:2
-  12. Tests Scores
-
-
- </pre>'
-
-   student.create_ext_arbitrary(:content => ep)
+    student.ext_test_scores.create!(
+    :name => "PLAA #{grade} Text Reading Lvl",
+    :date => date,
+    :scaleScore => 23
+    )
+   ep = ''
+   #   student.create_ext_arbitrary(:content => ep)
   
   end
 
