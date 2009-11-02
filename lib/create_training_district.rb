@@ -119,6 +119,28 @@ class CreateTrainingDistrict
       newcd= RecommendedMonitor.create!(ckhash)
     end
 
+    FasterCSV.table("db/training/assets.csv").each do |ck|
+      
+      old_id = ck[:attachable_id]
+      case ck[:attachable_type]
+      when 'ProbeDefinition'
+        newid=probe_hash[old_id]
+      when 'InterventionDefinition'
+        newid = definitionhash[old_id]
+      else
+        newid = nil
+      end
+
+      if ck[:url].include?("/")
+        url = ck[:url]
+      else
+        url = "/file/#{ck[:url]}"
+      end
+      Asset.create!(:attachable_type => ck[:attachable_type], :attachable_id => newid, :url => url, :name => ck[:name]) if newid.present?
+        
+
+    end
+
 
     
     
