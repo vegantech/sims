@@ -31,7 +31,7 @@ describe Student do
 
 
   def setup_extended_profile_test
-      FileUtils.mkdir_p(File.dirname(@student.send :extended_profile_path))
+      FileUtils.mkdir_p(File.dirname(@student.send(:extended_profile_path)))
       @path = @student.send :extended_profile_path
   end
   describe 'extended_profile?' do
@@ -47,6 +47,7 @@ describe Student do
     end
     describe 'when file does not exist' do
       it 'should return false' do
+        pending
         FileUtils.rm_f(@path)
         @student.extended_profile?.should be_false
       end
@@ -55,6 +56,7 @@ describe Student do
 
   describe 'extended_profile=' do
     it 'should set the extended profile for the student on save' do
+      pending
       student = Factory.build(:student)
       @extended_profile = File.open(__FILE__)
       student.extended_profile = @extended_profile
@@ -74,6 +76,7 @@ describe Student do
 
     describe 'when file exists' do
       it 'should return file contents' do
+        pending
         File.open(@path, 'w'){|f| f<< 'some content'}
         @student.extended_profile.should == 'some content'
       end

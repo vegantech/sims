@@ -1,0 +1,47 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  student: 
+  HomeLanguage: MyString
+  streetAddress: MyString
+  cityStateZip: MyString
+  mealstatus: MyString
+  englishProficiency: MyString
+  specialEdStatus: MyString
+  disability1: MyString
+  disability2: MyString
+  singleParent: false
+  raceEthnicity: MyString
+  suspensions_in: 1
+  suspensions_out: 1
+  years_in_district: 1
+  school_changes: 1
+  years_at_current_school: 1
+  previous_school_name: MyString
+  current_attendance_rate: 1.5
+  previous_attendance_rate: 1.5
+  esl: false
+  tardies: 1
+
+two:
+  student: 
+  HomeLanguage: MyString
+  streetAddress: MyString
+  cityStateZip: MyString
+  mealstatus: MyString
+  englishProficiency: MyString
+  specialEdStatus: MyString
+  disability1: MyString
+  disability2: MyString
+  singleParent: false
+  raceEthnicity: MyString
+  suspensions_in: 1
+  suspensions_out: 1
+  years_in_district: 1
+  school_changes: 1
+  years_at_current_school: 1
+  previous_school_name: MyString
+  current_attendance_rate: 1.5
+  previous_attendance_rate: 1.5
+  esl: false
+  tardies: 1

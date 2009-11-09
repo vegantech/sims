@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  student: 
+  name: MyString
+  date: 2009-10-11
+  scaleScore: 1.5
+  result: MyString
+  enddate: 2009-10-11
+
+two:
+  student: 
+  name: MyString
+  date: 2009-10-11
+  scaleScore: 1.5
+  result: MyString
+  enddate: 2009-10-11

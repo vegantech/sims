@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  student: 
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  student_number: MyString
+  grade: MyString
+  school_name: MyString
+  age: 1
+
+two:
+  student: 
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  student_number: MyString
+  grade: MyString
+  school_name: MyString
+  age: 1
