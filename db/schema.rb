@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091027163035) do
+ActiveRecord::Schema.define(:version => 20091110154916) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.integer  "student_id"
   end
 
+  add_index "consultation_forms", ["team_consultation_id"], :name => "index_consultation_forms_on_team_consultation_id"
+
   create_table "countries", :force => true do |t|
     t.string   "name"
     t.string   "abbrev"
@@ -127,6 +129,8 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.datetime "updated_at"
     t.boolean  "admin",      :default => false
   end
+
+  add_index "countries", ["abbrev"], :name => "index_countries_on_abbrev"
 
   create_table "districts", :force => true do |t|
     t.string   "name"
@@ -277,6 +281,8 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "flag_descriptions", ["district_id"], :name => "index_flag_descriptions_on_district_id"
 
   create_table "flags", :force => true do |t|
     t.string   "category"
@@ -457,6 +463,7 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
   add_index "news_items", ["district_id"], :name => "index_news_items_on_district_id"
   add_index "news_items", ["school_id"], :name => "index_news_items_on_school_id"
   add_index "news_items", ["state_id"], :name => "index_news_items_on_state_id"
+  add_index "news_items", ["system"], :name => "index_news_items_on_system"
 
   create_table "objective_definitions", :force => true do |t|
     t.string   "title"
@@ -593,6 +600,7 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.datetime "updated_at"
   end
 
+  add_index "quicklist_items", ["district_id", "school_id"], :name => "index_quicklist_items_on_district_id_and_school_id"
   add_index "quicklist_items", ["district_id"], :name => "index_quicklist_items_on_district_id"
   add_index "quicklist_items", ["intervention_definition_id"], :name => "index_quicklist_items_on_intervention_definition_id"
   add_index "quicklist_items", ["school_id"], :name => "index_quicklist_items_on_school_id"
@@ -766,6 +774,8 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.integer "user_id"
   end
 
+  add_index "staff_assignments", ["school_id", "user_id"], :name => "index_staff_assignments_on_school_id_and_user_id"
+
   create_table "states", :force => true do |t|
     t.string   "name"
     t.string   "abbrev"
@@ -832,6 +842,8 @@ ActiveRecord::Schema.define(:version => 20091027163035) do
     t.datetime "updated_at"
     t.boolean  "complete",     :default => false
   end
+
+  add_index "team_consultations", ["student_id"], :name => "index_team_consultations_on_student_id"
 
   create_table "tiers", :force => true do |t|
     t.integer  "district_id"
