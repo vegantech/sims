@@ -46,7 +46,7 @@ class InterventionDefinition < ActiveRecord::Base
   validates_numericality_of :frequency_multiplier, :time_length_num
 
   acts_as_reportable if defined? Ruport
-  acts_as_list :scope => 'intervention_cluster_id'
+  acts_as_list :scope => :intervention_cluster_id
   after_save :update_district_quicklist
   is_paranoid
   
