@@ -147,7 +147,7 @@ class InterventionsController < ApplicationController
     @goal_definition = @objective_definition.goal_definition
 
     redirect_to new_intervention_url(:goal_id => @goal_definition, :objective_id => @objective_definition,
-           :category_id => @intervention_cluster, :definition_id => @intervention_definition, :quicklist => true)
+           :category_id => @intervention_cluster, :definition_id => @intervention_definition)#:quicklist => true)
   end
 
   def ajax_probe_assignment
