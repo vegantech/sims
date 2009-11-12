@@ -1,4 +1,4 @@
-<% remote_form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
+<% form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
   <%= render :partial=>f %>
   <div class="center_submit">
     <%= f.submit "Update" %>

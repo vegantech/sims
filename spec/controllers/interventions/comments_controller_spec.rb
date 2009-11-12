@@ -91,11 +91,12 @@ describe Interventions::CommentsController do
         assigns(:intervention_comment).should equal(mock_intervention_comment)
       end
 
-      it "should redirect to the intervention_comment" do
+      it "should show a confirmation page and close" do
         InterventionComment.stub!(:find).and_return(mock_intervention_comment(:update_attributes => true, 'user=' => false))
         mock_intervention_comment.stub!('comment=' => false)
         put :update, :id => "1", :intervention_comment =>{}, :format => 'html'
-        response.should redirect_to(intervention_url(@intervention))
+        response.should be_success
+        # redirect_to(intervention_url(@intervention))
       end
 
     end

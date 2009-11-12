@@ -1,16 +1,20 @@
 <% readonly = false %>
 
 <% content_tag_for :tr, comment do %>
-  <td>
-    <%= h comment.comment %> by <%= h comment.user%> on <%= h comment.updated_at.to_date.to_s  %>
+  <td> 
+    <% content_tag_for :span, comment, "span" do %>
+      <%= h comment.comment %> by <%= h comment.user%> on <%= h comment.updated_at.to_date.to_s  %>
+    <% end %>
   </td>
     <% if current_user == comment.user and !readonly %>
       <td>
-        <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank"}%>
+        <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank"} %>
+        <%=periodically_call_remote(:url => intervention_comment_path(@intervention,comment), :method => :get,:update => dom_id(comment,'span'), :frequency => '20') %>
       </td>
       <td>
         <%= link_to_remote_degrades 'Delete', :url => intervention_comment_path(@intervention, comment),
         :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
+        
       </td>
     <% end %>
 <% end %>
