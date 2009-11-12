@@ -25,7 +25,6 @@ class Interventions::CommentsController < ApplicationController
   def edit
     @intervention_comment = @intervention.comments.find(params[:id])
     respond_to do |format|
-      format.js
       format.html
     end
 
@@ -61,7 +60,6 @@ class Interventions::CommentsController < ApplicationController
     respond_to do |format|
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'
-        format.js
         format.html {}
         format.xml  { head :ok }
       else
