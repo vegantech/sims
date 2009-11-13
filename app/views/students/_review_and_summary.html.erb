@@ -1,6 +1,6 @@
 <h2 class="conclusions_and_recommendations"  ondblclick="$('review_and_summary_of_progress').toggle();">Review and Summary of Progress
 </h2>
 <div id="review_and_summary_of_progress">
-  <%= render :partial => 'checklists' %>
+  <%= render :partial => 'checklists' if show_checklist_section?%>
   <%= render :partial => 'recommendations' %>
 </div>
