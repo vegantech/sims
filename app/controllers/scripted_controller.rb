@@ -6,7 +6,7 @@ class ScriptedController < ApplicationController
     response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
     response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
     
-    @students= Student.connection.select_all("select distinct s.id_district,r.id, r.created_at from students s left outer join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 left outer join recommendations r2 on r2.student_id=s.id left outer join interventions i on i.student_id = s.id left outer join student_comments sc on sc.student_id = s.id 
+    @students= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at from students s left outer join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 left outer join recommendations r2 on r2.student_id=s.id left outer join interventions i on i.student_id = s.id left outer join student_comments sc on sc.student_id = s.id 
     left outer join checklists c on c.student_id = s.id
     left outer join flags f on f.type = 'CustomFlag' and f.student_id = s.id
     left outer join principal_overrides po on po.student_id = s.id
@@ -30,9 +30,9 @@ class ScriptedController < ApplicationController
            end
            
           answers = Hash[*answers]
-          csv <<[student["id_district"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y")] 
+          csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y")] 
         else
-          csv << [student["id_district"],"N",nil,nil,nil,nil,nil] unless student["id_district"].blank?
+          csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil] unless student["district_student_id"].blank?
         end
       end
     end

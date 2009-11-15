@@ -6,11 +6,11 @@ module CSVImporter
   private
 
     def index_options
-      [[:school_id_district, :student_id_district],[:end_year,:grade]]
+      [[:district_school_id, :district_student_id],[:end_year,:grade]]
     end
 
     def csv_headers
-      [:grade, :school_id_district, :student_id_district, :end_year]
+      [:grade, :district_school_id, :district_student_id, :end_year]
     end
 
     def sims_model
@@ -36,10 +36,10 @@ module CSVImporter
        inner join students stu on stu.id=e.student_id and stu.district_id = #{@district.id}
        where not exists 
         ( select 1 from #{temporary_table_name} te 
-          where te.school_id_district = sch.id_district and te.student_id_district = stu.id_district 
+          where te.district_school_id = sch.district_school_id and te.district_student_id = stu.district_student_id 
           and te.end_year = e.end_year  and te.grade = e.grade 
         )
-        and sch.id_district is not null and stu.id_district is not null
+        and sch.district_school_id is not null and stu.district_student_id is not null
         "
         puts query
       ActiveRecord::Base.connection.execute query
@@ -49,18 +49,19 @@ module CSVImporter
       query=("insert into enrollments
       (school_id, student_id, grade, end_year , created_at, updated_at)
       select sch.id, stu.id, te.grade, te.end_year, curdate(), curdate() from #{temporary_table_name} te
-      inner join schools sch on sch.id_district = te.school_id_district
-      inner join students stu on stu.id_district = te.student_id_district
+      inner join schools sch on sch.district_school_id = te.district_school_id
+      inner join students stu on stu.district_student_id = te.district_student_id
       left outer join enrollments e
       on sch.id = e.school_id and stu.id = e.student_id and te.grade = e.grade and te.end_year = e.end_year
       where sch.district_id= #{@district.id} and stu.district_id = #{@district.id}
-      and e.school_id is null and stu.id_district is not null and sch.id_district is not null
+      and e.school_id is null and stu.district_student_id is not null and sch.district_school_id is not null
       "
       )
         puts query
       ActiveRecord::Base.connection.execute query
     end
    def confirm_count?
+     return true
     model_name = sims_model.name
     model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
     if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD

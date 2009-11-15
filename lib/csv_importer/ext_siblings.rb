@@ -3,11 +3,11 @@ module CSVImporter
   private
 
     def index_options
-      [:id_district]
+      [:district_student_id]
     end
 
     def csv_headers
-      [:id_district, :firstName, :middleName,:lastName, :studentNumber, :grade, :SchoolName, :age]
+      [:district_student_id, :first_name, :middle_name,:last_name, :student_number, :grade, :school_name, :age]
     end
 
     def sims_model
@@ -16,13 +16,13 @@ module CSVImporter
 
     def migration t
       
-      t.column :id_district, :integer
-      t.column :firstName, :string
-      t.column :middleName, :string
-      t.column :lastName, :string
-      t.column :studentNumber, :string
+      t.column :district_student_id, :integer
+      t.column :first_name, :string
+      t.column :middle_name, :string
+      t.column :last_name, :string
+      t.column :student_number, :string
       t.column :grade, :string
-      t.column :SchoolName, :string
+      t.column :school_name, :string
       t.column :age, :integer
       t.column :arbitrary, :text
       
@@ -37,7 +37,7 @@ module CSVImporter
        delete from ea using  ext_siblings ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
-       stu.id_district is not null
+       stu.district_student_id is not null
         "
         puts query
       ActiveRecord::Base.connection.execute query
@@ -46,10 +46,10 @@ module CSVImporter
     def insert
       query=("insert into ext_siblings
       (student_id, first_name, middle_name, last_name, student_number, grade, school_name, age, created_at, updated_at)
-      select stu.id, te.firstName, te.middleName, te.lastName, te.studentNumber, te.grade, te.SchoolName, te.age, curdate(), curdate() from #{temporary_table_name} te
-      inner join students stu on stu.id_district = te.id_district
+      select stu.id, te.first_name, te.middle_name, te.last_name, te.student_number, te.grade, te.school_name, te.age, curdate(), curdate() from #{temporary_table_name} te
+      inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
-      and  stu.id_district is not null 
+      and  stu.district_student_id is not null 
       "
       )
         puts query
@@ -57,15 +57,7 @@ module CSVImporter
     end
    def confirm_count?
      return true
-    model_name = sims_model.name
-    model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
-    if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
-      @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
-      false
-    else
-      true
-    end
-    end
+   end
  
 
 

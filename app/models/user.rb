@@ -15,14 +15,13 @@
 #  middle_name  :string(255)
 #  suffix       :string(255)
 #  salt         :string(255)     default("")
-#  id_district  :integer(4)
+#  district_user_id  :integer(4)
 #
 
 class User < ActiveRecord::Base
 
 
   
-  CSV_HEADERS=[:id_district,:username,:first_name, :last_name, :middle_name, :suffix, :email,:passwordhash,:salt]
   
   include FullName
   after_update :save_user_school_assignments

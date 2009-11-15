@@ -134,15 +134,15 @@ class ImportMMSD
     @ids_to_map.each do |id_to_map|
       unless @id_mapping[id_to_map]
         if id_to_map == 'student_id'
-          @id_mapping[id_to_map]=Hash[*Student.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+          @id_mapping[id_to_map]=Hash[*Student.all(:select=>'id,district_user_id',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.district_user_id,e.id]}.flatten]
         elsif id_to_map == 'teacher_id'
-          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,district_user_id',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.district_user_id,e.id]}.flatten]
         elsif id_to_map == "author_id"
-          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,district_user_id',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.district_user_id,e.id]}.flatten]
         elsif id_to_map == "user_id"
-          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,district_user_id',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.district_user_id,e.id]}.flatten]
         elsif id_to_map == "principal_id"
-          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,id_district',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.id_district,e.id]}.flatten]
+          @id_mapping[id_to_map]=Hash[*User.all(:select=>'id,district_user_id',:conditions=>{:district_id => ImportMMSD.district}).collect{|e| [e.district_user_id,e.id]}.flatten]
 
         else
           if id_to_map == "from_tier"
@@ -331,12 +331,12 @@ class ImportMMSD
 
   def find_user old_id
     @id_mapping['user_id'] ||={}
-    @id_mapping['user_id'][old_id] ||= (User.find_by_id_district_and_district_id(old_id,ImportMMSD.district)||User.new).id
+    @id_mapping['user_id'][old_id] ||= (User.find_by_district_user_id_and_district_id(old_id,ImportMMSD.district)||User.new).id
   end
 
   def find_student old_id
     @id_mapping['student_id'] ||={}
-    @id_mapping['student_id'][old_id] ||= (Student.find_by_id_district_and_district_id(old_id,ImportMMSD.district)||Student.new).id
+    @id_mapping['student_id'][old_id] ||= (Student.find_by_district_student_id_and_district_id(old_id,ImportMMSD.district)||Student.new).id
 
   end
 

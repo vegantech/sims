@@ -3,15 +3,15 @@ module CSVImporter
 
   private
     def index_options
-      [[:personID]]
+      [[:district_user_id]]
     end
 
     def csv_headers
-      [:personID]
+      [:district_user_id]
     end
 
     def migration t
-      t.integer :personID
+      t.integer :district_user_id
     end
 
     def delete
@@ -27,7 +27,7 @@ module CSVImporter
       query=("insert into special_user_groups
       (user_id,grouptype,district_id, created_at, updated_at)
       select u.id , #{SpecialUserGroup::ALL_SCHOOLS_IN_DISTRICT},#{@district.id}, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
-      users u on u.id_district = tug.personID
+      users u on u.district_user_id = tug.district_user_id
       and u.district_id = #{@district.id}  
       "
       )

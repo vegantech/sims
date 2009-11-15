@@ -15,7 +15,7 @@
 #  middle_name  :string(255)
 #  suffix       :string(255)
 #  salt         :string(255)     default("")
-#  id_district  :integer(4)
+#  district_user_id  :integer(4)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

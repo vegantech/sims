@@ -56,7 +56,7 @@ end
 Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |username, district_name, password|
   district = District.find_by_name(district_name)
   user = district.users.authenticate(username, password)
-  user ||= Factory(:user, :district=>district, :password => password, :username => username, :id_district => rand(50000))
+  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => rand(50000))
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
@@ -74,18 +74,18 @@ end
 
 Given /^a student "([^\"]*)"$/ do |fullname|
   first,last = fullname.split(' ')
-  @student = Factory(:student,:district => @district, :id_district => 31337, :id_state => 33, :first_name => first, :last_name => last)
+  @student = Factory(:student,:district => @district, :district_student_id => 31337, :id_state => 33, :first_name => first, :last_name => last)
 end
 
 Given /^a school "([^\"]*)"$/ do |name|
   @school = School.find_by_name (name) 
-  @school ||=  Factory(:school,:district=> @district, :id_district => 42, :name => name)
+  @school ||=  Factory(:school,:district=> @district, :district_school_id => 42, :name => name)
 end
 
 Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |group_title, school_name, group_id_district|
   school = School.find_by_name(school_name)
   group = Group.find_or_create_by_title_and_school_id(group_title, school.id)
-  group.id_district = group_id_district
+  group.district_group_id = group_id_district
   group.save!
 end
 

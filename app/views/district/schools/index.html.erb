@@ -5,7 +5,7 @@
   <tr>
     
     <th class="sortable">Name</th>
-    <th class="sortable">id_district</th>
+    <th class="sortable">district_school_id</th>
     <th></th>
   </tr>
   </thead>
@@ -14,7 +14,7 @@
 <% for school in @schools %>
   <tr>
     <td><%= h school.name %></td>
-    <td><%= h school.id_district %></td>
+    <td><%= h school.district_school_id %></td>
 
     <td>
       <%= link_to 'Edit', edit_district_school_path(school) %>

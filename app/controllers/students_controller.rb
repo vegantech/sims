@@ -117,8 +117,8 @@ class StudentsController < ApplicationController
   end
 
   def ic_entry
-      session[:user_id]= nil if current_user.id_district.to_s != params[:personID]
-      student = current_district.students.find_by_id_district(params[:contextID])
+      session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
+      student = current_district.students.find_by_district_student_id(params[:contextID])
       if student
         session[:requested_url]= student_url(student,:username => params[:username])
       else

@@ -34,8 +34,8 @@ module CSVImporter
       query=("insert into special_user_groups
       (user_id,school_id,grouptype,district_id,is_principal,grade, created_at, updated_at)
       select u.id ,schools.id, #{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL},#{@district.id},tug.principal, nullif(tug.grade,''), CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
-      users u on u.id_district = tug.district_user_id
-      inner join schools on tug.district_school_id = schools.id_district
+      users u on u.district_user_id = tug.district_user_id
+      inner join schools on tug.district_school_id = schools.district_school_id
       where u.district_id = #{@district.id}  and schools.district_id = #{@district.id}
       "
       )

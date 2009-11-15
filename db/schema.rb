@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091110154916) do
+ActiveRecord::Schema.define(:version => 20091114233840) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -326,10 +326,10 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "id_district"
+    t.string   "district_group_id"
   end
 
-  add_index "groups", ["id_district"], :name => "index_groups_on_id_district"
+  add_index "groups", ["district_group_id"], :name => "index_groups_on_id_district"
   add_index "groups", ["school_id"], :name => "index_groups_on_school_id"
 
   create_table "groups_students", :id => false, :force => true do |t|
@@ -744,7 +744,7 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
 
   create_table "schools", :force => true do |t|
     t.string   "name"
-    t.integer  "id_district"
+    t.integer  "district_school_id"
     t.integer  "id_state"
     t.integer  "id_country"
     t.integer  "district_id"
@@ -752,7 +752,7 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
     t.datetime "updated_at"
   end
 
-  add_index "schools", ["district_id", "id_district"], :name => "index_schools_on_district_id_and_id_district"
+  add_index "schools", ["district_id", "district_school_id"], :name => "index_schools_on_district_id_and_id_district"
 
   create_table "special_user_groups", :force => true do |t|
     t.integer  "user_id"
@@ -810,7 +810,7 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "number"
-    t.integer  "id_district"
+    t.integer  "district_student_id"
     t.integer  "id_state"
     t.integer  "id_country"
     t.datetime "created_at"
@@ -823,7 +823,7 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
   end
 
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
-  add_index "students", ["id_district"], :name => "index_students_on_id_district"
+  add_index "students", ["district_student_id"], :name => "index_students_on_id_district"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
 
   create_table "team_agendas", :force => true do |t|
@@ -895,10 +895,10 @@ ActiveRecord::Schema.define(:version => 20091110154916) do
     t.string   "email"
     t.string   "middle_name"
     t.string   "suffix"
-    t.string   "salt",         :default => ""
-    t.integer  "id_district"
+    t.string   "salt",             :default => ""
+    t.integer  "district_user_id"
   end
 
-  add_index "users", ["district_id", "id_district"], :name => "index_users_on_district_id_and_id_district"
+  add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"
 
 end

@@ -31,7 +31,7 @@ module CSVImporter
               where schools.district_id = #{@district.id} and students.district_id = #{@district.id}
               and not exists (
                                           select 1 from #{temporary_table_name} tug
-                                                  where tug.district_student_id = students.id_district and tug.district_group_id = groups.id_district
+                                                  where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id
                                                         )"
 
       puts query                                                        
@@ -42,9 +42,9 @@ module CSVImporter
       query=("insert into groups_students
       (student_id,group_id)
       select u.id , g.id from #{temporary_table_name} tug inner join 
-      students u on u.id_district = tug.district_student_id
+      students u on u.district_student_id = tug.district_student_id
       inner join groups g
-      on tug.district_group_id = g.id_district
+      on tug.district_group_id = g.district_group_id
       and u.district_id = #{@district.id}  
       where not exists (
       select 1 from groups_students gs

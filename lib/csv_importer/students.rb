@@ -1,28 +1,5 @@
 module CSVImporter
 
-  # == Schema Information
-  # Schema version: 20090623023153
-  #
-  # Table name: students
-  #
-  #  id          :integer(4)      not null, primary key
-  #  district_id :integer(4)
-  #  last_name   :string(255)
-  #  first_name  :string(255)
-  #  number      :string(255)
-  #  id_district :integer(4)
-  #  id_state    :integer(4)
-  #  id_country  :integer(4)
-  #  created_at  :datetime
-  #  updated_at  :datetime
-  #  birthdate   :date
-  #  esl         :boolean(1)
-  #  special_ed  :boolean(1)
-  #  middle_name :string(255)
-  #  suffix      :string(255)
-  #
-
-
   
   class Students < CSVImporter::Base
     #13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
@@ -38,11 +15,11 @@ module CSVImporter
 
                                   
     def index_options
-      [:id_state, :id_district]
+      [:id_state, :district_student_id]
     end
 
     def csv_headers
-     [:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
+     [:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
     end
 
     def sims_model
@@ -110,7 +87,7 @@ module CSVImporter
     def reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
       shared="#{temporary_table_name} ts inner join students s on 
           ts.id_state = s.id_state
-          where s.district_id is null and s.id_district is not null
+          where s.district_id is null and s.district_student_id is not null
           and s.id_state is not null
           and ((
             ts.birthdate != s.birthdate
@@ -131,7 +108,7 @@ module CSVImporter
     def claim_students_with_nil_district
       
       claimed_count = ActiveRecord::Base.connection.update_sql("update students s inner join #{temporary_table_name} ts on 
-      ts.id_state = s.id_state set s.district_id = #{@district.id}, s.id_district = ts.id_district where s.district_id is null and ts.id_state is not null")
+      ts.id_state = s.id_state set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id where s.district_id is null and ts.id_state is not null")
       @messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
      
       #do select and add to messages
@@ -150,16 +127,16 @@ module CSVImporter
        updates=csv_headers.collect{|e| "s.#{e} = ts.#{e}"}.join(", ")
              
       q="update students s inner join #{temporary_table_name} ts on 
-          ts.id_district = s.id_district set s.updated_at = CURDATE(), #{updates}
-          where s.district_id = #{@district.id} and s.id_district is not null"
+          ts.district_student_id = s.district_student_id set s.updated_at = CURDATE(), #{updates}
+          where s.district_id = #{@district.id} and s.district_student_id is not null"
       ActiveRecord::Base.connection.update_sql(q)
     end
 
     def delete
       #unset the district of  all students that are not in the temporary table
        q="update students s left outer join #{temporary_table_name} ts on 
-          ts.id_district = s.id_district set s.district_id = null
-          where s.district_id = #{@district.id} and ts.id_district is null and s.id_district is not null"
+          ts.district_student_id = s.district_student_id set s.district_id = null
+          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
      
        ActiveRecord::Base.connection.update_sql(q)
        
@@ -178,8 +155,8 @@ module CSVImporter
       query=("insert into students
       (#{inserts}, created_at, updated_at, district_id)
       select ts.*, curdate(), curdate(), #{@district.id} from #{temporary_table_name} ts left outer join students s
-      on ts.id_district = s.id_district and s.district_id = #{@district.id}
-      where s.id_district is null and ts.id_district is not null
+      on ts.district_student_id = s.district_student_id and s.district_id = #{@district.id}
+      where s.district_student_id is null and ts.district_student_id is not null
       "
       )
 
@@ -202,59 +179,4 @@ module CSVImporter
 
   end
 end
-=begin
 
-
-module ImportCSV::Students  
-  def student_ids_with_associations ids=[]
-   has_many = Student.reflect_on_all_associations(:has_many).select{|e| e.source_reflection.blank?}
-   habtm = Student.reflect_on_all_associations(:has_and_belongs_to_many)
-
-   table_names = []
-
-   has_many.each{|e| table_names << e.table_name}
-   habtm.each{|e| table_names << e.options[:join_table]}
-   table_names.uniq!
-   
-   Student.all( 
-      :group => 'students.id',
-      :select => "students.id", 
-      :joins => table_names.collect{|tn| "left outer join #{tn} on students.id = #{tn}.student_id"}.join(" "), 
-      :having => table_names.collect{|tn| "count(#{tn}.student_id) >0"}.join(" or "),
-      :conditions => {:id => ids}
-   ).collect(&:id)
-  end
-
-  def load_students_from_csv file_name
-    #136.140547037125 new import, 88 running it again
-    
-    @students = Student.find_all_by_district_id(@district.id).hash_by(:id_state)
-    if load_from_csv file_name, "student"
-      #TODO deletion should only occur for students that have no activity
-      #Student.scoped(:conditions => ["district_id = ? and id_district is not null and id not in (?)",@district.id, @ids]).destroy_all
-      bulk_update Student
-      students_ids = @students.values.collect(&:id)
-
-      # Student.delete(students_ids - @ids)
-      to_delete_or_disable = (students_ids - @ids)
-
-      to_disable =student_ids_with_associations to_delete_or_disable
-      to_delete = to_delete_or_disable - to_disable
-      #      ,to_delete = to_delete_or_disable.partition{|i| Enrollment.exists?(:student_id => i)}
-
-      Student.delete(to_delete)
-      Student.update_all("district_id = null, id_district = null", "id in (#{to_disable})") unless to_disable.empty?
-      #      Student.connection.execute "update students set (district_id, id_district) = (null, null) where students.id in (#{to_disable})"
-      bulk_insert Student
-    else
-      false
-    end
-  end
-  def process_student_line line
-    found_student = @students[line[:id_state].to_i] || @district.students.build
-    process_line line, found_student
-  end
-
-
-end
-=end

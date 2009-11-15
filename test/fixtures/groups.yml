@@ -8,7 +8,7 @@
 #  school_id   :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  id_district :string(255)
+#  district_group_id :string(255)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

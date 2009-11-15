@@ -3,12 +3,12 @@ module CSVImporter
   private
 
     def index_options
-      [:personID]
+      [:district_student_id]
     end
     
     def csv_headers
     [
-    :HomeLanguage, :personID, :streetAddress, :cityStateZip, :mealstatus, :englishProficiency, :specialEdStatus, :disability1, :disability2, :singleParent, :raceEthnicity, :suspensions_in, :suspensions_out, :years_in_district, :school_changes, :years_at_current_school, :previous_school_name, :current_attendance_rate, :previous_attendance_rate, :esl, :tardies
+    :district_student_id,:home_language, :street_address, :city_state_zip, :meal_status, :english_proficiency, :special_ed_status, :disability1, :disability2, :single_parent, :race_ethnicity, :suspensions_in, :suspensions_out, :years_in_district, :school_changes, :years_at_current_school, :previous_school_name, :current_attendance_rate, :previous_attendance_rate, :esl, :tardies
     ]
     end
 
@@ -18,17 +18,17 @@ module CSVImporter
 
     def migration t
 
-      t.column :HomeLanguage, :string
-      t.column :personID, :integer
-     t.column :streetAddress, :string
-     t.column :cityStateZip, :string
-     t.column :mealstatus, :string
-     t.column :englishProficiency, :string
-     t.column :specialEdStatus, :string
+      t.column :district_student_id, :integer
+      t.column :home_language, :string
+     t.column :street_address, :string
+     t.column :city_state_zip, :string
+     t.column :meal_status, :string
+     t.column :english_proficiency, :string
+     t.column :special_ed_status, :string
      t.column :disability1, :string
      t.column :disability2, :string
-     t.column :singleParent, :boolean
-     t.column :raceEthnicity, :string
+     t.column :single_parent, :boolean
+     t.column :race_ethnicity, :string
      t.column :suspensions_in, :integer
      t.column :suspensions_out, :integer
      t.column :years_in_district, :integer
@@ -51,7 +51,7 @@ module CSVImporter
        delete from ea using  ext_summaries ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
-       stu.id_district is not null
+       stu.district_student_id is not null
         "
         puts query
       ActiveRecord::Base.connection.execute query
@@ -62,11 +62,11 @@ module CSVImporter
     def insert
       query=("insert into ext_summaries
       select NULL,stu.id, 
-       te.HomeLanguage, te.streetAddress, te.cityStateZip, te.mealstatus, te.englishProficiency, te.specialEdStatus, te.disability1, te.disability2, te.singleParent, te.raceEthnicity, te.suspensions_in, te.suspensions_out, te.years_in_district, te. school_changes, te.years_at_current_school, te.previous_school_name, te.current_attendance_rate, te.previous_attendance_rate, te.esl, te.tardies,
+       te.home_language, te.street_address, te.city_state_zip, te.meal_status, te.english_proficiency, te.special_ed_status, te.disability1, te.disability2, te.single_parent, te.race_ethnicity, te.suspensions_in, te.suspensions_out, te.years_in_district, te. school_changes, te.years_at_current_school, te.previous_school_name, te.current_attendance_rate, te.previous_attendance_rate, te.esl, te.tardies,
        curdate(), curdate() from #{temporary_table_name} te
-      inner join students stu on stu.id_district = te.personID
+      inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
-      and  stu.id_district is not null 
+      and  stu.district_student_id is not null 
       "
       )
         puts query
@@ -75,14 +75,6 @@ module CSVImporter
 
    def confirm_count?
      return true
-    model_name = sims_model.name
-    model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
-    if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
-      @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
-      false
-    else
-      true
-    end
     end
  
 

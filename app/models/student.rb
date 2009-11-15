@@ -8,7 +8,7 @@
 #  last_name   :string(255)
 #  first_name  :string(255)
 #  number      :string(255)
-#  id_district :integer(4)
+#  district_student_id :integer(4)
 #  id_state    :integer(4)
 #  id_country  :integer(4)
 #  created_at  :datetime
@@ -22,7 +22,6 @@
 
 class Student < ActiveRecord::Base
 
-  CSV_HEADERS=[:id_state, :id_district, :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
   EXTENDED_PROFILE_PATH = "#{RAILS_ROOT}/file/extended_profiles/%s/%s" #% [district_id, id]
   include FullName
   belongs_to :district
@@ -50,7 +49,7 @@ class Student < ActiveRecord::Base
   
 
   validates_presence_of :first_name, :last_name, :district_id
-  validates_uniqueness_of :id_district, :scope => :district_id, :allow_blank => true
+  validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
   #validates_uniqueness_of :id_state, :allow_nil => true 
   validate :unique_id_state_by_state
 

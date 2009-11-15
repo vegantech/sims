@@ -8,7 +8,7 @@
 #  last_name   :string(255)
 #  first_name  :string(255)
 #  number      :string(255)
-#  id_district :integer(4)
+#  district_student_id :integer(4)
 #  id_state    :integer(4)
 #  id_country  :integer(4)
 #  created_at  :datetime
@@ -26,7 +26,7 @@ one:
   district: 
   last_name: MyString
   first_name: MyString
-  id_district: 1
+  district_student_id: 1
   id_state: 1
   id_country: 1
 
@@ -35,7 +35,7 @@ two:
   district: 
   last_name: MyString
   first_name: MyString
-  id_district: 1
+  district_student_id: 1
   id_state: 1
   id_country: 1
 

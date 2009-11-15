@@ -28,7 +28,7 @@ module CSVImporter
 
 extra ="      where not exists (
         select 1 from #{temporary_table_name} tug
-        where tug.district_user_id = users.id_district and tug.district_group_id = groups.id_district)
+        where tug.district_user_id = users.district_user_id and tug.district_group_id = groups.district_group_id)
       )"
       UserGroupAssignment.connection.execute query
     end
@@ -37,9 +37,9 @@ extra ="      where not exists (
       query=("insert into user_group_assignments
       (user_id,group_id, is_principal, created_at, updated_at)
       select u.id , g.id, principal, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
-      users u on u.id_district = tug.district_user_id
+      users u on u.district_user_id = tug.district_user_id
       inner join groups g
-      on tug.district_group_id = g.id_district
+      on tug.district_group_id = g.district_group_id
       and u.district_id = #{@district.id}  
       "
       )
