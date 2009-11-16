@@ -76,7 +76,11 @@ class InterventionBuilder::ObjectivesController < ApplicationController
   end
 
   def disable
-    @objective_definition.disable!
+    if params[:enable]
+      @objective_definition.update_attribute(:disabled, false)
+    else
+      @objective_definition.disable!
+    end
     respond_to do |format|
       format.html { redirect_to intervention_builder_objectives_url }
     end

@@ -3,12 +3,12 @@
 <% form_tag do %>
 <div class="standardForm">
 
-<% @goal_definitions.each do |g| %>
-<% g.objective_definitions.each do |o| %>
+<% @goal_definitions.reject(&:disabled).each do |g| %>
+<% g.objective_definitions.reject(&:disabled).each do |o| %>
 <%=content_tag :h2, o.title %>
-<% o.intervention_clusters.each do |ic| %>
+<% o.intervention_clusters.reject(&:disabled).each do |ic| %>
 <%=content_tag :h4, ic.title %>
-<% @int_defs=ic.intervention_definitions %>
+<% @int_defs=ic.intervention_definitions.reject(&:disabled) %>
 
         <% @int_defs.each do |int_def| %>
          <%=check_box_tag("int_defs[]", int_def.id,@probe_definition.intervention_definitions.include?(int_def), :id=>int_def.id) %>

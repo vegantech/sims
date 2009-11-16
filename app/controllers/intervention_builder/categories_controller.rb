@@ -72,7 +72,11 @@ class InterventionBuilder::CategoriesController < ApplicationController
   end
 
   def disable
-    @intervention_cluster.disable!
+    if params[:enable]
+      @intervention_cluster.update_attribute(:disabled, false)
+    else
+      @intervention_cluster.disable!
+    end
     
     respond_to do |format|
       format.html { redirect_to intervention_builder_categories_url }

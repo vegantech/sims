@@ -1,11 +1,11 @@
 <% form_tag do %>
-<% @goals.each do |goal| %>
+<% @goals.reject(&:disable).each do |goal| %>
   <%= content_tag :h2, goal.title %>
-  <% goal.objective_definitions.each do |objective| %>
+  <% goal.objective_definitions.reject(&:disable).each do |objective| %>
     <%= content_tag :h2, objective.title %>
-    <% objective.intervention_clusters.each do |category| %>
+    <% objective.intervention_clusters.reject(&:disable).each do |category| %>
       <% content_tag :h2, category.title %>
-      <% category.intervention_definitions.each do |intervention| %>
+      <% category.intervention_definitions.reject(&:disable).each do |intervention| %>
         <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
         <%= label_tag dom_id(intervention), intervention.title %> 
 <br />

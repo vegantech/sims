@@ -78,7 +78,11 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   def disable
     @intervention_definition = InterventionDefinition.find(params[:id])
-    @intervention_definition.disable!
+    if params[:enable]
+      @intervention_definition.update_attribute(:disabled, false)
+    else
+      @intervention_definition.disable!
+    end
 
     respond_to do |format|
       format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }

@@ -89,7 +89,11 @@ class InterventionBuilder::GoalsController < ApplicationController
 
   def disable
     @goal_definition = current_district.goal_definitions.find(params[:id])
-    @goal_definition.disable!
+    if params[:enable]
+      @goal_definition.update_attribute(:disabled,false)
+    else
+      @goal_definition.disable!
+    end
     respond_to do |format|
       format.html { redirect_to intervention_builder_goals_url }
     end

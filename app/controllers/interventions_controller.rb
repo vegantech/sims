@@ -132,7 +132,7 @@ class InterventionsController < ApplicationController
 
 
   def quicklist_options
-    @quicklist_intervention_definitions = current_school.quicklist 
+    @quicklist_intervention_definitions = current_school.quicklist.reject(&:disabled)
     respond_to do |format|
       format.js
       format.html

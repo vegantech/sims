@@ -1,5 +1,5 @@
 <% if @quicklist_intervention_definitions.blank? %>
-   Quicklist is not available.
+   Quicklist is empty.
 <% else %>
    <%form_for :quicklist_item, :url => quicklist_interventions_path do |f| %>
     <%= f.label :intervention_definition_id, "Intervention Quicklist" %>
