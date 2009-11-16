@@ -52,7 +52,7 @@ class ScriptedController < ApplicationController
       spawn do
         importer = ImportCSV.new params[:upload_file], current_district
         importer.import
-        Notifications.deliver_district_upload_results importer.messages, 'b723176@madison.k12.wi.us'
+        Notifications.deliver_district_upload_results importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us'
       end
       render :text=> ''
     else
@@ -65,7 +65,7 @@ protected
   def authenticate
     subdomains
     authenticate_or_request_with_http_basic do |username, password|
-      username == params[:action] && current_district.users.authenticate(username,password)
+      username == params[:action] && @u=current_district.users.authenticate(username,password)
     end
   end
 

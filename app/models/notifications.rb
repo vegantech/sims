@@ -99,7 +99,7 @@ class Notifications < ActionMailer::Base
     @subject = 'SIMS- Checklist Completed'
     @body['recommendation'] = rec  unless rec.blank?
     @body['student']=student
-    @from                     = 'SIMS <b723176@madison.k12.wi.us>'
+    @from                     = 'SIMS <shawn@simspilot.org>'
     @headers = {}
     @body['user_name']= user_name
     @recipients = user_email
@@ -108,7 +108,7 @@ class Notifications < ActionMailer::Base
 
   def district_upload_results msg, admin_email
     @subject = 'SIMS Upload Results'
-    @from                     = 'SIMS <b723176@madison.k12.wi.us>'
+    @from                     = 'SIMS <shawn@simspilot.org>'
     @recipients = admin_email
     @body['msg'] = msg
     
