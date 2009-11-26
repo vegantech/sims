@@ -101,7 +101,7 @@ class ImportCSV
     
 
   def ids_by_id_district klass
-    klass.connection.select_all("select id, district_#{klass.name.downcase}_id from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>true)
+    klass.connection.select_all("select id, district_#{klass.name.downcase}_id as id_district from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>true)
   end
 
   
