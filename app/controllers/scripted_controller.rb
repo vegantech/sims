@@ -43,7 +43,10 @@ class ScriptedController < ApplicationController
        
   end
              
-      
+
+  def district_export
+    send_file(DistrictExport.generate(current_district))
+  end
 
   def district_upload
     if request.post? or true
