@@ -24,5 +24,33 @@ module InterventionsHelper
     ret  
   end
   
- 
+
+
+  def tiered_quicklist(quicklist_items)
+    if quicklist_items.blank?
+      concat("Quicklist is empty.")
+    else
+      form_for :quicklist_item,  :url => quicklist_interventions_path do |f|
+        concat(f.label(:intervention_definition_id, "Intervention Quicklist "))
+        concat('<select id="quicklist_item_intervention_definition_id" onchange="form.submit()" name="quicklist_item[intervention_definition_id]"')
+        concat('<option value=""></option>')
+        gqi=quicklist_items.group_by{|q| "#{q.objective_definition} : #{q.tier}"}
+        gqi.each do |group,col|
+          concat("<optgroup label='#{group}'>")
+          concat(options_from_collection_for_select(col, :id, :title))
+          concat("</optgroup>")
+        end
+        concat('</select>')
+          
+          
+
+        #        concat(f.collection_select(:intervention_definition_id, quicklist_items, :id, :title ,{:prompt=>""},:onchange=>"submit()"))
+             
+        concat("<noscript>#{ f.submit "Pick from Quicklist"}</noscript>")
+
+      end
+    
+    end
+
+  end
 end

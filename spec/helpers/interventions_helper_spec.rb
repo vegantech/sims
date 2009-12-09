@@ -24,6 +24,34 @@ describe InterventionsHelper do
     end
 
   end
+
+  describe 'tiered_quicklist' do
+
+    it 'should return Quicklist is empty if there are no quicklist items' do
+      tiered_quicklist(nil).should == 'Quicklist is empty.'
+    end
+
+    it 'should return a form if there are  quicklist items' do
+      g11=mock_intervention_definition(:title => 'Quicklist1',:id=>6, :objective_definition => 'Objective 1',:tier=>'1-Basic')
+      g11b=mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 1',:tier=>'1-Basic')
+      g00=mock_intervention_definition(:title => 'Quicklist3',:id=>3, :objective_definition => '',:tier=>'')
+      
+      
+     
+      arr=[g11,g00,g11b]
+      tiered_quicklist(arr).should have_tag("form") do
+        with_tag("option[value=?]",'','')
+        with_tag("optgroup[label=?]","Objective 1 : 1-Basic") do
+          with_tag("option[value=?]",g11.id, g11.title)
+          with_tag("option[value=?]",g11b.id, g11b.title)
+        end
+        with_tag("option[value=?]",g00.id, g00.title)
+        with_tag("noscript") do
+          with_tag("input[type=submit][value=?]", 'Pick from Quicklist')
+        end
+      end
+    end
+  end
   #Delete this example and add some real ones or delete this file
 
 =begin  

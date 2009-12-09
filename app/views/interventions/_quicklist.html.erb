@@ -1,11 +1,1 @@
-<% if @quicklist_intervention_definitions.blank? %>
-   Quicklist is empty.
-<% else %>
-   <%form_for :quicklist_item, :url => quicklist_interventions_path do |f| %>
-    <%= f.label :intervention_definition_id, "Intervention Quicklist" %>
-    <%= f.collection_select :intervention_definition_id, @quicklist_intervention_definitions, :id, :title ,{:prompt=>""},:onchange=>"submit()"%>
-    <noscript><%= f.submit "Pick from Quicklist" %></noscript>
-  <% end %>
-<% end %>
-
-
+<%tiered_quicklist(@quicklist_intervention_definitions ) %> 
