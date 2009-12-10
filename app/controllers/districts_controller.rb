@@ -1,5 +1,5 @@
 class DistrictsController < ApplicationController
-  additional_write_actions :reset_password, :recreate_admin, :bulk_import
+  additional_write_actions :reset_password, :recreate_admin, :bulk_import, :export
   additional_read_actions :bulk_import_form
   before_filter :state_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
 
@@ -78,7 +78,12 @@ class DistrictsController < ApplicationController
     redirect_to(districts_url)
   end
 
+  def export
+    send_file(DistrictExport.generate(current_district), :type => 'applciation/zip', :x_sendfile => true)
 
+  end
+
+  
   def bulk_import_form
      @uuid = (0..29).to_a.map {|x| rand(10)}
   end

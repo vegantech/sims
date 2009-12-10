@@ -45,7 +45,7 @@ class ScriptedController < ApplicationController
              
 
   def district_export
-    send_file(DistrictExport.generate(current_district))
+    send_file(DistrictExport.generate(current_district), :x_sendfile => true, :filename => 'sims_export.zip')
   end
 
   def district_upload
