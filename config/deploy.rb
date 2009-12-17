@@ -24,7 +24,7 @@ task :wip do
 <br /> The data in this demo gets reset weekly. Training districts are reset daily.'
   set :application, "sims-wip"
   set :domain, 'sims-wip.vegantech.com'
-  set :branch, 'aug-11-formatting-changes'
+#  set :branch, 'aug-11-formatting-changes'
 
 end
 
