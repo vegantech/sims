@@ -84,6 +84,7 @@ class ProbeDefinition < ActiveRecord::Base
     my_hash
   end
 
+
   private
   def deep_clone_parent_field
     'district_id'

@@ -49,7 +49,15 @@ class InterventionDefinition < ActiveRecord::Base
   acts_as_list :scope => :intervention_cluster_id
   after_save :update_district_quicklist
   is_paranoid
-  
+ 
+
+  def title
+    if custom
+      "(c) #{self[:title]}"
+    else
+      "#{self[:title]}"
+    end
+  end
 
   def business_key
     "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
