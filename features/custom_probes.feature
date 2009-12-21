@@ -55,7 +55,7 @@ Feature: Create Custom Probes
     And I select "Some Category" from "intervention_cluster_id"
     And I press "Choose Category"
     
-    And I select "Custom Intervention Name" from "intervention_definition_id"
+    And I select "(c) Custom Intervention Name" from "intervention_definition_id"
     And I press "Choose Intervention"
 
     Then page should contain "PTitle1"

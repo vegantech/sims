@@ -52,7 +52,7 @@ class InterventionDefinition < ActiveRecord::Base
  
 
   def title
-    if custom
+    if custom and self[:title].present?
       "(c) #{self[:title]}"
     else
       "#{self[:title]}"
