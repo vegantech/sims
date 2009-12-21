@@ -91,6 +91,74 @@ protected
 
   end
 
+  def dates_of_sims_data
+
+
+    @students= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 
+    where s.district_id = #{current_district.id}")
+
+    students =Student.connection.select_all(
+ 
+    "
+    select s.district_student_id,  (year(sc.updated_at + INTERVAL 6 month))  as schoolyear from student_comments sc
+    inner join students s on sc.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(sc.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from recommendations r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+    
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from interventions r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from checklists r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from flags r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id} and r.type = 'CustomFlag'
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from principal_overrides r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from consultation_form_requests r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+
+    union
+
+    select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from consultation_forms r
+    inner join students s on r.student_id = s.id
+    where s.district_id = #{current_district.id}
+    group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
+    ")
+
+    students.each {|s| s["schoolyear"] = Date.civil(s["schoolyear"].to_i,1,1).to_s }
+    @students += students
+  end
+
 
   
 end
