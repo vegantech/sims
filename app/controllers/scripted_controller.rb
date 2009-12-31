@@ -6,17 +6,10 @@ class ScriptedController < ApplicationController
     response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
     response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
     
-    @students= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at from students s left outer join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 left outer join recommendations r2 on r2.student_id=s.id left outer join interventions i on i.student_id = s.id left outer join student_comments sc on sc.student_id = s.id 
-    left outer join checklists c on c.student_id = s.id
-    left outer join flags f on f.type = 'CustomFlag' and f.student_id = s.id
-    left outer join principal_overrides po on po.student_id = s.id
-    left outer join consultation_form_requests cfr on cfr.student_id = s.id
-    left outer join consultation_forms cf on cf.student_id = s.id
-    where s.district_id = #{current_district.id} and (r.id is not null or  r2.id is not null or i.id is not null or sc.id is not null or c.id is not null or f.id is not null or po.id is not null
-    or cfr.id is not null or cf.id is not null)")
-
+    @students= dates_of_sims_data
+   
     csv_string = FasterCSV.generate(:row_sep=>"\r\n") do |csv|
-      csv << ["personID","referral_request","main_concerns","interventions_tried","family_involvement","external_factors","date"]
+      csv << ["personID","referral_request","main_concerns","interventions_tried","family_involvement","external_factors","date","schoolyear"]
       @students.each do |student|
         if student["id"]
            
@@ -30,9 +23,9 @@ class ScriptedController < ApplicationController
            end
            
           answers = Hash[*answers]
-          csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y")] 
+          csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y"),nil] 
         else
-          csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil] unless student["district_student_id"].blank?
+          csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil,student["schoolyear"] unless student["district_student_id"].blank?
         end
       end
     end
@@ -94,7 +87,8 @@ protected
   def dates_of_sims_data
 
 
-    @students= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 
+    referrals= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at, (year(r.updated_at + INTERVAL 6 month))  as schoolyear
+    from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 
     where s.district_id = #{current_district.id}")
 
     students =Student.connection.select_all(
@@ -155,8 +149,15 @@ protected
     group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
     ")
 
-    students.each {|s| s["schoolyear"] = Date.civil(s["schoolyear"].to_i,1,1).to_s }
-    @students += students
+    students.reject! do |e|
+      referrals.any? do |r|
+        r["district_student_id"] == e["district_student_id"] &&
+          r["schoolyear"] == e["schoolyear"]
+      end
+    end
+
+
+    referrals + students
   end
 
 
