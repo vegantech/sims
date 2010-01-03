@@ -25,7 +25,7 @@ class ScriptedController < ApplicationController
           answers = Hash[*answers]
           csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y"),nil] 
         else
-          csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil,student["schoolyear"] unless student["district_student_id"].blank?
+          csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil,student["schoolyear"]] unless student["district_student_id"].blank?
         end
       end
     end
