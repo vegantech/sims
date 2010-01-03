@@ -55,6 +55,8 @@
          <% if current_student and current_student.max_tier %>
             Current Tier is <%=current_student.max_tier%>
          <% end %>
+         <br />
+         <%="Logged in as #{current_user} (#{current_school})" if current_user  && !current_user.new_record? %>
         <br /><br />
 
         <% if ENV["RAILS_ENV"] == "development" %>
