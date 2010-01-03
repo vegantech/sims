@@ -65,15 +65,14 @@ class Notifications < ActionMailer::Base
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end
 
-  def intervention_ending_reminder(intervention, sent_at = Time.now)
-    participants = intervention.participants_with_author
-    subject    '[SIMS] Student Intervention Ending This Week'
-    recipients participants.collect(&:email).compact.uniq.join(',')
+  def intervention_ending_reminder(user,interventions, sent_at = Time.now)
+    subject    '[SIMS] Student Intervention(s) Ending This Week'
+    recipients user.email
     from       'SIMS <sims@simspilot.org>'
     sent_on    sent_at
    
-    setup_url(intervention.student.district)
-    body       :greeting => 'Hi,', :participants => participants, :intervention => intervention, :url_opts => url_opts
+    setup_url(user.district)
+    body       :greeting => 'Hi,', :user => user, :interventions => interventions, :url_opts => url_opts
   end
 
   def intervention_reminder(sent_at = Time.now)
@@ -114,8 +113,22 @@ class Notifications < ActionMailer::Base
     
   end
 
-  def self.setup_ending_reminders
-    interventions_ending_this_week.each { |intervention| self.deliver_intervention_ending_reminder(intervention)}
+  def self.setup_ending_reminders(district = nil)
+    errors = []
+    users_with_interventions = Hash.new([])
+    interventions_ending_this_week.each do |intervention| 
+      if district.blank? || intervention.participants_with_author.collect(&:user).collect(&:district_id).include?(district.id)
+        intervention.participants_with_author.each{|p| users_with_interventions[p.user] |= [intervention]}
+      end
+    end
+      users_with_interventions.each do |user,interventions|
+        begin
+        self.deliver_intervention_ending_reminder(user,interventions)
+        rescue Exception => e
+          errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
+        end
+      end
+    puts errors.inspect
   end
 
   def self.interventions_ending_this_week
