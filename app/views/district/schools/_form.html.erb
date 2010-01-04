@@ -11,12 +11,6 @@
     <%= form.text_field :district_school_id %>
     <%= help_popup("The primary key used in your Student Information System for the school.  #{id_district_desc(form.object)}") %>
   </div>
-  <div class = "form_row">
-    <%= form.label :id_state, "DPI school id" %>
-    <%= form.text_field :id_state %>
-    <%= help_popup("#{id_state_desc(form.object)}.  It probably isn't required." ) %>
-    
-  </div>
 <!--
   <div class = "form_row">
     <%= form.label :id_country, id_country_desc(form.object) %><br />

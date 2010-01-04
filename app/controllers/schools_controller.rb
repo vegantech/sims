@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  layout 'main'
   def index
     @schools = current_user.authorized_schools
     flash[:notice]="No schools available" and redirect_to root_url if @schools.blank?

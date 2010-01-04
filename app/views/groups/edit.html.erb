@@ -1,13 +1,8 @@
 <h1>Editing group</h1>
 
 <% form_for(@group) do |f| %>
-  <%= f.error_messages %>
-
+<%= render :partial => f %>
   <p>
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </p>
- <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>

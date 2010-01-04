@@ -39,9 +39,10 @@
         </p>
         <%= render :partial =>"layouts/administration"%>
         <p><%= render :partial=>"layouts/flag_legend"%></p>
-        <%= yield :news %>
+
         <p><%= render_cell(:principal_overrides, :user_requests, :user=>@user)%></p>
         <p><%= render_cell(:principal_overrides, :principal_responses,:user=>@user)%></p>
+        <%= render :partial => 'main/news' %>
       </div>
       <div id="main">
         <div id="breadcrumbs_and_banners">
