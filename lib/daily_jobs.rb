@@ -13,7 +13,7 @@ class DailyJobs
 
   def self.run_weekly
     self.reset_demo if defined?(SIMS_DOMAIN) && SIMS_DOMAIN == "sims-open.vegantech.com"
-    Notifications.setup_ending_reminders(District.find_by_state_id(3269))
+    Notifications.setup_ending_reminders(District.find_by_state_dpi_num(3269))
   end
 
   def self.reset_demo
