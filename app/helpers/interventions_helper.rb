@@ -3,10 +3,12 @@ module InterventionsHelper
   def tiered_intervention_definition_select(intervention_definitions, include_blank=true, selected = nil)
 
     #current_district.lock_tier?
-   lock_tier= current_district.lock_tier?
+   if  current_district.lock_tier
+     lock_tier = true unless  ( current_district.state_dpi_num == 3269  && intervention_definitions.present? && intervention_definitions.first.objective_definition.title == "Improved Attendance")
+   end
    ret=%q{<select id="intervention_definition_id" class="fixed_width" onchange="$('spinnerdefinitions').show();form.onsubmit()" name="intervention_definition[id]">}
   
-    ret += '<option value=""></option>}' if include_blank
+    ret += '<option value=""></option>' if include_blank
     c=intervention_definitions.group_by{|e| e.tier.to_s}
     selected = selected.id if selected.present?
     if lock_tier 
