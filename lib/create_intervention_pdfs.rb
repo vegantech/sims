@@ -23,4 +23,9 @@ class CreateInterventionPdfs
     end
      FileUtils.rm(old_files - new_files)
   end
+
+  def self.destroy(district)
+      dir = "#{RAILS_ROOT}/public/system/district_generated_docs/#{district.id}/"
+      FileUtils.rm_rf(dir) if File.exists?dir
+  end
 end

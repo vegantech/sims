@@ -63,6 +63,7 @@ class District < ActiveRecord::Base
   validate_on_update :check_keys
                                          
   before_destroy :make_sure_there_are_no_schools
+  after_destroy {|d| ::CreateInterventionPdfs.destroy(d) }
   before_validation :clear_logo
   after_create :create_admin_user
   before_update :backup_key
