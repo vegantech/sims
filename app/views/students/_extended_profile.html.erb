@@ -1,7 +1,7 @@
 <h3 class="extended_profile", ondblclick="$('extended_profile').toggle();"><span>Extended Profile</span></h3>
 <% if @student.extended_profile? %>
-  <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" %>
-  <div id="extended_profile" style="display:none;" >
+  <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" unless defined?(in_report) %>
+  <div id="extended_profile" <%='style="display:none;"' unless defined?(in_report) %> >
      <% ext_pro = @student.ext_summary || @student.build_ext_summary %>
     <%#=extended_profile(@student)%>
 
@@ -13,7 +13,7 @@
   <% if @student.ext_adult_contacts.present? %>
   <h3>Adult Contacts</h3>
   <table>
-    <%= render :partial=>'adult_contact', :collection=>@student.ext_adult_contacts %>
+    <%= render :partial=>'students/adult_contact', :collection=>@student.ext_adult_contacts %>
   </table>
   <% end %>
 
@@ -61,7 +61,7 @@
     <th>School Name</th>
     </tr>
 
-    <%=render :partial=>'sibling', :collection=>@student.ext_siblings %>
+    <%=render :partial=>'students/sibling', :collection=>@student.ext_siblings %>
   </table>
   <% end %>
 
@@ -88,7 +88,7 @@
         <% scores.each do |score| %>
           <tr>
           <td></td><td></td>
-          <%=render :partial=>"extended_test_score",:collection=>score %>
+          <%=render :partial=>"students/extended_test_score",:collection=>score %>
           </tr>
        <% end %>
        <% end %>

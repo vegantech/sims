@@ -4,7 +4,7 @@
   <% end %>
 
   <% subreport_selected(@opts[:extended_profile]) do %>
-    <%= extended_profile(@student) %>
+    <%= render :partial => "students/extended_profile", :locals => {:in_report => true} %>
   <% end %>
 
   <% subreport_selected(@opts[:flags]) do %>
