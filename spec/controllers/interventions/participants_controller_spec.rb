@@ -24,6 +24,7 @@ describe Interventions::ParticipantsController do
     it "should expose a new intervention_participant as @intervention_participant" do 
       get :new
       assigns[:intervention_participant].should equal(mock_intervention_participant)
+      assigns[:users].should ==([nil,1,2,3])
     end
 
   end
