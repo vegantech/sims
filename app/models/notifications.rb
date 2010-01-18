@@ -1,36 +1,7 @@
 class Notifications < ActionMailer::Base
-  if RAILS_ENV == 'production'
-
-   if defined?DEFAULT_URL
-     default_url_options[:host] = 'www.simspilot.org'
-     default_url_options[:protocol]='https'
-   else
-     default_url_options[:host] = 'sims-open.vegantech.com'
-     default_url_options[:port] = 80
-   end
-  else
-
-    default_url_options[:host] = 'localhost'
-    default_url_options[:port] = 3000
-  end
 
   def setup_url(district)
-    if defined?DEFAULT_URL &&  RAILS_ENV == 'production'
-      default_url_options[:protocol]='https'
-      default_url_options[:host]="#{district.abbrev}.simspilot.org"
-    end
-  end
-
-  def url_opts
-    h={}
-    if defined?SIMS_DOMAIN
-      h[:host]=SIMS_DOMAIN
-      h[:protocol]=SIMS_PROTO
-      h[:only_path] = false
-    else
-      h[:only_path] = true
-    end
-    h
+    default_url_options[:host].gsub!(/^www/,"#{district.abbrev}")
   end
 
 
@@ -40,6 +11,7 @@ class Notifications < ActionMailer::Base
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
+    setup_url(override.student.district)
     body       :override=>override
   end
 
@@ -49,6 +21,7 @@ class Notifications < ActionMailer::Base
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
+    setup_url(override.student.district)
     body       :override => override
   end
 
@@ -72,7 +45,7 @@ class Notifications < ActionMailer::Base
     sent_on    sent_at
    
     setup_url(user.district)
-    body       :greeting => 'Hi,', :user => user, :interventions => interventions, :url_opts => url_opts
+    body       :greeting => 'Hi,', :user => user, :interventions => interventions
   end
 
   def intervention_reminder(sent_at = Time.now)
@@ -100,6 +73,8 @@ class Notifications < ActionMailer::Base
     @body['student']=student
     @from                     = 'SIMS <shawn@simspilot.org>'
     @headers = {}
+
+    setup_url(student.district)
     @body['user_name']= user_name
     @recipients = user_email
     

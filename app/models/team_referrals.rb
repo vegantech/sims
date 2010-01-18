@@ -1,16 +1,5 @@
 class TeamReferrals < ActionMailer::Base
 
-  def url_opts
-    h={}
-    if defined?SIMS_DOMAIN
-      h[:host]=SIMS_DOMAIN
-      h[:protocol]=SIMS_PROTO
-      h[:only_path] = false
-    else
-      h[:only_path] = true
-    end
-    h
-  end
   def concern_note_created(note, sent_at = Time.now)
     subject    'Team Consultation Form Created'
     recipients note.recipient.email
@@ -25,7 +14,7 @@ class TeamReferrals < ActionMailer::Base
     recipients users.collect(&:email).uniq.compact.join(",")
     from       'SIMS <shawn@simspilot.org>'
     sent_on    sent_at
-    body       :greeting => 'Hi,', :users => users, :student => student , :requestor => requestor, :url_opts => url_opts
+    body       :greeting => 'Hi,', :users => users, :student => student , :requestor => requestor
   end
 
 end

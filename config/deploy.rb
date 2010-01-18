@@ -46,7 +46,7 @@ task :pilot2 do
   set :application, "simspilot"
   set :login_note, '<p>Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> </p>'
 
-  after  :setup_domain_constant, :setup_default_url, :change_railmail_to_smtp 
+  after  :setup_domain_constant, :setup_default_url, :change_railmail_to_smtp, :setup_https_protocol
 end
 
 
@@ -120,6 +120,10 @@ end
 
 task :setup_domain_constant do
   run "cd #{release_path}/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
+end
+
+task :setup_https_protocol do
+  run "cd #{release_path}/config/initializers && sed -i  -e 's/SIMS_PROTO =\"http\"/SIMS_PROTO =\"https\"/' host_info.rb "
 end
 
 task :setup_default_url do
