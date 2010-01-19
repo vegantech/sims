@@ -5,6 +5,7 @@ class TeamReferrals < ActionMailer::Base
     recipients note.recipient.email
     from       'SIMS <shawn@simspilot.org>'
     sent_on    sent_at
+
     
     body       :greeting => 'Hi,', :recipient_name=>note.recipient.fullname, :student_name => note.student.fullname, :requestor_name => note.requestor.fullname, :note=>note
   end

@@ -1,5 +1,5 @@
 <%=@student.fullname %> has been discussed at our team meeting.  
-Please share information based on your perspective by going to <%=student_url(@student.id)  %>, then click on Respond to Request for Information under the Team Notes heading.
+Please share information based on your perspective by going to <%=link_to @student, student_url(@student.id)  %>, then click on Respond to Request for Information under the Team Notes heading.
 
 
 Requested by: <%=@requestor.fullname %>

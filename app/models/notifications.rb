@@ -1,17 +1,11 @@
 class Notifications < ActionMailer::Base
 
-  def setup_url(district)
-    default_url_options[:host].gsub!(/^www/,"#{district.abbrev}")
-  end
-
-
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'
     recipients override.student.principals.collect(&:email).join(',')
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
-    setup_url(override.student.district)
     body       :override=>override
   end
 
@@ -21,7 +15,6 @@ class Notifications < ActionMailer::Base
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
-    setup_url(override.student.district)
     body       :override => override
   end
 
@@ -29,7 +22,6 @@ class Notifications < ActionMailer::Base
     interventions=Array(interventions)
     participants=interventions.first.participants_with_author
 
-    setup_url(interventions.first.user.district)
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'
@@ -44,7 +36,6 @@ class Notifications < ActionMailer::Base
     from       'SIMS <sims@simspilot.org>'
     sent_on    sent_at
    
-    setup_url(user.district)
     body       :greeting => 'Hi,', :user => user, :interventions => interventions
   end
 
@@ -61,7 +52,6 @@ class Notifications < ActionMailer::Base
     subject    '[SIMS]  Student Intervention New Participant'
     from       'SIMS <sims@simspilot.org>'
     recipients intervention_person.user.email
-    setup_url(intervention_person.user.district)
     sent_on    Time.now
     body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author,
                 :interventions=> [intervention_person.intervention],:participant => intervention_person
@@ -74,7 +64,6 @@ class Notifications < ActionMailer::Base
     @from                     = 'SIMS <shawn@simspilot.org>'
     @headers = {}
 
-    setup_url(student.district)
     @body['user_name']= user_name
     @recipients = user_email
     

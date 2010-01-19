@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TeamReferrals do
   describe "concern_note_created" do
-    it 'should send the email' do
+   it 'should send the email' do
      
       user=Factory(:user, :email => 'bob@e.fg')
       student = Factory(:student, :district => user.district)
@@ -22,19 +22,22 @@ describe TeamReferrals do
   describe "gather_information_request" do
     it 'should send the email' do
 
+      oldurl_opts = TeamReferrals.default_url_options
       user=Factory(:user, :email => 'one@bob.com')
       user2=Factory(:user, :district => user.district, :email => 'two@bob.com')
       student = Factory(:student, :district => user.district)
       users=[user,user2]
       requestor = user
-      sims_domain = "http://#{SIMS_DOMAIN}:3000" if defined?SIMS_DOMAIN
+      sims_domain = "sims_test_host"
+
+      student.district.should == user.district
 
 
 
       proc{@mail=TeamReferrals.deliver_gather_information_request(users,student,requestor)}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Consultation Form Request'
       @mail.header["to"].to_s.should ==  "#{user.email}, #{user2.email}"
-      @mail.body.should == "First Last has been discussed at our team meeting.  \nPlease share information based on your perspective by going to #{sims_domain}/student/show/#{student.id}, then click on Respond to Request for Information under the Team Notes heading.\n\n\nRequested by: #{requestor.first_name} Last_Name\n"
+      @mail.body.should == "First Last has been discussed at our team meeting.  \nPlease share information based on your perspective by going to http://www.#{sims_domain}/students/#{student.id}, then click on Respond to Request for Information under the Team Notes heading.\n\n\nRequested by: #{requestor.first_name} Last_Name\n"
     end
   end
 
