@@ -123,7 +123,7 @@ task :setup_domain_constant do
 end
 
 task :setup_https_protocol do
-  run "cd #{release_path}/config/initializers && sed -i  -e 's/SIMS_PROTO =\"http\"/SIMS_PROTO =\"https\"/' host_info.rb "
+  run "cd #{release_path}/config/initializers && sed -i  -e 's/SIMS_PROTO=\"http\"/SIMS_PROTO =\"https\"/' host_info.rb "
 end
 
 task :setup_default_url do

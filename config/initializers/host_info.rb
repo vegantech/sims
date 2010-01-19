@@ -1,4 +1,4 @@
-#SIMS_DOMAIN = sims-open.vegantech.com
+#SIMS_DOMAIN = #sims-open.vegantech.com
 SIMS_PROTO="http"  #change to https when we're using that.
 #DEFAULT_URL = #'http://www.simspilot2.org:3000'
 
