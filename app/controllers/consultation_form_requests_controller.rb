@@ -48,7 +48,7 @@ class ConsultationFormRequestsController < ApplicationController
   
   private
   def set_users_and_teams
-    @users = current_school.users
+    @users = current_school.assigned_users
     @teams = current_school.school_teams.named
   end
 end

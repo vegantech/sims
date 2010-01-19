@@ -20,7 +20,7 @@ describe ConsultationFormRequestsController do
   describe "GET new" do
     it "assigns a new consultation_form_request as @consultation_form_request" do
       ConsultationFormRequest.should_receive(:new).and_return(mock_consultation_form_request)
-      controller.stub_association!(:current_school, :users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
+      controller.stub_association!(:current_school, :assigned_users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
       get :new
       assigns[:consultation_form_request].should equal(mock_consultation_form_request)
       assigns[:users].should == [1,2,3]
@@ -51,7 +51,7 @@ describe ConsultationFormRequestsController do
     
     describe "with invalid params" do
       it "assigns a newly created but unsaved consultation_form_request as @consultation_form_request" do
-        controller.stub_association!(:current_school, :users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
+        controller.stub_association!(:current_school, :assigned_users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
         ConsultationFormRequest.stub!(:new).with({'these' => 'params',  'requestor'=>@user, 'student' =>@student }).and_return(mock_consultation_form_request(:save => false))
         post :create, :consultation_form_request => {:these => 'params'}
         assigns[:consultation_form_request].should equal(mock_consultation_form_request)
@@ -60,7 +60,7 @@ describe ConsultationFormRequestsController do
       end
 
       it "re-renders the 'new' template" do
-        controller.stub_association!(:current_school, :users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
+        controller.stub_association!(:current_school, :assigned_users=>[1,2,3], :school_teams=>mock_array(:named=>['a','b']))
         ConsultationFormRequest.stub!(:new).and_return(mock_consultation_form_request(:save => false))
         post :create, :consultation_form_request => {}
         response.should render_template('new')
