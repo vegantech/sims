@@ -1,4 +1,8 @@
 <% ipa.fields_for :probe_definition do |pdef| %>
+<% pdef.object.valid? if request.post?%>
+
+<%=pdef.error_messages %>
+
   <table width="98%">
   <!--[form:probe_definition]-->
     <tr>
