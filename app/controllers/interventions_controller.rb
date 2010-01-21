@@ -52,11 +52,9 @@ class InterventionsController < ApplicationController
       spellcheck [comment].join(" ")
       @intervention_comment = @intervention.comments.last
       # populate_goals
-      render :action => :new
-      return
     end
 
-    if @intervention.save
+    if params[:spellcheck].blank? && @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
