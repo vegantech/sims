@@ -66,6 +66,30 @@ class LoginController < ApplicationController
     render :action => "login"
   end
 
+  def change_password
+    @user = current_user
+    if request.put? #&& current_user.change_password(params[:old_password],params[:password],params[:password_confirmation])
+      
+      if current_district.users.authenticate(@user.username, params['user']['old_password'])
+        if params['user']['password'].blank?
+         flash[:notice] = 'Your password cannot be blank'
+        elsif  params['user']['password'] != params['user']['password_confirmation']
+         flash[:notice] = 'Your password and confirmation must match'
+        else
+          @user.password = params['user']['password']
+          @user.password_confirmation = params['user']['password_confirmation']
+          @user.save
+          flash[:notice] = 'Your password has been changed'
+          redirect_to root_url
+        end
+      else
+        flash[:notice] = "Your old password was incorrect"
+      end
+    end
+    
+
+  end
+
  
 private
   def successful_login_destination

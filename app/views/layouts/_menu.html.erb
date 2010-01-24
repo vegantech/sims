@@ -31,6 +31,7 @@
     <% if false %>
         <%= li_link_to_if_authorized 'Role Management',roles_path %>
     <% end %>
+    <li><%= link_to "Change Password", change_password_path %></li>
     <li><%= render :partial => 'login/logout' %></li>
   <% elsif !defined?DEFAULT_URL %>
     <li>Please login.</li>

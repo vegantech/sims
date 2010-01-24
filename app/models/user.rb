@@ -42,7 +42,8 @@ class User < ActiveRecord::Base
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
 
-  attr_accessor :password, :all_students_in_district
+  attr_accessor :password, :all_students_in_district, :old_password
+  
 
   validates_presence_of :username, :last_name, :first_name, :district
   validates_presence_of :password, :on => :create

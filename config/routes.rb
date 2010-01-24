@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
 
 
 
+  map.change_password '/change_password', :controller=> 'login', :action => 'change_password'
   map.download_file '/file/:filename', :controller=>'file', :action => 'download', :requirements => { :filename => %r([^/;,?]+) }
 
   map.preview_graph '/preview_graph/:intervention_id', :controller => 'interventions/probe_assignments', :action => 'preview_graph'
