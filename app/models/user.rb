@@ -251,6 +251,23 @@ class User < ActiveRecord::Base
     update_attribute(:district_id,nil)
   end
 
+  def change_password(params)
+    if !self.district.users.authenticate(self.username, params['old_password'])
+      errors.add(:old_password, "is incorrect") 
+    elsif params['password'].blank?
+      errors.add(:password, 'cannot be blank')
+    elsif params['password'] != params['password_confirmation']
+      errors.add(:password_confirmation, 'must match password')
+    else
+      self.password = params['password']
+      self.password_confirmation = params['password_confirmation']
+      self.save
+      return true
+    end
+
+    false
+
+  end
 
 protected
   def district_special_groups

@@ -27,17 +27,17 @@ Feature: Login
 
     When I fill in "Old Password" with "wrong"
     And I press "Change Password"
-    Then I should see "Your old password was incorrect"
+    Then I should see "Old password is incorrect"
 
     When I fill in "Old Password" with "fr0d0L1v3s"
     And I press "Change Password"
-    Then I should see "Your password cannot be blank"
+    Then I should see "Password cannot be blank"
 
     When I fill in "Old Password" with "fr0d0L1v3s"
     And I fill in "Password" with "New"
     And I fill in "Password Confirmation" with "Something else"
     And I press "Change Password"
-    Then I should see "Your password and confirmation must match"
+    Then I should see "Password confirmation must match password"
 
 
     When I fill in "Old Password" with "fr0d0L1v3s"
