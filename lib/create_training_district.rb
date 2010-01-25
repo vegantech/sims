@@ -30,10 +30,13 @@ class CreateTrainingDistrict
     oneschool.groups << other_homeroom
 
     melody.groups << other_homeroom
+    melody.schools << alpha_elem
     oneschool.schools << alpha_elem
+    
 
     
     oneschool.save!
+    melody.save!
     training_team = alpha_elem.school_teams.create!(:name => "Training")
     
     #oneschool
@@ -44,10 +47,14 @@ class CreateTrainingDistrict
     alphaprin.user_school_assignments.create!(:admin => true, :school => alpha_elem)
     alphaprin.special_user_groups.create!(:school=>alpha_elem, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :is_principal => true)
 
-    training_team.school_team_memberships.create!(:user => alphaprin, :contact => true)
+    training_team.school_team_memberships.create!(:user => alphaprin, :contact => false)
+    training_team.school_team_memberships.create!(:user => oneschool, :contact => true)
     
     content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
 
+    other_team = alpha_elem.school_teams.create!(:name => "Other Team")
+    other_team.school_team_memberships.create!(:user => alphaprin, :contact => true)
+    
     self.generate_interventions(td)
     self.generate_checklist_definition(td)
 
