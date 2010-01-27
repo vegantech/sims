@@ -14,11 +14,7 @@ class Interventions::CommentsController < ApplicationController
 
   def show
     @intervention_comment = @intervention.comments.find(params[:id])
-    respond_to do |format|
-      format.js { render :text => @intervention_comment.comment}
-
-    end
-
+    render :layout => false
   end
 
   # GET /comments/1/edit
@@ -85,6 +81,10 @@ class Interventions::CommentsController < ApplicationController
 
 protected
   def load_intervention
-    @intervention=current_student.interventions.find(params[:intervention_id])
+    if current_student
+      @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?
+    else
+      false
+    end
   end
 end

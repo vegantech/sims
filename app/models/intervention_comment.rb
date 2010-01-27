@@ -15,4 +15,9 @@ class InterventionComment < ActiveRecord::Base
   belongs_to :user
   belongs_to :intervention
   validates_presence_of :comment
+
+  def to_s
+    "#{comment} by #{user} on #{updated_at.to_date}" 
+  end
+  
 end

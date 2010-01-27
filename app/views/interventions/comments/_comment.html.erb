@@ -3,7 +3,7 @@
 <% content_tag_for :tr, comment do %>
   <td> 
     <% content_tag_for :span, comment, "span" do %>
-      <%= h comment.comment %> by <%= h comment.user%> on <%= h comment.updated_at.to_date.to_s  %>
+      <%= h comment %>
     <% end %>
   </td>
     <% if current_user == comment.user and !readonly %>
