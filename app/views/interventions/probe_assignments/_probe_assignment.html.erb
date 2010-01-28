@@ -31,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= render :partial=>"interventions/probes/probe", :collection=>probe_assignment.probes %>
+    <%= render :partial=>"interventions/probes/probe", :collection=>probe_assignment.probes.for_table %>
   </tbody>
 </table>
 

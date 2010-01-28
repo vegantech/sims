@@ -25,6 +25,8 @@ class Probe < ActiveRecord::Base
   validates_numericality_of :score
   validate :score_in_range
   named_scope :for_graph,:order=>"administered_at DESC, id DESC", :limit=>8
+  named_scope :for_table,:order=>"administered_at DESC, id DESC"
+
   attr_accessor :assessment_type
 
 
