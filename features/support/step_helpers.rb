@@ -117,7 +117,7 @@ def create_default_student
   @default_user.groups << g
   @default_user.save!
 
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id)
+  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :district => @student.district)
 
   @student
 end

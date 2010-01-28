@@ -164,7 +164,7 @@ end
     @group=params[:id]
     grade = @group.split("_").last
     grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL))
+    @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => current_district))
     
 
     if @special_user_group.save

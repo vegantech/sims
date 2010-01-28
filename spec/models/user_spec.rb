@@ -306,7 +306,7 @@ describe User do
       s3=Factory(:school, :district => @user.district)
       
       @user.schools << s1
-      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3)
+      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3, :district => @user.district)
       @user.authorized_schools.should == [s1,s3]
       @user.authorized_schools(s1.id).should == [s1]
       @user.authorized_schools(s2.id).should == []

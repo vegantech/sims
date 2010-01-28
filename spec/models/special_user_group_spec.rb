@@ -24,7 +24,8 @@ describe SpecialUserGroup do
       :is_principal => false,
       :grouptype=>1,
       :user_id=>1,
-      :school_id=>2
+      :school_id=>2,
+      :district_id => 2
     }
   end
 

@@ -26,7 +26,7 @@ class SpecialUserGroup < ActiveRecord::Base
   ALL_STUDENTS_IN_SCHOOL = 3
 
   validates_presence_of :grouptype, :user_id
-  validates_presence_of :district_id, :if => lambda {|s| s.school_id.blank?}
+  validates_presence_of :district_id #, :if => lambda {|s| s.school_id.blank?}
   validates_presence_of :school_id, :if => lambda {|s| s.district_id.blank?}
   validates_uniqueness_of :user_id, :scope=>[:grade,:district_id,:school_id,:grouptype] , :message => "-- Remove the user first." 
 
@@ -52,5 +52,6 @@ class SpecialUserGroup < ActiveRecord::Base
     #fixes ticket 152
     1
   end
+
 end
 

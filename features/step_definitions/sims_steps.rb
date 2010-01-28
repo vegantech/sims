@@ -300,7 +300,8 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
+  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
+                                           :district => @default_user.district)
 
   StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
 end
