@@ -1,6 +1,6 @@
 class DistrictsController < ApplicationController
   additional_write_actions :reset_password, :recreate_admin, :bulk_import, :export
-  additional_read_actions :bulk_import_form
+  additional_read_actions :bulk_import_form, :logs
   before_filter :state_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
 
   # GET /districts
@@ -112,6 +112,10 @@ class DistrictsController < ApplicationController
       end
     end
 
+  end
+
+  def logs
+    @logs = current_district.logs
   end
 
 private

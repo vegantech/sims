@@ -76,7 +76,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
 
 
-  map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put }, 
+  map.resources :districts, :member => {:reset_password => :put, :recreate_admin => :put, :logs => :get}, 
     :collection=>{:bulk_import_form => :get, :bulk_import =>:post, :bulk_import => :get, :export => :get}
 
   map.resources :states, :member => {:reset_password => :put, :recreate_admin => :put }

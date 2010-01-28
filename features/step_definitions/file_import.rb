@@ -78,7 +78,7 @@ Given /^a student "([^\"]*)"$/ do |fullname|
 end
 
 Given /^a school "([^\"]*)"$/ do |name|
-  @school = School.find_by_name (name) 
+  @school = School.find_by_name(name) 
   @school ||=  Factory(:school,:district=> @district, :district_school_id => 42, :name => name)
 end
 

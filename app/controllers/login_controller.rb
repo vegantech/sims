@@ -16,9 +16,11 @@ class LoginController < ApplicationController
       session[:user_id] = @user.id
       if @user.new_record?
         logger.info "Failed login of #{params[:username]} at #{current_district.name}"
+        current_district.logs.create(:body => "Failed login of #{params[:username]}")
         HoptoadNotifier.notify :error_message=>"Failed login of #{params[:username]} at #{current_district.name}" if Rails.env == "production"
         flash[:notice] = 'Authentication Failure'
       else
+        current_district.logs.create(:body => "Successful login of #{@user.fullname}")
         logger.info "Successful login of #{@user.fullname} at #{current_district.name}"
         session[:district_id]=current_district.id
         redirect_to successful_login_destination and return
