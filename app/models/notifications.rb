@@ -1,10 +1,18 @@
-class Notifications < ActionMailer::Base
+class Notifications < MailerWithSubdomains
+
+#  alias_method_chain :url_for, :subdomain
+#  def url_for_with_subdomain(opts ={})
+#    raise 'missing district' if @district.blank?
+#  end
+
+
 
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'
     recipients override.student.principals.collect(&:email).join(',')
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
+    @district = override.student.district
     
     body       :override=>override
   end
@@ -14,6 +22,7 @@ class Notifications < ActionMailer::Base
     recipients override.teacher.email
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
+    @district = override.student.district
     
     body       :override => override
   end
@@ -26,6 +35,7 @@ class Notifications < ActionMailer::Base
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
+    @district = interventions.first.student.district
     
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end
@@ -35,6 +45,7 @@ class Notifications < ActionMailer::Base
     recipients user.email
     from       'SIMS <sims@simspilot.org>'
     sent_on    sent_at
+    @district = user.district
    
     body       :greeting => 'Hi,', :user => user, :interventions => interventions
   end
@@ -53,6 +64,7 @@ class Notifications < ActionMailer::Base
     from       'SIMS <sims@simspilot.org>'
     recipients intervention_person.user.email
     sent_on    Time.now
+    @district = intervention_person.user.district
     body       :greeting => 'Hi,', :participants => intervention_person.intervention.participants_with_author,
                 :interventions=> [intervention_person.intervention],:participant => intervention_person
   end
@@ -66,6 +78,7 @@ class Notifications < ActionMailer::Base
 
     @body['user_name']= user_name
     @recipients = user_email
+    @district = student.district
     
   end
 
@@ -74,6 +87,7 @@ class Notifications < ActionMailer::Base
     @from                     = 'SIMS <shawn@simspilot.org>'
     @recipients = admin_email
     @body['msg'] = msg
+    
     
   end
 

@@ -45,7 +45,7 @@ class CreateTrainingDistrict
     
     alphaprin = td.users.create!(:username => 'alphaprin', :password => 'alphaprin', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Principal')
     alphaprin.user_school_assignments.create!(:admin => true, :school => alpha_elem)
-    alphaprin.special_user_groups.create!(:school=>alpha_elem, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :is_principal => true, :district => d)
+    alphaprin.special_user_groups.create!(:school=>alpha_elem, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :is_principal => true, :district => td)
 
     training_team.school_team_memberships.create!(:user => alphaprin, :contact => false)
     training_team.school_team_memberships.create!(:user => oneschool, :contact => true)
