@@ -45,7 +45,7 @@ module CSVImporter
        left outer join #{temporary_table_name} tg 
        on tg.district_group_id = g.district_group_id
        inner join schools sch on g.school_id = sch.id and sch.district_id= #{@district.id}
-       where tg.district_school_id is null and sch.district_school_id is not null
+       where tg.district_school_id is null and sch.district_school_id is not null and g.district_group_id is not null
         "
       ActiveRecord::Base.connection.execute query
     end
