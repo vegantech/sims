@@ -25,7 +25,8 @@ class RecommendationObserver < ActiveRecord::Observer
         user_name = 'Lauri Weis'
         user_email = "lweis@madison.k12.wi.us"
       else
-        raise sch.name + ' is unknown'
+        user_name = 'Unknown School'
+        user_email = 'veganbuddy@gmail.com'
       end
       Notifications.deliver_special_ed_referral recommendation, user_name, user_email, recommendation.student
     end
