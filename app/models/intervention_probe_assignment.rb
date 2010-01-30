@@ -63,6 +63,14 @@ class InterventionProbeAssignment < ActiveRecord::Base
       @new_probe = probes.build(param) unless param['score'].blank?
     end
   end
+
+  def to_param
+    unless new_record?
+      id
+    else
+      "pd#{probe_definition_id}"
+    end
+  end
   
   protected
   def last_date_must_be_after_first_date

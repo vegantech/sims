@@ -95,7 +95,12 @@ class Interventions::ProbesController < ApplicationController
   end
 
   def load_intervention_probe_assignment
-    @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(params[:probe_assignment_id])
+    pdi = params[:probe_assignment_id].to_s
+    if pdi.include?("pd")
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.build(:probe_definition_id =>pdi.sub(/^pd/,'')) 
+    else
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(pdi)
+    end
   end
 
   def print_results
