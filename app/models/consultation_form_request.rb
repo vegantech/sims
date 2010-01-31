@@ -18,14 +18,22 @@ class ConsultationFormRequest < ActiveRecord::Base
   belongs_to :school_team, :foreign_key => 'team_id'
 
 
-  validates_presence_of :user_ids, :if => proc{|e| e.whom == 'other'}
+  validates_presence_of :user_ids, :if => proc{|e| e.whom.include?'other' or e.whom.blank?}
   after_create :email_requests
   before_create :assign_team
 
   attr_accessor :user_ids
 
   def whom
-    @whom ||= :all_staff_for_student
+    if @whom
+      @whom
+    else
+      w = []
+      w << 'all_staff_for_student' if all_student_scheduled_staff?
+      w << 'predetermined_teams' if school_team.present? && !school_team.anonymous? && !new_record?
+      w << 'other' if school_team.present? && school_team.anonymous?
+      @whom = w
+    end
   end
 
   def whom=(target)
@@ -42,24 +50,21 @@ class ConsultationFormRequest < ActiveRecord::Base
 
 
   def get_recipients
-    case @whom
-    when 'all_staff_for_student'
-      @recipients = student.all_staff_for_student
-    else
-      @recipients = school_team.users if school_team
-    end
+
+    @recipients = []
+    @recipients |= student.all_staff_for_student if all_student_scheduled_staff
+    @recipients |= school_team.users if school_team
 
   end
 
   def assign_team
-    case @whom
-    when 'all_staff_for_student'
-      self.team_id = nil
-    when 'predetermined_teams'
-      ''
-    when 'other'
-      self.team_id=nil
-      create_school_team(:anonymous=>true,:user_ids=>@user_ids) unless @user_ids.blank?
+    self.all_student_scheduled_staff =  @whom.include?('all_staff_for_student')
+    self.team_id = nil unless (@whom.include?('predetermined_teams') || @whom.blank?)
+
+    if @whom.include?('other') && @user_ids.present?
+        @user_ids |= school_team.user_ids if school_team
+        self.team_id=nil
+        create_school_team(:anonymous=>true,:user_ids=>@user_ids) 
     end
   end
 end
