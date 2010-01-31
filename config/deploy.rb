@@ -32,7 +32,7 @@ desc "pilot for pilot, default is demo"
 task :pilot do
   set :domain, 'simspilot.vegantech.com'
   set :application, "simspilot"
-  set :login_note, '<p>Use the username and password that your district admin assigned.  It may be the same as your SIS.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
+  set :login_note, '<p>Use the username and password assigned by your district admin.  It may be the same as your SIS.  Be sure to pick your district if you see the district dropdown.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
 end
 
 desc "pilot2 for pilot on rimuhosting"
@@ -44,7 +44,7 @@ task :pilot2 do
   set :domain, 'simspilot.org'
   set :default_url, 'https://www.simspilot.org'
   set :application, "simspilot"
-  set :login_note, '<p>Use the username and password that Shawn setup for you.  Be sure to pick your district.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> </p>'
+  set :login_note, '<p>Use the username and password assigned by your district admin.  It may be the same as your SIS.  Be sure to pick your district if you see the district dropdown.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> </p>'
 
   after  :setup_domain_constant, :setup_default_url, :change_railmail_to_smtp, :setup_https_protocol
 end

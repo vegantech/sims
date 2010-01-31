@@ -3,6 +3,8 @@
   page.replace_html("studentflags", "#{status_display current_student, true}")
   page.replace_html("consultation_forms", :partial => "consultation_forms/list", :locals =>  {:consultation_forms => current_student.pending_consultation_forms})
   page.replace_html("consultation_form", flash[:notice])
+  page.show('team_consultations')
+  page.show('consultation_forms')
   page << 'new Effect.ScrollTo("consultation_form");'
   page.visual_effect :pulsate, 'studentflags'
                

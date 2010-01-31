@@ -9,23 +9,23 @@
 
   </div>
 
-  <h3 class="team_consultations_header" ondblclick="$('pending_consultations').toggle();"><span>Pending Team Consultation</span></h3>
-  <%= link_to_function "Show/Hide" , "$('pending_consultations').toggle()" %>
+  <h3 class="team_consultations_header" ondblclick="$('team_consultations').toggle();"><span>Pending Team Consultation</span></h3>
+  <%= link_to_function "Show/Hide" , "$('team_consultations').toggle()" %>
   <div id = "pending_consultations">
-   <div id="team_consultations">
+    <div id="team_consultations" <%= 'style="display:none"' if @student.team_consultations.pending.blank? %>>
       <%= render :partial => "team_consultations/list", :locals => {:team_consultations => @student.team_consultations.pending} %>
-   </div>
+    </div>
     <div id = "consultation_form_request"></div>
-    <h3 class="team_consultations_header"><span>Responses to Request For Information</span></h3>
+    <h3 class="team_consultations_header"  ondblclick="$('consultation_forms').toggle();" ><span>Responses to Request For Information</span></h3>
     <%= link_to_function "Show/Hide" , "$('consultation_forms').toggle()" %>
 
-      <div id="consultation_forms">
+    <div id="consultation_forms" <%='style="display:none"' if @student.pending_consultation_forms.blank? %>>
        <%= render :partial => 'consultation_forms/list', :locals => {:consultation_forms => @student.pending_consultation_forms} %>
       </div>
    </div>
   <h3 class="team_consultations_header" ondblclick="$('completed_consultations').toggle();"><span>Team Consult Completed</span></h3>
   <%= link_to_function "Show/Hide" , "$('completed_consultations').toggle()" %>
-  <div id = "completed_consultations">
+  <div id = "completed_consultations" <%='style="display:none"' if @student.team_consultations.complete.blank? %>>
     <%= render :partial => "team_consultations/complete", :locals => {:team_consultations => @student.team_consultations.complete} %>
   </div>
 
