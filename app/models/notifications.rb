@@ -96,7 +96,7 @@ class Notifications < MailerWithSubdomains
     users_with_interventions = Hash.new([])
     interventions_ending_this_week.each do |intervention| 
       if district.blank? || intervention.participants_with_author.collect(&:user).compact.collect(&:district_id).include?(district.id)
-        intervention.participants_with_author.each{|p| users_with_interventions[p.user] |= [intervention]}
+        intervention.participants_with_author.each{|p| users_with_interventions[p.user] |= [intervention] if p.user && intervention.student.belongs_to_user?(p.user)}
       end
     end
       users_with_interventions.each do |user,interventions|
