@@ -1,6 +1,6 @@
 <h1>Editing school</h1>
 
-<% form_for(@school, :url => district_school_path(@school), :method => :put) do |f| %>
+<% labelled_form_for(@school, :url => district_school_path(@school), :method => :put) do |f| %>
   <%= render :partial => f %>
   <p>
     <%= f.submit "Update" %>

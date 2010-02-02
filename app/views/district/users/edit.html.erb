@@ -1,6 +1,6 @@
 <h1>Editing user</h1>
 
-<% form_for(@user, :url => district_user_path(@user), :method => :put) do |f| %>
+<% labelled_form_for(@user, :url => district_user_path(@user), :method => :put) do |f| %>
   <%= render :partial => f %>
   <p>
     <%= f.submit "Update" %>
