@@ -17,7 +17,9 @@ describe SchoolTeam do
   before(:each) do
     @valid_attributes = {
       :name => "value for name",
-      :anonymous => false
+      :anonymous => false,
+      :contact => 2
+
     }
   end
 

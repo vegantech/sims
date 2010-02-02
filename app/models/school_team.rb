@@ -19,11 +19,17 @@ class SchoolTeam < ActiveRecord::Base
 
   named_scope :named, {:conditions => {:anonymous => false }}
   validates_presence_of :name, :unless => :anonymous?
+  validates_presence_of :contact, :unless => :anonymous?                                
   after_save :update_contact
 
   def contact
-    c= school_team_memberships.find_by_contact(true)
-    if c.present?
+    unless new_record?
+      c= school_team_memberships.find_by_contact(true)
+    else
+      return @contact
+    end
+
+    if c.present?  && c.user.present?
       c.user.id
     else
       nil
@@ -31,9 +37,11 @@ class SchoolTeam < ActiveRecord::Base
   end
 
   def contact=(contact_id)
-    @contact = contact_id.to_i
-    c=school_team_memberships.find_by_user_id(contact_id) || school_team_memberships.build(:user_id => contact_id)
-    c.contact = true
+    if contact_id.present?
+      @contact = contact_id.to_i
+      c=school_team_memberships.find_by_user_id(contact_id) || school_team_memberships.build(:user_id => contact_id)
+      c.contact = true
+    end
   end
 
   def to_s
