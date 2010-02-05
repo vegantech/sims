@@ -1,7 +1,9 @@
 <h1>Flag Descriptions</h1>
 
 <div class="new_form">
-<% form_for(@flag_description) do |f| %>
+    <div id="global_spell_container" style="background-color: #ddd"></div>
+  <% form_for(@flag_description) do |f| %>
+
   <%= f.error_messages %>
 
   <% Flag::FLAGTYPES.each do |flag,values| %>
@@ -11,9 +13,40 @@
     </div>
   <% end %>
 
+  <%= f.text_area :created_at %>
+
  <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 
 </div>
+<%@spell_check_fields = [1] %>
+<% unless @spell_check_fields.blank? %>
+
+<script type="text/javascript">
+    var googie5 = new GoogieSpellMultiple("/images/googiespell/", "/spell_check/?lang=");
+
+    //New menu item "Add"
+    var add_checker = function(elm) {
+      return true;
+    };
+    var add_item = function(elm, current_googie) {
+      googie5.ignoreAll(elm);
+    };
+    googie5.appendNewMenuItem("Add", add_item, add_checker);
+
+    var fn_no_more_errors = function(e) {
+      alert('no more errors');
+    }
+
+    googie5.setDependent();
+//    googie5.setCustomAjaxError(function(req) {
+  //    alert('babu')
+//    });
+    googie5.useCloseButtons();
+    googie5.noMoreErrorsCallback(fn_no_more_errors);
+    googie5.setSpellContainer("global_spell_container");
+    googie5.decorateTextareas(<%=Flag::FLAGTYPES.collect{|flag,values| "'flag_description_#{flag}'"}.join(", ") %>);
+  </script>
+<% end %>

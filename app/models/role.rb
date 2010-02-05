@@ -48,9 +48,9 @@ class Role < ActiveRecord::Base
 
   def to_s
     if system?  
-      "<b>#{name}</b>"
+      "<b>#{name.titleize}</b>"
     else
-      name
+      name.titleize
     end
   end
 

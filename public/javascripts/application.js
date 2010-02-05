@@ -100,7 +100,9 @@ function change_date(new_record){
 
 var Checklist = {
   setup:function() {
+          if (!($$('a.questionLink')[0] == null)) {
     $$('a.questionLink').invoke('observe', 'click', Checklist.showQuestion)
+          }
   },
   showQuestion:function(e) {
     Event.stop(e)

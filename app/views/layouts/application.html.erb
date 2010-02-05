@@ -7,11 +7,13 @@
     <meta name="robots" content="index,follow" />
     <%= stylesheet_link_tag 'common', :media => :all %>
     <%= stylesheet_link_tag 'datepicker', :media => :all %>
+    <%= stylesheet_link_tag 'googiespell', :media => :all %>
     <%= stylesheet_link_tag 'print', :media => :print %>
     <%= stylesheet_link_tag 'screen', :media => :screen %>
 
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
-    <%= javascript_include_tag 'prototype','overlib',  'effects', 'application', 'datepicker'  , :cache => true %>
+    <%= javascript_include_tag 'prototype','overlib',  'effects', 'application', 'datepicker', 
+      'googiespell/AJS', 'googiespell/googiespell', 'googiespell/googiespell_multiple' ,'googiespell/cookiesupport' , :cache => true %>
 
     <%#=unobtrusive_datepicker_includes%>
   </head>

@@ -10,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :team_consultations, :member => {:complete => :put}
 
 
+  map.spell_check '/spell_check/', :controller => 'spell_check'
 
   map.change_password '/change_password', :controller=> 'login', :action => 'change_password'
   map.download_file '/file/:filename', :controller=>'file', :action => 'download', :requirements => { :filename => %r([^/;,?]+) }
