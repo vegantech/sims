@@ -79,8 +79,10 @@
   <br class="brclear" />
   <%= form.hidden_field :intervention_definition_id  unless @intervention.intervention_definition.new_record?%>
 
+  <% if false %> <%#SPELL_CHECK_CHANGE_ME%>
   <%= render :partial => '/layouts/spell_check' %>
   <script language='javascript'>
     window.googie5.redecorate('intervention')
   </script>
+  <% end %>
  

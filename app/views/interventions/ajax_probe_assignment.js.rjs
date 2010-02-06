@@ -3,4 +3,6 @@ page << "datePickerController.cleanUp();"
 page.replace_html "intervention_probe_assignment", :partial=>"interventions/probe_assignments/intervention_probe_assignment_detail"
 page << "datePickerController.create();"
 page.hide "spinnerassign_progress"
-page << "window.googie5.redecorate('intervention_probe_assignment');"
+if false #SPELL_CHECK_CHANGE_ME
+  page << "window.googie5.redecorate('intervention_probe_assignment');"
+end
