@@ -2,12 +2,12 @@
   <%= int_def.error_messages %>
   <p>
     <%= int_def.label :title %> 
-    <%= int_def.text_field :title %> 
+    <%= int_def.text_field :title, :class => 'spell_check' %> 
   </p>
   <br class="brclear"/ >
   <p>
     <%= int_def.label :description %> 
-    <%= int_def.text_area :description %> 
+    <%= int_def.text_area :description ,:class => 'spell_check'%> 
   </p>
   <br class="brclear"/ >
   <p>
@@ -16,3 +16,4 @@
     <%= int_def.collection_select(:tier_id, @tiers, :id, :title) %>
   </p>
 <% end %>
+

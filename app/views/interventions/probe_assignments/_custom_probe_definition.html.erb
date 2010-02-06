@@ -9,11 +9,11 @@
   <!--[form:probe_definition]-->
     <tr>
       <td width="15%"><%= pdef.label :title %></td>
-      <td colspan="3"><%= pdef.text_field :title, :size => 51 %></td>
+      <td colspan="3"><%= pdef.text_field :title, :size => 51 ,:class => 'spell_check'%></td>
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :description %></td>
-      <td colspan="3"><%= pdef.text_area :description, :cols => 50, :rows => 5 %></td>
+      <td colspan="3"><%= pdef.text_area :description, :cols => 50, :rows =>5 ,:class => 'spell_check' %></td>
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :minimum_score, 'Min score' %></td>
@@ -47,3 +47,8 @@
     </div>
   <% end %>
 <% end %>
+
+      <% @spell_check_fields ||= []
+      @spell_check_fields << 'intervention_intervention_probe_assignment_probe_definition_attributes_title'
+      @spell_check_fields << 'intervention_intervention_probe_assignment_probe_definition_attributes_description'
+    %>

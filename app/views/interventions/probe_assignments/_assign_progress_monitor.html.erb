@@ -20,7 +20,7 @@
 {:onchange => remote_function(:url => ajax_probe_assignment_interventions_url, :method => :get, 
               :with => 
              "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'", 
-              :before => "$('spinnerassign_progress').show();", :class => "fixed_width")}) %>
+             :before => "$('spinnerassign_progress').show();", :class => "fixed_width")}) %>
 
     <%= spinner("assign_progress") %>
   <% end %>

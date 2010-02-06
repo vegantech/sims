@@ -12,10 +12,17 @@
     <%= stylesheet_link_tag 'screen', :media => :screen %>
 
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
-    <%= javascript_include_tag 'prototype','overlib',  'effects', 'application', 'datepicker', 
-      'googiespell/AJS', 'googiespell/googiespell', 'googiespell/googiespell_multiple' ,'googiespell/cookiesupport' , :cache => true %>
 
-    <%#=unobtrusive_datepicker_includes%>
+      <%= javascript_include_tag 'googiespell/AJS','prototype','overlib',  'effects', 'application', 'datepicker',
+        'googiespell/googiespell', 'googiespell/googiespell_multiple' ,'googiespell/cookiesupport' , :cache => true%>
+      <%#AJS Conflicts with prototype and must be loaded before%>
+
+
+      <%#=unobtrusive_datepicker_includes%>
+      <script language = "javascript">
+        var googie5 = new GoogieSpellMultiple("/images/googiespell/", "/spell_check/?lang=");
+
+      </script>
   </head>
 
   <body>
@@ -52,6 +59,7 @@
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>
+         <%= render :partial => 'layouts/spell_check' %>
       </div>
       <div id="footer">
          <br style="clear:right;"/>

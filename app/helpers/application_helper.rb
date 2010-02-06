@@ -120,9 +120,11 @@ module ApplicationHelper
   end
 
   def labelled_form_for(record_or_name_or_array, *args, &proc)
+    @spell_check_fields ||= []
 
     options = args.extract_options!
     concat("<div class ='new_form'>")
+    concat('<div id="global_spell_container" style="background-color: #ddd"></div>')
     form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
     concat("</div>")
     

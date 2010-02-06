@@ -12,6 +12,10 @@
 //////
 // Support dependent text boxes
 /////
+//
+//
+
+
 function GoogieSpellMultiple(img_dir, server_url) {
   this.img_dir = img_dir;
   this.server_url = server_url;
@@ -85,6 +89,19 @@ function GoogieSpellMultiple(img_dir, server_url) {
 GoogieSpellMultiple.prototype.getState = function() {
   return this.state;
 }
+
+GoogieSpellMultiple.prototype.redecorate = function (container){
+  $(container).select('.spell_check').each(function(s, index) {
+      googie5.decorateTextareas(s.id);
+  });
+
+
+
+};
+
+
+
+
 
 GoogieSpellMultiple.prototype.noMoreErrorsCallback = function(fn) {
   this.no_more_errors_callback = fn;
