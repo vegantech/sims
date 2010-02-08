@@ -66,7 +66,8 @@ module CSVImporter
 
        
     def confirm_header row
-      h= row.split(",").collect(&:strip).collect(&:to_sym)
+      h= row.split(",").collect(&:strip)
+      h=h.delete_if(&:blank?).collect(&:to_sym)
       if h.join(",") == csv_headers.join(",")
         return h
       else

@@ -14,8 +14,8 @@ module CSVImporter
       t.integer :district_user_id
       t.string :username
       t.string :first_name
-      t.string :last_name
       t.string :middle_name
+      t.string :last_name
       t.string :suffix
       t.string :email
       t.string :passwordhash
@@ -24,7 +24,7 @@ module CSVImporter
     end
 
     def update
-    updates=csv_headers.collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
+    updates=csv_headers[0..-3].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
     query = ("update users u
       inner join #{temporary_table_name} tu
       on u.district_user_id = tu.district_user_id and u.district_user_id is not null
@@ -41,6 +41,7 @@ module CSVImporter
       delete
       update
       insert
+      update_passwords
     end
 
     def delete
@@ -51,6 +52,19 @@ module CSVImporter
       where u.district_user_id is not null and u.district_id = #{@district.id}
       and tu.district_user_id is null"
       User.connection.execute query
+    end
+
+    def update_passwords
+    updates=csv_headers[-3..-1].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
+    query = ("update users u
+      inner join #{temporary_table_name} tu
+      on u.district_user_id = tu.district_user_id and u.district_user_id is not null
+      set u.updated_at=CURDATE(), 
+      #{updates}
+    where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null"
+    )
+
+
     end
 
     def insert

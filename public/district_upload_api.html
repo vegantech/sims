@@ -12,6 +12,14 @@
       <li>persistent- they should remain the same over time, even over years.</li>
       <li>consistent- it must be the same number even when used in different files.</li>
     </ul>
+    </p>
+
+    <p>Note for boolean values, leaving it blank (without quotes), putting in the word false, or N will be considered false.  Otherwise it will be considered true.  (T/F will not work as expected.)
+    </p>
+
+
+
+
 
     
 
@@ -98,7 +106,7 @@
       <dl>
         <dt>district_student_id</dt> <dd>Key for student</dd>
         <dt>relationship</dt> <dd>String describing relationship.  Something like Parent or Emergency Contact</dd>
-        <dt>guardian</dt> <dd>true if contact is a parent/guardian and entitled to records,   blank otherwise</dd>
+        <dt>guardian</dt> <dd>true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)</dd>
         <dt>first_name</dt> <dd>First Name</dd>
         <dt>last_name</dt> <dd>Last Name</dd>
         <dt>home_phone</dt> <dd>Home Phone #</dd>
@@ -154,7 +162,7 @@
         <dt>special_ed_status</dt> <dd>Displayed as given, perhaps Y or N.</dd>
         <dt>disability1</dt> <dd>Primary Disability</dd>
         <dt>disability2</dt> <dd>Other Disability</dd>
-        <dt>single_parent</dt> <dd>true if single parent family, otherwise blank</dd>
+        <dt>single_parent</dt> <dd>true if single parent family, otherwise blank (Y/N) also works</dd>
         <dt>race_ethnicity</dt> <dd>Displayed as given</dd>
         <dt>suspensions_in</dt> <dd>In School Suspensions</dd>
         <dt>suspensions_out</dt> <dd>Out of School Suspensions</dd>
@@ -164,7 +172,7 @@
         <dt>previous_school_name</dt> <dd>Name of previous school</dd>
         <dt>current_attendance_rate</dt> <dd>Attendance for current year as rate * 100 (100, 94.3, 44.5)  (Displayed as Current Attendance)</dd>
         <dt>previous_attendance_rate</dt> <dd>Attendance for previous year as rate * 100 (100, 94.3, 44.5) (Displayed as Previous Attendance)</dd>
-        <dt>esl</dt> <dd>true if enrolled in English as a Second Languange,  blank otherwise</dd>
+        <dt>esl</dt> <dd>true if enrolled in English as a Second Languange,  blank otherwise (Y/N also works)</dd>
         <dt>tardies</dt> <dd>number of times late to class,   displays as Periods Tardy)</dd>
       </dl>
     </div>
@@ -263,8 +271,8 @@
         <dt>last_name</dt> <dd>Last name of student.</dd>
         <dt>suffix</dt> <dd>Suffix of student (jr. III).</dd>
         <dt>birthdate</dt> <dd>Date of Birth  (YYYY-MM-DD)</dd>
-        <dt>esl</dt> <dd>true if student is considered English as a Second Language  (false or blank if not)</dd>
-        <dt>special_ed</dt> <dd>true if student is in Special Educatin (false or blank if not)</dd>
+        <dt>esl</dt> <dd>true if student is considered English as a Second Language  (false or blank if not Y/N also works)  </dd>
+        <dt>special_ed</dt> <dd>true if student is in Special Educatin (false or blank if not Y/N also works)</dd>
       </dl>
     </div>
 
@@ -319,7 +327,7 @@
       <dl>
         <dt>district_user_id</dt> <dd>Key for user</dd>
         <dt>district_group_id</dt> <dd>Key for group (the one you created for the SIMS group.)</dd>
-        <dt>principal</dt><dd>true if the user is the principal for that group, blank otherwise.   The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv</dd>
+        <dt>principal</dt><dd>true if the user is the principal for that group, blank otherwise.   The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv  (Y/N also works)</dd>
       </dl>
     </div>
 
