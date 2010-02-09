@@ -18,7 +18,11 @@ class LoginController < ApplicationController
         logger.info "Failed login of #{params[:username]} at #{current_district.name}"
         current_district.logs.create(:body => "Failed login of #{params[:username]}")
         HoptoadNotifier.notify :error_message=>"Failed login of #{params[:username]} at #{current_district.name}" if Rails.env == "production"
-        flash[:notice] = 'Authentication Failure'
+        if @user.token
+          flash[:notice] = 'An email has been sent, follow the link to change your password.'
+        else
+          flash[:notice] = 'Authentication Failure'
+        end
       else
         current_district.logs.create(:body => "Successful login of #{@user.fullname}")
         logger.info "Successful login of #{@user.fullname} at #{current_district.name}"
@@ -70,12 +74,19 @@ class LoginController < ApplicationController
 
   def change_password
     @user = current_user
+
+    if @user.new_record?
+      @user =  User.find(params[:id] || params[:user][:id], :conditions => ["passwordhash ='' and salt ='' and token = ?",params[:token] || params['user'][:token]]) #and email_token
+      redirect_to logout if @user.blank?
+    end
+
     if request.put?
-      if current_user.change_password(params['user'])
+      if @user.change_password(params['user'])
         flash[:notice] = 'Your password has been changed'
         redirect_to root_url
       end
     end
+    puts @user.inspect
  end
 
  

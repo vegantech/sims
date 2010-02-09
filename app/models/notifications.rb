@@ -6,6 +6,17 @@ class Notifications < MailerWithSubdomains
 #  end
 
 
+  def change_password(user)
+    @district=user.district
+    subject    '[SIMS] Email Registration'
+    recipients user.email
+    from       'SIMS <sims@simspilot.org>'
+    sent_on    Time.now
+    
+    body       :user=>user
+ 
+  end
+
 
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'

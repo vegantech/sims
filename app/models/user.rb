@@ -142,6 +142,21 @@ class User < ActiveRecord::Base
   def self.authenticate(username, password)
     @user = self.find_by_username(username)
 
+    if @user && @user.passwordhash.blank? && @user.salt.blank?
+      if @user.district.key.present? && @user.district.key == password
+        @user.update_attribute(:token, Digest::SHA1.hexdigest("#{@user.district.key}#{rand}#{@user.id}"))
+        Notifications.deliver_change_password(@user)
+        #send the email
+        @user = User.new(:token => @user.token)
+        
+        return @user
+      else
+        @user = nil
+      end
+
+
+    end
+
     if @user
       unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast.downcase))
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
@@ -252,6 +267,20 @@ class User < ActiveRecord::Base
   end
 
   def change_password(params)
+    if self.passwordhash.blank? && self.salt.blank? 
+      errors.add(:old_password, "is incorrect")  if (!self.district.key.present? || self.district.key != params[:old_password])
+
+      errors.add(:password, 'cannot be blank') and return false if params['password'].blank?
+      errors.add(:password_confirmation, 'must match password') and return false if params['password'] != params['password_confirmation']
+
+      self.password = params['password']
+      self.password_confirmation = params['password_confirmation']
+      return false if self.token != params['token']
+      self.token = nil
+      self.save 
+      return true
+    end
+
     if !self.district.users.authenticate(self.username, params['old_password'])
       errors.add(:old_password, "is incorrect") 
     elsif params['password'].blank?

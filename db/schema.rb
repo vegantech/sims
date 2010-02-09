@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100128175508) do
+ActiveRecord::Schema.define(:version => 20100209204915) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -891,6 +891,7 @@ ActiveRecord::Schema.define(:version => 20100128175508) do
     t.string   "suffix"
     t.string   "salt",             :default => ""
     t.integer  "district_user_id"
+    t.string   "token"
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"

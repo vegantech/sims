@@ -6,9 +6,9 @@
       <%= render :partial => f %>
 
       <div class = "form_row">
-        <%= f.label :key, 'Password Hash Key' %>
+        <%= f.label :key, 'District Key' %>
         <%= f.text_field :key %>
-        <%= help_popup "This key is part of the filter that converts plaintext passwords to hashes stored in the database.   It should match the key used when you generate the users.csv.  When users login, the same conversion occurs and the hashes are compared.   If you've changed this key twice already, the system will prevent you from doing so again, as it could potentially lock out your users.  " 
+        <%= help_popup "This key is part of the filter that converts plaintext passwords to hashes stored in the database.   It should match the key used when you generate the users.csv.  When users login, the same conversion occurs and the hashes are compared.   If you've changed this key twice already, the system will prevent you from doing so again, as it could potentially lock out your users.  This also serves as a default password for users.  They can enter this and then they will receive a confirmation email and be able to change their password." 
         %>
       </div>
       <div class ="form_row">
