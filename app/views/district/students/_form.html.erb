@@ -49,13 +49,8 @@
       <%= form.text_field :district_student_id %>
       <%= help_popup id_district_desc(form.object) %>
     </div>
-  <div class="form_row">
-      <%= form.label :id_country, "National ID" %>
-      <%= form.text_field :id_country %>
-      <%= help_popup id_country_desc(form.object) %>
-  </div>
-
-   <div class="form_row">
+ 
+    <div class="form_row">
       <%= form.label :birthdate %>
       <%= form.unobtrusive_date_picker :birthdate ,:start_year=>Time.now.year-30, :end_year=>Time.now.year, :default=>8.years.ago, :order => [:month, :day, :year]%>
     </div>
