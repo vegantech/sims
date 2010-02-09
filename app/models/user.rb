@@ -268,7 +268,7 @@ class User < ActiveRecord::Base
 
   def change_password(params)
     if self.passwordhash.blank? && self.salt.blank? 
-      errors.add(:old_password, "is incorrect")  if (!self.district.key.present? || self.district.key != params[:old_password])
+      errors.add(:old_password, "is incorrect") and return false  if (!self.district.key.present? || self.district.key != params[:old_password])
 
       errors.add(:password, 'cannot be blank') and return false if params['password'].blank?
       errors.add(:password_confirmation, 'must match password') and return false if params['password'] != params['password_confirmation']
