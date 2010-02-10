@@ -22,7 +22,6 @@
 
 class Student < ActiveRecord::Base
 
-  EXTENDED_PROFILE_PATH = "#{RAILS_ROOT}/file/extended_profiles/%s/%s" #% [district_id, id]
   include FullName
   belongs_to :district
   has_and_belongs_to_many :groups
@@ -71,11 +70,11 @@ class Student < ActiveRecord::Base
   end
 
   def extended_profile
-    ext_arbitrary
+    ext_arbitrary.to_s
  end
 
   def extended_profile= file
-    @extended_profile = file unless file.blank?
+    @extended_profile = file
   end
 
   def latest_checklist
@@ -216,11 +215,6 @@ class Student < ActiveRecord::Base
   end
 
 
-  def delete_extended_profile=(value)
-    @delete_extended_profile = !value.to_i.zero?
-  end
-  
-
   def find_checklist(checklist_id, show=true)
     if show
       @checklist=checklists.find(checklist_id,:include=>{:answers=>:answer_definition})
@@ -257,19 +251,18 @@ class Student < ActiveRecord::Base
 
   protected
 
-  def extended_profile_path
-    EXTENDED_PROFILE_PATH % [district_id, id]
-  end
-
   def save_extended_profile
-    if @extended_profile
-      create_ext_arbitrary(:content =>@extended_prfile.read)
-     @extended_profile=nil
-    end
 
-    if @delete_extended_profile
-      delete_ext_arbitrary
-      @delete_extended_profile = nil
+   if @extended_profile == ''
+       ext_arbitrary.destroy if ext_arbitrary
+
+   end
+
+
+    
+    if @extended_profile.present?
+      create_ext_arbitrary(:content =>@extended_profile)
+     @extended_profile=nil
     end
 
   end

@@ -73,25 +73,11 @@
 
     <div class="form_row">
       <%=form.label :extended_profile, 'Add student profile html' %>
-      <%=form.file_field :extended_profile %>
+      <%=form.text_area :extended_profile %>
     </div>
   </fieldset>
 
 </div>
-  <%- if @student.extended_profile? -%>
-  <div id ="extended_profile">
-  <fieldset class="other">
-    <legend>Extended Profile</legend>
-      <%= extended_profile(@student) %>
-    </fieldset>
-  </div>
-       <%= link_to_function 'Remove Extended Profile' do |page|
-            page.replace_html 'extended_profile', hidden_field_tag('student[delete_extended_profile]',"1")
-            page.insert_html :bottom, 'extended_profile', "The extended profile will be removed when you save."
-            end %>
-
-  <% end %>
-
 
  <div id= "enrollments">
    <%=render :partial => 'enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
