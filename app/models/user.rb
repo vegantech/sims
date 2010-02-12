@@ -298,6 +298,11 @@ class User < ActiveRecord::Base
 
   end
 
+  def interventions
+    #TODO TESTS
+    Intervention.find(:all,:include => :intervention_participants, :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
+  end
+
 protected
   def district_special_groups
     all_students = all_students_in_district || 
