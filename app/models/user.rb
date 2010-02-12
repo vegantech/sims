@@ -303,6 +303,10 @@ class User < ActiveRecord::Base
     Intervention.find(:all,:include => :intervention_participants, :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end
 
+  def interventions2
+    Intervention.find(:all,:include => [:intervention_probe_assignments,:intervention_participants], :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?) and intervention_probe_assignments.id is not null",id,id],:group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', :having => 'count(student_id) > 1')
+  end
+
 protected
   def district_special_groups
     all_students = all_students_in_district || 
