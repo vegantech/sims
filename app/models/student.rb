@@ -124,7 +124,7 @@ class Student < ActiveRecord::Base
     principals = groups.collect(&:principals)
 
     principals |= special_group_principals
-    principals.flatten.uniq
+    principals.flatten.compact.uniq
   end
 
   def self.paged_by_last_name(last_name="", page="1")
