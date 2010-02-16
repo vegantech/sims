@@ -166,7 +166,7 @@ module CSVImporter
 
     def confirm_count?
       model_name = sims_model.name
-      model_count = @district.send(model_name.tableize).count
+      model_count = @district.send(model_name.tableize).count(:conditions=>'district_student_id is not null and district_student_id !=""')
       if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
         @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
         false
