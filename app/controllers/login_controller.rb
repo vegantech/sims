@@ -86,7 +86,6 @@ class LoginController < ApplicationController
         redirect_to root_url
       end
     end
-    puts @user.inspect
  end
 
  

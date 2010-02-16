@@ -14,6 +14,20 @@ Given /^common data$/i do
   create_default_intervention_pieces
 end
 
+Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |user_name, key|
+  clear_login_dropdowns
+  create_user user_name, 't'
+
+  @user.update_attribute(:passwordhash,'')
+  @user.update_attribute(:salt,'')
+  @user.update_attribute(:email,'b723176@madison.k12.wi.us')
+  @user.district.update_attribute(:key, key)
+
+
+end
+
+
+
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
   s.enrollments.create!(@student.enrollments.first.attributes)

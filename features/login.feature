@@ -55,3 +55,39 @@ Feature: Login
     When I fill in "Password" with "New"
     And I press "Login"
     Then I should see "Logout"
+
+  Scenario: Email confirmation of user with blank password and district key
+    Given user "no_password" with no password in district with key "bnford"
+    And I go to the home page
+
+    When I fill in "Login" with "no_password" 
+    And I fill in "Password" with "cucumber"
+    And I press "Login"
+    Then I should see "Authentication Failure"
+
+    When I fill in "Login" with "no_password"
+    And I fill in "Password" with "bnford"
+    And I press "Login"
+
+    Then I should see "An email has been sent, follow the link to change your password."
+    Then I should receive an email
+
+    When I open the email
+
+    Then I should see "change your password" in the email
+
+
+
+    When I click the change_password link in the email
+    Then I should see "Change Password"
+
+    When I fill in "Old Password" with "bnford"
+    And I fill in "Password" with "cucumber"
+    And I fill in "Password Confirmation" with "cucumber"
+    And I press "Change Password"
+
+    Then I should see "Your password has been changed"
+
+    And I should see "Please Login"
+
+
