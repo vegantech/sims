@@ -56,7 +56,8 @@ end
 Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |username, district_name, password|
   district = District.find_by_name(district_name)
   user = district.users.authenticate(username, password)
-  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => rand(50000))
+  dui=username == 'no_password'? 3 : rand(50000)
+  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => dui)
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|

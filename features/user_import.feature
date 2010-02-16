@@ -19,10 +19,12 @@ Feature: CSV Import of Users
 
   Scenario: Import two users csv when one user already exists with changed password and one new
     Given user "sally_smith" in district "Telophia" with password "big_bopper"
+    Given user "no_password" in district "Telophia" with password "unchanged"
     And User "sally_smith" should authenticate with password "big_bopper" for district "Telophia"
     When I import_users_from_csv with "test/csv/users/two/users.csv", "Telophia"
     Then User "sally_smith" should authenticate with password "little_bopper" for district "Telophia"
-    And "Telophia" should have "2" users
+    Then User "no_password" should authenticate with password "unchanged" for district "Telophia"
+    And "Telophia" should have "3" users
     And there should be a user with username "sally_smith"
     And the command should have succeeded
 
@@ -36,7 +38,7 @@ Feature: CSV Import of Users
     
   Scenario: Import two user csv when all are new
     When I import_users_from_csv with "test/csv/users/two/users.csv", "Telophia"
-    Then "Telophia" should have "2" users
+    Then "Telophia" should have "3" users
     And there should be a user with username "sally_smith"
     And there should be a user with username "bob_barker"
     And the command should have succeeded
