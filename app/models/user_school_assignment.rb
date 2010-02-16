@@ -39,7 +39,8 @@ class UserSchoolAssignment < ActiveRecord::Base
 private
   def create_all_students
     if @all_students
-      user.special_user_groups.find_or_create_by_school_id_and_grade_and_grouptype(school_id,nil,SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL) 
+      d=user.special_user_groups.find_or_create_by_school_id_and_grade_and_grouptype_and_district_id(school_id,nil,SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,user.district_id) 
+
     elsif @all_students ==false
      user.special_user_groups.find_all_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL).each(&:destroy)
     end
