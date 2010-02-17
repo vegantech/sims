@@ -11,7 +11,7 @@ module CSVImporter
     end
 
     def migration t
-      t.integer :district_user_id
+      t.string :district_user_id
       t.integer :district_school_id
       t.boolean :principal
       t.string :grade
