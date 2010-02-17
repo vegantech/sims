@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
+  before_save :nullify_blank_district_user_id
   after_save :district_special_groups
 
   acts_as_reportable # if defined? Ruport
@@ -314,5 +315,9 @@ protected
     user_school_assignments.each do |user_school_assignment|
       user_school_assignment.save(false)
     end
+  end
+
+  def nullify_blank_district_user_id
+    self.district_user_id = nil if district_user_id.blank?
   end
 end
