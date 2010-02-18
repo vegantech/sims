@@ -91,7 +91,7 @@ module ApplicationHelper
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
   end
 
-  def link_to_remote_if(condition, name, options = {}, html_options = {}, *parameters_for_method_reference, &block)
+  def link_to_remote_if(condition, name, options = {}, html_options = {},  &block)
     condition ? link_to_remote_degrades(name, options, html_options ) : name
   end
 
