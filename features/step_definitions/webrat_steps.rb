@@ -109,6 +109,12 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
   field_labeled(field).value.should_not =~ /#{value}/
 end
 
+Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
+  field_labeled(label).should_not be_checked
+end
+
+
+
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
   field_labeled(label).should be_checked
 end
