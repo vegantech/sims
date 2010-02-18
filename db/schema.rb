@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100217013317) do
+ActiveRecord::Schema.define(:version => 20100218042434) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -812,7 +812,7 @@ ActiveRecord::Schema.define(:version => 20100217013317) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "number"
-    t.integer  "district_student_id"
+    t.string   "district_student_id"
     t.integer  "id_state"
     t.integer  "id_country"
     t.datetime "created_at"

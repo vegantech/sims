@@ -16,7 +16,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :integer
+      t.column :district_student_id, :string
       t.column :guardian, :boolean
       t.column :relationship, :string
       t.column :first_name, :string
