@@ -6,6 +6,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
   def index
     @intervention_definitions = @intervention_cluster.intervention_definitions
 
+    #TODO Refactor filter and put in model
     if params[:commit]
       @intervention_definitions.reject!(&:disabled) unless params[:disabled]
       @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
