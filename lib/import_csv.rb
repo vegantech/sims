@@ -101,7 +101,7 @@ class ImportCSV
     
 
   def ids_by_id_district klass
-    klass.connection.select_all("select id, district_#{klass.name.downcase}_id as id_district from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>true)
+    klass.connection.select_all("select id, district_#{klass.name.downcase}_id as id_district from #{klass.table_name} where district_id = #{@district.id}").hash_by("id_district", "id", :to_i=>false)
   end
 
   
@@ -171,7 +171,7 @@ class ImportCSV
     if @constant.to_set ==lines.headers.to_set  #expected headers are present in any order with no extra ones
       true
     else
-      @messages <<  "invalid header #{lines.headers.inspect} it should be #{@constant.to_set.inspect}"
+      @messages <<  "invalid header #{lines.headers.inspect} it should be #{@constant.to_set.inspect} for #{@constant}"
       false
     end
   end
