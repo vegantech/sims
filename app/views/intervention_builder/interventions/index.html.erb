@@ -1,6 +1,19 @@
 <h1>Listing Interventions</h1>
 <%= render :partial=>"intervention_builder/categories/summary" %>
 
+<% form_tag("",:method => "get") do %>
+  <%= check_box_tag :system,1, (!params[:commit] || params[:system])%>
+  <%= label_tag 'system', 'System'%>
+  <%= check_box_tag :custom,1, (!params[:commit] || params[:custom])%>
+  <%= label_tag 'custom', 'Custom'%>
+  &nbsp;|
+  <%= check_box_tag :enabled,1,(!params[:commit] || params[:enabled])%>
+  <%= label_tag 'enabled', 'Enabled'%>
+  <%= check_box_tag :disabled, 1,(!params[:commit] || params[:disabled])%>
+  <%= label_tag 'disabled', 'Disabled'%>
+  <%= submit_tag 'Filter'%>
+<% end %>
+
 <table>
   <thead>
   <tr>

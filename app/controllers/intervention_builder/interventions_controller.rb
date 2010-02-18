@@ -6,6 +6,14 @@ class InterventionBuilder::InterventionsController < ApplicationController
   def index
     @intervention_definitions = @intervention_cluster.intervention_definitions
 
+    if params[:commit]
+      @intervention_definitions.reject!(&:disabled) unless params[:disabled]
+      @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
+      
+      @intervention_definitions.reject!(&:custom) unless params[:custom]
+      @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
+    end
+
     respond_to do |format|
       format.html # index.rhtml
     end
