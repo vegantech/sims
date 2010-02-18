@@ -178,7 +178,7 @@ class Intervention < ActiveRecord::Base
       comment = {:comment => comments.present? ? comments.first.comment : nil}
       student_ids = self.selected_ids
       student_ids.delete(self.student_id.to_s)
-      ipa = @ipa.attributes || nil
+      ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
           :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
