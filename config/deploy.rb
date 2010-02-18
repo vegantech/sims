@@ -1,17 +1,9 @@
-default_run_options[:pty] = true
-default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
+set :stages, %w(staging production)
+set :default_stage, 'staging'
+require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
-#require 'centostrano'
-
-set :ruby_vm_type,      :ree       # :ree, :mri
-set :web_server_type,   :apache    # :apache, :nginx
-set :app_server_type,   :passenger # :passenger, :mongrel
-set :db_server_type,    :mysql     # :mysql, :postgresql,...
-
-
-set :domain, 'sims-open.vegantech.com'
-set :repository,  "git://github.com/vegantech/sims.git"
-set :application, "sims-open"
+# default_run_options[:pty] = true
+# default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
 
 
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
@@ -59,44 +51,14 @@ task :open2 do
 end
 
 
-
-
-
-
-set :use_sudo, false
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
-set (:deploy_to){ "/www/#{application}"}
-
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-set :scm, "git"
-
-set :branch, "master"
-set :deploy_via, :remote_cache
-set :git_enable_submodules, 1
-
-role :app, "vegantech.com"
-role :web, "vegantech.com"
-role :db,  "vegantech.com", :primary => true
-
-
-
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
+after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory
 
 
-
 namespace :deploy do
-  desc "Restart Application"
-  task :restart, :roles => :app do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-
   desc "Reset Files and data"
   task :reset_files_and_data, :roles => "app" do 
-    run "cd #{deploy_to}/current && RAILS_ENV=production rake db:drop db:create db:migrate db:fixtures:load && rm -rf #{deploy_to}/current/system/*"
+    run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} rake db:drop db:create db:migrate db:fixtures:load && rm -rf #{deploy_to}/current/system/*"
     create_intervention_pdfs
   end
 
@@ -115,7 +77,7 @@ end
 
 desc 'Load the fixtures from test/fixtures, this will overwrite whatever is in the db'
 task :load_fixtures do
-  run "cd #{deploy_to}/current && rake db:fixtures:load RAILS_ENV=production"
+  run "cd #{deploy_to}/current && rake db:fixtures:load RAILS_ENV=#{fetch(:rails_env, "production")}"
 end
 
 task :setup_domain_constant do
@@ -135,7 +97,7 @@ task :change_railmail_to_smtp do
 end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
-  run "cd #{deploy_to}/current && RAILS_ENV=production ruby script/runner DailyJobs.regenerate_intervention_reports"
+  run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} ruby script/runner DailyJobs.regenerate_intervention_reports"
 end
 
 
