@@ -2,6 +2,8 @@ set :stages, %w(staging production wip pilot2 veg-open open2)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
+set :deploy_via, :remote_cache
+
 # default_run_options[:pty] = true
 # default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
 
