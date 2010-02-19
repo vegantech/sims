@@ -1,4 +1,4 @@
-set :stages, %w(staging production wip pilot2 veg-open)
+set :stages, %w(staging production wip pilot2 veg-open open2)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
@@ -9,22 +9,6 @@ require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-e
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
  <br /> The data in this demo gets reset weekly.   Training districts are reset daily.'
 
-
-desc "pilot for pilot, default is demo"
-task :pilot do
-  set :domain, 'simspilot.vegantech.com'
-  set :application, "simspilot"
-  set :login_note, '<p>Use the username and password assigned by your district admin.  It may be the same as your SIS.  Be sure to pick your district if you see the district dropdown.  If you\'re looking for the demo, it\'s at <%=link_to "http://sims-open.vegantech.com", "http://sims-open.vegantech.com" %> '
-end
-
-
-desc "open2 for temp training on rimuhosting"
-task :open2 do
-  ENV['HOSTS']='74.50.50.62'
-  role :app, "74.50.50.62"
-  role :web, "74.50.50.62"
-  role :db,  "74.50.50.62", :primary => true
-end
 
 
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
