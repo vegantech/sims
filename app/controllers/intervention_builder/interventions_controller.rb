@@ -86,17 +86,25 @@ class InterventionBuilder::InterventionsController < ApplicationController
   end
 
   def disable
-    @intervention_definition = InterventionDefinition.find(params[:id])
-    if params[:enable]
-      @intervention_definition.update_attribute(:disabled, false)
+    if params[:id]
+      @intervention_definitions = Array(@intervention_definition)
     else
-      @intervention_definition.disable!
+      @intervention_definitions = []
+    end
+    if params[:enable]
+      a='enabled'
+      @intervention_definitions.each{|i| i.update_attribute(:disabled, false)}
+    else
+      a='disabled'
+      @intervention_definitions.each(&:disable!)
     end
 
+    flash[:notice] = "#{@template.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
     respond_to do |format|
       format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end
   end
+
 
   def move
     @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id])

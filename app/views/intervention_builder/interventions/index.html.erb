@@ -14,23 +14,27 @@
   <%= submit_tag 'Filter'%>
 <% end %>
 
-<table>
-  <thead>
-  <tr>
-    <th>Order</th>
-    <th> </th>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Tier</th>
-    <th>Time length</th>
-    <th>Frequency</th>
-    <th>Updated on</th>
-  </tr>
-  </thead>
-  <tbody id="intervention_definition_list">
-<%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
-</tbody>
-</table>
+<% form_tag(:controller => 'intervention_builder/interventions' ,:action => 'disable', :goal_id => @goal_definition,
+            :objective_id=>@objective_definition, :category_id => @intervention_cluster, :method => 'put') do %>
+  <table>
+    <thead>
+    <tr>
+      <th>Order</th>
+      <th> </th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Tier</th>
+      <th>Time length</th>
+      <th>Frequency</th>
+      <th>Updated on</th>
+    </tr>
+    </thead>
+    <tbody id="intervention_definition_list">
+  <%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
+  </tbody>
+  </table>
+  <%= submit_tag 'Disable Selected Interventions', :confirm => 'Disable Selected Intervention Definitions?' %>
+<% end %>
 
 <br />
 
