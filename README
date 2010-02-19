@@ -1,6 +1,11 @@
 SIMS- open source
 Track Student Interventions
 
+
+Some of the icons come from the Silk icon set at http://www.famfamfam.com/lab/icons/silk/
+
+
+
 see deployment for information on how to deploy.    This will be centrally hosted, but you're welcome to set up your own instance and help contribute code.
 
 
@@ -28,6 +33,11 @@ rake db:fixtures:load
 ruby script/server 
 
 Then point your browser to http://localhost:3000   to see SIMS.
+
+
+
+
+
 
 
 

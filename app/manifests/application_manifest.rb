@@ -43,6 +43,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     # If you've already told Moonshine about a package required by a gem with
     # :apt_gems in <tt>moonshine.yml</tt> you do not need to include it here.
     package 'aspell', :ensure => :installed
+    package 'zip', :ensure => :installed
 
     daily_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
     cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 0

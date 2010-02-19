@@ -1,4 +1,4 @@
-set :stages, %w(staging production)
+set :stages, %w(staging production wip pilot2 open)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
@@ -9,16 +9,6 @@ require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-e
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
  <br /> The data in this demo gets reset weekly.   Training districts are reset daily.'
 
-
-desc ":wip for work in progress demo"
-task :wip do
-  set :login_note, 'This is a work in progress (unstable) demo.   You use names like oneschool (look to the menu at the left for more.)
-<br /> The data in this demo gets reset weekly. Training districts are reset daily.'
-  set :application, "sims-wip"
-  set :domain, 'sims-wip.vegantech.com'
-#  set :branch, 'aug-11-formatting-changes'
-
-end
 
 desc "pilot for pilot, default is demo"
 task :pilot do
