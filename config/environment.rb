@@ -38,7 +38,6 @@ Rails::Initializer.run do |config|
  config.gem "fastercsv"
  config.gem "hpricot"
  config.gem "pdf-writer", :lib => "pdf/writer"
- config.gem "jscruggs-metric_fu", :source => "http://gems.github.com", :lib => false
 
  # deployment
  config.gem "capistrano", :lib => false
