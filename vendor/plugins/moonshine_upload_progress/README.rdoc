@@ -1,0 +1,34 @@
+= Moonshine_UploadProgress
+
+=== A plugin for Moonshine[http://github.com/railsmachine/moonshine]
+
+A plugin for installing and managing mod_upload_progress[http://www.railsillustrated.com/screencast-file-uploads-progress-in-rails-passenger.html].
+
+The plugin will build and enable the module in Apache. You will also need to add the following to your manifest:
+
+    configure(:passenger => { :vhost_extra => """
+    <Location />
+        # enable tracking uploads in /
+        TrackUploads On
+    </Location>
+
+    <Location /progress>
+        # enable upload progress reports in /progress
+        ReportUploads On
+    </Location>
+    """})
+
+The only available option at this time is shared_memory_size which defaults to 1024000 (100k). To adjust this, 
+add to your moonshine.yml:
+
+    :upload_progress:
+      :shared_memory_size: 2048000
+
+Then re-deploy.
+
+=== Instructions
+
+* <tt>script/plugin install git://github.com/railsmachine/moonshine_upload_progress.git</tt>
+* Include the plugin and recipe(s) in your Moonshine manifest
+    plugin :upload_progress
+    recipe :upload_progress

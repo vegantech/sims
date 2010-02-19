@@ -35,6 +35,14 @@ Rails::Initializer.run do |config|
     config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
   end
  config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
+ config.gem "fastercsv"
+ config.gem "hpricot"
+ config.gem "pdf-writer", :lib => "pdf/writer"
+ config.gem "jscruggs-metric_fu", :source => "http://gems.github.com", :lib => false
+
+ # deployment
+ config.gem "capistrano", :lib => false
+ config.gem "capistrano-ext", :lib => false
 
  # need to upgrade rubygems
   # config.gem 'hpricot'

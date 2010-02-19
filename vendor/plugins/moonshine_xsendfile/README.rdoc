@@ -1,0 +1,14 @@
+= Moonshine_Xsendfile
+
+=== A plugin for Moonshine[http://github.com/railsmachine/moonshine]
+
+A plugin for installing and managing mod_xsendfile[http://tn123.ath.cx/mod_xsendfile] for Apache.
+
+=== Instructions
+
+* <tt>script/plugin install git://github.com/railsmachine/moonshine_xsendfile.git</tt>
+* Configure settings if needed (it probably isn't)
+    configure(:xsendfile => {:x_send_file_allow_above => 'off'})
+* Include the plugin and recipe(s) in your Moonshine manifest
+    plugin :xsendfile
+    recipe :xsendfile

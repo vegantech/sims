@@ -1,0 +1,39 @@
+h1. Moonshine_Scout
+
+A plugin "Moonshine":http://github.com/railsmachine/moonshine for installing
+and managing the "Scout gem":http://github.com/highgroove/scout/tree/master.
+
+h3. Requirements
+
+* A "Scout":http://scoutapp.com account
+* The agent key for your server. This key will be provided at the time you add
+your server to Scout, and is also available under the Server Admin section of
+the site.
+
+h3. Quickstart Instructions
+
+* @script/plugin install git://github.com/railsmachine/moonshine_scout.git@
+* Configure agent key in @config/moonshine.yml@
+  <pre>
+    :scout:
+      :agent_key: YOUR-PRIVATE-SCOUT-KEY
+  </pre>
+* Include the plugin and recipe(s) in your Moonshine manifest
+  <pre>
+    plugin :scout
+    recipe :scout
+  </pre>
+
+Scout is now configured to run via cron every 3 minutes.
+
+h3. Advanced configuration
+
+You can adjust the @user@ that runs the Scout command and the @interval@ at
+which it runs by using the respective keys:
+
+<pre>
+  :scout:
+    :agent_key: YOUR-PRIVATE-SCOUT-KEY
+    :interval:  15 # defaults to 3
+    :user:      root # defaults to the moonshine user, or 'daemon' if that's not configured
+</pre>

@@ -1,0 +1,10 @@
+--- 
+- :name: fastercsv
+- :name: hpricot
+- :name: pdf-writer
+- :name: jscruggs-metric_fu
+  :source: http://gems.github.com
+- :name: capistrano
+- :name: capistrano-ext
+- :version: 2.3.2
+  :name: rails
