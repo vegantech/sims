@@ -92,6 +92,7 @@ Rails::Initializer.run do |config|
   config.action_mailer.delivery_method = :railmail
 
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )
+  config.time_zone = 'Central Time (US & Canada)'
 end
 
 # begin
