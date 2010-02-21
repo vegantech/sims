@@ -65,17 +65,19 @@
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.conf.erb 
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.vhost.erb 
 :passenger:
-  :max_pool_size: 12
+  :max_pool_size: 3
+#  :max_pool_size: 12
 
 # MySQL-specific options. Refer to the following templates for details about what values are used:
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/moonshine.cnf.erb 
 :mysql:
-  :innodb_buffer_pool_size: 256M
-  :sort_buffer_size: 16M
-  :read_rnd_buffer_size: 16M
-  :tmp_table_size: 256M
-  :max_heap_table_size: 256M
-  :table_cache: 4096
+  :innodb_buffer_pool_size: 128M
+#  :innodb_buffer_pool_size: 256M
+#  :sort_buffer_size: 16M
+#  :read_rnd_buffer_size: 16M
+#  :tmp_table_size: 256M
+#  :max_heap_table_size: 256M
+#  :table_cache: 4096
 
 
 :scout:
