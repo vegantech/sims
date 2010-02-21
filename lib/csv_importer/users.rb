@@ -61,9 +61,10 @@ module CSVImporter
       on u.district_user_id = tu.district_user_id and u.district_user_id is not null
       set u.updated_at=CURDATE(), 
       #{updates}
-    where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null"
+    where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null and tu.passwordhash <> '' and tu.salt <> ''"
     )
 
+      User.connection.execute query
 
     end
 

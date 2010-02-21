@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe FlagsForStudentReport do
   describe 'render_text' do
     it 'should generate correct text output' do
-      now = Date.new(2008, 12, 12).to_time
+      now = Time.parse("2008-12-12 00:00 UTC")
       Time.stub!(:now => now)
 
       d = mock_district(:key=>'D#')
