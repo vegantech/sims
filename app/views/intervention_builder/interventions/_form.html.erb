@@ -31,6 +31,17 @@
     <%=form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %>  
   </p>
 
+  <% if form.object.school_id %>
+    <div class="fake_label">&nbsp;</div>
+    <p>Originally a custom intervention by <%=form.object.user%> at <%=form.object.school%>.</p>
+    <p>
+    <div class="fake_label"><%=form.check_box :custom %></div>
+    <%= form.label :custom ,'Custom', {:class =>"checkbox_label"}%>
+    </p>
+
+  <% end %>
+
+
   <p>
     <div class="fake_label"><%=form.check_box(:district_quicklist)%></div>
     <%= form.label :district_quicklist ,"District Quicklist",{:class =>"checkbox_label"} %>
