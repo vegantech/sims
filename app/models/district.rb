@@ -48,7 +48,7 @@ class District < ActiveRecord::Base
   has_attached_file  :logo
 
 
-  named_scope :normal, :conditions=>{:admin=>false}
+  named_scope :normal, :conditions=>{:admin=>false}, :order => 'name'
   named_scope :admin, :conditions=>{:admin=>true}
 
   delegate :country, :to => :state
