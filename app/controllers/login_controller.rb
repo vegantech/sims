@@ -93,7 +93,7 @@ private
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
       district_state_and_country = [current_district.abbrev,current_district.state.abbrev, current_district.state.country.abbrev]
-      subdomain = district_state_and_country.join('-') if USE_SUBDOMAINS rescue nil and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
+      subdomain = district_state_and_country.join('-') if ENABLE_SUBDOMAINS rescue nil# and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
       root_url(:subdomain=>subdomain)
   end
 
