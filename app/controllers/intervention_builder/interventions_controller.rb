@@ -1,5 +1,6 @@
 class InterventionBuilder::InterventionsController < ApplicationController
   include SpellCheck
+  additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
   # GET /intervention_definitions
@@ -117,6 +118,13 @@ class InterventionBuilder::InterventionsController < ApplicationController
       format.html {redirect_to index_url}
       format.js {@intervention_definitions=@intervention_cluster.intervention_definitions} 
     end
+  end
+
+  def sort
+    params[:intervention_definition_list].each_with_index do |id, index|
+      @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
+    end
+    render :nothing => true
   end
 
   private

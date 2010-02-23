@@ -113,39 +113,30 @@ module CSVImporter
     end
 
     def add_indexes
-      verbose = ActiveRecord::Migration.verbose
-      ActiveRecord::Migration.verbose = false
-
       index_options.each_with_index do |e,idx|
-         ActiveRecord::Migration.add_index temporary_table_name, e, :name=>"temporary_index_#{idx}"
+        ActiveRecord::Migration.add_index temporary_table_name, e, :name=>"temporary_index_#{idx}"
       end
-      ActiveRecord::Migration.verbose = verbose
-
     end
 
     def remove_indexes
-      verbose = ActiveRecord::Migration.verbose
-      ActiveRecord::Migration.verbose = false
       index_options.each do |e|
         ActiveRecord::Migration.remove_index temporary_table_name, *e
       end
     end
 
     def create_temporary_table 
-      verbose = ActiveRecord::Migration.verbose
-      ActiveRecord::Migration.verbose = false
-      ActiveRecord::Migration.create_table temporary_table_name, :id => false, :temporary => temporary_table? do |t|
-        migration t
+      ActiveRecord::Migration.suppress_messages do 
+        ActiveRecord::Migration.create_table temporary_table_name, :id => false, :temporary => temporary_table? do |t|
+          migration t
+        end
+        add_indexes
       end
-      add_indexes
-      ActiveRecord::Migration.verbose = verbose
     end
 
     def drop_temporary_table
-      verbose = ActiveRecord::Migration.verbose
-      ActiveRecord::Migration.verbose = false
-      ActiveRecord::Migration.drop_table temporary_table_name if temporary_table?
-      ActiveRecord::Migration.verbose = verbose
+      ActiveRecord::Migration.suppress_messages do 
+        ActiveRecord::Migration.drop_table temporary_table_name if temporary_table?
+      end
     end
 
     def sims_model

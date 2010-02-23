@@ -64,3 +64,10 @@
 {
   font-size: 20px;
 }
+
+tr .handle {
+  font-size: 12px;
+  cursor: move;
+  color: #777;
+
+}
