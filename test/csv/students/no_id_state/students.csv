@@ -1,2 +1,2 @@
 id_state,district_student_id,number,first_name,middle_name,last_name,suffix,birthdate,esl,special_ed
-5,1040,"STU##9",Raging,NULL,Zephyr,"III",1995-07-02,NULL,NULL
+,1040,"STU##9",Raging,NULL,Zephyr,"III",1995-07-02,NULL,NULL

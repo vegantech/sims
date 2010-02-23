@@ -13,6 +13,13 @@ Feature: CSV Import of Students
     Then the command should have succeeded
     And there should be "1" student
 
+		When I remove the student and state_id
+    And I import_csv with "test/csv/students/no_id_state/students.csv"
+		And the command should have "1 students claimed that had left another district"
+
+    And there should be "1" student
+
+
   Scenario: Import where student is deleted and have no other tables referencing them
     Given no other students
     Given a student "Ignored Parameter"
