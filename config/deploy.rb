@@ -54,6 +54,10 @@ task :setup_default_url do
   put("DEFAULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb", :via => :scp) 
 end
 
+task :enable_subdomains do
+  put("USE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", :via => :scp)
+end
+
 task :change_railmail_to_smtp do
   run "cd #{release_path}/config/ && sed -i  -e 's/railmail/smtp/' environment.rb "
 end

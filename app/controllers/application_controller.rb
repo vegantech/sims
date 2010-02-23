@@ -115,27 +115,18 @@ class ApplicationController < ActionController::Base
   end
 
   def subdomains
-      g = self.request.subdomains
-      if request.domain == "simspilot.org"
-        g.shift if System::RESERVED_SUBDOMAINS.include?(g.first)
-        g << "sims"
-      end
-
-     
-
-
-      if g.pop.to_s.match(SUBDOMAIN_MATCH) and !g.blank?
-
-        s=g.first.split("-").reverse
-        params[:district_abbrev] = s.pop
-        params[:state_abbrev] = s.pop || "wi"
-        params[:country_abbrev] = s.pop || "us"
-      elsif params[:country_abbrev] || params[:state_abbrev] || params[:district_abbrev]
-        params[:state_abbrev] ||=  "wi"
-        params[:country_abbrev] ||=  "us"
-      else
-        return
-      end
+    if current_subdomain
+      g=current_subdomain
+      s=g.split("-").reverse
+      params[:district_abbrev] = s.pop
+      params[:state_abbrev] = s.pop || "wi"
+      params[:country_abbrev] = s.pop || "us"
+    elsif params[:country_abbrev] || params[:state_abbrev] || params[:district_abbrev]
+       params[:state_abbrev] ||=  "wi"
+       params[:country_abbrev] ||=  "us"
+    else
+      return
+    end
 
       @country ||= Country.find_by_abbrev(params[:country_abbrev])
       if @country

@@ -92,16 +92,9 @@ class LoginController < ApplicationController
 private
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
-    if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH) or request.host == "www.simspilot.org"
-      district_state_and_country = [current_district.abbrev]
-      district_state_and_country << current_district.state.abbrev 
-      district_state_and_country << current_district.state.country.abbrev
-      existing_subdomain=".#{request.subdomains.last}" unless System::RESERVED_SUBDOMAINS.include?request.subdomains.last
-      "#{request.protocol}#{district_state_and_country.join("-")}#{existing_subdomain}.#{request.domain}#{request.port_string}/"
-    else
-      root_url
-    end
-
+      district_state_and_country = [current_district.abbrev,current_district.state.abbrev, current_district.state.country.abbrev]
+      subdomain = district_state_and_country.join('-') if USE_SUBDOMAINS rescue nil and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
+      root_url(:subdomain=>subdomain)
   end
 
   
