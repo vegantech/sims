@@ -13,7 +13,7 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 
 
-after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
+after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory
 
 
@@ -32,6 +32,13 @@ namespace :deploy do
     puts "go stop passenger"
   end
 end 
+
+task :update_new_relic_name do
+    run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-open-#{stage}/' newrelic.yml "
+
+
+end
+
 
 task :copy_database_yml do 
   run "cp  #{deploy_to}/database.yml.mysql #{release_path}/config/database.yml"
