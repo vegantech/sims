@@ -26,7 +26,8 @@
 
 :ssl:
   :only: true
-  :self_signed: true
+  :certificate_file: /home/rails/certs/simspilot.org.crt
+  :certificate_key_file: /home/rails/certs/simspilot.org.pem
 
 :upload_progress:
   :shared_memory_size: 1024000
