@@ -230,7 +230,7 @@ Feature: Sims Demo Walkthrough
 
  Scenario: test wi_admin
     Given load demo data
-    And I enter url "http://admin-wi-us.sims-open.example.com"
+    And I enter url "/?district_abbrev=admin&state_abbrev=wi"
     And I fill in "Login" with "district_admin"
     And I fill in "Password" with "district_admin"
     And I press "Login"

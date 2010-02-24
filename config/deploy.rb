@@ -55,7 +55,7 @@ task :setup_default_url do
 end
 
 task :enable_subdomains do
-  put("USE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", :via => :scp)
+  put("ENABLE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", :via => :scp)
 end
 
 task :change_railmail_to_smtp do

@@ -143,7 +143,7 @@ describe StudentsController do
         it 'should set error message and redraw search screen' do
           post :search
           flash[:notice].should == 'Missing search criteria'
-          response.should redirect_to(:action => :search)
+          response.should redirect_to("http://www.test.host/students/search")
         end
       end
 
