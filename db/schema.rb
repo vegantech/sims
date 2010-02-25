@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100218042434) do
+ActiveRecord::Schema.define(:version => 20100225000140) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -807,13 +807,6 @@ ActiveRecord::Schema.define(:version => 20100218042434) do
   add_index "student_comments", ["student_id"], :name => "index_student_comments_on_student_id"
   add_index "student_comments", ["user_id"], :name => "index_student_comments_on_user_id"
 
-  create_table "student_groups_546713874_importer", :id => false, :force => true do |t|
-    t.integer "district_student_id"
-    t.string  "district_group_id"
-  end
-
-  add_index "student_groups_546713874_importer", ["district_student_id", "district_group_id"], :name => "temporary_index_0"
-
   create_table "students", :force => true do |t|
     t.integer  "district_id"
     t.string   "last_name"
@@ -834,14 +827,6 @@ ActiveRecord::Schema.define(:version => 20100218042434) do
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
   add_index "students", ["district_student_id"], :name => "index_students_on_id_district"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
-
-  create_table "team_agendas", :force => true do |t|
-    t.integer  "team_id"
-    t.date     "date"
-    t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"
@@ -907,6 +892,7 @@ ActiveRecord::Schema.define(:version => 20100218042434) do
     t.string   "salt",             :default => ""
     t.string   "district_user_id"
     t.string   "token"
+    t.integer  "roles_mask"
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"
