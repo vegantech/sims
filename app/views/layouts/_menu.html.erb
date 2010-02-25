@@ -1,36 +1,33 @@
 <ul>
   <% if session[:user_id] %>
     <li><%= link_to "Home", root_path %> </li>
-    <%= li_link_to_if_authorized 'School Selection', schools_path %> 
+    <%= li_link_to('School Selection', schools_path) if can? :read, School %> 
     <%= render :partial => "layouts/core_practices" %>
     <%= render :partial => "layouts/intervention_pdf_html_list" %>
-    <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
-    <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
-    <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
-    <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
-    <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
-    <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL %>
+    <%= li_link_to 'Checklist Builder', checklist_builder_checklists_path if can? :manage, Checklist %>
+    <%= li_link_to 'Intervention Builder', intervention_builder_goals_path  if can? :manage, InterventionDefinition%>
+    <%= li_link_to 'Progress Monitor Builder', intervention_builder_probes_path if can? :maange, ProbeDefinition %>
+    <%= li_link_to 'Flag Categories/Core Practices', flag_categories_path if can? :manage, FlagCategory %>
+    <%= li_link_to 'Tier Builder', tiers_path if can? :manage, Tier %>
+    <%= li_link_to('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL or cannot?(:read, Railmail)%>
     <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
       current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
     <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
     <% plus_minus_li "Reports" do %>
-        <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
-        <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
-            regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
+        <%= li_link_to('School Team Notes by Date', '/reports/team_notes') unless current_school.blank?  or cannot?(:read,TeamNotesReport)%>
+        <%= li_link_to "Regenerate Intervention documents in menu",
+            regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put if can?(:manage, InterventionDefinition)%>
 
-        <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
-            interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
+        <%= li_link_to "Interventions Without Recommended Monitors",
+            interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get if can?(:manage, InterventionDefinition)  %>
         <% if_student_selected do %>
-          <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
-          <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
+          <%= li_link_to "<b>Student Report</b>", '/reports/student_overall_options' if can?(:read,Student) %>
+          <%= li_link_to "Student Interventions", '/reports/student_interventions' if can?(:read, Student)%>
         <% end %>
-        <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
+        <%= li_link_to 'User Interventions', '/reports/user_interventions' if can?(:read,UserInterventionsReport) %>
     <%  end %>
 
-    <% if false %>
-        <%= li_link_to_if_authorized 'Role Management',roles_path %>
-    <% end %>
     <li><%= link_to "Change Password", change_password_path %></li>
     <li><%= render :partial => 'login/logout' %></li>
   <% elsif !defined?DEFAULT_URL %>
@@ -47,7 +44,7 @@
   <% plus_minus_li "Help" do %>
     <% if session[:user_id] %>
       <% current_user.roles.each do |role| %>
-        <% plus_minus_li role.name.humanize do %>
+        <% plus_minus_li role.humanize do %>
           <%=links_and_attachments(role, :li) %>
         <% end %>
       <% end %>

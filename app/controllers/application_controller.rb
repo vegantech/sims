@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   def authorize
     controller = self.class.controller_path  # may need to change this
     action_group = action_group_for_current_action
-    unless current_user.authorized_for?(controller, action_group)
+    if  current_user.authorized_for?(controller, action_group)
       logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."
       
       flash[:notice] =  "You are not authorized to access that page"

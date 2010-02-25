@@ -19,7 +19,7 @@
 #
 
 class User < ActiveRecord::Base
-
+  ROLES = ["district_admin", "content_admin", "school_admin", "regular_user", "news_admin", "state_admin", "country_admin"]
 
   
   
@@ -35,8 +35,6 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
-  has_and_belongs_to_many :roles
-  has_many :rights, :through => :roles
   has_many :student_comments
   has_many :intervention_participants
   has_many :school_team_memberships
@@ -189,6 +187,7 @@ class User < ActiveRecord::Base
   
   
   def authorized_for?(controller, action_group)
+    raise "#{controller} #{action_group}"
     !new_record? && roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
   end
 
@@ -297,6 +296,20 @@ class User < ActiveRecord::Base
 
     false
 
+  end
+
+  def roles=(roles)
+    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.sum
+  end
+
+  def roles
+    ROLES.reject do |r|
+      ((roles_mask || 0) & 2**ROLES.index(r)).zero?
+    end
+  end
+
+  def role?(role)
+    roles.include?(role.to_s)
   end
 
 protected

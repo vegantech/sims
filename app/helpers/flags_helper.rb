@@ -15,8 +15,7 @@ module FlagsHelper
   end
 
   def team_concerns?(student = current_student)
-    student.team_consultations.pending.present?
-    
+    student.team_consultations.none?(&:complete) && student.team_consultations.present?
   end
   def team_concerns(student)
     if team_concerns?(student)

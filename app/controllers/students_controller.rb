@@ -1,10 +1,12 @@
 class StudentsController < ApplicationController
 	before_filter :enforce_session_selections, :except => [:index, :select, :search]
+  skip_before_filter :authorize
   additional_read_actions %w{grade_search member_search search}
 
   # GET /students
   # GET /students.xml
   def index
+    unauthorized! if cannot? :read, Student 
     flash[:notice]="Please Choose a school" and redirect_to schools_url  and return unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
     @students = student_search index_includes=true
@@ -16,6 +18,7 @@ class StudentsController < ApplicationController
   end
 
   def select
+    unauthorized! if cannot? :read, Student 
     # add selected students to session, then redirect to show
 
     @students = student_search
@@ -43,6 +46,7 @@ class StudentsController < ApplicationController
   end
 
   def search
+    unauthorized! if cannot? :read, Student 
     if request.get?
       @grades = current_school.grades_by_user(current_user) unless current_school.blank?
 
@@ -68,6 +72,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.xml
   def show
+    unauthorized! if cannot? :read, Student 
     @student = Student.find(params[:id])
     if @student.district_id != current_district.id
       flash[:notice] = 'Student not enrolled in district'

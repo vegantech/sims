@@ -1,8 +1,0 @@
-<% if @parent.news.any? || @can_edit %>
-  <div class="NewsGroup">
-    <h2><%=@parent.name%> News</h2>
-    <%=render :collection=>@parent.news, :partial=>"news_item"%>
-    <%= link_to 'New news_item', new_news_item_path if @can_edit%>
-  </div>
-<% end %>
-

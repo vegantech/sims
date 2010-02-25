@@ -6,7 +6,10 @@ module ApplicationHelper
     submit_tag("Spellcheck", :name=>"spellcheck",:onclick =>"$('#{prefix}spellcheck').value='Spellcheck'")
   end
 
-  
+
+  def li_link_to(name, options = {}, html_options = {}, *rest)
+    content_tag :li,link_to(name,options,html_options)
+  end
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
      content_tag :li,r if r.present?

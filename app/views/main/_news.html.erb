@@ -1,6 +1,6 @@
 <% unless current_district.blank? %>
-  <%= render_cell(:news,:index, :parent=>current_district, :district=>current_district, :user=>current_user) %>
-  <%= render_cell(:news,:index, :parent=>current_district.state,:district=>current_district, :user=>current_user) %>
-  <%= render_cell(:news,:index, :parent=>current_district.country, :district=>current_district, :user=>current_user ) %>
-  <%= render_cell(:news,:index, :parent=>System, :district=>current_district, :user=>current_user) %>
+  <%= render :partial => 'news/parent', :object=>current_district %>
+  <%= render :partial => 'news/parent', :object=>current_district.state %>
+  <%= render :partial => 'news/parent', :object=>current_district.country %>
+  <%= render :partial => 'news/parent', :object=>System %>
 <% end %>

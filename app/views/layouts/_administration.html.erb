@@ -1,7 +1,5 @@
-<% if session[:user_id] && current_district && current_district.admin? %>
-  <%= render_cell(:administration, :system, :district=>current_district, :user=>current_user) %>
-  <%= render_cell(:administration, :country, :district=>current_district, :user=>current_user) %>
-  <%= render_cell(:administration, :state, :district=>current_district, :user=>current_user) %>
-<% end %>
-  <%= render_cell(:administration, :school, :school => current_school,:user => current_user) if session[:user_id] && session[:school_id]%>
-  <%= render_cell(:administration, :district, :district=>current_district ,:user => current_user) if session[:user_id]%>
+<%= render :partial => 'administration/system' if can? :create, Country %>
+<%= render :partial => 'administration/country' if can? :edit, current_district.country %>
+<%= render :partial => 'administration/state' if can? :edit, current_district.state %>
+<%= render :partial => 'administration/school' if can? :edit, current_school %>
+<%= render :partial => 'administration/district' if can? :edit, current_district %>
