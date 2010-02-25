@@ -20,6 +20,9 @@ class Ability
       user.role?('regular_user')
     end
 
+    can :read, Railmail unless user.new_record?
+
+
   end
 
 end

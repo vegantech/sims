@@ -80,6 +80,12 @@ class ApplicationController < ActionController::Base
 
   def authorize
     controller = self.class.controller_path  # may need to change this
+    if controller == 'railmail' then
+      unauthorized! unless can? :read, Railmail
+      return true
+    end
+
+
     action_group = action_group_for_current_action
     if  current_user.authorized_for?(controller, action_group)
       logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."

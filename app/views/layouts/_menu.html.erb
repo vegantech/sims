@@ -15,7 +15,7 @@
     <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
     <% plus_minus_li "Reports" do %>
-        <%= li_link_to('School Team Notes by Date', '/reports/team_notes') unless current_school.blank?  or cannot?(:read,TeamNotesReport)%>
+        <%= li_link_to('School Team Notes by Date', '/reports/team_notes') unless current_school.blank?  or cannot?(:read,Student)%>
         <%= li_link_to "Regenerate Intervention documents in menu",
             regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put if can?(:manage, InterventionDefinition)%>
 
@@ -25,7 +25,7 @@
           <%= li_link_to "<b>Student Report</b>", '/reports/student_overall_options' if can?(:read,Student) %>
           <%= li_link_to "Student Interventions", '/reports/student_interventions' if can?(:read, Student)%>
         <% end %>
-        <%= li_link_to 'User Interventions', '/reports/user_interventions' if can?(:read,UserInterventionsReport) %>
+        <%= li_link_to 'User Interventions', '/reports/user_interventions' if can?(:read,Student) %>
     <%  end %>
 
     <li><%= link_to "Change Password", change_password_path %></li>
