@@ -36,8 +36,8 @@ describe DistrictsController do
 
   describe 'create' do
     it 'should create district when valid' do
-      @n.should_receive(:build).with([45]).and_return(mock_district(:save=>true))
-      post :create, :district => ([45])
+      @n.should_receive(:build).with(['45']).and_return(mock_district(:save=>true))
+      post :create, :district => (['45'])
       flash[:notice].should ==  'District was successfully created.'
 
       response.should redirect_to(districts_url)
