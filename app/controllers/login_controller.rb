@@ -77,7 +77,7 @@ class LoginController < ApplicationController
 
     if @user.new_record? 
       id=params[:id] || (params[:user] && params[:user][:id])
-      token = params[:token] || (params[:token] && params['user'][:token])
+      token = params['token'] || (params[:user] && params['user'][:token])
       @user =  User.find(id, :conditions => ["passwordhash ='' and salt ='' and token = ?",token]) #and email_token
       redirect_to logout if @user.blank?
     end
