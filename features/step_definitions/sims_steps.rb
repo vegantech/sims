@@ -57,15 +57,8 @@ Given /^I log in as content_builder$/ do
   Factory(:frequency)
   clear_login_dropdowns
   u=create_user "content_builder", "content_builder"
-  r=Role.create!(:name => 'content_admin', :district_id => u.district_id)
-  u.roles << r
-#  r.rights.create!(:controller=>"intervention_builder/goals", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"intervention_builder/objectives", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"intervention_builder/categories", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"intervention_builder/interventions", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"intervention_builder/probes", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"tiers", :read_access=>true, :write_access=>true)
-#  r.rights.create!(:controller=>"checklist_builder/checklists", :read_access=>true, :write_access=>true)
+  u.roles = "content_admin"
+  u.save!
 
   visit '/'
   fill_in 'Login', :with => 'content_builder'
@@ -76,15 +69,9 @@ end
 Given /^I am a district admin$/ do
   clear_login_dropdowns
   default_user
+  @default_user.roles= "district_admin"
+  @default_user.save!
   log_in
-  role = Role.create!(:name => "district_admin")
-
-  Role.create!(:name => 'regular_user', :district_id => @default_user.district_id)
-#  role.rights.create!(:controller=>"district/schools", :read_access=>true, :write_access=>true)
-#  role.rights.create!(:controller=>"district/users", :read_access=>true, :write_access=>true)
-#  role.rights.create!(:controller=>"district/students", :read_access=>true, :write_access=>true)
-#  role.rights.create!(:controller=>"districts", :read_access=>true, :write_access=>true)
-  default_user.roles=[role]
 end
 
 Given /^I am a state admin$/ do
