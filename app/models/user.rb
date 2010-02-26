@@ -19,7 +19,6 @@
 #
 
 class User < ActiveRecord::Base
-  ROLES = ["district_admin", "content_admin", "school_admin", "regular_user", "news_admin", "state_admin", "country_admin"]
 
   
   
@@ -35,7 +34,6 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
-#  has_and_belongs_to_many :roles
   has_many :student_comments
   has_many :intervention_participants
   has_many :school_team_memberships
@@ -188,7 +186,7 @@ class User < ActiveRecord::Base
   
   
   def authorized_for?(controller, action_group)
-    !new_record? && roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
+    !new_record? && Role.has_controller_and_action_group?(controller.to_s, action_group.to_s,roles)
   end
 
   def grouped_principal_overrides
@@ -262,7 +260,7 @@ class User < ActiveRecord::Base
     user_school_assignments.destroy_all
     special_user_groups.destroy_all
     user_group_assignments.destroy_all
-    roles.clear
+    update_attribute(:roles_mask,0)
     update_attribute(:district_id,nil)
   end
 
@@ -299,17 +297,22 @@ class User < ActiveRecord::Base
   end
 
   def roles=(roles)
-    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.sum
+    @roles = nil
+    self.roles_mask = Role.roles_to_mask(roles)
   end
 
   def roles
-    ROLES.reject do |r|
-      ((roles_mask || 0) & 2**ROLES.index(r)).zero?
-    end
+    @roles ||= Role.mask_to_roles(roles_mask)
   end
 
   def role?(role)
     roles.include?(role.to_s)
+  end
+
+  def self.find_all_by_role(role,options = {})
+    with_scope :find => options do
+      find(:all,:conditions => ["roles_mask & ? ",2**Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+    end
   end
 
 protected

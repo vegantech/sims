@@ -1,8 +1,9 @@
 module ImportCSV::Roles
   
   def load_user_roles_from_csv file_name, role
-    @role=Role.find_by_name(role) or return false
-    @existing_users = @role.users.all(:conditions => ["district_id = ? and district_user_id is not null", @district.id],:select => "id, district_user_id")
+    @role=Role::ROLES[role] or return false
+    @existing_users = @district.users.find_all_by_role(role, :conditions => 'district_user_id is not null', :select => 'id, district_user_id')
+#      @role.users.all(:conditions => ["district_id = ? and district_user_id is not null", @district.id],:select => "id, district_user_id")
     
     if load_from_csv file_name, "role"
       @desired_users = district.users(true).all(:select => "id, district_user_id", 
@@ -11,10 +12,10 @@ module ImportCSV::Roles
         )
       
       # insert desired - existing
-      @role.users << (@desired_users  -@existing_users)
+      Role.add_users(role, @desired_users  -@existing_users)
       
       # remove existing - desired
-      @role.users.delete(@existing_users - @desired_users)
+      Role.remove_users(role,@existing_users - @desired_users)
     end
   end
 

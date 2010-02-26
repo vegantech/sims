@@ -14,7 +14,7 @@ class District::UsersController < ApplicationController
   def new
     @user = current_district.users.build
     @schools = current_district.schools
-    @user.roles << Role.find_by_name('regular_user')
+    @user.roles='regular_user'
 
     respond_to do |format|
       format.html # new.html.erb

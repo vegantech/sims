@@ -7,7 +7,7 @@ class System
   end
 
   def self.roles
-    Role.system
+    Role::ROLES
   end
 
   def self.bootstrap

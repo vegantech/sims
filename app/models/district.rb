@@ -239,7 +239,7 @@ private
     if users.blank?
       u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
       u.reset_password!
-      u.roles=Role.find(:all,:conditions=>{:district_id=>nil, :name=>"district_admin"})
+      u.roles='district_admin'
       u.save!
     end
   end

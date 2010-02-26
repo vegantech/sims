@@ -245,13 +245,13 @@ describe User do
     end
 
     it 'should call check for read rights when group is read' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read').and_return(true)
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read',[]).and_return(true)
       u=Factory(:user)
       u.authorized_for?('test_controller','read').should == true
     end
 
     it 'should call check for write rights when group is write' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write').and_return(true)
+      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write',[]).and_return(true)
       u=Factory(:user)
       u.authorized_for?('test_controller','write').should == true
     end
