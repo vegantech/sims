@@ -34,7 +34,6 @@ class Role < ActiveRecord::Base
   include LinkAndAttachmentAssets
 
   belongs_to :district
-  has_many :rights, :dependent=>:destroy
   has_and_belongs_to_many :users
 
   acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this
@@ -56,16 +55,6 @@ class Role < ActiveRecord::Base
 
   def system?
     district_id.blank?
-  end
-
-  private
-
-  def after_initialize
-      puts "In after initialize"
-    unless rights.any?
-      self.rights.build(:controller=>"students")
-    end
-
   end
 
 end
