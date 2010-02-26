@@ -42,7 +42,7 @@ describe StudentsController do
         e2.stub_association!(:student,:id=>6)
 
         controller.should_receive(:student_search).and_return([e1,e2])
-        get :select, :id=>[1,5,6]
+        get :select, :id=>['1','5','6']
 
       end
       it 'should put error in flash' do

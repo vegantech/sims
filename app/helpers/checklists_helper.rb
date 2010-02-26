@@ -122,7 +122,7 @@ module ChecklistsHelper
   end
        
   def markdown_with_span(text)
-    content_tag :span, markdown(text),:class=>'markdown'
+    content_tag :span, markdown(text.to_s.gsub(/\r\n\*/,"\n\n*")),:class=>'markdown'
   end
 
 

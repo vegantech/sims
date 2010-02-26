@@ -46,7 +46,7 @@ class Notifications < MailerWithSubdomains
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
-    @district = interventions.first.student.district
+    @district = interventions.first.try(:student).try(:district)
     
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end

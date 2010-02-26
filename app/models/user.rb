@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
+#  has_and_belongs_to_many :roles
   has_many :student_comments
   has_many :intervention_participants
   has_many :school_team_memberships

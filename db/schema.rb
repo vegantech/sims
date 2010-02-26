@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100225000140) do
+ActiveRecord::Schema.define(:version => 20100226021506) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -701,17 +701,6 @@ ActiveRecord::Schema.define(:version => 20100225000140) do
 
   add_index "recommended_monitors", ["intervention_definition_id"], :name => "index_recommended_monitors_on_intervention_definition_id"
   add_index "recommended_monitors", ["probe_definition_id"], :name => "index_recommended_monitors_on_probe_definition_id"
-
-  create_table "rights", :force => true do |t|
-    t.string   "controller"
-    t.boolean  "read_access"
-    t.boolean  "write_access"
-    t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "rights", ["role_id"], :name => "index_rights_on_role_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

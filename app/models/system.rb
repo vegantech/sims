@@ -18,7 +18,6 @@ class System
 
     if Role.count == 0
       r=Role.create!(:name=>"country_admin")
-      r.rights.create!(:controller=>"countries", :read_access=>true, :write_access=>true)
       Country.first.admin_district.users.first.roles << r
     end
   end
