@@ -34,7 +34,7 @@ namespace :deploy do
 end 
 
 task :update_new_relic_name do
-    run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-open-#{stage}/' newrelic.yml "
+    run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-#{stage}/' newrelic.yml "
 
 
 end
