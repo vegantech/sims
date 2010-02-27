@@ -13,6 +13,8 @@ class ConvertRolesToRolesMask < ActiveRecord::Migration
     end
   end
 
+end
+
   class User < ActiveRecord::Base
     ROLES = ["district_admin", "content_admin", "school_admin", "regular_user", "news_admin", "state_admin", "country_admin"]
     has_and_belongs_to_many :old_roles, :join_table => 'roles_users', :class_name => 'Role'
@@ -31,5 +33,6 @@ class ConvertRolesToRolesMask < ActiveRecord::Migration
 
   class Role < ActiveRecord::Base
     has_and_belongs_to_many :users
+    set_table_name 'roles'
   end
-end
+
