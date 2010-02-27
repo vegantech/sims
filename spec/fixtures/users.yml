@@ -22,7 +22,7 @@
 
 DEFAULTS: &DEFAULTS
   username: $LABEL
-  roles_mask: <%=Role.roles_to_mask('regular_user')
+  roles_mask: <%=Role.roles_to_mask('regular_user') %>
 
 one:
   passwordhash: 
@@ -113,6 +113,6 @@ wi_admin:
   username: district_admin
   district: wi_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles_mask: <%=Role.roles_to_msk %w{news_admin state_admin district_admin} %>
+  roles_mask: <%=Role.roles_to_mask %w{news_admin state_admin district_admin} %>
   
 

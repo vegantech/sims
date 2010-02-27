@@ -35,6 +35,7 @@ end
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
   s.enrollments.create!(@student.enrollments.first.attributes)
+  @additional_student=true
   s.save!
 end
 
