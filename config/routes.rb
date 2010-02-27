@@ -100,7 +100,7 @@ ActionController::Routing::Routes.draw do |map|
       :collection=>{:regenerate_intervention_pdfs => :put,  :interventions_without_recommended_monitors => :get} do |goal|
       goal.resources :objectives,  :member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" do |objective|
         objective.resources :categories,:member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" do |category|
-          category.resources :interventions ,:member=>{:disable =>:put, :move =>:put }, :name_prefix=>"intervention_builder_" 
+          category.resources :interventions ,:member=>{:disable =>:put, :move =>:put },:collection=>{:sort => :post}, :name_prefix=>"intervention_builder_" 
         end
       end
     end

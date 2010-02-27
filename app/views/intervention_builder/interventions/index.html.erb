@@ -1,23 +1,42 @@
 <h1>Listing Interventions</h1>
 <%= render :partial=>"intervention_builder/categories/summary" %>
 
-<table>
-  <thead>
-  <tr>
-    <th>Order</th>
-    <th> </th>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Tier</th>
-    <th>Time length</th>
-    <th>Frequency</th>
-    <th>Updated on</th>
-  </tr>
-  </thead>
-  <tbody id="intervention_definition_list">
-<%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
-</tbody>
+<% form_tag("",:method => "get") do %>
+  <%= check_box_tag :system,1, (!params[:commit] || params[:system])%>
+  <%= label_tag 'system', 'System'%>
+  <%= check_box_tag :custom,1, (!params[:commit] || params[:custom])%>
+  <%= label_tag 'custom', 'Custom'%>
+  &nbsp;|
+  <%= check_box_tag :enabled,1,(!params[:commit] || params[:enabled])%>
+  <%= label_tag 'enabled', 'Enabled'%>
+  <%= check_box_tag :disabled, 1,(!params[:commit] || params[:disabled])%>
+  <%= label_tag 'disabled', 'Disabled'%>
+  <%= submit_tag 'Filter'%>
+<% end %>
+
+<% form_tag(:controller => 'intervention_builder/interventions' ,:action => 'disable', :goal_id => @goal_definition,
+            :objective_id=>@objective_definition, :category_id => @intervention_cluster, :method => 'put') do %>
+  <table>
+    <thead>
+    <tr>
+      <th>Order</th>
+      <th> </th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Tier</th>
+      <th>Time length</th>
+      <th>Frequency</th>
+      <th>Updated on</th>
+    </tr>
+    </thead>
+    <tbody id="intervention_definition_list">
+  <%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
+  </tbody>
 </table>
+  <%= submit_tag 'Disable Selected Interventions', :confirm => 'Disable Selected Intervention Definitions?' %>
+<% end %>
+
+<%= sortable_element('intervention_definition_list', :tag => 'tr', :url => sort_intervention_builder_interventions_path(@goal_definition,@objective_definition,@intervention_cluster),:handle => 'handle') %>
 
 <br />
 

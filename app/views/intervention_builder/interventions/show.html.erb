@@ -40,6 +40,15 @@
   <%=h @intervention_definition.updated_at.to_s(:report) %>
 </p>
 
+<% if @intervention_definition.school_id %>
+  <p>
+  <%=@intervention_definition.custom? ? 'Currently' : 'Originally' %> a custom intervention by <%=@intervention_definition.user%> at <%=@intervention_definition.school%>.
+  </p>
+<% end %>
+
+
+
+
 <table>
 <caption>Recommended Progress Monitors
 </caption>

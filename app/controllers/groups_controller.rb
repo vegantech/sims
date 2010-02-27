@@ -87,7 +87,7 @@ class GroupsController < ApplicationController
   def add_student_form
     @group = current_school.groups.find(params[:id])
     @student = Student.new
-    @students=current_school.students - @group.students
+    @students=current_school.students.find(:all,:order => 'last_name, first_name') - @group.students
     respond_to do |format|
       format.js {}
     end
@@ -106,7 +106,7 @@ class GroupsController < ApplicationController
 
   def add_user_form
     @group = current_school.groups.find(params[:id])
-    @users = current_school.users 
+    @users = current_school.assigned_users
     @user_assignment = @group.user_group_assignments.build
     #need to handle special user groups as well
     respond_to do |format|
@@ -124,7 +124,7 @@ class GroupsController < ApplicationController
      if @user_assignment.save
        format.js {}
      else
-       @users = current_school.users 
+       @users = current_school.assigned_users
        format.js {render :action=>"add_user_form"}
      end
    end
@@ -157,7 +157,9 @@ end
     grade = @group.split("_").last
     grade= nil if grade == "school"
     @special_user_group = current_school.special_user_groups.build(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL)
-    @users = current_school.users
+    @users = current_school.assigned_users
+
+
   end
 
   def add_special
@@ -169,7 +171,7 @@ end
 
     if @special_user_group.save
     else
-      @users=current_school.users
+      @users=current_school.assigned_users
       render :action=>:add_special_form
     end
 

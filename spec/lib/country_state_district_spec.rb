@@ -18,8 +18,9 @@ describe "Populate Country State and District dropdowns" do
       country=Country.new
       state=State.new
       district=District.new
+      current_district = District.new(:state=> state, :name => 'Please Select a District')
       country.stub_association!(:states,:normal=>[5,6,state])
-      state.stub_association!(:districts, :normal=>[district,7,8])
+      state.stub_association!(:districts, :normal=>[district,7,8], :build => current_district)
       Country.should_receive(:normal).and_return([country,2,3])
       self.should_receive(:current_user_id).and_return(false)
       dropdowns
@@ -28,7 +29,7 @@ describe "Populate Country State and District dropdowns" do
       @states.should == [5,6,state]
       @state.should == state
       @districts.should == [district,7,8]
-      @current_district.should == district
+      @current_district.should == current_district
     end
 
 

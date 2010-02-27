@@ -36,7 +36,6 @@ class User < ActiveRecord::Base
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
   has_and_belongs_to_many :roles
-  has_many :rights, :through => :roles
   has_many :student_comments
   has_many :intervention_participants
   has_many :school_team_memberships
@@ -51,6 +50,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
+  before_save :nullify_blank_district_user_id
   after_save :district_special_groups
 
   acts_as_reportable # if defined? Ruport
@@ -188,7 +188,7 @@ class User < ActiveRecord::Base
   
   
   def authorized_for?(controller, action_group)
-    roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
+    !new_record? && roles.has_controller_and_action_group?(controller.to_s, action_group.to_s)
   end
 
   def grouped_principal_overrides
@@ -323,5 +323,9 @@ protected
     user_school_assignments.each do |user_school_assignment|
       user_school_assignment.save(false)
     end
+  end
+
+  def nullify_blank_district_user_id
+    self.district_user_id = nil if district_user_id.blank?
   end
 end

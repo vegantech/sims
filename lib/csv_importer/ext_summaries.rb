@@ -18,7 +18,7 @@ module CSVImporter
 
     def migration t
 
-      t.column :district_student_id, :integer
+      t.column :district_student_id, :string
       t.column :home_language, :string
      t.column :street_address, :string
      t.column :city_state_zip, :string

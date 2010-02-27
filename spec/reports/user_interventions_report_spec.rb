@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe UserInterventionsReport do
   describe 'render_text' do
     it 'should generate correct text output' do
-      now = Date.new(2008, 12, 12).to_time
+      now = Date.new(2008, 12, 12).to_time(:utc)
       Time.stub!(:now => now)
 
       ip = Factory(:intervention_participant, :role => 1)

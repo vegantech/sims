@@ -23,4 +23,25 @@ class Asset < ActiveRecord::Base
   def to_s
     "#{name} #{document.original_filename if document?}"
   end
+
+  def self.duplicates
+    find(:all, :group=>'name, url,attachable_id', :having => 'count(id)>1', :conditions => 'url <> "" and url is not null')
+  end
+
+  def broken?
+    (document_file_name.present?  && !File.exists?(document.path)) ||
+      (url.present? && !url_exists)
+  end
+
+  private
+  def url_exists
+    case url
+     when /^\/file/
+       File.exists?(File.join(RAILS_ROOT,url))
+     when /^\/help/
+      File.exists?(File.join(RAILS_ROOT,'app/views/help',"_#{url.split('/').last}.html.erb"))
+     else
+       false #go to it yourself
+     end
+  end
 end

@@ -107,7 +107,7 @@ class Intervention < ActiveRecord::Base
 
   def intervention_probe_assignment=(params)
     intervention_probe_assignments.update_all(:enabled => false) #disable all others
-    params.stringify_keys!
+    params.stringify_keys! unless params.blank? #fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
   
     if params['probe_definition_id'] == 'custom'
@@ -175,11 +175,14 @@ class Intervention < ActiveRecord::Base
     # make sure it doesn't create double interventions for the selected student
     # make sure it creates interventions for each student
     if self.apply_to_all == "1"
+      comment = {:comment => comments.present? ? comments.first.comment : nil}
       student_ids = self.selected_ids
       student_ids.delete(self.student_id.to_s)
+      ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
         Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
-          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids))
+          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
+                                                  :comment => comment ,:intervention_probe_assignment => ipa))
       end
     end
     true

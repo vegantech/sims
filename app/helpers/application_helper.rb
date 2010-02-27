@@ -91,14 +91,14 @@ module ApplicationHelper
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
   end
 
-  def link_to_remote_if(condition, name, options = {}, html_options = {}, *parameters_for_method_reference, &block)
+  def link_to_remote_if(condition, name, options = {}, html_options = {},  &block)
     condition ? link_to_remote_degrades(name, options, html_options ) : name
   end
 
   def link_to_with_icon(name, url, suffix="")
     ext_match = /\.\w+$/
     ext = (name.match ext_match)
-    file = "#{name.split(ext_match).first.gsub(/_/," ")}#{suffix}"
+    file = "#{name.split(ext_match).first.to_s.gsub(/_/," ")}#{suffix}"
     icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext[0][1..-1]}.gif"
     blank={}
     blank[:target]="_blank" unless url=="#"

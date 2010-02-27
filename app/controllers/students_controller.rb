@@ -25,7 +25,13 @@ class StudentsController < ApplicationController
       flash[:notice] = 'No students selected'
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
-      session[:selected_students] = params[:id].uniq
+      max_students = 250
+      params[:id].uniq!
+      if params[:id].length > max_students
+        flash[:notice] ="Selection limited to #{max_students} students"
+        params[:id] = params[:id][0...max_students]
+      end
+      session[:selected_students] = params[:id]
       session[:selected_student] = session[:selected_students].first
       redirect_to student_url(session[:selected_student]) and return
     else

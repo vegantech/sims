@@ -1,0 +1,9 @@
+--- 
+- :name: fastercsv
+- :name: hpricot
+- :name: pdf-writer
+  :source: http://gems.github.com
+- :name: capistrano
+- :name: capistrano-ext
+- :version: 2.3.2
+  :name: rails

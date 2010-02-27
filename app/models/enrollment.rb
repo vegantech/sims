@@ -14,7 +14,7 @@
 
 class Enrollment < ActiveRecord::Base
 
-  CSV_HEADERS=[:grade, :school_id_district, :student_id_district, :end_year]
+  CSV_HEADERS=[:grade, :district_school_id, :district_student_id, :end_year]
   belongs_to :student
   belongs_to :school
 
@@ -39,7 +39,8 @@ class Enrollment < ActiveRecord::Base
     
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
-    if u = search_hash[:user]
+    if search_hash[:user]
+      u = search_hash[:user]
       search_hash.delete(:user_id) if search_hash[:user_id] == u.id.to_s || search_hash[:user_id] == "*"
       if u.special_user_groups.all_students_in_school?(sch_id)
         #User has access to everyone in school

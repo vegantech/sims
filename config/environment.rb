@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -30,11 +30,19 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
-  config.gem 'BlueCloth', :lib=>'bluecloth'
+  config.gem 'bluecloth'
   if YAML.load_file(RAILS_ROOT+"/config/database.yml")[RAILS_ENV]["adapter"] == "sqlserver"
     config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
   end
  config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
+ config.gem "fastercsv"
+ config.gem "hpricot"
+ config.gem "pdf-writer", :lib => "pdf/writer"
+ config.gem 'rack', :version => '>= 1.0.0'
+
+ # deployment
+ config.gem "capistrano", :lib => false
+ config.gem "capistrano-ext", :lib => false
 
  # need to upgrade rubygems
   # config.gem 'hpricot'
@@ -85,6 +93,7 @@ Rails::Initializer.run do |config|
   config.action_mailer.delivery_method = :railmail
 
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )
+  config.time_zone = 'Central Time (US & Canada)'
 end
 
 # begin

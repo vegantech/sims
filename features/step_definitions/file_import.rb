@@ -49,6 +49,11 @@ Then /^the command should have succeeded$/ do
   @command_return_val.should match(/Successful import/)
 end
 
+Then /^the command should have "([^\"]*)"$/ do |arg1|
+   @command_return_val.should match(/#{arg1}/)
+end
+
+
 Then /^there should be a user with username "([^\"]*)"$/ do |username|
   @district.users.find_by_username(username).should be_true
 end
@@ -56,7 +61,8 @@ end
 Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |username, district_name, password|
   district = District.find_by_name(district_name)
   user = district.users.authenticate(username, password)
-  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => rand(50000))
+  dui=username == 'no_password'? 3 : rand(50000)
+  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => dui)
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
@@ -147,5 +153,12 @@ Then /^"([^\"]*)" should have groups (.*)$/ do |school_name, group_names|
   group_names = Array(eval(group_names))
   school = School.find_by_name(school_name)
   school.groups.map(&:title).to_set.should == group_names.to_set
+end
+
+
+
+When /^I remove the student and state_id$/ do
+  Student.update_all("district_id = null, district_student_id = null, id_state = null")
+  pp Student.all
 end
 

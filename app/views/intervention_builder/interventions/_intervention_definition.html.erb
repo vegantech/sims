@@ -1,5 +1,8 @@
 <% content_tag_for :tr, intervention_definition do %>
-  <td><%=move_up_down_buttons intervention_definition -%></td>
+  <td><span class="handle"><%=image_tag 'anchor.png' %></span><br />
+    <%=move_up_down_buttons intervention_definition -%> <br />
+    <%= check_box_tag 'id[]',intervention_definition.id, false, :id => "ck_#{intervention_definition.position}" %>
+  </td>
   <td align="center">
   <%= link_to 'Show', intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,intervention_definition) %><br />
   <%= link_to 'Edit', edit_intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,intervention_definition) %><br />

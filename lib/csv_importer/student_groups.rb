@@ -19,7 +19,7 @@ module CSVImporter
     end
 
     def migration t
-      t.integer :district_student_id
+      t.string :district_student_id
       t.string :district_group_id
     end
 

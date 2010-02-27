@@ -99,14 +99,14 @@ describe ApplicationController do
 
 
     it 'sims.example.com' do
-      controller.stub_association!(:request,:subdomains=>['sims'], :domain=>"example.com")
+      controller.stub!(:current_subdomian => nil)
       controller.stub!(:params).and_return(flash)
       controller.send('subdomains')
     end
 
     describe '' do
       before do
-        controller.stub_association!(:request,:subdomains=>['test','sims'], :domain=>"example.com")
+        controller.stub!(:current_subdomian => 'test')
         controller.stub!(:params).and_return(flash)
         Country.should_receive(:find_by_abbrev).with('us').and_return(mock_country(:states=>State))
         State.should_receive(:find_by_abbrev).with('wi').and_return(mock_state(:districts=>District))
@@ -120,11 +120,13 @@ describe ApplicationController do
       
       end
       it 'test.sims.example.com same district' do
+        pending 'need to test ENABLE SUBDOMAINS'
         controller.send('subdomains')
         controller.instance_variable_get('@current_district').should == @d
       end
 
       it 'test.sims.example.com different district' do
+        pending 'need to test ENABLE SUBDOMAINS'
         controller.instance_variable_set('@current_district','fake')
         controller.should_receive(:redirect_to)
         controller.should_receive(:logout_url)
@@ -132,6 +134,7 @@ describe ApplicationController do
       end
 
       it 'test-state.sims.example.com' do
+        pending 'need to test ENABLE SUBDOMAINS'
         State.find_by_abbrev('wi') #from before above
         controller.stub_association!(:request,:subdomains=>['test-state','sims'], :domain=>"example.com")
         State.should_receive(:find_by_abbrev).with('state').and_return(mock_state(:districts=>District))
@@ -139,6 +142,7 @@ describe ApplicationController do
       end
 
       it 'test-wi-country' do 
+        pending 'need to test ENABLE SUBDOMAINS'
         Country.find_by_abbrev('us') #from before above
         
         controller.stub_association!(:request,:subdomains=>['test-wi-country','sims'], :domain=>"example.com")

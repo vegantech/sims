@@ -1,16 +1,16 @@
-# todo: patch rescue_action and track how many are occuring and capture instances as well
+
 ActionController::Base.class_eval do
   
-  def newrelic_notice_error(exception)
-    local_params = (respond_to? :filter_parameters) ? filter_parameters(params) : params
-    
-    NewRelic::Agent.agent.error_collector.notice_error(newrelic_metric_path, (request) ? request.path : nil,
-    local_params, exception)
+  # Make a note of an exception associated with the currently executin
+  # controller action.  Note that this used to be available on Object
+  # but we replaced that global method with NewRelic::Agent#notice_error.
+  # Use that one outside of controller actions.
+  def newrelic_notice_error(exception, custom_params = {})
+    NewRelic::Agent::Instrumentation::MetricFrame.notice_error exception, custom_params
   end
   
   def rescue_action_with_newrelic_trace(exception)
-    newrelic_notice_error exception
-    
+    NewRelic::Agent::Instrumentation::MetricFrame.notice_error exception
     rescue_action_without_newrelic_trace exception
   end
   
@@ -21,3 +21,4 @@ ActionController::Base.class_eval do
   protected :rescue_action
 
 end if defined? ActionController
+

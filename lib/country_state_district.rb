@@ -24,14 +24,16 @@ module CountryStateDistrict
     districts=@districts || @state.districts.normal
 
     districts=@state.districts.admin if districts.blank?
-    if params[:district]
-      @current_district = District.find(params[:district][:id])
+    @current_district ||= districts.first if districts.size ==1
+    if params[:district] and params[:district][:id]
+      @current_district ||= District.find(params[:district][:id])
     end
+    
 
     unless districts.size == 1
       @districts ||= districts
     end
-    @current_district ||= districts.first
+    @current_district ||= @state.districts.build(:name => 'Please Select a District')
 
   end
 end

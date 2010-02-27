@@ -52,6 +52,8 @@ class CreateTrainingDistrict
     content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
 
     other_team = alpha_elem.school_teams.create!(:name => "Other Team", :contact => alphaprin.id)
+    td.flag_categories.create!({"category"=>"math", "threshold"=>"30", "existing_asset_attributes"=>{"qqq"=>""}, "new_asset_attributes"=>[{"name"=>"Math Core Practice (training sample link)", "url"=>"#"}]})
+
     
     self.generate_interventions(td)
     self.generate_checklist_definition(td)
@@ -210,7 +212,7 @@ class CreateTrainingDistrict
       s.groups << group
       s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
         comprehension strategies to independent reading") if rand(10) == 1
-      s.system_flags.create!(:category=>"math", :reason => "1- word problem assessment ") if rand(10) == 1
+      s.system_flags.create!(:category=>"math", :reason => "1- word problem assessment ") if i.odd?
       s.system_flags.create!(:category=>"suspension", :reason => "2 office referrals") if rand(10) == 1
       s.system_flags.create!(:category=>"attendance", :reason => "3 times tardy ") if rand(10) == 1
     end

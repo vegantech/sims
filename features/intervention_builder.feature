@@ -43,3 +43,91 @@ Feature: Intervention Builder
     And I press "Create"
     Then I should see "Intervention was successfully created."
     Then I should see "Listing Interventions"
+
+  Scenario: Intervention Filter
+    Given I log in as content_builder
+    And there is an intervention_definition that is "enabled" and "system"
+    And there is an intervention_definition that is "enabled" and "custom"
+    And there is an intervention_definition that is "disabled" and "system"
+    And there is an intervention_definition that is "disabled" and "custom"
+
+    And I follow "Intervention Builder"
+    And I follow "See Objectives"
+    And I follow "See Categories"
+    And I follow "See Interventions"
+
+    Then I should see "Enabled System"
+    Then I should see "Enabled Custom"
+    Then I should see "Disabled System"
+    Then I should see "Disabled Custom"
+
+    Then the "Enabled" checkbox should be checked
+    Then the "Disabled" checkbox should be checked
+    Then the "System" checkbox should be checked
+    Then the "Custom" checkbox should be checked
+
+    When I uncheck "Custom"
+    And I press "Filter"
+
+    Then the "Custom" checkbox should not be checked
+    Then I should see "Enabled System"
+    Then I should not see "Enabled Custom"
+    Then I should see "Disabled System"
+    Then I should not see "Disabled Custom"
+
+    When I uncheck "Disabled"
+    And I press "Filter"
+    Then I should see "Enabled System"
+    Then I should not see "Enabled Custom"
+    Then I should not see "Disabled System"
+    Then I should not see "Disabled Custom"
+
+    When I uncheck "System"
+    And I check "Custom"
+    And I press "Filter"
+    Then I should not see "Enabled System"
+    Then I should see "Enabled Custom"
+    Then I should not see "Disabled System"
+    Then I should not see "Disabled Custom"
+
+    When I check "Disabled"
+    And I check "Custom"
+    And I press "Filter"
+    Then I should not see "Enabled System"
+    Then I should see "Enabled Custom"
+    Then I should not see "Disabled System"
+    Then I should see "Disabled Custom"
+  
+  Scenario: Disable Selected Interventions
+    Given I log in as content_builder
+    And there is an intervention_definition that is "enabled" and "system"
+    And there is an intervention_definition that is "enabled" and "custom"
+    And there is an intervention_definition that is "disabled" and "system"
+    And there is an intervention_definition that is "disabled" and "custom"
+
+    And I follow "Intervention Builder"
+    And I follow "See Objectives"
+    And I follow "See Categories"
+    And I follow "See Interventions"
+    And I press "Disable Selected Interventions"
+    Then I should see "0 Intervention Definitions disabled"
+
+    And I check "ck_1"
+    And I check "ck_2"
+    And I press "Disable Selected Interventions"
+    Then I should see "2 Intervention Definitions disabled"
+
+    When I uncheck "Disabled"
+    And I press "Filter"
+    Then I should not see "Recommend Progress Monitors"
+
+
+
+   
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+associating users with students.
+
+Make sure users, students, and enrollments have been entered.
+The User must have the "Regular User" Role checked.
+
+
+1. Give the user access to all students in the district.
+
+As a district admin go to the edit user screen.   Check the box for All Students in District and hit save.
+
+Populate the all_students_in_district.csv file with their appropriate district_user_id
+
+2. Give the user acesss to all students in a school.
+As a district admin go to the edit user screen.   Click on the add user school association and make sure the dropdown for "All Students" is set to yes.
+
+Populate the all_students_in_school.csv file with their appropriate district_user_id and district_school_id.
+
+3. Create groups and assign users and students to them.
+See *Assigning a school administrator* if you have not yet set one up.
+
+As a school admin pick your school and then go to the groups screen.    You can create a group here and assign it a name and a district_group_id.     Groups most commonly map to sections of students, but are
+simply any named association of students (so they could be neighborhoods, teams, or just a way to assign specific students to specific users.)  Then assign users and students by following that link.  Groups 
+can also be assigned principals.
+
+You can assign a user to all students in a given grade on the groups screen.  
+
+For grade groupings you use all_students_in_school.csv but populate the grade field.  If the user is a principal (for a school) or an assistant principal (for a subgroup) then set the principal field to true.
+
+Groups are created in the groups.csv
+Students are assigned to groups in student_group_assignments.
+Users are assigned to groups in user_group_assignments. 
+
+If you are creating your own groups or merging two or more sets (such as sections and neighborhoods) then I recommend adding a prefix to the primary key for those groups in your SIS.  That way if you have a
+a neighborhood and a section with the same ID they won't overlap.
+

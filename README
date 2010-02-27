@@ -1,6 +1,11 @@
 SIMS- open source
 Track Student Interventions
 
+
+Some of the icons come from the Silk icon set at http://www.famfamfam.com/lab/icons/silk/
+
+
+
 see deployment for information on how to deploy.    This will be centrally hosted, but you're welcome to set up your own instance and help contribute code.
 
 
@@ -32,4 +37,39 @@ Then point your browser to http://localhost:3000   to see SIMS.
 
 
 
-Some of the icons come from the Silk icon set at http://www.famfamfam.com/lab/icons/silk/    
+
+
+
+
+== Making changes to the server
+
+To add new packages or make configuration changes on the server, please
+edit the following files. They contain examples for common configurations.
+If you have any questions about how to make a particular change, the Rails
+Machine staff is always ready to help.
+
+- config/moonshine.yml
+
+  Use this file to manage configuration related to deploying and
+  running the app: domain name, git repos, package dependencies for
+  gems, and more.
+
+- app/manifests/application_manifest.rb
+
+  Use this to manage the configuration of everything else on the
+  server: define the server 'stack', cron jobs, mail aliases,
+  configuration files
+
+== Deploying
+
+We're using the multi-stage deployment functionality of the excellent
+<tt>capistrano-ext</tt> gem to allow you to separately deploy to your staging
+and production server. If you don't already have this gem installed,
+please do so by running <tt>sudo gem install capistrano-ext</tt>.
+
+Use <tt>cap staging deploy</tt> to deploy to staging and <tt>cap production
+deploy</tt> to update production code.
+
+On every deployment, Moonshine will make sure that all gems, packages, 
+and configurations are as specified in <tt>moonshine.yml</tt> and in the
+manifest.

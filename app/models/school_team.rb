@@ -17,7 +17,7 @@ class SchoolTeam < ActiveRecord::Base
   has_many :users, :through => :school_team_memberships
   has_many :team_consultations
 
-  named_scope :named, {:conditions => {:anonymous => false }}
+  named_scope :named, {:conditions => {:anonymous => false }, :order => 'name'}
   validates_presence_of :name, :unless => :anonymous?
   validates_presence_of :contact, :unless => :anonymous?                                
   after_save :update_contact

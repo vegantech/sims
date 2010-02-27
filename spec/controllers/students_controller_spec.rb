@@ -42,7 +42,7 @@ describe StudentsController do
         e2.stub_association!(:student,:id=>6)
 
         controller.should_receive(:student_search).and_return([e1,e2])
-        get :select, :id=>[1,5,6]
+        get :select, :id=>['1','5','6']
 
       end
       it 'should put error in flash' do
@@ -143,7 +143,7 @@ describe StudentsController do
         it 'should set error message and redraw search screen' do
           post :search
           flash[:notice].should == 'Missing search criteria'
-          response.should redirect_to(:action => :search)
+          response.should redirect_to("http://www.test.host/students/search")
         end
       end
 

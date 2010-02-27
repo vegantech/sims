@@ -150,17 +150,7 @@ private
 def default_user
   clear_login_dropdowns unless @default_user
   @default_user ||= create_user 'default_user'
-  default_role = Role.create!(:name => 'Default Role', :district_id => @default_user.district_id, :users=>[@default_user])
-  Right.create!(:role => default_role, :controller => 'students', :read_access => true)
-  Right.create!(:role => default_role, :controller => 'schools', :read_access => true)
-  Right.create!(:role => default_role, :controller => 'reports', :read_access => true)
-
-  ["interventions", "interventions/goals", "interventions/objectives", "interventions/categories", 
-  "interventions/objectives", "interventions/definitions", "interventions/probes",
-  "interventions/probe_assignments", "interventions/participants", "principal_overrides", 
-  "team_consultations", "consultation_forms"].each do |c|
-    default_role.rights.create!(:controller=>c, :read_access=> true, :write_access => true)
-  end
+  default_role = Role.create!(:name => 'regular_user', :district_id => @default_user.district_id, :users=>[@default_user])
 
   # put other stuff above this
   @default_user

@@ -12,7 +12,7 @@ module CSVImporter
     end
 
     def migration t
-      t.column :district_user_id, :integer
+      t.column :district_user_id, :string
       t.column :district_school_id, :integer
     end
 

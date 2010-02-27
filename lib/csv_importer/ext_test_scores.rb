@@ -16,7 +16,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :integer
+      t.column :district_student_id, :string
       t.column :name, :string
       t.column :date, :date
       t.column :scale_score, :float

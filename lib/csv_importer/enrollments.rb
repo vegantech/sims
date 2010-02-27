@@ -21,7 +21,7 @@ module CSVImporter
       cols = sims_model.columns.inject({}){|hash, col| hash[col.name.to_sym] = col.type; hash}
 
       csv_headers.each do |col|
-        t.column col, cols[col] || :integer
+        t.column col, cols[col] || :string
       end
     end
 

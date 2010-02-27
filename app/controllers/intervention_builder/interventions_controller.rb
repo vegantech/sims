@@ -1,10 +1,20 @@
 class InterventionBuilder::InterventionsController < ApplicationController
   include SpellCheck
+  additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
   # GET /intervention_definitions
   def index
     @intervention_definitions = @intervention_cluster.intervention_definitions
+
+    #TODO Refactor filter and put in model
+    if params[:commit]
+      @intervention_definitions.reject!(&:disabled) unless params[:disabled]
+      @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
+      
+      @intervention_definitions.reject!(&:custom) unless params[:custom]
+      @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
+    end
 
     respond_to do |format|
       format.html # index.rhtml
@@ -77,17 +87,25 @@ class InterventionBuilder::InterventionsController < ApplicationController
   end
 
   def disable
-    @intervention_definition = InterventionDefinition.find(params[:id])
-    if params[:enable]
-      @intervention_definition.update_attribute(:disabled, false)
+    if params[:id]
+      @intervention_definitions = Array(@intervention_definition)
     else
-      @intervention_definition.disable!
+      @intervention_definitions = []
+    end
+    if params[:enable]
+      a='enabled'
+      @intervention_definitions.each{|i| i.update_attribute(:disabled, false)}
+    else
+      a='disabled'
+      @intervention_definitions.each(&:disable!)
     end
 
+    flash[:notice] = "#{@template.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
     respond_to do |format|
       format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end
   end
+
 
   def move
     @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id])
@@ -100,6 +118,13 @@ class InterventionBuilder::InterventionsController < ApplicationController
       format.html {redirect_to index_url}
       format.js {@intervention_definitions=@intervention_cluster.intervention_definitions} 
     end
+  end
+
+  def sort
+    params[:intervention_definition_list].each_with_index do |id, index|
+      @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
+    end
+    render :nothing => true
   end
 
   private

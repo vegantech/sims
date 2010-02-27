@@ -56,6 +56,7 @@ class Student < ActiveRecord::Base
   delegate :recommendation_definition, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
 
+  before_save :nullify_blank_district_student_id
   after_update :save_system_flags, :save_enrollments
   after_save :save_extended_profile
   #  before_validation :clear_extended_profile
@@ -124,7 +125,7 @@ class Student < ActiveRecord::Base
     principals = groups.collect(&:principals)
 
     principals |= special_group_principals
-    principals.flatten.uniq
+    principals.flatten.compact.uniq
   end
 
   def self.paged_by_last_name(last_name="", page="1")
@@ -266,4 +267,9 @@ class Student < ActiveRecord::Base
     end
 
   end
+
+  def nullify_blank_district_student_id
+    self.district_student_id = nil if district_student_id.blank?
+  end
+
 end

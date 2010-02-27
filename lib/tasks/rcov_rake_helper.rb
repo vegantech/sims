@@ -4,6 +4,7 @@ begin
 
 rescue LoadError
   #allow rake to continue to function is rcov gem is not installed
+  nil
 end
 
 

@@ -11,7 +11,7 @@ module CSVImporter
     end
 
     def migration t
-      t.integer :district_user_id
+      t.string :district_user_id
       t.string :username
       t.string :first_name
       t.string :middle_name
@@ -61,9 +61,10 @@ module CSVImporter
       on u.district_user_id = tu.district_user_id and u.district_user_id is not null
       set u.updated_at=CURDATE(), 
       #{updates}
-    where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null"
+    where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null and tu.passwordhash <> '' and tu.salt <> ''"
     )
 
+      User.connection.execute query
 
     end
 
@@ -85,7 +86,7 @@ module CSVImporter
 
     def confirm_count?
       model_name = "user"
-      model_count = @district.send(model_name.tableize).count
+      model_count = @district.send(model_name.tableize).count(:conditions=>'district_user_id is not null and district_user_id !=""')
         if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
           @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
           false

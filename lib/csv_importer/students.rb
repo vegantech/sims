@@ -108,8 +108,11 @@ module CSVImporter
     def claim_students_with_nil_district
       
       claimed_count = ActiveRecord::Base.connection.update_sql("update students s inner join #{temporary_table_name} ts on 
-      ts.id_state = s.id_state set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id where s.district_id is null and ts.id_state is not null")
+      ts.id_state = s.id_state or (ts.id_state is null and s.id_state is null) set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id where s.district_id is null and
+                                                               (ts.id_state is not null or (ts.birthdate = s.birthdate and ts.first_name = s.first_name and 
+                                                               ts.last_name = s.last_name and ts.birthdate is not null and ts.id_state is null and s.id_state is null ) ) ")
       @messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
+      
      
       #do select and add to messages
       # select * from students_546713874_importer ts inner join students s on ts.id_state = s.id_state
@@ -138,7 +141,7 @@ module CSVImporter
           ts.district_student_id = s.district_student_id set s.district_id = null
           where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
      
-       ActiveRecord::Base.connection.update_sql(q)
+      ActiveRecord::Base.connection.update_sql(q)
        
       #prune the districtless students
       
@@ -161,12 +164,12 @@ module CSVImporter
       )
 
      
-      ActiveRecord::Base.connection.execute query
+     ActiveRecord::Base.connection.update_sql(query)
     end
 
     def confirm_count?
       model_name = sims_model.name
-      model_count = @district.send(model_name.tableize).count
+      model_count = @district.send(model_name.tableize).count(:conditions=>'district_student_id is not null and district_student_id !=""')
       if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
         @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
         false

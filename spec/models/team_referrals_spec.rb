@@ -37,7 +37,7 @@ describe TeamReferrals do
       proc{@mail=TeamReferrals.deliver_gather_information_request(users,student,requestor)}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Consultation Form Request'
       @mail.header["to"].to_s.should ==  "#{user.email}, #{user2.email}"
-      @mail.body.should == "First Last has been discussed at our team meeting.  \nPlease share information based on your perspective by going to <a href=\"http://#{student.district.abbrev}.sims_test_host/students/#{student.id}\">First Last</a>, then click on Respond to Request for Information under the Team Notes heading.\n\n\nRequested by: #{requestor.first_name} Last_Name\n"
+      @mail.body.should == "First Last has been discussed at our team meeting.  \nPlease share information based on your perspective by going to <a href=\"http://www.#{student.district.abbrev}.sims_test_host/students/#{student.id}\">First Last</a>, then click on Respond to Request for Information under the Team Notes heading.\n\n\nRequested by: #{requestor.first_name} Last_Name\n"
     end
   end
 
