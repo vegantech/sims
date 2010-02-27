@@ -115,9 +115,9 @@ private
   end
 
   def self.interventions2(id)
-    Intervention.find(:all,
+    Intervention.find_all_by_active(true,
                       :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition], 
-    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?) and intervention_probe_assignments.id is not null",id,id],
+    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)  and intervention_probe_assignments.id is not null",id,id],
     :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', 
     :having => 'count(student_id) > 1', 
     :select => 'intervention_definitions.title, interventions.id, interventions.intervention_definition_id,probe_definition_id, count(student_id) as student_count'
@@ -125,7 +125,7 @@ private
   end
 
   def find_student_interventions
-     Intervention.find_all_by_intervention_definition_id(@intervention.intervention_definition_id, 
+     Intervention.find_all_by_intervention_definition_id_and_active(@intervention.intervention_definition_id, true,
                      :include => [:student, :intervention_probe_assignments, :intervention_participants],
                      :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
                                                        ).collect{|i| ScoreComment.new(i, @user)}

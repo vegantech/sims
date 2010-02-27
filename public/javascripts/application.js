@@ -35,6 +35,16 @@ function unselectStudents(){
     }
 }
 
+function grouped_change_date(){
+  for (x=1; x<4; x++){
+    val=$$('form.edit_grouped_progress_entry > select:nth-child('+(x+1) +')')[0];
+    $$('td.date >select:nth-child('+ x+ ')').each(function(n) {
+        n.value = val.value;
+        });
+  }
+
+}
+
 
 function change_date(new_record){
     
