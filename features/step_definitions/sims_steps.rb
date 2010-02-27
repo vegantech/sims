@@ -68,15 +68,16 @@ end
 
 Given /^I am a district admin$/ do
   clear_login_dropdowns
-  default_user
-  @default_user.roles= "district_admin"
-  @default_user.save!
   log_in
+  @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["district_admin"])
+  @default_user.save!
 end
 
 Given /^I am a state admin$/ do
   Given "I am a district admin"
-  @user.district.update_attribute(:admin , true)
+  @default_user.roles = (Role.mask_to_roles(@default_user.reload.roles_mask) | ['state_admin'])
+  @default_user.save!
+  @default_user.district.update_attribute(:admin , true)
 end
 
 Given /^I enter default student url$/ do
