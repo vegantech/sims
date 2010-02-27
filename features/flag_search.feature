@@ -3,7 +3,10 @@ Feature: Search By Intervention Flags
   A SIMS user
   Should be able to find students by intervention flags
   
-  Scenario: List all students
+	Background: 
+		Given clear login dropdowns
+  
+	Scenario: List all students
     Given school "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" with "attendance" flag
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"

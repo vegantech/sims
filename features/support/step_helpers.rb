@@ -148,11 +148,12 @@ end
 private
 
 def default_user
-  clear_login_dropdowns unless @default_user
+#  clear_login_dropdowns unless @default_user
   @default_user ||= create_user 'default_user'
   @default_user.roles = ['regular_user']
   @default_user.save!
 
+  SpecialUserGroup.delete_all
   # put other stuff above this
   @default_user
 end

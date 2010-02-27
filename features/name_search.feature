@@ -2,6 +2,9 @@ Feature: Search By Student Last Name
   In order to pick students to manage
   A SIMS user
   Should be able to find students by last name
+
+	Background: 
+		Given clear login dropdowns
   
   Scenario: Search by First Grade
     Given no other schools

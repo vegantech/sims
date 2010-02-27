@@ -3,6 +3,9 @@ Feature: Search By Student Groups
   A SIMS user
   Should be able to find students by Student Group criteria
 
+	Background: 
+		Given clear login dropdowns
+
   Scenario: User With One Group
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd"

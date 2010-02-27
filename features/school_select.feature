@@ -2,6 +2,9 @@ Feature: School Selection
   In order to constrain student selection by school
   A SIMS user
   Should be able to select from the available schools
+
+	Background:
+		Given clear login dropdowns
   
   Scenario: School Choices Displayed
     Given school "Glenn Stephens"
@@ -48,6 +51,7 @@ Feature: School Selection
     And page should contain "Choose School"
 
   Scenario: Auto Select School
+		Given clear login dropdowns
     Given school "Glenn Stephens"
 		#And school "Velma Hamilton"
 

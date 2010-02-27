@@ -26,6 +26,10 @@ Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |u
 
 end
 
+Given /clear login dropdowns/ do
+  clear_login_dropdowns
+end
+
 
 
 Given /^with additional student$/i do
