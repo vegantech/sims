@@ -1,0 +1,16 @@
+<h1>Grouped Progress Monitor Entries</h1>
+
+<table>
+  <tr>
+    <th>Intervention</th>
+    <th>Students</th>
+  </tr>
+
+<% @grouped_progress_entries.each do |grouped_progress_entry| %>
+  <tr>
+    <td><%= grouped_progress_entry %></td>
+    <td><%= grouped_progress_entry.student_count %></td>
+    <td><%= link_to 'Assign Scores', edit_grouped_progress_entry_path(grouped_progress_entry) %></td>
+  </tr>
+<% end %>
+</table>

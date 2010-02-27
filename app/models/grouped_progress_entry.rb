@@ -1,0 +1,138 @@
+class GroupedProgressEntry 
+  attr_accessor :global_date
+
+  def errors
+    []
+  end
+  def self.all(user)
+    interventions2(user.id).map { |c| new(c,user) }
+  end
+
+  def self.find(user,param)
+    all(user).detect { |l| l.to_param == param } || raise(ActiveRecord::RecordNotFound)
+  end
+
+  def initialize(obj,user)
+    @intervention = obj
+    @user=user
+  end
+  
+  def to_param
+    "#{@intervention.id}-#{@intervention.probe_definition_id}"
+  end
+
+  def to_s
+    "#{@intervention.title}"
+  end
+
+  def student_count
+    "(#{@intervention.student_count})"
+
+  end
+
+  def student_interventions
+    @student_interventions ||= find_student_interventions
+  end
+
+  def student_interventions=(param)
+    raise param.inspect
+  end
+
+  def update_attributes(param)
+    param.each do |int_id, int_attr|
+      student_interventions.each do |i|
+        if i.id.to_s == int_id then
+          i.update_attributes(int_attr)
+        end
+      end
+    end
+    if student_interventions.all?(&:valid?)
+      student_interventions.each(&:save) 
+      true
+    else
+      false
+    end
+
+  end
+
+  class ScoreComment
+    attr_accessor :date,:score,:comment,:intervention,:id
+    def initialize(intervention,user)
+      @intervention = intervention
+      @id = intervention.id
+      @user = user
+      @comment = ''
+      @errors =''
+      @probe = nil
+      @score = nil
+    end
+
+    def errors
+      @errors.to_s
+    end
+
+    def update_attributes(params)
+      @comment = params['comment']
+      @intervention.comment_author=@user.id
+      @intervention.comment = {:comment => @comment}
+      begin
+        @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
+      rescue ArgumentError
+        @errors +='Invalid Date'
+      end
+      @score = params[:score]
+
+
+      @probe=@intervention.intervention_probe_assignment.probes.build(:score => @score) unless @score.blank?
+    end
+
+    def valid?
+      if @intervention.valid? && (!@probe || @probe.valid?)  && @errors.blank? 
+        true
+      else
+        @errors += @intervention.errors.full_messages.join(", ") +' ' + @probe.errors.full_messages.join(", ")
+        false
+      end
+    end
+
+    def save
+      @intervention.save! 
+      @probe.save! unless @probe.blank?
+    end
+    
+    def student
+      @intervention.student
+    end
+    def to_param
+      @id
+    end
+  end
+
+private
+  def self.interventions(id)
+    #TODO TESTS
+    Intervention.find(:all,:include => :intervention_participants, :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
+  end
+
+  def self.interventions2(id)
+    Intervention.find(:all,
+                      :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition], 
+    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?) and intervention_probe_assignments.id is not null",id,id],
+    :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', 
+    :having => 'count(student_id) > 1', 
+    :select => 'intervention_definitions.title, interventions.id, interventions.intervention_definition_id,probe_definition_id, count(student_id) as student_count'
+                     )
+  end
+
+  def find_student_interventions
+     Intervention.find_all_by_intervention_definition_id(@intervention.intervention_definition_id, 
+                     :include => [:student, :intervention_probe_assignments, :intervention_participants],
+                     :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
+                                                       ).collect{|i| ScoreComment.new(i, @user)}
+
+  end
+
+
+end
+
+

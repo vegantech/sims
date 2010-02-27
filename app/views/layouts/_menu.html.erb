@@ -28,9 +28,7 @@
         <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
     <%  end %>
 
-    <% if false %>
-        <%= li_link_to_if_authorized 'Role Management',roles_path %>
-    <% end %>
+    <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path %>
     <li><%= link_to "Change Password", change_password_path %></li>
     <li><%= render :partial => 'login/logout' %></li>
   <% elsif !defined?DEFAULT_URL %>

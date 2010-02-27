@@ -97,7 +97,11 @@ RIGHTS={"district_admin" =>[
     :write_access=>nil},
    {:read_access=>true,
     :controller=>"student_comments",
-    :write_access=>true}],
+    :write_access=>true},
+   {:read_access=>true,
+    :controller=>"grouped_progress_entries",
+    :write_access=>true}
+  ],
  "school_admin" =>
   [{:read_access=>true,
     :controller=>"school_teams",

@@ -1,0 +1,2 @@
+module GroupedProgressEntriesHelper
+end

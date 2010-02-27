@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :grouped_progress_entries
+
   map.resources :flag_descriptions
 
   map.resources :school_teams
