@@ -236,6 +236,7 @@ Feature: Sims Demo Walkthrough
     And I press "Login"
     Then I should see "Wisconsin Administration"
     And I follow "Manage Districts"
+		And I show page
     And I follow "Delete"
     And I should see "Have the district admin remove the schools first."
     And I follow "New district"

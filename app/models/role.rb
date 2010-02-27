@@ -16,6 +16,12 @@ class Role
   ROLES = SYSTEM_ROLES.keys
   CSV_HEADERS = [:district_user_id]
 
+  HELP = {
+    "district_admin" => [{:name => "Change your logo and url", :url=> "/help/edit_district"}]
+  }
+
+  HELP.default = []
+
 
 
 
