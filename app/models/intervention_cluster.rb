@@ -20,7 +20,7 @@
 #Also known as category
 class InterventionCluster < ActiveRecord::Base
   belongs_to :objective_definition
-  has_many :intervention_definitions, :order => :position, :dependent => :destroy
+  has_many :intervention_definitions, :order =>'disabled, custom, position', :dependent => :destroy
 
   delegate :goal_definition, :to => :objective_definition
 
