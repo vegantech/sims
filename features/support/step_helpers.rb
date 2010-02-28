@@ -45,7 +45,7 @@ end
 
 def log_in
   default_user
-  create_school 'Glenn Stephens'
+  create_school 'Glenn Stephens' unless @additional_student
   visit '/'
   fill_in 'Login', :with => @default_user.username
   fill_in 'Password', :with => @default_user.username
@@ -148,10 +148,12 @@ end
 private
 
 def default_user
-  clear_login_dropdowns unless @default_user
+#  clear_login_dropdowns unless @default_user
   @default_user ||= create_user 'default_user'
-  default_role = Role.create!(:name => 'regular_user', :district_id => @default_user.district_id, :users=>[@default_user])
+  @default_user.roles = ['regular_user']
+  @default_user.save!
 
+  SpecialUserGroup.delete_all unless @additional_student
   # put other stuff above this
   @default_user
 end

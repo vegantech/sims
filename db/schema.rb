@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100226021506) do
+ActiveRecord::Schema.define(:version => 20100227032415) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -702,28 +702,6 @@ ActiveRecord::Schema.define(:version => 20100226021506) do
   add_index "recommended_monitors", ["intervention_definition_id"], :name => "index_recommended_monitors_on_intervention_definition_id"
   add_index "recommended_monitors", ["probe_definition_id"], :name => "index_recommended_monitors_on_probe_definition_id"
 
-  create_table "roles", :force => true do |t|
-    t.string   "name"
-    t.integer  "district_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "asset_file_name"
-    t.string   "asset_content_type"
-    t.integer  "asset_file_size"
-    t.datetime "asset_updated_at"
-  end
-
-  add_index "roles", ["district_id"], :name => "index_roles_on_district_id"
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
-  end
-
-  add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
-  add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
-
   create_table "school_team_memberships", :force => true do |t|
     t.integer  "school_team_id"
     t.integer  "user_id"
@@ -796,13 +774,6 @@ ActiveRecord::Schema.define(:version => 20100226021506) do
   add_index "student_comments", ["student_id"], :name => "index_student_comments_on_student_id"
   add_index "student_comments", ["user_id"], :name => "index_student_comments_on_user_id"
 
-  create_table "student_groups_546713874_importer", :id => false, :force => true do |t|
-    t.integer "district_student_id"
-    t.string  "district_group_id"
-  end
-
-  add_index "student_groups_546713874_importer", ["district_student_id", "district_group_id"], :name => "temporary_index_0"
-
   create_table "students", :force => true do |t|
     t.integer  "district_id"
     t.string   "last_name"
@@ -823,14 +794,6 @@ ActiveRecord::Schema.define(:version => 20100226021506) do
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
   add_index "students", ["district_student_id"], :name => "index_students_on_id_district"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
-
-  create_table "team_agendas", :force => true do |t|
-    t.integer  "team_id"
-    t.date     "date"
-    t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"
@@ -896,8 +859,10 @@ ActiveRecord::Schema.define(:version => 20100226021506) do
     t.string   "salt",             :default => ""
     t.string   "district_user_id"
     t.string   "token"
+    t.integer  "roles_mask",       :default => 0
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"
+  add_index "users", ["roles_mask"], :name => "index_users_on_roles_mask"
 
 end

@@ -4,6 +4,7 @@ Feature: Search By Student Last Name
   Should be able to find students by enrollment year
 
   Background:
+		Given clear login dropdowns
     Given no other schools
   
   Scenario: Search by year

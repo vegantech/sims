@@ -47,8 +47,10 @@
   <% plus_minus_li "Help" do %>
     <% if session[:user_id] %>
       <% current_user.roles.each do |role| %>
-        <% plus_minus_li role.name.humanize do %>
-          <%=links_and_attachments(role, :li) %>
+        <% plus_minus_li role.humanize do %>
+          <%Role::HELP[role].each do |role_help| %>
+            <%=content_tag(:li, link_to(role_help[:name],role_help[:url])) %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

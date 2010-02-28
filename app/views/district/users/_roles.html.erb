@@ -1,7 +1,7 @@
 <h2>Roles</h2>
   <table>
     <tbody>
-      <% current_district.available_roles.in_groups_of(2,false).each do |role| %>
+      <% Role::ROLES.in_groups_of(2,false).each do |role| %>
         <tr>
           <td><%= render :partial => 'role',:object => role[0] %></td>
           <td><%= render :partial => 'role',:object => role[1]  if role[1] %></td>
@@ -9,6 +9,6 @@
       <% end %>
     </tbody>
   </table>
-<%=hidden_field_tag "user[role_ids][]",""%>
+<%=hidden_field_tag "user[roles][]",""%>
 
 

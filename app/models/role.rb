@@ -1,56 +1,66 @@
-# == Schema Information
-# Schema version: 20090623023153
-#
-# Table name: roles
-#
-#  id                 :integer(4)      not null, primary key
-#  name               :string(255)
-#  district_id        :integer(4)
-#  position           :integer(4)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  asset_file_name    :string(255)
-#  asset_content_type :string(255)
-#  asset_file_size    :integer(4)
-#  asset_updated_at   :datetime
-#
-
-class Role < ActiveRecord::Base
+class Role 
 
   SYSTEM_ROLES ={
                   "district_admin" => 'Add a logo, set the district key, add users, add schools, 
                   assign roles, add students, enroll students, import files, set district abbreviation',
-                  "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
                   "content_admin" => 'Setup Goals, Objectives, Categories, Interventions, Tiers, Checklists, and Progress Monitors', 
+                  "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
                   "regular_user" => 'Regular user of SIMS', 
                   "news_admin"  => 'Create and edit news items that appear on the left' , 
                   "state_admin" => 'Creates and edits states',
                   "country_admin" => 'Creates and edits countries'
                 }
 
+
+
+  ROLES = %w{ district_admin content_admin school_admin regular_user news_admin state_admin country_admin}
   CSV_HEADERS = [:district_user_id]
 
+  HELP = {
+    "district_admin" => [{:name => "Change your logo and url", :url=> "/help/edit_district"}]
+  }
 
-  include LinkAndAttachmentAssets
-
-  belongs_to :district
-  has_and_belongs_to_many :users
-
-  acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this
-  named_scope :system, :conditions => {:district_id => nil}
+  HELP.default = []
 
 
-  def self.has_controller_and_action_group?(controller,action_group)
+
+
+#  acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this
+#  named_scope :system, :conditions => {:district_id => nil}
+
+
+
+  def self.mask_to_roles(mask)
+    Role::ROLES.reject do |r|
+      ((mask || 0) & 2**Role::ROLES.index(r)).zero?
+    end
+  end
+
+  def self.roles_to_mask(roles=[])
+    (Array(roles) & ROLES).map { |r| 2**ROLES.index(r) }.sum
+  end
+
+  def self.has_controller_and_action_group?(controller,action_group,roles)
     return false unless %w{ read_access write_access }.include?(action_group)
-    find(:all).any?{|r| Right::RIGHTS[r.name.to_s].detect{|right| right[:controller] == controller && right[action_group.to_sym]}}
+    roles.any?{|r| Right::RIGHTS[r.to_s].detect{|right| right[:controller] == controller && right[action_group.to_sym]}}
+  end
+
+  def self.add_users(name, users)
+    unless ROLES.index(name).nil?
+      User.update_all("roles_mask = roles_mask | #{2**ROLES.index(name)}",{:id=>Array(users)}) 
+    end
+  end
+
+  def self.remove_users(name,users)
+    unless ROLES.index(name).nil?
+      User.update_all("roles_mask = roles_mask & ~#{2**ROLES.index(name)}",{:id=>Array(users)}) 
+
+    end
+
   end
 
   def to_s
-    if system?  
       "<b>#{name.titleize}</b>"
-    else
-      name.titleize
-    end
   end
 
   def system?

@@ -22,7 +22,7 @@
 
 DEFAULTS: &DEFAULTS
   username: $LABEL
-  roles: regular_user
+  roles_mask: <%=Role.roles_to_mask %w{regular_user} %>
 
 one:
   passwordhash: 
@@ -64,7 +64,7 @@ alphaprin:
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
   district: wi_test
-  roles: regular_user, school_admin
+  roles_mask: <%=Role.roles_to_mask %w{regular_user school_admin} %>
   <<: *DEFAULTS
 
 
@@ -94,7 +94,7 @@ district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_test
-  roles: regular_user, news_admin, district_admin
+  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin district_admin}%>
   <<: *DEFAULTS
 
 
@@ -104,7 +104,7 @@ content_builder:
   district: wi_test
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
-  roles: content_admin
+  roles_mask: <%=Role.roles_to_mask %w{content_admin}%>
 
 system_admin:
   first_name: System
@@ -112,7 +112,7 @@ system_admin:
   username: district_admin
   district: admin_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: news_admin, country_admin, state_admin, district_admin
+  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin district_admin}%>
  
 us_admin:
   first_name: UnitedStates
@@ -120,7 +120,7 @@ us_admin:
   username: district_admin
   district: us_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: news_admin, country_admin, state_admin, district_admin
+  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin district_admin}%>
  
 wi_admin:
   first_name: Wisconsin
@@ -128,7 +128,7 @@ wi_admin:
   username: district_admin
   district: wi_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles: news_admin, state_admin, district_admin
+  roles_mask: <%=Role.roles_to_mask %w{news_admin state_admin district_admin}%>
   
 wi_oneschool:
   username: "oneschool"
@@ -144,7 +144,7 @@ wi_district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_mmsd
-  roles: regular_user, news_admin, district_admin
+  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin district_admin}%>
   <<: *DEFAULTS
 
 
@@ -155,7 +155,7 @@ wi_content_builder:
   district: wi_mmsd
   passwordhash: <%= User.encrypted_password("content_builder") %>
   username: content_builder
-  roles: content_admin
+  roles_mask: <%=Role.roles_to_mask %w{content_admin}%>
 
 wi_alphaprin:
   username: alphaprin
@@ -163,7 +163,7 @@ wi_alphaprin:
   last_name: "Alpha Elementary"
   passwordhash: <%= User.encrypted_password("alphaprin") %>
   district: wi_mmsd
-  roles: regular_user, school_admin
+  roles_mask: <%=Role.roles_to_mask %w{regular_user school_admin}%>
   <<: *DEFAULTS
 
 wi_melody:
@@ -172,6 +172,6 @@ wi_melody:
   last_name: TrebleCleff
   passwordhash: <%= User.encrypted_password("melody") %>
   district: wi_mmsd
-  roles: regular_user
+  roles_mask: <%=Role.roles_to_mask %w{regular_user}%>
 
 

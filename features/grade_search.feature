@@ -2,7 +2,10 @@ Feature: Search Page
   In order to pick students to manage
   A SIMS user
   Should be able to find students using search criteria
-  
+
+	Background: 
+		Given clear login dropdowns
+
   Scenario: Search by grade *
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
