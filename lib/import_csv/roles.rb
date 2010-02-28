@@ -1,7 +1,11 @@
 module ImportCSV::Roles
   
   def load_user_roles_from_csv file_name, role
-    @role=Role::ROLES[role] or return false
+    if Role::ROLES.include? role
+      @role = role
+    else
+      return false
+    end
     @existing_users = @district.users.find_all_by_role(role, :conditions => 'district_user_id is not null', :select => 'id, district_user_id')
 #      @role.users.all(:conditions => ["district_id = ? and district_user_id is not null", @district.id],:select => "id, district_user_id")
     

@@ -1,4 +1,5 @@
 server "sims.widpi.managedmachine.com", :app, :web, :db, :primary => true
+set :branch, 'inline_roles_and_rights'
 
 set :domain, 'sims.widpi.managedmachine.com'
 set :default_url, 'https://sims.widpi.managedmachine.com'

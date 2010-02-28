@@ -13,7 +13,7 @@ class Role
 
 
 
-  ROLES = SYSTEM_ROLES.keys
+  ROLES = %w{ district_admin content_admin school_admin regular_user news_admin state_admin country_admin}
   CSV_HEADERS = [:district_user_id]
 
   HELP = {
