@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+require 'bluecloth'
 describe ChecklistsHelper do
   include ChecklistsHelper
   #Delete this example and add some real ones or delete this file
@@ -52,7 +53,9 @@ describe ChecklistsHelper do
 
   describe 'markdown_with_span' do
     it 'should return markdown text wrapped in a span' do
+      pending
       markdown_with_span('text to display').should == '<span class="markdown"><p>text to display</p></span>'
+      
     end
   end
 
