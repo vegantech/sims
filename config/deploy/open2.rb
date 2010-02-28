@@ -4,7 +4,7 @@ load "#{File.dirname(__FILE__)}/prohibition.rb"
 <br /> The data in this demo gets reset weekly. Training districts are reset daily.'
   set :application, "sims-open"
   set :domain, 'simspilot.org'
-  set :branch, 'rm_prod'
+  set :branch, 'rails2.3.3.1'
 
 
   ENV['HOSTS']='74.50.50.62'

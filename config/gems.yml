@@ -7,3 +7,5 @@
 - :name: capistrano-ext
 - :version: 2.3.2
   :name: rails
+  :name: rack
+  :version: 1.0.1

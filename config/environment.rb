@@ -38,7 +38,7 @@ Rails::Initializer.run do |config|
  config.gem "fastercsv"
  config.gem "hpricot"
  config.gem "pdf-writer", :lib => "pdf/writer"
- config.gem 'rack', :version => '>= 1.0.0'
+ config.gem 'rack', :version => '= 1.0.1'
 
  # deployment
  config.gem "capistrano", :lib => false
