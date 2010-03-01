@@ -21,7 +21,7 @@ class GroupedProgressEntriesController < ApplicationController
   # PUT /grouped_progress_entries/1.xml
   def update
     @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id])
-    @intervention = Intervention.find(@grouped_progress_entry)
+    @intervention = Intervention.find(@grouped_progress_entry.to_param.split("-").first)
     @probe_definition = @intervention.intervention_probe_assignment.probe_definition
     
 
