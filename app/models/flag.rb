@@ -15,13 +15,14 @@
 #
 
 class Flag < ActiveRecord::Base
-	ORDERED_TYPE_KEYS = %w{attendance languagearts math suspension ignored custom}
+	ORDERED_TYPE_KEYS = %w{attendance suspension math language_arts gifted ignored custom}
 
   TYPES = {
       "attendance" => {:icon => "A.gif", :humanize => "Attendance"},
-      "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts"},
-      "math" => {:icon => "M.gif", :humanize => "Math"},
       "suspension" => {:icon=> "B.gif", :humanize => "Behavior" },
+      "math" => {:icon => "M.gif", :humanize => "Math"},
+      "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts"},
+      "gifted" => {:icon=> "lightbulb.png", :humanize => "Gifted/Talented"},
       "ignored" => {:icon => "I.gif", :humanize => "Ignored"},
       "custom" => {:icon => "C.gif", :humanize => "Custom"}
     }
