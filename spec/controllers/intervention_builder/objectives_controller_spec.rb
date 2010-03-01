@@ -38,7 +38,7 @@ describe InterventionBuilder::ObjectivesController do
   describe "responding to GET new" do
   
     it "should expose a new Objective as @objective_definition" do
-      ObjectiveDefinition.should_receive(:build_with_new_asset).and_return(mock_objective)
+      ObjectiveDefinition.should_receive(:build).and_return(mock_objective)
       get :new, :goal_id => "44"
       assigns[:objective_definition].should equal(mock_objective)
     end
