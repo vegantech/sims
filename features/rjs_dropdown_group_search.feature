@@ -5,6 +5,7 @@ Feature: Search By Student Groups
 
   Background:
     Given no other schools
+		Given clear login dropdowns
 
   Scenario: User With Two Groups  changes grade
     Given school "Central"

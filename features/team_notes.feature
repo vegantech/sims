@@ -2,6 +2,9 @@ Feature: Team Notes
   In order view team notes in batches
   A SIMS user
   Should be able to view Team Notes report
+
+	Background:
+		Given clear login dropdowns
   
   Scenario: Show Team Notes
     Given common data

@@ -24,7 +24,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
   # GET /objective_definitions/new
   def new
-    @objective_definition = @goal_definition.objective_definitions.build_with_new_asset
+    @objective_definition = @goal_definition.objective_definitions.build
   end
 
   # GET /objective_definitions/1;edit

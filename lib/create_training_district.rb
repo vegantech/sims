@@ -58,9 +58,9 @@ class CreateTrainingDistrict
     self.generate_interventions(td)
     self.generate_checklist_definition(td)
 
-    Role.find_by_name("regular_user").users << [alphaprin,oneschool]
-    Role.find_by_name("school_admin").users << alphaprin
-    Role.find_by_name("content_admin").users << content_admin
+    Role.add_users "regular_user", [alphaprin,oneschool]
+    Role.add_users "school_admin", alphaprin
+    Role.add_users "content_admin",  content_admin
 
     self.generate_students(td, alpha_elem, training_homeroom)
     self.generate_other_students(td,alpha_elem, other_homeroom)

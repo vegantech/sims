@@ -2,6 +2,9 @@ Feature: Assign Participants to Intervention
   In order to use assign participants to an intervention
   A SIMS USER
   Should be able to create an intervention and then assign participants
+	
+	Background: 
+		Given clear login dropdowns
 
   Scenario: Create Custom
     #Assuming interventions currently work correctly and we're going to piggyback on that

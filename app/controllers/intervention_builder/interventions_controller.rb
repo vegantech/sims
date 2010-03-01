@@ -9,11 +9,15 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
     #TODO Refactor filter and put in model
     if params[:commit]
-      @intervention_definitions.reject!(&:disabled) unless params[:disabled]
-      @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
+      if params[:enabled] || params[:disabled]
+        @intervention_definitions.reject!(&:disabled) unless params[:disabled]
+        @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
+      end
       
-      @intervention_definitions.reject!(&:custom) unless params[:custom]
-      @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
+      if params[:custom] || params[:system]
+        @intervention_definitions.reject!(&:custom) unless params[:custom]
+        @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
+      end
     end
 
     respond_to do |format|
@@ -31,7 +35,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # GET /intervention_definitions/new
   def new
     @intervention_definition = @intervention_cluster.intervention_definitions.build
-    @intervention_definition.assets.build
     @tiers = current_district.tiers
   end
 

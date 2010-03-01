@@ -5,8 +5,8 @@ describe System do
     System.news.should ==(NewsItem.system)
   end
 
-  it 'shoudl have roles which are equivalent to Roles.system' do
-    System.roles.should ==(Role.system)
+  it 'shoudl have roles which are equivalent to Role::ROLES' do
+    System.roles.should ==(Role::ROLES)
 
   end
 

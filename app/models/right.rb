@@ -10,7 +10,6 @@
 #  role_id      :integer(4)
 #  created_at   :datetime
 #  updated_at   :datetime
-#
 
 class Right 
 
@@ -173,5 +172,9 @@ RIGHTS={"district_admin" =>[
     :controller=>"countries",
     :write_access=>true}]
 }
+
+  def self.cache_key
+    RIGHTS.to_s.hash
+  end
 
 end

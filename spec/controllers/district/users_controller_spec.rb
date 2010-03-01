@@ -29,7 +29,7 @@ describe District::UsersController do
   describe "responding to GET new" do
     it "should expose a new user as @user" do
       User.should_receive(:build).and_return(mock_user)
-      mock_user.should_receive(:roles).and_return([])
+      mock_user.should_receive(:roles=).with('regular_user')
 
       get :new
       assigns[:user].should equal(mock_user)
