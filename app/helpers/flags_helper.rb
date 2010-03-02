@@ -28,7 +28,7 @@ module FlagsHelper
 
   def custom_flags(student)
     unless student.custom_flags.blank?
-      popup="C: Custom Flags- #{flag_summary(student.custom_flags)}"
+      popup="Custom Flags : #{flag_summary(student.custom_flags)}"
       image_with_popup("C.gif",popup)
     end || ""
   end
@@ -39,7 +39,7 @@ module FlagsHelper
 
   def ignore_flags(student, changeable = false)
     unless changeable || student.ignore_flags.blank?
-      popup = "I: Ignore Flags -  #{flag_summary(student.ignore_flags)}"
+      popup = "Ignore Flags :  #{flag_summary(student.ignore_flags)}"
       image_with_popup("I.gif", popup)
     else
       s = student.ignore_flags.collect do |igflag|
@@ -59,7 +59,7 @@ module FlagsHelper
       @flagcount ||= Hash.new(0)
       @flagcount[flagtype] +=1
 
-      popup = "#{Flag::FLAGTYPES[flagtype][:icon].split('.').first.upcase}: #{flag_summary(flags)}"
+      popup = "#{Flag::FLAGTYPES[flagtype][:humanize]} : #{flag_summary(flags)}"
 
       if changeable
         form_remote_tag(:url => {:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},

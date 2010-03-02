@@ -47,7 +47,7 @@ describe FlagsHelper do
     it 'should show the custom flag icon with the summary as a popup' do
       flag = mock_flag(:summary => "Custom Flag Summary", :any? => true)
       student = mock_student(:custom_flags => [flag])
-      self.should_receive(:image_with_popup).with("C.gif", 'C: Custom Flags- Custom Flag Summary').and_return('RSPEC CUSTOM FLAGS')
+      self.should_receive(:image_with_popup).with("C.gif", 'Custom Flags : Custom Flag Summary').and_return('RSPEC CUSTOM FLAGS')
       custom_flags(student).should == "RSPEC CUSTOM FLAGS"
     end
   end
@@ -65,7 +65,7 @@ describe FlagsHelper do
         it 'should show current flags' do
           cf = mock_flag(:summary => 'Current Flag Summary')
           student = mock_student(:current_flags => {'math' => [cf]})
-          self.should_receive(:image_with_popup).with("M.gif", "M: Current Flag Summary").and_return('Rspec Current Flags')
+          self.should_receive(:image_with_popup).with("M.gif", "Math : Current Flag Summary").and_return('Rspec Current Flags')
           current_flags(student).should == 'Rspec Current Flags'
         end
       end
@@ -78,7 +78,7 @@ describe FlagsHelper do
           current_flags(student, true).should == "<form action=\"/custom_flags/ignore_flag?category=languagearts\"" +
             " method=\"post\" onsubmit=\"new Ajax.Request('/custom_flags/ignore_flag?category=languagearts'," +
             " {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"" +
-            " style=\"display:inline\"><input onmouseout=\"return nd();\" onmouseover=\"return overlib('M: Current Flag Summary');\"" +
+            " style=\"display:inline\"><input onmouseout=\"return nd();\" onmouseover=\"return overlib('Math : Current Flag Summary');\"" +
             " src=\"/images/CF.png\" type=\"image\" /></form>"
         end
       end
@@ -98,7 +98,7 @@ describe FlagsHelper do
         it 'should show I.gif image with popup message' do
           flag = mock_flag(:summary => 'Ignore Flag Summary')
           student = mock_student(:ignore_flags => [flag])
-          self.should_receive(:image_with_popup).with("I.gif", "I: Ignore Flags -  Ignore Flag Summary").and_return('Rspec Ignore Flags')
+          self.should_receive(:image_with_popup).with("I.gif", "Ignore Flags :  Ignore Flag Summary").and_return('Rspec Ignore Flags')
           ignore_flags(student).should == 'Rspec Ignore Flags'
         end
       end
