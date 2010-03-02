@@ -15,7 +15,7 @@
 #
 
 class Flag < ActiveRecord::Base
-	ORDERED_TYPE_KEYS = %w{attendance suspension math language_arts gifted ignored custom}
+	ORDERED_TYPE_KEYS = %w{attendance suspension math languagearts gifted ignored custom}
 
   TYPES = {
       "attendance" => {:icon => "A.gif", :humanize => "Attendance"},
