@@ -15,7 +15,7 @@ Feature: Team Notes
     And other district team note "Fifth Team Note" on "01/11/08"
     And other school team note "Sixth Team Note" on "01/11/08"
     And unauthorized student team note "Seventh Team Note" on "01/11/08"
-    And I go to the school selection page
+    And I start at the school selection page
     And I select "Default School" from "school_id"
     And I press "Choose School"
     When I follow "Team Notes"

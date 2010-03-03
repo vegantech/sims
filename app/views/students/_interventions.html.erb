@@ -2,7 +2,7 @@
 <div id="interventions" >
 <h3 class="intervention_summary"><span>Assign New Intervention and Progress Monitor</span></h3>
 
-  <%=content_tag :span, link_to("Select New Intervention and Progress Monitor from Menu ", new_intervention_path)%> <br />
+  <%=content_tag :span, link_to("Select New Intervention and Progress Monitor from Menu", new_intervention_path)%> <br />
   <%=content_tag :span, link_to("Create New Custom Intervention and Progress Monitor", new_intervention_path(:custom_intervention=>true))%> <br />
   <%=link_to_remote_degrades("Select from Intervention Quicklist", :url=>quicklist_options_interventions_path, :method => :get) %> <br />
     <span id="quicklist"> </span>

@@ -14,10 +14,10 @@ Feature: Search By Student Last Name
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens" in 2009
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister', 'Sally Carpenter']
 		And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
-		# And I am on the search page
+		# And I start at the search page
     
     Then I should see select box with id of "search_criteria_year" and contains ['All', '', '2008', '2009']
     When I select "All" from "Year"
@@ -48,10 +48,10 @@ Feature: Search By Student Last Name
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" in 2028
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard']
 		And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		When I press "Choose School"
-		# And I am on the search page
+		# And I start at the search page
     
     Then I should see select box with id of "search_criteria_year" and contains ['All', '2028']
 

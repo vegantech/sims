@@ -5,12 +5,12 @@ Feature: School Maintenance
 
   Scenario: Nondistrict admin should not see school administration panel
     Given common data
-    When I go to the school selection page
+    When I start at the school selection page
     Then I should not see "Add/Remove Schools" but am pending
 
   Scenario: District admin should be able to add/create schools
     Given I am a district admin
-    And I go to the home page
+    And I start at the home page
     Then I follow "Add/Remove Schools"
     Then I follow "New School"
     Then I fill in "Name" with "Cucumber Elementary"

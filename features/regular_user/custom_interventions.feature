@@ -30,7 +30,6 @@ Feature: Create Custom Intervention
     # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
     When I press "Save"
     # And I go Back to student profile screen
-    Then show me the page
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
     And I select "Some Goal" from "goal_definition_id"

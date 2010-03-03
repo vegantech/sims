@@ -5,12 +5,12 @@ Feature: User Maintenance
   
   Scenario: Nondistrict admin should not see useradministration panel
     Given common data
-    When I go to the school selection page
+    When I start at the school selection page
     Then I should not see "Add/Remove Users"
 
   Scenario: District admin should be able to add/create Users
     Given I am a district admin
-    And I go to the home page
+    And I start at the home page
     Then I follow "Add/Remove Users"
     Then I follow "New user"
     Then I fill in "Username" with "cuke_user"

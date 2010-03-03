@@ -5,12 +5,12 @@ Feature: Student Maintenance
   
   Scenario: Nondistrict admin should not see useradministration panel
     Given common data
-    When I go to the school selection page
+    When I start at the school selection page
     Then I should not see "Add/Remove Students"
 
   Scenario: District admin should be able to add/create Students
     Given I am a district admin
-    And I go to the home page
+    And I start at the home page
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     Then I fill in "First Name" with "George"
@@ -32,7 +32,7 @@ Feature: Student Maintenance
   Scenario: District admin attempts to enter a student that belongs to a district
     Given I am a district admin
     And student exists with id_state of 1234
-    And I go to the home page
+    And I start at the home page
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     And I fill in "State ID" with "1234"
@@ -46,7 +46,7 @@ Feature: Student Maintenance
   Scenario: District admin attempts to enter a student that does not belong to any district
     Given I am a district admin
     And student exists with no district and id_state of 1234
-    And I go to the home page
+    And I start at the home page
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     And I fill in "State ID" with "1234"
