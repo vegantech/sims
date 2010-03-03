@@ -29,10 +29,10 @@ Feature: Tier Builder
     When I follow "New Tier"
     And I fill in "Title" with "Spelled Correctly"
     And I press "Create"
-    And I should see "Spelled Inkorrect" within tr.tier:first-of-type
+    And I should see "Spelled Inkorrect" within "tr.tier:first-of-type"
   
     And I press within tr.tier:last-of-type
-    And I should see "Spelled Inkorrect" within tr.tier:last-of-type
+    And I should see "Spelled Inkorrect" within "tr.tier:last-of-type"
 
   Scenario: Remove Tier in use
     Given load demo data 
@@ -44,13 +44,13 @@ Feature: Tier Builder
 
     And I follow "Tier Builder"
 
-    Then I follow "Delete" within tr.tier:first-of-type
-    And I should see "This tier is in use.  Are you sure you want to move everything to 2 - Targeted?"
+    Then I follow "Delete" within "tr.tier:first-of-type"
+    And I should see "This tier is in use. Are you sure you want to move everything to 2 - Targeted?"
     And I follow "Cancel"
     And I should see "Broad"
     
-    Then I follow "Delete" within tr.tier:first-of-type
-    And I should see "This tier is in use.  Are you sure you want to move everything to 2 - Targeted?"
+    Then I follow "Delete" within "tr.tier:first-of-type"
+    And I should see "This tier is in use. Are you sure you want to move everything to 2 - Targeted?"
     And I press "Delete"
     And I should not see "Broad"
     And I should see "Records have been moved to the 2 - Targeted tier"

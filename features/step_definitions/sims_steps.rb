@@ -264,19 +264,9 @@ Given /^there is an email containing "(.*)"$/ do |target_text|
   last_mail.should match(/#{target_text}/)
 end
 
-When /^I follow "(.*)" within (.*)$/ do |link, scope|
-  click_link_within(scope,link)
-end
-
 When /^I press within (.*)$/ do | scope|
   within(scope) do |scoped|
     scoped.click_button
-  end
-end
-
-Given /^I should see "(.*)" within (.*)$/ do |see,scope|
-  within(scope) do |scoped|
-    scoped.should contain(see)
   end
 end
 

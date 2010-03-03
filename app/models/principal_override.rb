@@ -22,7 +22,7 @@ class PrincipalOverride < ActiveRecord::Base
   belongs_to :start_tier, :class_name => 'Tier'
   belongs_to :end_tier, :class_name => 'Tier'
   belongs_to :student
-  attr_accessor :action
+  attr_accessor :action, :skip_email
   attr_reader :unavailable_reason, :send_email
 
   STATUS=["Awaiting approval","Approved","Rejected*","Rejected","Approved*"]
@@ -100,7 +100,7 @@ class PrincipalOverride < ActiveRecord::Base
   def before_validation_on_update
     #TODO make sure the principal is actually a principal for this student
     #Refactor this
-    @send_email=true
+    @send_email=true unless @skip_email
     case self.action
     when 'accept':
       self.status=APPROVED_NOT_SEEN
