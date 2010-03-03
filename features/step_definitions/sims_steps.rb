@@ -93,12 +93,18 @@ Given /^I enter url "(.*)"$/ do |url|
   visit url
 end
 
+When /^I start at (.*)$/ do |page_name|
+  go_to_page page_name
+
+end
+
+
 When /^I go to (.*)$/ do |page_name|
-	go_to_page page_name
+  pending 'change me to start_at'
 end
 
 When /^I am on (.*)$/ do |page_name|
-	go_to_page page_name
+  pending 'change me to start_at'
 end
 
 Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
@@ -197,10 +203,6 @@ Given /group "(.*)" for school "(.*)" with students (.*)$/ do |group_title, scho
   end
 end
 
-Given /^require everything$/ do
-  #only called once
-  Coveralls.require_all_ruby_files ["/app"]
-end
 
 Given /^load demo data$/ do
   fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
