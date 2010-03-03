@@ -44,8 +44,8 @@ Feature: Assign Participants to Intervention
     Then there are "1" emails
       #(One to both users)
     When I follow "Edit/Add Comment"
-    Then I should see "default user" within "div.user"
-    And I should see "Firstcucumber_another Last_Name"
+    Then I should see "default user" within "div#participants_list"
+    And I should see "Firstcucumber_another Last_Name" within "div#participants_list"
 
   
  Scenario: Add same Participant and select checkbox
@@ -66,12 +66,12 @@ Feature: Assign Participants to Intervention
     And I select "default user" from "intervention_participant_user_ids_"
     And I press "Save"
     When I follow "Edit/Add Comment"
-    Then I should see "default user" within "div.user"
-    And I should see "Firstcucumber_another Last_Name"
+    Then I should see "default user" within "div#participants_list"
+#    And I should see "Firstcucumber_another Last_Name" ???
 
     Then there are "1" emails
     # one to each user(1),  even though there are multiple students
-    When I follow "Edit/add comment"
+#    When I follow "Edit/add comment"
     And I press "Save"
 
     #It should not blow up
