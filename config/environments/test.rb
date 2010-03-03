@@ -24,7 +24,7 @@ config.action_mailer.delivery_method = :test
 
 
 #Test requirements
-config.gem 'spicycode-rcov', :lib => 'rcov', :version => ">= 0.8.1.3"
+config.gem 'rcov',  :version => "> 0.8.1.2"
 config.gem 'hpricot'
 config.gem 'nokogiri', :version => '>= 1.1.0'
 #config.gem 'treetop'

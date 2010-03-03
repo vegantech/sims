@@ -18,7 +18,7 @@ Feature: Alternate Entry Points
 
   Scenario: oneschool intervention email
     Given load demo data
-    When I enter url "/interventions/282151792/edit"
+    When I enter url "/interventions/184330814/edit"
     Then I should see "Login"
     And I select "WI Test District" from "District"
     And I fill in "Login" with "oneschool"
