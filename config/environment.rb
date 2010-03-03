@@ -36,7 +36,6 @@ Rails::Initializer.run do |config|
   end
  config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
  config.gem "fastercsv"
- config.gem "hpricot"
  config.gem "pdf-writer", :lib => "pdf/writer"
  config.gem 'rack', :version => '= 1.0.1'
 
