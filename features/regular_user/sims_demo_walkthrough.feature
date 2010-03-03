@@ -199,59 +199,7 @@ Feature: Sims Demo Walkthrough
     
     
 
-  Scenario:  test district_admin
-    Given load demo data
-    And I go to the home page
-    And I select "WI Test District" from "District"
-    And I fill in "Login" with "district_admin"
-    And I fill in "Password" with "district_admin"
-    Then I press "Login"
-    And I should see "Change your logo and url"
-    And I follow "Change your logo and url"
-    And I should not see "Sorry, help not found."
-    And I follow "Home"
-    And page should contain "news_items"
-    And I should see "WI Test District Administration"
-    And I should see "Add/Remove Users"
-    And I should see "Add/Remove Students"
-    And I should see "Edit your district"
-    And I should see "Add/Remove Schools"
 
-  #Edit User
-    When I follow "Add/Remove Users"
-    When I follow "edit" within #tr_880270606
-    Then I should see "Editing user"
-    Then I press "Update"
-
-  # lighthouse ticket 158 editing a second time causes a validation error
-    When I follow "edit" within #tr_880270606
-    Then I should see "Editing user"
-    Then I press "Update"
-
- Scenario: test wi_admin
-    Given load demo data
-    And I enter url "/?district_abbrev=admin&state_abbrev=wi"
-    And I fill in "Login" with "district_admin"
-    And I fill in "Password" with "district_admin"
-    And I press "Login"
-    Then I should see "Wisconsin Administration"
-    And I follow "Manage Districts"
-    And I follow "Delete"
-    And I should see "Have the district admin remove the schools first."
-    And I follow "New district"
-    And I fill in "Name" with "Cucumber"
-    And I fill in "Abbrev" with "cuke"
-    And I press "Create"
-    And I should see "District was successfully created"
-    And I follow "Delete" within #cuke_tr
-    And I should not see "Have the district admin remove the schools first."
-    And I should not see "cuke"
-    
-    
-
-
-
-    
   Scenario: Alphaprin
     Given load demo data 
     And I go to the home page
@@ -371,12 +319,3 @@ Feature: Sims Demo Walkthrough
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
 
-  Scenario: content_builder
-    Given load demo data
-    And I go to the home page
-    And I select "WI Test District" from "District"
-    And I fill in "Login" with "content_builder"
-    And I fill in "Password" with "content_builder"
-    And I press "Login"
-    And I follow "Flag Categories/Core Practices"
-    And I follow "New Flag Category"

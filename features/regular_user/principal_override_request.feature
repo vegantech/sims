@@ -18,6 +18,7 @@ Feature: Principal Override Request
 
   Scenario: Request Principal Override when there are principals
     When I follow "Request Principal Override to unlock next tier"  
+    And show me the page
     And I fill it in with "sothing"
     And I press the button
     Then I should see 1 override requests

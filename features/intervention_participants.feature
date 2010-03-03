@@ -14,10 +14,7 @@ Feature: Assign Participants to Intervention
     When I complete "Assign New Intervention"
     And I follow "Edit/Add Comment"
 
-    # Yes.  The following line of code is lame.
-    # Basically, I did not want to accept a false match on "default user" higher on the page.
-    Then page should contain "\ndefault user\n<input id=\"intervention_participant_user_ids_"
-
+    Then I should see "default user" within "div.user"
     And I am now pending
     When I follow "Add Participant"
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_id"
@@ -47,7 +44,7 @@ Feature: Assign Participants to Intervention
     Then there are "1" emails
       #(One to both users)
     When I follow "Edit/Add Comment"
-    Then page should contain '\ndefault user\n<input id=\"intervention_participant_user_ids_' # see comment about this above
+    Then I should see "default user" within "div.user"
     And I should see "Firstcucumber_another Last_Name"
 
   
@@ -69,7 +66,7 @@ Feature: Assign Participants to Intervention
     And I select "default user" from "intervention_participant_user_ids_"
     And I press "Save"
     When I follow "Edit/Add Comment"
-    Then page should contain "\ndefault user\n<input id="intervention_participant_user_ids_" # see comment about this above
+    Then I should see "default user" within "div.user"
     And I should see "Firstcucumber_another Last_Name"
 
     Then there are "1" emails

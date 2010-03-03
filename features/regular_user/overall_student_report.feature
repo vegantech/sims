@@ -21,7 +21,7 @@ Feature: Overall Student Report
     When I check "<label>"
     And I press "Generate Report"
     Then I should see "<header_or_unique_string>"
-    Examples
+    Examples:
      | label                | header_or_unique_string           |
      | Top summary          | Student Name:                     |
      | Flags                | Flags                             |
