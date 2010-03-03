@@ -53,7 +53,6 @@ Feature: Student Maintenance
     And I call ajax check_id_state with "1234"
     # Then I should see a popup that the student was found  
     Then I should see an alert
-    # Then I show page
     And I should see "Claim First Last for your district"
     When I magically visit "Claim First Last for your district"
     Then I should see "Student is now in your district, remove them if you want to undo"

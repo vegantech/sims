@@ -313,10 +313,6 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
   StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
 end
 
-Given /^I show page$/ do
-  save_and_open_page
-end
-
 When /^page should contain "(.*)"$/ do |arg1|
   response.body.should =~ /#{arg1}/
 end

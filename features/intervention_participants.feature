@@ -18,7 +18,6 @@ Feature: Assign Participants to Intervention
     # Basically, I did not want to accept a false match on "default user" higher on the page.
     Then page should contain "\ndefault user\n<input id=\"intervention_participant_user_ids_"
 
-    # And I show page
     And I am now pending
     When I follow "Add Participant"
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_id"
@@ -48,7 +47,6 @@ Feature: Assign Participants to Intervention
     Then there are "1" emails
       #(One to both users)
     When I follow "Edit/Add Comment"
-    # And I show page
     Then page should contain '\ndefault user\n<input id=\"intervention_participant_user_ids_' # see comment about this above
     And I should see "Firstcucumber_another Last_Name"
 
@@ -68,7 +66,6 @@ Feature: Assign Participants to Intervention
     And I check "Assign yourself to this intervention"
     And I check "Apply to all selected students"
     When I follow "Add Participant"
-    # Then I show page
     And I select "default user" from "intervention_participant_user_ids_"
     And I press "Save"
     When I follow "Edit/Add Comment"

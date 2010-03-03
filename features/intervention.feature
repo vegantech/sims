@@ -65,7 +65,6 @@ Feature: Create Intervention
     Then I should see "Enter/view scores"
     And xhr "onclick" "enter_view_score_link"
     Then I should see "Preview Graph"
-#    And I show page
 
   Scenario: Add a comment to an existing intervention with a different creator
     #312, intervention comments can have different authors than intervention creator
