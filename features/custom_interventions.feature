@@ -7,7 +7,7 @@ Feature: Create Custom Intervention
     #Assuming itnerventions currently work correctly and we're going to piggyback on that
 
     Given common data
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "New Custom Intervention"
 
     # same as intervention
@@ -30,6 +30,7 @@ Feature: Create Custom Intervention
     # along with intervention using data from intervention and custom flag (intervention, description, title, tier) [user,school, disabled=false]
     When I press "Save"
     # And I go Back to student profile screen
+    Then show me the page
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
     And I select "Some Goal" from "goal_definition_id"
@@ -46,7 +47,7 @@ Feature: Create Custom Intervention
   Scenario: Create invalid existing
     #feature for 212
     Given common data
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
     # same as intervention
@@ -72,7 +73,7 @@ Feature: Create Custom Intervention
   Scenario: Create invalid custom
     #missing title    feature for #212
     Given common data
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "New Custom Intervention"
 
     # same as intervention

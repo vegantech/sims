@@ -5,7 +5,7 @@ Feature: Overall Student Report
 
   Background:
     Given common data
-    When I am on the student profile page
+    When I start at the the student profile page
     And I follow "Student Report"
     Then I should see "Choose Sections for Student Report Common Last"
 

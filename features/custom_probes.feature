@@ -7,7 +7,7 @@ Feature: Create Custom Probes
     #Assuming itnerventions currently work correctly and we're going to piggyback on that
     Given common data
 
-    And I am on student profile page
+    And I start at the student profile page
     Then I follow "Create New Custom Intervention and Progress Monitor"
     And I select "Some Goal" from "goal_definition_id"
     And I press "Choose Goal"

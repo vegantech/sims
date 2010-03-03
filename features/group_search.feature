@@ -11,7 +11,7 @@ Feature: Search By Student Groups
     And group "Blue Team" for school "Central" with student "Blue Floyd"
     And group "Red Team" for school "Central" with student "Red Fred"
     And I have access to "Blue Team"
-    And I am on search page
+    And I start at the search page
 
     # And I should see my own username in the group member selection
     # And group_member_selection_id drop down should contain ["Prompt", "Option 1", "Option 2"]
@@ -33,7 +33,7 @@ Feature: Search By Student Groups
     And group "Maroon Team" for school "East High" with student "Harold Yerbie"
     And I have access to "Orange Team"
     And I have access to "Maroon Team"
-    And I am on search page
+    And I start at the search page
     And I should see select box with id of "search_criteria_group_id" and contains ['Filter by Group','Maroon Team', 'Orange Team']
     When I select "Orange Team" from "Student Group"
     And I press "Search for Students"
@@ -51,7 +51,7 @@ Feature: Search By Student Groups
     And group "Green Team" for school "Central" with student "Green Gene" in grade "3"
     And I have access to ["Blue Team","Red Team", "Yellow Team", "Green Team"]
     And "Other_Guy" has access to ["Blue Team", "Yellow Team", "Green Team"]
-    And I am on search page
+    And I start at the search page
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Green Team","Red Team", "Yellow Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy","default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
@@ -73,7 +73,7 @@ Feature: Search By Student Groups
     And group "Red Team" for school "Central" with student "Red Fred" in grade "1"
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
-    And I am on search page
+    And I start at the search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy", "default user"]

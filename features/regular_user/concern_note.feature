@@ -5,7 +5,7 @@ Feature: Concern Note
 
   Background:
     Given common data
-    And I am on the student profile page
+    And I start at the student profile page
 
   Scenario: Create Team Consultation Form without any teams
     When I follow "Create Team Consultation Form"

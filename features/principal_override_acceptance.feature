@@ -7,7 +7,7 @@ Feature: Principal Override Accept and Reject
     Given common data
     And I am the principal
     And there is a principal override request
-    And I am on the search page
+    And I start at the the search page
     And I follow "1 pending request"
 
   Scenario: Reject

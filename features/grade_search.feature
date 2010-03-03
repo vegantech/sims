@@ -12,10 +12,10 @@ Feature: Search Page
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
-		# And I am on the search page
+		# And I start at the the search page
 
     # When I select "*" from "students_grade"
     When I select "*" from "Grade"
@@ -31,10 +31,10 @@ Feature: Search Page
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
-		# And I am on the search page
+		# And I start at the the search page
 
     When I select "1" from "Grade"
 		And I press "Search for Students"

@@ -13,7 +13,7 @@ Feature: Search By Student Groups
     And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
-    And I am on search page
+    And I start at the search page
 
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy","default user"]
@@ -39,7 +39,7 @@ Feature: Search By Student Groups
     And group "Green Team" for school "Central" with student "Green Gene" in grade "3"
     And I have access to ["Blue Team","Red Team", "Yellow Team", "Green Team"]
     And "Other_Guy" has access to ["Blue Team", "Yellow Team", "Green Team"]
-    And I am on search page
+    And I start at the search page
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Green Team","Red Team", "Yellow Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy","default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
@@ -61,7 +61,7 @@ Feature: Search By Student Groups
     And group "Red Team" for school "Central" with student "Red Fred" in grade "1"
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
-    And I am on search page
+    And I start at the search page
     
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy", "default user"]

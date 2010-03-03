@@ -12,7 +12,7 @@ Feature: Search By Intervention Flags
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister"]
     And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		And I choose "List all students"
@@ -30,7 +30,7 @@ Feature: Search By Intervention Flags
 		And student "Sally" "Cart" in grade 2 at "Glenn Stephens" with ignore_flag for "math" with reason "Ignore this math flag"
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart"]
     And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
@@ -46,7 +46,7 @@ Feature: Search By Intervention Flags
 		And student "Sally" "Wood" in grade 2 at "Glenn Stephens" with custom_flag for "attendance" with reason "Always skips homeroom"
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Wood"]
     And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
@@ -64,7 +64,7 @@ Feature: Search By Intervention Flags
     And student "Has" "More" in grade 4 at "Glenn Stephens" with "math" flag and ignore_flag for "attendance" with reason "Actually here"
     And group "My Group" for school "Glenn Stephens" with students ["Eric Aagard", "Mike Baumeister", "Sally Cart", "Has Both", "Has More"]
     And I have access to "My Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
@@ -80,7 +80,7 @@ Feature: Search By Intervention Flags
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens"
 		And group "Whatta Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
 		And I have access to "Whatta Group"
-		And I am on the school selection page
+		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		And I choose "List only students flagged for intervention"
@@ -100,7 +100,7 @@ Feature: Search By Intervention Flags
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
 		And group "Some Kinda Group" for school "Ridgewood" with students ['Adam Partridge', 'Andy Dudley', 'Craig Acomb', 'Different Flag']
 		And I have access to "Some Kinda Group"
-    And I am on the school selection page
+    And I start at the the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
     And I choose "List only students flagged for intervention"
@@ -123,7 +123,7 @@ Feature: Search By Intervention Flags
 		And student "Different" "Flag" in grade 2 at "Ridgewood" with "suspension" flag
 		And group "Some Kinda Group" for school "Ridgewood" with students ['Adam Partridge', 'Andy Dudley', 'Craig Acomb', 'Different Flag']
 		And I have access to "Some Kinda Group"
-    And I am on the school selection page
+    And I start at the the school selection page
     And I select "Ridgewood" from "school_id"
     And I press "Choose School"
     And I choose "List only students flagged for intervention"

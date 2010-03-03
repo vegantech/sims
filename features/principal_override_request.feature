@@ -5,7 +5,7 @@ Feature: Principal Override Request
 
   Background:
     Given common data
-    And I am on the student profile page
+    And I start at the the student profile page
 
   Scenario: Request Principal Override when there are no tiers
     Given there are no tiers

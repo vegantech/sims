@@ -6,7 +6,7 @@ Feature: Intervention Quicklist
   Scenario: Select From Quicklist without javascript
     Given common data
     And quicklist choices ["Quicklist Item 1", "Quicklist Item 2"]
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "Select from Intervention Quicklist"
     And I should see "Intervention Quicklist"
     And I select "Quicklist Item 1" from "Intervention Quicklist"
@@ -24,13 +24,13 @@ Feature: Intervention Quicklist
   Scenario: Not in custom
     Given common data
     And quicklist choices ["Quicklist Item 1", "Quicklist Item 2"]
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "New Custom Intervention"
     And I should not see "Intervention Quicklist"
 
   Scenario: No Quicklist items
     Given common data
-    And I am on student profile page
+    And I start at the student profile page
     And I follow "New Custom Intervention"
     And I should not see "Intervention Quicklist"
 

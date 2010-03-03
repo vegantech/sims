@@ -95,13 +95,8 @@ end
 
 When /^I start at (.*)$/ do |page_name|
   go_to_page page_name
-
 end
 
-
-When /^I go to (.*)$/ do |page_name|
-  pending 'change me to start_at'
-end
 
 When /^I am on (.*)$/ do |page_name|
   pending 'change me to start_at'

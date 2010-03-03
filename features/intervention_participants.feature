@@ -10,7 +10,7 @@ Feature: Assign Participants to Intervention
     #Assuming interventions currently work correctly and we're going to piggyback on that
     Given common data
     And there are "0" emails
-    And I am on student profile page
+    And I start at the student profile page
     When I complete "Assign New Intervention"
     And I follow "Edit/Add Comment"
 
@@ -32,7 +32,7 @@ Feature: Assign Participants to Intervention
   Scenario: Add Participant to new Intervention
     Given common data
     And a clear email queue
-    And I am on student profile page
+    And I start at the student profile page
     When I follow "Select New Intervention and Progress Monitor from Menu"
     And I select "Some Goal" from "goal_definition_id"
     And I press "Choose Goal"
@@ -55,7 +55,7 @@ Feature: Assign Participants to Intervention
     Given common data
     Given with additional student
     And there are "0" emails
-    And I am on student profile page
+    And I start at the student profile page
     When I follow "Select New Intervention and Progress Monitor from Menu"
     And I select "Some Goal" from "goal_definition_id"
     And I press "Choose Goal"
