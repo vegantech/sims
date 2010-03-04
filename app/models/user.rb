@@ -315,6 +315,22 @@ class User < ActiveRecord::Base
     end
   end
 
+  def authorized_students
+    district.students.find(:all,
+        :joins => "left outer join special_user_groups on special_user_groups.user_id = #{self.id} 
+                    and special_user_groups.district_id = #{self.district_id}
+                    left outer join enrollments on enrollments.student_id = students.id
+                    left outer join  user_group_assignments on user_group_assignments.user_id = #{self.id} 
+                    inner join groups_students on groups_students.group_id = user_group_assignments.group_id 
+                    and groups_students.student_id = students.id 
+                    ",
+        :conditions => "special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  
+        or (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
+              and (special_user_groups.grade is null or special_user_groups.grade = enrollments.grade)
+            or (user_group_assignments.id is not null) 
+          )")
+  end
+
 protected
   def district_special_groups
     all_students = all_students_in_district || 
