@@ -170,7 +170,7 @@ describe Intervention do
         intervention.time_length.should == tl1
         intervention.frequency_multiplier.should == 60
         intervention.time_length_number.should == 7
-        intervention.end_date.should == 210.days.since.to_date
+        intervention.end_date.should == 210.days.since(Date.today)
       end
     end
       

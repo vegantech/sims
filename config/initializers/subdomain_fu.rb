@@ -1,9 +1,16 @@
 begin
   h=Object.const_get("SIMS_DOMAIN") 
 rescue NameError
-  h='www.sims_test_host'
+  h='example.com'
 end
-SubdomainFu.tld_size = h.split(".").length() -1
+
+size = h.split(".").length() -1
+
+SubdomainFu.tld_sizes = {:development => 0,
+                         :test => 1,
+                         :production => size,
+                         :cucumber => 1
+                         }
 SubdomainFu.mirrors = 'www'
 SubdomainFu.preferred_mirror = "www"
  

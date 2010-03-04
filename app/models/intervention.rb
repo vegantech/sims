@@ -246,7 +246,11 @@ class Intervention < ActiveRecord::Base
   end
 
   def default_end_date
-    (start_date + (time_length_number*time_length.days).days) if time_length_number and time_length
+   if time_length_number and time_length
+      (start_date + (time_length_number*time_length.days).days) 
+   else
+      start_date
+   end
   end
 
   def after_initialize

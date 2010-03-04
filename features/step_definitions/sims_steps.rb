@@ -93,12 +93,13 @@ Given /^I enter url "(.*)"$/ do |url|
   visit url
 end
 
-When /^I go to (.*)$/ do |page_name|
-	go_to_page page_name
+When /^I start at (.*)$/ do |page_name|
+  go_to_page page_name
 end
 
+
 When /^I am on (.*)$/ do |page_name|
-	go_to_page page_name
+  pending 'change me to start_at'
 end
 
 Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
@@ -197,10 +198,6 @@ Given /group "(.*)" for school "(.*)" with students (.*)$/ do |group_title, scho
   end
 end
 
-Given /^require everything$/ do
-  #only called once
-  Coveralls.require_all_ruby_files ["/app"]
-end
 
 Given /^load demo data$/ do
   fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
@@ -267,19 +264,9 @@ Given /^there is an email containing "(.*)"$/ do |target_text|
   last_mail.should match(/#{target_text}/)
 end
 
-When /^I follow "(.*)" within (.*)$/ do |link, scope|
-  click_link_within(scope,link)
-end
-
 When /^I press within (.*)$/ do | scope|
   within(scope) do |scoped|
     scoped.click_button
-  end
-end
-
-Given /^I should see "(.*)" within (.*)$/ do |see,scope|
-  within(scope) do |scoped|
-    scoped.should contain(see)
   end
 end
 
@@ -311,10 +298,6 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
                                            :district => @default_user.district)
 
   StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
-end
-
-Given /^I show page$/ do
-  save_and_open_page
 end
 
 When /^page should contain "(.*)"$/ do |arg1|
