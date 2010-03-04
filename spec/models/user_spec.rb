@@ -41,7 +41,7 @@ describe User do
     end
 
     describe 'additional hash keys and salts' do
-      before do
+      before :all do
         System::HASH_KEY='mms'
       end
 
@@ -292,6 +292,7 @@ describe User do
     end
 
     it 'should return all schools for user with access to all schools' do
+      @user.district.schools.delete_all
       s1=Factory(:school, :district => @user.district)
       s2=Factory(:school, :district => @user.district)
       s3=Factory(:school, :district => @user.district)
