@@ -70,7 +70,7 @@ class ProbeDefinition < ActiveRecord::Base
     #This will work better
 
     #refactor this to use recommended monitors?
-    probes = find(:all, :order =>:position)
+    probes = find(:all, :order =>"active desc, custom, position")
 
 
     if params[:commit]
