@@ -1,6 +1,19 @@
 <h1> Progress Monitors </h1>
 <p><b>Groups are determined by the recommended monitors page via the intervention builder.  </b></p>  
 
+<% form_tag("",:method => "get") do %>
+  <%= check_box_tag :system,1, (!params[:commit] || params[:system])%>
+  <%= label_tag 'system', 'System'%>
+  <%= check_box_tag :custom,1, (!params[:commit] || params[:custom])%>
+  <%= label_tag 'custom', 'Custom'%>
+  &nbsp;|
+  <%= check_box_tag :enabled,1,(!params[:commit] || params[:enabled])%>
+  <%= label_tag 'enabled', 'Enabled'%>
+  <%= check_box_tag :disabled, 1,(!params[:commit] || params[:disabled])%>
+  <%= label_tag 'disabled', 'Disabled'%>
+  <%= submit_tag 'Filter'%>
+<% end %>
+
 
 <ul id="probe_definition_list">
   <% @probe_definitions_in_groups.each do |k,g| %>

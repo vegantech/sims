@@ -5,7 +5,8 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def index
     @probe_definitions_in_groups =
-      current_district.probe_definitions.group_by_cluster_and_objective
+      current_district.probe_definitions.group_by_cluster_and_objective(params)
+
   end
 
   def show
