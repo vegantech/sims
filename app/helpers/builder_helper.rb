@@ -10,8 +10,8 @@ module BuilderHelper
   end
 
   def new_probe_definition(pd=ProbeDefinition.new)
-    pd.assets.build if pd.assets.blank?
-    pd.probe_definition_benchmarks.build if pd.probe_definition_benchmarks.blank?
+#    pd.assets.build if pd.assets.blank?
+#    pd.probe_definition_benchmarks.build if pd.probe_definition_benchmarks.blank?
     pd
   end
 end
