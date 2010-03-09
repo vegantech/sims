@@ -24,6 +24,8 @@
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
+  belongs_to :user
+  belongs_to :school
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
@@ -49,6 +51,16 @@ class ProbeDefinition < ActiveRecord::Base
       errors.add(:minimum_score, "must be less than the maximum score.")
     end
   end
+
+  def title
+    if custom and self[:title].present?
+      "(c) #{self[:title]}"
+    else
+      "#{self[:title]}"
+    end
+  end
+
+
 
   def probes
     intervention_probe_assignments

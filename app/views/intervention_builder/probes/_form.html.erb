@@ -18,6 +18,18 @@
     <td width="35%"><%= form.text_field :maximum_score, 'size' => 5  %></td>
   </tr>
   <tr>
+    <% if form.object.school_id %>
+    <td></td>
+    <td colspan="3">
+    <p>Originally a custom intervention by <%=form.object.user%> at <%=form.object.school%>.</p>
+    <div class="fake_label"><%=form.check_box :custom %></div>
+      <%= form.label :custom ,'Custom', {:class =>"checkbox_label"}%>
+      </p>
+    </td>
+
+  <% end %>
+
+
   </tr>
 <!--[eoform:probe_definition]-->
 </table>
