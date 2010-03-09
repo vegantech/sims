@@ -214,7 +214,15 @@ class Intervention < ActiveRecord::Base
 
   def save_assigned_monitor
     return true unless defined?(@ipa)
-    @ipa.probe_definition.intervention_definitions << self.intervention_definition  if @ipa.probe_definition.intervention_definitions.blank?
+    if @ipa.probe_definition.intervention_definitions.blank?
+      pd=@ipa.probe_definition
+      pd.intervention_definitions << self.intervention_definition  
+      pd.user_id = user_id
+      pd.school_id = school_id
+      pd.custom = true
+
+    end
+    
     @ipa.save
 
   end
