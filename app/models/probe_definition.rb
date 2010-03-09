@@ -24,6 +24,8 @@
 class ProbeDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :district
+  belongs_to :user
+  belongs_to :school
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
   has_many :recommended_monitors, :dependent => :destroy
   has_many :intervention_definitions,:through => :recommended_monitors
@@ -50,15 +52,41 @@ class ProbeDefinition < ActiveRecord::Base
     end
   end
 
+  def title
+    if custom and self[:title].present?
+      "(c) #{self[:title]}"
+    else
+      "#{self[:title]}"
+    end
+  end
+
+
+
   def probes
     intervention_probe_assignments
   end
 
-  def self.group_by_cluster_and_objective
+  def self.group_by_cluster_and_objective(params ={})
     #This will work better
 
     #refactor this to use recommended monitors?
-    probes = find(:all, :order =>:position)
+    probes = find(:all, :order =>"active desc, custom, position")
+
+
+    if params[:commit]
+      if params[:enabled] || params[:disabled]
+        probes.reject!(&:active) unless params[:enabled]
+        probes = probes.select(&:active) unless params[:disabled]
+      end
+      
+      if params[:custom] || params[:system]
+        probes.reject!(&:custom) unless params[:custom]
+        probes = probes.select(&:custom) unless params[:system]
+      end
+    end
+
+
+
 
     my_hash = ActiveSupport::OrderedHash.new()
 

@@ -31,13 +31,10 @@ Rails::Initializer.run do |config|
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
   config.gem 'bluecloth', :version => '> 2.0.0'
-  if YAML.load_file(RAILS_ROOT+"/config/database.yml")[RAILS_ENV]["adapter"] == "sqlserver"
-    config.gem 'rails-sqlserver-2000-2005-adapter', :lib => 'active_record/connection_adapters/sqlserver_adapter'
-  end
- config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
- config.gem "fastercsv"
- config.gem "pdf-writer", :lib => "pdf/writer"
- config.gem 'rack', :version => '= 1.0.1'
+  config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
+  config.gem "fastercsv"
+  config.gem "pdf-writer", :lib => "pdf/writer"
+  config.gem 'rack', :version => '= 1.0.1'
 
  # deployment
  config.gem "capistrano", :lib => false

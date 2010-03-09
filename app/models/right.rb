@@ -13,7 +13,8 @@
 
 class Right 
 
-RIGHTS={"district_admin" =>[
+RIGHTS={"district_admin" =>
+  [
   {:read_access=>true,
     :controller=>"district/users",
     :write_access=>true},

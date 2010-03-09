@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100301185501) do
+ActiveRecord::Schema.define(:version => 20100309003823) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -546,6 +546,7 @@ ActiveRecord::Schema.define(:version => 20100301185501) do
     t.datetime "deleted_at"
     t.datetime "copied_at"
     t.integer  "copied_from"
+    t.boolean  "custom",        :default => false, :null => false
   end
 
   add_index "probe_definitions", ["district_id"], :name => "index_probe_definitions_on_district_id"

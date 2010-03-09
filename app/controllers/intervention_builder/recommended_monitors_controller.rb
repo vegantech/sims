@@ -6,10 +6,11 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
   def assign_probes_to_intervention
     
     @intervention_definition=current_district.find_intervention_definition_by_id(params[:id])
+    @back_path =  intervention_builder_intervention_url(*@intervention_definition.ancestor_ids)
   
     if request.post? and params[:commit]
       flash[:notice=] = "Changes saved for #{@intervention_definition.title}" if @intervention_definition.probe_definition_ids=params[:probes]
-      redirect_to intervention_builder_intervention_url(*@intervention_definition.ancestor_ids) and return        
+      redirect_to @back_path and return        
     end
     @recommended_monitors = @intervention_definition.recommended_monitors.collect(&:probe_definition_id)
     @probe_definitions_in_groups =  current_district.probe_definitions.group_by_cluster_and_objective
