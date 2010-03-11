@@ -222,6 +222,7 @@ class Intervention < ActiveRecord::Base
       pd.intervention_definitions << self.intervention_definition  
       pd.user_id = user_id
       pd.school_id = school_id
+      pd.district_id = goal_definition.district_id
       pd.custom = true
 
     end

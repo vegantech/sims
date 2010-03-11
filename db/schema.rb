@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100309003823) do
+ActiveRecord::Schema.define(:version => 20100311001013) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -670,7 +670,7 @@ ActiveRecord::Schema.define(:version => 20100309003823) do
     t.integer  "recommendation"
     t.integer  "checklist_id"
     t.integer  "user_id"
-    t.text     "reason"
+    t.text     "other"
     t.boolean  "should_advance"
     t.datetime "created_at"
     t.datetime "updated_at"

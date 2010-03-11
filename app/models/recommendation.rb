@@ -34,10 +34,9 @@ class Recommendation < ActiveRecord::Base
 #  validates_presence_of :checklist_id, 
   validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral, :school
-  attr_accessor :other
 
 
-  #there's a custom sort for this in the checklist helper
+   #there's a custom sort for this in the checklist helper
   RECOMMENDATION={
     0=>{:text=>"The student made progress and no longer requires intervention.", :readonly => true},
     1 =>{:text=>"The student is making progress; choose new interventions from the next level; continue to monitor progress.",:promote=>true},
