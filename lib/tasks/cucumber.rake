@@ -26,7 +26,7 @@ begin
       t.rcov_opts << send("default_rcov_params_for_#{target}")
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
-      t.profile = 'default'
+      t.profile = 'rcov'
 
     end
 
