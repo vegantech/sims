@@ -75,7 +75,8 @@ class CreateTrainingDistrict
     definitionhash = {}
     probe_hash = {}
     
-    oldtiers=[781073596, 781073597, 781073598]
+    oldtiers=[781074649, 781074650, 781074651]
+
     tier = district.tiers.create!(:title=>'First tier')
     second_tier = district.tiers.create!(:title=>'Second tier')
     third_tier = district.tiers.create!(:title=>'Third tier')
@@ -103,28 +104,36 @@ class CreateTrainingDistrict
     FasterCSV.table("db/training/intervention_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
-      if [1037859175,1037859176,1037859177].include?(ck[:intervention_cluster_id].to_i)
-        mytier = [tier.id,second_tier.id,third_tier.id][oldtiers.index(ck[:tier_id].to_i)]
-        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier))
-      else
-        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => tier.id))
+      mytier = [tier.id,second_tier.id,third_tier.id][oldtiers.index(ck[:tier_id].to_i)] || tier
+      unless ckhash[:disabled]
+        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier)) 
+        definitionhash[ck[:id]]=newcd.id
       end
-      definitionhash[ck[:id]]=newcd.id
     end
 
 
     FasterCSV.table("db/training/probe_definitions_monitors.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      newcd= district.probe_definitions.create!(ckhash)
-      probe_hash[ck[:id]]=newcd.id
+      if ckhash[:active]
+        newcd= district.probe_definitions.create!(ckhash)
+        probe_hash[ck[:id]]=newcd.id
+      end
     end
 
     FasterCSV.table("db/training/recommended_monitors.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-      newcd= RecommendedMonitor.create!(ckhash)
+      newcd= RecommendedMonitor.create!(ckhash) 
     end
+
+    FasterCSV.table("db/training/probe_definition_benchmarks.csv").each do |ck|
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
+      newcd= ProbeDefinitionBenchmark.create!(ckhash) 
+    end
+
+
 
     FasterCSV.table("db/training/assets.csv").each do |ck|
       
