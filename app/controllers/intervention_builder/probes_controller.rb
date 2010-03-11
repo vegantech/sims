@@ -51,7 +51,16 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   end
 
+
   def disable
+    if params[:commit]
+      pds=current_district.probe_definitions.find_all_by_id(params[:id])
+      pds.each{|i| i.update_attribute(:active,false)}
+      flash[:notice] = "#{@template.pluralize(pds.size, 'Progress Monitor')} disabled."
+      redirect_to intervention_builder_probes_url and return
+    end
+
+
     #disable/reenable
     probe_definition=current_district.find_probe_definition((params[:id]))
     if probe_definition
