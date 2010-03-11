@@ -14,36 +14,39 @@
   <%= submit_tag 'Filter'%>
 <% end %>
 
+<% form_tag(:controller => 'intervention_builder/probes' ,:action => 'disable', :method => 'put') do %>
 
-<ul id="probe_definition_list">
-  <% @probe_definitions_in_groups.each do |k,g| %>
-    <%= content_tag :h2, k.to_s.titleize %>
-    <% g[:clusters].each do |k,ic| %>
-      <%= content_tag :h4, k unless k==:none%>
-      <table>
-        <col width= 20%></col>
-        <col width= 15%></col>
-        <col width= 40%></col>
-        <col width= 7%></col>
-        <col width= 8%></col>
-        <thead>
-        <tr>
-          <th> </th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Min/Max</th>
-          <th>Updated On</th>
-        </tr>
-        </thead>
-        <tbody>
-          <%=render :partial=>'probe_definition',:collection=>ic[:probes] %>
-        </tbody>
-      </table>
+  <ul id="probe_definition_list">
+    <% @probe_definitions_in_groups.each do |k,g| %>
+      <%= content_tag :h2, k.to_s.titleize %>
+      <% g[:clusters].each do |k,ic| %>
+        <%= content_tag :h4, k unless k==:none%>
+        <table>
+          <col width= 20% />
+          <col width= 15% />
+          <col width= 40% />
+          <col width= 7% />
+          <col width= 8% />
+          <thead>
+          <tr>
+            <th> </th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Min/Max</th>
+            <th>Updated On</th>
+          </tr>
+          </thead>
+          <tbody>
+            <%=render :partial=>'probe_definition',:collection=>ic[:probes] %>
+          </tbody>
+        </table>
+      <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
 
 
+  <%= submit_tag 'Disable Selected Progress Monitors', :confirm => 'Disable Selected Progress Monitors?' %>
+<% end %>
 
 
 

@@ -7,6 +7,13 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
+function check_same_boxes(obj) {
+  $$('.'+obj.className).each(function(s){
+      s.checked=obj.checked;
+      });
+
+}
+
 function searchByIntervention() {
   document.getElementById('search_criteria_search_type_active_intervention').checked = true;
 }
