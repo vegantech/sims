@@ -1,4 +1,4 @@
-updated_at,title,deleted_at,copied_at,id,district_id,disabled,description,position,copied_from,created_at
-Fri Aug 08 13:12:05 -0500 2008,Engagement,,,753270954,546713874,,Engagement refers to the student's connection to schooling.  Positive engagement is noted when students have good attendance and participate fully in school.,1,,Tue Aug 14 13:36:40 -0500 2007
-Wed Sep 03 09:38:32 -0500 2008,Relationships,,,753270955,546713874,,"""Relationships"" refers to a student's connection and bond with peers and  adults.  When a student has positive relationships with teachers and staff as well as peers in school, more positive student behavior results.",2,,Tue Aug 14 13:36:40 -0500 2007
-Thu Sep 18 11:42:17 -0500 2008,Learning,,,753270956,546713874,,Learning refers to the acquisition of knowledge and skills.  ,3,,Tue Aug 14 13:36:45 -0500 2007
+id,title,description,district_id,position,disabled,created_at,updated_at,deleted_at,copied_at,copied_from
+189,Engagement,Engagement refers to the student's connection to schooling.  Positive engagement is noted when students have good attendance and participate fully in school.,1001893663,1,,2007-08-14 18:36:40,2008-08-08 18:12:05,,,
+190,Relationships,"""Relationships"" refers to a student's connection and bond with peers and  adults.  When a student has positive relationships with teachers and staff as well as peers in school, more positive student behavior results.",1001893663,2,,2007-08-14 18:36:40,2008-09-03 14:38:32,,,
+191,Learning,Learning refers to the acquisition of knowledge and skills.  ,1001893663,3,,2007-08-14 18:36:45,2008-09-18 16:42:17,,,

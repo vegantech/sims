@@ -33,11 +33,16 @@ class DistrictExport
     self.generate_csv(dir,district,'intervention_definitions', InterventionDefinition.column_names.join(","), "inner join intervention_clusters on intervention_clusters.id = intervention_definitions.intervention_cluster_id inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
 
     self.generate_csv(dir,district,'probe_definitions', ProbeDefinition.column_names.join(","))
+    self.generate_csv(dir,district,'probe_definition_benchmarks', ProbeDefinitionBenchmark.column_names.join(","), 
+                      "inner join probe_definitions on probe_definitions.id = probe_definition_benchmarks.probe_definition_id and probe_definitions.district_id = #{district.id}")
     self.generate_csv(dir,district,'recommended_monitors', RecommendedMonitor.column_names.join(","), "inner join probe_definitions on probe_definitions.id = recommended_monitors.probe_definition_id and probe_definitions.district_id = #{district.id}")
 
     self.generate_csv(dir,district,'recommendation_definitions', RecommendationDefinition.column_names.join(","),'')
     self.generate_csv(dir,district,'recommendation_answer_definitions', RecommendationAnswerDefinition.column_names.join(","),'inner join recommendation_definitions on recommendation_answer_definitions.recommendation_definition_id = recommendation_definitions.id')
+    assets = district.probe_definitions.collect(&:assets).flatten.compact | 
+      district.goal_definitions.collect(&:objective_definitions).flatten.collect(&:intervention_clusters).flatten.collect(&:intervention_definitions).flatten.collect(&:assets).flatten.compact
 
+    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})")
 
     system "zip -j -qq #{dir}sims_export.zip #{dir}*"
    
