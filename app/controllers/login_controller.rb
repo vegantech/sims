@@ -17,7 +17,6 @@ class LoginController < ApplicationController
       if @user.new_record?
         logger.info "Failed login of #{params[:username]} at #{current_district.name}"
         current_district.logs.create(:body => "Failed login of #{params[:username]}")
-        HoptoadNotifier.notify :error_message=>"Failed login of #{params[:username]} at #{current_district.name}" if Rails.env == "production"
         if @user.token
           flash[:notice] = 'An email has been sent, follow the link to change your password.'
         else
