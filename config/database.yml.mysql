@@ -12,7 +12,7 @@ development:
   database: sims_open_development
   <<: *defaults
 
-test:
+test: &TEST
   database: sims_open_test 
   <<: *defaults
 
