@@ -19,3 +19,6 @@ test:
 production:
   database: sims_open_production
   <<: *defaults
+
+cucumber:
+  <<: *TEST

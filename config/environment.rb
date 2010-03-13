@@ -27,6 +27,7 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem 'hpricot' #used by html_matchers, need to fix this as it is only needed in testing, but the plugin causes problems
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
@@ -34,7 +35,7 @@ Rails::Initializer.run do |config|
   config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
   config.gem "fastercsv"
   config.gem "pdf-writer", :lib => "pdf/writer"
-  config.gem 'rack', :version => '= 1.0.1'
+  config.gem 'rack', :version => '>= 1.0.0'
 
  # deployment
  config.gem "capistrano", :lib => false
