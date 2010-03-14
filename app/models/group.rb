@@ -35,4 +35,26 @@ class Group < ActiveRecord::Base
       :conditions=> ['title like ?', "%#{title}%"],
       :order => 'title'
   end
+
+
+  def self.authorized_for_user(user,num=:all, options = {})
+    with_scope :find => options do
+      find(num,
+          :joins => "
+          inner join groups_students on groups.id = groups_students.group_id
+          inner join enrollments on enrollments.student_id = groups_students.student_id
+          left outer join user_group_assignments on groups.id = user_group_assignments.group_id 
+            and user_group_assignments.user_id = #{user.id} ",
+          :conditions => "exists(select id from special_user_groups where (special_user_groups.user_id =#{user.id} and (
+               special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  or
+              (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id 
+              and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade ))))) 
+               or groups_students.group_id is not null
+               ")
+    end
+
+
+  end
+
+
 end

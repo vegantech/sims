@@ -53,14 +53,6 @@ class User < ActiveRecord::Base
 
   acts_as_reportable # if defined? Ruport
 
-  def authorized_groups_for_school(school)
-    if special_user_groups.all_students_in_school?(school)
-      school.groups
-    else
-      groups.by_school(school)
-    end
-  end
-
   def filtered_groups_by_school(school,opts={})
     #opts can be grade and prompt
     #default prompt is "*-Filter by Group"
@@ -70,13 +62,7 @@ class User < ActiveRecord::Base
     
     opts.reverse_merge!( "grade"=>"*") 
     prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group").split("-",2)
-    grps = authorized_groups_for_school(school)
-
-    unless opts["grade"] =="*"
-      grps = grps.select do |u_group|
-        u_group.students.find(:first,:conditions=>["enrollments.grade=?",opts["grade"]],:include=>:enrollments)
-      end
-    end
+    grps = authorized_groups_for_school_and_grade(school,opts["grade"])
 
     unless opts["user"].blank?
       grps = grps.select do |u_group|
@@ -110,12 +96,8 @@ class User < ActiveRecord::Base
     opts.stringify_keys!
     opts.reverse_merge!( "grade"=>"*")
 
-    users=authorized_groups_for_school(school).members
-    unless opts["grade"]  == "*"
-      user_ids =users.collect(&:id)
-      users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}, :order => 'last_name, first_name').uniq
-    end
-    #    users=users.sort_by{|u| u.to_s}
+    users=authorized_group_members_for_school_and_grade(school,opts["grade"])
+   #    users=users.sort_by{|u| u.to_s}
     prompt_id,prompt_text=(opts["prompt"] || "*-All Staff").split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
     users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
@@ -331,19 +313,35 @@ or (user_group_assignments.id is not null)
 
 =end
 
-  def authorized_students(num=:all)
-    district.students.find(num,
-        :joins => "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
-        left outer join enrollments on enrollments.student_id = students.id
-        left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
-          and user_group_assignments.user_id = #{self.id}
-          ) 
-         on groups_students.student_id = students.id",
-        :conditions => "(special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
-          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id 
-          and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade ) 
-          ) or user_group_assignments.id is not null
-    ")
+  def authorized_group_members_for_school_and_grade(school,grade)
+    options= {}
+    options[:conditions] = ["enrollments.grade =?", grade] unless grade =="*"
+    options[:select] = 'distinct user_group_assignments.user_id'
+    User.find_all_by_id(school.groups.authorized_for_user(self,:all,options).collect(&:user_id),:order=>'last_name, first_name')
+  end
+  
+  def authorized_groups_for_school_and_grade(school,grade)
+    options = {}
+    options[:select] = 'distinct groups.*'
+    options[:conditions] = ["enrollments.grade =?", grade] unless grade =="*"
+    school.groups.authorized_for_user(self,:all,options)
+  end
+
+  def authorized_groups_for_school(school,options = {:select => 'distinct groups.*'})
+    school.groups.authorized_for_user(self,:all,options)
+  end
+
+  def authorized_grades_for_school(school)
+    grades=school.students.authorized_for_user(self,:all, :select => 'distinct enrollments.grade',:order => 'grade').collect(&:grade) 
+    grades.unshift("*") if grades.size > 1
+  end
+
+  def authorized_students_for_school(school)
+    school.students.authorized_for_user(self,:all)
+  end
+
+  def authorized_students(num=:all,options ={})
+    district.students.authorized_for_user(self,num,options)
   end
 
 protected

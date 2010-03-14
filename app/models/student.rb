@@ -250,6 +250,29 @@ class Student < ActiveRecord::Base
     ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id}})
   end
 
+  def self.authorized_for_user(user,num=:all, options = {})
+    #works for all students in school
+    enrollment_join = "inner join enrollments on enrollments.student_id = students.id"  unless  self.scoped_methods.any?{|k|  k[:find] && k[:find][:joins].include?('enrollments')}
+
+    with_scope :find => options do
+      find(num,
+           :joins => "
+            #{enrollment_join}
+            left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
+              and user_group_assignments.user_id = #{user.id}
+              ) 
+             on groups_students.student_id = students.id",
+               :conditions => "exists(select id from special_user_groups where (special_user_groups.user_id =#{user.id} and (
+               special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  or
+              (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id 
+              and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade ))))) 
+               or groups_students.group_id is not null
+               ")
+    end
+
+
+  end
+
   protected
 
   def save_extended_profile

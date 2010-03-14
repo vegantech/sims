@@ -214,6 +214,7 @@ class District < ActiveRecord::Base
     end
   end
 
+
 private
 
   def make_sure_there_are_no_schools
