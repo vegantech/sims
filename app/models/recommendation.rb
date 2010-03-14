@@ -40,6 +40,7 @@ class Recommendation < ActiveRecord::Base
   RECOMMENDATION={
     0=>{:text=>"The student made progress and no longer requires intervention.", :readonly => true},
     1 =>{:text=>"The student is making progress; choose new interventions from the next level; continue to monitor progress.",:promote=>true},
+    2 =>{:text=>"The student is making progress; continue the same intervention; continue to monitor progress.",:promote=>false},
     3=>{:text => "The student is not making progress; choose new interventions from the current level; continue to monitor progress.",
       },
     4 => {:text => "The student has not made progress.  Choose new interventions from the next level and continue to monitor progress.",:promote=>true},
@@ -51,14 +52,14 @@ class Recommendation < ActiveRecord::Base
 
   STATUS={ 
           :unknown => "UNKNOWN_STATUS",
-          :draft => "Draft, make changes to recommendation and submit",
-          :can_refer => "Referred to Special Ed",
+          :draft => "Draft, make changes to recommendation and submit.",
+          :can_refer => "Referred to Special Ed.",
           :cannot_refer => "Criteria not met (need 3 or above on all questions) for referral.",
           :ineligable_to_refer=> "Impairment Suspected, but eligibility not met.",
           :nonadvancing => "Recommendation submitted, continue working at same tier",
-          :passed =>  "Recommendation submitted, next tier is available",
+          :passed =>  "Recommendation submitted, next tier is available.",
           :failing_score => "Submitted, did not meet criteria to move to next tier.",
-          :optional_checklist => "Optional Checklist Completed"
+          :optional_checklist => "Optional Checklist Completed."
         }  
 
   def status
