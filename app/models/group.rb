@@ -20,6 +20,10 @@ class Group < ActiveRecord::Base
   validates_uniqueness_of :title, :scope=>:school_id
 
   named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
+  named_scope :by_grade, lambda { |grade| {:conditions=>{:enrollments=>{:grade=>grade}},
+  :joins => 'inner join enrollments on enrollments.school_id = groups.school_id inner join groups_students on groups_students.group_id = groups.id  
+  and groups_students.student_id = enrollments.student_id' 
+  }}
   def self.members
     #TODO tested, but it is ugly and should be refactored
     group_ids=find(:all,:select=>"groups.id")

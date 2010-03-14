@@ -187,7 +187,7 @@ describe User do
   
   describe 'filtered_groups_by_school' do
     it 'should return all authorized_groups for school if prompt is blank' do
-      @user.should_receive(:authorized_groups_for_school).with('s1').any_number_of_times.and_return(['group 2', 'group 1'])
+      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 2', 'group 1'])
       g1=Group.new
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
       
@@ -199,7 +199,7 @@ describe User do
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
      
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
-      @user.should_receive(:authorized_groups_for_school).with('s1').any_number_of_times.and_return(['group 1'])
+      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 1'])
       @user.filtered_groups_by_school('s1').should == ['group 1']
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
       @user.filtered_groups_by_school('s1').should == [g1,'group 1']

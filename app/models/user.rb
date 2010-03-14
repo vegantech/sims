@@ -53,11 +53,19 @@ class User < ActiveRecord::Base
 
   acts_as_reportable # if defined? Ruport
 
-  def authorized_groups_for_school(school)
+  def authorized_groups_for_school(school,grade=nil)
     if special_user_groups.all_students_in_school?(school)
-      school.groups
+      if grade
+        school.groups.by_grade
+      else
+        school.groups
+      end
     else
-      groups.by_school(school)
+      if grade
+        groups.by_school(school).by_grade(grade)
+      else
+        groups.by_school(school)
+      end
     end
   end
 
@@ -68,15 +76,10 @@ class User < ActiveRecord::Base
     
     opts.stringify_keys!
     
-    opts.reverse_merge!( "grade"=>"*") 
+    grade = opts[:grade]
+    grade = nil if grade == "*"
     prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group").split("-",2)
-    grps = authorized_groups_for_school(school)
-
-    unless opts["grade"] =="*"
-      grps = grps.select do |u_group|
-        u_group.students.find(:first,:conditions=>["enrollments.grade=?",opts["grade"]],:include=>:enrollments)
-      end
-    end
+    grps = authorized_groups_for_school(school,grade)
 
     unless opts["user"].blank?
       grps = grps.select do |u_group|
