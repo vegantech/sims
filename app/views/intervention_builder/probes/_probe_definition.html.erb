@@ -19,7 +19,7 @@
     <%=h probe_definition.description %>
   </td>
   <td>
-     <%="#{probe_definition.minimum_score} - #{probe_definition.maximum_score}" %>
+     <%="(#{probe_definition.minimum_score}) - (#{probe_definition.maximum_score})" %>
   </td>
   <td>
      <%=  probe_definition.updated_at.to_s(:report) %>

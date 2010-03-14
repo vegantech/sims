@@ -7,14 +7,16 @@
  
       <div class="form_row">
         <label for="search_criteria_grade" class="fake_label">Grade</label>
-        <%= select(:search_criteria,:grade,@grades) %>
-        <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade'%>
+        <%= select(:search_criteria,:grade,@grades) %> <%= spinner('grade_search') %>
+        <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade', :before => "$('spinnergrade_search').show();", :complete => "$('spinnergrade_search').hide();"%>
       </div>
       <div class="form_row">
         <label for="search_criteria_user_id" class="fake_label">Staff Member</label>
-        <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname ) %>
+        <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname ) %> <%= spinner('member_search') %>
         <%= observe_field 'search_criteria_user_id', :url => member_search_students_path, 
-          :with=>"'user=' +escape(value) + '&grade=' + escape($('search_criteria_grade').value)" %>
+          :with=>"'user=' +escape(value) + '&grade=' + escape($('search_criteria_grade').value)",
+          :before => "$('spinnermember_search').show();", :complete => "$('spinnermember_search').hide();"
+        %>
         <%=help_popup("Search by staff assigned to a group.  Typically teachers assigned to sections, but could be coaches of teams, staff members of neighborhoods, etc.") %>
       </div>
       <div class="form_row">
