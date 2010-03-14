@@ -512,3 +512,8 @@ div.questionDiv label ul
 
 
 
+table.intervention_builder th,td {
+  text-align:left;
+  padding-right: 15px;
+
+}
