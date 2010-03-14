@@ -30,7 +30,7 @@ class ConsultationForm < ActiveRecord::Base
   FIELD_SIZE = '60x3'
 
   def build_concerns
-     0.upto(ConsultationFormConcern::AREAS.length){|i| consultation_form_concerns.build(:area => i)} if consultation_form_concerns.blank?
+     0.upto(ConsultationFormConcern::AREAS.length() -1 ){|i| consultation_form_concerns.build(:area => i)} if consultation_form_concerns.blank?
   end
 
  private
