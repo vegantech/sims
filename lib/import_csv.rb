@@ -27,6 +27,7 @@ class ImportCSV
       identify_and_unzip
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
+      @district.students.update_all(:updated_at => Time.now) #expire any student related cache
       @messages << "No csv files uploaded" if sorted_filenames.blank? 
     end
     @messages << b

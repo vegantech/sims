@@ -7,7 +7,7 @@ describe CreateInterventionPdfs do
       describe 'with objective_definitions' do
         it 'should write a PDF, and HTML report for each objective_definition' do
           od = mock_objective_definition(:title => 'some objective definition')
-          district = mock_district(:objective_definitions => [od])
+          district = mock_district(:objective_definitions => [od], :touch=>true)
           InterventionDefinitionSummaryReport.should_receive(:render_pdf).with( :objective_definition => od, :template => :standard).and_return('PDF Contents')
           InterventionDefinitionSummaryReport.should_receive(:render_html).with(:objective_definition => od, :template => :standard).and_return('HTML Contents')
 
@@ -23,7 +23,7 @@ describe CreateInterventionPdfs do
 
       describe 'without ojbective_definitions' do
         it 'should write a PDF, and HTML report for each objective_definition' do
-          district = mock_district(:objective_definitions => [])
+          district = mock_district(:objective_definitions => [], :touch => true)
           FileUtils.should_not_receive(:mkdir_p)
 
           CreateInterventionPdfs.generate(district)

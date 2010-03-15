@@ -28,7 +28,7 @@ class Flag < ActiveRecord::Base
     }
   FLAGTYPES= TYPES.reject{|i,j| i=="custom" || i=="ignored"}
 
-  belongs_to :student
+  belongs_to :student, :touch => true
   belongs_to :user
   belongs_to :district
   validates_presence_of :category, :reason, :type

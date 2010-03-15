@@ -1,8 +1,10 @@
 <%= selected_navigation %>
 
 <div class = "profile_page">
-  <%= render :partial => 'student', :locals => {:changeable => true} %>
-  <%= render :partial => 'extended_profile' %>
+  <% cache ["student_topsection", @student] do %>
+    <%= render :partial => 'student', :locals => {:changeable => true} %>
+    <%= render :partial => 'extended_profile' %>
+  <% end %>
   <%= render :partial => 'team_consultations' %>
   <%= render :partial => 'team_notes' %>
   <%= render :partial => 'interventions' %>
