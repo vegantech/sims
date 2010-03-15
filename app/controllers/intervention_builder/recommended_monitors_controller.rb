@@ -25,7 +25,7 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
       redirect_to intervention_builder_probes_url and return        
     end
     @recommended_monitors = @probe_definition.recommended_monitors.collect(&    :intervention_definition_id)
-    @goal_definitions=current_district.goal_definitions
+    @goal_definitions=current_district.goal_definitions.find(:all,:include=>{:objective_definitions=>{:intervention_clusters=>:intervention_definitions}})
   end
  
   def move
