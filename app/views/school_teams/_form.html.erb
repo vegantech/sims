@@ -6,8 +6,9 @@
 </p>
 
 <p>
-  <%= form.label :contact %>
-  <%= form.collection_select(:contact, @users, :id, :fullname) %>
+  <%= form.label :contact_ids, 'Contact(s)' %>
+  <%= form.collection_select('contact_ids', @users, :id, :fullname,{},:multiple=>true, :size => 5) %>
+  <%= help_popup('Hold Down Ctrl if you would like to select more than one contact.  The contact recieves a consultation request email, can mark a consultation as complete and can request (gather) more information.  A team typically has one contact.') %>
 </p>
 <p></p>
 Members
