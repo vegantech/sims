@@ -171,7 +171,7 @@ RIGHTS={"district_admin" =>
 }
 
   def self.cache_key
-    RIGHTS.to_s.hash
+    Digest::MD5.hexdigest(RIGHTS.to_s)
   end
 
 end

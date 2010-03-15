@@ -1,4 +1,4 @@
-<% cache(probe_definition) do %>
+<% cache(["probe_builder_index",probe_definition]) do %>
 <% content_tag_for :tr, probe_definition do %>
    <td>
     <%= link_to 'Show', intervention_builder_probe_path(probe_definition)  %> <br />

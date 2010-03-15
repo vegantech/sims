@@ -14,7 +14,7 @@
 class FlagCategory < ActiveRecord::Base
   #Could store icon, threshold for warning, description
   include LinkAndAttachmentAssets  #has many :assets
-  belongs_to :district
+  belongs_to :district, :touch => true
   
   validates_uniqueness_of :category, :scope=>:district_id
   validates_inclusion_of :category, :in => Flag::FLAGTYPES.keys
