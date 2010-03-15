@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   def authorized_groups_for_school(school,grade=nil)
     if special_user_groups.all_students_in_school?(school)
       if grade
-        school.groups.by_grade
+        school.groups.by_grade(grade)
       else
         school.groups
       end
@@ -113,10 +113,12 @@ class User < ActiveRecord::Base
     opts.stringify_keys!
     opts.reverse_merge!( "grade"=>"*")
 
-    users=authorized_groups_for_school(school).members
+    grade = opts[:grade]
+    grade = nil if grade == "*"
+    users=authorized_groups_for_school(school,grade).members
     unless opts["grade"]  == "*"
-      user_ids =users.collect(&:id)
-      users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}, :order => 'last_name, first_name').uniq
+#      user_ids =users.collect(&:id)
+ #     users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}, :order => 'last_name, first_name').uniq
     end
     #    users=users.sort_by{|u| u.to_s}
     prompt_id,prompt_text=(opts["prompt"] || "*-All Staff").split("-",2)
