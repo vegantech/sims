@@ -1,6 +1,6 @@
 <% content_tag_for :tr, team_consultation  do %>
   <td> <%= team_consultation.school_team %> </td>
-  <td> <%= team_consultation.recipient %> </td>
+  <td> <%= team_consultation.recipients.join(",") %> </td>
   <td> <%= team_consultation.requestor %> </td>
   <td> <%= team_consultation.created_at.to_date %> </td>
   <% if team_consultation.complete? %>
@@ -14,7 +14,7 @@
     <% end %>
   <% else %>
  <!--   Edit  -->
-    <% if team_consultation.recipient == current_user %>
+    <% if team_consultation.recipients.include?(current_user) %>
         <!-- Schedule  -->
       &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>
       <%= link_to_remote_degrades "Complete", :confirm => "Are you Sure?", :url => complete_team_consultation_path(team_consultation), :method => :put %>

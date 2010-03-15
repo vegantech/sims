@@ -5,7 +5,7 @@ describe TeamReferrals do
      
       user=Factory(:user, :email => 'bob@e.fg')
       student = Factory(:student, :district => user.district)
-      team = SchoolTeam.create!(:name => 'Testing', :contact => user.id)
+      team = SchoolTeam.create!(:name => 'Testing', :contact_ids => [user.id])
 
       note = TeamConsultation.new(:student=>student,:requestor => user, :school_team => team )
 

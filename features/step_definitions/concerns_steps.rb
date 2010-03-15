@@ -2,7 +2,7 @@ Given /^Shawn Balestracci is a team contact for "([^\"]*)"$/ do |team_name|
   u = Factory(:user, :first_name => 'Shawn', :last_name => 'Balestracci', :email => 'b723176@madison.k12.wi.us')
   @user ||= u
   st=@school.school_teams.find_or_create_by_name(team_name)
-  st.contact = u.id
+  st.contact_ids = [u.id]
   st.save!
 end
 
