@@ -70,7 +70,7 @@ class ProbeDefinition < ActiveRecord::Base
     #This will work better
 
     #refactor this to use recommended monitors?
-    probes = find(:all, :order =>"active desc, custom, position")
+    probes = find(:all, :order =>"active desc, custom, position", :include => [{:intervention_definitions=>{:intervention_cluster=>:objective_definition}},:intervention_probe_assignments])
 
 
     if params[:commit]
