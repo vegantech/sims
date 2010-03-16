@@ -22,6 +22,7 @@ class CreateInterventionPdfs
       
     end
      FileUtils.rm(old_files - new_files)
+     district.touch
   end
 
   def self.destroy(district)

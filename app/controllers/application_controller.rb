@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
-    :current_student_id, :current_student, :current_district, :current_school, :current_user
+    :current_student_id, :current_student, :current_district, :current_school, :current_user, :current_state, :current_country
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -64,6 +64,14 @@ class ApplicationController < ActionController::Base
 
   def current_district
     @current_district ||= District.find_by_id(current_district_id) 
+  end
+
+  def current_state
+    @current_state ||= current_district.state
+  end
+
+  def current_country
+    @current_country ||= current_state.country
   end
 
   def authenticate

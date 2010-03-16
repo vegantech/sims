@@ -29,6 +29,10 @@ class Role
 #  named_scope :system, :conditions => {:district_id => nil}
 
 
+  def self.cache_key
+    Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.to_s)
+  end
+
 
   def self.mask_to_roles(mask)
     Role::ROLES.reject do |r|

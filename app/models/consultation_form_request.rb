@@ -13,7 +13,7 @@
 #
 
 class ConsultationFormRequest < ActiveRecord::Base
-  belongs_to :student
+  belongs_to :student, :touch => true
   belongs_to :requestor, :class_name => 'User'
   belongs_to :school_team, :foreign_key => 'team_id'
 

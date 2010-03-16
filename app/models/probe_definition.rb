@@ -70,7 +70,7 @@ class ProbeDefinition < ActiveRecord::Base
     #This will work better
 
     #refactor this to use recommended monitors?
-    probes = find(:all, :order =>"active desc, custom, position")
+    probes = find(:all, :order =>"active desc, custom, position", :include => [{:intervention_definitions=>{:intervention_cluster=>:objective_definition}},:intervention_probe_assignments, :recommended_monitors])
 
 
     if params[:commit]
@@ -110,6 +110,10 @@ class ProbeDefinition < ActiveRecord::Base
     my_hash[:unassigned_progress_monitors] = unassigned
 
     my_hash
+  end
+
+  def cache_key
+    super + "-probes-#{probes.empty?}"
   end
 
 

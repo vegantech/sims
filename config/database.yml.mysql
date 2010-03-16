@@ -2,13 +2,9 @@ defaults: &defaults
   adapter: mysql
   encoding: utf8
   username: root
-  socket: /var/lib/mysql/mysql.sock
-#  socket: /var/run/mysqld/mysqld.sock
-#  socket: /tmp/mysql.sock
 #  password: root
-#  socket: /opt/local/var/run/mysql5/mysqld.sock
 
-development:
+development: &DEVELOPMENT
   database: sims_open_development
   <<: *defaults
 
@@ -19,6 +15,17 @@ test: &TEST
 production:
   database: sims_open_production
   <<: *defaults
+
+
+
+
+development_with_cache:
+  database: sims_open_development
+  <<: *DEVELOPMENT
+
+staging:
+  database: sims_open_development
+  <<: *DEVELOPMENT
 
 cucumber:
   <<: *TEST

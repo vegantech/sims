@@ -12,7 +12,7 @@
 #
 
 class TeamConsultation < ActiveRecord::Base
-  belongs_to :student
+  belongs_to :student, :touch => true
   belongs_to :requestor, :class_name =>'User'
   belongs_to :school_team, :foreign_key => 'team_id'
   has_many :consultation_forms, :dependent => :destroy

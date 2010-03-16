@@ -21,7 +21,7 @@
 #
 
 class ChecklistDefinition < ActiveRecord::Base
-  belongs_to :district
+  belongs_to :district, :touch => true
   belongs_to :recommendation_definition
   has_many :question_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :element_definitions, :through =>:question_definitions

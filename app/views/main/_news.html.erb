@@ -1,6 +1,16 @@
 <% unless current_district.blank? %>
-  <%= render_cell(:news,:index, :parent=>current_district, :district=>current_district, :user=>current_user) %>
-  <%= render_cell(:news,:index, :parent=>current_district.state,:district=>current_district, :user=>current_user) %>
-  <%= render_cell(:news,:index, :parent=>current_district.country, :district=>current_district, :user=>current_user ) %>
-  <%= render_cell(:news,:index, :parent=>System, :district=>current_district, :user=>current_user) %>
+  <% cache ["news",current_district,current_user.roles_mask] do %>
+    <%= render_cell(:news,:index, :parent=>current_district, :district=>current_district, :user=>current_user) %>
+  <% end%>
+
+  <% cache ["news",current_district,current_user.roles_mask,current_state] do %>
+    <%= render_cell(:news,:index, :parent=>current_district.state,:district=>current_district, :user=>current_user) %>
+  <% end %>
+
+  <% cache ["news",current_district,current_user.roles_mask,current_country] do %>
+    <%= render_cell(:news,:index, :parent=>current_district.country, :district=>current_district, :user=>current_user ) %>
+  <% end %>
+  <% cache ["news",current_district,current_user.roles_mask,System] do %>
+    <%= render_cell(:news,:index, :parent=>System, :district=>current_district, :user=>current_user) %>
+  <% end %>
 <% end %>

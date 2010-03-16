@@ -1,5 +1,7 @@
 <h1> Progress Monitor Title: <%=@probe_definition.title%> </h1><br />
 
+<% intervention_definition_ids = @probe_definition.intervention_definition_ids %>
+
 <% form_tag do %>
 <div class="standardForm">
 
@@ -10,8 +12,8 @@
 <%=content_tag :h4, ic.title %>
 <% @int_defs=ic.intervention_definitions.reject(&:disabled) %>
 
-        <% @int_defs.each do |int_def| %>
-         <%=check_box_tag("int_defs[]", int_def.id,@probe_definition.intervention_definitions.include?(int_def), :id=>int_def.id) %>
+<% @int_defs.each do |int_def| %>
+         <%=check_box_tag("int_defs[]", int_def.id,intervention_definition_ids.include?(int_def.id), :id=>int_def.id) %>
 		 
          <%= label_tag int_def.id, int_def.title %><br />
         <% end %>

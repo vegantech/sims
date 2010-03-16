@@ -250,6 +250,14 @@ class Student < ActiveRecord::Base
     ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id}})
   end
 
+  def touch
+    #I don't want validations to run
+    self.updated_at = Time.now.utc
+    update_without_callbacks
+
+
+  end
+
   protected
 
   def save_extended_profile

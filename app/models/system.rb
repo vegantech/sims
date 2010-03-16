@@ -22,4 +22,9 @@ class System
     Country.admin.first.admin_district
   end
 
+  def self.cache_key
+     "system#{news.last(:order=>'updated_at').try(:cache_key)}"
+  end
+
+
 end

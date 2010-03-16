@@ -25,7 +25,7 @@ class Intervention < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
 
   belongs_to :user
-  belongs_to :student
+  belongs_to :student, :touch => true
   belongs_to :intervention_definition
   belongs_to :frequency
   belongs_to :time_length

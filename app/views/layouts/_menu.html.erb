@@ -2,46 +2,55 @@
   <% if session[:user_id] %>
     <li><%= link_to "Home", root_path %> </li>
     <%= li_link_to_if_authorized 'School Selection', schools_path %> 
-    <%= render :partial => "layouts/core_practices" %>
-    <%= render :partial => "layouts/intervention_pdf_html_list" %>
-    <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
-    <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
-    <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
-    <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
-    <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
-    <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL %>
-    <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
-      current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
-    <%= mmsd_eligibility_criteria(menu=true) if current_district %>
+    <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
+      <%= render :partial => "layouts/core_practices" %>
+      <%= render :partial => "layouts/intervention_pdf_html_list" %>
 
-    <% plus_minus_li "Reports" do %>
-        <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
-        <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
-            regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
+    <% end %>
 
-        <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
-            interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
-        <% if_student_selected do %>
-          <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
-          <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
-        <% end %>
-        <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
-    <%  end %>
+    <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,current_school.blank?,current_student.blank?] do %>
 
-    <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path %>
-    <li><%= link_to "Change Password", change_password_path %></li>
-    <li><%= render :partial => 'login/logout' %></li>
-  <% elsif !defined?DEFAULT_URL %>
-    <li>Please login.</li>
-    <% if @districts.blank? or @districts.size < 100 %>
-      <li>For this demo, use oneschool as the username and password</li>
-      <li>or twoschools for the name and password</li>
-      <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>
-      <li>Use content_builder to access the builders</li>
-      <li>(MMSD has oneschool, alphaprin, district_admin, and content_builder)</li>
+      <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path %>
+      <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
+      <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
+      <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
+      <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
+      <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
+      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless defined?DEFAULT_URL %>
+      <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
+        current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
+      <%= mmsd_eligibility_criteria(menu=true) if current_district %>
+
+      <% plus_minus_li "Reports" do %>
+          <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
+          <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
+              regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
+
+          <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
+              interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
+          <% if_student_selected do %>
+            <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
+            <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
+          <% end %>
+          <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
+      <%  end %>
+
+      <li><%= link_to "Change Password", change_password_path %></li>
+      <li><%= render :partial => 'login/logout' %></li>
+    <% end %>
+    <% elsif !defined?DEFAULT_URL %>
+      <li>Please login.</li>
+      <% if @districts.blank? or @districts.size < 100 %>
+        <li>For this demo, use oneschool as the username and password</li>
+        <li>or twoschools for the name and password</li>
+        <li>Other users:  alphaprin, allstudents, noschools, nogroups, alphagradethree</li>
+        <li>Use content_builder to access the builders</li>
+        <li>(MMSD has oneschool, alphaprin, district_admin, and content_builder)</li>
+    <% end %>
   <% end %>
-  <% end %>
 
+
+  <% cache ["help",current_user.roles_mask,Role.cache_key] do %>
   <% plus_minus_li "Help" do %>
     <% if session[:user_id] %>
       <% current_user.roles.each do |role| %>
@@ -53,4 +62,6 @@
       <% end %>
     <% end %>
   <% end %>
+<% end %>
+
 </ul>
