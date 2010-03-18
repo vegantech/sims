@@ -1,10 +1,13 @@
 <% content_tag_for :tr, consultation_form_summary  do %>
   <td> <%=consultation_form_summary.school_team %> </td>
   <td> <%=consultation_form_summary.user %> </td>
-  <td> <%=consultation_form_summary.created_at.to_date %> </d>
+  <td> <%=consultation_form_summary.created_at.to_date %> </td>
 
-  <%content_tag_for :span, consultation_form_summary, "show_hide_view" do %>
+  <td>
+    <%= link_to_remote_degrades( "delete", {:url => consultation_form_summary, :method => :delete, :confirm=> "Are you sure?"}) if consultation_form_summary.user == current_user %>
+    <%content_tag_for :span, consultation_form_summary, "show_hide_view" do %>
   <%= link_to_remote_degrades "view",
     {:url => consultation_form_summary, :method => :get} %>
   <% end %>
+</td>
 <% end %>

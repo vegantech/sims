@@ -22,4 +22,19 @@ class TeamReferrals < MailerWithSubdomains
     body       :greeting => 'Hi,', :users => users, :student => student , :requestor => requestor
   end
 
+
+  def concern_note_withdrawn(note, sent_at = Time.now)
+    subject    'Team Consultation Form Withdrawn'
+    recipients note.recipients.collect(&:email).join(",")
+    from       'SIMS <shawn@simspilot.org>'
+    sent_on    sent_at
+
+    @district = note.student.district
+
+    
+    body       :greeting => 'Hi,', :recipient_name=>note.recipients.join(", "), :student_name => note.student.fullname, :requestor_name => note.requestor.fullname, :note=>note
+  end
+
+
+
 end

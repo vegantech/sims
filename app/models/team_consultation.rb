@@ -21,6 +21,7 @@ class TeamConsultation < ActiveRecord::Base
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
+  after_destroy :email_concern_recipient_about_withdrawal
   named_scope :complete, :conditions => {:complete=>true}
   named_scope :pending, :conditions => {:complete=>false}
 
@@ -31,6 +32,14 @@ class TeamConsultation < ActiveRecord::Base
       TeamReferrals.deliver_concern_note_created(self)
     end
   end
+
+  def email_concern_recipient_about_withdrawal
+    if student && requestor
+      TeamReferrals.deliver_concern_note_withdrawn(self)
+    end
+  end
+
+
 
   def recipients
     User.find_all_by_id(school_team.contact_ids) if school_team.present?

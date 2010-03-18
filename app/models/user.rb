@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
   has_many :intervention_participants
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
+  has_many :team_consultations,:foreign_key => :requestor_id
 
   attr_accessor :password, :all_students_in_district, :old_password
   
