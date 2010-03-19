@@ -126,15 +126,15 @@ describe TeamConsultationsController do
 
   describe "DELETE destroy" do
     it "destroys the requested team_consultation" do
-      TeamConsultation.should_receive(:find).with("37").and_return(mock_team_consultation)
+      TeamConsultation.should_receive(:find).with("37",anything()).and_return(mock_team_consultation)
       mock_team_consultation.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
   
     it "redirects to the team_consultations list" do
-      TeamConsultation.stub!(:find).and_return(mock_team_consultation(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(team_consultations_url)
+      TeamConsultation.stub!(:find).and_return(mock_team_consultation(:destroy => true, :student => stu=mock_student))
+      delete :destroy, :id => "1", :format =>'html'
+      response.should redirect_to(student_url(stu))
     end
   end
 
