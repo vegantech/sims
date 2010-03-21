@@ -46,4 +46,12 @@ class ConsultationFormsController < ApplicationController
     end
   end
 
+  def destroy
+    @consultation_form = ConsultationForm.find_by_user_id_and_id(current_user,params[:id])
+    @consultation_form.destroy
+    respond_to do |format|
+      format.js
+    end
+  end
+
 end

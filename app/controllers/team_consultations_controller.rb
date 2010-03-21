@@ -86,18 +86,19 @@ class TeamConsultationsController < ApplicationController
   # DELETE /team_consultations/1
   # DELETE /team_consultations/1.xml
   def destroy
-    @team_consultation = TeamConsultation.find(params[:id])
+    @team_consultation = current_user.team_consultations.find(params[:id])
     @team_consultation.destroy
 
     respond_to do |format|
-      format.html { redirect_to(team_consultations_url) }
+      format.js
+      format.html { redirect_to(@team_consultation.student) }
       format.xml  { head :ok }
     end
   end
 
   def complete
     @team_consultation = TeamConsultation.find(params[:id])
-    @team_consultation.complete! and flash[:notice] = "Marked complete" if @team_consultation.recipient == current_user
+    @team_consultation.complete! and flash[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
     
     respond_to do |format|
       format.js

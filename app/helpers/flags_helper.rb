@@ -15,8 +15,9 @@ module FlagsHelper
   end
 
   def team_concerns?(student = current_student)
-    student.team_consultations.none?(&:complete) && student.team_consultations.present?
+    student.team_consultations.pending.present?
   end
+
   def team_concerns(student)
     if team_concerns?(student)
       image_tag('comments.png', :alt=>'Team Consultations')

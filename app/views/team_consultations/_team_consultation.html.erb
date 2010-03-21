@@ -13,7 +13,10 @@
       <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>
     <% end %>
   <% else %>
- <!--   Edit  -->
+    <!--   Edit  -->
+    <% if team_consultation.requestor == current_user && team_consultation.consultation_forms.all?{|cf| cf.user_id == current_user.id }%>
+      <%= link_to_remote_degrades("Withdraw Team Concern",{:url=> team_consultation, :method => :delete, :confirm => "This will remove your team consultation request."})  %>
+    <% end %>
     <% if team_consultation.recipients.include?(current_user) %>
         <!-- Schedule  -->
       &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>
