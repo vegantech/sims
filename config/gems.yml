@@ -1,11 +1,12 @@
 --- 
+- :name: hpricot
 - :name: bluecloth
   :version: "> 2.0.0"
 - :name: fastercsv
-- :name: hpricot
 - :name: pdf-writer
 - :name: rack
-  :version: = 1.0.1
+  :version: ">= 1.0.0"
+- :name: memcached
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails

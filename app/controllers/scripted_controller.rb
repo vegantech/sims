@@ -1,5 +1,6 @@
 class ScriptedController < ApplicationController
   skip_before_filter  :authorize, :verify_authenticity_token
+  skip_before_filter :authenticate, :only => :prime_cache
   
   def referral_report
     require 'fastercsv'
@@ -54,6 +55,12 @@ class ScriptedController < ApplicationController
     else
       raise 'error'
     end
+  end
+
+  def prime_cache
+    puts params.inspect
+    @enrollments = Enrollment.all
+    render :layout=>false
   end
 
 
