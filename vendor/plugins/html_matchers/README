@@ -1,0 +1,25 @@
+HtmlMatchers
+============
+
+This Rails plugin provides a layer of abstraction on top of Rspec for testing
+HTML contents.
+
+It depends on Rspec and Hpricot: rspec, and rspec-rails because enhancing them
+is the whole point of this plugin, and Hpricot because I find it so much more
+capable, and faster than the assert_select that is built into Rails.
+
+Using from Cucumber
+===================
+
+Add require 'cucumber/rails/rspec' to features/support/env.rb.
+
+This is important, so that rspec matchers are in play.
+
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2008 [name of plugin creator], released under the MIT license
