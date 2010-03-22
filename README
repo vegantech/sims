@@ -18,13 +18,17 @@ Be sure to set the domain name of the SIMS application in the config/initializer
 
 
 Basics for installing SIMS locally (without the tests, which don't work on Windows yet)
-Adjust the patchs to match your platform (/ to \)
+Adjust the paths to match your platform (/ to \)
 
 
 git clone git://github.com/vegantech/sims.git
 cd sims
 git submodule init
-git submodule update vendor/plugins/cells
+git submodule update 
+
+sudo rake gems:install 
+
+
 
 copy the config/database.yml.sqlite3 to config/database.yml
 rake db:migrate
@@ -33,7 +37,6 @@ rake db:fixtures:load
 ruby script/server 
 
 Then point your browser to http://localhost:3000   to see SIMS.
-
 
 
 
