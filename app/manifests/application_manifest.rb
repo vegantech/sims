@@ -46,10 +46,14 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     package 'zip', :ensure => :installed
 
     daily_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
-    cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 0
+    cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 6
 
     weekly_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
-    cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 1, :weekday => 0
+    cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 7, :weekday => 0
+
+    prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags"
+    cron 'weekly_jobs', :command => prime_cache, :user => configuration[:user], :minute => '*/10'
+
 
     # %w( root rails ).each do |user|
     #   mailalias user, :recipient => 'you@domain.com'
