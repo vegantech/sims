@@ -6,7 +6,7 @@
 - :name: pdf-writer
 - :name: rack
   :version: ">= 1.0.0"
-- :name: system-timer
+- :name: system_timer
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails
