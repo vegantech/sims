@@ -111,7 +111,7 @@ class Enrollment < ActiveRecord::Base
 
     if search_hash.delete(:index_includes)
       ids=scope.collect(&:id)
-      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user},:team_consultations ]}, :order => 'students.last_name, students.first_name')
+      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]}, :order => 'students.last_name, students.first_name')
     else
 
       scope#=scope.scoped #:include => :student

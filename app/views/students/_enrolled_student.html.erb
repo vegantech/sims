@@ -1,6 +1,5 @@
 <% if current_district.id == enrolled_student.student.district_id %>
   <tr class="<%= cycle('', 'list-line-even') %>">
-  <% cache ["student_index",enrolled_student, enrolled_student.student] do %>
     <td style="text-align:center;">
       <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
     </td>
@@ -21,9 +20,11 @@
       <%= yes_or_no enrolled_student.student.special_ed %>
     </td>
 
+    
     <td>
-      <%=status_display(enrolled_student.student) %>
+      <%cache ["status_display",enrolled_student.student] do %>
+        <%=status_display(enrolled_student.student) %>
+      <% end %>
     </td>
-<% end %>
   </tr>
 <% end %>
