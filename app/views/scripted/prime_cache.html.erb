@@ -1,0 +1,16 @@
+<ul>
+  <% District.all.each do |district| %>
+    <li> <%=district %> <%GC.start %>
+    <% cache ["prime_cache",district.id,district.students.last(:order => :updated_at)] do %>
+      - <%=Time.zone.now.to_s(:short) %>
+
+      <ul><% district.schools.all.each do |school| %>
+          <li><%=school.name%></li>
+          <% school.enrollments.find_each(:include=>'student') do |e| %>
+            <%render :partial => 'students/enrolled_student' ,:locals => {:current_district => district, :current_student => e.try(:student) }, :object =>e  if e.student%>
+          <% end %>
+        <% end %></ul>
+    <% end %>
+    </li>
+  <% end %>
+
