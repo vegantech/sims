@@ -73,7 +73,7 @@ class Enrollment < ActiveRecord::Base
     when 'list_all'
     when 'flagged_intervention'  
       # only include enrollments for students who have at least one of the intervention types.
-      scope =scope.scoped :conditions => "exists (select * from flags where flags.student_id = students.id)", :joins => {:student=>:flags}
+      scope =scope.scoped :conditions => "exists (select id from flags where flags.student_id = students.id)", :joins => {:student=>:flags}
 
       #TODO rename this to just flag_types, also in controller and view
       categories = Array(search_hash[:flagged_intervention_types]) - ['ignored','custom']
@@ -87,14 +87,14 @@ class Enrollment < ActiveRecord::Base
         sti_types << 'CustomFlag' if  search_hash[:flagged_intervention_types].include?('custom')
         conditions["flags.type"] = sti_types
       else
-        scope = scope.scoped :conditions => ['not exists (select * from flags as flags2 where flags.category=flags2.category and 
+        scope = scope.scoped :conditions => ['not exists (select id from flags as flags2 where flags.category=flags2.category and 
         flags2.type="IgnoreFlag" and flags.student_id =flags2.student_id)', "IgnoreFlag"] 
       end
       scope = scope.scoped :conditions => conditions
 
 
     when 'active_intervention'
-       scope=scope.scoped :conditions=> ["exists (select * from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true],:joins =>{:student=>:interventions}
+       scope=scope.scoped :conditions=> ["exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true],:joins =>{:student=>:interventions}
       unless search_hash[:intervention_group_types].blank?
         table=search_hash[:intervention_group].tableize
         
@@ -104,7 +104,7 @@ class Enrollment < ActiveRecord::Base
       end
 
     when 'no_intervention'
-      scope = scope.scoped :conditions=> ["not exists (select * from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
+      scope = scope.scoped :conditions=> ["not exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
     else
       raise 'Unrecognized search_type'
     end
