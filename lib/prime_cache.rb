@@ -14,6 +14,7 @@ class PrimeCache
 
 
 
+
     Student.find_each(:include=>[:team_consultations_pending, :flags,:ignore_flags,:custom_flags, {:interventions=>:user}],
                                                             :conditions =>  ["students.updated_at > ?",last_ran])  do |student|
       key = ctrl.fragment_cache_key  ["status_display",student]
@@ -24,6 +25,7 @@ class PrimeCache
         ctrl.write_fragment ["status_display",student], status_display(student)
       end
     end
+    ctrl.write_fragment(last_ran_key,this_run)
 
     puts "hits: #{hit}   misses:#{miss}"
 
