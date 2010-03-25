@@ -52,7 +52,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 7, :weekday => 0
 
     prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags >> #{configuration[:deploy_to]}/current/log/prime_cache.log"
-    cron 'prime_cache', :command => prime_cache, :user => configuration[:user], :minute => "*/30"
+    cron 'prime_cache', :command => prime_cache, :user => configuration[:user], :minute => "*/10"
 
     cron 'backup_daily', :command => "/home/rails/backups/backup.sh", :hour => 8,:user => configuration[:user]
 
