@@ -27,7 +27,7 @@ describe District::StudentsController do
   describe "responding to GET new" do
   
     it "should expose a new student as @student" do
-      Student.should_receive(:new).and_return(mock_student)
+      Student.should_receive(:new).and_return(mock_student(:enrollments => mock_enrollment(:build=>[])))
       get :new
       assigns[:student].should equal(mock_student)
     end
@@ -37,7 +37,7 @@ describe District::StudentsController do
   describe "responding to GET edit" do
   
     it "should expose the requested student as @student" do
-      Student.should_receive(:find).with("37").and_return(mock_student)
+      Student.should_receive(:find).with("37").and_return(mock_student(:enrollments => mock_enrollment(:build=>[],'empty?'=>true)))
       get :edit, :id => "37"
       assigns[:student].should equal(mock_student)
     end

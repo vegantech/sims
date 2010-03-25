@@ -84,3 +84,10 @@
 :scout:
   #Rails Machine's 'Cloud image' key, for standardized plugin set
   :agent_key: c59ececc-7d50-4d2e-9a66-07ba3b85f797
+
+:memcached:
+    :max_memory: 256
+    :client:  1.8.1
+    :enable_on_boot:  true
+
+
