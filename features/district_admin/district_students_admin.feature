@@ -17,6 +17,7 @@ Feature: Student Maintenance
     And I fill in "Middle Name" with "Freddie"
     Then I fill in "Last Name" with "Harrelson"
     Then I fill in "Suffix" with "Jr IV"
+    And I fill in "Grade" with "4"
     Then I press "Create"
     Then I should not see "Create"
     And I should see "Harrelson"
