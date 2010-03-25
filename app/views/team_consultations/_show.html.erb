@@ -4,7 +4,7 @@
   <td colspan = "6">
     <% team_consultation.consultation_forms.each do |cf| %>
       <% form_for(cf) do |consultation_form| %>
-        <%=h cf.user %> <%= cf.created_at.to_date %>
+        <b>Author:</b> <%=h cf.user %> -  <%= cf.created_at.to_date %>
         <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
       <% end %>
     <% end %>

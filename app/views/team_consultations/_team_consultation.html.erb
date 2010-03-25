@@ -10,16 +10,18 @@
   <td>
   <% if team_consultation.complete? %>
     <%content_tag_for :span, team_consultation, "show_hide_view" do %>
-      <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>
+      <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>&nbsp;&nbsp;&nbsp;
+
     <% end %>
   <% else %>
     <!--   Edit  -->
     <% if team_consultation.requestor == current_user && team_consultation.consultation_forms.all?{|cf| cf.user_id == current_user.id }%>
-      <%= link_to_remote_degrades("Withdraw Team Concern",{:url=> team_consultation, :method => :delete, :confirm => "This will remove your team consultation request."})  %>
+      <%= link_to_remote_degrades("Withdraw",{:url=> team_consultation, :method => :delete, :confirm => "This will remove your team consultation request."})  %>&nbsp;&nbsp;&nbsp;
     <% end %>
     <% if team_consultation.recipients.include?(current_user) %>
         <!-- Schedule  -->
-      &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>
+        &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>&nbsp;&nbsp;&nbsp;
+
       <%= link_to_remote_degrades "Complete", :confirm => "Are you Sure?", :url => complete_team_consultation_path(team_consultation), :method => :put %>
     <% end %>
   <% end %>
