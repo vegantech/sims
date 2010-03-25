@@ -17,6 +17,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students/new.xml
   def new
     @student = Student.new
+    @student.enrollments.build(:end_year => Date.today.year)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -27,6 +28,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students/1/edit
   def edit
     @student = current_district.students.find(params[:id])
+    @student.enrollments.build(:end_year => Date.today.year) if @student.enrollments.empty?
   end
 
   # POST /district_students
