@@ -14,6 +14,25 @@ Feature: Login
 		Then I should not see "Please Login:"
 		Then I should see "Logout"
 
+  Scenario: Failed Login
+    Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
+    And I go to the home page
+
+    When I fill in "Login" with "cuke_oneschool"
+		And I fill in "Password" with "fr0d0L1v3s2"
+		And I press "Login"
+    Then I should see "Authentication Failure"
+    
+    When I fill in "Login" with "cuke_oneschool"
+		And I fill in "Password" with "fr0d0L1v3s"
+		And I press "Login"
+
+		Then I should not see "Please Login:"
+    And I should not see "Authentication Failure"
+		Then I should see "Logout"
+
+
+
   Scenario: Change password
     Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
     And I go to the home page

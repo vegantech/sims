@@ -26,6 +26,7 @@ class LoginController < ApplicationController
         current_district.logs.create(:body => "Successful login of #{@user.fullname}")
         logger.info "Successful login of #{@user.fullname} at #{current_district.name}"
         session[:district_id]=current_district.id
+        flash[:notice] = nil if flash[:notice] == 'Authentication Failure'
         redirect_to successful_login_destination and return
       end
     end
