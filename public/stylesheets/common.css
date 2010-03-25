@@ -510,6 +510,22 @@ div.questionDiv label ul
   display: inline;
 }
 
+table.team_consultations_list  th, td {
+  text-align:left;
+  padding-right: 15px;
+
+}
+
+
+table.team_consultations_list table  th {
+  text-align:center;
+  padding-right: 0px;
+}
+
+table.team_consultations_list table  td {
+  padding-right: 0px;
+}
+
 
 
 table.intervention_builder th,td {
