@@ -7,7 +7,7 @@
   <%= error_messages_for :enrollment, :object => enrollment %>
   <p>
     <%=enrollment_form.label :school_id, 'School'%>
-    <%= enrollment_form.collection_select(:school_id, current_district.schools, :id, :to_s ) %>
+    <%= enrollment_form.collection_select(:school_id, current_district.schools, :id, :to_s , :prompt => "Please Select a School") %>
     <%=enrollment_form.label :grade %> 
     <%= enrollment_form.text_field :grade , :size=>5%>
     <%=enrollment_form.label :end_year %> 

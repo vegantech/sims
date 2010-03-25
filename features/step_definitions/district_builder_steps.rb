@@ -33,3 +33,9 @@ When /^I magically visit "([^\"]*)"$/ do |url|
   visit "#{$1}?method=_put"
 end
   
+
+Given /^a school in my district named "([^\"]*)"$/ do |name|
+  Factory(:school,:name => name, :district_id => @default_user.district_id)
+end
+
+
