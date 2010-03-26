@@ -18,10 +18,11 @@ describe Enrollment do
 
   describe 'year_search' do
     before do
-      @e1=Enrollment.create!(:grade=>2)
-      @e2=Enrollment.create!(:grade=>2,:end_year=>2)
-      @e3=Enrollment.create!(:grade=>2, :end_year => 2)
-      @e4=Enrollment.create!(:grade=>2, :end_year => 3)
+      Enrollment.delete_all
+      @e1=Enrollment.create!(:grade=>2,:school_id=>1)
+      @e2=Enrollment.create!(:grade=>2,:end_year=>2, :school_id => 1)
+      @e3=Enrollment.create!(:grade=>2, :end_year => 2, :school_id => 1)
+      @e4=Enrollment.create!(:grade=>2, :end_year => 3, :school_id => 1)
       @scope = Enrollment.send(:scoped,nil)
     end
 
@@ -71,6 +72,7 @@ describe Enrollment do
 
     describe 'with user_id and user' do
       before do
+        Enrollment.delete_all
         group1=Factory(:group,:school_id=>999)
         group2=Factory(:group, :school_id=>999)
         group3=Factory(:group, :school_id=>999)

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100311001013) do
+ActiveRecord::Schema.define(:version => 20100326043642) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(:version => 20100311001013) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "student_id"
+    t.text     "race_culture"
   end
 
   add_index "consultation_forms", ["team_consultation_id"], :name => "index_consultation_forms_on_team_consultation_id"
