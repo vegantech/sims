@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def spell_check_button
-    button_to_function('Check Spelling', "var speller = new spellChecker();speller.textInputs=this.form.getElementsByClassName('spell_check');speller.openChecker();")
+    button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();")
   end
 
 
