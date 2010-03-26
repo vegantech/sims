@@ -2,7 +2,6 @@ class StudentCommentsController < ApplicationController
   # GET /student_comments
   # GET /student_comments.xml
   before_filter :enforce_session_selections
-  include SpellCheck
 
   # GET /student_comments/new
   # GET /student_comments/new.xml
@@ -30,8 +29,6 @@ class StudentCommentsController < ApplicationController
   def create
     @student_comment = StudentComment.new(params[:student_comment])
     
-    spellcheck @student_comment.body and render :action=>:new and return unless params[:spellcheck].blank?
-
     respond_to do |format|
       if @student_comment.save
         format.js 
@@ -53,8 +50,7 @@ class StudentCommentsController < ApplicationController
   def update
     @student_comment = current_user.student_comments.find(params[:id])
     @student_comment.body=params[:student_comment][:body]
-    spellcheck @student_comment.body and render :action=>:edit and return unless params[:spellcheck].blank?
-
+    
     respond_to do |format|
       if @student_comment.save
         flash[:notice] = 'Team Note was successfully updated.'

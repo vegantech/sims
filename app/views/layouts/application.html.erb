@@ -13,9 +13,8 @@
 
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
 
-
-      <%= javascript_include_tag 'prototype','overlib', 'effects','dragdrop', 'application', 'datepicker','spellerpages/spellChecker',
-         :cache => true%>
+      <%= javascript_include_tag 'prototype','overlib', 'effects','dragdrop','application','spellerpages/spellChecker', :cache => true%>
+      <%= javascript_include_tag 'datepicker', :cache => false%>
   </head>
 
   <body>

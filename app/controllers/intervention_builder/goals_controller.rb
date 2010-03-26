@@ -1,5 +1,4 @@
 class InterventionBuilder::GoalsController < ApplicationController
-  include SpellCheck
   additional_write_actions :regenerate_intervention_pdfs, :interventions_without_recommended_monitors
   helper_method :move_path
 
@@ -43,7 +42,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   # POST /goal_definitions
   def create
     @goal_definition = current_district.goal_definitions.build(params[:goal_definition])
-    spellcheck [@goal_definition.title,@goal_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
     
 
     respond_to do |format|
@@ -60,7 +58,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   def update
     @goal_definition = current_district.goal_definitions.find(params[:id])
     @goal_definition.attributes=params[:goal_definition]
-    spellcheck [@goal_definition.title,@goal_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @goal_definition.save
