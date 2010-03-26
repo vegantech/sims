@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<%= stylesheet_link_tag "/stylesheets/spellerStyle" %>
+<%= javascript_include_tag "/javascripts/spellerpages/wordWindow" %>
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+	var suggs = new Array();
+	var words = new Array();
+	var textinputs = new Array();
+	var error;
+
+
+  <% @original_texts.each_with_index do |original_text,idx| %>
+    textinputs[<%=idx%>] = decodeURIComponent('<%= original_text %>');
+    words[<%=idx%>] = [];
+    suggs[<%=idx%>] = [];
+
+
+    <% @words[idx].each_with_index do |pair, i| %>
+      words[<%=idx%>][<%= i %>] = '<%= pair[0] %>';
+      suggs[<%=idx%>][<%= i %>] = [<%= pair[1] %>];
+    <% end %>
+  <% end %>
+
+	var wordWindowObj = new wordWindow();
+	wordWindowObj.originalSpellings = words;
+	wordWindowObj.suggestions = suggs;
+	wordWindowObj.textInputs = textinputs;
+
+	function init_spell() {
+	  // check if any error occured during server-side processing
+	  if( error ) {
+	    alert( error );
+	  } else {
+	    // call the init_spell() function in the parent frameset
+	    if (parent.frames.length) {
+	      parent.init_spell( wordWindowObj );
+	    } else {
+	      alert('This page was loaded outside of a frameset. It might not display properly');
+	    }
+	  }
+	}
+</script>
+</head>
+<body onload="init_spell();">
+
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+	wordWindowObj.writeBody();
+// ]]>
+</script>
+
+</body>
+</html>
