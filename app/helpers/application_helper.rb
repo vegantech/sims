@@ -1,5 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def spell_check_button
+    button_to_function('Check Spelling', "var speller = new spellChecker();speller.textInputs=this.form.getElementsByClassName('spell_check');speller.openChecker();")
+  end
+
 
   def spell_check_submit prefix=nil
     hidden_field_tag("spellcheck", nil, :id=>"#{prefix}spellcheck") +

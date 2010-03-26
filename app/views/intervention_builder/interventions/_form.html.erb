@@ -1,12 +1,12 @@
 <div class="new_form">
   <p>
     <%= form.label :title %>
-    <%= form.text_area :title %>
+    <%= form.text_area :title, :class => 'spell_check' %>
   </p>
 
   <p>
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description , :class => 'spell_check'%>
   </p>
 
   <%= form.hidden_field :custom %>
@@ -49,8 +49,7 @@
 
   <p>
     <%= submit_tag submit_name , :class =>"submit"%>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
-  <%= render :partial => 'spell_check/spelling'  %>
 
 </div>

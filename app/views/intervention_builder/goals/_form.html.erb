@@ -1,18 +1,17 @@
 <div class="new_form">
 <p>
   <%= form.label :title %>
-  <%= form.text_field :title %>
+  <%= form.text_field :title, :class => 'spell_check' %>
 </p>
 
 <p>
   <%= form.label :description %>
-  <%= form.text_area :description %>
+  <%= form.text_area :description, :class => 'spell_check' %>
 </p>
 
 <p>
   <%= submit_tag submit_text, :class=>'submit' %>
-  <%= spell_check_submit %>
+  <%= spell_check_button %>
 </p>
-<%= render :partial => 'spell_check/spelling'  %>
 
 </div>

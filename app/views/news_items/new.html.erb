@@ -3,10 +3,11 @@
 <% labelled_form_for(@news_item) do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.text_area :text %>
+  <%= f.text_area :text, :class => 'spell_check' %>
   </p>
   <p>
     <%= f.submit "Create" %>
+    <%= spell_check_button %>
   </p>
 <% end %>
 

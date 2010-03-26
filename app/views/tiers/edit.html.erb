@@ -5,14 +5,13 @@
 
   <p>
     <%= f.label :title %><br />
-    <%= f.text_field :title %>
+    <%= f.text_field :title, :class => 'spell_check' %>
   </p>
   
   <p>
     <%= f.submit 'Update' %>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
-        <%= render :partial => 'spell_check/spelling'  %>
 
 <% end %>
 
