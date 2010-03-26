@@ -13,6 +13,11 @@
 <p>
   <%= consultation_form.label :not_in_sims, 'What interventions have been tried that are not documented in SIMS?' %> <br />
   <%= consultation_form.text_area :not_in_sims, :size => ConsultationForm::FIELD_SIZE %>
+  </p>
+
+<p>
+  <%= consultation_form.label :race_culture, "How does race and/or culture impact the student's performance in school?" %> <br />
+  <%= consultation_form.text_area :race_culture, :size => ConsultationForm::FIELD_SIZE %>
 </p>
 
 <p>
