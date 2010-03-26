@@ -30,5 +30,9 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
     @template.content_tag(:div, '' + super + label + help, :class => 'form_row')  #wrap with a div form_Row
   end
 
+  def spell_check_button
+    @template.button_to_function('Check Spelling', 'spell_check(this.form);')
+  end
+
 
 end
