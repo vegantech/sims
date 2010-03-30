@@ -7,7 +7,6 @@
     <meta name="robots" content="index,follow" />
     <%= stylesheet_link_tag 'common', :media => :all %>
     <%= stylesheet_link_tag 'datepicker', :media => :all %>
-    <%= stylesheet_link_tag 'googiespell', :media => :all %>
     <%= stylesheet_link_tag 'print', :media => :print %>
     <%= stylesheet_link_tag 'screen', :media => :screen %>
 
@@ -51,7 +50,6 @@
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>
-          <%#= render :partial => 'layouts/spell_check' %><%#SPELL_CHECK_CHANGE_ME%>
       </div>
       <div id="footer">
          <br style="clear:right;"/>
@@ -86,12 +84,13 @@
             </fieldset>
  
           </div>
-          <script type='text/javascript' 
-                      src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
                     
         <% end %> 
       </div>
     </div>
-
+    <% if false %>
+          <script type='text/javascript' 
+            src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+        <% end %> 
   </body>
 </html>

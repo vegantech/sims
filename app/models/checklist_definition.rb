@@ -82,6 +82,7 @@ class ChecklistDefinition < ActiveRecord::Base
   protected
 
   def before_save
+    raise 'why am I called'
     if active?
       district.checklist_definitions.active_checklist_definition.update_attribute(:active, false)
     end

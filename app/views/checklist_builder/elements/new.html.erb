@@ -1,11 +1,10 @@
 <h1>New Element Definition</h1>
 <%= error_messages_for :element_definition %>
-<%- form_for :element_definition, :url => checklist_builder_elements_path do |f| -%>
+<%- form_for :element_definition, :url => checklist_builder_elements_path, :html => {:id => 'new_elemenent_definition_form'} do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :element_definition => @element_definition } %>
   <p>
     <%= submit_tag "Create" %>
-    <%= spell_check_submit
+    <%= spell_check_button %>
   </p>
 <%- end -%>
-<%= render :partial => 'spell_check/spelling'  %>
 <p><%= link_to 'Back', checklist_builder_checklists_path(@checklist_definition) %></p>

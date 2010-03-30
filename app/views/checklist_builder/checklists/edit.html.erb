@@ -1,13 +1,12 @@
 <h1>Editing Checklist Definition <%= @checklist_definition.checklist_definition_id %></h1>
 <%= error_messages_for :checklist_definition %>
-<%- form_for :checklist_definition, :url => checklist_builder_checklist_path(@checklist_definition), :html => { :method => :put , :multipart => true} do |f| -%>
+<%- form_for :checklist_definition, :url => checklist_builder_checklist_path(@checklist_definition), :html => { :method => :put , :multipart => true, :id => dom_id(@checklist_definition,"form")} do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :checklist_definition => @checklist_definition } %>
   <p>
     <%= submit_tag "Update" %>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
 <%- end -%>
-<%= render :partial => 'spell_check/spelling'  %>
 
 <p><%= link_to 'Show', checklist_builder_checklist_path(@checklist_definition) %> |
 <%= link_to 'Back', checklist_builder_checklist_path %></p>

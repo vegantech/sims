@@ -4,11 +4,11 @@
 </p>
 <p>
   <%=f.label :text, "Text: #{markdown_note}" %><br />
-  <%= f.text_area :text %>
+  <%= f.text_area :text , :class => 'spell_check'%>
 </p>
 <p>
   <%= f.label :directions, "Directions: (Required) #{markdown_note}" %><br />
-  <%= f.text_area :directions %>
+  <%= f.text_area :directions, :class => 'spell_check' %>
   </p>
 
   Assigned Recommendation (Blank will mean the checklist is optional: <br />
