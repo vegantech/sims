@@ -9,7 +9,8 @@ Feature: Tier Builder
 
     When I follow "New Tier"
     And I fill in "Title" with "Spelled Inkorrect"
-    And I press "Spellcheck"
+    And I am now pending
+    And I press "Check Spelling"
     And I should see "1 Spelling error detected"
     And I press "Create"
 

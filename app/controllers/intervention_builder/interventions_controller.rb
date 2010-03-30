@@ -1,5 +1,4 @@
 class InterventionBuilder::InterventionsController < ApplicationController
-  include SpellCheck
   additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
@@ -47,7 +46,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # POST /intervention_definitions
   def create
     @intervention_definition = @intervention_cluster.intervention_definitions.build(params[:intervention_definition])
-    spellcheck [@intervention_definition.title,@intervention_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @intervention_definition.save
@@ -62,7 +60,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # PUT /intervention_definitions/1
   def update
     @intervention_definition.attributes=params[:intervention_definition]
-    spellcheck [@intervention_definition.title,@intervention_definition.description].join(" ") and edit and  render :action=>:edit and return unless params[:spellcheck].blank?
     
     respond_to do |format|
       if @intervention_definition.save

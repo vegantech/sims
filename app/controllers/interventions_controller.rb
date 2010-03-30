@@ -1,5 +1,4 @@
 class InterventionsController < ApplicationController
-  include SpellCheck
   additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :authorize, :only => [:add_benchmark]
@@ -43,18 +42,7 @@ class InterventionsController < ApplicationController
     @intervention = build_from_session_and_params
     @tiers=current_district.tiers
 
-    unless params[:spellcheck].blank?
-      @quicklist = true if params[:quicklist]
-      @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
-      comment = @intervention.comments.last
-      comment = comment ? comment.comment : ""
-      
-      spellcheck [comment].join(" ")
-      @intervention_comment = @intervention.comments.last
-      # populate_goals
-    end
-
-    if params[:spellcheck].blank? && @intervention.save
+    if @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
@@ -80,15 +68,6 @@ class InterventionsController < ApplicationController
       params[:intervention][:comment_author] = current_user.id if params[:intervention][:comment]
     end
     @tiers = current_district.tiers
-
-    unless params[:spellcheck].blank?
-      spellcheck [params[:intervention][:comment][:comment]].join(" ")
-      @intervention_comment = InterventionComment.new(params[:intervention][:comment])
-      @users = current_school.assigned_users.collect{|e| [e.fullname, e.id]}
-      a = request.xhr? ? :spell_fail : :edit
-      render :action => a
-      return
-    end
 
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])

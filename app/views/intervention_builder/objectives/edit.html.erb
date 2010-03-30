@@ -3,7 +3,7 @@
 
 <%= error_messages_for :objective_definition %>
 
-<% form_for(:objective_definition, :url => intervention_builder_objective_path(@goal_definition,@objective_definition), :html => { :method => :put, :multipart => true }) do |f| %>
+<% form_for(@objective_definition, :url => intervention_builder_objective_path(@goal_definition,@objective_definition), :html => { :method => :put, :multipart => true }) do |f| %>
 <%= render :partial => f,:locals=>{:submit_name=>"Update"} %>
 <% end %>
 <%= link_to 'Show', intervention_builder_objective_path(@goal_definition,@objective_definition) %> |

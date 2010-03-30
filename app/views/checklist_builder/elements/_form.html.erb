@@ -1,6 +1,6 @@
 <p>
   Text: (Required) <%=markdown_note %><br />
-  <%= f.text_area :text %>
+  <%= f.text_area :text , :class => 'spell_check'%>
 </p>
 <p>
   Kind: (Required) <%= f.select :kind, ElementDefinition.kinds_of_elements.collect{|key, value| [value, key.to_s]} %>

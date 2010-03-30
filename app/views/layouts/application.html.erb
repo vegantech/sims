@@ -7,34 +7,17 @@
     <meta name="robots" content="index,follow" />
     <%= stylesheet_link_tag 'common', :media => :all %>
     <%= stylesheet_link_tag 'datepicker', :media => :all %>
-    <%= stylesheet_link_tag 'googiespell', :media => :all %>
     <%= stylesheet_link_tag 'print', :media => :print %>
     <%= stylesheet_link_tag 'screen', :media => :screen %>
 
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
 
-
-      <%= javascript_include_tag 'prototype','overlib', 'effects','dragdrop', 'application', 'datepicker',
-         :cache => true%>
-      <%#SPELL_CHECK_CHANGE_ME%>
-
-
-      <%#= javascript_include_tag 'googiespell/AJS','prototype','overlib',  'effects', 'application', 'datepicker',
-        'googiespell/googiespell', 'googiespell/googiespell_multiple' ,'googiespell/cookiesupport' , :cache => true%>
-      <%#AJS Conflicts with prototype and must be loaded before%>
-
-
-
-      <%#=unobtrusive_datepicker_includes%>
-      <% if false %> <%#SPELL_CHECK_CHANGE_ME%>
-      <script language = "javascript">
-        var googie5 = new GoogieSpellMultiple("/images/googiespell/", "/spell_check/?lang=");
-
-       </script>
-     <%end%>
+      <%= javascript_include_tag 'popup','prototype','overlib', 'effects','dragdrop','application','spellerpages/spellChecker', :cache => true%>
+      <%= javascript_include_tag 'datepicker', :cache => false%>
   </head>
 
   <body>
+
     <div id="wrap">
       <div id="header">
         <div id ="left_header">
@@ -68,7 +51,6 @@
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>
-          <%#= render :partial => 'layouts/spell_check' %><%#SPELL_CHECK_CHANGE_ME%>
       </div>
       <div id="footer">
          <br style="clear:right;"/>
@@ -103,9 +85,15 @@
             </fieldset>
  
           </div>
+                    
         <% end %> 
       </div>
     </div>
+    <% if false %>
+          <script type='text/javascript' 
+            src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+        <% end %> 
+
 
   </body>
 </html>

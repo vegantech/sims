@@ -1,11 +1,11 @@
 <a name="<%= dom_id(question_definition, "new_element_definition_errors_anchor") %>">
   <div id="<%= dom_id(question_definition, "new_element_definition_errors") %>" style="display:none"></div>
 </a>
-<%- remote_form_for :element_definition, :url => checklist_builder_elements_path do |f| -%>
+<%- remote_form_for :element_definition, :url => checklist_builder_elements_path, :html => {:id => 'new_element_definition_form'} do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :element_definition => element_definition } %>
   <p>
     <%= submit_tag "Create" %> |
-    <%= spell_check_submit %> |
+    <%= spell_check_button %> |
 
     <%= link_to_function "Cancel", nil do |page|
       page.remove_content dom_id(question_definition, "new_element_definition")
@@ -13,4 +13,3 @@
     end %>
   </p>
 <%- end -%>
-<%= render :partial => 'spell_check/spelling'  %>

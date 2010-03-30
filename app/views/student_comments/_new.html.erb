@@ -3,7 +3,6 @@
 <% end %>
   
 
-  <%= render :partial => 'spell_check/spelling' ,:locals=>{:prefix => dom_id(@student_comment)} %>
   <%= link_to_function 'cancel',{:href=> url_for(current_student)} do |page| 
     page['new_team_note'].replace_html(:partial=>'students/add_note_link')
     end  %>

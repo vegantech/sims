@@ -1,5 +1,4 @@
 class ChecklistBuilder::ElementsController < ApplicationController
-  include SpellCheck
   before_filter :load_checklist_definition, :load_question_definition, :except => :suggestions
 
   def index
@@ -40,7 +39,6 @@ class ChecklistBuilder::ElementsController < ApplicationController
 
   def create
     @element_definition = @question_definition.element_definitions.build(params[:element_definition])
-    spellcheck [@element_definition.text].join(" ") and render :action => :new and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @element_definition.save
@@ -60,8 +58,6 @@ class ChecklistBuilder::ElementsController < ApplicationController
     @element_definition = @question_definition.element_definitions.find(params[:id])
     @element_definition.attributes= params[:element_definition]
 
-    a = request.xhr? ? :spell_fail : :edit
-    spellcheck [@element_definition.text].join(" ") and render :action => a and return unless params[:spellcheck].blank? 
 
     respond_to do |format|
       if @element_definition.save

@@ -4,10 +4,9 @@
 
  <%= render :partial => f %>
     <%= f.submit "Create" %>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
 <% end %>
- <%= render :partial => 'spell_check/spelling'  %>
 
 
 <%= link_to 'Back', intervention_path(@intervention) %>

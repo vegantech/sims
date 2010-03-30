@@ -15,11 +15,11 @@
     <%= form.hidden_field :user_id %>
   <p>
     <%= form.label :body, :Note %><br />
-    <%= form.text_area :body,  :rows=>5, :class=>"full_width" %>
+    <%= form.text_area :body,  :rows=>5, :class=>"full_width spell_check" %>
   </p>
 
  <div class="center_submit">
     <%= form.submit "Save" %>
-    <%= spell_check_submit dom_id(form.object) %>
+    <%= spell_check_button %>
  </div>
 

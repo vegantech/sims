@@ -1,6 +1,6 @@
 <p>
   Text: <%=markdown_note %><br />
-  <%= f.text_area :text %>
+  <%= f.text_area :text , :class => 'spell_check'%>
 </p>
 <p>
   Scoring Value: (Required) <%= f.select :value, (0..10).to_a, :selected => answer_definition.value.to_i %>

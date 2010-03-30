@@ -13,7 +13,7 @@ text_of_comment = text_of_comment.text if text_of_comment
     <td colspan="<%=max_count%>">
 
       <span><%= hidden_field_tag "element_definition[#{element_definition.id}][id]", element_definition.answer_definitions[0].id %>
-<%= text_area_tag "element_definition[#{element_definition.id}][text]", text_of_comment, :size => "60x4" %></span>
+        <%= text_area_tag "element_definition[#{element_definition.id}][text]", text_of_comment, :size => "60x4", :class => 'spell_check' %></span>
 <% unless view %>
 <%- previous_answers(@checklist, element_definition.answer_definitions[0]) do |answer| -%>
   <div style="color:gray;margin-left:1em">By <%= answer.checklist.teacher.fullname %> on <%= answer.created_at.to_s(:chatty) %>:</div><div style="color:gray;margin-left:2em"><%= answer.text %></div>

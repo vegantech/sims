@@ -1,5 +1,4 @@
 class InterventionBuilder::ObjectivesController < ApplicationController
-  include SpellCheck
   
 
   helper_method :move_path
@@ -35,7 +34,6 @@ class InterventionBuilder::ObjectivesController < ApplicationController
   # POST /objective_definitions
   def create
     @objective_definition = @goal_definition.objective_definitions.build(params[:objective_definition])
-    spellcheck [@objective_definition.title,@objective_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
     
     respond_to do |format|
       if @objective_definition.save
@@ -50,7 +48,6 @@ class InterventionBuilder::ObjectivesController < ApplicationController
   # PUT /objective_definitions/1
   def update
     @objective_definition.attributes=params[:objective_definition]
-    spellcheck [@objective_definition.title,@objective_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
     respond_to do |format|
       if @objective_definition.save
