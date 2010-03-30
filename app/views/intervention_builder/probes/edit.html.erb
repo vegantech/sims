@@ -4,8 +4,7 @@
   <%= render :partial => f%>
   
   <%= submit_tag 'Save Changes' %>
-    <%= spell_check_submit %>
-  <%= render :partial => 'spell_check/spelling'  %>
+  <%= spell_check_button %>
 <% end %>
 <p>
   <%= link_to 'Display', intervention_builder_probe_path(@probe_definition) %>

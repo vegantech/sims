@@ -22,10 +22,9 @@
 
       <div class="center_submit">
         <%= f.submit "Save" %>
-        <%= spell_check_submit %>
+        <%= spell_check_button %>
       </div>
     <% end %>
-    <%= render :partial => 'spell_check/spelling' %>
     <div class="center_submit">
       <%= link_to 'Back', student_path(@intervention.student) %>
     </div>

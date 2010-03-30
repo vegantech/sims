@@ -35,7 +35,7 @@ module FlagsHelper
   end
 
   def flag_summary(flags)
-    flags.collect(&:summary).join(" ")
+    flags.collect(&:summary).join(" ").gsub(/\n/,'')
   end
 
   def ignore_flags(student, changeable = false)

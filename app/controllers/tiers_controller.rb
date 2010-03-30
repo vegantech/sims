@@ -1,5 +1,4 @@
 class TiersController < ApplicationController
-  include SpellCheck
   helper_method :move_path
 
   # GET /tiers
@@ -44,8 +43,6 @@ class TiersController < ApplicationController
   # POST /tiers.xml
   def create
     @tier = current_district.tiers.build(params[:tier])
-    spellcheck @tier.title and render :action=>:new and return unless params[:spellcheck].blank?
-
 
     respond_to do |format|
       if @tier.save
@@ -65,8 +62,6 @@ class TiersController < ApplicationController
     @tier = current_district.tiers.find(params[:id])
     @tier.attributes=params[:tier]
 
-    spellcheck @tier.title and render :action=>:edit and return unless params[:spellcheck].blank?
-  
     respond_to do |format|
       if @tier.save
         flash[:notice] = 'Tier was successfully updated.'

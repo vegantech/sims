@@ -4,13 +4,12 @@
   <%= f.error_messages %>
   <p>
     <%= f.label :text %><br />
-    <%= f.text_area :text %>
+    <%= f.text_area :text, :class => 'spell_check' %>
   </p>
   <p>
     <%= f.submit "Update" %>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
 <% end %>
-<%= render :partial => 'spell_check/spelling'  %>
 
 <%= link_to 'Back', root_path %>

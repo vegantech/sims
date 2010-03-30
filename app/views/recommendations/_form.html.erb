@@ -9,7 +9,7 @@
 
     <%=content_tag :b, af.label(:text, answer.recommendation_answer_definition.text, :for=> answer.recommendation_answer_definition) %>
 
-    <div> <%= af.text_area  :text, :size => "60x4" , :style=>"margin-left:1em;", :id=>answer.recommendation_answer_definition%> </div><br />
+    <div> <%= af.text_area  :text, :size => "60x4" , :style=>"margin-left:1em;", :id=>answer.recommendation_answer_definition, :class => 'spell_check'%> </div><br />
     <%=af.hidden_field :recommendation_answer_definition_id %>
 
     <%Array(recommendation.previous_answers[answer.recommendation_answer_definition_id]).each do |prev| %>

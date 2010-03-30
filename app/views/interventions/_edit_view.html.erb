@@ -31,12 +31,11 @@
     <div class="center_submit">
       <% unless readonly %>
         <%= f.submit "Save"  %>
-        <%= spell_check_submit %>
+        <%= spell_check_button %>
       <% end %>
     </div>
   <% end %>
 </div>
-<%= render :partial => 'spell_check/spelling' %>
 <div class="center_submit">
   <% if @intervention.active? %>
     <%= link_to 'End', end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> 

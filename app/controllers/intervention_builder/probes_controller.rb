@@ -1,5 +1,4 @@
 class InterventionBuilder::ProbesController < ApplicationController
-  include SpellCheck
   skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   additional_read_actions :add_benchmark
 
@@ -24,7 +23,6 @@ class InterventionBuilder::ProbesController < ApplicationController
 
   def create
     @probe_definition = current_district.probe_definitions.build(params[:probe_definition])
-    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:new and return unless params[:spellcheck].blank?
 
      if @probe_definition.save
        flash[:notice]= 'Progress Monitor Definition was successfully created'
@@ -37,7 +35,6 @@ class InterventionBuilder::ProbesController < ApplicationController
   def update
     @probe_definition = current_district.probe_definitions.find(params[:id])
     @probe_definition.attributes = params[:probe_definition]
-    spellcheck [@probe_definition.title,@probe_definition.description].join(" ") and render :action=>:edit and return unless params[:spellcheck].blank?
 
      if @probe_definition.save
        flash[:notice]= 'Progress Monitor Definition was successfully updated'

@@ -1,11 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
-  def spell_check_submit prefix=nil
-    hidden_field_tag("spellcheck", nil, :id=>"#{prefix}spellcheck") +
-    submit_tag("Spellcheck", :name=>"spellcheck",:onclick =>"$('#{prefix}spellcheck').value='Spellcheck'")
+  def spell_check_button
+    button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();") +
+      help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " ) 
   end
-
 
   def li_link_to(name, options = {}, html_options = {}, *rest)
     content_tag :li,link_to(name,options,html_options)

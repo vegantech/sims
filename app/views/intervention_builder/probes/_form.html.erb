@@ -4,18 +4,18 @@
 <!--[form:probe_definition]-->
   <tr>
     <td width="15%"><%=form.label :title %></td>
-    <td colspan="3"><%= form.text_field  'title', 'size' => 51  %></td>
+    <td colspan="3"><%= form.text_field  'title', 'size' => 51  , :class => 'spell_check'%></td>
   </tr>
   <tr>
     <td width="15%"><%= form.label :description %></td>
-    <td colspan="3"><%= form.text_area :description, 'cols' => 50,  'rows' => 5  %></td>
+    <td colspan="3"><%= form.text_area :description, 'cols' => 50,  'rows' => 5, :class => 'spell_check'  %></td>
   </tr>
   <tr>
     <td width="15%"><%= form.label :minimum_score %></td>
     <td><%= form.text_field  :minimum_score, 'size' => 5  %></td>
 
     <td width="15%"><%= form.label  :maximum_score %></td>
-    <td width="35%"><%= form.text_field :maximum_score, 'size' => 5  %></td>
+    <td width="35%"><%= form.text_field :maximum_score, 'size' => 5 %></td>
   </tr>
   <tr>
     <% if form.object.school_id %>

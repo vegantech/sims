@@ -1,11 +1,10 @@
 <h1>New Question Definition</h1>
 <%= error_messages_for :question_definition %>
-<%- form_for :question_definition, :url => question_definitions_path do |f| -%>
+<%- form_for :question_definition, :url => question_definitions_path, :html => {:id => 'new_question_definition_form'} do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :question_definition => @question_definition } %>
   <p>
     <%= submit_tag "Create" %>
-    <%= spell_check_submit %>
+    <%= spell_check_button %>
   </p>
 <%- end -%>
-<%= render :partial => 'spell_check/spelling'  %>
 <%= link_to 'Back', checklist_definition_path(@checklist_definition) %>
