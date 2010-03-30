@@ -1,6 +1,6 @@
 
 <script>
-
+var opener = window;
 var wordWindow = null;
 var controlWindow = null;
 
@@ -16,9 +16,9 @@ function init_spell( spellerWindow ) {
 
 	if( controlWindow && wordWindow ) {
 		// populate the speller object and start it off!
-		var speller = opener.speller;
-		wordWindow.speller = speller;
-		speller.startCheck( wordWindow, controlWindow );
+//    var speller = opener.speller;
+		wordWindow.speller = top.speller;
+		top.speller.startCheck( wordWindow, controlWindow );
 	}
 }
 
@@ -39,13 +39,12 @@ function postWords() {
 	bodyDoc.write('<html>');
 	bodyDoc.write('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 	bodyDoc.write('<link rel="stylesheet" type="text/css" href="spellerStyle.css"/>');
-	if (opener) {
-		var speller = opener.speller;
+	if (true) {
 		bodyDoc.write('<body class="normalText" onLoad="document.forms[0].submit();">');
 		bodyDoc.write('<p>Spell check in progress...</p>');
-		bodyDoc.write('<form action="'+speller.spellCheckScript+'" method="post">');
-		for( var i = 0; i < speller.textInputs.length; i++ ) {
-			bodyDoc.write('<input type="hidden" name="textinputs[]" value="'+encodeForPost(speller.textInputs[i].value)+'">');
+		bodyDoc.write('<form action="'+top.speller.spellCheckScript+'" method="post">');
+		for( var i = 0; i < top.speller.textInputs.length; i++ ) {
+			bodyDoc.write('<input type="hidden" name="textinputs[]" value="'+encodeForPost(top.speller.textInputs[i].value)+'">');
 		}
 		bodyDoc.write('</form>');
 		bodyDoc.write('</body>');

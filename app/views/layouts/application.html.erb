@@ -12,11 +12,12 @@
 
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
 
-      <%= javascript_include_tag 'prototype','overlib', 'effects','dragdrop','application','spellerpages/spellChecker', :cache => true%>
+      <%= javascript_include_tag 'popup','prototype','overlib', 'effects','dragdrop','application','spellerpages/spellChecker', :cache => true%>
       <%= javascript_include_tag 'datepicker', :cache => false%>
   </head>
 
   <body>
+
     <div id="wrap">
       <div id="header">
         <div id ="left_header">
@@ -92,5 +93,7 @@
           <script type='text/javascript' 
             src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
         <% end %> 
+
+
   </body>
 </html>

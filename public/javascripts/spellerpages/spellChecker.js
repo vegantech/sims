@@ -83,10 +83,20 @@ function spellCheckAll() {
 // call this method to check text boxe(s) and/or textarea(s) that were passed in to the
 // object's constructor or to the textInputs property
 function openChecker() {
-	this.spellCheckerWin = window.open( this.popUpUrl, this.popUpName, this.popUpProps );
+
+
+
+
+	this.spellCheckerWin = new Popup();
+          this.spellCheckerWin.content = '<iframe width="450px" height="400px"  src="/speller/spellchecker.html"></iframe>' ;
+          this.spellCheckerWin.autoHide = false;
+          this.spellCheckerWin.width = 500;
+          this.spellCheckerWin.height = 450;
+  
 	if( !this.spellCheckerWin.opener ) {
 		this.spellCheckerWin.opener = window;
 	}
+  this.spellCheckerWin.show();
 }
 
 function startCheck( wordWindowObj, controlWindowObj ) {
@@ -269,7 +279,7 @@ function terminateSpell() {
 	}
 
 	// return back to the calling window
-	this.spellCheckerWin.close();
+	this.spellCheckerWin.hide();
 
 	return true;
 }

@@ -8,9 +8,7 @@
 var spellerObject;
 var controlWindowObj;
 
-if( parent.opener ) {
-	spellerObject = parent.opener.speller;
-}
+	spellerObject = top.speller;
 
 function ignore_word() {
 	if( spellerObject ) {
@@ -139,7 +137,7 @@ function init_spell() {
 			<input class="buttonDefault" type="button" name="btnUndo" value="Undo" onClick="undo();" disabled>
 			</td>
 			<td>&nbsp;&nbsp;</td>
-			<td>
+      <td>
 			<input class="buttonDefault" type="button" value="Close" onClick="end_spell();">
 			</td>
 		</tr>
