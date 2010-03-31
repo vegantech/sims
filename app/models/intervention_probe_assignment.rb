@@ -21,6 +21,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :probe_definition
   belongs_to :frequency
   has_many :probes, :dependent => :destroy
+  
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
@@ -71,8 +72,70 @@ class InterventionProbeAssignment < ActiveRecord::Base
       "pd#{probe_definition_id}"
     end
   end
-  
+
+ def google_chart
+    custom_chm=[numbers_in_bars,max_min_zero].join("|")
+    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+      Gchart.bar(:data => probes_for_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
+                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :bar_width_and_spacing => '30,25',
+                 :bar_colors => probes_for_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+                 :format=>'image_tag',
+                 :min_value=>min, :max_value=>max,
+                 :encoding => 'text',
+                 :custom => custom_string,
+                 :size => '400x250'
+
+                )
+  end
+
+  def probes_for_graph
+    probes.reject{|e| e.administered_at.blank? || e.score.blank?}.sort_by(&:administered_at)
+  end
+
+  def benchmarks
+    probe_definition.probe_definition_benchmarks
+  end
+
   protected
+  def numbers_in_bars
+    #show the value in white in the bar
+      'chm=N,FFFFFF,0,,12,,c'
+  end
+
+  def max_min_zero
+    #min, zero, max
+    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0&chxp=2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
+  end
+
+  def benchmark_lines
+    if benchmarks.present?
+      "chm=#{benchmarks.collect{|b| "r,ff9c00,0,#{scale_value(b.benchmark)-0.001},#{scale_value(b.benchmark) + 0.001}"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+    end
+  end
+
+  def chart_margins
+    "chma=20,20,20,20"
+    ""
+  end
+
+  
+  def scale_value(value)
+    (value-min).to_f/(max-min).to_f
+  end
+
+  def min
+    probe_definition.minimum_score || (probes_for_graph.collect(&:score).min >=0 ? 0 : probes_for_graph.collect(&:score).min)
+  end
+
+  def max
+    probe_definition.maximum_score || (probes_for_graph.collect(&:score).max <= 10 ? 10 : probes_for_graph.collect(&:score).max)
+  end
+   
+
+
+
+
   def last_date_must_be_after_first_date
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end
