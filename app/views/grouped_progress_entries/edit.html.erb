@@ -13,7 +13,7 @@ Intervention-<%=@grouped_progress_entry %>
 <%=links_and_attachments(@probe_definition, 'p') %>
 
 
-Min <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_score %>
+<p>Min: <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_score %></p>
 
 <%= @probe_definition.probe_definition_benchmarks.join('<br /') %>
 
@@ -40,7 +40,7 @@ Min <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_s
             <td><%= @student_intervention.student %></td>
             <td><%@student_intervention.score%><%= field.text_field :score%></td>
             <td class="date"><%@student_intervention.date%><%= field.unobtrusive_date_picker :date, :order => [:month, :day, :year] %></td>
-            <td><%= field.text_area(:comment, :size => '25x2') %> </td>
+            <td><%= field.text_area(:comment, :size => '25x2', :class => 'spell_check') %> </td>
 
           <% end %>
         </tr>
@@ -49,7 +49,7 @@ Min <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_s
     </tbody>
   </table>
   <p>
-    <%= f.submit 'Add Scores' %>
+  <%= f.submit 'Add Scores' %> <%=spell_check_button%>
   </p>
 <% end %>
 
