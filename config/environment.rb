@@ -37,6 +37,7 @@ Rails::Initializer.run do |config|
   config.gem "pdf-writer", :lib => "pdf/writer"
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
+  config.gem 'googlecharts'
 
  # deployment
  config.gem "capistrano", :lib => false
