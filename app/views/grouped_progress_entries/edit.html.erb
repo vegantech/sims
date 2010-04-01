@@ -38,7 +38,7 @@ Intervention-<%=@grouped_progress_entry %>
           <% fields_for "student_intervention[]" do |field| %>
             <td><div style="color: red"><%=@student_intervention.errors%></div></td>
             <td><%= @student_intervention.student %></td>
-            <td><%@student_intervention.score%><%= field.text_field :score%></td>
+            <td><%@student_intervention.score%><%= field.text_field :score, :size=>4, :maxlength=>4%></td>
             <td class="date"><%@student_intervention.date%><%= field.unobtrusive_date_picker :date, :order => [:month, :day, :year] %></td>
             <td><%= field.text_area(:comment, :size => '25x2', :class => 'spell_check') %> </td>
 
