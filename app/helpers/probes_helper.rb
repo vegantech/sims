@@ -1,9 +1,24 @@
 module ProbesHelper
-
   def probe_graph(intervention_probe_assignment, count)
-    ProbeGraph.new(intervention_probe_assignment).display_graph(count)
-  end
+    html = <<-"HTML"
+        <p style="text-align:center;">
+        
+          Current scores for "#{intervention_probe_assignment.probe_definition.title}"<br />
+    HTML
 
+    intervention_probe_assignment.benchmarks.each do |benchmark|
+    html += <<-"HTML"
+
+          Benchmark: #{benchmark[:score]} at grade level #{benchmark[:grade_level]} <br />
+
+    HTML
+    end
+
+
+    html+ "</p>" +
+     intervention_probe_assignment.google_chart
+  end
+    
 
   def display_assessment_links(probe_assignment)
     s=''
