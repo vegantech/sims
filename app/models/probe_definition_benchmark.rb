@@ -24,6 +24,10 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   is_paranoid
   include DeepClone
 
+  def to_s
+    "Gr: #{grade_level}  - #{benchmark}"
+  end
+
   protected
   def validate_within_probe_definition_range
     
