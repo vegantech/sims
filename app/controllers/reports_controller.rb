@@ -56,11 +56,13 @@ class ReportsController < ApplicationController
     if request.post?
       @start_date = build_date(params[:start_date])
       @end_date   = build_date(params[:end_date])
+      @sort_field = params[:report_params][:sort_field]
+      @content = params[:report_params][:content]
     else
       @start_date = @end_date = @today
     end
 
-    handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date
+    handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date, :sort_field=>@sort_field, :content => @content
   end
 
   private

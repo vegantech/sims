@@ -1,5 +1,6 @@
 <h3 class="conclusions_and_recommendations" ondblclick="$('checklists').toggle();"><span>Checklist for Culturally Responsive Practices</span>
 </h3>
+<%="Note: For this section to appear for your district, have the content builder enable the the checklist using the Checklist Builder" if current_district.abbrev.match(/^training/) %>
 
 <div id="checklists">
   <%= link_to "Complete a Checklist for this Student", new_checklist_url %>

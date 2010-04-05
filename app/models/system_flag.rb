@@ -17,8 +17,6 @@
 class SystemFlag < Flag
   CSV_HEADERS = [:district_student_id, :category, :reason]
 
-  validates_uniqueness_of :category, :scope => :student_id
-
   def summary
     "#{reason} on #{created_at}"
   end

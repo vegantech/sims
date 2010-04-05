@@ -37,6 +37,8 @@ class TeamNotes
     @school = options[:school]
     @start_date = options[:start_date]
     @end_date = options[:end_date]
+    @sort_field = options[:sort_field] || 'Student'
+    @content = options[:content].to_s
   end
 
   def to_table
@@ -46,12 +48,14 @@ class TeamNotes
     student_ids = Enrollment.search({:search_type =>'list_all',
                  :school_id => @school.id, :user => @user}).collect(&:student_id)
 
+
     rt = StudentComment.report_table(:all,
       :conditions => {:created_at  => @start_date.beginning_of_day..@end_date.end_of_day,
                     :students => {:id=> student_ids,:district_id => @user.district_id }}, # OK to remove, since handled by search above?
       :include => {:student => {:only => [:id], :methods => :fullname}, :user => {:only => [], :methods => :fullname}},
       :joins => :student,
-      :only => [:body, :created_at])
+      :only => [:body, :created_at],
+      :filters => lambda{|r| r["body"].include?(@content)})
 
     unless rt.empty?
       rt.replace_column('created_at', 'Date') do |r|
@@ -68,12 +72,16 @@ class TeamNotes
     rt.rename_columns('body' => 'Team Note', 'user.fullname' => 'User Name')
 
     rt.reorder('Student', 'Date', 'User Name', 'Team Note')
-    rt
+      rt
   end
 
   def to_grouping
     @table ||= to_table
     return @table if  @table.column_names.blank?
-    Ruport::Data::Grouping(@table, :by => 'Student')
+    if @sort_field == 'Student'
+      Ruport::Data::Grouping(@table, :by => 'Student')
+    else
+      @table.sort_rows_by(@sort_field)
+    end
   end
 end
