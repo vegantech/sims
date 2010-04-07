@@ -56,7 +56,7 @@ class GroupedProgressEntry
   end
 
   class ScoreComment
-    attr_accessor :date,:score,:comment,:intervention,:id
+    attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator
     def initialize(intervention,user)
       @intervention = intervention
       @id = intervention.id

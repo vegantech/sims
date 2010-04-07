@@ -53,6 +53,19 @@ function grouped_change_date(){
 }
 
 
+function calculate_percentage(field){
+  base_id = field.id.replace("_numerator","").replace("_denominator","")
+  numerator = $(base_id+'_numerator').value
+  denominator = $(base_id+'_denominator').value
+  score_field = $(base_id+'_score')
+  score =  parseInt(100*numerator/denominator);
+  if(!isNaN(score)){
+    score_field.value = score ;
+  }
+
+}
+
+
 function change_date(new_record){
     
     var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
