@@ -28,6 +28,14 @@ class ObjectiveDefinition < ActiveRecord::Base
   include DeepClone
   acts_as_reportable if defined? Ruport
 
+  define_statistic :count , :count => :all
+  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_calculated_statistic :districts_with_changes do
+    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => :goal_definition).length
+  end
+
+
+
   def disable!
     intervention_clusters.each(&:disable!)
     update_attribute(:disabled,true)

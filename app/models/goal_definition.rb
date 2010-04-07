@@ -31,6 +31,15 @@ class GoalDefinition < ActiveRecord::Base
   acts_as_list :scope=>:district_id
 
   acts_as_reportable if defined? Ruport
+
+
+  define_statistic :count , :count => :all
+  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_calculated_statistic :districts_with_changes do
+    find(:all,:group => 'title', :having => 'count(title)=1',:select =>'distinct district_id').length
+  end
+
+
   is_paranoid
   include DeepClone
 
