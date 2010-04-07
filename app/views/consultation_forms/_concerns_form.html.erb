@@ -16,13 +16,13 @@
           <%= concern_fields.label :area, concern_fields.object.area_text %>
         </td>
         <td>
-          <%= concern_fields.text_area :strengths, :size => ConsultationFormConcern::FIELD_SIZE %>
+          <%= concern_fields.text_area :strengths, :size => ConsultationFormConcern::FIELD_SIZE, :class => 'spell_check' %>
         </td>
         <td>
-          <%= concern_fields.text_area :concerns, :size => ConsultationFormConcern::FIELD_SIZE %>
+          <%= concern_fields.text_area :concerns, :size => ConsultationFormConcern::FIELD_SIZE, :class => 'spell_check' %>
         </td>
         <td>
-          <%= concern_fields.text_area :recent_changes, :size => ConsultationFormConcern::FIELD_SIZE %>
+          <%= concern_fields.text_area :recent_changes, :size => ConsultationFormConcern::FIELD_SIZE, :class => 'spell_check' %>
         </td>
       </tr>
     <% end %>

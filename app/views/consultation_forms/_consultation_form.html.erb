@@ -2,25 +2,25 @@
 
 <p>
   <%= consultation_form.label :do_differently, 'What do you want the student to be able to do?' %> <br />
-  <%= consultation_form.text_area :do_differently, :size => ConsultationForm::FIELD_SIZE %>
+  <%= consultation_form.text_area :do_differently, :size => ConsultationForm::FIELD_SIZE, :class => 'spell_check' %>
 </p>
 
 <p>
   <%= consultation_form.label :parent_notified, 'Has the parent been notified of the concern? If so how?' %> <br />
-  <%= consultation_form.text_area :parent_notified, :size => ConsultationForm::FIELD_SIZE %>
+  <%= consultation_form.text_area :parent_notified, :size => ConsultationForm::FIELD_SIZE, :class => 'spell_check' %>
 </p>
 
 <p>
   <%= consultation_form.label :not_in_sims, 'What interventions have been tried that are not documented in SIMS?' %> <br />
-  <%= consultation_form.text_area :not_in_sims, :size => ConsultationForm::FIELD_SIZE %>
+  <%= consultation_form.text_area :not_in_sims, :size => ConsultationForm::FIELD_SIZE , :class => 'spell_check'%>
   </p>
 
 <p>
   <%= consultation_form.label :race_culture, "How does race and/or culture impact the student's performance in school?" %> <br />
-  <%= consultation_form.text_area :race_culture, :size => ConsultationForm::FIELD_SIZE %>
+  <%= consultation_form.text_area :race_culture, :size => ConsultationForm::FIELD_SIZE , :class => 'spell_check'%>
 </p>
 
 <p>
   <%= consultation_form.label :desired_outcome, 'What is the desired outcome from the team consultation?' %> <br />
-  <%= consultation_form.text_area :desired_outcome, :size => ConsultationForm::FIELD_SIZE %>
+  <%= consultation_form.text_area :desired_outcome, :size => ConsultationForm::FIELD_SIZE , :class => 'spell_check'%>
 </p>
