@@ -10,10 +10,17 @@
     %>
 
 
-  <%= link_to_remote 'Preview Graph',
-    :url => preview_graph_url(:intervention_id => @intervention.id, :id => probe_assignment.id, :probe_definition_id => probe_assignment.probe_definition_id),
+  <%= link_to_remote 'Preview Bar Graph',
+    :url => preview_graph_url(:intervention_id => @intervention.id, :id => probe_assignment.id, :probe_definition_id => probe_assignment.probe_definition_id, :graph=>'bar'),
       :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
       :with => "new_probe_scores()" %>
+
+  <%= link_to_remote 'Preview Line Graph',
+    :url => preview_graph_url(:intervention_id => @intervention.id, :id => probe_assignment.id, :probe_definition_id => probe_assignment.probe_definition_id, :graph =>'line'),
+      :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
+      :with => "new_probe_scores()" %>
+
+
 
 <% end %>
 <% end %>
