@@ -39,7 +39,7 @@ Feature: Create Intervention
     When I follow "Edit/Add Comment"
     Then I should see "Enter/view scores"
     When I follow "Enter/view scores"
-    Then I should see "preview graph"
+    Then I should see "preview bar graph"
 
   Scenario: Edit an existing intervention with a progress monitor selected, but no recommended monitors
     And I need to figure out why this isn't working it's ticket 283
@@ -50,7 +50,7 @@ Feature: Create Intervention
     Then I should see "Enter/view scores"
     
     When I follow "Enter/view scores"
-    Then I should see "preview graph"
+    Then I should see "preview bar graph"
 
   Scenario: Edit an existing intervention with progress monitors available but none selected
     Given an intervention with two progress monitors but none selected
@@ -64,7 +64,7 @@ Feature: Create Intervention
 
     Then I should see "Enter/view scores"
     And xhr "onclick" "enter_view_score_link"
-    Then I should see "Preview Graph"
+    Then I should see "Preview Bar Graph"
 
   Scenario: Add a comment to an existing intervention with a different creator
     #312, intervention comments can have different authors than intervention creator
