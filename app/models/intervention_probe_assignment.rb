@@ -74,38 +74,50 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
  def google_line_chart
+   #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
    return ''if probes_for_graph.empty?
     custom_chm=[numbers_on_line,max_min_zero].join("|")
     custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
-      Gchart.line(:data => probes_for_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+    group=0
+    probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
+      if group>0
+        probes_for_this_graph= [probes_for_graph[group*10-1]] + probes_for_this_graph
+      end
+      group+=1
+    
+    
+      Gchart.line(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
+                 :axis_labels => [probes_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
                  :bar_width_and_spacing => '30,25',
-                 :bar_colors => probes_for_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
                  :min_value=>min, :max_value=>max,
                  :encoding => 'text',
                  :custom => custom_string,
-                 :size => '400x250'
+                 :size => '600x250'
 
-                )
+                 )}.join("<br />")
+
 
 
  end
  def google_bar_chart
+   #groups of 10
    return ''if probes_for_graph.empty?
     custom_chm=[numbers_in_bars,max_min_zero].join("|")
     custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
-      Gchart.bar(:data => probes_for_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+    probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
+      Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
+                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
                  :bar_width_and_spacing => '30,25',
-                 :bar_colors => probes_for_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
                  :min_value=>min, :max_value=>max,
                  :encoding => 'text',
                  :custom => custom_string,
-                 :size => '400x250'
+                 :size => '600x250'
 
-                )
+                )}.join("<br />")
   end
 
   def probes_for_graph
