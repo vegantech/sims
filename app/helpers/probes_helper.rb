@@ -1,5 +1,10 @@
 module ProbesHelper
   def probe_graph(intervention_probe_assignment, count)
+    if params[:graph] == 'line'
+      graph=:google_line_chart
+    else
+      graph=:google_bar_chart
+    end
     html = <<-"HTML"
         <p style="text-align:center;">
         
@@ -16,7 +21,7 @@ module ProbesHelper
 
 
     html+ "</p>" +
-     intervention_probe_assignment.google_chart
+     intervention_probe_assignment.send(graph) + params[:graph].to_s
   end
     
 

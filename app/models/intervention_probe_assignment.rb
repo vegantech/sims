@@ -73,7 +73,26 @@ class InterventionProbeAssignment < ActiveRecord::Base
     end
   end
 
- def google_chart
+ def google_line_chart
+   return ''if probes_for_graph.empty?
+    custom_chm=[numbers_on_line,max_min_zero].join("|")
+    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+      Gchart.line(:data => probes_for_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
+                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :bar_width_and_spacing => '30,25',
+                 :bar_colors => probes_for_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+                 :format=>'image_tag',
+                 :min_value=>min, :max_value=>max,
+                 :encoding => 'text',
+                 :custom => custom_string,
+                 :size => '400x250'
+
+                )
+
+
+ end
+ def google_bar_chart
+   return ''if probes_for_graph.empty?
     custom_chm=[numbers_in_bars,max_min_zero].join("|")
     custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
       Gchart.bar(:data => probes_for_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
@@ -98,6 +117,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   protected
+  def numbers_on_line
+    #show the value in black on the graph
+      'chm=N,000000,0,,12,,t'
+  end
   def numbers_in_bars
     #show the value in white in the bar
       'chm=N,FFFFFF,0,,12,,c'
