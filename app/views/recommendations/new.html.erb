@@ -8,6 +8,7 @@
   <%=render :partial=>f, :locals=>{:recommendation=>@recommendation, :show_previous=>true}%>
    <%= submit_tag "Submit" %>
    <%= submit_tag "Save Draft", :name=>"draft" %>
+  <%= spell_check_button %>
  
 <%- end -%>
 <br clear="left"/>

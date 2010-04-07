@@ -50,6 +50,9 @@ class District < ActiveRecord::Base
 
   named_scope :normal, :conditions=>{:admin=>false}, :order => 'name'
   named_scope :admin, :conditions=>{:admin=>true}
+  named_scope :in_use,  :include => :users, :conditions => "users.username != 'district_admin' and users.id is not null"
+
+  define_statistic :count_of_districts_in_use , :count => :in_use
 
   delegate :country, :to => :state
 
@@ -68,6 +71,8 @@ class District < ActiveRecord::Base
   before_validation :clear_logo
   after_create :create_admin_user
   before_update :backup_key
+
+
 
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
 

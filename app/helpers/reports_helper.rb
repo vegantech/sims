@@ -4,4 +4,10 @@ module ReportsHelper
       yield
     end
   end
+
+  def fix_names(name)
+    name.gsub!(/Student Comment/,"Team Note")
+    name.gsub!(/Intervention Cluster/,"Intervention Category")
+    name
+  end
 end

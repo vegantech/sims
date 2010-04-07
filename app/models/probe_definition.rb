@@ -43,6 +43,12 @@ class ProbeDefinition < ActiveRecord::Base
   is_paranoid
   include DeepClone
 
+  define_statistic :count , :count => :all
+  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_calculated_statistic :districts_with_changes do
+    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
+  end
+
   acts_as_reportable if defined? Ruport
   
   def validate

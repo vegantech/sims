@@ -49,7 +49,13 @@ class InterventionDefinition < ActiveRecord::Base
   acts_as_list :scope => :intervention_cluster_id
   after_save :update_district_quicklist
   is_paranoid
- 
+  define_statistic :count , :count => :all
+  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_calculated_statistic :districts_with_changes do
+    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
+  end
+
+
 
   def title
     if custom and self[:title].present?

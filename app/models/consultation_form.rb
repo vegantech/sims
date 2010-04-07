@@ -24,6 +24,12 @@ class ConsultationForm < ActiveRecord::Base
   delegate :school_team,  :to => '(team_consultation or return nil)'
   attr_writer :school, :student
 
+
+  define_statistic :consultation_forms , :count => :all
+  define_statistic :students_with_forms , :count => :all,  :select => 'distinct team_consultations.student_id', :joins => :team_consultation
+  define_statistic :districts_with_forms, :count => :all, :select => 'distinct district_id', :joins => :user
+  define_statistic :users_with_forms, :count => :all, :select => 'distinct user_id'
+
   accepts_nested_attributes_for :consultation_form_concerns
   before_save :set_team_consultation, :set_user
 

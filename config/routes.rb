@@ -11,6 +11,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :team_consultations, :member => {:complete => :put}
 
+  map.stats '/stats', :controller => 'main', :action => 'stats'
+
 
   map.spell_check '/spell_check/', :controller => 'spell_check'
 

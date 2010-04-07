@@ -48,6 +48,10 @@ class Student < ActiveRecord::Base
 
   
 
+  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id'
+  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id'
+  define_statistic :districts_with_students, :count => :all, :select => 'distinct district_id'
+  
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
   #validates_uniqueness_of :id_state, :allow_nil => true 

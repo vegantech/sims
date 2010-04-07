@@ -57,6 +57,13 @@ class Intervention < ActiveRecord::Base
   named_scope :active, :conditions => {:active => true}, :order => 'created_at desc'
   named_scope :inactive, :conditions => {:active => false}, :order => 'created_at desc'
 
+
+
+  define_statistic :interventions , :count => :all
+  define_statistic :students_with_interventions , :count => :all,  :select => 'distinct student_id'
+  define_statistic :districts_with_interventions, :count => :all, :select => 'distinct district_id', :joins => :student
+  define_statistic :users_with_interventions, :count => :all, :select => 'distinct user_id'
+
   acts_as_reportable # if defined? Ruport
 
   def self.build_and_initialize(args)

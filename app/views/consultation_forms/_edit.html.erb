@@ -4,6 +4,7 @@
     <% remote_form_for(consultation_form) do |f| %>
       <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
       <%=submit_tag 'Update' %>
+      <%= spell_check_button %>
       <%=link_to_function('cancel') do |page|
         page.show("show_hide_view_#{dom_id(@consultation_form)}")
         page.show("edit_#{dom_id(@consultation_form)}")

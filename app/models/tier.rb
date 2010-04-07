@@ -24,6 +24,11 @@ class Tier < ActiveRecord::Base
   acts_as_list :scope => :district_id
   validates_presence_of :title
 
+  define_statistic :count , :count => :all
+  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_calculated_statistic :districts_with_changes do
+    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
+  end
   def to_s
     "#{position} - #{title}"
   end

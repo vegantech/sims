@@ -20,4 +20,10 @@ class SystemFlag < Flag
   def summary
     "#{reason} on #{created_at}"
   end
+
+
+  define_statistic :flags , :count => :all
+  define_statistic :students_with_flags , :count => :all,  :select => 'distinct student_id'
+  define_statistic :districts_with_flags, :count => :all, :select => 'distinct students.district_id', :joins => :student
+  define_statistic :users_with_flags, :count => :all, :select => 'distinct user_id'
 end

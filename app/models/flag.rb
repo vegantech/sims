@@ -40,6 +40,7 @@ class Flag < ActiveRecord::Base
   named_scope :custom, :conditions=>{:type=>'CustomFlag'}
   named_scope :ignore, :conditions=>{:type=>'IgnoreFlag'}
   named_scope :system, :conditions=>{:type=>'SystemFlag'}
+
   def summary
     "#{reason}- by #{user} on #{created_at}"
   end
