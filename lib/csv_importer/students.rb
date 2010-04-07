@@ -12,7 +12,21 @@ module CSVImporter
     end
 =end
   private
-
+    def load_data_infile
+      headers=csv_headers
+      headers[-3]="@birthdate"
+      <<-EOF
+          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+            INTO TABLE #{temporary_table_name}
+            FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
+            (#{headers.join(", ")})
+            set birthdate=ifnull(str_to_date(@birthdate,"%Y-%m-%d"),str_to_date(@birthdate,"%m/%d/%Y"))
+            
+            ;
+        EOF
+    end
+ 
                                   
     def index_options
       [:id_state, :district_student_id]
