@@ -30,6 +30,12 @@ class Checklist < ActiveRecord::Base
   delegate :recommendation_definition_id, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
+  define_statistic :count , :count => :all
+  define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
+
+
+
+
 
   STATUS = {
           :unknown => "UNKNOWN_STATUS",

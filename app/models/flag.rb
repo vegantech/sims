@@ -40,6 +40,11 @@ class Flag < ActiveRecord::Base
   named_scope :custom, :conditions=>{:type=>'CustomFlag'}
   named_scope :ignore, :conditions=>{:type=>'IgnoreFlag'}
   named_scope :system, :conditions=>{:type=>'SystemFlag'}
+
+  define_statistic :flags , :count => :all
+  define_statistic :students_with_flags , :count => :all,  :select => 'distinct student_id'
+  define_statistic :districts_with_flags, :count => :all, :select => 'distinct students.district_id', :joins => :student
+  define_statistic :users_with_flags, :count => :all, :select => 'distinct user_id'
   def summary
     "#{reason}- by #{user} on #{created_at}"
   end

@@ -19,6 +19,11 @@ class StudentComment < ActiveRecord::Base
   validates_presence_of :body
 
   acts_as_reportable if defined? Ruport
+  
+  define_statistic :team_notes , :count => :all
+  define_statistic :students_with_notes , :count => :all,  :select => 'distinct student_id'
+  define_statistic :districts_with_team_notes, :count => :all, :select => 'distinct district_id', :joins => :student
+  define_statistic :users_with_team_notes, :count => :all, :select => 'distinct user_id'
 
 
   def date_user_student_school_grade

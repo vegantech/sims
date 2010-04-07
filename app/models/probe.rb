@@ -29,6 +29,9 @@ class Probe < ActiveRecord::Base
 
   attr_accessor :assessment_type
 
+  define_statistic :entered_scores , :count => :all
+  define_statistic :students_with_entered_scores , :count => :all,  :select => 'distinct student_id', :joins => {:intervention_probe_assignment=>:intervention}
+  define_statistic :districts_with_entered_scores, :count => :all, :select => 'distinct students.district_id', :joins => {:intervention_probe_assignment=>{:intervention=>:student}}
 
 
 def calculate_score(params)
