@@ -35,7 +35,6 @@ class School < ActiveRecord::Base
   define_statistic :count_of_schools_in_use , :count => :all, :joins => :enrollments, :select => 'distinct schools.id'
   define_statistic :districts_with_schools , :count => :all, :joins => :enrollments, :select => 'distinct schools.district_id'
 
-
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id
 

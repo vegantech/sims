@@ -22,8 +22,8 @@ class SystemFlag < Flag
   end
 
 
-  define_statistic :flags , :count => :all
-  define_statistic :students_with_flags , :count => :all,  :select => 'distinct student_id'
+  define_statistic :flags , :count => :all, :joins => :student
+  define_statistic :students_with_flags , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_flags, :count => :all, :select => 'distinct students.district_id', :joins => :student
-  define_statistic :users_with_flags, :count => :all, :select => 'distinct user_id'
+  define_statistic :users_with_flags, :count => :all, :select => 'distinct user_id', :joins => :student
 end

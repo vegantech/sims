@@ -35,7 +35,7 @@ class Recommendation < ActiveRecord::Base
   validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral, :school
 
-  define_statistic :count, :count => :all
+  define_statistic :count, :count => :all,:joins => :student
   define_statistic :count_of_districts, :count => :all, :select => 'distinct students.district_id', :joins => :student
 
 

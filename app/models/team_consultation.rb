@@ -25,10 +25,10 @@ class TeamConsultation < ActiveRecord::Base
   named_scope :complete, :conditions => {:complete=>true}
   named_scope :pending, :conditions => {:complete=>false}
 
-  define_statistic :team_consultation_requests , :count => :all
-  define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id'
+  define_statistic :team_consultation_requests , :count => :all, :joins => :student
+  define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_requests, :count => :all, :select => 'distinct district_id', :joins => :student
-  define_statistic :users_with_requests, :count => :all, :select => 'distinct requestor_id'
+  define_statistic :users_with_requests, :count => :all, :select => 'distinct requestor_id', :joins => :requestor
   
 
   def email_concern_recipient

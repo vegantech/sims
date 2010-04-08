@@ -1,9 +1,9 @@
-  <%@stats.each do |klass, metrics| %>
+<%@stats.each do |klass, metrics| %>
     <h2><%= fix_names(klass.titleize) %></h2>
     <table>
       <% metrics.each do |name,value|  %>
         <tr>
-          <td width="250px"><%=name.to_s.titleize%></td>
+          <td width="350px"><%=name.to_s.titleize%></td>
           <td><%=value%></td>
         </tr>
       <% end %>

@@ -33,8 +33,8 @@ class InterventionParticipant < ActiveRecord::Base
   ROLES = %w{Implementer Participant Author}
   named_scope :implementer, :conditions => {:role => IMPLEMENTER}
   
-  define_statistic :participants , :count => :all
-  define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id'
+  define_statistic :participants , :count => :all, :joins => :user
+  define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
 
   RoleStruct = Struct.new(:id, :name)
 
