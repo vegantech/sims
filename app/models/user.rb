@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :password, :all_students_in_district, :old_password
 
-  define_statistic :user_count, :count => :all, :conditions => "username != 'district_admin'"
+  define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
   
 
   validates_presence_of :username, :last_name, :first_name, :district

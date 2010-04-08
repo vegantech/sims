@@ -52,7 +52,7 @@ class District < ActiveRecord::Base
   named_scope :admin, :conditions=>{:admin=>true}
   named_scope :in_use,  :include => :users, :conditions => "users.username != 'district_admin' and users.id is not null"
 
-  define_statistic :count_of_districts_at_least_one_user_account , :count => :in_use
+  define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
   delegate :country, :to => :state
 

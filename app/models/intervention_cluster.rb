@@ -32,7 +32,7 @@ class InterventionCluster < ActiveRecord::Base
   is_paranoid
   include DeepClone
   define_statistic :count , :count => :all,:joins => {:objective_definition=>:goal_definition} 
-  define_statistic :distinct , :count => :all,  :select => 'distinct intervention_clusters.title', :joins => {:objective_definition=>:goal_definition}
+  define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_clusters.title', :joins => {:objective_definition=>:goal_definition}
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:objective_definition=>:goal_definition}).length
   end

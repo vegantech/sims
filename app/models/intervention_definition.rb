@@ -50,7 +50,7 @@ class InterventionDefinition < ActiveRecord::Base
   after_save :update_district_quicklist
   is_paranoid
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
-  define_statistic :distinct , :count => :all,  :select => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
+  define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
