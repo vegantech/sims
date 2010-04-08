@@ -33,8 +33,6 @@ class Checklist < ActiveRecord::Base
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
 
-  filter_all_stats_on(:without_district, "district_id is not ?")
-
 
 
 
