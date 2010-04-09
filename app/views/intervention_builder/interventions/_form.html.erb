@@ -31,6 +31,11 @@
     <%=form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %>  
   </p>
 
+  <p>
+    <%= form.label :notify_email %>
+    <%= form.text_field(:notify_email) %> 
+    <%=help_popup('Whenever one of these interventions are started, the email will be cc\'d to the address(s) listed here, separate them with ,\'s if you would like to use more than one') %>
+  </p>
   <% if form.object.school_id %>
     <div class="fake_label">&nbsp;</div>
     <p>Originally a custom intervention by <%=form.object.user%> at <%=form.object.school%>.</p>

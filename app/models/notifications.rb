@@ -41,11 +41,14 @@ class Notifications < MailerWithSubdomains
   def intervention_starting(interventions)
     interventions=Array(interventions)
     participants=interventions.first.participants_with_author
+    watcher = interventions.first.try(:intervention_definition).try(:notify_email)
+    watcher = nil unless watcher.to_s.include?("@")
 
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
     from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
+    cc         watcher
     @district = interventions.first.try(:student).try(:district)
     
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
