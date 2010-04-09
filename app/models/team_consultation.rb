@@ -23,16 +23,16 @@ class TeamConsultation < ActiveRecord::Base
   after_create :email_concern_recipient
   after_destroy :email_concern_recipient_about_withdrawal
   named_scope :complete, :conditions => {:complete=>true}
-  named_scope :pending, :conditions => {:complete=>false}
+  named_scope :pending, :conditions => {:complete=>false, :draft=>false}
 
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
   define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_requests, :count => :all, :select => 'distinct district_id', :joins => :student
   define_statistic :users_with_requests, :count => :all, :select => 'distinct requestor_id', :joins => :requestor
-  
+
 
   def email_concern_recipient
-    if student && requestor
+    if student && requestor && !draft
       TeamReferrals.deliver_concern_note_created(self)
     end
   end

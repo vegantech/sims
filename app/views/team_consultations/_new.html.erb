@@ -9,12 +9,14 @@
   <p>
     <%= f.label :recipient_id, 'Recipient' %>
     <%= f.collection_select :team_id, @teams, :id, :to_s %>
+    <%= f.hidden_field :draft %>
 
   </p>
   <p>
 
   
   <%= f.submit 'Save' %>
+  <%= f.submit 'Save as Draft', :onclick =>'this.form.elements("team_consultation[draft]").value=true' %>
   <%= spell_check_button %>
 
     <%= link_to :cancel, current_student %>

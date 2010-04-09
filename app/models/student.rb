@@ -37,7 +37,7 @@ class Student < ActiveRecord::Base
   has_many :ignore_flags
   has_many :flags
   has_many :team_consultations
-  has_many :team_consultations_pending, :conditions => {:complete => false}, :class_name => "TeamConsultation"
+  has_many :team_consultations_pending, :conditions => {:complete => false, :draft => false}, :class_name => "TeamConsultation"
   has_many :consultation_form_requests
   has_one :ext_arbitrary
   has_many :ext_siblings
@@ -252,7 +252,7 @@ class Student < ActiveRecord::Base
   end
 
   def pending_consultation_forms
-    ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id}})
+    ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id, :draft => false}})
   end
 
   def touch

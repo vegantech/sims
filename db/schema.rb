@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100326043642) do
+ActiveRecord::Schema.define(:version => 20100409171131) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -805,6 +805,7 @@ ActiveRecord::Schema.define(:version => 20100326043642) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "complete",     :default => false
+    t.boolean  "draft",        :default => false
   end
 
   add_index "team_consultations", ["student_id"], :name => "index_team_consultations_on_student_id"
