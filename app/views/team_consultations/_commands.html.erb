@@ -1,3 +1,4 @@
+<%=render :partial => 'team_consultations/draft' %>
 <%=link_to_remote_degrades "Create Team Consultation Form",:url=>new_team_consultation_url %> <br />
 <%= link_to_remote_degrades "Respond to Request for Information", :url => new_consultation_form_url if team_concerns? %>
 

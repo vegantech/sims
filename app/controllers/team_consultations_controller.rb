@@ -40,6 +40,12 @@ class TeamConsultationsController < ApplicationController
   # GET /team_consultations/1/edit
   def edit
     @team_consultation = TeamConsultation.find(params[:id])
+    @teams = current_school.school_teams
+    respond_to do |format|
+      format.js { render :action => 'new'}
+      format.html # new.html.erb
+      format.xml  { render :xml => @team_consultation }
+    end
   end
 
   # POST /team_consultations
@@ -51,8 +57,11 @@ class TeamConsultationsController < ApplicationController
 
     respond_to do |format|
       if @team_consultation.save
-        
-        msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+        unless @team_consultation.draft?
+          msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+        else
+          msg = 'The Team Consultation Draft was saved.'
+        end
         
         format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
@@ -73,10 +82,16 @@ class TeamConsultationsController < ApplicationController
 
     respond_to do |format|
       if @team_consultation.update_attributes(params[:team_consultation])
-        flash[:notice] = 'TeamConsultation was successfully updated.'
-        format.html { redirect_to(@team_consultation) }
+        if @team_consultation.draft?
+          msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+        else
+          msg = 'TeamConsultation was successfully updated.'
+        end
+        format.js { flash.now[:notice] = msg; render :action => 'create'}
+        format.html { redirect_to(@team_consultation.student) }
         format.xml  { head :ok }
       else
+        format.js { render :action => 'new'}
         format.html { render :action => "edit" }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end

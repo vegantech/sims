@@ -6,6 +6,7 @@ describe TeamConsultationsController do
       
 
   def mock_team_consultation(stubs={})
+    stubs.merge!(:draft? =>false)
     @mock_team_consultation ||= mock_model(TeamConsultation, stubs)
   end
   
@@ -38,6 +39,7 @@ describe TeamConsultationsController do
   describe "GET edit" do
     it "assigns the requested team_consultation as @team_consultation" do
       TeamConsultation.should_receive(:find).with("37").and_return(mock_team_consultation)
+      controller.stub_association!(:current_school, :school_teams => [])
       get :edit, :id => "37"
       assigns[:team_consultation].should equal(mock_team_consultation)
     end
@@ -95,10 +97,10 @@ describe TeamConsultationsController do
         assigns[:team_consultation].should equal(mock_team_consultation)
       end
 
-      it "redirects to the team_consultation" do
+      it "behaves like create" do
         TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(team_consultation_url(mock_team_consultation))
+        response.should render_template("create")
       end
     end
     
@@ -118,7 +120,7 @@ describe TeamConsultationsController do
       it "re-renders the 'edit' template" do
         TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => false))
         put :update, :id => "1"
-        response.should render_template('edit')
+        response.should render_template('new')
       end
     end
     

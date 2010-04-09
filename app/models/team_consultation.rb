@@ -21,9 +21,11 @@ class TeamConsultation < ActiveRecord::Base
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
+  after_validation_on_update :email_concern_recipient, :if=>'draft_changed?'
   after_destroy :email_concern_recipient_about_withdrawal
   named_scope :complete, :conditions => {:complete=>true}
   named_scope :pending, :conditions => {:complete=>false, :draft=>false}
+  named_scope :draft, :conditions => :draft
 
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
   define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student

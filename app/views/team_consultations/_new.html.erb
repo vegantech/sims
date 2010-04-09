@@ -15,7 +15,7 @@
   <p>
 
   
-  <%= f.submit 'Save' %>
+  <%= f.submit 'Save', :onclick =>'this.form.elements("team_consultation[draft]").value=false' %>
   <%= f.submit 'Save as Draft', :onclick =>'this.form.elements("team_consultation[draft]").value=true' %>
   <%= spell_check_button %>
 

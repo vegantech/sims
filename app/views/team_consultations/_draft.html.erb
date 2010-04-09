@@ -1,0 +1,4 @@
+<%draft_consultations.each do  |draft| %>
+  Draft <%=draft.requestor %> on <%=draft.updated_at.to_s(:short) %> 
+  <%= link_to_remote_degrades "Edit" , {:url =>edit_team_consultation_path(draft), :method => :get} %> <br />
+<% end %>

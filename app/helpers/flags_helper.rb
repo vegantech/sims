@@ -1,5 +1,11 @@
 module FlagsHelper
   # Since all helpers are loaded, I'll just group them by convenience
+  def draft_consultations
+    drafts = current_user.team_consultations.draft.find_all_by_student_id(current_student.id)
+    drafts |= current_student.team_consultations.draft if current_student.principals.include?(current_user)
+    drafts
+  end
+
 
   def image_with_popup(image, popup)
     image_tag(image,"onmouseover" => "return overlib('#{popup}');",
