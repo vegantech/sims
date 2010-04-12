@@ -1,5 +1,5 @@
 class GroupedProgressEntry 
-  attr_accessor :global_date
+  attr_accessor :global_date, :intervention, :probe_definition
 
   def errors
     []
@@ -15,6 +15,7 @@ class GroupedProgressEntry
 
   def initialize(obj,user,student_ids)
     @intervention = obj
+    @probe_definition = @intervention.intervention_probe_assignment.probe_definition
     @user=user
     @student_ids =student_ids
   end
