@@ -5,10 +5,12 @@
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
       <%= render :partial => "layouts/core_practices" %>
       <%= render :partial => "layouts/intervention_pdf_html_list" %>
+
     <% end %>
 
     <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,current_school.blank?,current_student.blank?] do %>
 
+      <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path %>
       <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
       <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
       <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>

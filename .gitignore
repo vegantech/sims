@@ -1,6 +1,7 @@
 log/*.log
 tmp/**/*
 tmp/webrat*.html
+tmp/restart.txt
 doc/api
 doc/app
 config/database.yml

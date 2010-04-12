@@ -135,7 +135,10 @@ class Intervention < ActiveRecord::Base
   end
 
   def comment=(txt)
-    comments.build(:comment=>txt[:comment], :user_id=>comment_author || self.user_id) if !txt[:comment].blank?
+    @comment=comments.build(:comment=>txt[:comment], :user_id=>comment_author || self.user_id) if !txt[:comment].blank?
+  end
+  def comment
+    @comment
   end
 
   def assigned_probes

@@ -1,0 +1,57 @@
+<h1>Enter Progress Monitor Scores and Comments</h1>
+
+<h2>
+Intervention-<%=@grouped_progress_entry %>
+</h2>
+
+<h3>
+  <%=@probe_definition.title %>
+</h3>
+<p>
+  <%=@probe_definition.description %>
+</p>
+<%=links_and_attachments(@probe_definition, 'p') %>
+
+
+<p>Min: <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_score %></p>
+
+<%= @probe_definition.probe_definition_benchmarks.join('<br /') %>
+
+<% form_for(@grouped_progress_entry) do |f| %>
+  <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}, :onchange => 'grouped_change_date();'  %>
+
+
+  <%#= f.error_messages %>
+  <table>
+    <thead>
+      <tr>
+        <th>&nbsp</th>
+        <th>Student</th>
+        <th>Score <%=help_popup("You may enter a score in the left field, or a ratio using the right two fields which will populate the score field for you.")%></th>
+        <th>Date</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
+        <tr>
+          <% fields_for "student_intervention[]" do |field| %>
+            <td><div style="color: red"><%=@student_intervention.errors%></div></td>
+            <td><%= @student_intervention.student %></td>
+            <td><%@student_intervention.score%><%= field.text_field :score, :size=>4, :maxlength=>4%> or 
+              <%=field.text_field :numerator, :size => 4, :onchange=>'calculate_percentage(this);'%>:<%=field.text_field :denominator, :size =>4,:onchange=>'calculate_percentage(this)' %> </td>
+            <td class="date"><%@student_intervention.date%><%= field.unobtrusive_date_picker :date, :order => [:month, :day, :year] %></td>
+            <td><%= field.text_area(:comment, :size => '25x2', :class => 'spell_check') %> </td>
+
+          <% end %>
+        </tr>
+     <% end %>
+
+    </tbody>
+  </table>
+  <p>
+  <%= f.submit 'Add Scores' %> <%=spell_check_button%>
+  </p>
+<% end %>
+
+<%= link_to 'Back', grouped_progress_entries_path %>

@@ -1,0 +1,26 @@
+<h1>Grouped Progress Monitor Entries</h1>
+
+Groups appear when at least two students with interventions where:
+
+<ul>
+  <li> You are a participant. </li>
+  <li> There is the same progress monitor assigned. (One must be selected.)</li>
+  <li> The interventions are active and are the same title, category, objective, and goal.</li>
+  <li> The students match your search criteria. </li>
+</ul>
+
+
+<table>
+  <tr>
+    <th>Intervention</th>
+    <th>Students</th>
+  </tr>
+
+<% @grouped_progress_entries.each do |grouped_progress_entry| %>
+  <tr>
+    <td><%= grouped_progress_entry %></td>
+    <td><%= grouped_progress_entry.student_count %></td>
+    <td><%= link_to 'Assign Scores', edit_grouped_progress_entry_path(grouped_progress_entry) %></td>
+  </tr>
+<% end %>
+</table>
