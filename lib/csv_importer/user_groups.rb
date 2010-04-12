@@ -23,7 +23,7 @@ module CSVImporter
       inner join users on uga.user_id = users.id
       inner join groups on uga.group_id = groups.id
       inner join schools on groups.school_id = schools.id
-      where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and groups.district_group_id is not null
+      where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and groups.district_group_id is not null and groups.district_group_id !=''
       "
 
 extra ="      where not exists (
