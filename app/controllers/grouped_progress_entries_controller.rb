@@ -2,7 +2,7 @@ class GroupedProgressEntriesController < ApplicationController
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
-    @grouped_progress_entries = GroupedProgressEntry.all(current_user)
+    @grouped_progress_entries = GroupedProgressEntry.all(current_user,search_criteria)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,7 +12,7 @@ class GroupedProgressEntriesController < ApplicationController
 
   # GET /grouped_progress_entries/1/edit
   def edit
-    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id])
+    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
     @intervention = Intervention.find(@grouped_progress_entry.to_param.split("-").first)
     @probe_definition = @intervention.intervention_probe_assignment.probe_definition
   end
@@ -20,7 +20,7 @@ class GroupedProgressEntriesController < ApplicationController
   # PUT /grouped_progress_entries/1
   # PUT /grouped_progress_entries/1.xml
   def update
-    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id])
+    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
     @intervention = Intervention.find(@grouped_progress_entry.to_param.split("-").first)
     @probe_definition = @intervention.intervention_probe_assignment.probe_definition
     
@@ -35,6 +35,13 @@ class GroupedProgressEntriesController < ApplicationController
         format.xml  { render :xml => @grouped_progress_entry.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  private
+  def search_criteria
+    session[:search].merge(
+      :school_id => current_school_id,
+      :user => current_user)
   end
 
 end

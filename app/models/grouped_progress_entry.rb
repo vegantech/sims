@@ -4,17 +4,19 @@ class GroupedProgressEntry
   def errors
     []
   end
-  def self.all(user)
-    interventions2(user.id).map { |c| new(c,user) }
+  def self.all(user, search)
+    student_ids=Enrollment.search(search).collect(&:student_id)
+    interventions2(user.id,student_ids).map { |c| new(c,user,student_ids) }
   end
 
-  def self.find(user,param)
-    all(user).detect { |l| l.to_param == param } || raise(ActiveRecord::RecordNotFound)
+  def self.find(user,param,search)
+    all(user,search).detect { |l| l.to_param == param } || raise(ActiveRecord::RecordNotFound)
   end
 
-  def initialize(obj,user)
+  def initialize(obj,user,student_ids)
     @intervention = obj
     @user=user
+    @student_ids =student_ids
   end
   
   def to_param
@@ -114,8 +116,8 @@ private
     Intervention.find(:all,:include => :intervention_participants, :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end
 
-  def self.interventions2(id)
-    Intervention.find_all_by_active(true,
+  def self.interventions2(id, student_ids)
+    Intervention.find_all_by_active_and_student_id(true,student_ids,
                       :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition], 
     :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)  and intervention_probe_assignments.id is not null",id,id],
     :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', 
@@ -125,7 +127,7 @@ private
   end
 
   def find_student_interventions
-     Intervention.find_all_by_intervention_definition_id_and_active(@intervention.intervention_definition_id, true,
+     Intervention.find_all_by_intervention_definition_id_and_active_and_student_id(@intervention.intervention_definition_id, true, @student_ids,
                      :include => [:student, :intervention_probe_assignments, :intervention_participants],
                      :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
                                                        ).collect{|i| ScoreComment.new(i, @user)}

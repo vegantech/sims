@@ -13,7 +13,7 @@ describe AllControllers do
         checklist_builder/answers checklist_builder/checklists checklist_builder/elements checklist_builder/questions
         checklists consultation_form_requests consultation_forms
         countries custom_flags district/flag_categories district/schools district/students district/users districts 
-        file flag_descriptions groups help
+        file flag_descriptions grouped_progress_entries groups help
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
