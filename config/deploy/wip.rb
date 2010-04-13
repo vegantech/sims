@@ -5,7 +5,7 @@ server "vegantech.com", :app, :web, :db, :primary => true
 <br /> The data in this demo gets reset weekly. Training districts are reset daily.'
   set :application, "sims-wip"
   set :domain, 'sims-wip.vegantech.com'
-  set :branch, '271_group_progress_monitor_entry'
+#  set :branch, '271_group_progress_monitor_entry'
 
 #  set :branch, 'aug-11-formatting-changes'
   #
