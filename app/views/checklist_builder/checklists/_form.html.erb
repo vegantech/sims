@@ -3,16 +3,13 @@
   <%= f.check_box :active %>
 </p>
 <p>
-  <%=f.label :text, "Text: #{markdown_note}" %><br />
+  <%=f.label :text, "Title: #{markdown_note}" %><br />
   <%= f.text_area :text , :class => 'spell_check'%>
 </p>
 <p>
   <%= f.label :directions, "Directions: (Required) #{markdown_note}" %><br />
   <%= f.text_area :directions, :class => 'spell_check' %>
   </p>
-
-  Assigned Recommendation (Blank will mean the checklist is optional: <br />
-  <%= f.collection_select(:recommendation_definition_id, @checklist_definition.district.recommendation_definitions_with_state,:id,:text, :include_blank=>true) %>
 
   <div>
     <%= f.label(:document, 'Attach Document') %>

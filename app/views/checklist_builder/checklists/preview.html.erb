@@ -4,3 +4,4 @@
 <%= render :partial => 'checklists/form', :locals => { :checklist => @checklist } %>
 <%- end -%>
 </div>
+<%= link_to 'Back', checklist_builder_checklist_path(@checklist_definition) %>

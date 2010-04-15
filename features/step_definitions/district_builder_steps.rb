@@ -35,7 +35,7 @@ end
   
 
 Given /^a school in my district named "([^\"]*)"$/ do |name|
-  Factory(:school,:name => name, :district_id => @default_user.district_id)
+  @default_user.district.schools.find_by_name(name) or Factory(:school,:name => name, :district_id => @default_user.district_id)
 end
 
 

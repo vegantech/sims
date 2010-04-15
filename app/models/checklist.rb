@@ -84,7 +84,7 @@ class Checklist < ActiveRecord::Base
    end
 
    def missing_checklist_definition?
-     checklist_definition.new_record?  || checklist_definition.blank?
+      checklist_definition.blank?
    end
 
    def self.max_tier

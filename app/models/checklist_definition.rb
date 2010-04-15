@@ -82,7 +82,8 @@ class ChecklistDefinition < ActiveRecord::Base
 
   def before_save
     if active?
-      district.checklist_definitions.active_checklist_definition.try(:update_attribute,:active, false)
+      id_cond="id != #{id}" unless new_record?
+      district.checklist_definitions.update_all('active=false', id_cond)
     end
   end
 

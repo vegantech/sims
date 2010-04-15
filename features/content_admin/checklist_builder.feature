@@ -10,7 +10,7 @@ Feature: Checklist Builder
 
   Scenario: Create Checklist
     When I follow "Add New Checklist Definition"
-    And I fill in "Text" with "This is the text"
+    And I fill in "Title" with "This is the text"
     And I press "Create"
     Then I should see "Directions can't be blank"
     When I fill in "Directions" with "These are the directions"
