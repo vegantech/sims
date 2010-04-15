@@ -18,7 +18,6 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
    
     #move
     @state_checklist = current_district.admin_district.active_checklist_definition
-    @state_checklist = nil if @state_checklist.new_record?
 
 
     respond_to do |format|

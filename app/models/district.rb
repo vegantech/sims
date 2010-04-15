@@ -81,15 +81,15 @@ class District < ActiveRecord::Base
   end
 
   def active_checklist_document
-    active_checklist_definition.document
+    active_checklist_definition.try(:document)
   end
 
   def active_checklist_document?
-    active_checklist_definition.document?
+    active_checklist_definition.try(:document?)
   end
 
   def active_checklist_definition
-    checklist_definitions.find_by_active(true) or state_district.checklist_definitions.find_by_active(true) or ChecklistDefinition.new
+    checklist_definitions.find_by_active(true) or state_district.checklist_definitions.find_by_active(true) 
   end
 
   def recommendation_definitions_with_state

@@ -32,7 +32,6 @@ class ChecklistDefinition < ActiveRecord::Base
   before_validation :clear_document
   validates_presence_of :directions, :text
   acts_as_reportable if defined? Ruport
-  is_paranoid
 
   def save_all!
     save! and
@@ -46,7 +45,7 @@ class ChecklistDefinition < ActiveRecord::Base
   end
 
   def self.active_checklist_definition
-    find_by_active(true)  || ChecklistDefinition.new
+    find_by_active(true)
   end
 
   
@@ -83,7 +82,7 @@ class ChecklistDefinition < ActiveRecord::Base
 
   def before_save
     if active?
-      district.checklist_definitions.active_checklist_definition.update_attribute(:active, false)
+      district.checklist_definitions.active_checklist_definition.try(:update_attribute,:active, false)
     end
   end
 

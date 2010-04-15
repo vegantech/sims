@@ -92,7 +92,7 @@ describe District do
       describe 'without active district definition' do
         it 'should return nil' do
           @ld_cd.update_attribute(:active,false)
-          @local_district.active_checklist_definition.should be_new_record
+          @local_district.active_checklist_definition.should be_nil
         end
       end
     end

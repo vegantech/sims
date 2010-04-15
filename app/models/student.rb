@@ -58,7 +58,7 @@ class Student < ActiveRecord::Base
   validate :unique_id_state_by_state
 
   delegate :state_id, :to => '(district or return nil)'
-  delegate :recommendation_definition, :to => :checklist_definition
+  delegate :recommendation_definition, :to => '(checklist_definition or return nil)'
   acts_as_reportable if defined? Ruport
 
   before_save :nullify_blank_district_student_id
