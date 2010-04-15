@@ -47,7 +47,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :intervention_cluster_id
-  after_save :update_district_quicklist
   is_paranoid
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
   define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
@@ -154,17 +153,6 @@ class InterventionDefinition < ActiveRecord::Base
 
 
   
-  protected
-  def update_district_quicklist
-    return true if intervention_cluster.blank?   #TODO fix delegation
-    if @district_quicklist_arg
-      quicklist_items.create(:district_id=>self.district.id) unless district_quicklist
-    elsif !new_record?
-      g=quicklist_items.find_by_district_id(self.district.id) 
-      g.destroy if g 
-    end
-  end
-
   private
   def deep_clone_parent_field
     'intervention_cluster_id'
