@@ -50,6 +50,11 @@ Intervention-<%=@grouped_progress_entry %>
     </tbody>
   </table>
   <p>
+  <%=link_to_function("Add Participant", :href => '#') {|page| page.insert_html(:top, 'participants_list', :partial => 'new_participant', :locals => {:users => @grouped_progress_entry.staff})} %>
+  </p>
+  <div id="participants_list">
+  </div>
+  <p>
   <%= f.submit 'Add Scores' %> <%=spell_check_button%>
   </p>
 <% end %>

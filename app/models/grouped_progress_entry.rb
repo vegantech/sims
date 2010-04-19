@@ -6,18 +6,19 @@ class GroupedProgressEntry
   end
   def self.all(user, search)
     student_ids=Enrollment.search(search).collect(&:student_id)
-    interventions2(user.id,student_ids).map { |c| new(c,user,student_ids) }
+    interventions2(user.id,student_ids).map { |c| new(c,user,student_ids, search) }
   end
 
   def self.find(user,param,search)
     all(user,search).detect { |l| l.to_param == param } || raise(ActiveRecord::RecordNotFound)
   end
 
-  def initialize(obj,user,student_ids)
+  def initialize(obj,user,student_ids, search={})
     @intervention = obj
     @probe_definition = @intervention.intervention_probe_assignment.probe_definition
     @user=user
     @student_ids =student_ids
+    @school = School.find(search[:school_id])
   end
   
   def to_param
@@ -26,6 +27,10 @@ class GroupedProgressEntry
 
   def to_s
     "#{@intervention.title}"
+  end
+
+  def staff
+     [nil] | @school.assigned_users.collect{|e| [e.fullname, e.id]}
   end
 
   def student_count
@@ -42,9 +47,11 @@ class GroupedProgressEntry
   end
 
   def update_attributes(param)
+    participants = param.delete("participant_user_ids") || []
     param.each do |int_id, int_attr|
       student_interventions.each do |i|
         if i.id.to_s == int_id then
+          int_attr["new_intervention_participant_ids"]= participants.compact.collect(&:to_i).reject(&:zero?)
           i.update_attributes(int_attr)
         end
       end
@@ -78,6 +85,7 @@ class GroupedProgressEntry
       @comment = params['comment']
       @intervention.comment_author=@user.id
       @intervention.comment = {:comment => @comment}
+      @intervention.participant_user_ids |= params['new_intervention_participant_ids']
       begin
         @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
       rescue ArgumentError
@@ -122,8 +130,8 @@ private
                       :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition], 
     :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)  and intervention_probe_assignments.id is not null",id,id],
     :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', 
-    :having => 'count(student_id) > 1', 
-    :select => 'intervention_definitions.title, interventions.id, interventions.intervention_definition_id,probe_definition_id, count(student_id) as student_count'
+    :having => 'count(distinct student_id) > 1', 
+    :select => 'intervention_definitions.title, interventions.id, interventions.intervention_definition_id,probe_definition_id, count(distinct student_id) as student_count'
                      )
   end
 

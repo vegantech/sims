@@ -42,6 +42,7 @@ describe InterventionDefinition do
     end
 
     it 'should assign itself to the quicklist if = "1"' do
+      pending
       k=Factory(:intervention_definition)
       k.district_quicklist.should == false
       k.district_quicklist = "1"

@@ -60,9 +60,10 @@ class InterventionParticipant < ActiveRecord::Base
   protected
 
   def before_create
-    if intervention.created_at == intervention.updated_at 
+    if intervention.created_at == intervention.updated_at     
       @skip_email = true if Time.now - intervention.created_at < 1.second
     end
+      @skip_email ||= caller.to_s.include?("grouped_progress_entry")
   end
 
   def send_new_participant_email
