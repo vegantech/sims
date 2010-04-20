@@ -43,4 +43,17 @@ class GroupedProgressEntriesController < ApplicationController
       :user => current_user)
   end
 
+
+  rescue_from(ActiveRecord::RecordNotFound) do
+    respond_to do |format|
+      format.html do
+        flash[:notice]='Record not found'
+          redirect_to root_url
+      end
+      format.js {render :nothing => true}
+    end
+  end
+
+
+
 end

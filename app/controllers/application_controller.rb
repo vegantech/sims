@@ -152,7 +152,6 @@ class ApplicationController < ActionController::Base
       end
   end
 
-
   rescue_from(ActiveRecord::RecordNotFound) do
     respond_to do |format|
       format.html do
@@ -166,6 +165,7 @@ class ApplicationController < ActionController::Base
       format.js {render :nothing => true}
     end
   end
+
 
   def options_for_microsoft_office_protocol_discovery
     render :nothing => true, :status => 200 if request.method == :options

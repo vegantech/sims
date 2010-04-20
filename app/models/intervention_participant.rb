@@ -64,6 +64,7 @@ class InterventionParticipant < ActiveRecord::Base
       @skip_email = true if Time.now - intervention.created_at < 1.second
     end
       @skip_email ||= caller.to_s.include?("grouped_progress_entry")
+      true
   end
 
   def send_new_participant_email

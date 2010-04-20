@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
   has_many :student_comments
   has_many :intervention_participants
+  has_many :interventions_as_participant, :through => :intervention_participants, :class_name => 'Intervention', :source => :intervention
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
   has_many :team_consultations,:foreign_key => :requestor_id

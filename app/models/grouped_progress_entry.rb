@@ -10,7 +10,7 @@ class GroupedProgressEntry
   end
 
   def self.find(user,param,search)
-    all(user,search).detect { |l| l.to_param == param } || raise(ActiveRecord::RecordNotFound)
+    all(user,search).detect { |l| l.to_param == param } ||  raise(ActiveRecord::RecordNotFound)
   end
 
   def initialize(obj,user,student_ids, search={})
@@ -51,13 +51,18 @@ class GroupedProgressEntry
     param.each do |int_id, int_attr|
       student_interventions.each do |i|
         if i.id.to_s == int_id then
-          int_attr["new_intervention_participant_ids"]= participants.compact.collect(&:to_i).reject(&:zero?)
           i.update_attributes(int_attr)
         end
       end
     end
     if student_interventions.all?(&:valid?)
       student_interventions.each(&:save) 
+      User.find_all_by_id(participants).each do |user|
+        new_intervention_participant = student_interventions.collect(&:id)- user.interventions_as_participant_ids
+        user.interventions_as_participant_ids |= new_intervention_participant
+        user.save
+        Notifications.deliver_intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id)) unless new_intervention_participant.blank?
+      end
       true
     else
       false
@@ -85,7 +90,6 @@ class GroupedProgressEntry
       @comment = params['comment']
       @intervention.comment_author=@user.id
       @intervention.comment = {:comment => @comment}
-      @intervention.participant_user_ids |= params['new_intervention_participant_ids']
       begin
         @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
       rescue ArgumentError
