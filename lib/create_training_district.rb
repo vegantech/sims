@@ -531,5 +531,66 @@ class CreateTrainingDistrict
   
   end
 
+  def self.copy_content_from_district(from,to)
+
+    from.tiers.each {|tier| to.tiers.create!(tier.attributes)}
+    from.goal_definitions.find_all_by_deleted_at(nil).each do |goal_definition|
+      to.goal_definitions.create!(goal_definition.attributes.merge(:copied_from=>goal_definition.id, :copied_at => Time.now)) unless goal_definition.disabled?
+    end
+
+    from.objective_definitions.each do |objective_definition|
+      gd = to.goal_definitions.find_by_copied_from(objective_definition.goal_definition_id)
+      gd.objective_definitions.create!(objective_definition.attributes.merge(:copied_from => objective_definition.id, :copied_at => Time.now)) unless objective_definition.disabled?
+    end
+
+
+    from.intervention_clusters.each do |intervention_cluster|
+      od = to.objective_definitions.find{|e| e.copied_from==intervention_cluster.objective_definition_id}
+      od.intervention_clusters.create!(intervention_cluster.attributes.merge(:copied_from => intervention_cluster.id, :copied_at => Time.now)) unless intervention_cluster.disabled?
+    end
+
+    from.intervention_clusters.collect(&:intervention_definitions).flatten.compact.each do |intervention_definition|
+      tier_id = to.tiers.find_by_position(intervention_definition.tier.position).id
+      ic = to.intervention_clusters.find{|e| e.copied_from==intervention_definition.intervention_cluster_id}
+      ic.intervention_definitions.create!(
+        intervention_definition.attributes.merge(
+          :copied_from => intervention_definition.id, :tier_id => tier_id, :copied_at => Time.now
+      )
+      ) unless (intervention_definition.disabled? or intervention_definition.custom?)
+    end
+
+    from.probe_definitions.find_all_by_active_and_custom(true,false).each do |probe_definition|
+      to.probe_definitions.create!(probe_definition.attributes.merge(:copied_from=>probe_definition.id, :copied_at => Time.now))
+    end
+
+    from.probe_definitions.find_all_by_active_and_custom(true,false).collect(&:probe_definition_benchmarks).flatten.compact.each do |probe_definition_benchmark|
+      pd = to.probe_definitions.find_by_copied_from probe_definition_benchmark.probe_definition_id
+      pd.probe_definition_benchmarks.create!(probe_definition_benchmark.attributes.merge(:copied_from => probe_definition_benchmark.id, :copied_at => Time.now)) if probe_definition_benchmark.valid?
+
+    end
+
+
+    intervention_definitions = to.intervention_clusters.collect(&:intervention_definitions).flatten.compact;nil
+    from.probe_definitions.find_all_by_active_and_custom(true,false).collect(&:recommended_monitors).flatten.compact.each do |recommended_monitor|
+      pd = to.probe_definitions.find_by_copied_from recommended_monitor.probe_definition_id
+      id = intervention_definitions.find{|e| e.copied_from == recommended_monitor.intervention_definition_id}
+      pd.recommended_monitors.create!(recommended_monitor.attributes.merge!(:intervention_definition_id => id.id, :copied_from => recommended_monitor.id, :copied_at => Time.now)) unless id.blank?
+    end;nil
+
+    to.probe_definitions.each do |probe_definition|
+      from.probe_definitions.find(probe_definition.copied_from).assets.each do |asset|
+        probe_definition.assets.create!(:name => asset.name, :url => asset.url, :document => asset.document)
+      end
+    end
+
+
+    to.intervention_clusters.collect(&:intervention_definitions).flatten.compact.each do |intervention_definition|
+      InterventionDefinition.find(intervention_definition.copied_from).assets.each do |asset|
+        intervention_definition.assets.create!(:name => asset.name, :url => asset.url, :document => asset.document)
+      end
+    end
+
+
+  end
  
 end
