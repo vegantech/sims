@@ -27,7 +27,7 @@ describe Tier do
 
   describe 'used_at_all? method' do
     before do
-      Tier.destroy_all
+      Tier.delete_all
       Checklist.destroy_all
       Recommendation.destroy_all
       PrincipalOverride.destroy_all
@@ -91,6 +91,7 @@ describe Tier do
 
   describe 'move_children_to_delete_successor' do
     it 'should be called before destroy' do
+      Tier.delete_all
       t0 = Factory(:tier)
       p1 = create_without_callbacks(Checklist, :tier => t0)
       t0.should_receive(:move_children_to_delete_successor)

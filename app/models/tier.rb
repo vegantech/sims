@@ -62,6 +62,7 @@ class Tier < ActiveRecord::Base
   private
 
   def move_children_to_delete_successor
+    return unless delete_successor
     successor_id = delete_successor.id
     #reflect on all associations
     #update all where options[:foreign_key] = self.id
