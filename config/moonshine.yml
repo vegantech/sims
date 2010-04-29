@@ -21,7 +21,7 @@
 
 # Domain aliases for applaction. One common use of this is for asset hosts.
 :domain_aliases:
-  - *.simspilot.org.org 
+  - *.simspilot.org 
 #  - assets2.sims.managedmachine.com
 
 :ssl:
