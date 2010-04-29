@@ -65,6 +65,7 @@ describe Enrollment do
 
     describe 'with student group' do 
       it 'should return only students in that grade' do
+        Enrollment.delete_all
         e1,e2,e3 = %w{1 2 3}.collect{|i| Enrollment.create! :grade=>i.to_s, :student_id=>99999, :school_id=>999}
         Enrollment.search(:search_type => 'list_all', :grade=>'3').should == [e3]
       end
@@ -212,6 +213,7 @@ describe Enrollment do
 
     describe 'passed flagged_intervention' do
       before do
+        Enrollment.delete_all
         @e1,@e2,@e3,@e4,@e5,@e6 =(1..6).collect do |i|
           s = Factory(:student)
           s.enrollments.create!(:grade=>"1",:school_id=>999)
