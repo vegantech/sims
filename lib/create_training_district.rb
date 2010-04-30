@@ -14,6 +14,7 @@ class CreateTrainingDistrict
     if d.present?
       d.schools.destroy_all
       d.tiers.delete_all
+      d.flag_categories.destroy_all
       d.destroy
     end
     td=wi.districts.create!(:abbrev=>abbrev, :name => abbrev.capitalize)

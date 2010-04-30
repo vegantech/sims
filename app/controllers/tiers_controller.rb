@@ -79,6 +79,13 @@ class TiersController < ApplicationController
   def destroy
     #really_destroy if confirm is true or used_at_all?
     @tier = current_district.tiers.find(params[:id])
+
+    if current_district.tiers.count < 2
+      flash[:notice] = "There should be at least one tier."
+      redirect_to(tiers_url) and return
+
+    end
+    
     if params[:delete_confirmation] or !@tier.used_at_all?
       flash[:notice] = "Records have been moved to the #{@tier.delete_successor} tier" if params[:delete_confirmation]
       @tier.destroy
