@@ -51,6 +51,7 @@
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>
+          <%= render :partial =>'login/whats_new' if show_whats_new%>
       </div>
       <div id="footer">
          <br style="clear:right;"/>

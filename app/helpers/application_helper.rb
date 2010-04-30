@@ -5,6 +5,11 @@ module ApplicationHelper
       help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " ) 
   end
 
+  def show_whats_new
+    ["schools","login", "main"].include? params[:controller] or
+      params[:controller]=="students" && params[:action] == "search"
+  end
+
   def li_link_to(name, options = {}, html_options = {}, *rest)
     content_tag :li,link_to(name,options,html_options)
   end

@@ -22,7 +22,7 @@ class GroupedProgressEntry
   end
   
   def to_param
-    "#{@intervention.id}-#{@intervention.probe_definition_id}"
+    "#{@intervention.intervention_definition_id}-#{@intervention.probe_definition_id}"
   end
 
   def to_s
