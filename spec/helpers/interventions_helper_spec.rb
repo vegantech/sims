@@ -8,11 +8,14 @@ describe InterventionsHelper do
       self.should_receive(:current_district).and_return(mock_district('lock_tier?' => false))
     end
     it 'should have select tag with default blank' do
-      tiered_intervention_definition_select([Factory(:intervention_definition)]).should have_tag("select#intervention_definition_id.fixed_width[onchange=?][name=?]",
+      tier=Tier.create!(:title=>'Tiered Intervention Select')
+      int_def=Factory(:intervention_definition,:tier=>tier)
+      d=tiered_intervention_definition_select([int_def])
+      d.should have_tag("select#intervention_definition_id.fixed_width[onchange=?][name=?]",
         "$('spinnerdefinitions').show();form.onsubmit()" ,'intervention_definition[id]') do
           with_tag("option[value=?]","")
-          with_tag("optgroup[label=?]",Tier.first.to_s) do
-            with_tag("option[value=?]",InterventionDefinition.first.id,:text=>InterventionDefinition.first.title)
+          with_tag("optgroup[label=?]",tier.to_s) do
+            with_tag("option[value=?]",int_def.id,:text=>int_def.title)
           end
         end
   
