@@ -100,6 +100,7 @@ Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |arg1, arg
 end
 
 When /^I import_enrollments_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district|
+  puts Enrollment.all.inspect
   i=ImportCSV.new(filename, @district)
   i.import
   @command_return_val = i.messages.join(", ")

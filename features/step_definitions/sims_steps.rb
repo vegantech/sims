@@ -57,6 +57,11 @@ Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
 end
 
 Given /^I log in as content_builder$/ do
+  District.destroy_all
+  InterventionDefinition.destroy_all
+  GoalDefinition.destroy_all
+  ObjectiveDefinition.destroy_all
+  InterventionCluster.destroy_all
   Factory(:tier)
   Factory(:time_length)
   Factory(:frequency)
@@ -64,6 +69,7 @@ Given /^I log in as content_builder$/ do
   u=create_user "content_builder", "content_builder"
   u.roles = "content_admin"
   u.save!
+  @content_district = u.district
 
   visit '/'
   fill_in 'Login', :with => 'content_builder'
