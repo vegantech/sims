@@ -3,7 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe CreateTrainingDistrict do
   describe 'generate_one class method' do
     before :all do
-      @state=Factory(:state, :abbrev => 'wi')
       @district = CreateTrainingDistrict.generate_one
     end
     it 'should generate a training district' do

@@ -53,7 +53,7 @@ protected
 
   def populate_goals
     find_goal_definition
-    @goal_definitions = current_district.goal_definitions_with_state # not for js
+    @goal_definitions = current_district.goal_definitions # not for js
     @goal_definitions.reject!(&:disabled)
     populate_objectives if @goal_definition
   end
@@ -62,9 +62,9 @@ protected
   def find_goal_definition
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
-        current_district.find_goal_definition_with_state(params[:goal_id] || params[:goal_definition][:id])
-      elsif current_district.goal_definitions_with_state.reject(&:disabled).size == 1
-        current_district.goal_definitions_with_state.first
+        current_district.goal_definitions.find(params[:goal_id] || params[:goal_definition][:id])
+      elsif current_district.goal_definitions.reject(&:disabled).size == 1
+        current_district.goal_definitions.first
       else
         nil
         # intervention definition provided

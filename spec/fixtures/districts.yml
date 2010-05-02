@@ -25,10 +25,8 @@
 wi_mmsd:
   name: Madison Metropolitan School District
   abbrev: MyString
-  state: state_wi
   state_dpi_num: 3269
 
 one:
   name: MyString
   abbrev: MyString
-  state: 

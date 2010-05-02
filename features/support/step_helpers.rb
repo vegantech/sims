@@ -140,8 +140,6 @@ end
 def clear_login_dropdowns
   #School.destroy_all
   District.delete_all
-  State.destroy_all
-  Country.destroy_all 
   @default_district=nil
 end
 

@@ -10,10 +10,10 @@ Feature: From Scratch
     When I fill in "Login" with "district_admin"
     And I fill in "Password" with "district_admin"
     Then I press "Login"
-    Then I follow "Manage Countries"
-    Then I follow "New country"
-    And I fill in "Name" with "United States"
-    And I fill in "abbrev" with "us"
+    Then I follow "Manage Districts"
+    Then I follow "New District"
+    And I fill in "Name" with "Cucumber Pickle"
+    And I fill in "abbrev" with "cp"
     And I press "Create"
 
     Then I follow "Logout"
@@ -21,5 +21,5 @@ Feature: From Scratch
     When I fill in "Login" with "district_admin"
     And I fill in "Password" with "district_admin"
     Then I press "Login"
-    Then I should not see "Manage Countries"
+    Then I should not see "Manage Districts"
 

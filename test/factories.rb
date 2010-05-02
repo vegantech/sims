@@ -22,11 +22,6 @@ end
 Factory.define :consultation_form_concern do |cfc|
 end
 
-Factory.define :country do |c|
-  c.abbrev {Factory.next(:abbrev)}
-  c.name {|c| "#{c} Country"}
-end
-
 Factory.define :user do |u|
   u.username {Factory.next(:username)}
   u.password {|u| u.username}
@@ -86,18 +81,11 @@ end
 Factory.define :district do |d|
   d.abbrev {Factory.next(:abbrev)}
   d.name {|c| "#{c.abbrev} District"}
-  d.association :state
 end
 
 Factory.define :school do |s|
   s.name {"#{Factory.next(:abbrev)} School"}
   s.association :district
-end
-
-Factory.define :state do |s|
-  s.abbrev {Factory.next(:abbrev)}
-  s.name {|c| "#{c} State"}
-  s.association :country
 end
 
 Factory.define :intervention_participant do |ip|

@@ -9,15 +9,14 @@ class CreateTrainingDistrict
   def self.generate_one(num = '')
    
     abbrev = "training#{num}"
-    wi = State.find_by_abbrev('wi')
-    d=wi.districts.find_by_abbrev(abbrev)
+    d=District.find_by_abbrev(abbrev)
     if d.present?
       d.schools.destroy_all
       d.tiers.delete_all
       d.flag_categories.destroy_all
       d.destroy
     end
-    td=wi.districts.create!(:abbrev=>abbrev, :name => abbrev.capitalize)
+    td=District.create!(:abbrev=>abbrev, :name => abbrev.capitalize)
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementry')
 

@@ -5,8 +5,7 @@ class DistrictsController < ApplicationController
 
   # GET /districts
   def index
-    @state = current_district.state
-    @districts = @state.districts.normal
+    @districts = District.normal
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,7 +28,7 @@ class DistrictsController < ApplicationController
 
   # POST /districts
   def create
-    @district = current_district.state.districts.normal.build(params[:district])
+    @district = District.normal.build(params[:district])
 
     respond_to do |format|
       if @district.save
@@ -57,7 +56,7 @@ class DistrictsController < ApplicationController
 
   # DELETE /districts/1
   def destroy
-    @district = current_district.state.districts.normal.find(params[:id])
+    @district = District.normal.find(params[:id])
     @district.destroy
     flash[:notice] = @district.errors[:base]
 

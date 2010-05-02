@@ -15,11 +15,6 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
   def index
     @checklist_definitions = current_district.checklist_definitions
-   
-    #move
-    @state_checklist = current_district.admin_district.active_checklist_definition
-
-
     respond_to do |format|
       format.html
     end
@@ -102,7 +97,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   def new_from_this
 
     @old_checklist_definition = ChecklistDefinition.find(params[:id])
-    districts=[current_district, current_district.admin_district]
+    districts=[current_district, current_district.admin_district].compact
     if districts.include?(@old_checklist_definition.district)
       @new_checklist_definition = @old_checklist_definition.deep_clone
       @new_checklist_definition.district = current_district

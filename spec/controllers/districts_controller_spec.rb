@@ -7,8 +7,8 @@ describe DistrictsController do
   fixtures :districts
 
   before do
-    @district=mock_district(:state=>@state=mock_state, :admin? => true)
-    @state.stub_association!(:districts,:normal => @n=[1,2,3,4,5,6])
+    @district=mock_district(:admin? => true)
+    District.stub!(:normal => @n=[1,2,3,4,5,6])
 
     controller.stub!(:current_district=>@district)
   end

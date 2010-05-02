@@ -30,9 +30,11 @@ describe GoalDefinition do
 
   describe 'deep_clone' do
     before do
+      GoalDefinition.destroy_all
       @goal = Factory(:goal_definition)
-      @admin_district = @goal.district.admin_district
+      @admin_district = District.admin.first || Factory(:district, :admin => true)
       @target_district = @goal.district
+      @admin_district.should_not == @target_district
       @goal.district=@admin_district
       @goal.save!
     end

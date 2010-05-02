@@ -54,10 +54,8 @@ class Student < ActiveRecord::Base
   
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
-  #validates_uniqueness_of :id_state, :allow_nil => true 
-  validate :unique_id_state_by_state
+  validate :unique_id_state
 
-  delegate :state_id, :to => '(district or return nil)'
   delegate :recommendation_definition, :to => '(checklist_definition or return nil)'
   acts_as_reportable if defined? Ruport
 
@@ -242,10 +240,10 @@ class Student < ActiveRecord::Base
     update_attribute(:district_id,nil)
   end
 
-  def unique_id_state_by_state
-    if id_state.present? and state_id.present?
-      other_student = Student.by_state_id_and_id_state(state_id, id_state).first
-      if other_student && other_student != self
+  def unique_id_state
+    if id_state.present?
+      other_student = Student.find_by_id_state(id_state, :conditions => ["district_id != ?",self.district_id])
+      if other_student
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
     end

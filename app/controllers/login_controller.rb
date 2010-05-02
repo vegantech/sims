@@ -47,23 +47,10 @@ class LoginController < ApplicationController
     render :action=>"login"
   end
 
-  def choose_country
-    @country=Country.find(params[:country][:id])
-    if request.subdomains.to_s.match(SUBDOMAIN_MATCH) && @country
-      redirect_to "#{request.protocol}#{@country.abbrev}.#{request.host_with_port}" and return
-    end
-    dropdowns
-    render :action=>"login"
-  end
-
   def choose_state
     @state=State.find(params[:state][:id])
-    @country=@state.country
     if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH) && @state
      state_and_country=[@state.abbrev]
-      if request.subdomains.size == 1 then 
-        state_and_country << @state.country.abbrev
-      end
 
       redirect_to "#{request.protocol}#{state_and_country.join(".")}.#{request.host_with_port}" and return
     end
@@ -96,8 +83,8 @@ private
     return session[:requested_url] if session[:requested_url]
     begin
     if ENABLE_SUBDOMAINS 
-      district_state_and_country = [current_district.abbrev,current_district.state.abbrev, current_district.state.country.abbrev]
-      subdomain = district_state_and_country.join('-') #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
+      district_state = [current_district.abbrev,current_district.state.abbrev]
+      subdomain = district_state.join('-') #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
     end
     return root_url(:subdomain=>subdomain)
     rescue NameError

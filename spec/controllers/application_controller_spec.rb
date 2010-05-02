@@ -108,8 +108,6 @@ describe ApplicationController do
       before do
         controller.stub!(:current_subdomian => 'test')
         controller.stub!(:params).and_return(flash)
-        Country.should_receive(:find_by_abbrev).with('us').and_return(mock_country(:states=>State))
-        State.should_receive(:find_by_abbrev).with('wi').and_return(mock_state(:districts=>District))
         District.should_receive(:find_by_abbrev).with('test').and_return(@d=mock_district)
       end
       

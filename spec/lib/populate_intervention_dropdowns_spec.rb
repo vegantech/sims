@@ -23,7 +23,7 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def current_district
-    @current_district ||= mock_district(:goal_definitions_with_state => [])
+    @current_district ||= mock_district(:goal_definitions => [])
   end
 
   def flash

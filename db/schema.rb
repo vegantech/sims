@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100409224259) do
+ActiveRecord::Schema.define(:version => 20100501180133) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -123,16 +123,6 @@ ActiveRecord::Schema.define(:version => 20100409224259) do
 
   add_index "consultation_forms", ["team_consultation_id"], :name => "index_consultation_forms_on_team_consultation_id"
 
-  create_table "countries", :force => true do |t|
-    t.string   "name"
-    t.string   "abbrev"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "admin",      :default => false
-  end
-
-  add_index "countries", ["abbrev"], :name => "index_countries_on_abbrev"
-
   create_table "district_logs", :force => true do |t|
     t.integer  "district_id"
     t.string   "body"
@@ -146,7 +136,6 @@ ActiveRecord::Schema.define(:version => 20100409224259) do
     t.string   "name"
     t.string   "abbrev"
     t.integer  "state_dpi_num"
-    t.integer  "state_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin",                 :default => false
@@ -159,8 +148,6 @@ ActiveRecord::Schema.define(:version => 20100409224259) do
     t.string   "previous_key",          :default => ""
     t.boolean  "lock_tier",             :default => false
   end
-
-  add_index "districts", ["state_id"], :name => "index_districts_on_state_id"
 
   create_table "element_definitions", :force => true do |t|
     t.integer  "question_definition_id"
@@ -465,16 +452,12 @@ ActiveRecord::Schema.define(:version => 20100409224259) do
     t.boolean  "system"
     t.integer  "district_id"
     t.integer  "school_id"
-    t.integer  "state_id"
-    t.integer  "country_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "news_items", ["country_id"], :name => "index_news_items_on_country_id"
   add_index "news_items", ["district_id"], :name => "index_news_items_on_district_id"
   add_index "news_items", ["school_id"], :name => "index_news_items_on_school_id"
-  add_index "news_items", ["state_id"], :name => "index_news_items_on_state_id"
   add_index "news_items", ["system"], :name => "index_news_items_on_system"
 
   create_table "objective_definitions", :force => true do |t|
@@ -755,17 +738,6 @@ ActiveRecord::Schema.define(:version => 20100409224259) do
   end
 
   add_index "staff_assignments", ["school_id", "user_id"], :name => "index_staff_assignments_on_school_id_and_user_id"
-
-  create_table "states", :force => true do |t|
-    t.string   "name"
-    t.string   "abbrev"
-    t.integer  "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "admin",      :default => false
-  end
-
-  add_index "states", ["country_id"], :name => "index_states_on_country_id"
 
   create_table "student_comments", :force => true do |t|
     t.integer  "student_id"

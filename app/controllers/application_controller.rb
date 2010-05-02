@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
-    :current_student_id, :current_student, :current_district, :current_school, :current_user, :current_state, :current_country
+    :current_student_id, :current_student, :current_district, :current_school, :current_user
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -66,14 +66,6 @@ class ApplicationController < ActionController::Base
     @current_district ||= District.find_by_id(current_district_id) 
   end
 
-  def current_state
-    @current_state ||= current_district.state
-  end
-
-  def current_country
-    @current_country ||= current_state.country
-  end
-
   def authenticate
     subdomains
     redirect_to logout_url() if current_district_id and current_district.blank? 
@@ -127,24 +119,8 @@ class ApplicationController < ActionController::Base
       g=current_subdomain
       s=g.split("-").reverse
       params[:district_abbrev] = s.pop
-      params[:state_abbrev] = s.pop || "wi"
-      params[:country_abbrev] = s.pop || "us"
-    elsif params[:country_abbrev] || params[:state_abbrev] || params[:district_abbrev]
-       params[:state_abbrev] ||=  "wi"
-       params[:country_abbrev] ||=  "us"
-    else
-      return
     end
-
-      @country ||= Country.find_by_abbrev(params[:country_abbrev])
-      if @country
-        @countries=[]
-        @state ||= @country.states.find_by_abbrev(params[:state_abbrev])
-      end
-      if @state
-        @states=[]
-        district = @state.districts.find_by_abbrev(params[:district_abbrev]) 
-      end
+        district = District.find_by_abbrev(params[:district_abbrev]) 
       if district
         redirect_to logout_url and return if current_district and current_district != district
         @districts =[]

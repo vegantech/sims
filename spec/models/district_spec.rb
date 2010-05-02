@@ -25,75 +25,30 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe District do
 
   before(:all) do
-    @local_district = Factory(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
-    @district2 = Factory(:district, :name=>"district_2", :abbrev=>"DIST2", :state => @local_district.state)
-    @state_district = @local_district.state.districts.admin.first
+    @local_district = District.find_by_name("GD_TEST") || Factory(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
+    @district2 = District.find_by_name("district_2") || Factory(:district, :name=>"district_2", :abbrev=>"DIST2")
+    @state_district = District.admin.first ||  Factory(:district, :admin=>true)
   end
   it 'should be valid' do
     Factory.build(:district).should be_valid
   end
 
-  describe 'goal_definitions_for_state' do
-    before(:all) do
-      @marked_sd_gd = Factory(:goal_definition, :district => @state_district)
-      @local_district.marked_state_goal_ids= @marked_sd_gd.id.to_s
-      @local_district.save
-      @unmarked_sd_gd = Factory(:goal_definition, :district => @state_district)
-      @ld_gd = Factory(:goal_definition, :district => @local_district)
-    end
-
-    it 'should find all with our district id' do
-      @local_district.goal_definitions_with_state.should include(@ld_gd)
-    end
-
-    it 'should include only marked goal definitions from state district' do
-      @state_district.goal_definitions.should include(@marked_sd_gd)
-      @local_district.goal_definitions_with_state.should include(@marked_sd_gd)
-      @local_district.goal_definitions_with_state.should_not include(@unmarked_sd_gd)
-    end
-
-  end
-
   describe 'active_checklist_definition method' do
     before(:all) do
-      @sd_cd = Factory(:checklist_definition, :district => @state_district)
+      ChecklistDefinition.delete_all
       @ld_cd = Factory(:checklist_definition, :district => @local_district)
     end
 
-    describe 'with an active state definition' do
-      before do
-        @sd_cd.update_attribute(:active,true)
-      end
-    
-      describe 'with active district definition' do
-        it "should return district's active definition" do
-          @ld_cd.update_attribute(:active,true)
-          @local_district.active_checklist_definition.should == @ld_cd
-        end
-      end
-      describe 'without active district definition' do
-        it "should return state's active definition" do
-          @ld_cd.update_attribute(:active,false)
-          @local_district.active_checklist_definition.should == @sd_cd
-        end
+    describe 'with active district definition' do
+      it "should return district's active definition" do
+        @ld_cd.update_attribute(:active,true)
+        @local_district.active_checklist_definition.should == @ld_cd
       end
     end
-    describe 'without an active state definition' do
-      before do
-        @sd_cd.update_attribute(:active,false)
-      end
-
-      describe 'with active district definition' do
-        it "should return district's active definition" do
-          @ld_cd.update_attribute(:active,true)
-          @local_district.active_checklist_definition.should == @ld_cd
-        end
-      end
-      describe 'without active district definition' do
-        it 'should return nil' do
-          @ld_cd.update_attribute(:active,false)
-          @local_district.active_checklist_definition.should be_nil
-        end
+    describe 'without active district definition' do
+      it 'should return nil' do
+        @ld_cd.update_attribute(:active,false)
+        @local_district.active_checklist_definition.should be_nil
       end
     end
   end
@@ -131,14 +86,16 @@ describe District do
 
   describe 'clone_content_from_admin' do
     it 'should clone the content of its admin district?' do
+      pending
       district = @local_district
+      district.goal_definitions.destroy_all
       admin_district = district.state_district
       gd1 = Factory(:goal_definition, :district=>admin_district)
       od1 = Factory(:objective_definition, :goal_definition => gd1)
 
       district.clone_content_from_admin
 
-      district.goal_definitions.should_not == admin_district.goal_definitions
+      district.goal_definitions.reload.should_not == admin_district.goal_definitions
       district.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
       district.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
 
@@ -158,27 +115,6 @@ describe District do
     it 'should return the state admin district for a leaf (normal) district' do
       @local_district.admin_district.should == @state_district
     end
-
-    it 'should return the country admin district for a state admin district' do
-      country_admin_district = @local_district.country.admin_district
-      @state_district.admin_district.should == country_admin_district
-    end
-
-
-    it 'should return the system admin district for a country admin' do
-      admin_country = Factory(:country, :admin => true)
-      country_admin_district = @state_district.admin_district
-      
-      country_admin_district.admin_district.should == System.admin_district
-
-    end
-    
-    it 'should return nil for the system admin district'  do
-      admin_country = Factory(:country, :admin => true)
-      System.admin_district.admin_district.should be_nil
-    end
-
-
   end
 
   describe 'key validation' do

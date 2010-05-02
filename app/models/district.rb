@@ -7,7 +7,6 @@
 #  name                  :string(255)
 #  abbrev                :string(255)
 #  state_dpi_num         :integer(4)
-#  state_id              :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime
 #  admin                 :boolean(1)
@@ -24,13 +23,13 @@ class District < ActiveRecord::Base
   ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
 
-  belongs_to :state
   has_many :users, :order => :username
   has_many :checklist_definitions
   has_many :flag_categories
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
+  has_many :objective_definitions, :through => :goal_definitions
   has_many :probe_definitions
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
@@ -54,14 +53,12 @@ class District < ActiveRecord::Base
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
-  delegate :country, :to => :state
 
 
   
   validates_presence_of :abbrev,:name
-  validates_uniqueness_of :abbrev,:name, :scope=>:state_id
-  validates_uniqueness_of :admin, :scope=>:state_id, :if=>lambda{|d| d.admin?}  #only 1 admin state per country
-  validates_uniqueness_of :state_id,  :if=>lambda{|d| d.state && d.state.admin?}  #only 1 district per admin state
+  validates_uniqueness_of :abbrev,:name
+  validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate_on_update :check_keys
@@ -89,13 +86,10 @@ class District < ActiveRecord::Base
   end
 
   def active_checklist_definition
-    checklist_definitions.find_by_active(true) or state_district.checklist_definitions.find_by_active(true) 
+    checklist_definitions.find_by_active(true)
   end
 
-  def recommendation_definitions_with_state
-    recommendation_definitions | state_district.recommendation_definitions
-  end
-  
+ 
 
 
   def find_intervention_definition_by_id(id)
@@ -112,21 +106,14 @@ class District < ActiveRecord::Base
   def administers
     if system_admin?
       System
-    elsif country_admin?
-      country
-    elsif admin?
-      state
     else
       self
     end
   end
 
-  def system_admin?
-    country_admin? && country.admin?
-  end
 
-  def country_admin?
-    admin? && state.admin?
+  def system_admin?
+    admin?
   end
 
   def to_s
@@ -166,20 +153,7 @@ class District < ActiveRecord::Base
   end
 
   def state_district
-    @state2||=state.districts.admin.first
-  end
-
-  def goal_definitions_with_state
-    @goal_definitions_with_state ||= GoalDefinition.find_all_by_district_id([self.id,state_district.id],:conditions=>["district_id = ? or (district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.to_s.split(",")], :order => :position)
-  end
-
-  def find_goal_definition_with_state(id2)
-    @goal_definition ||= GoalDefinition.find_by_id_and_district_id(id2,[self.id,state_district.id],:conditions=>["district_id = ? or (district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.to_s.split(",")])
-
-  end
-
-  def objective_definitions
-    @objective_definitions ||= ObjectiveDefinition.find(:all, :joins=>:goal_definition, :conditions =>["goal_definitions.district_id = ? or (goal_definitions.district_id = ? and goal_definitions.id in (?))", self.id,state_district.id, marked_state_goal_ids.to_s.split(",")])
+    @state2||=admin_district
   end
 
   def intervention_clusters  #district only
@@ -206,17 +180,7 @@ class District < ActiveRecord::Base
 
 
   def admin_district
-    if admin?
-      if system_admin?
-        nil
-      elsif country_admin?
-        System.admin_district
-      else
-        country.admin_district
-      end
-    else
-      state.admin_district
-    end
+    District.admin.first
   end
 
   def self.madison

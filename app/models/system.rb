@@ -11,15 +11,17 @@ class System
   end
 
   def self.bootstrap
-    if Country.count == 0
-      Country.create!(:admin=>true,:name=>"System Administration", :abbrev=>:admin)
-      Country.first.admin_district.users.first.update_attribute(:roles,'country_admin')
+    if admin_district.nil?
+      d=District.create(:admin => true, :name => "Administration", :abbrev => :admin)
+      u=d.users.first
+      u.roles=['district_admin','state_admin']
+      u.save!
     end
 
   end
 
   def self.admin_district
-    Country.admin.first.admin_district
+    District.admin.first
   end
 
   def self.cache_key

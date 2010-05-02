@@ -79,7 +79,7 @@ describe TiersController do
     
   end
 
-  describe "PUT udpate" do
+  describe "PUT update" do
     
     describe "with valid params" do
       it "updates the requested tier" do
@@ -128,8 +128,9 @@ describe TiersController do
     describe 'without delete_confirmation or used_at_all?' do
       
       it "destroys the requested tier" do
-        Tier.should_receive(:find).with("37").and_return(mock_tier(:used_at_all? => false))
-        mock_tier.should_receive(:destroy)
+        Tier.should_receive(:count).and_return(2)
+        Tier.should_receive(:find).with("37").and_return(m=mock_tier(:used_at_all? => false))
+        m.should_receive(:destroy)
         delete :destroy, :id => "37"
       end
     
@@ -138,17 +139,28 @@ describe TiersController do
         delete :destroy, :id => "1"
         response.should redirect_to(tiers_url)
       end
+
+      it 'does not destroy the last tier' do 
+        Tier.should_receive(:count).and_return(1)
+        Tier.should_receive(:find).with("37").and_return(m=mock_tier(:used_at_all? => false))
+        m.should_not_receive(:destroy)
+        delete :destroy, :id => "37"
+        flash[:notice].should == 'There should be at least one tier.'
+
+      end
     end
 
     describe 'with delete_confirmation' do
  
       it "destroys the requested tier" do
+        Tier.should_receive(:count).and_return(2)
         Tier.should_receive(:find).with("37").and_return(mock_tier(:used_at_all? => true, :delete_successor => 'e'))
         mock_tier.should_receive(:destroy)
         delete :destroy, :id => "37", :delete_confirmation=>true
       end
     
       it "redirects to the tiers list" do
+        Tier.should_receive(:count).and_return(2)
         Tier.stub!(:find).and_return(mock_tier(:destroy => true, :used_at_all? =>true, :delete_successor=>'e'))
         delete :destroy, :id => "1", :delete_confirmation=>true
         flash[:notice].should =~ /Records have been moved/
@@ -160,12 +172,14 @@ describe TiersController do
     describe 'with used_at_all?' do
   
       it "does not destroys the requested tier" do
+        Tier.should_receive(:count).and_return(2)
         Tier.should_receive(:find).with("37").and_return(mock_tier(:used_at_all? => true, :delete_successor => 'e'))
         mock_tier.should_not_receive(:destroy)
         delete :destroy, :id => "37"
       end
     
       it "redirects to the tiers list" do
+        Tier.should_receive(:count).and_return(2)
         Tier.stub!(:find).and_return(mock_tier(:destroy => true, :used_at_all? =>true, :delete_successor=>'e'))
         delete :destroy, :id => "1"
         flash[:notice].should =~ /Tier in use/

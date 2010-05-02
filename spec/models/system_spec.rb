@@ -11,7 +11,7 @@ describe System do
   end
 
   it 'should have admin district' do
-    f=Factory(:country,:admin=>true)
+    f=District.admin.first || Factory(:district,:admin=>true)
     System.admin_district.should == f.admin_district
 
   end

@@ -4,7 +4,7 @@ Feature: Sims Demo Walkthrough
  
  Scenario: test wi_admin
     Given load demo data
-    When I enter url "http://www.example.com/?district_abbrev=admin&state_abbrev=wi"
+    When I enter url "http://www.example.com/?district_abbrev=admin"
     When I fill in "Login" with "district_admin"
     And I fill in "Password" with "district_admin"
     And I press "Login"

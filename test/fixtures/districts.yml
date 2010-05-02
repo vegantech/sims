@@ -7,7 +7,6 @@
 #  name                  :string(255)
 #  abbrev                :string(255)
 #  state_dpi_num         :integer(4)
-#  state_id              :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime
 #  admin                 :boolean(1)
@@ -25,29 +24,13 @@
 wi_test:
   name: WI Test District
   abbrev: test
-  state: state_wi
 
 wi_admin:
   name: Wisconsin Administration District
   abbrev: admin
-  state: state_wi
   admin: true
 
 wi_mmsd:
   name: Madison Metropolitan School District
   abbrev: mmsd
-  state: state_wi
   state_dpi_num: 3269
-
-
-admin_admin_admin:
-  name: System Administration District
-  abbrev: admin
-  state: admin_admin
-  admin: true
-
-us_admin_admin:
-  name: United States Administration District
-  abbrev: admin
-  state: us_admin
-  admin: true

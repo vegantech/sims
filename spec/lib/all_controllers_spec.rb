@@ -12,7 +12,7 @@ describe AllControllers do
       static_list = %w{ application
         checklist_builder/answers checklist_builder/checklists checklist_builder/elements checklist_builder/questions
         checklists consultation_form_requests consultation_forms
-        countries custom_flags district/flag_categories district/schools district/students district/users districts 
+        custom_flags district/flag_categories district/schools district/students district/users districts 
         file flag_descriptions grouped_progress_entries groups help
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
@@ -22,7 +22,7 @@ describe AllControllers do
         principal_overrides quicklist_items recommendations reports 
         school_teams
         schools scripted spell_check
-        states student_comments students team_consultations tiers 
+        student_comments students team_consultations tiers 
       }
       AllControllers.names.should ==  static_list
     end

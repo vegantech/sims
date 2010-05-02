@@ -12,6 +12,7 @@ describe ChecklistBuilder::ChecklistsController do
 
   it 'should get index' do
     d=Factory(:district)
+    admin = District.admin.first || Factory(:district,:admin=>true)
     controller.stub!(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :index
@@ -72,7 +73,7 @@ describe ChecklistBuilder::ChecklistsController do
 
      it 'should set the flash and not save if the checklist is not available to the current district' do
        d=Factory(:district)
-       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>-1)
+       a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>nil)
        controller.stub!(:current_district).and_return(d)
        post :new_from_this, :id=>a.id
        assigns[:new_checklist_definition].should be_nil
@@ -80,7 +81,7 @@ describe ChecklistBuilder::ChecklistsController do
        response.should redirect_to(checklist_builder_checklists_url)
      end
 
-     it 'should set the flas and save if the old checklist belongs to the district' do
+     it 'should set the flash and save if the old checklist belongs to the district' do
        d=Factory(:district)
        a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>d.id)
        controller.stub!(:current_district).and_return(d)
@@ -91,8 +92,9 @@ describe ChecklistBuilder::ChecklistsController do
 
      end
 
-     it 'should set the flas and save if the old checklist belongs to the state_district' do
+     it 'should set the flashand save if the old checklist belongs to the state_district' do
        d=Factory(:district)
+       admin_district = District.admin.first || Factory(:district, :admin => true)
        a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district_id=>d.admin_district.id)
        controller.stub!(:current_district).and_return(d)
        post :new_from_this, :id=>a.id

@@ -8,8 +8,6 @@
 #  system      :boolean(1)
 #  district_id :integer(4)
 #  school_id   :integer(4)
-#  state_id    :integer(4)
-#  country_id  :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
 #
@@ -17,16 +15,8 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  text: system admin is admin-admin-admin.sims-demo.vegantech.com    (administration is done by district)  This will probably not be used anytime soon, since we expect all our districts to be in the United States (and in Wisconsin)   So far you can just set the system news.   The username is district-admin for all the administration districts.  Once there are more districts, users will see a pulldown unless they go to their appropriate subdomain.
+  text: system admin is admin.sims-open.vegantech.com    (administration is done by district)  This will probably not be used anytime soon, since we expect all our districts to be in the United States (and in Wisconsin)   So far you can just set the system news.   The username is district-admin for all the administration districts.  Once there are more districts, users will see a pulldown unless they go to their appropriate subdomain.
   system: true
-
-two:
-  text: United States admin is admin-admin-us.sims-demo.vegantech.com  
-  country: country_us
-
-three:
-  text: Wisconsin Admin is admin-wi-us.sims-demo.vegantech.com   This is the one most likely to be used in production. 
-  state: state_wi
 
 four:
   text: Test District News Item.
