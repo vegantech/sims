@@ -1,7 +1,7 @@
 <a name="<%= dom_id(checklist_definition,"new_question_definition_errors_anchor") %>">
   <div id="<%= dom_id(checklist_definition,"new_question_definition_errors") %>" style="display:none"></div>
 </a>
-<%- remote_form_for :question_definition,question_definition, :url => checklist_builder_questions_url, :html=>{:id => 'new_question_definition_form', :method => 'wtf'} do |f| -%>
+<%- remote_form_for :question_definition,question_definition, :url => checklist_builder_questions_url, :html=>{:id => 'new_question_definition_form'} do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :question_definition => question_definition } %>
   <p>
     <%= submit_tag "Create" %> |
