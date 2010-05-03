@@ -24,6 +24,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ChecklistDefinition do
   before(:each) do
+    District.delete_all
+    ChecklistDefinition.delete_all
     @district = District.first || Factory(:district)
     @valid_attributes = {
       :text => "value for text",
