@@ -80,7 +80,7 @@ module FlagsHelper
   end
 
   def flag_select
-    Flag::ORDERED_TYPE_KEYS.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}
+   '<div>'+ Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>") + '</div>'
   end
 
   def flag_checkbox(flagtype)
