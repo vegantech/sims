@@ -22,7 +22,6 @@ Groups appear when at least two students with interventions where:
   <tr>
     <td><%= grouped_progress_entry %></td>
     <td><%= grouped_progress_entry.student_count %></td>
-    <td><%= link_to 'Assign Scores', edit_grouped_progress_entry_path(grouped_progress_entry) %></td>
     <td><%= link_to 'View/Print', grouped_progress_entry_path(grouped_progress_entry) %></td>
   </tr>
 <% end %>

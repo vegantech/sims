@@ -17,6 +17,13 @@ class GroupedProgressEntriesController < ApplicationController
     @probe_definition = @grouped_progress_entry.probe_definition
   end
 
+  def show
+    params[:graph]='line'
+    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
+    @intervention = @grouped_progress_entry.intervention
+    @probe_definition = @grouped_progress_entry.probe_definition
+  end
+
   # PUT /grouped_progress_entries/1
   # PUT /grouped_progress_entries/1.xml
   def update

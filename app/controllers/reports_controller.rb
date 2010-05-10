@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary, :user_interventions
+  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary, :user_interventions, :grouped_progress_entry
 
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA
@@ -14,6 +14,13 @@ class ReportsController < ApplicationController
     grade = params[:report_params][:grade] if params[:report_params]
     grade = nil if grade.blank? or grade.include?("*")
     handle_report_postback StudentFlagReport, 'student_flag_summary', :grade => grade, :school => @school
+  end
+
+  def grouped_progress_entry
+    search_criteria=session[:search].merge(
+      :school_id => current_school_id,
+      :user => current_user)
+    @grouped_progress_entries = GroupedProgressEntry.all(current_user,search_criteria)
   end
 
   # interventions for a single student

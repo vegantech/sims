@@ -33,6 +33,7 @@
             <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
           <% end %>
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
+          <%= li_link_to_if_authorized "Grouped Progress Monitors and Comments", '/reports/grouped_progress_entry' %>
       <%  end %>
 
       <li><%= link_to "Change Password", change_password_path %></li>
