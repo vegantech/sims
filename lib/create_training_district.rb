@@ -52,7 +52,7 @@ class CreateTrainingDistrict
     content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
 
     other_team = alpha_elem.school_teams.create!(:name => "Other Team", :contact_ids => [alphaprin.id])
-    td.flag_categories.create!({"category"=>"math", "threshold"=>"30", "existing_asset_attributes"=>{"qqq"=>""}, "new_asset_attributes"=>[{"name"=>"Math Core Practice (training sample link)", "url"=>"#"}]})
+    td.flag_categories.create!({"category"=>"math", "threshold"=>"30", "existing_asset_attributes"=>{"qqq"=>""}, "new_asset_attributes"=>[{"name"=>"Math Core Practices (Madison)", "url"=>"/file/Mathematics_Core_Practices.pdf"}]})
 
     
     self.generate_interventions(td)
