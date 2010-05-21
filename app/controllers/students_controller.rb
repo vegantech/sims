@@ -8,6 +8,12 @@ class StudentsController < ApplicationController
     flash[:notice]="Please Choose a school" and redirect_to schools_url  and return unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
     @students = student_search index_includes=true
+    @flags_above_threshold= 
+      if  session[:search][:search_type] == 'flagged_intervention' 
+        []
+      else
+      current_district.flag_categories.above_threshold(@students.collect(&:student_id))
+      end
 
     respond_to do |format|
       format.html # index.html.erb

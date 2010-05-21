@@ -6,11 +6,15 @@ describe StudentsController do
 
   describe 'get index' do
     it 'should get index when there is a current school and search criteria' do
-      controller.should_receive(:student_search).and_return(['a','b','c'])
+      a=mock_enrollment(:student_id => 1)
+      b=mock_enrollment(:student_id => 2)
+      c=mock_enrollment(:student_id => 3)
+      controller.should_receive(:student_search).and_return([a,b,c])
       controller.should_receive(:current_school_id).and_return(['a','b','c'])
+      controller.should_receive(:current_district).and_return(District.new)
       get :index, {},{:search=>{}}
       response.should be_success
-      assigns(:students).should == ['a','b','c']
+      assigns(:students).should == [a,b,c]
     end
 
     it 'should redirect to school selection if there is none selected' do
