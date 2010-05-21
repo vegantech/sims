@@ -38,6 +38,7 @@ Rails::Initializer.run do |config|
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
   config.gem 'googlecharts'
+  config.gem 'hoptoad_notifier'
 
  # deployment
  config.gem "capistrano", :lib => false
