@@ -18,16 +18,20 @@ Intervention-<%=@grouped_progress_entry %>
 <%= @probe_definition.probe_definition_benchmarks.join('<br /') %>
 
 <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
-  <h3>
-   <%= @student_intervention.student %>
- </h3>
-  <%=@student_intervention.intervention.intervention_probe_assignment.google_line_chart%>
-  <% @student_intervention.intervention.comments.each do |comment| %> 
-    <p><%=h comment %></p>
-  <% end %>
+  <table class="grouped_progress_entry" >
+    <thead>
+      <tr><th> <%= @student_intervention.student %> </th></tr>
+    </thead>
+    <tbody>
+      <tr><td>
+          <%=@student_intervention.intervention.intervention_probe_assignment.google_line_or_bar_chart%>
+          <% @student_intervention.intervention.comments.each do |comment| %> 
+            <p><%=h comment %></p>
+          <% end %>
+      </td></tr>
 
-  <hr>
-
+    </table>
+    <hr />
 <% end %>
 
   

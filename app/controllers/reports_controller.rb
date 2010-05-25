@@ -17,7 +17,7 @@ class ReportsController < ApplicationController
   end
 
   def grouped_progress_entry
-    search_criteria=session[:search].merge(
+    search_criteria=(session[:search] ||{}).merge(
       :school_id => current_school_id,
       :user => current_user)
     @grouped_progress_entries = GroupedProgressEntry.all(current_user,search_criteria)

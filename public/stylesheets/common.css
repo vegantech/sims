@@ -533,3 +533,9 @@ table.intervention_builder th,td {
   padding-right: 15px;
 
 }
+
+
+table.grouped_progress_entry thead {
+  display:table-header-group;
+}
+

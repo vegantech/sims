@@ -73,6 +73,15 @@ class InterventionProbeAssignment < ActiveRecord::Base
     end
   end
 
+  def google_line_or_bar_chart
+    if probes_for_graph.size <2
+      google_bar_chart
+    else
+      google_line_chart
+    end
+
+  end
+
  def google_line_chart
    #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
    return ''if probes_for_graph.empty?
