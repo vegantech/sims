@@ -17,7 +17,8 @@ class ReportsController < ApplicationController
   end
 
   def grouped_progress_entry
-    search_criteria=(session[:search] ||{}).merge(
+    flash[:notice]="You must complete a search first" and redirect_to root_url and return  if session[:search].blank?
+    search_criteria=session[:search].merge(
       :school_id => current_school_id,
       :user => current_user)
     @grouped_progress_entries = GroupedProgressEntry.all(current_user,search_criteria)

@@ -8,13 +8,7 @@ class StudentsController < ApplicationController
     flash[:notice]="Please Choose a school" and redirect_to schools_url  and return unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
     @students = student_search index_includes=true
-    @flags_above_threshold= 
-      if  session[:search][:search_type] == 'flagged_intervention' 
-        []
-      else
-      current_district.flag_categories.above_threshold(@students.collect(&:student_id))
-      end
-
+    @flags_above_threshold= flags_above_threshold
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @students }
@@ -45,6 +39,10 @@ class StudentsController < ApplicationController
     end
     session[:selected_students]= nil
     session[:selected_student]= nil
+
+   @flags_above_threshold= flags_above_threshold
+
+
     render :action=>"index" 
   end
 
@@ -99,6 +97,14 @@ class StudentsController < ApplicationController
   end
 
   private
+
+  def flags_above_threshold
+      if  session[:search][:search_type] == 'flagged_intervention' 
+        []
+      else
+        current_district.flag_categories.above_threshold(@students.collect(&:student_id))
+      end
+  end
 
   def enforce_session_selections
     return true unless params[:id]

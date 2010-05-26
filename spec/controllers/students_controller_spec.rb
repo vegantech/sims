@@ -30,7 +30,8 @@ describe StudentsController do
    describe 'without selected_students' do
       it 'should put error in flash, and rerender students index' do
         controller.should_receive(:student_search).and_return([])
-        get :select
+        controller.should_receive(:flags_above_threshold).and_return([])
+        get :select,{}, {:search=>{}}
 
         session[:selected_students].should be_nil
         flash[:notice].should == 'No students selected'
@@ -45,8 +46,10 @@ describe StudentsController do
         e1.stub_association!(:student,:id=>5)
         e2.stub_association!(:student,:id=>6)
 
+        controller.should_receive(:flags_above_threshold).and_return([])
         controller.should_receive(:student_search).and_return([e1,e2])
-        get :select, :id=>['1','5','6']
+        get :select, {:id=>['1','5','6']}, {:search=>{}}
+
 
       end
       it 'should put error in flash' do
@@ -71,7 +74,8 @@ describe StudentsController do
         e1.stub_association!(:student,:id => "5")
         e2.stub_association!(:student,:id => "16")
         controller.should_receive(:student_search).and_return([e1,e2])
-        get :select, :id => ["5", "16"]
+        get :select, {:id => ["5", "16"]},  {:search=>{}}
+
        end
       
        it 'should set selected_students and selected_student' do
@@ -95,7 +99,7 @@ describe StudentsController do
         e3.stub_association!(:student, :id => '37')
         controller.should_receive(:student_search).and_return([e1,e2,e3])
 
-        get :select, :id => ["5", "16"]
+        get :select, {:id => ["5", "16"]},  {:search=>{}}
         flash[:notice].should_not == 'Unauthorized Student selected'
         session[:selected_students].should == ["5", "16"]
         session[:selected_student].should == "5"
