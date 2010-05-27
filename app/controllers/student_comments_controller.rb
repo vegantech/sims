@@ -29,16 +29,17 @@ class StudentCommentsController < ApplicationController
   def create
     @student_comment = StudentComment.new(params[:student_comment])
     
+    
     respond_to do |format|
       if @student_comment.save
-        format.js 
+        format.js {responds_to_parent {render}}
         format.html { 
           flash[:notice] = 'Team Note was successfully created.'
           redirect_to(current_student) 
          }
         format.xml  { render :xml => @student_comment, :status => :created, :location => @student_comment }
       else
-        format.js { render :action => "new" } 
+        format.js { responds_to_parent{render :action => "new" } }
         format.html { render :action => "new" }
         format.xml  { render :xml => @student_comment.errors, :status => :unprocessable_entity }
       end
@@ -54,11 +55,11 @@ class StudentCommentsController < ApplicationController
     respond_to do |format|
       if @student_comment.save
         flash[:notice] = 'Team Note was successfully updated.'
-        format.js
+        format.js {responds_to_parent {render}}
         format.html { redirect_to(current_student) }
         format.xml  { head :ok }
       else
-        format.js   { render :action => "edit" }
+        format.js   { responds_to_parent{render :action => "edit" } }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @student_comment.errors, :status => :unprocessable_entity }
       end

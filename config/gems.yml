@@ -8,6 +8,7 @@
   :version: ">= 1.0.0"
 - :name: system_timer
 - :name: googlecharts
+- :name: responds_to_parent
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails

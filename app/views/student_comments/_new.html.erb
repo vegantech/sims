@@ -1,4 +1,4 @@
-<% remote_form_for(@student_comment) do |f| %>
+<% form_for(@student_comment, :url=>"/student_comments.js", :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
   <%= render :partial=>f %>
 <% end %>
   
