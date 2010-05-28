@@ -8,6 +8,7 @@
   <b>Note:</b>
   <%=h comment.body %>
 
+  <ul>    <%=links_and_attachments comment ,'li'%> </ul>
   <% if current_user.id == comment.user_id %>
     <br />
         <%= link_to_remote_degrades 'Edit', :url => edit_student_comment_path(comment), :method=> :get %>
