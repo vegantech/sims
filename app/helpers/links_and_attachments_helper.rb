@@ -1,13 +1,13 @@
 module LinksAndAttachmentsHelper
 
-  def add_asset_link(name, parent)
+  def add_asset_link(name, parent, suffix="")
     link_to_function name do |page|
-      page.append_asset_link(parent)
+      page.append_asset_link(parent,suffix)
     end
   end
 
-  def append_asset_link(parent)
-    page.insert_html :bottom, :assets, :partial => 'assets/asset', :object => Asset.new,
+  def append_asset_link(parent,suffix="")
+    page.insert_html :bottom, "assets#{suffix}", :partial => 'assets/asset', :object => Asset.new,
         :locals =>{:parent => parent}
   end
 
