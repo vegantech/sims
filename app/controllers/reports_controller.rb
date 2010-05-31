@@ -38,7 +38,7 @@ class ReportsController < ApplicationController
 
   def student_overall_options
     # present choices for report, maybe merge this in via postback if it seems right. 
-    @opts = [:top_summary, :extended_profile, :flags, :team_notes, :intervention_summary, :checklists_and_or_recommendations, :consultation_forms]
+    @opts = [:top_summary, :extended_profile, :flags, :team_notes, :intervention_summary,:intervention_detail, :checklists_and_or_recommendations, :consultation_forms]
     @student = current_student
     @filetypes = ['html']
     @filetypes << ['pdf'] if defined? PDF::HTMLDoc

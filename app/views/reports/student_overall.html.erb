@@ -30,10 +30,27 @@
     <h3 class="intervention_summary"><span>Active Interventions</span></h3>
     <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.active, :no_action=>true} %>
 
+
     <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
     <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.inactive, :no_action => true} %>
     <% end %>
   <% end %>
+
+  <% subreport_selected @opts[:intervention_detail] do %>
+    <% if @student.interventions.empty? %>
+      Student has no interventions<br/>
+    <% else %>
+    <h2>Interventions</h2>
+    <h3 class="intervention_summary"><span>Active Interventions</span></h3>
+    <%= render :partial => 'interventions/detail', :collection=>@student.interventions.active %>
+
+
+    <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
+    <%= render :partial => 'interventions/detail', :collection=>@student.interventions.inactive %>
+    <% end %>
+  <% end %>
+
+
 
   <% subreport_selected @opts[:checklists_and_or_recommendations] do %>
     <% unless @student.checklists.empty? and @student.recommendations.without_checklist.empty? %>
