@@ -1,7 +1,9 @@
 <% readonly = false if readonly.nil? %> 
 <% custom = flash[:custom_intervention] %>
 <%= form.error_messages %>
-  <p>
+<p>
+
+  <div class ="fake_label">&nbsp;</div>
   <%= links_and_attachments form.object.intervention_definition, :p %>
   </p>
 

@@ -14,6 +14,12 @@
     <%= int_def.hidden_field :intervention_cluster_id %>
     <%= int_def.label :tier_id, "Tier" %> 
     <%= int_def.collection_select(:tier_id, @tiers, :id, :title) %>
-  </p>
+    </p>
+    <p>
+    <div class ="fake_label">&nbsp; </div>
+    <%= render :partial => '/assets/asset_form', :locals => {:form=>int_def, :parent =>'intervention[intervention_definition_attributes]'}  %>
+    </p>
+
+    <br class="brclear"/ >
 <% end %>
 
