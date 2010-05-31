@@ -1,0 +1,69 @@
+--- !ruby/object:Gem::Specification 
+name: responds_to_parent
+version: !ruby/object:Gem::Version 
+  prerelease: false
+  segments: 
+  - 1
+  - 0
+  - 20091013
+  version: 1.0.20091013
+platform: ruby
+authors: []
+
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2010-01-19 00:00:00 +00:00
+default_executable: 
+dependencies: []
+
+description: 
+email: 
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- README
+- Rakefile
+- MIT-LICENSE
+- lib/responds_to_parent.rb
+- lib/responds_to_parent/action_controller.rb
+- lib/responds_to_parent/selector_assertion.rb
+- test/responds_to_parent_test.rb
+- test/assert_select_parent_test.rb
+has_rdoc: true
+homepage: http://github.com/markcatley/responds_to_parent
+licenses: []
+
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      segments: 
+      - 0
+      version: "0"
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      segments: 
+      - 0
+      version: "0"
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.6
+signing_key: 
+specification_version: 3
+summary: "[Rails] Adds 'responds_to_parent' to your controller torespond to the parent document of your page.Make Ajaxy file uploads by posting the form to a hiddeniframe, and respond with RJS to the parent window."
+test_files: []
+
