@@ -23,6 +23,8 @@
 class Student < ActiveRecord::Base
 
   include FullName
+  include LinkAndAttachmentAssets
+
   belongs_to :district
   has_and_belongs_to_many :groups
   has_many :checklists
@@ -70,7 +72,7 @@ class Student < ActiveRecord::Base
   }
 
   def extended_profile?
-    ext_arbitrary.present? || ext_siblings || ext_adult_contacts || ext_test_scores || ext_summary
+    ext_arbitrary.present? || ext_siblings.present? || ext_adult_contacts.present? || ext_test_scores.present? || ext_summary.present? || assets.present?
   end
 
   def extended_profile

@@ -94,3 +94,9 @@
 <%=link_to_function 'Add System Flag' do |page|
   page.insert_html :bottom, :system_flags, :partial => 'system_flag' , :object => SystemFlag.new
 end %>
+
+<p>
+<%= render :partial => 'assets/asset_form', :locals => {:form=>form, :parent =>'student'}  %>
+These will be displayed in the extended profile.  If you'd like to add a student's picture, then just attach it here in the proper size as a jpg, png, or gif.
+</p>
+
