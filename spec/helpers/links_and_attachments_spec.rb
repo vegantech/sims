@@ -39,7 +39,7 @@ describe LinksAndAttachmentsHelper do
     end
 
     it 'should display a link when the object has 1 asset with just a link' do
-      document = mock_object(:original_filename=>"original_filename", :url=>"new_doc_url")
+      document = mock_object(:original_filename=>"original_filename", :url=>"new_doc_url", :content_type=>'blah')
       
       
       empty_asset=mock_asset(:url=>nil, 'document?'=>false)
