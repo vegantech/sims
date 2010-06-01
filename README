@@ -42,6 +42,35 @@ Then point your browser to http://localhost:3000   to see SIMS.
 
 
 
+Production Deployment (without moonshine)
+Once you have it setup for development and have Apache setup
+
+
+sudo gem install passenger
+sudo passenger-install-apache2-module
+
+Modify the apache config files following the onscreen directions.    
+
+
+From your development directory:
+Adjust your mail and server settings in the config/deploy/other.rb
+sudo gem install capistrano capistrano-ext
+cap other deploy:cold
+(You might need to setup the database.yml on the server.   If the deploy cold fails, run RAILS_ENV=production rake db:migrate db:fixtures:load 
+ then run script/runner -e production CreateTrainingDistrict.generate_one  on the server)
+
+cap other deploy:restart
+
+
+
+
+
+
+
+
+
+
+
 
 
 == Making changes to the server
