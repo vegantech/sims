@@ -10,7 +10,6 @@ class Notifications < MailerWithSubdomains
     @district=user.district
     subject    '[SIMS] Email Registration'
     recipients user.email
-    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     
     body       :user=>user
@@ -21,7 +20,6 @@ class Notifications < MailerWithSubdomains
   def principal_override_request(override)
     subject    '[SIMS] Principal Override Request'
     recipients override.student.principals.collect(&:email).join(',')
-    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     @district = override.student.district
     
@@ -31,7 +29,6 @@ class Notifications < MailerWithSubdomains
   def principal_override_response(override)
     subject    "[SIMS] Principal Override #{override.action.capitalize}ed"
     recipients override.teacher.email
-    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     @district = override.student.district
     
@@ -46,7 +43,6 @@ class Notifications < MailerWithSubdomains
 
     recipients  participants.collect(&:email).uniq.join(',')
     subject    '[SIMS]  Student Intervention Starting'
-    from       'SIMS <sims@simspilot.org>'
     sent_on    Time.now
     cc         watcher
     @district = interventions.first.try(:student).try(:district)
@@ -57,7 +53,6 @@ class Notifications < MailerWithSubdomains
   def intervention_ending_reminder(user,interventions, sent_at = Time.now)
     subject    '[SIMS] Student Intervention(s) Ending This Week'
     recipients user.email
-    from       'SIMS <sims@simspilot.org>'
     sent_on    sent_at
     @district = user.district
    
@@ -67,7 +62,6 @@ class Notifications < MailerWithSubdomains
   def intervention_reminder(sent_at = Time.now)
     subject    'Notifications#intervention_reminder'
     recipients ''
-    from       ''
     sent_on    sent_at
     
     body       :greeting => 'Hi,'
@@ -75,7 +69,6 @@ class Notifications < MailerWithSubdomains
 
   def intervention_participant_added(intervention_person)
     subject    '[SIMS]  Student Intervention New Participant'
-    from       'SIMS <sims@simspilot.org>'
                 intervention_person = Array(intervention_person)
                 @intervention_person = intervention_person.first
     recipients @intervention_person.user.email
@@ -90,7 +83,6 @@ class Notifications < MailerWithSubdomains
     @subject = 'SIMS- Checklist Completed'
     @body['recommendation'] = rec  unless rec.blank?
     @body['student']=student
-    @from                     = 'SIMS <shawn@simspilot.org>'
     @headers = {}
 
     @body['user_name']= user_name
@@ -101,7 +93,6 @@ class Notifications < MailerWithSubdomains
 
   def district_upload_results msg, admin_email
     @subject = 'SIMS Upload Results'
-    @from                     = 'SIMS <shawn@simspilot.org>'
     @recipients = admin_email
     @body['msg'] = msg
     
