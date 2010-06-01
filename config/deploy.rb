@@ -38,7 +38,7 @@ task :update_new_relic_name do
 end
 
 task :create_secret do
-  run "cd #{release_path} && rake secret > #{deploy_to}/secret"
+  run "cd #{deploy_to}/current && rake secret > #{deploy_to}/secret"
 end
 
 task :link_secret do
