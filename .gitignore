@@ -5,6 +5,7 @@ tmp/restart.txt
 doc/api
 doc/app
 config/database.yml
+config/secret
 *~
 *.sqlite3
 db/*.sqlite3-journal

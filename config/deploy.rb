@@ -13,8 +13,8 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 
 
-after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name
-after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory
+after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret
+after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory, :create_secret
 
 
 namespace :deploy do
@@ -39,6 +39,14 @@ task :update_new_relic_name do
 
 end
 
+task :create_secret do
+  run "cd #{release_path} && rake secret > #{deploy_to}/secret"
+end
+
+task :link_secret do
+  run "ln -nfs #{deploy_to}/secret #{release_path}/config/secret"
+
+end
 
 task :copy_database_yml do 
   run "cp  #{deploy_to}/database.yml.mysql #{release_path}/config/database.yml"

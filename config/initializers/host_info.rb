@@ -9,9 +9,17 @@ SIMS_PROTO="http"  #change to https when we're using that.
 # If you change this key, all old sessions will become invalid!
 # Make sure the secret is at least 30 characters and all random, 
 # no regular words or you'll be exposed to dictionary attacks.
+#
+#
+secret_file = File.join(RAILS_ROOT,"config","secret")
+if File.exist?(secret_file)
+  secret=File.read(secret_file)
+else
+  secret = '9df9dcab8db4a1ccd72c79b014440d19d31042f8f6bcbec04c6c940c034d1cb210073b5613d0873544133aef0e5c21f197018d9a7ed23afbef31bc52b38c68ad'
+end
 sessionhash= {
-    :key         => '_sims-open_session',
-    :secret      => '9df9dcab8db4a1ccd72c79b014440d19d31042f8f6bcbec04c6c940c034d1cb210073b5613d0873544133aef0e5c21f197018d9a7ed23afbef31bc52b38c68ad'
+    :key         => '_sims-open2_session',
+    :secret      => secret
     }
 
 sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}") if defined? SIMS_DOMAIN
