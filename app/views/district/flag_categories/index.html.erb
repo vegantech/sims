@@ -2,15 +2,16 @@
 
 <table>
   <tr>
-    <th>District</th>
     <th>Category</th>
+    <th>Threshold</th>
+    <th>Documents</th>
   </tr>
 
 <% for flag_category in @flag_categories %>
   <tr>
-    <td><%=h flag_category.district %></td>
-    <td><%=h flag_category.category %></td>
-    <td><%= link_to 'Show', flag_category %></td>
+    <td><%=Flag::FLAGTYPES[flag_category.category][:humanize] %></td>
+    <td><%= flag_category.threshold %> </td>
+    <td><ul><%= links_and_attachments(flag_category, "li") %></ul> </td>
     <td><%= link_to 'Edit', edit_flag_category_path(flag_category) %></td>
     <td><%= link_to 'Delete', flag_category, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

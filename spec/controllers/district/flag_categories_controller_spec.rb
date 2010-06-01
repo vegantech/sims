@@ -36,28 +36,6 @@ describe District::FlagCategoriesController do
 
   end
 
-  describe "responding to GET show" do
-
-    it "should expose the requested flag_category as @flag_category" do
-      FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-      get :show, :id => "37"
-      assigns[:flag_category].should equal(mock_flag_category)
-    end
-    
-    describe "with mime type of xml" do
-
-      it "should render the requested flag_category as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-        mock_flag_category.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
-  end
-
   describe "responding to GET new" do
   
     it "should expose a new flag_category as @flag_category" do
