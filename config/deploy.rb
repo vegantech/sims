@@ -1,4 +1,4 @@
-set :stages, %w(staging production wip pilot2 veg-open open2)
+set :stages, %w(staging production wip pilot2 veg-open open2 other)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
@@ -35,8 +35,6 @@ end
 
 task :update_new_relic_name do
     run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-#{stage}/' newrelic.yml "
-
-
 end
 
 task :create_secret do

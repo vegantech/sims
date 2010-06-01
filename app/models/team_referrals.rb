@@ -4,7 +4,6 @@ class TeamReferrals < MailerWithSubdomains
   def concern_note_created(note, sent_at = Time.now)
     subject    'Team Consultation Form Created'
     recipients note.recipients.collect(&:email).join(",")
-    from       'SIMS <shawn@simspilot.org>'
     sent_on    sent_at
 
     @district = note.student.district
@@ -16,7 +15,6 @@ class TeamReferrals < MailerWithSubdomains
   def gather_information_request(users, student, requestor,sent_at = Time.now)
     subject    'Consultation Form Request'
     recipients users.collect(&:email).uniq.compact.join(",")
-    from       'SIMS <shawn@simspilot.org>'
     sent_on    sent_at
     @district = student.district
     body       :greeting => 'Hi,', :users => users, :student => student , :requestor => requestor
@@ -26,7 +24,6 @@ class TeamReferrals < MailerWithSubdomains
   def concern_note_withdrawn(note, sent_at = Time.now)
     subject    'Team Consultation Form Withdrawn'
     recipients note.recipients.collect(&:email).join(",")
-    from       'SIMS <shawn@simspilot.org>'
     sent_on    sent_at
 
     @district = note.student.district
