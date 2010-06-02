@@ -5,10 +5,13 @@
     <%= content_tag :h2, objective.title %>
     <% objective.intervention_clusters.reject(&:disabled).each do |category| %>
       <% content_tag :h2, category.title %>
-      <% category.intervention_definitions.reject(&:disabled).each do |intervention| %>
-        <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
-        <%= label_tag dom_id(intervention), intervention.title %> 
-<br />
+      <% category.intervention_definitions.reject(&:disabled).group_by(&:tier).sort.each do |tier,interventions| %>
+        <%= content_tag :h3, tier %>
+        <%interventions.each do |intervention| %>
+          <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
+          <%= label_tag dom_id(intervention), intervention.title %> 
+          <br />
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
