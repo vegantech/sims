@@ -20,6 +20,13 @@ Feature: CSV Import of Students
     And there should be "1" student
 
 
+  Scenario: Import students with varying ESL/birthdate to confirm truthiness
+    Given no other students
+    When I import_csv with "test/csv/students/bool/students.csv"
+    Then all students with last name "FALSE" should be "false"
+    Then all students with last name "TRUE" should be "true"
+    
+
   Scenario: Import where student is deleted and have no other tables referencing them
     Given no other students
     Given a student "Ignored Parameter"

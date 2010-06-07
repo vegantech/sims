@@ -1,0 +1,14 @@
+id_state,district_student_id,number,first_name,middle_name,last_name,suffix,birthdate,esl,special_ed
+1,1,"STU##1",NULL,NULL,FALSE,"III",1995-07-02,NULL,NULL
+2,2,"STU##2",true,NULL,TRUE,"III",1995-07-02,true,true
+3,3,"STU##3",TRUE,NULL,TRUE,"III",1995-07-02,TRUE,TRUE
+4,4,"STU##4",True,NULL,TRUE,"III",1995-07-02,True,true
+5,5,"STU##5",True,Quotes,TRUE,"III",1995-07-02,"True","True"
+6,6,"STU##6",1,NULL,TRUE,"III",1995-07-02,1,1
+7,7,"STU##7",Y,NULL,TRUE,"III",1995-07-02,Y,Y
+8,8,"STU##8",yes,NULL,TRUE,"III",1995-07-02,yes,yes
+9,9,"STU##9",t,NULL,TRUE,"III",1995-07-02,t,t
+10,10,"STU##10",-1,NULL,TRUE,"III",1995-07-02,-1,-1
+11,11,"STU##11",0,NULL,FALSE,"III",1995-07-02,0,0
+12,12,"STU##12",BLANK,NULL,FALSE,"III",1995-07-02,"",""
+13,13,"STU##13",EMPTY,NULL,FALSE,"III",1995-07-02,,

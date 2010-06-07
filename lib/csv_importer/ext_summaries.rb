@@ -2,6 +2,40 @@ module CSVImporter
   class ExtSummaries < CSVImporter::Base
   private
 
+
+    def load_data_infile
+      headers=csv_headers
+      headers[-2]="@esl"
+      headers[-2]="@single_parent"
+      <<-EOF
+          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+            INTO TABLE #{temporary_table_name}
+            FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
+            (#{headers.join(", ")})
+            esl= case trim(lower(@esl)) 
+        when 't' then true 
+        when 'y' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end 
+        single_parent= case trim(lower(@single_parent)) 
+        when 't' then true 
+        when 'y' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end ;
+
+        EOF
+    end
+ 
+
     def index_options
       [:district_student_id]
     end

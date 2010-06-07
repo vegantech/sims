@@ -163,3 +163,10 @@ When /^I remove the student and state_id$/ do
   pp Student.all
 end
 
+Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, bool|
+  all=Student.find_all_by_last_name(name)
+    wrong=all.select{|s| s.esl !=eval(bool) || s.special_ed !=eval(bool)}
+    wrong.should == []
+end
+
+

@@ -1,6 +1,27 @@
 module CSVImporter
   class ExtAdultContacts < CSVImporter::Base
   private
+    def load_data_infile
+      headers=csv_headers
+      headers[2]="@guardian"
+      <<-EOF
+          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+            INTO TABLE #{temporary_table_name}
+            FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
+            (#{headers.join(", ")})
+            guardian= case trim(lower(@guardian)) 
+        when 't' then true 
+        when 'y' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end ;
+        EOF
+    end
+ 
 
     def index_options
       [:district_student_id]

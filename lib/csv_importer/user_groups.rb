@@ -4,6 +4,28 @@ module CSVImporter
     #135 with district constrained delete
 
   private
+
+    def load_data_infile
+      headers=csv_headers
+      headers[-1]="@principal"
+      <<-EOF
+          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+            INTO TABLE #{temporary_table_name}
+            FIELDS TERMINATED BY ','
+            OPTIONALLY ENCLOSED BY '"'
+            (#{headers.join(", ")})
+            principal= case trim(lower(@principal)) 
+        when 't' then true 
+        when 'y' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end ;
+        EOF
+    end
+ 
     def index_options
       [[:district_user_id, :district_group_id]]
     end

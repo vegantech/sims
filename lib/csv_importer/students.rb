@@ -15,15 +15,33 @@ module CSVImporter
     def load_data_infile
       headers=csv_headers
       headers[-3]="@birthdate"
+      headers[-1]="@special_ed"
+      headers[-2]="@esl"
       <<-EOF
           LOAD DATA LOCAL INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
-            set birthdate=ifnull(str_to_date(@birthdate,"%Y-%m-%d"),str_to_date(@birthdate,"%m/%d/%Y"))
-            
-            ;
+            set birthdate=ifnull(str_to_date(@birthdate,"%Y-%m-%d"),str_to_date(@birthdate,"%m/%d/%Y")),
+            special_ed= case trim(lower(@special_ed)) 
+        when 't' then true 
+        when 'y' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end,
+        esl = case trim(lower(@esl)) 
+        when 'y' then true 
+        when  't' then true 
+        when 'yes' then true 
+        when 'true' then true 
+        when '-1' then true 
+        when '1' then true 
+        else false 
+        end ;
         EOF
     end
  
@@ -42,7 +60,7 @@ module CSVImporter
 
     def migration t
       @cols = sims_model.columns.inject({}){|hash, col| hash[col.name.to_sym] = col.type; hash}
-      @cols[:special_ed]=:string
+      @cols[:esl]=:string
 
       csv_headers.each do |col|
         t.column col, @cols[col]
@@ -55,8 +73,9 @@ module CSVImporter
 
     def postprocess_uploaded_csv
       to_strip=csv_headers.select{|col| @cols[col] == :string || @cols[col] == :text}
-      s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')},  
-        special_ed = case special_ed when 'Y' then true when 'N' then false when 'n' then false when NULL then NULL else true end"
+      
+      s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')}  "
+      
       
       
       
