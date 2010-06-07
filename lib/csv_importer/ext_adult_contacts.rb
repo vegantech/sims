@@ -10,7 +10,7 @@ module CSVImporter
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
-            guardian= case trim(lower(@guardian)) 
+            set guardian= case trim(lower(@guardian)) 
         when 't' then true 
         when 'y' then true 
         when 'yes' then true 

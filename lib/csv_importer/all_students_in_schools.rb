@@ -12,7 +12,7 @@ module CSVImporter
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
-            principal= case trim(lower(@principal)) 
+            set principal= case trim(lower(@principal)) 
         when 't' then true 
         when 'y' then true 
         when 'yes' then true 

@@ -13,7 +13,7 @@ module CSVImporter
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
-            esl= case trim(lower(@esl)) 
+        set     esl= case trim(lower(@esl)) 
         when 't' then true 
         when 'y' then true 
         when 'yes' then true 
