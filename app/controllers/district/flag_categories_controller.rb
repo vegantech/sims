@@ -10,22 +10,10 @@ class District::FlagCategoriesController < ApplicationController
     end
   end
 
-  # GET /district_flag_categories/1
-  # GET /district_flag_categories/1.xml
-  def show
-    @flag_category = current_district.flag_categories.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @flag_category }
-    end
-  end
-
   # GET /district_flag_categories/new
   # GET /district_flag_categories/new.xml
   def new
     @flag_category = current_district.flag_categories.build
-    @flag_category.assets.build
 
     respond_to do |format|
       format.html # new.html.erb
