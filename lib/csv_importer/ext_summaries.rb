@@ -21,7 +21,7 @@ module CSVImporter
         when '-1' then true 
         when '1' then true 
         else false 
-        end 
+        end ,
         single_parent= case trim(lower(@single_parent)) 
         when 't' then true 
         when 'y' then true 
