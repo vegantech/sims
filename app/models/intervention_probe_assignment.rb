@@ -73,11 +73,11 @@ class InterventionProbeAssignment < ActiveRecord::Base
     end
   end
 
-  def google_line_or_bar_chart
-    if probes_for_graph.size <2
+  def google_line_or_bar_chart graph_type=nil
+    if probes_for_graph.size <2 or graph_type=="bar"
       google_bar_chart
     else
-      google_line_chart
+      google_line_chart or "graph_type"=="line"
     end
 
   end

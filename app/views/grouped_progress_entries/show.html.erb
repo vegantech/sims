@@ -18,6 +18,7 @@ Intervention-<%=@grouped_progress_entry %>
 <%="Benchmarks:" if  @probe_definition.probe_definition_benchmarks.any? %>
 <%= @probe_definition.probe_definition_benchmarks.join('<br />') %>
 
+
 <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
   <table class="grouped_progress_entry" >
     <thead>
@@ -25,7 +26,7 @@ Intervention-<%=@grouped_progress_entry %>
     </thead>
     <tbody>
       <tr><td>
-          <%=@student_intervention.intervention.intervention_probe_assignment.google_line_or_bar_chart%>
+          <%=@student_intervention.intervention.intervention_probe_assignment.google_line_or_bar_chart params[:graph_type]%>
           <% @student_intervention.intervention.comments.each do |comment| %> 
             <p><%=h comment %></p>
           <% end %>
@@ -36,5 +37,8 @@ Intervention-<%=@grouped_progress_entry %>
 <% end %>
 
   
-
+<%= link_to_if params[:graph_type], "Default Graphs", grouped_progress_entry_path(@grouped_progress_entry)  %>
+<%= link_to_unless params[:graph_type] == "bar", "All Bar Graphs", grouped_progress_entry_path(@grouped_progress_entry,:graph_type => 'bar')  %>
+<%= link_to_unless params[:graph_type] == "line", "All Line Graphs", grouped_progress_entry_path(@grouped_progress_entry,:graph_type => 'line')  %>
+<br />
 <%= link_to 'Back', grouped_progress_entries_path %>
