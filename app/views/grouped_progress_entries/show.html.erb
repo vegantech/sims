@@ -15,7 +15,8 @@ Intervention-<%=@grouped_progress_entry %>
 
 <p>Min: <%=@probe_definition.minimum_score %> -  Max: <%=@probe_definition.maximum_score %></p>
 
-<%= @probe_definition.probe_definition_benchmarks.join('<br /') %>
+<%="Benchmarks:" if  @probe_definition.probe_definition_benchmarks.any? %>
+<%= @probe_definition.probe_definition_benchmarks.join('<br />') %>
 
 <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
   <table class="grouped_progress_entry" >
