@@ -1,0 +1,1 @@
+select schoolID as district_school_id, name as name from school
