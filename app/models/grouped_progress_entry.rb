@@ -1,5 +1,5 @@
 class GroupedProgressEntry 
-  attr_accessor :global_date, :intervention, :probe_definition
+  attr_accessor :global_date, :intervention, :probe_definition 
 
   def errors
     []
@@ -67,8 +67,61 @@ class GroupedProgressEntry
     else
       false
     end
-
   end
+    COLORS= [ "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000", 
+        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
+        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0", 
+        "400000", "004000", "000040", "404000", "400040", "004040", "404040", 
+        "200000", "002000", "000020", "202000", "200020", "002020", "202020", 
+        "600000", "006000", "000060", "606000", "600060", "006060", "606060", 
+        "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0", 
+        "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
+
+    
+    def aggregate_chart
+#      probe_scores
+ #       scores, grouped by date?
+      ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
+         @probe_definition.id,
+        :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
+           @intervention.intervention_definition_id])
+
+      students= ipa.collect(&:intervention).collect(&:student).flatten
+      probes = ipa.collect(&:probes)
+      scores=probes.flatten.collect(&:score)
+      dates = probes.flatten.collect(&:administered_at)
+      max_score = scores.max
+      min_score = scores.min
+      min_date = dates.min
+      max_date =dates.max
+
+      scaled_scores=probes.collect do |probe_groups|
+        probe_groups.collect do |probe|
+          100*(probe.score-min_score)/(max_score - min_score + 0.0001)
+        end.join(",") 
+      end.join("|")
+
+
+
+
+  #    student_names
+   #   probe_defintion
+    #  probe_brenchmark
+
+      
+
+      
+      { 'chdl' => students.collect(&:fullname).join("|"),
+        'chco' => COLORS[0..students.size-1].join(","),
+        'cht' => 'lc',
+        'chtt'=> "#{max_score} | #{min_score}",
+        'chs' => '600x500',
+        'chxt'=> 'x',
+        'chd' => "t:#{scaled_scores}"}
+    end
+
+
+  
 
   class ScoreComment
     attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator
