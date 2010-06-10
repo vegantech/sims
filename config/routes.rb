@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :grouped_progress_entries
+  map.resource :chart, :only => :show
+  map.resources :grouped_progress_entries, :member =>{:aggregate => :get }
 
   map.resources :flag_descriptions
 
