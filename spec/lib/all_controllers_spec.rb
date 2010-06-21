@@ -9,7 +9,7 @@ describe AllControllers do
     it 'should list all controller names' do
       # For now I'm testing this is strictly equal.
       # Once we trust it, we could use subset? instead to keep it from breaking ALL the time...
-      static_list = %w{ application charts
+      static_list = %w{ application
         checklist_builder/answers checklist_builder/checklists checklist_builder/elements checklist_builder/questions
         checklists consultation_form_requests consultation_forms
         custom_flags district/flag_categories district/schools district/students district/users districts 
