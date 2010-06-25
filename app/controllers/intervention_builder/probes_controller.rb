@@ -1,8 +1,10 @@
 class InterventionBuilder::ProbesController < ApplicationController
   skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
+  skip_before_filter :verify_authenticity_token, :only => :disable
   additional_read_actions :add_benchmark
 
   def index
+    params[:enabled]=true and params[:commit]=true unless params[:commit]
     @probe_definitions_in_groups =
       current_district.probe_definitions.group_by_cluster_and_objective(params)
 
