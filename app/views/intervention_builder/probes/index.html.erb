@@ -11,6 +11,7 @@
   <%= label_tag 'enabled', 'Enabled'%>
   <%= check_box_tag :disabled, 1,(!params[:commit] || params[:disabled])%>
   <%= label_tag 'disabled', 'Disabled'%>
+  <%=help_popup("Disabled are hidden by default, check the box and hit filter to see them.") %>
   <%= submit_tag 'Filter'%>
 <% end %>
 

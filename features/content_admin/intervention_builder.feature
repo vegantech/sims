@@ -58,15 +58,21 @@ Feature: Intervention Builder
 
     Then I should see "Enabled System"
     Then I should see "Enabled Custom"
+    Then I should not see "Disabled System"
+    Then I should not see "Disabled Custom"
+
+    Then the "Enabled" checkbox should be checked
+    When I check "Disabled"
+    And I press "Filter"
+
+
+    Then I should see "Enabled System"
+    Then I should see "Enabled Custom"
     Then I should see "Disabled System"
     Then I should see "Disabled Custom"
 
-    Then the "Enabled" checkbox should be checked
-    Then the "Disabled" checkbox should be checked
-    Then the "System" checkbox should be checked
-    Then the "Custom" checkbox should be checked
-
     When I uncheck "Custom"
+    When I check "System"
     And I press "Filter"
 
     Then the "Custom" checkbox should not be checked
