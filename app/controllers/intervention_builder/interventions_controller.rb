@@ -1,9 +1,11 @@
 class InterventionBuilder::InterventionsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => :disable
   additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
   # GET /intervention_definitions
   def index
+    params[:enabled]=true and params[:commit]=true unless params[:commit]
     @intervention_definitions = @intervention_cluster.intervention_definitions
 
     #TODO Refactor filter and put in model
