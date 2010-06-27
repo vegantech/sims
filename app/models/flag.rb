@@ -28,6 +28,8 @@ class Flag < ActiveRecord::Base
       "ignored" => {:icon => "I.gif", :humanize => "Ignored"},
       "custom" => {:icon => "C.gif", :humanize => "Custom"}
     }
+  ORDERED_HUMANIZED_ALL=ORDERED_TYPE_KEYS.collect{|e| TYPES[e][:humanize]}
+  ORDERED_HUMANIZED_TYPES=ORDERED_HUMANIZED_ALL[0..-3]
   FLAGTYPES= TYPES.reject{|i,j| i=="custom" || i=="ignored"}
 
   belongs_to :student, :touch => true

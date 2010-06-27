@@ -1,4 +1,5 @@
 class StudentFlagReport < DefaultReport
+  #list of students grouped by flag
   stage :header, :body
   required_option :school
   load_html_csv_text
@@ -63,7 +64,7 @@ class StudentFlags
 
   def to_grouping
     @table ||= to_table
-    sort_lambda = lambda {|g| ["Attendance", "Behavior", "Language Arts", "Math", "Custom Flags", "IgnoreFlags"].index(g.name)  ||999      }
+    sort_lambda = lambda {|g| Flag::ORDERED_HUMANIZED_ALL.index(g.name) || 999 }
     Ruport::Data::Grouping(@table, :by => "FlagType").sort_grouping_by sort_lambda
   end
 end
