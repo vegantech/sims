@@ -34,6 +34,7 @@
           <% end %>
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
           <%= li_link_to_if_authorized "Grouped Progress Monitors and Comments", '/reports/grouped_progress_entry' if session[:search] %>
+          <%= li_link_to_if_authorized "Flagged Students", '/reports/student_flag_summary' if session[:search] %>
       <%  end %>
 
       <li><%= link_to "Change Password", change_password_path %></li>

@@ -8,6 +8,7 @@ describe ReportsController do
     integrate_views
 
     before do
+      pending
       @school = Factory(:school)
       @district = Factory(:district)
       @from_url = request.env["HTTP_REFERER"] = 'http://one_step_back.org'
