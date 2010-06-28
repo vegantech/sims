@@ -23,8 +23,9 @@ class FlagSummary
 
     table.replace_column('user_id') {|r| (User.find_by_id(r['user_id']) || User.new).fullname}
     table.replace_column('updated_at') {|r| (r['updated_at'].to_s(:long))}
+    table.replace_column('category') {|r| Flag::TYPES[r['category']][:humanize]}
 
-    sort_lambda = lambda {|g| ['Attendance', 'Behavior', 'Language Arts', 'Math', 'Custom Flags', 'IgnoreFlags'].index(g.name) || 999 }
+    sort_lambda = lambda {|g| Flag::ORDERED_HUMANIZED_ALL.index(g.name) || 999 }
     table.sort_rows_by sort_lambda
   end
 

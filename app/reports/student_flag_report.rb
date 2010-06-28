@@ -1,6 +1,7 @@
 class StudentFlagReport < DefaultReport
+  #list of students grouped by flag
   stage :header, :body
-  required_option :school
+  required_option :search
   load_html_csv_text
   
   def setup
@@ -24,30 +25,46 @@ end
 class StudentFlags
 
   def initialize(options = {})
-    @school = School.find(options[:school])
-    @grade = options[:grade]
+    @search=options[:search]
+    @search[:search_type]='flagged_intervention'
+    @search[:flagged_intervention_types]=[]
+
   end
 
   def to_table
-    grade = @grade
     return unless defined? Ruport
     
     srt = Ruport::Data::Table(["Name", "Student Num", "Grade", "Flag Reason", "FlagType"])
+    students = Enrollment.search(@search).collect(&:student)
+    students.each do |student|
+      student.flags.current.each do |flagtype,flags|
+        srt <<  [student.fullname, student.number, student.enrollments.first.grade, flags.collect(&:summary).join(" "),Flag::TYPES[flagtype][:humanize]]
+      end
+    end
+
+    @search[:flagged_intervention_types]=['ignored']
+    students = Enrollment.search(@search).collect(&:student)
+    students.each do |student|
+        srt <<  [student.fullname, student.number, student.enrollments.first.grade, student.ignore_flags.summary,"Ignored Flags"]
+    end
+
+
+
+    @search[:flagged_intervention_types]=['custom']
+    students = Enrollment.search(@search).collect(&:student)
+    students.each do |student|
+        srt <<  [student.fullname, student.number, student.enrollments.first.grade, student.custom_flags.summary,"Custom Flags"]
+    end
+
+
+
 
     #This hasn't been ported yet,  there's mo person_id in open sims.
     return srt  #Remove this return
 =begin    ### BEGIN INVALID CODE
     puts "ADD Grade to HEADER " if grade
     opts = ["fullname", "studentNum"]
-    opts << "grade" unless grade
-    # h = {:conditions => ["grade=?",grade]} if grade
     students = @school.students.find_flagged_students.select{|e| e.person_id if grade.blank? || e.grade == grade }
-
-    students.each do |student|
-      student.flags.current.each do |flagtype,flags|
-        srt <<  [student.fullname, student.studentNum, student.grade, flags.collect(&:summary).join(" "),Flag::TYPES[flagtype][:humanize]]
-      end
-    end
 
 
     
@@ -63,7 +80,7 @@ class StudentFlags
 
   def to_grouping
     @table ||= to_table
-    sort_lambda = lambda {|g| ["Attendance", "Behavior", "Language Arts", "Math", "Custom Flags", "IgnoreFlags"].index(g.name)  ||999      }
+    sort_lambda = lambda {|g| Flag::ORDERED_HUMANIZED_ALL.index(g.name) || 999 }
     Ruport::Data::Grouping(@table, :by => "FlagType").sort_grouping_by sort_lambda
   end
 end

@@ -14,10 +14,10 @@ describe StudentFlagReport do
       @student.system_flags.create!(:category=>"attendance", :reason=>"Attendance rate of 25%")
 
      
-      report_body = StudentFlagReport.render_text(:school => @school, :grade=>"3")
 
 
       pending 'This really is not implemented properly yet'
+      report_body = StudentFlagReport.render_text(:school => @school, :grade=>"3")
       report_body = StudentFlagReport.render_text(:school => @school, :grade=>"3")
 
       report_body.should == <<EOS
