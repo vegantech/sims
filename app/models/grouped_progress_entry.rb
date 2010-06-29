@@ -1,5 +1,6 @@
 class GroupedProgressEntry 
   attr_accessor :global_date, :intervention, :probe_definition 
+  NUMBER_OF_STUDENTS_ON_GRAPH=15
 
   def errors
     []
@@ -77,8 +78,17 @@ class GroupedProgressEntry
         "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0", 
         "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
 
+
+    def student_count
+      ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
+         @probe_definition.id,
+        :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
+           @intervention.intervention_definition_id])
+
+     ipa.size
+    end
     
-    def aggregate_chart
+    def aggregate_chart(page=0)
 #      probe_scores
  #       scores, grouped by date?
       ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
@@ -94,6 +104,14 @@ class GroupedProgressEntry
       min_score = scores.min
       min_date = dates.min
       max_date =dates.max
+
+      group_size=ipa.size/(ipa.size.to_f/NUMBER_OF_STUDENTS_ON_GRAPH).ceil
+      low=page.to_i*group_size
+      high =low+group_size -1
+
+      probes=probes[low..high]
+      students=students[low..high]
+
 
       scaled_scores=probes.collect do |probe_groups|
         probe_groups.collect do |probe|
@@ -112,7 +130,7 @@ class GroupedProgressEntry
 
       
       { 'chdl' => students.collect(&:fullname).join("|"),
-        'chco' => COLORS[0..students.size-1].join(","),
+        'chco' => COLORS[low..high].join(","),
         'cht' => 'lc',
         'chtt'=> "#{max_score} | #{min_score}",
         'chs' => '600x500',

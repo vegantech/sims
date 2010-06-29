@@ -1,3 +1,10 @@
-<div id ='aggregate_graph'>
-  <%=image_tag(aggregate_grouped_progress_entry_path(@grouped_progress_entry)) %>
+<%= link_to_function "Show Aggregate Graph" do |page| 
+   page[:aggregate_graph].show 
+end %>
+<br />
+<div style="display:none" id ='aggregate_graph'>
+
+  <% (@grouped_progress_entry.student_count.to_f/GroupedProgressEntry::NUMBER_OF_STUDENTS_ON_GRAPH).ceil.times do |t| %>
+    <%=image_tag(aggregate_grouped_progress_entry_path(@grouped_progress_entry,:page=>t)) %> <br />
+ <% end %>
 </div>
