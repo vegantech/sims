@@ -35,7 +35,7 @@ class StudentFlags
     return unless defined? Ruport
     
     srt = Ruport::Data::Table(["Name", "Student Num", "Grade", "Flag Reason", "FlagType"])
-    students = Enrollment.search(@search).collect(&:student)
+    students = Enrollment.search(@search).collect(&:student).compact.uniq
     students.each do |student|
       student.flags.current.each do |flagtype,flags|
         srt <<  [student.fullname, student.number, student.enrollments.first.grade, flags.collect(&:summary).join(" "),Flag::TYPES[flagtype][:humanize]]
@@ -43,7 +43,7 @@ class StudentFlags
     end
 
     @search[:flagged_intervention_types]=['ignored']
-    students = Enrollment.search(@search).collect(&:student)
+    students = Enrollment.search(@search).collect(&:student).compact.uniq
     students.each do |student|
         srt <<  [student.fullname, student.number, student.enrollments.first.grade, student.ignore_flags.summary,"Ignored Flags"]
     end
@@ -51,7 +51,7 @@ class StudentFlags
 
 
     @search[:flagged_intervention_types]=['custom']
-    students = Enrollment.search(@search).collect(&:student)
+    students = Enrollment.search(@search).collect(&:student).compact.uniq
     students.each do |student|
         srt <<  [student.fullname, student.number, student.enrollments.first.grade, student.custom_flags.summary,"Custom Flags"]
     end
