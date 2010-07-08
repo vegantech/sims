@@ -18,7 +18,7 @@ class CreateTrainingDistrict
     td = create_with_schools_and_users(abbrev,name)
     self.generate_interventions(td, district_dir)
     self.generate_checklist_definition(td)
-
+    td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
   end
 
   
