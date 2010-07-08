@@ -3,20 +3,37 @@ class CreateTrainingDistrict
   def self.generate
     generate_one
     2.upto(20){ |i| generate_one(i.to_s)}
+    generate_named_districts
 
   end
 
-  def self.generate_one(num = '')
-   
-    abbrev = "training#{num}"
+  def self.generate_named_districts
+    Dir.glob(File.join(RAILS_ROOT,"public","system", "district_demo_content","*")).each {|d| generate_named_district d}
+  end
+
+  def self.generate_named_district district_dir
+    abbrev=File.basename(district_dir)
+    name = "z #{abbrev} Content"
+    destroy_district abbrev
+    td = create_with_schools_and_users(abbrev,name)
+    self.generate_interventions(td, district_dir)
+    self.generate_checklist_definition(td)
+    td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
+  end
+
+  
+  def self.destroy_district abbrev
     d=District.find_by_abbrev(abbrev)
-    if d.present?
+     if d.present?
       d.schools.destroy_all
       d.tiers.delete_all
       d.flag_categories.destroy_all
       d.destroy
     end
-    td=District.create!(:abbrev=>abbrev, :name => abbrev.capitalize)
+  end
+
+  def self.create_with_schools_and_users(abbrev,name)
+    td=District.create!(:abbrev=>abbrev, :name =>name)
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementry')
 
@@ -54,88 +71,121 @@ class CreateTrainingDistrict
     other_team = alpha_elem.school_teams.create!(:name => "Other Team", :contact_ids => [alphaprin.id])
     td.flag_categories.create!({"category"=>"math", "threshold"=>"30", "existing_asset_attributes"=>{"qqq"=>""}, "new_asset_attributes"=>[{"name"=>"Math Core Practices (Madison)", "url"=>"/file/Mathematics_Core_Practices.pdf"}]})
 
-    
-    self.generate_interventions(td)
-    self.generate_checklist_definition(td)
-
     Role.add_users "regular_user", [alphaprin,oneschool]
     Role.add_users "school_admin", alphaprin
     Role.add_users "content_admin",  content_admin
 
     self.generate_students(td, alpha_elem, training_homeroom)
     self.generate_other_students(td,alpha_elem, other_homeroom)
+
     td
+  end
+
+  def self.generate_one(num = '')
+   
+    abbrev = "training#{num}"
+    name = abbrev.capitalize
+    destroy_district abbrev
+    td=create_with_schools_and_users(abbrev,name)
+
+   
+    self.generate_interventions(td)
+    self.generate_checklist_definition(td)
+
+   td
     
   end
 
-  def self.generate_interventions(district)
+  def self.generate_interventions(district,path="db/training")
     goalhash = {}
     objectivehash = {}
     clusterhash = {}
     definitionhash = {}
     probe_hash = {}
-    
-    oldtiers=[781074649, 781074650, 781074651]
 
-    tier = district.tiers.create!(:title=>'First tier')
-    second_tier = district.tiers.create!(:title=>'Second tier')
-    third_tier = district.tiers.create!(:title=>'Third tier')
+    if File.exist?(File.join(path,"tiers.csv")) 
+      oldtiers = 
+      tier_csv=FasterCSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
+      oldtiers=tier_csv.collect{|t| t[:id]}
+      tiers=[]
+      tier_csv.each do |ck|
+        ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+        tiers <<  district.tiers.create!(ckhash)
+      end
+      
+    else
+      oldtiers=[781074649, 781074650, 781074651]
+      tier = district.tiers.create!(:title=>'First tier')
+      second_tier = district.tiers.create!(:title=>'Second tier')
+      third_tier = district.tiers.create!(:title=>'Third tier')
+      tiers = [tier,second_tier,third_tier]
+    end
+
     
-    FasterCSV.table("db/training/goal_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/goal_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       newcd= district.goal_definitions.create!(ckhash)
       goalhash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/objective_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/objective_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
       newcd= ObjectiveDefinition.create!(ckhash)
       objectivehash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/intervention_clusters.csv").each do |ck|
+    FasterCSV.table("#{path}/intervention_clusters.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
       newcd= InterventionCluster.create!(ckhash)
       clusterhash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/intervention_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/intervention_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
-      mytier = [tier.id,second_tier.id,third_tier.id][oldtiers.index(ck[:tier_id].to_i)] || tier
-      unless ckhash[:disabled]
+      mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
+      unless ckhash[:disabled] or ckhash[:custom]
         newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier)) 
         definitionhash[ck[:id]]=newcd.id
       end
     end
 
 
-    FasterCSV.table("db/training/probe_definitions_monitors.csv").each do |ck|
+    
+    if File.exist?("#{path}/probe_definitions_monitors.csv")
+      pdf="#{path}/probe_definitions_monitors.csv"
+    else
+      pdf = "#{path}/probe_definitions.csv"
+    end
+
+    FasterCSV.table(pdf).each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      if ckhash[:active]
+      if ckhash[:active] and !ckhash[:custom]
         newcd= district.probe_definitions.create!(ckhash)
         probe_hash[ck[:id]]=newcd.id
       end
     end
 
-    FasterCSV.table("db/training/recommended_monitors.csv").each do |ck|
+    FasterCSV.table("#{path}/recommended_monitors.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
       newcd= RecommendedMonitor.create!(ckhash) 
     end
 
-    FasterCSV.table("db/training/probe_definition_benchmarks.csv").each do |ck|
+    FasterCSV.table("#{path}/probe_definition_benchmarks.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-      newcd= ProbeDefinitionBenchmark.create!(ckhash) 
+      
+      newcd= ProbeDefinitionBenchmark.new(ckhash) 
+      newcd.save! if newcd.valid?
     end
 
 
 
-    FasterCSV.table("db/training/assets.csv").each do |ck|
+    FasterCSV.table("#{path}/assets.csv").each do |ck|
       
       old_id = ck[:attachable_id]
       case ck[:attachable_type]
@@ -147,7 +197,7 @@ class CreateTrainingDistrict
         newid = nil
       end
 
-      if ck[:url].include?("/")
+      if ck[:url].to_s.include?("/")
         url = ck[:url]
       else
         url = "/file/#{ck[:url]}"
@@ -164,12 +214,12 @@ class CreateTrainingDistrict
 
   end
 
-  def self.generate_checklist_definition(district)
+  def self.generate_checklist_definition(district, path="db/training")
     checklisthash = {}
     questionhash = {}
     elementhash = {}
     
-    FasterCSV.table("db/training/checklist_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/checklist_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:active]=!!district.abbrev.match(/^training/)
       
@@ -177,21 +227,21 @@ class CreateTrainingDistrict
       checklisthash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/question_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/question_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:checklist_definition_id]= checklisthash[ck[:checklist_definition_id]]
       newcd= QuestionDefinition.create!(ckhash)
       questionhash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/element_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/element_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:question_definition_id]= questionhash[ck[:question_definition_id]]
       newcd= ElementDefinition.create!(ckhash)
       elementhash[ck[:id]]=newcd.id
     end
 
-    FasterCSV.table("db/training/answer_definitions.csv").each do |ck|
+    FasterCSV.table("#{path}/answer_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:value] ||=0
       ckhash[:element_definition_id]= elementhash[ck[:element_definition_id]]

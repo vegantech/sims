@@ -17,47 +17,6 @@ describe CreateInterventionPdfs do
     end
   end
 
-  describe 'run_weekly' do
-    it 'should call reset_demo if SIMS_DOMAIN is sims-open.vegantech.com' do
-      DailyJobs.should_receive(:reset_demo)
-      ::SIMS_DOMAIN="sims-open.vegantech.com"
-      oldenv = ENV['RESET_DEMO']
-      ENV['RESET_DEMO']='true'
-      DailyJobs.run_weekly
-      ENV['RESET_DEMO'] = oldenv
-    end
 
-    it 'should not call reset_demo if SIMS_DOMAIN is unset or not sims-open.vegantech.com' do
-      DailyJobs.should_not_receive(:reset_demo)
-      Object.send(:remove_const,:SIMS_DOMAIN) if defined?SIMS_DOMAIN
-      DailyJobs.run_weekly
-      SIMS_DOMAIN="something.vegantech.com"
-      DailyJobs.run_weekly
-      oldenv = ENV['RESET_DEMO']
-      ENV['RESET_DEMO']=nil
-      SIMS_DOMAIN="sims_open.vegantech.com"
-      DailyJobs.run_weekly
-      ENV['RESET_DEMO'] = oldenv
-
-    end
-  end
-
-  describe 'reset_demo' do
-    it 'should destroy all user created data' do
-      oldenv = ENV['RESET_DEMO']
-      ENV['RESET_DEMO']='true'
-      Intervention.should_receive(:destroy_all)
-      CustomFlag.should_receive(:destroy_all)
-      Checklist.should_receive(:destroy_all)
-      Recommendation.should_receive(:destroy_all)
-      PrincipalOverride.should_receive(:destroy_all)
-      StudentComment.should_receive(:destroy_all)
-      RailmailDelivery.should_receive(:destroy_all) if defined?RailmailDelivery
-      DailyJobs.reset_demo
-      ENV['RESET_DEMO'] = oldenv
-    end
-
-
-  end
 end
 

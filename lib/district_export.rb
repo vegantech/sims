@@ -27,6 +27,7 @@ class DistrictExport
     self.generate_csv(dir,district,'answer_definitions', AnswerDefinition.column_names.join(","), "inner join element_definitions on element_definitions.id = answer_definitions.element_definition_id inner join question_definitions on question_definitions.id = element_definitions.question_definition_id inner join checklist_definitions on checklist_definitions.id = question_definitions.checklist_definition_id and checklist_definitions.district_id = #{district.id}")
     
 
+    self.generate_csv(dir,district,'tiers', Tier.column_names.join(","))
     self.generate_csv(dir,district,'goal_definitions', GoalDefinition.column_names.join(","))
     self.generate_csv(dir,district,'objective_definitions', ObjectiveDefinition.column_names.join(","), "inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
     self.generate_csv(dir,district,'intervention_clusters', InterventionCluster.column_names.join(","), "inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
