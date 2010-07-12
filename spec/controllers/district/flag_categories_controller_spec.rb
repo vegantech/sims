@@ -68,10 +68,9 @@ describe District::FlagCategoriesController do
       end
 
       it "should redirect to the created flag_category" do
-        pending
         FlagCategory.stub!(:build).and_return(mock_flag_category(:save => true))
         post :create, :flag_category => {}
-        response.should redirect_to(mock_flag_category)
+        response.should redirect_to(flag_categories_url)
       end
       
     end
@@ -111,10 +110,9 @@ describe District::FlagCategoriesController do
       end
 
       it "should redirect to the flag_category" do
-        pending
         FlagCategory.stub!(:find).and_return(mock_flag_category(:update_attributes => true))
         put :update, :id => "1", :flag_category => {:these => 'params'}
-        response.should redirect_to(mock_flag_category)
+        response.should redirect_to(flag_categories_url)
       end
 
     end

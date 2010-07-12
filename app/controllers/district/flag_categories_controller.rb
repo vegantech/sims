@@ -34,7 +34,7 @@ class District::FlagCategoriesController < ApplicationController
     respond_to do |format|
       if @flag_category.save
         flash[:notice] = 'FlagCategory was successfully created.'
-        format.html { redirect_to(@flag_category) }
+        format.html { redirect_to(flag_categories_url) }
         format.xml  { render :xml => @flag_category, :status => :created, :location => @flag_category }
       else
         format.html { render :action => "new" }
@@ -52,7 +52,7 @@ class District::FlagCategoriesController < ApplicationController
     respond_to do |format|
       if @flag_category.update_attributes(params[:flag_category])
         flash[:notice] = 'FlagCategory was successfully updated.'
-        format.html { redirect_to(@flag_category) }
+        format.html { redirect_to(flag_categories_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

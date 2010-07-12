@@ -20,6 +20,17 @@ describe InterventionsController do
     controller.stub_association!(:current_district, :tiers=>[mock_tier])
   end
 
+  describe 'index' do
+    #LH 464
+    it 'should redirect to the root_url' do
+      get :index
+      response.should redirect_to(root_url)
+
+    end
+
+
+  end
+
   describe 'find_intervention' do
     it 'should redirect to current_student if the intervention cannot be found' do
       @interventions.stub!(:find=>nil)
@@ -222,5 +233,17 @@ describe InterventionsController do
       put :end, :id => @intervention.id
       response.should redirect_to(student_url(@student))
     end
+  end
+
+  describe 'quicklist_options' do
+    it 'should return an empty array when school is nil' do
+      #LH 462
+      controller.stub!(:current_school=>nil)
+      get :quicklist_options
+      assigns(:quicklist_intervention_definitions).should be_empty
+    end
+
+    it 'should return an array of interventions for a school'
+
   end
 end

@@ -1,5 +1,7 @@
 class GroupedProgressEntriesController < ApplicationController
   additional_read_actions :aggregate
+  before_filter :confirm_search
+  
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
@@ -61,11 +63,16 @@ class GroupedProgressEntriesController < ApplicationController
       :user => current_user)
   end
 
+  def confirm_search
+    flash[:notice]="You must complete a search first" and redirect_to root_url and return false  if session[:search].blank?
+    true
+  end
+
 
   rescue_from(ActiveRecord::RecordNotFound) do
     respond_to do |format|
       format.html do
-        flash[:notice]='Record not found'
+        flash[:notice]='Record not found try redoing the search'
           redirect_to root_url
       end
       format.js {render :nothing => true}
