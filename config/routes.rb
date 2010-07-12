@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.doc '/doc/', :controller => 'doc'
   map.resources :grouped_progress_entries, :member =>{:aggregate => :get }
 
   map.resources :flag_descriptions
