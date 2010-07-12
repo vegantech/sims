@@ -1,6 +1,6 @@
 <% content_tag_for :tr, team_consultation  do %>
   <td> <%= team_consultation.school_team %> </td>
-  <td> <%= team_consultation.recipients.join(",") %> </td>
+  <td> <%= team_consultation.recipients.join(", ") %> </td>
   <td> <%= team_consultation.requestor %> </td>
   <td> <%= team_consultation.created_at.to_date %> </td>
   <% if team_consultation.complete? %>

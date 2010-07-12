@@ -5,6 +5,10 @@ class InterventionsController < ApplicationController
 
   include PopulateInterventionDropdowns
 
+#  def index
+#    redirect_to root_url
+#  end
+
   # GET /interventions/1
   def show
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first
@@ -109,7 +113,8 @@ class InterventionsController < ApplicationController
 
 
   def quicklist_options
-    @quicklist_intervention_definitions = current_school.quicklist.reject(&:disabled)
+
+    @quicklist_intervention_definitions = (current_school || School.new).quicklist.reject(&:disabled)
     respond_to do |format|
       format.js
       format.html

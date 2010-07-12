@@ -22,17 +22,26 @@ describe GroupedProgressEntriesController do
   end
   
   describe "GET index" do
-    it "assigns all grouped_progress_entries as @grouped_progress_entries" do
+    it "assigns all grouped_progress_entries as @grouped_progress_entries when search is present" do
       GroupedProgressEntry.should_receive(:all).with(current_user,search_criteria).and_return([mock_grouped_progress_entry])
-      get :index
+      get :index,{},{:search => true}
+      pending
 #      assigns[:grouped_progress_entries].should == [mock_grouped_progress_entry]
     end
+
+    it "redirects when search is absent" do
+      GroupedProgressEntry.should_not_receive(:all).with(current_user,search_criteria).and_return([mock_grouped_progress_entry])
+      get :index,{},{}
+      response.should redirect_to(root_url)
+      flash[:notice].should == "You must complete a search first"
+    end
+ 
   end
 
   describe "GET edit" do
     it "assigns the requested grouped_progress_entry as @grouped_progress_entry" do
       GroupedProgressEntry.should_receive(:find).with(current_user,"37",search_criteria ).and_return(mock_grouped_progress_entry)
-      get :edit, :id => "37"
+      get :edit, {:id => "37"},{:search => true}
       assigns[:grouped_progress_entry].should equal(mock_grouped_progress_entry)
       response.should render_template(:edit)
     end
@@ -44,18 +53,19 @@ describe GroupedProgressEntriesController do
       it "updates the requested grouped_progress_entry" do
         GroupedProgressEntry.should_receive(:find).with(current_user,"37",search_criteria).and_return(mock_grouped_progress_entry)
         mock_grouped_progress_entry.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :student_intervention=>{'these'=> 'params'}
+        put :update, {:id => "37", :student_intervention=>{'these'=> 'params'}}, {:search => true}
       end
 
       it "assigns the requested grouped_progress_entry as @grouped_progress_entry" do
         GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, {:id => "1"}, {:search => true}
         assigns[:grouped_progress_entry].should equal(mock_grouped_progress_entry)
       end
 
       it "redirects to the grouped_progress_entry" do
         GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry(:update_attributes => true))
-        put :update, :id => "1"
+        put :update,{:id => "1"}, {:search => true}
+
         response.should redirect_to(grouped_progress_entries_url)
       end
     end
@@ -64,18 +74,18 @@ describe GroupedProgressEntriesController do
       it "updates the requested grouped_progress_entry" do
         GroupedProgressEntry.should_receive(:find).with(current_user,"37",search_criteria).and_return(mock_grouped_progress_entry)
         mock_grouped_progress_entry.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :student_intervention => {:these => 'params'}
+        put :update, {:id => "37", :student_intervention => {:these => 'params'}}, {:search => true}
       end
 
       it "assigns the grouped_progress_entry as @grouped_progress_entry" do
         GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, {:id => "1"}, {:search => true}
         assigns[:grouped_progress_entry].should equal(mock_grouped_progress_entry)
       end
 
       it "re-renders the 'edit' template" do
         GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, {:id => "1"}, {:search => true}
         response.should render_template('edit')
       end
     end
