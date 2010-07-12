@@ -223,4 +223,16 @@ describe InterventionsController do
       response.should redirect_to(student_url(@student))
     end
   end
+
+  describe 'quicklist_options' do
+    it 'should return an empty array when school is nil' do
+      #LH 462
+      controller.stub!(:current_school=>nil)
+      get :quicklist_options
+      assigns(:quicklist_intervention_definitions).should be_empty
+    end
+
+    it 'should return an array of interventions for a school'
+
+  end
 end
