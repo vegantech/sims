@@ -5,6 +5,10 @@ class InterventionsController < ApplicationController
 
   include PopulateInterventionDropdowns
 
+#  def index
+#    redirect_to root_url
+#  end
+
   # GET /interventions/1
   def show
     @intervention_probe_assignment = @intervention.intervention_probe_assignments.first

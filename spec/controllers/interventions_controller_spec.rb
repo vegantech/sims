@@ -20,6 +20,17 @@ describe InterventionsController do
     controller.stub_association!(:current_district, :tiers=>[mock_tier])
   end
 
+  describe 'index' do
+    #LH 464
+    it 'should redirect to the root_url' do
+      get :index
+      response.should redirect_to(root_url)
+
+    end
+
+
+  end
+
   describe 'find_intervention' do
     it 'should redirect to current_student if the intervention cannot be found' do
       @interventions.stub!(:find=>nil)
