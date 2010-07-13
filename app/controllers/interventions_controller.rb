@@ -5,9 +5,9 @@ class InterventionsController < ApplicationController
 
   include PopulateInterventionDropdowns
 
-#  def index
-#    redirect_to root_url
-#  end
+  def index
+    redirect_to root_url
+  end
 
   # GET /interventions/1
   def show
