@@ -1,6 +1,57 @@
 module CSVImporter
   class AllStudentsInSchools < CSVImporter::Base
 
+    FIELD_DESCRIPTIONS = { 
+      :district_user_id => 'Key for user',
+      :district_school_id =>"Key for school",
+      :principal =>"True if the user is the principal of this group (or school)  otherwise blank",
+      :grade =>"Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade"
+    }
+
+    class << self
+      def description
+        "List of users with access to all students in a given school, or all students in a given grade. Be sure to also give them regular user access."
+      end
+      
+      def file_name
+        "all_students_in_school.csv"
+      end
+
+      def csv_headers
+        [:district_user_id, :district_school_id, :principal, :grade]
+      end
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
   private
 
     def load_data_infile
@@ -28,9 +79,6 @@ module CSVImporter
       [[:district_user_id, :district_school_id]]
     end
 
-    def csv_headers
-      [:district_user_id, :district_school_id, :principal, :grade]
-    end
 
     def migration t
       t.string :district_user_id

@@ -11,6 +11,51 @@ module CSVImporter
      @messages.join(' ')
     end
 =end
+    FIELD_DESCRIPTIONS = { 
+      :district_example_id => 'the primary key used in the student information system by the district',
+      :example_text => 'some other field'
+    }
+    class << self
+      def description
+        "Students in the district"
+      end
+
+      def csv_headers
+        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+      end
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
+
   private
     def load_data_infile
       headers=csv_headers

@@ -1,16 +1,58 @@
 module CSVImporter
   class Enrollments < CSVImporter::Base
+    FIELD_DESCRIPTIONS = { 
+      :grade =>"Grade of student, whatever is here will be displayed on the screen.",
+      :district_school_id =>"Key for school",
+      :district_student_id =>"Key for student",
+      :end_year =>"Calendar year when school year ends.  the 2010-2011 school year would be 2011"
+    }
+    class << self
+      def description
+        "Assigns students to schools"
+      end
+      def csv_headers
+        [:grade, :district_school_id, :district_student_id, :end_year]
+      end
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
+
     #12 seconds to preprocess the file and setup the temporary table
     # @real=638.522989988327 with the delete outer join
     #16.5350589752197 with the not exists call
-  private
+    private
 
     def index_options
       [[:district_school_id, :district_student_id],[:end_year,:grade]]
-    end
-
-    def csv_headers
-      [:grade, :district_school_id, :district_student_id, :end_year]
     end
 
     def sims_model
@@ -40,9 +82,9 @@ module CSVImporter
           and te.end_year = e.end_year  and te.grade = e.grade 
         )
         and sch.district_school_id is not null and stu.district_student_id is not null
-        "
-        puts query
-      ActiveRecord::Base.connection.execute query
+       "
+       puts query
+       ActiveRecord::Base.connection.execute query
     end
 
     def insert
@@ -56,22 +98,22 @@ module CSVImporter
       where sch.district_id= #{@district.id} and stu.district_id = #{@district.id}
       and e.school_id is null and stu.district_student_id is not null and sch.district_school_id is not null
       "
-      )
-        puts query
-      ActiveRecord::Base.connection.execute query
+            )
+            puts query
+            ActiveRecord::Base.connection.execute query
     end
-   def confirm_count?
-     return true
-    model_name = sims_model.name
-    model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
-    if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
-      @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
-      false
-    else
-      true
+    def confirm_count?
+      return true
+      model_name = sims_model.name
+      model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
+      if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
+        @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
+        false
+      else
+        true
+      end
     end
-    end
- 
+
 
 
   end

@@ -1,14 +1,62 @@
 module CSVImporter
   class ExtTestScores < CSVImporter::Base
+
+    FIELD_DESCRIPTIONS = { 
+        :district_student_id =>"Key for student",
+        :name =>"Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
+        :date =>"Date of exam",
+        :scale_score =>"Scaled Score",
+        :result =>"Interpreted result",
+        :end_date =>"Not used"
+    }
+    class << self
+      def description
+        'Test Scores for the extended profile. For the WKCE scores will be displayed based on the result: "1-minimal", "2-basic", "3-proficient", "4-advanced" <br />
+         For other exams, scores will be displaed as "scalescore / result'
+         
+      end
+
+      def csv_headers
+        [:district_student_id, :name, :date, :scale_score, :result, :end_date]
+      end
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
   private
 
     def index_options
       [:district_student_id]
     end
     
-    def csv_headers
-      [:district_student_id, :name, :date, :scale_score, :result, :end_date]
-    end
 
     def sims_model
       ExtArbitrary

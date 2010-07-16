@@ -8,12 +8,9 @@ class DocController < ActionController::Base
   def district_upload
     if params[:id]
       doc=params[:id].gsub(/[^a-zA-Z0-9_]/,"")
-      if doc=="examples"
-        render :action => "district_upload/examples" and return
-      else
-        #get csv object
-        
-        render :action => "district_upload/view" and return
+      if doc
+        @importer = "CSVImporter/#{doc}".classify.pluralize.constantize
+        render :action => "district_upload/file_api" and return
       end
     end
   end

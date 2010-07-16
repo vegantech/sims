@@ -14,183 +14,11 @@
     </ul>
     </p>
 
-    <div id="example_file">
-      <h3><a href="/doc/district_upload/examples">examples.csv</a> (filename)</h3>
-      <p>An example file used to show the format</p>
-      <p>district_example_id, example_text (fields)</p>
-      <dl>
-        <dt>district_example_id</dt> <dd>the primary key used in the student information system by the district</dd>
-        <dt>example_text</dt> <dd>some other field</dd>
-      </dl>
-    </div>
 
+    <%= render :partial => 'file_summary', :object => CSVImporter::Examples, :locals=> {:head_extra => '(Filename)',:field_extra => '(fields)'} %>
+    <%= render :partial => 'file_summary', :collection => ImportCSV.importers %>
 
-    <div id="all_schools.csv">
-      <h3>all_schools.csv</h3>
-      <p>List of users with access to all schools in the district.  Be sure to also give them regular user access.</p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
-    <div id="all_students_in_district.csv">
-      <h3>all_students_in_district.csv</h3>
-      <p>List of users with access to all students in the district.  Be sure to also give them regular user access.</p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
-    <div id="all_students_in_school.csv">
-      <h3>all_students_in_school.csv</h3>
-      <p>List of users with access to all students in a given school, or all students in a given grade.  Be sure to also give them regular user access.</p>
-      <p>district_user_id,district_school_id,principal,grade</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-        <dt>district_school_id</dt> <dd>Key for school</dd>
-        <dt>principal</dt> <dd>True if the user is the principal of this group (or school)  otherwise blank</dd>
-        <dt>grade</dt> <dd>Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade</dd>
-      </dl>
-    </div>
-
-
-
-    
-    <div id="content_admins.csv">
-      <h3>content_admins.csv</h3>
-      <p>List of users with access to the content builders.</p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
-
-     <div id="district_admins.csv">
-       <h3>district_admins.csv</h3>
-       <p>List of users with access to the district admin tools.   This should be limited, as the district admin tools would allow users to assign themselves additional rights.</p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
-
-     <div id="enrollments.csv">
-       <h3>enrollments.csv</h3>
-       <p>Assigns students to schools</p>
-        <p>grade,district_school_id,district_student_id,end_year</p>
-      <dl>
-        <dt>grade</dt> <dd>Grade of student, whatever is here will be displayed on the screen.</dd>
-        <dt>district_school_id</dt> <dd>Key for school</dd>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>end_year</dt> <dd>Calendar year when school year ends.  the 2009-2010 school year would be 2010</dd>
-      </dl>
-    </div>
-
-     <div id="ext_adult_contacts.csv">
-       <h3>ext_adult_contacts.csv</h3>
-       <p>Parents, guardians and other emergency contacts- appears in extended profile</p>
-        <p>district_student_id,relationship,guardian,first_name,last_name,home_phone,work_phone,cell_phone,pager,email,street_address,city_state_zip</p>
-      <dl>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>relationship</dt> <dd>String describing relationship.  Something like Parent or Emergency Contact</dd>
-        <dt>guardian</dt> <dd>true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)</dd>
-        <dt>first_name</dt> <dd>First Name</dd>
-        <dt>last_name</dt> <dd>Last Name</dd>
-        <dt>home_phone</dt> <dd>Home Phone #</dd>
-        <dt>work_phone</dt> <dd>Work Phone #</dd>
-        <dt>cell_phone</dt> <dd>Cell Phone #</dd>
-        <dt>pager</dt> <dd>Pager #</dd>
-        <dt>email</dt> <dd>Email Address</dd>
-        <dt>street_address</dt> <dd>First line of address</dd>
-        <dt>city_state_zip</dt> <dd>City, State, Zip</dd>
-      </dl>
-    </div>
-
-
-
-    
-     <div id="ext_arbitraries.csv">
-       <h3>ext_arbitraries.csv</h3>
-       <p>Freeform html that appears at the end of the extended profile</p>
-       <p>district_student_id,arbitrary</p>
-      <dl>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>arbitrary</dt> <dd>Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag.</dd>
-      </dl>
-    </div>
-
-    <div id="ext_siblings.csv">
-       <h3>ext_siblings.csv</h3>
-       <p>Brothers and sisters- appears in extended profile</p>
-        <p>district_student_id,first_name,middle_name,last_name,student_number,grade,school_name,age </p>
-      <dl>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>first_name</dt> <dd>First Name</dd>
-        <dt>middle_name</dt> <dd>Middle Name</dd>
-        <dt>last_name</dt> <dd>Last Name</dd>
-        <dt>student_number</dt> <dd>Student number that would appear on report card or student id card.</dd>
-        <dt>grade</dt> <dd>Grade</dd>
-        <dt>school_name</dt> <dd>Currently Enrolled at School</dd>
-        <dt>age</dt> <dd>Age</dd>
-      </dl>
-    </div>
-
-    <div id="ext_summaries.csv">
-       <h3>ext_summaries.csv</h3>
-       <p>Additional information displayed in a table at the top.</p>
-       <p>district_student_id,home_language,street_address,city_state_zip,meal_status,english_proficiency,special_ed_status,disability1,disability2,single_parent,race_ethnicity,suspensions_in,suspensions_out,years_in_district,school_changes,years_at_current_school,previous_school_name,current_attendance_rate,previous_attendance_rate,esl,tardies</p>
-      <dl>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>home_language</dt> <dd>Language spoken at home</dd>
-        <dt>street_address</dt> <dd>First line of address</dd>
-        <dt>city_state_zip</dt> <dd>City, State, Zip</dd>
-        <dt>meal_status</dt> <dd>Free, Reduced, etc., or left blank</dd>
-        <dt>english_proficiency</dt> <dd>String or number</dd>
-        <dt>special_ed_status</dt> <dd>Displayed as given, perhaps Y or N.</dd>
-        <dt>disability1</dt> <dd>Primary Disability</dd>
-        <dt>disability2</dt> <dd>Other Disability</dd>
-        <dt>single_parent</dt> <dd>true if single parent family, otherwise blank (Y/N) also works</dd>
-        <dt>race_ethnicity</dt> <dd>Displayed as given</dd>
-        <dt>suspensions_in</dt> <dd>In School Suspensions</dd>
-        <dt>suspensions_out</dt> <dd>Out of School Suspensions</dd>
-        <dt>years_in_district</dt> <dd>Number of years student enrolled in district</dd>
-        <dt>school_changes</dt> <dd>Number of times student changed schools</dd>
-        <dt>years_at_current_school</dt> <dd>Number of years at current school</dd>
-        <dt>previous_school_name</dt> <dd>Name of previous school</dd>
-        <dt>current_attendance_rate</dt> <dd>Attendance for current year as rate * 100 (100, 94.3, 44.5)  (Displayed as Current Attendance)</dd>
-        <dt>previous_attendance_rate</dt> <dd>Attendance for previous year as rate * 100 (100, 94.3, 44.5) (Displayed as Previous Attendance)</dd>
-        <dt>esl</dt> <dd>true if enrolled in English as a Second Languange,  blank otherwise (Y/N also works)</dd>
-        <dt>tardies</dt> <dd>number of times late to class,   displays as Periods Tardy)</dd>
-      </dl>
-    </div>
-
-
-    <div id="ext_test_scores.csv">
-       <h3>ext_test_scores.csv</h3>
-       <p>Test Scores for the extended profile</p>
-       <p>district_student_id,name,date,scale_score,result,end_date</p>
-      <dl>
-        <dt>district_student_id</dt> <dd>Key for student</dd>
-        <dt>name</dt> <dd>Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)</dd>
-        <dt>date</dt> <dd>Date of exam</dd>
-        <dt>scale_score</dt> <dd>Scaled Score</dd>
-        <dt>result</dt> <dd>Interpreted result</dd>
-        <dt>end_date</dt> <dd>Not used</dd>
-      </dl>
-
-      <p>For the WKCE scores will be displayed based on the result: "1-minimal", "2-basic", "3-proficient", "4-advanced" <br />
-      For other exams, scores will be displaed as "scalescore / result"
-      </p>
-    </div>
-
-
-    
-
-    
+   
     <div id="groups.csv">
       <h3>groups.csv</h3>
       <p>Named collections of students within a school.  It could be classroom sections of students, neighborhoods, teams.  Students and Users get assigned to them.</p>
@@ -201,27 +29,6 @@
         <dt>name</dt> <dd>The name of the group that will appear in SIMS.</dd>
       </dl>
     </div>
-
-
-    <div id="news_admins.csv">
-      <h3>news_admins.csv</h3>
-      <p>List of users with access to the edit and create news entries.</p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
-
-     <div id="regular_users.csv">
-       <h3>regular_users.csv</h3>
-       <p>List of users with access to the core functionality of SIMS.   Most users should have this role. </p>
-      <p>district_user_id</p>
-      <dl>
-        <dt>district_user_id</dt> <dd>Key for user</dd>
-      </dl>
-    </div>
-
 
      <div id="schools.csv">
        <h3>schools.csv</h3>
@@ -333,10 +140,6 @@
         <dt>district_school_id</dt> <dd>Key for school</dd>
       </dl>
     </div>
-
-
-
-
 
   </body>
 </html>

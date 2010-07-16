@@ -1,5 +1,59 @@
 module CSVImporter
   class ExtAdultContacts < CSVImporter::Base
+
+    FIELD_DESCRIPTIONS = { 
+        :district_student_id =>"Key for student",
+        :relationship =>"String describing relationship.  Something like Parent or Emergency Contact",
+        :guardian =>"true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)",
+        :first_name =>"First Name",
+        :last_name =>"Last Name",
+        :home_phone =>"Home Phone #",
+        :work_phone =>"Work Phone #",
+        :cell_phone =>"Cell Phone #",
+        :pager =>"Pager #",
+        :email =>"Email Address",
+        :street_address =>"First line of address",
+        :city_state_zip =>"City, State, Zip"
+    }
+    class << self
+      def description
+        "Parents, guardians and other emergency contacts- appears in extended profile"
+      end
+
+      def csv_headers
+        [:district_student_id, :relationship, :guardian, :first_name,:last_name, :home_phone, :work_phone, :cell_phone, :pager, :email, :street_address, :city_state_zip]
+      end
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
   private
     def load_data_infile
       headers=csv_headers
@@ -27,9 +81,6 @@ module CSVImporter
       [:district_student_id]
     end
     
-    def csv_headers
-      [:district_student_id, :relationship, :guardian, :first_name,:last_name, :home_phone, :work_phone, :cell_phone, :pager, :email, :street_address, :city_state_zip]
-    end
 
     def sims_model
       ExtArbitrary

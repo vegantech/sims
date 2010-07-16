@@ -1,5 +1,73 @@
 module CSVImporter
   class ExtSummaries < CSVImporter::Base
+
+    FIELD_DESCRIPTIONS = { 
+        :district_student_id =>"Key for student",
+        :home_language =>"Language spoken at home",
+        :street_address =>"First line of address",
+        :city_state_zip =>"City, State, Zip",
+        :meal_status =>"Free, Reduced, etc., or left blank",
+        :english_proficiency =>"String or number",
+        :special_ed_status =>"Displayed as given, perhaps Y or N.",
+        :disability1 =>"Primary Disability",
+        :disability2 =>"Other Disability",
+        :single_parent =>"true if single parent family, otherwise blank (Y/N) also works",
+        :race_ethnicity =>"Displayed as given",
+        :suspensions_in =>"In School Suspensions",
+        :suspensions_out =>"Out of School Suspensions",
+        :years_in_district =>"Number of years student enrolled in district",
+        :school_changes =>"Number of times student changed schools",
+        :years_at_current_school =>"Number of years at current school",
+        :previous_school_name =>"Name of previous school",
+        :current_attendance_rate =>"Attendance for current year as rate * 100 (100, 94.3, 44.5)  (Displayed as Current Attendance)",
+        :previous_attendance_rate =>"Attendance for previous year as rate * 100 (100, 94.3, 44.5) (Displayed as Previous Attendance)",
+        :esl =>"true if enrolled in English as a Second Languange,  blank otherwise (Y/N also works)",
+        :tardies =>"number of times late to class,   displays as Periods Tardy)"
+    }
+    class << self
+      def description
+        "Additional information displayed in a table at the top."
+      end
+
+
+      def csv_headers
+        [
+          :district_student_id,:home_language, :street_address, :city_state_zip, :meal_status, :english_proficiency, :special_ed_status, :disability1, :disability2, :single_parent, :race_ethnicity, :suspensions_in, :suspensions_out, :years_in_district, :school_changes, :years_at_current_school, :previous_school_name, :current_attendance_rate, :previous_attendance_rate, :esl, :tardies
+        ]
+      end
+
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "When to upload this file in relation to other files."
+      end
+
+      def removed
+        "What gets removed when this file is uploaded."
+      end
+
+      def related
+        "links to related files with explanations."
+      end
+
+      def how_often
+        "Notes on how often this file should be imported after initial import."
+      end
+
+      def alternate
+        "links to files that can be used instead of this one, with explanation."
+      end
+
+      def upload_responses
+        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
+        In this case you'll see unknown file examples.csv"
+      end
+
+    end
+
   private
 
 
@@ -40,11 +108,6 @@ module CSVImporter
       [:district_student_id]
     end
     
-    def csv_headers
-    [
-    :district_student_id,:home_language, :street_address, :city_state_zip, :meal_status, :english_proficiency, :special_ed_status, :disability1, :disability2, :single_parent, :race_ethnicity, :suspensions_in, :suspensions_out, :years_in_district, :school_changes, :years_at_current_school, :previous_school_name, :current_attendance_rate, :previous_attendance_rate, :esl, :tardies
-    ]
-    end
 
     def sims_model
       ExtArbitrary

@@ -10,7 +10,19 @@ class ImportCSV
   CLEAN_CSV_OPTS ={:converters => [STRIP_FILTER,:symbol]}
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
- 
+
+  VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
+    "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
+    "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv", "ext_summaries.csv",
+    "district_admins.csv","news_admins.csv", "content_admins.csv", "school_admins.csv", "regular_users.csv", "system_flags.csv"
+    ]
+
+  def self.importers
+    VALID_FILES.sort.collect do |csv_file|
+      "CSVImporter::#{csv_file.split('.').first.classify.pluralize}".constantize
+    end
+  end
+
   @@file_handlers={}
 
   attr_reader :district, :messages, :filenames
@@ -71,7 +83,7 @@ class ImportCSV
       load_user_roles_from_csv file_name, 'regular_user'
     when 'system_flags.csv'
       load_system_flags_from_csv file_name
-    when *csv_importers(file_name)
+    when *csv_importers
       csv_importer file_name
     else
       msg = "Unknown file #{base_file_name}"
@@ -81,10 +93,8 @@ class ImportCSV
     update_memcache
   end
 
-  def csv_importers file_name
-    ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
-    "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
-    "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv", "ext_summaries.csv"]
+  def csv_importers 
+    VALID_FILES
   end
 
   def csv_importer file_name

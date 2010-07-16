@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>SIMS District Upload- examples.csv</title>
+  <style type="text/css">
+  th,td {  
+border-width: 1px 0px 0px 0px;
+border-style: solid;
+padding: 25px;
+}
+  </style>
+</head>
+  <body>
+    <h1> SIMS District Upload- examples.csv</h1>
+    <table>
+      <tr>
+        <th> File Name </th>
+        <td><%=@importer.file_name %> &nbsp;  (This must match exactly) </td>
+      </tr>
+ 
+
+      <% %w{description fields load_order overwritten removed related alternate how_often}.each do |field| %>
+      <tr>
+        <th><%=field.titleize %> </th>
+        <td><%=@importer.try field %> </td>
+      </tr>
+    <% end %>
+
+      <tr>
+        <th>Empty File</th>
+        <td><%=link_to @importer.file_name,"/district_upload/empty/#{@importer.file_name}" %></td>
+      </tr>
+
+      <tr>
+        <th>Sample File</th>
+        <td><%=link_to @importer.file_name,"/district_upload/sample/#{@importer.file_name}"%></a></td>
+      </tr>
+  
+      <tr>
+        <th>Upload Responses </th>
+        <td><%=@importer.upload_responses %> </td>
+      </tr>
+
+      <tr>
+        <th>Field Detail</th>
+        <td> 
+          <dl>
+            <% @importer.csv_headers.each do |field| %>
+              <dt><%= field %></dt> <dd><%= @importer::FIELD_DESCRIPTIONS[field] %> </dd>
+            <% end %>
+
+           </dl>
+
+         </td>
+       </tr>
+       </table>
+
+
+       <a href="../district_upload">Back to list of files</a>
+  </body>
+</html>
