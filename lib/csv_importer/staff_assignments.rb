@@ -1,7 +1,8 @@
 module CSVImporter
   class StaffAssignments < CSVImporter::Base
    FIELD_DESCRIPTIONS = { 
-      :district_user_id => 'Key for user'
+      :district_user_id => 'Key for user',
+      :district_school_id => 'Key for school'
     }
 
     
@@ -11,7 +12,7 @@ module CSVImporter
       end
 
       def csv_headers
-        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+        [:district_user_id, :district_school_id]
       end
 
       def overwritten
@@ -52,9 +53,6 @@ module CSVImporter
       [:district_user_id, :district_school_id]
     end
 
-    def csv_headers
-      [:district_user_id, :district_school_id]
-    end
 
     def migration t
       t.column :district_user_id, :string

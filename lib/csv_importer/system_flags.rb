@@ -1,8 +1,9 @@
 module CSVImporter
   class SystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+        :district_student_id =>"Key for student",
+        :category =>"Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}",
+        :reason =>"A description of the reason the student was flagged.",
     }
     class << self
       def description
@@ -10,7 +11,7 @@ module CSVImporter
       end
 
       def csv_headers
-        [:district_example_id, :example_text]
+        [:district_student_id, :category, :reason]
       end
 
       def overwritten

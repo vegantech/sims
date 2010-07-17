@@ -5,18 +5,20 @@ module CSVImporter
     #
     #
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
-    }
+    :district_user_id => 'Key for user',
+    :district_group_id => "Key for group (the one you created for the SIMS group.)",
+    :principal => "true if the user is the principal for that group, blank otherwise.   
+The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  
+Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv  (Y/N also works)"
+}
     class << self
       def description
         "Assigns users to groups."
       end
 
       def csv_headers
-        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+        [:district_user_id, :district_group_id, :principal]
       end
-
       def overwritten
         "What will get overwritten/changed when this file is uploaded."
       end
@@ -76,9 +78,6 @@ module CSVImporter
       [[:district_user_id, :district_group_id]]
     end
 
-    def csv_headers
-      [:district_user_id, :district_group_id, :principal]
-    end
 
     def migration t
       t.string :district_user_id

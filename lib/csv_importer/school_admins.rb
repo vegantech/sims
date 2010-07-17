@@ -8,7 +8,7 @@ module CSVImporter
         [:district_user_id]
       end
       def description
-        "School admins, does this work?  FIXME"
+        "School admins, role.  You also need to assign them as an admin to a specific school (edit their user within SIMS)"
       end
 
       def overwritten

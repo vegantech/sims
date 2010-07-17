@@ -2,8 +2,8 @@ module CSVImporter
   class Schools < CSVImporter::Base
 #
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+        :district_school_id =>"Key for school",
+        :name =>"Name of school"
     }
     class << self
       def description
@@ -11,7 +11,7 @@ module CSVImporter
       end
 
       def csv_headers
-        [:district_example_id, :example_text]
+        [:district_school_id, :name]
       end
 
       def overwritten
@@ -53,9 +53,6 @@ module CSVImporter
       [:district_school_id]
     end
 
-    def csv_headers
-     [:district_school_id, :name]
-    end
 
     def sims_model
       School

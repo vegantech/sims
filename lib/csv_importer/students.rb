@@ -12,8 +12,16 @@ module CSVImporter
     end
 =end
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+        :id_state =>"WSLS# (or other state id for student)",
+        :district_student_id =>"Key used by district for student",
+        :number =>"Student number that would appear on report card or student id card.",
+        :first_name =>"First name of student.",
+        :middle_name =>"Middle name (or initial) of student.",
+        :last_name =>"Last name of student.",
+        :suffix =>"Suffix of student (jr. III).",
+        :birthdate =>"Date of Birth  (YYYY-MM-DD or MM/DD/YYYY)",
+        :esl =>"true if student is considered English as a Second Language  (false or blank if not Y/N also works)  ",
+        :special_ed =>"true if student is in Special Educatin (false or blank if not Y/N also works)"
     }
     class << self
       def description
@@ -21,7 +29,7 @@ module CSVImporter
       end
 
       def csv_headers
-        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+        [:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
       end
 
       def overwritten
@@ -95,9 +103,6 @@ module CSVImporter
       [:id_state, :district_student_id]
     end
 
-    def csv_headers
-     [:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
-    end
 
     def sims_model
       Student

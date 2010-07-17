@@ -2,15 +2,19 @@ module CSVImporter
   class Groups < CSVImporter::Base
     #    77.6728281974792
     #
+    FIELD_DESCRIPTIONS = { 
+      :district_group_id =>"Key for group, this could be a string.  I recommend using a prefix, so sect314 would represent a section with a primary key of 314, then nei445 could be a neighborhood with id 445.   Keys must be unique so this is necessary if you're going to be combining data from different tables from your student information system",
+      :district_school_id =>"Key for school",
+      :name =>"The name of the group that will appear in SIMS."
+    }
     class << self
       def description
         "Named collections of students within a school. It could be classroom sections of students, neighborhoods, teams. Students and Users get assigned to them."
       end
 
       def csv_headers
-        [:district_example_id, :example_text]
+        [:district_group_id, :district_school_id, :name]
       end
-
       def overwritten
         "What will get overwritten/changed when this file is uploaded."
       end
@@ -48,9 +52,6 @@ module CSVImporter
       [[:district_group_id, :district_school_id] ]
     end
 
-    def csv_headers
-     [:district_group_id, :district_school_id, :name]
-    end
     
 
     def migration t

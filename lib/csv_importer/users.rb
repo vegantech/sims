@@ -1,8 +1,18 @@
 module CSVImporter
   class Users < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+        :district_user_id =>"Key for user",
+        :username =>"Used at login",
+        :first_name =>"First Name",
+        :middle_name =>"Middle Name",
+        :last_name =>"Last Name",
+        :suffix =>"Suffix",
+        :email =>"Email address",
+        :passwordhash =>'The encoded password.   Encode the password using the following:  
+SHA1.encode("#{system_hash}#{password.downcase}#{district_key}#{salt}")
+  replacing the #{} with the appropriate values.  system_hash is currently blank.   
+password is the user\'s password in lowercase, district_key is set by the district admin, and the salt is the next field',
+        :salt =>"A random value used in the password hash"
     }
     class << self
       def description

@@ -1,8 +1,8 @@
 module CSVImporter
   class UserSchoolAssignments < CSVImporter::Base
      FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+      :district_user_id => 'Key for user',
+      :district_school_id => 'Key for school'
     }
     class << self
       def description
@@ -10,9 +10,8 @@ module CSVImporter
       end
 
       def csv_headers
-        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+        [:district_user_id, :district_school_id]
       end
-
       def overwritten
         "What will get overwritten/changed when this file is uploaded."
       end
@@ -51,9 +50,6 @@ module CSVImporter
       [:district_school_id, :district_user_id]
     end
 
-    def csv_headers
-      [:district_user_id, :district_school_id]
-    end
 
     def migration t
       t.column :district_school_id, :integer
