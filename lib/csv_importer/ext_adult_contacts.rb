@@ -1,5 +1,54 @@
 module CSVImporter
   class ExtAdultContacts < CSVImporter::Base
+
+    FIELD_DESCRIPTIONS = { 
+        :district_student_id =>"Key for student",
+        :relationship =>"String describing relationship.  Something like Parent or Emergency Contact",
+        :guardian =>"true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)",
+        :first_name =>"First Name",
+        :last_name =>"Last Name",
+        :home_phone =>"Home Phone #",
+        :work_phone =>"Work Phone #",
+        :cell_phone =>"Cell Phone #",
+        :pager =>"Pager #",
+        :email =>"Email Address",
+        :street_address =>"First line of address",
+        :city_state_zip =>"City, State, Zip"
+    }
+    class << self
+      def description
+        "Parents, guardians and other emergency contacts- appears in extended profile"
+      end
+
+      def csv_headers
+        [:district_student_id, :relationship, :guardian, :first_name,:last_name, :home_phone, :work_phone, :cell_phone, :pager, :email, :street_address, :city_state_zip]
+      end
+      def overwritten
+      end
+
+      def load_order
+        "This can be done after students."
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+        "This can be uploaded as often as students are uploaded, or once per year."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
   private
     def load_data_infile
       headers=csv_headers
@@ -27,9 +76,6 @@ module CSVImporter
       [:district_student_id]
     end
     
-    def csv_headers
-      [:district_student_id, :relationship, :guardian, :first_name,:last_name, :home_phone, :work_phone, :cell_phone, :pager, :email, :street_address, :city_state_zip]
-    end
 
     def sims_model
       ExtArbitrary

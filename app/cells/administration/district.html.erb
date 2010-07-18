@@ -9,6 +9,6 @@
   <%=content_tag(:li,link_to('Edit Flag Descriptions', flag_descriptions_url)) if @show_district%>
   <%=content_tag(:li,link_to('Import from CSV', bulk_import_form_districts_url)) if @show_district %>
   <%=content_tag(:li,link_to('Export to CSV', export_districts_url)) if @show_district %>
-  <%=content_tag(:li,link_to('Documentation', '/tutorial/district_admin.html')) if @show_district %>
+  <%=content_tag(:li,link_to('Documentation', doc_url)) if @show_district %>
   </ul>
 <% end %>

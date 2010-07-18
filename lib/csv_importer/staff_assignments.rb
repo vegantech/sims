@@ -1,15 +1,51 @@
 module CSVImporter
   class StaffAssignments < CSVImporter::Base
-  
+   FIELD_DESCRIPTIONS = { 
+      :district_user_id => 'Key for user',
+      :district_school_id => 'Key for school'
+    }
+
+    
+    class << self
+      def description
+        "OPTIONAL- used when many users have access to a school but you want to limit the participants and other dropdowns to users that work at that school"
+      end
+
+      def csv_headers
+        [:district_user_id, :district_school_id]
+      end
+
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
     private
 
     def index_options
       [:district_user_id, :district_school_id]
     end
 
-    def csv_headers
-      [:district_user_id, :district_school_id]
-    end
 
     def migration t
       t.column :district_user_id, :string

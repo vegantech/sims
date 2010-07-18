@@ -1,0 +1,3 @@
+district_user_id,username,first_name,middle_name,last_name,suffix,email,passwordhash,salt
+1,uploaded_user,uploaded,"",user,,veganbuddy@gmail.com,"e49512524f47b4138d850c9d9d85972927281da0",
+2,no_password,no,"",password,,veganbuddy@gmail.com,,

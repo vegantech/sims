@@ -1,6 +1,7 @@
 module CSVImporter
   require 'fastercsv'
   class Base
+    FIELD_DESCRIPTIONS = {}
     def initialize file_name, district
       @district = district
       @file_name = file_name
@@ -21,6 +22,45 @@ module CSVImporter
        @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
        
       @messages.join(", ")
+    end
+
+    class << self
+      def file_name
+        name.tableize.split("/").last+".csv"
+      end
+
+      def description
+        "This needs a description"
+      end
+
+      def fields
+        csv_headers.join(", ")
+      end
+
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        "Successful import of #{self.file_name} - means the file could be read"
+      end
+
+      def field_detail
+      end
     end
 
     
@@ -45,6 +85,9 @@ module CSVImporter
       @line_count = 0
       
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
+      #convert bare carriage returns to newlines
+      system "sed -i -e 's/\r[^\\n]/\\n/g' #{@file_name}"
+
       #pop off header
       head= `head -n 1 #{@file_name}`
       return false unless confirm_header head
@@ -56,7 +99,7 @@ module CSVImporter
 
 
       
-      a =  "sed -e 's/, ([jjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
+      a =  "sed -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
 
@@ -140,6 +183,11 @@ module CSVImporter
     end
 
     def sims_model
+    end
+
+    private
+    def csv_headers
+      self.class.csv_headers
     end
 
 

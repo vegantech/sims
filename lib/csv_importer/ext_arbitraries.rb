@@ -1,14 +1,51 @@
 module CSVImporter
   class ExtArbitraries < CSVImporter::Base
+    FIELD_DESCRIPTIONS = { 
+        :district_student_id =>"Key for student",
+        :arbitrary =>"Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag."      
+    }
+    class << self
+      def description
+        "Freeform html that appears at the end of the extended profile"
+      end
+
+      def csv_headers
+        [:district_student_id, :arbitrary]
+      end
+
+      def overwritten
+        "What will get overwritten/changed when this file is uploaded."
+      end
+
+      def load_order
+        "This can be uploaded after students."
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+        "Once per year if you choose to use it, otherwise never."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
   private
 
     def index_options
       [:district_student_id]
     end
 
-    def csv_headers
-      [:district_student_id, :arbitrary]
-    end
 
     def sims_model
       ExtArbitrary

@@ -1,13 +1,52 @@
 module CSVImporter
   class AllSchools < CSVImporter::Base
 
+    FIELD_DESCRIPTIONS = { 
+      :district_user_id => 'Key for user'
+    }
+
+    class << self
+
+      def description
+        "List of users with access to all schools in the district. Be sure to also give them regular user access and to assign them to groups."
+      end
+      
+      def csv_headers
+        [:district_user_id]
+      end
+
+
+      def overwritten
+      end
+
+      def load_order
+        "This should be done after users."
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+        "This likely would not change often.  Whenever users are uploaded."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
+
   private
     def index_options
       [[:district_user_id]]
-    end
-
-    def csv_headers
-      [:district_user_id]
     end
 
     def migration t

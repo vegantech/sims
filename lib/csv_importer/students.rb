@@ -11,6 +11,56 @@ module CSVImporter
      @messages.join(' ')
     end
 =end
+    FIELD_DESCRIPTIONS = { 
+        :id_state =>"WSLS# (or other state id for student)",
+        :district_student_id =>"Key used by district for student",
+        :number =>"Student number that would appear on report card or student id card.",
+        :first_name =>"First name of student.",
+        :middle_name =>"Middle name (or initial) of student.",
+        :last_name =>"Last name of student.",
+        :suffix =>"Suffix of student (jr. III).",
+        :birthdate =>"Date of Birth  (YYYY-MM-DD or MM/DD/YYYY)",
+        :esl =>"true if student is considered English as a Second Language  (false or blank if not Y/N also works)  ",
+        :special_ed =>"true if student is in Special Educatin (false or blank if not Y/N also works)"
+    }
+    class << self
+      def description
+        "Students in the district"
+      end
+
+      def csv_headers
+        [:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
+      end
+
+      def overwritten
+        "Students with matching district_student_id in the csv file."
+      end
+
+      def load_order
+        "3.  This should be one of the first files uploaded."
+      end
+
+      def removed
+        "Students with a district_student_id assignment but not in the file will be removed from the district."
+      end
+
+      def related
+      end
+
+      def how_often
+        "As often as students enter/exit the district.  If this happens rarely, you may wish to make the changes manually instead."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
   private
     def load_data_infile
       headers=csv_headers
@@ -50,9 +100,6 @@ module CSVImporter
       [:id_state, :district_student_id]
     end
 
-    def csv_headers
-     [:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
-    end
 
     def sims_model
       Student

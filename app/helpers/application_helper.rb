@@ -48,6 +48,11 @@ module ApplicationHelper
  
   end
 
+  def link_to_if_present(name, path)
+    link_to(name,path) if File.exist?("#{RAILS_ROOT}/public/#{path}")
+  end
+
+
   def breadcrumbs
     s = [link_to('Home', root_path)]
     s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id]) 

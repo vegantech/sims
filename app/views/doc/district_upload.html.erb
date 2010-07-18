@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>SIMS District Upload API</title>
+  </head>
+  <body>
+    <h1>SIMS District Upload API</h1>
+    <p> Each file when uploaded will overwrite the current content in the district.   For example, if you create a students.csv with just first graders, then upload another one with just second graders, SIMS will only have the second graders in the system.   Combine all your students into a single file.  
+    </p>
+
+    <p> Each file has one or more references to district keys in the form district_table_id. These must be: <ul>
+      <li>unique- each show represent exactly one record</li>
+      <li>persistent- they should remain the same over time, even over years.</li>
+      <li>consistent- it must be the same number even when used in different files.</li>
+    </ul>
+    </p>
+
+    <ul>
+			<li><a href="/district_upload/empty/empty.zip">Sample CSV files, with just headers for all files</a></li>
+      <li><a href="/district_upload/sample/sample.zip">Example CSV files (more coming soon.)</a></li>
+    </ul>
+
+    <%= render :partial => 'file_summary', :object => CSVImporter::Examples, :locals=> {:head_extra => '(Filename)',:field_extra => '(fields)'} %>
+    <%= render :partial => 'file_summary', :collection => ImportCSV.importers %>
+  </body>
+</html>

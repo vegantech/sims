@@ -1,0 +1,25 @@
+--- 
+recommendation_definition_00001: 
+  updated_at: 2009-02-12 13:23:25 Z
+  text: Original Single Question Recommendation Attached to Checklist
+  deleted_at: 
+  copied_at: 
+  id: 1
+  district_id: 24007300
+  checklist_definition_id: 
+  copied_from: 
+  score_options: 1
+  created_at: 2008-10-28 21:16:32 Z
+  active: false
+recommendation_definition_00002: 
+  updated_at: 2009-02-12 13:23:12 Z
+  text: Multiple Question Standalone Recommendation
+  deleted_at: 
+  copied_at: 
+  id: 2
+  district_id: 24007300
+  checklist_definition_id: 
+  copied_from: 
+  score_options: 1
+  created_at: 2008-10-28 21:16:32 Z
+  active: true
