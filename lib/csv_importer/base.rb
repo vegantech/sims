@@ -1,6 +1,7 @@
 module CSVImporter
   require 'fastercsv'
   class Base
+    FIELD_DESCRIPTIONS = {}
     def initialize file_name, district
       @district = district
       @file_name = file_name
@@ -21,6 +22,45 @@ module CSVImporter
        @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
        
       @messages.join(", ")
+    end
+
+    class << self
+      def file_name
+        name.tableize.split("/").last+".csv"
+      end
+
+      def description
+        "This needs a description"
+      end
+
+      def fields
+        csv_headers.join(", ")
+      end
+
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        "Successful import of #{self.file_name} - means the file could be read"
+      end
+
+      def field_detail
+      end
     end
 
     
@@ -143,6 +183,11 @@ module CSVImporter
     end
 
     def sims_model
+    end
+
+    private
+    def csv_headers
+      self.class.csv_headers
     end
 
 

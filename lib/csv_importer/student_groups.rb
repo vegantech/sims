@@ -3,16 +3,51 @@ module CSVImporter
 
    #<Benchmark::Tms:0x41da63f8 @real=1328.59576916695, @utime=0.0200000000000005, @cstime=0.77, @cutime=20.16, @label="", @total=20.97, @stime=0.02>
    #884 SECONDS NOW.. (there wasn't anything to delete)  delete took 937..   1792 total with delete...    630 seconds after initial load now
-   
+  FIELD_DESCRIPTIONS = { 
+      :district_student_id => 'Key for student',
+      :district_group_id => 'Key for group (the one you created for the SIMS group.)'
+    }
+
+    
+    class << self
+      def description
+        "Assigns students to groups."
+      end
+
+      def csv_headers
+        [:district_student_id, :district_group_id]
+      end
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+  
 
   private
     def index_options
       [[:district_student_id, :district_group_id]]
     end
 
-    def csv_headers
-      [:district_student_id, :district_group_id]
-    end
 
     def temporary_table?
       true

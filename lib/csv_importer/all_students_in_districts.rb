@@ -1,13 +1,58 @@
 module CSVImporter
   class AllStudentsInDistricts < CSVImporter::Base
 
+    FIELD_DESCRIPTIONS = { 
+      :district_user_id => 'Key for user'
+    }
+
+    
+    class << self
+      def file_name
+        "all_students_in_district.csv"
+      end
+      def description
+        "List of users with access to all students in the district. Be sure to also give them regular user access."
+      end
+
+      def csv_headers
+        [:district_user_id]
+      end
+
+
+      def overwritten
+        "Users in this file will be given access to all students in the district."
+      end
+
+      def load_order
+        "6. Initially, it is easiest to give all users this level of access.  Then you can move on to more limited access (by school, then by group) as you work on other files."
+      end
+
+      def removed
+        "Users not in this file but with a district_user_id assigned will have access to all students_in_district removed."
+      end
+
+      def related
+      end
+
+      def how_often
+        "If used, it should be updated as often as users.  Once you are using other levels of access, you might want prefer to manage this manually."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
+
+
   private
     def index_options
       [[:district_user_id]]
-    end
-
-    def csv_headers
-      [:district_user_id]
     end
 
     def migration t
@@ -19,6 +64,7 @@ module CSVImporter
       inner join users on sug.user_id = users.id
       where users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}
+      and users.district_user_id is not null
       "
       SpecialUserGroup.connection.execute query
     end

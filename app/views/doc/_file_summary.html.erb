@@ -1,0 +1,15 @@
+<%head_extra ||='' 
+field_extra ||= '' 
+%>
+<div id="<%=file_summary.file_name%>">
+  <h3><%=link_to file_summary.file_name, "/doc/district_upload/#{file_summary.file_name.split(".").first}"%> <%=head_extra%></h3>
+  <p><%=file_summary.description %></p>
+  <p><%=file_summary.fields %> <%=field_extra %></p>
+  <dl>
+    <% file_summary.csv_headers.each do |field| %>
+      <dt><%= field %></dt> <dd><%= file_summary::FIELD_DESCRIPTIONS[field] %> </dd>
+    <% end %>
+
+  </dl>
+</div>
+

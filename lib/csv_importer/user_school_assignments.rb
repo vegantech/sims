@@ -1,15 +1,48 @@
 module CSVImporter
   class UserSchoolAssignments < CSVImporter::Base
-  
+     FIELD_DESCRIPTIONS = { 
+      :district_user_id => 'Key for user',
+      :district_school_id => 'Key for school'
+    }
+    class << self
+      def description
+        "Assigns users to schools. This provides access in the school selection screen"
+      end
+
+      def csv_headers
+        [:district_user_id, :district_school_id]
+      end
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+ 
     private
 
     def index_options
       [:district_school_id, :district_user_id]
     end
 
-    def csv_headers
-      [:district_user_id, :district_school_id]
-    end
 
     def migration t
       t.column :district_school_id, :integer

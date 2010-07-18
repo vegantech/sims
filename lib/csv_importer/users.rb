@@ -1,5 +1,58 @@
 module CSVImporter
   class Users < CSVImporter::Base
+    FIELD_DESCRIPTIONS = { 
+        :district_user_id =>"Key for user",
+        :username =>"Used at login",
+        :first_name =>"First Name",
+        :middle_name =>"Middle Name",
+        :last_name =>"Last Name",
+        :suffix =>"Suffix",
+        :email =>"Email address",
+        :passwordhash =>'The encoded password.   Encode the password using the following:  
+SHA1.encode("#{system_hash}#{password.downcase}#{district_key}#{salt}")
+  replacing the #{} with the appropriate values.  system_hash is currently blank.   
+password is the user\'s password in lowercase, district_key is set by the district admin, and the salt is the next field',
+        :salt =>"A random value used in the password hash"
+    }
+    class << self
+      def description
+        "Users in the district.  Note you can leave the password and salt blank, if so then be sure to set a district_key and make sure the email is present.
+        The district key acts as an initial password, which users will change when they first login."
+      end
+
+      def csv_headers
+        [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+      end
+
+      def overwritten
+        "Users with matching district_user_id in the file will be overwritten."
+      end
+
+      def load_order
+        "2. This should be uploaded before most other files."
+      end
+
+      def removed
+        "Users with district_user_id assigned but not in the file are removed from the district."
+      end
+
+      def related
+      end
+
+      def how_often
+        "This should be uploaded when new users are added to your district or when users are removed."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
 
   private
     def index_options
@@ -7,7 +60,7 @@ module CSVImporter
     end
 
     def csv_headers
-     [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
+      self.class.csv_headers
     end
 
     def migration t

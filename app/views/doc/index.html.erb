@@ -1,0 +1,31 @@
+<h1> SIMS Documentation</h1>
+
+<h2> District Administration </h2>
+<%=link_to "Instructions for CSV Generation", :controller=> 'doc', :action => 'district_upload' %>
+	<h3>Files</h3>
+		<ul>
+			<li><a href="/tutorial/sys_admin.html">District Administration runthrough and tips on importing and exporting files</a></li>
+			<li><a href="/district_upload/empty/empty.zip">Sample CSV files, with just headers for all files</a></li>
+			<li><a href="/district_upload/sample/sample.zip">Example CSV files (more coming soon.)</a></li>
+			<li><a href="powerschool/index.htm">Instructions for exporting from Powerschool</a></li>
+		</ul>
+			
+
+
+
+		<h3>Troubleshooting</h3>
+		<p>Be sure users have the proper role assigned.  For access to SIMS they need to be a regular user.  They also need to be assigned to students and schools.   If you do not setup groups, then be sure to give your users access to all students in district or all students in school.   You can see successful and failed login attempts from the menu at the left.
+		</p>
+
+
+
+                <h3 id="upload">Uploading the files</h3>
+                    <p>Also see the District Administration runthrough for additional information.</p>
+                <ol>
+
+                <li> Optional, you can zip them all into one file.  It will shorten the upload time.
+                On windows,  go to where the files were saved, select them, right click, choose Send To, then Compressed folder.   Then you can name your zipfile. </li>
+
+                <li> For the zip file above, or the individual files, log in as a district administrator in SIMS.  Then choose import file from the left.     </li>
+
+

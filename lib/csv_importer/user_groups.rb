@@ -2,6 +2,47 @@ module CSVImporter
   class UserGroups < CSVImporter::Base
     #125.01763010025 seconds!
     #135 with district constrained delete
+    #
+    #
+    FIELD_DESCRIPTIONS = { 
+    :district_user_id => 'Key for user',
+    :district_group_id => "Key for group (the one you created for the SIMS group.)",
+    :principal => "true if the user is the principal for that group, blank otherwise.   
+The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  
+Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv  (Y/N also works)"
+}
+    class << self
+      def description
+        "Assigns users to groups."
+      end
+
+      def csv_headers
+        [:district_user_id, :district_group_id, :principal]
+      end
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
 
   private
 
@@ -30,9 +71,6 @@ module CSVImporter
       [[:district_user_id, :district_group_id]]
     end
 
-    def csv_headers
-      [:district_user_id, :district_group_id, :principal]
-    end
 
     def migration t
       t.string :district_user_id

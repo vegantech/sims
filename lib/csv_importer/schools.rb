@@ -1,14 +1,56 @@
 module CSVImporter
   class Schools < CSVImporter::Base
+#
+    FIELD_DESCRIPTIONS = { 
+        :district_school_id =>"Key for school",
+        :name =>"Name of school"
+    }
+    class << self
+      def description
+        "Schools in the district"
+      end
+
+      def csv_headers
+        [:district_school_id, :name]
+      end
+
+      def overwritten
+        "Any school in your district with a district_school_id in the csv file will get updated."
+      end
+
+      def load_order
+        "1. This should be done first.  You may already have schools loaded in your district, if so, then you should go in manually to each one and add the
+        district_school_id."
+      end
+
+      def removed
+        "Any schools in your district with district_school_id assigned but not in this file will be removed."
+      end
+
+      def related
+      end
+
+      def how_often
+        "Likely only once, or manually.  If schools are added, closed, or renamed, then you could upload this again."
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
+
+
 
   private
     def index_options
       [:district_school_id]
     end
 
-    def csv_headers
-     [:district_school_id, :name]
-    end
 
     def sims_model
       School

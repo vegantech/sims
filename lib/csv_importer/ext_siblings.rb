@@ -1,14 +1,55 @@
 module CSVImporter
   class ExtSiblings < CSVImporter::Base
+
+    FIELD_DESCRIPTIONS = { 
+      :district_student_id =>"Key for student",        
+      :first_name =>"First Name",
+        :middle_name =>"Middle Name",
+        :last_name =>"Last Name",
+        :student_number =>"Student number that would appear on report card or student id card.",
+        :grade =>"Grade",
+        :school_name =>"Currently Enrolled at School",
+        :age =>"Age"
+    }
+    class << self
+      def description
+        "Brothers and sisters- appears in extended profile"
+      end
+
+      def csv_headers
+        [:district_student_id, :first_name, :middle_name,:last_name, :student_number, :grade, :school_name, :age]
+      end
+
+      def overwritten
+      end
+
+      def load_order
+      end
+
+      def removed
+      end
+
+      def related
+      end
+
+      def how_often
+      end
+
+      def alternate
+      end
+
+      def upload_responses
+        super
+      end
+
+    end
+
   private
 
     def index_options
       [:district_student_id]
     end
 
-    def csv_headers
-      [:district_student_id, :first_name, :middle_name,:last_name, :student_number, :grade, :school_name, :age]
-    end
 
     def sims_model
       ExtArbitrary
