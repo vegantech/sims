@@ -56,6 +56,7 @@ module CSVImporter
       end
 
       def upload_responses
+        "Successful import of #{self.file_name} - means the file could be read"
       end
 
       def field_detail

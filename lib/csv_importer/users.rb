@@ -16,7 +16,8 @@ password is the user\'s password in lowercase, district_key is set by the distri
     }
     class << self
       def description
-        "Users in the district"
+        "Users in the district.  Note you can leave the password and salt blank, if so then be sure to set a district_key and make sure the email is present.
+        The district key acts as an initial password, which users will change when they first login."
       end
 
       def csv_headers
@@ -24,32 +25,29 @@ password is the user\'s password in lowercase, district_key is set by the distri
       end
 
       def overwritten
-        "What will get overwritten/changed when this file is uploaded."
+        "Users with matching district_user_id in the file will be overwritten."
       end
 
       def load_order
-        "When to upload this file in relation to other files."
+        "2. This should be uploaded before most other files."
       end
 
       def removed
-        "What gets removed when this file is uploaded."
+        "Users with district_user_id assigned but not in the file are removed from the district."
       end
 
       def related
-        "links to related files with explanations."
       end
 
       def how_often
-        "Notes on how often this file should be imported after initial import."
+        "This should be uploaded when new users are added to your district or when users are removed."
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
       end
 
       def upload_responses
-        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
-        In this case you'll see unknown file examples.csv"
+        super
       end
 
     end

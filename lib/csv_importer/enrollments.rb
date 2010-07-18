@@ -19,28 +19,25 @@ module CSVImporter
       end
 
       def load_order
-        "When to upload this file in relation to other files."
+        "4. This can be uploaded after schools and students."
       end
 
       def removed
-        "What gets removed when this file is uploaded."
+        "Enrollments for students with district_student_id assignment but not in this file."
       end
 
       def related
-        "links to related files with explanations."
       end
 
       def how_often
-        "Notes on how often this file should be imported after initial import."
+        "This should be uploaded whenever students is uploaded."
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
       end
 
       def upload_responses
-        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
-        In this case you'll see unknown file examples.csv"
+        super
       end
 
     end

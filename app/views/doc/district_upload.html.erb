@@ -14,6 +14,10 @@
     </ul>
     </p>
 
+    <ul>
+			<li><a href="/district_upload/empty/empty.zip">Sample CSV files, with just headers for all files</a></li>
+      <li><a href="/district_upload/sample/sample.zip">Example CSV files (more coming soon.)</a></li>
+    </ul>
 
     <%= render :partial => 'file_summary', :object => CSVImporter::Examples, :locals=> {:head_extra => '(Filename)',:field_extra => '(fields)'} %>
     <%= render :partial => 'file_summary', :collection => ImportCSV.importers %>

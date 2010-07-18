@@ -33,32 +33,29 @@ module CSVImporter
       end
 
       def overwritten
-        "What will get overwritten/changed when this file is uploaded."
+        "Students with matching district_student_id in the csv file."
       end
 
       def load_order
-        "When to upload this file in relation to other files."
+        "3.  This should be one of the first files uploaded."
       end
 
       def removed
-        "What gets removed when this file is uploaded."
+        "Students with a district_student_id assignment but not in the file will be removed from the district."
       end
 
       def related
-        "links to related files with explanations."
       end
 
       def how_often
-        "Notes on how often this file should be imported after initial import."
+        "As often as students enter/exit the district.  If this happens rarely, you may wish to make the changes manually instead."
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
       end
 
       def upload_responses
-        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
-        In this case you'll see unknown file examples.csv"
+        super
       end
 
     end

@@ -9,36 +9,33 @@ module CSVImporter
       end
 
       def description
-        "List of users with access to the district admin tools. This should be limited, as the district admin tools would allow users to assign themselves additional rights."
+        "List of users with access to the district admin tools. This should be limited, as the district admin tools 
+        would allow users to assign themselves additional rights. "
       end
 
       def overwritten
-        "What will get overwritten/changed when this file is uploaded."
       end
 
       def load_order
-        "When to upload this file in relation to other files."
+        "This can be uploaded after users."
       end
 
       def removed
-        "What gets removed when this file is uploaded."
       end
 
       def related
-        "links to related files with explanations."
       end
 
       def how_often
-        "Notes on how often this file should be imported after initial import."
+        "You will likely prefer to do this manually within SIMS.  Otherwise, whenever you want to designate different district administrators.  Be sure
+        to include your own account in the file."
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
       end
 
       def upload_responses
-        "What you see on the screen or in the email after uploading this file and what the different messages mean. <br />
-        In this case you'll see unknown file examples.csv"
+        super
       end
 
     end
