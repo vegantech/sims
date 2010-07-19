@@ -47,12 +47,14 @@ module CSVImporter
       end
 
       def related
+        {}
       end
 
       def how_often
       end
 
       def alternate
+        {}
       end
 
       def upload_responses

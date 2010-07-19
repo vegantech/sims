@@ -18,7 +18,7 @@ padding: 25px;
       </tr>
  
 
-      <% %w{description fields load_order overwritten removed related alternate how_often}.each do |field| %>
+      <% %w{description fields load_order overwritten removed how_often}.each do |field| %>
       <tr>
         <th><%=field.titleize %> </th>
         <td><%=@importer.try field %> </td>

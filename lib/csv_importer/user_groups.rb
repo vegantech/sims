@@ -28,14 +28,14 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

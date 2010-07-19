@@ -30,11 +30,11 @@ module CSVImporter
       end
 
       def how_often
-        {:examples => "Notes on how often this file should be imported after initial import."}
+        "Notes on how often this file should be imported after initial import."
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
+        {:examples => "links to files that can be used instead of this one, with explanation."}
       end
 
       def upload_responses

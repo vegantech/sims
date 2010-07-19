@@ -24,13 +24,18 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
       end
 
       def alternate
+        h={}
+        ImportCSV::VALID_FILES.select{|e| e =~ /_system_flags.csv/}.collect{|e| e.split(".csv").first.to_sym}.each do |f|
+          h[f]="Student Flags for category #{Flag::FLAGTYPES[f.to_s.split("_system").first][:humanize]}"
+        end
+        h
       end
 
       def upload_responses
@@ -38,8 +43,6 @@ module CSVImporter
       end
 
     end
-
-
   end
 end
 

@@ -24,15 +24,15 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "Once per year if you choose to use it, otherwise never."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super
