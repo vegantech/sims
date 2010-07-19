@@ -31,15 +31,15 @@ module CSVImporter
         "Users not in this file but with a district_user_id assigned will have access to all students_in_district removed."
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "If used, it should be updated as often as users.  Once you are using other levels of access, you might want prefer to manage this manually."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

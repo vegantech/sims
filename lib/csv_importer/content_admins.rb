@@ -22,15 +22,15 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "You might find this easier to handle manually within SIMS itself.  Otherwise, whenever you want to designate different content administrators."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

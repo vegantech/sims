@@ -27,15 +27,15 @@ module CSVImporter
         "Any schools in your district with district_school_id assigned but not in this file will be removed."
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "Likely only once, or manually.  If schools are added, closed, or renamed, then you could upload this again."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

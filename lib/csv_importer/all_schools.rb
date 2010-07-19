@@ -26,14 +26,15 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
+
+#      def alternate
+#      end
+
 
       def how_often
         "This likely would not change often.  Whenever users are uploaded."
-      end
-
-      def alternate
       end
 
       def upload_responses

@@ -36,15 +36,15 @@ password is the user\'s password in lowercase, district_key is set by the distri
         "Users with district_user_id assigned but not in the file are removed from the district."
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "This should be uploaded when new users are added to your district or when users are removed."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super
