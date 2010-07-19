@@ -26,11 +26,11 @@ module CSVImporter
       end
 
       def related
-        "links to related files with explanations."
+        {:examples=>"links to related files with explanations."}
       end
 
       def how_often
-        "Notes on how often this file should be imported after initial import."
+        {:examples => "Notes on how often this file should be imported after initial import."}
       end
 
       def alternate

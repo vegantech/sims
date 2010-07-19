@@ -23,6 +23,10 @@ class ImportCSV
     end
   end
 
+  def self.importer_from_symbol(key)
+   "CSVImporter::#{key.to_s.classify.pluralize}".constantize
+  end
+
   @@file_handlers={}
 
   attr_reader :district, :messages, :filenames

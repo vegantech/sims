@@ -1,0 +1,11 @@
+<%method = :related
+%>
+<dl>
+   <% related.send(method).each do |field,value| %>
+     <%file = ImportCSV.importer_from_symbol field %>
+     <dt><%= link_to file.file_name, "/doc/district_upload/#{related.file_name.split(".").first}"   %></dt> <dd><%= value %> </dd>
+   <% end %>
+
+ </dl>
+
+
