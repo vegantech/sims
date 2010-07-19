@@ -5,11 +5,11 @@ Feature: Documentation Generation/View
   
   Scenario: View list
     When I enter url "/doc"
-    Then I should see "District Upload API"
+    Then I should see "Instructions for CSV Generation"
 
   Scenario: District Upload
     When I enter url "/doc"
-    And I follow "District Upload API"
+    And I follow "Instructions for CSV Generation"
     Then I should see "examples.csv"
 
     

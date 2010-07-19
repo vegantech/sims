@@ -26,7 +26,7 @@ module CSVImporter
       end
 
       def related
-        "links to related files with explanations."
+        {:examples=>"links to related files with explanations."}
       end
 
       def how_often
@@ -34,7 +34,7 @@ module CSVImporter
       end
 
       def alternate
-        "links to files that can be used instead of this one, with explanation."
+        {:examples => "links to files that can be used instead of this one, with explanation."}
       end
 
       def upload_responses

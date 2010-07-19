@@ -23,16 +23,16 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "You will likely prefer to do this manually within SIMS.  Otherwise, whenever you want to designate different district administrators.  Be sure
         to include your own account in the file."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

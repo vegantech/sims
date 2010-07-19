@@ -44,15 +44,15 @@ module CSVImporter
         "Students with a district_student_id assignment but not in the file will be removed from the district."
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "As often as students enter/exit the district.  If this happens rarely, you may wish to make the changes manually instead."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

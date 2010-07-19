@@ -1,7 +1,8 @@
 class ImportCSV
   require 'hash_by'
   require 'fastercsv'
- 
+  require 'lib/csv_importer/base_system_flags'
+
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.6
   STRIP_FILTER = lambda{ |field| field.strip}
@@ -14,13 +15,18 @@ class ImportCSV
   VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
     "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
     "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv", "ext_summaries.csv",
-    "district_admins.csv","news_admins.csv", "content_admins.csv", "school_admins.csv", "regular_users.csv", "system_flags.csv"
+    "district_admins.csv","news_admins.csv", "content_admins.csv", "school_admins.csv", "regular_users.csv", "system_flags.csv",
+    *Flag::FLAGTYPES.keys.collect{|e| "#{e}_system_flags.csv"}
     ]
 
   def self.importers
     VALID_FILES.sort.collect do |csv_file|
       "CSVImporter::#{csv_file.split('.').first.classify.pluralize}".constantize
     end
+  end
+
+  def self.importer_from_symbol(key)
+   "CSVImporter::#{key.to_s.classify.pluralize}".constantize
   end
 
   @@file_handlers={}
@@ -82,6 +88,8 @@ class ImportCSV
     when 'regular_users.csv'
       load_user_roles_from_csv file_name, 'regular_user'
     when 'system_flags.csv'
+      load_system_flags_from_csv file_name
+    when *Flag::TYPES.keys.collect{|e| "#{e}_system_flags.csv"}
       load_system_flags_from_csv file_name
     when *csv_importers
       csv_importer file_name
@@ -177,7 +185,15 @@ class ImportCSV
   def headers_match? lines
     if @constant.to_set ==lines.headers.to_set  #expected headers are present in any order with no extra ones
       true
-    else
+      elsif @category
+        if lines.headers.to_set==[:district_student_id,:reason].to_set
+          true
+        else
+         @messages <<  "invalid header #{lines.headers.inspect} it should be district_student_id,reason for #{@category}"
+          false
+        end
+
+      else
       @messages <<  "invalid header #{lines.headers.inspect} it should be #{@constant.to_set.inspect} for #{@constant}"
       false
     end

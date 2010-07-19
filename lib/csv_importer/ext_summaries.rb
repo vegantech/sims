@@ -46,14 +46,14 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

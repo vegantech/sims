@@ -26,15 +26,15 @@ module CSVImporter
         "Enrollments for students with district_student_id assignment but not in this file."
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "This should be uploaded whenever students is uploaded."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super

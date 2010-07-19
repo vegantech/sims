@@ -33,15 +33,15 @@ module CSVImporter
       def removed
       end
 
-      def related
-      end
+#      def related
+#      end
 
       def how_often
         "This can be uploaded as often as students are uploaded, or once per year."
       end
 
-      def alternate
-      end
+#      def alternate
+#      end
 
       def upload_responses
         super
