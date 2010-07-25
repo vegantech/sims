@@ -1,5 +1,6 @@
 class GroupedProgressEntry 
-  attr_accessor :global_date, :intervention, :probe_definition
+  attr_accessor :global_date, :intervention, :probe_definition 
+  NUMBER_OF_STUDENTS_ON_GRAPH=15
 
   def errors
     []
@@ -67,8 +68,79 @@ class GroupedProgressEntry
     else
       false
     end
-
   end
+    COLORS= [ "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000", 
+        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
+        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0", 
+        "400000", "004000", "000040", "404000", "400040", "004040", "404040", 
+        "200000", "002000", "000020", "202000", "200020", "002020", "202020", 
+        "600000", "006000", "000060", "606000", "600060", "006060", "606060", 
+        "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0", 
+        "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
+
+
+    def student_count
+      ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
+         @probe_definition.id,
+        :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
+           @intervention.intervention_definition_id])
+
+     ipa.size
+    end
+    
+    def aggregate_chart(page=0)
+#      probe_scores
+ #       scores, grouped by date?
+      ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
+         @probe_definition.id,
+        :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
+           @intervention.intervention_definition_id])
+
+      students= ipa.collect(&:intervention).collect(&:student).flatten
+      probes = ipa.collect(&:probes)
+      scores=probes.flatten.collect(&:score)
+      dates = probes.flatten.collect(&:administered_at)
+      max_score = scores.max
+      min_score = scores.min
+      min_date = dates.min
+      max_date =dates.max
+
+      group_size=ipa.size/(ipa.size.to_f/NUMBER_OF_STUDENTS_ON_GRAPH).ceil
+      low=page.to_i*group_size
+      high =low+group_size -1
+
+      probes=probes[low..high]
+      students=students[low..high]
+
+
+      scaled_scores=probes.collect do |probe_groups|
+        probe_groups.collect do |probe|
+          100*(probe.score-min_score)/(max_score - min_score + 0.0001)
+        end.join(",") 
+      end.join("|")
+
+
+
+  #    student_names
+   #   probe_defintion
+    #  probe_brenchmark
+
+      
+
+      
+      { 'chdl' => students.collect(&:fullname).join("|"),
+        'chco' => COLORS[low..high].join(","),
+        'cht' => 'lc',
+        'chs' => '600x500',
+        'chxt'=> 'x,y',
+        'chxr' => "1,#{min_score},#{max_score}",
+        'chxl' => "0:|#{min_date}|#{max_date}",
+        'chid' => Time.now.usec,
+        'chd' => "t:#{scaled_scores}"}
+    end
+
+
+  
 
   class ScoreComment
     attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator

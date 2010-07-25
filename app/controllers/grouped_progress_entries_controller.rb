@@ -1,5 +1,7 @@
 class GroupedProgressEntriesController < ApplicationController
+  additional_read_actions :aggregate
   before_filter :confirm_search
+  
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
@@ -42,6 +44,16 @@ class GroupedProgressEntriesController < ApplicationController
         format.xml  { render :xml => @grouped_progress_entry.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  def aggregate
+    require 'net/http'
+    require 'uri'
+    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
+
+    res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'),
+                              @grouped_progress_entry.aggregate_chart(params[:page]))
+    send_data res.body, :type =>'image/png', :disposition => 'inline'
   end
 
   private

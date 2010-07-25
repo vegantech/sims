@@ -36,7 +36,10 @@ Intervention-<%=@grouped_progress_entry %>
     <hr />
 <% end %>
 
-  
+
+<%= render :partial => 'grouped_progress_entries/aggregate_graph' %>
+
+
 <%= link_to_if params[:graph_type], "Default Graphs", grouped_progress_entry_path(@grouped_progress_entry)  %>
 <%= link_to_unless params[:graph_type] == "bar", "All Bar Graphs", grouped_progress_entry_path(@grouped_progress_entry,:graph_type => 'bar')  %>
 <%= link_to_unless params[:graph_type] == "line", "All Line Graphs", grouped_progress_entry_path(@grouped_progress_entry,:graph_type => 'line')  %>
