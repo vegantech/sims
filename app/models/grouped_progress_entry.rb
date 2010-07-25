@@ -121,7 +121,6 @@ class GroupedProgressEntry
 
 
 
-
   #    student_names
    #   probe_defintion
     #  probe_brenchmark
@@ -132,9 +131,11 @@ class GroupedProgressEntry
       { 'chdl' => students.collect(&:fullname).join("|"),
         'chco' => COLORS[low..high].join(","),
         'cht' => 'lc',
-        'chtt'=> "#{max_score} | #{min_score}",
         'chs' => '600x500',
-        'chxt'=> 'x',
+        'chxt'=> 'x,y',
+        'chxr' => "1,#{min_score},#{max_score}",
+        'chxl' => "0:|#{min_date}|#{max_date}",
+        'chid' => Time.now.usec,
         'chd' => "t:#{scaled_scores}"}
     end
 
