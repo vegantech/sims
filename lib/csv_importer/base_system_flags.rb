@@ -17,12 +17,15 @@ module CSVImporter
       end
 
       def overwritten
+        "Students with district_student_id assigned will have their system flags reset."
       end
 
       def load_order
+        "This should be loaded after students, and after the system_flags file if that is used."
       end
 
       def removed
+        "All flags (except ignored or custom) for students with district_student_id assigned will be removed and recreated by this file"
       end
 
 #      def related
@@ -32,7 +35,8 @@ module CSVImporter
       end
 
       def alternate
-        {:system_flags => "You can put all categories together in one file instead." }
+        {:system_flags => "You can put all categories together in one file instead.  It's possible to do some categories combined in the system flags file and
+          do the rest individually as long as you load the system flags first." }
       end
 
       def upload_responses
