@@ -221,7 +221,7 @@ class CreateTrainingDistrict
     
     FasterCSV.table("#{path}/checklist_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:active]=!!district.abbrev.match(/^training/)
+      ckhash[:active]=!!district.abbrev.match(/^training/) || district.abbrev =='madison'
       
       newcd= district.checklist_definitions.create!(ckhash)
       checklisthash[ck[:id]]=newcd.id
