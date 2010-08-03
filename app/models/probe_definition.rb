@@ -101,7 +101,7 @@ class ProbeDefinition < ActiveRecord::Base
 
     probes.each do |probe|
       if probe.intervention_definitions.any?
-        probe.intervention_definitions.each do |id|
+        probe.intervention_definitions.compact.each do |id|
           ic=id.intervention_cluster
           od=ic.objective_definition
           my_hash[od.title] ||= {:clusters=>{}}

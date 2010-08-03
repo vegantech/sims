@@ -15,13 +15,15 @@ module CSVImporter
       end
 
       def overwritten
-        "What will get overwritten/changed when this file is uploaded."
+        "Students with district_student_id assigned will have their system flags reset."
       end
 
       def load_order
+        "This should be loaded after students, but before the category specific files"
       end
 
       def removed
+        "All flags (except ignored or custom) for students with district_student_id assigned will be removed and recreated by this file"
       end
 
 #      def related

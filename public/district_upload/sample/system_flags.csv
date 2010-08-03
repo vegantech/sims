@@ -1,0 +1,7 @@
+district_student_id,category,reason
+1,attendance,"Sample attendance flag that will get overwritten by individual file"
+1,suspension,"Sample Behavior flag that will get overwritten by individual file"
+1,math,"Sample Math flag that will get overwritten by individual file"
+1,languagearts,"Sample Language Arts flag that will get overwritten by individual file"
+1,socialstudies,"Sample Social Studies flag that will get overwritten by individual file"
+1,gifted,"Sample Talented/Gifted flag that will get overwritten by individual file"
