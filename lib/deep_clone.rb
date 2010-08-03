@@ -16,6 +16,9 @@ module DeepClone
     k
   end
 
+  def deep_clone?
+    true
+  end
 
 
   private
@@ -23,9 +26,6 @@ module DeepClone
     raise "This must be implemented and be a string"
   end
 
-  def deep_clone?
-    true
-  end
 
   def deep_clone_children
     raise "This must be an array of strings.  "
