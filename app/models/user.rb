@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
   
 
   validates_presence_of :username, :last_name, :first_name, :district
-  validates_presence_of :password, :on => :create
-  validates_presence_of :passwordhash, :on => :update
+  validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
+  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
@@ -375,5 +375,9 @@ protected
 
   def nullify_blank_district_user_id
     self.district_user_id = nil if district_user_id.blank?
+  end
+
+  def blank_password_ok?
+    email.present? && district && district.key.present?
   end
 end
