@@ -27,6 +27,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   delegate :student, :to => :intervention
   validates_associated :probes #,:probe_definition
   validate :last_date_must_be_after_first_date
+  validate :goal_in_range
 
   accepts_nested_attributes_for :probe_definition
 
@@ -187,4 +188,19 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def after_initialize
     self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
   end
+
+  def goal_in_range
+    if goal.present? and self.probe_definition.present?
+      if probe_definition.minimum_score.present? and goal < probe_definition.minimum_score
+        errors.add(:goal, "below minimum") and return false
+      end
+
+      if probe_definition.maximum_score.present? and goal > probe_definition.maximum_score
+        errors.add(:goal, "above maximum") and return false
+      end
+
+    end
+        
+  end
+
 end
