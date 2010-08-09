@@ -97,7 +97,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
     
     
       Gchart.line(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :axis_labels => axis_labels(probes_for_this_graph), 
                  :bar_width_and_spacing => '30,25',
                  :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
@@ -118,7 +118,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
     custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :axis_labels => axis_labels(probes_for_this_graph),
                  :bar_width_and_spacing => '30,25',
                  :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
@@ -135,10 +135,24 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def benchmarks
-    probe_definition.probe_definition_benchmarks
+    probe_definition.probe_definition_benchmarks |goal_benchmark.to_a
+  end
+
+  def goal_benchmark
+      ProbeDefinitionBenchmark.new(:benchmark=>goal, :grade_level => '   Goal') if goal?
   end
 
   protected
+
+  def axis_labels(p_for_this_graph)
+      [
+        p_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, 
+        p_for_this_graph.collect(&:score), 
+        [min,0,max],
+        benchmarks.collect{|b| "#{b.benchmark}-  #{b.grade_level}"},
+      ] 
+  end
+
   def numbers_on_line
     #show the value in black on the graph
       'chm=N,000000,0,,12,,t'
@@ -155,7 +169,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def benchmark_lines
     if benchmarks.present?
-      "chm=#{benchmarks.collect{|b| "r,ff9c00,0,#{scale_value(b.benchmark)-0.001},#{scale_value(b.benchmark) + 0.001}"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      "chm=#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark)-0.001},#{scale_value(b.benchmark) + 0.001}"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
     end
   end
 
