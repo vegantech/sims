@@ -32,6 +32,7 @@ module CSVImporter
 #      end
 
       def how_often
+        Flag::FLAGTYPES[flag_category][:how_often_to_upload]
       end
 
       def alternate

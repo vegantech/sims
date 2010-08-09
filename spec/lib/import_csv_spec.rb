@@ -18,7 +18,7 @@ describe ImportCSV do
 
       it 'each should have a csv file in sample' do
         files_present = Dir.glob("public/district_upload/sample/*.csv").collect{|e| e.split("/").last }
-        pending(" missing #{(@files - files_present).join(', ')}")
+#        pending(" missing #{(@files - files_present).join(', ')}")
         (@files - files_present).should == []
       end
 
@@ -29,7 +29,7 @@ describe ImportCSV do
       
       it 'should have zip file containing all the sample csvs' do
         zip_files =`unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
-        pending 
+#        pending 
         (@files - zip_files).should == []
       end
   end

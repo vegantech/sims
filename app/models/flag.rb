@@ -18,8 +18,14 @@ class Flag < ActiveRecord::Base
 	ORDERED_TYPE_KEYS = %w{attendance suspension math languagearts science socialstudies gifted ignored custom}
 
   TYPES = {
-      "attendance" => {:icon => "A.gif", :humanize => "Attendance"},
-      "suspension" => {:icon=> "B.gif", :humanize => "Behavior" },
+      "attendance" => {:icon => "A.gif", :humanize => "Attendance",
+        :how_often_to_upload => "If using this flag, needs to be done daily or weekly to be effective."
+                      },
+      "suspension" => {:icon=> "B.gif", :humanize => "Behavior",
+        :how_often_to_upload =>
+                      "As soon as possible after availability. 
+          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                      },
       "math" => {:icon => "M.gif", :humanize => "Math"},
       "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts"},
       "science" => {:icon=> "Beaker.png", :humanize => "Science"},

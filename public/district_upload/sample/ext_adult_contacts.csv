@@ -1,0 +1,3 @@
+district_student_id,relationship,guardian,first_name,last_name,home_phone,work_phone,cell_phone,pager,email,street_address,city_state_zip
+1,"Parent",true,Father,Uploaded,"608-123-4567","608-123-1111","","","","uploaded_father@simspilot.org","123 uploaded St.", "Sample, WI, 5333"
+1,"Neighbor",false,Friendly,Neighbor,"608-123-2222","","","","","neighbor@simspilot.org","122 uploaded St.", "Sample, WI, 5333"

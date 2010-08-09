@@ -30,6 +30,9 @@ module CSVImporter
 #      end
 
       def how_often
+        "As soon as possible after availability. 
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+
       end
 
       def alternate
