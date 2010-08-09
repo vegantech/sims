@@ -34,7 +34,7 @@ module CSVImporter
 
 
       def how_often
-        "This likely would not change often.  Whenever users are uploaded."
+        "Start of each semester (depending on frequency of new staff may need to be done more or less often; should be done at same time as the \"users\" file)."
       end
 
       def upload_responses

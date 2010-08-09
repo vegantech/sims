@@ -1,5 +1,5 @@
 <h1>Add Student</h1>
-<% @students.blank? %>
+<%if  @students.blank? %>
   There are no more enrolled students to assign to this group.
 <% else %>
   <% remote_form_for(@student, :url=>add_student_group_path(@group)) do |f| %>
