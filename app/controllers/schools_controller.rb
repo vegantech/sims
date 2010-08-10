@@ -12,6 +12,10 @@ class SchoolsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to :action => 'index' and return
+  end
+
   def select
     @school = current_user.authorized_schools(params["school"]["id"]).first
     # add school to session
