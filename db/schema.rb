@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100509160616) do
+ActiveRecord::Schema.define(:version => 20100808053607) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -416,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20100509160616) do
     t.boolean  "enabled",              :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "goal"
   end
 
   add_index "intervention_probe_assignments", ["frequency_id"], :name => "index_intervention_probe_assignments_on_frequency_id"

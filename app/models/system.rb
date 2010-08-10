@@ -12,7 +12,7 @@ class System
 
   def self.bootstrap
     if admin_district.nil?
-      d=District.create(:admin => true, :name => "Administration", :abbrev => :admin)
+      d=District.create(:admin => true, :name => "Administration", :abbrev => 'admin')
       u=d.users.first
       u.roles=['district_admin','state_admin']
       u.save!
