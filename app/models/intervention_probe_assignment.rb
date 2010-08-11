@@ -86,8 +86,9 @@ class InterventionProbeAssignment < ActiveRecord::Base
  def google_line_chart
    #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
    return ''if probes_for_graph.empty?
+    @chxp=[]
     custom_chm=[numbers_on_line,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
     group=0
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       if group>0
@@ -111,11 +112,17 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
 
  end
+
+ def chxp
+   "chxp=#{@chxp.join('|')}"
+ end
+
  def google_bar_chart
    #groups of 10
    return ''if probes_for_graph.empty?
+    @chxp=[]
     custom_chm=[numbers_in_bars,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
                  :axis_labels => axis_labels(probes_for_this_graph),
@@ -164,12 +171,14 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def max_min_zero
     #min, zero, max
-    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0&chxp=2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
+    @chxp<<"2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
+    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
   end
 
   def benchmark_lines
     if benchmarks.present?
-      "chm=#{benchmarks.collect{|b| "h,#{b.color},0,#{scale_value(b.benchmark)},3,1"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      @chxp <<  "3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      "chm=#{benchmarks.collect{|b| "h,#{b.color},0,#{scale_value(b.benchmark)},3,1"}.join("|")}" 
     end
   end
 
