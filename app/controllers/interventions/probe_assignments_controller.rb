@@ -30,6 +30,8 @@ class Interventions::ProbeAssignmentsController < ApplicationController
       @ipa = @intervention.intervention_probe_assignments.build(:probe_definition_id=>params[:probe_definition_id])
     end
 
+    @ipa.goal = params[:goal]
+
 #    render :text=> params[:intervention][:intervention_probe_assignment][:new_probes].inspect and return
     @probes = @ipa.probes.build(params[:probes].values)
 #    render :text => @ipa.probes.size.to_s and return
