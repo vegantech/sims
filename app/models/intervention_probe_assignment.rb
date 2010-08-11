@@ -169,7 +169,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def benchmark_lines
     if benchmarks.present?
-      "chm=#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark)-0.001},#{scale_value(b.benchmark) + 0.001}"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      "chm=#{benchmarks.collect{|b| "h,#{b.color},0,#{scale_value(b.benchmark)},3,1"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
     end
   end
 
