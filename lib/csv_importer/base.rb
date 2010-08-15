@@ -63,6 +63,9 @@ module CSVImporter
 
       def field_detail
       end
+
+      def how_many_rows
+      end
     end
 
     

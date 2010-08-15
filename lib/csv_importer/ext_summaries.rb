@@ -43,6 +43,10 @@ module CSVImporter
       def load_order
       end
 
+      def how_many_rows
+        "One row per student."
+      end
+
       def removed
       end
 
@@ -50,6 +54,8 @@ module CSVImporter
 #      end
 
       def how_often
+        "Start of the school year.
+        (Note this is a part of the extended profile and not required for functionality of SIMS, so it can be done infrequently.)"
       end
 
 #      def alternate

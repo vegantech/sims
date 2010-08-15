@@ -38,6 +38,11 @@ module CSVImporter
          "Start of each semester (depending on frequency of new staff may need to be done more or less often; should be done at same time as the \"users\" file)."
       end
 
+      def how_many_rows
+        "One row for each user per school.  If a school has multiple users then it will have multiple rows.  
+        If a user has access to multiple schools, then they will have multiple rows."
+      end
+
 #      def alternate
 #      end
 

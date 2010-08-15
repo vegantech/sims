@@ -27,7 +27,8 @@ module CSVImporter
 #      end
 
       def how_often
-        "This should be updated as often as the users file."
+        "Start of each semester (depending on frequency of new staff may need to be done more or less often; 
+        should be done at same time as the \"users\" file)."
       end
 
 #      def alternate
@@ -37,6 +38,9 @@ module CSVImporter
         super
       end
 
+      def how_many_rows
+        "One row per user with this access."
+      end
     end
 
 
