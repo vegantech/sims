@@ -25,6 +25,8 @@ module CSVImporter
 #      end
 
       def how_often
+        "Start of each semester (depending on frequency of new staff may need to be 
+        done more or less often; should be done at same time as the \"users\" file)."
       end
 
 #      def alternate
@@ -32,6 +34,10 @@ module CSVImporter
 
       def upload_responses
         super
+      end
+
+      def how_many_rows
+        "One row per user per school.  A school will have multiple users and a user can belong to multiple schools."
       end
 
     end

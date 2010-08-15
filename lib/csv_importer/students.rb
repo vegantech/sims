@@ -48,7 +48,8 @@ module CSVImporter
 #      end
 
       def how_often
-        "As often as students enter/exit the district.  If this happens rarely, you may wish to make the changes manually instead."
+        "Start of each semester, although this is dependent on how often students enter and exit the district. 
+        If this happens rarely, you may wish to make the changes manually instead."
       end
 
 #      def alternate
@@ -56,6 +57,10 @@ module CSVImporter
 
       def upload_responses
         super
+      end
+
+      def how_many_rows
+        "One row per student."
       end
 
     end

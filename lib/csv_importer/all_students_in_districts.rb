@@ -38,6 +38,11 @@ module CSVImporter
         "If used, it should be updated as often as users.  Once you are using other levels of access, you might want prefer to manage this manually."
       end
 
+      def how_many_rows
+        "One row per user with this access."
+
+      end
+
 #      def alternate
 #      end
 

@@ -33,6 +33,12 @@ module CSVImporter
 #      end
 
       def how_often
+        "Start of the school year.
+        (Note this is a part of the extended profile and not required for functionality of SIMS, so it can be done infrequently.)"
+      end
+
+      def how_many_rows
+        "One row per sibling, if the person is a sibling to multiple students then they will appear in this file multiple times with different district_student_id."
       end
 
 #      def alternate

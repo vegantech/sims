@@ -27,8 +27,7 @@ module CSVImporter
 #      end
 
       def how_often
-        "You will likely prefer to do this manually within SIMS.  Otherwise, whenever you want to designate different district administrators.  Be sure
-        to include your own account in the file."
+        "Start of school year, or handle manually.  Be sure to include your own account in the file so you don't lock yourself out."
       end
 
 #      def alternate
@@ -38,6 +37,9 @@ module CSVImporter
         super
       end
 
+      def how_many_rows
+        "One row per user with this access."
+      end
     end
 
 

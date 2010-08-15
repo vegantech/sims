@@ -30,11 +30,17 @@ module CSVImporter
 #      end
 
       def how_often
-        "This should be uploaded whenever students is uploaded."
+        "Start of each semester (depending on frequency of students entering and exiting the district may 
+        need to be done more or less often; should be done at same time as the \"students\" file)."
       end
 
 #      def alternate
 #      end
+      #
+      def how_many_rows
+        "One row per student per school.  Students can be in multiple rows, schools can be in multiple rows.  If multiple end years are entered
+        then there will be rows with the same school and student but different grades (usually) and end years."
+      end
 
       def upload_responses
         super

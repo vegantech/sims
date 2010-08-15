@@ -31,11 +31,15 @@ module CSVImporter
 #      end
 
       def how_often
-        "Likely only once, or manually.  If schools are added, closed, or renamed, then you could upload this again."
+        "Start of the school year, or handle manually.  If schools are added, closed, or renamed, then you could upload this again."
       end
 
 #      def alternate
 #      end
+      #
+      def how_many_rows
+        "One row per school"
+      end
 
       def upload_responses
         super

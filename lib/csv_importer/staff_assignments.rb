@@ -28,6 +28,7 @@ module CSVImporter
 #      end
 
       def how_often
+        "If used, once per year, or as often as \"users\" file is uploaded."
       end
 
 #      def alternate
@@ -37,6 +38,9 @@ module CSVImporter
         super
       end
 
+      def how_many_rows
+        "One row per user per school.  A school will have multiple users assigned, and a user could be assigned to multiple schools.  (If you are using this file, then you only want to include users with a phsyical presence at that school.)"  
+      end
     end
 
 
