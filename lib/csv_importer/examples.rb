@@ -42,6 +42,10 @@ module CSVImporter
         In this case you'll see unknown file examples.csv"
       end
 
+      def how_many_rows
+        "There should be one row per example."
+      end
+
     end
 
 

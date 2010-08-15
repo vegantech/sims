@@ -28,10 +28,15 @@ module CSVImporter
 #      end
 
       def how_often
+        "Once per semester (or quarter), or as often as the \"students\" file is uploaded"
       end
 
 #      def alternate
 #      end
+
+      def how_many_rows
+        "There should be one row per group.  A school will have multiple groups."
+      end
 
       def upload_responses
         super

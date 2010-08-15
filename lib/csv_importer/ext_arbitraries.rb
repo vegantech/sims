@@ -28,8 +28,14 @@ module CSVImporter
 #      end
 
       def how_often
-        "Once per year if you choose to use it, otherwise never."
+        "Start of the school year if you choose to use it, otherwise never.
+        (Note this is a part of the extended profile and not required for functionality of SIMS, so it can be done infrequently.)"
       end
+
+      def how_many_rows
+        "There should be one (or none) row per student where this is used.   "
+      end
+
 
 #      def alternate
 #      end

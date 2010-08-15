@@ -40,7 +40,11 @@ password is the user\'s password in lowercase, district_key is set by the distri
 #      end
 
       def how_often
-        "This should be uploaded when new users are added to your district or when users are removed."
+        "Start of each semester (depending on frequency of new staff may need to be done more or less often)."
+      end
+
+      def how_many_rows
+        "One row per user."
       end
 
 #      def alternate

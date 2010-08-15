@@ -26,7 +26,7 @@ module CSVImporter
 #      end
 
       def how_often
-        "You might find this easier to handle manually within SIMS itself.  Otherwise, whenever you want to designate different content administrators."
+        "Start of school year, or handle manually."
       end
 
 #      def alternate
@@ -36,6 +36,9 @@ module CSVImporter
         super
       end
 
+      def how_many_rows
+        "One row per user with this access."
+      end
     end
 
 

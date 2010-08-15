@@ -37,7 +37,11 @@ module CSVImporter
 #      end
 
       def how_often
-        "This can be uploaded as often as students are uploaded, or once per year."
+        "Start of the school year. (Note this is a part of the extended profile and not required for functionality of SIMS, so it can be done infrequently.)"
+      end
+
+      def how_many_rows
+        "One row per contact.  There can be multiple contacts per student.  If the same person is a contact for another student, then there will be another row for that contact (with a different district_student_id.)"
       end
 
 #      def alternate
