@@ -42,7 +42,7 @@ class ScriptedController < ApplicationController
   end
 
   def district_upload
-    if request.post? or true
+    if request.post? 
       #curl --user foo:bar -Fupload_file=@x.c http://localhost:3333/scripted/district_upload?district_abbrev=mmsd
       #      render :text => "#{params.inspect} #{current_district.to_s}"
       spawn do
@@ -53,6 +53,15 @@ class ScriptedController < ApplicationController
       render :text=> ''
     else
       raise 'error'
+    end
+  end
+
+  def automated_intervention
+    if request.post? or true
+      importer=AutomatedIntervention.new params[:upload_file], current_district
+      render :text=>importer.import
+    else
+      render :text =>"You need to POST a csv file with the following format:\n #{::AutomatedIntervention::FORMAT}"
     end
   end
 
