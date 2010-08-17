@@ -58,7 +58,7 @@ class ScriptedController < ApplicationController
 
   def automated_intervention
     if request.post? or true
-      importer=AutomatedIntervention.new params[:upload_file], current_district
+      importer=AutomatedIntervention.new params[:upload_file], @u
       render :text=>importer.import
     else
       render :text =>"You need to POST a csv file with the following format:\n #{::AutomatedIntervention::FORMAT}"
