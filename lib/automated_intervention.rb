@@ -17,7 +17,7 @@ class AutomatedIntervention
   end
 
   def messages
-    @messages.uniq.join("\n<br />")
+    @messages
   end
 
   

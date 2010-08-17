@@ -58,8 +58,12 @@ class ScriptedController < ApplicationController
 
   def automated_intervention
     if request.post? or true
-      importer=AutomatedIntervention.new params[:upload_file], @u
-      render :text=>importer.import
+      spawn do
+        importer=AutomatedIntervention.new params[:upload_file], @u
+        @messages=importer.import
+        Notifications.deliver_district_upload_results importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us'
+      end
+        render :text=>"response will be emailed to #{@u.email}"
     else
       render :text =>"You need to POST a csv file with the following format:\n #{::AutomatedIntervention::FORMAT}"
     end
