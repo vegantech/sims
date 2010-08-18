@@ -1,6 +1,6 @@
 class AutomatedIntervention
 
-  FORMAT="district_student_id,intervention_definition_id,start_date"
+  FORMAT="district_student_id,intervention_definition_id,start_date,comment"
 
   def initialize file,user
     @count=0
@@ -48,6 +48,7 @@ class AutomatedIntervention
     intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date])
 
     check_for_duplicate(intervention,line) and return false
+    intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
     intervention.save!
     @count +=1
 
