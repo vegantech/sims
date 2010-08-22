@@ -57,7 +57,6 @@ class ScriptedController < ApplicationController
   end
 
   def automated_intervention
-    Spawn::method :yield, 'development'
     if request.post? or true
       spawn do
         importer=AutomatedIntervention.new params[:upload_file], @u
