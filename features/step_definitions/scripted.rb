@@ -1,3 +1,13 @@
+When /^I log in with basic auth as "([^"]*)" with password "([^"]*)"$/ do |username, password|
+  basic_auth(username, password)
+end
+
+When /^I enter url "([^"]*)" with abbrev$/ do |url|
+  visit "#{url}?district_abbrev=#{@user.district.abbrev}"
+end
+
+
+
 Given /^a user "([^"]*)"$/ do |username|
   @user = User.find_by_username(username) || Factory(:user,:username=>username,:email => "#{username}@example.com",:password=>'e')
 end
