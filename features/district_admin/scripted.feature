@@ -7,6 +7,7 @@ Feature: Scrited Interaction with SIMS
     Given a user "automated_intervention"
     And a student with district_student_id "cuke123"
     And an intervention_definition with id "99876"
+    And a probe_definition with id "99876"
     And a clear email queue
     When I log in with basic auth as "automated_intervention" with password "e"
     And I enter url "/scripted/automated_intervention" with abbrev
@@ -17,5 +18,5 @@ Feature: Scrited Interaction with SIMS
     And I press "Submit"
     Then I should receive an email
     When I open the email
-    Then I should see "2 interventions added" in the email
+    Then I should see "4 interventions added" in the email
 

@@ -1,7 +1,12 @@
-district_student_id,intervention_definition_id,start_date,comment
-cuke123,-1,2008-01-01,"This is not a valid intervention"
-cuke123,99876,2008-01-01,"This is a comment"
-cuke123,99876,2008-01-02,"This is another intervention on a different date"
-cuke123,99876,2008-01-02,"This is a duplicate intervention that should not be added."
-invalid123,99876,2008-01-01,"This is an invalid student"
+district_student_id,intervention_definition_id,start_date,end_date,probe_definition_id,score,comment
+cuke123,-1,2008-01-01,,,,"This is not a valid intervention"
+cuke123,99876,2008-01-01,,,,"This is a comment"
+cuke123,99876,2008-01-02,2008-01-01,,,"This is another intervention on a different date and an invalid end date"
+cuke123,99876,2008-01-02,2008-01-03,,,"This is another intervention on a different date"
+cuke123,99876,2008-01-03,2008-01-04,-1,10,"This is an intervention with an invalid probe assignment"
+cuke123,99876,2008-01-03,2008-01-04,99876,-1000,"This is an intervention with an valid probe assignment but invalid score"
+cuke123,99876,2008-01-04,,99876,,"This is an intervention with an valid probe assignment and blank score"
+cuke123,99876,2008-01-05,,99876,,"This is an intervention with an valid probe assignment and valid score"
+cuke123,99876,2008-01-02,,,,,"This is a duplicate intervention that should not be added."
+invalid123,99876,2008-01-01,,,,,"This is an invalid student"
 

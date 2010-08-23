@@ -1,6 +1,6 @@
 class AutomatedIntervention
 
-  FORMAT="district_student_id,intervention_definition_id,start_date,comment"
+  FORMAT="district_student_id,intervention_definition_id,start_date,end_date,probe_definition_id,score,comment"
 
   def initialize file,user
     @count=0
@@ -45,7 +45,43 @@ class AutomatedIntervention
     student= check_student(line[:district_student_id]) or return false
     int_def=check_intervention_definition(line[:intervention_definition_id]) or return false
 
-    intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date], :called_internally=>true)
+    intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date], 
+                                             :end_date => line[:end_date],
+                                             :called_internally=>true)
+
+                                             
+
+    unless intervention.send(:end_date_after_start_date?)
+      @messages << "#{intervention.errors.full_messages.to_s} #{line.to_s}" and return false
+    end
+    
+    if line[:end_date].any?
+      intervention.active=false
+      intervention.ended_by_id = @user.id
+    end
+
+    if line[:probe_definition_id].any?
+      pd = @district.probe_definitions.find_by_id(line[:probe_definition_id]) 
+      pd or 
+      (@messages << "Invalid Probe Definition ID #{line.to_s}" and return false)
+
+      intervention.intervention_probe_assignment={:probe_definition_id => line[:probe_definition_id], 
+        :first_date => line[:start_date], :end_date => line[:start_date]}
+
+      if line[:score].any?
+        probe=intervention.intervention_probe_assignment.probes.build(:score => line[:score], :administered_at => line[:start_date])
+        max = pd.maximum_score || (1.0/0) #infinity
+        min = pd.minimum_score || (-1.0/0) #-infinity
+
+        unless probe.score.between?(max,min)
+          @messages << "Score is not between #{min} and #{max} #{line.to_s}" and return false
+        end
+      end
+
+    end
+
+
+
 
     check_for_duplicate(intervention,line) and return false
     intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
@@ -75,7 +111,7 @@ class AutomatedIntervention
 
   def check_for_duplicate i,line
     i.student.interventions.find_by_intervention_definition_id_and_user_id_and_start_date(i.intervention_definition_id,i.user_id,i.start_date) and
-    @messages << "Duplicate entry for #{line.inspect}"
+    @messages << "Duplicate entry for #{line.to_s}"
   end
 
   
