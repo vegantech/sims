@@ -1,0 +1,18 @@
+<p>
+Upload a file with the following headers: <br />
+<%=AutomatedIntervention::FORMAT%>
+</p>
+<%= render :partial => 'automated_intervention_fields' %>
+<%form_tag '',:multipart=>true do %>
+  <label for "upload_file">Upload File</label>
+  <%=file_field_tag "upload_file" %>
+  <%=hidden_field_tag :district_abbrev , @u.district.abbrev%>
+  <%=submit_tag 'Submit'%>
+<% end %>
+</p>
+
+
+<p>
+You can also automate this using curl: <br />
+curl --user automated_intervention:password -Fupload_file=@interventions.csv https://<%=@u.district.abbrev%>.simspilot.org/scripted/automated_intervention
+</p>

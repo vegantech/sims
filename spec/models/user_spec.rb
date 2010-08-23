@@ -22,8 +22,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-    @user = User.find_by_username 'oneschool' 
-    @user ||= Factory(:user, :username => "oneschool")
+      System::HASH_KEY=nil
+    User.destroy_all
+    @user = Factory(:user, :username => "oneschool")
   end
 
   describe 'authenticate' do
@@ -137,6 +138,8 @@ describe User do
   
   describe 'passwordhash' do
     it 'should be stored encrypted' do
+      System::HASH_KEY=nil
+
       @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
     end
   end
