@@ -1,0 +1,7 @@
+district_student_id,intervention_definition_id,start_date,comment
+cuke123,-1,2008-01-01,"This is not a valid intervention"
+cuke123,99876,2008-01-01,"This is a comment"
+cuke123,99876,2008-01-02,"This is another intervention on a different date"
+cuke123,99876,2008-01-02,"This is a duplicate intervention that should not be added."
+invalid123,99876,2008-01-01,"This is an invalid student"
+

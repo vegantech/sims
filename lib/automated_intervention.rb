@@ -5,7 +5,7 @@ class AutomatedIntervention
   def initialize file,user
     @count=0
     @messages = []
-    @file = file.path
+    @file = file.path if file
     @user = user
     @district=@user.district
 
@@ -32,7 +32,7 @@ class AutomatedIntervention
         process_row line
     end
 
-    @messages << "#{@count} entries added"
+    @messages << "#{@count} interventions added"
 
   end
 
@@ -45,7 +45,7 @@ class AutomatedIntervention
     student= check_student(line[:district_student_id]) or return false
     int_def=check_intervention_definition(line[:intervention_definition_id]) or return false
 
-    intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date])
+    intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date], :called_internally=>true)
 
     check_for_duplicate(intervention,line) and return false
     intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
