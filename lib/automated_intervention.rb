@@ -1,6 +1,19 @@
 class AutomatedIntervention
 
   FORMAT="district_student_id,intervention_definition_id,start_date,end_date,probe_definition_id,score,comment"
+  FIELDS={
+    :district_student_id => "Primary key in your student information system",
+    :intervention_definition_id => "Have the content admin navigate to the intervention in the content builder.  It is the number at the end of the url.",
+    :start_date => "Start of intervention in yyyy-mm-dd format",
+    :end_date => "If present, the end date of the intervention in yyyy-mm-dd format.  If absent, the intervention will be active.",
+    :probe_definition_id => "If present, the progress monitor assigned to this intervention.  
+      Have the content admin navigate to this in the content builder.  It is the number at the end of the url.",
+    :score => "If entered, a score will be entered.  It must be within the max and min of the assigned progress monitor.",
+    :comment => "An optional comment to be added to the intervention."
+  }
+
+
+
 
   def initialize file,user
     @count=0
