@@ -91,6 +91,7 @@ class CreateTrainingDistrict
    
     self.generate_interventions(td)
     self.generate_checklist_definition(td)
+    td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
 
    td
     

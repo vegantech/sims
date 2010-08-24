@@ -12,6 +12,7 @@ class Interventions::CommentsController < ApplicationController
   end
 
   def show
+
     @intervention_comment = @intervention.comments.find(params[:id])
     render :layout => false
   end
@@ -77,7 +78,7 @@ class Interventions::CommentsController < ApplicationController
 
 protected
   def load_intervention
-    if current_student
+    if current_student.present?
       @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?
     else
       false
