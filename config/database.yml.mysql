@@ -2,6 +2,7 @@ defaults: &defaults
   adapter: mysql
   encoding: utf8
   username: root
+  reconnect: true
 #  password: root
 
 development: &DEVELOPMENT

@@ -92,6 +92,12 @@ class Student < ActiveRecord::Base
     latest_checklist.checklist_definition
   end
 
+
+  def has_content?
+    flags.any? || team_consultations.any? || interventions.any? || checklists.any? || recommendations.any? || principal_overrides.any? ||
+    consultation_form_requests.any? || comments.any?
+  end
+
   def max_tier
     # Return the student's highest unlocked tier, defaults to lowest tier in district
     # this will be the highest permitted intervention tier for this student.

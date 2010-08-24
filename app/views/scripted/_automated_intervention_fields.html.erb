@@ -1,0 +1,6 @@
+<p>
+<% AutomatedIntervention::FORMAT.split(",").each do |field| %>
+  <b><%=field%></b> - <%=AutomatedIntervention::FIELDS[field.to_sym] %> <br />
+<% end %>
+</p>
+<p>

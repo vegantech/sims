@@ -42,7 +42,7 @@ class ScriptedController < ApplicationController
   end
 
   def district_upload
-    if request.post? or true
+    if request.post? 
       #curl --user foo:bar -Fupload_file=@x.c http://localhost:3333/scripted/district_upload?district_abbrev=mmsd
       #      render :text => "#{params.inspect} #{current_district.to_s}"
       spawn do
@@ -54,6 +54,18 @@ class ScriptedController < ApplicationController
     else
       raise 'error'
     end
+  end
+
+  def automated_intervention
+    if request.post?
+      spawn(:method => :yield) do
+        importer=AutomatedIntervention.new params[:upload_file], @u
+        @messages=importer.import
+        Notifications.deliver_district_upload_results @messages, @u.email || 'sbalestracci@madison.k12.wi.us'
+      end
+        render :text=>"response will be emailed to #{@u.email}" and return
+    end
+    render :layout=>false
   end
 
 

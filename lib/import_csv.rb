@@ -5,7 +5,7 @@ class ImportCSV
 
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.6
-  STRIP_FILTER = lambda{ |field| field.strip}
+  STRIP_FILTER = lambda{ |field| field.to_s.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
   CLEAN_CSV_OPTS ={:converters => [STRIP_FILTER,:symbol]}

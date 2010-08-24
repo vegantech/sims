@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>SIMS Scripted Interaction</title>
+  </head>
+  <body>
+    <h1>SIMS Scripted Interaction</h1>
+    <p> SIMS offers several options for uploading and downloading data that you can automate.  All you need to do is setup a user in your district with 
+    the appropriate name and password.  A confirmation email will be sent to the email address in that user.
+    </p>
+
+    <h2>Automated Interventions</h2>
+    <p>This allows you to upload a csv file which will automatically assign interventions to the students in the file.  This is useful if you want to 
+    mass assign an intervention (for example summer school.) </p>
+
+    <p>Create a user with username "automated_intervention".  Do not assign a district_user_id or any roles.   </p>  
+
+    <%=render :partial => '/scripted/automated_intervention_fields' %>
+ </body>
+</html>

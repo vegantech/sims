@@ -1,4 +1,4 @@
-Feature Content Builder
+Feature: Content Builder
   Scenario: content_builder
     Given load demo data
     And I go to the home page
