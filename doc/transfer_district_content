@@ -1,0 +1,26 @@
+Tiers
+   checklists assigned to that tier
+   principal overrides assigned to that tier
+   intervention definitions assigned to that tier
+   recommendations assigned to that tier
+
+
+   checklist definitions in use
+
+   collect ids of things in use, save to a file
+
+Moving content
+Create temporary district
+Turn off timestamps
+Move Goal Definitions
+Move Probe Definitions
+Move Tiers
+
+
+Decide which tiers to keep
+decide which probe definitions to keep
+decide which intervention definitions to keep
+Follow recommended monitors and intervention_probe_assignments
+
+Intervention Definitions
+
