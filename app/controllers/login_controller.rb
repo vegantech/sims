@@ -35,9 +35,7 @@ class LoginController < ApplicationController
 
   def logout
     oldflash = flash[:notice]
-    reset_session
-    session[:user_id]=nil
-    session[:district_id]=nil
+    reset_session_and_district
     dropdowns
     render :action=>:login #the redirect wasn't properly clearing the cookie via the reset_session
   end
@@ -60,12 +58,13 @@ class LoginController < ApplicationController
   end
 
   def change_password
+    reset_session_and_district if params['token'].present?
     @user = current_user
 
     if @user.new_record? 
       id=params[:id] || (params[:user] && params[:user][:id])
       token = params['token'] || (params[:user] && params['user'][:token])
-      @user =  User.find(id, :conditions => ["passwordhash ='' and salt ='' and token = ?",token]) #and email_token
+      @user =  User.find(id, :conditions => ["(passwordhash ='' or passwordhash is null) and salt ='' and token = ?",token]) #and email_token
       redirect_to logout if @user.blank?
     end
 
@@ -79,6 +78,13 @@ class LoginController < ApplicationController
 
  
 private
+  def reset_session_and_district
+    reset_session
+    session[:user_id]=nil
+    session[:district_id]=nil
+    
+  end
+
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
     begin

@@ -91,6 +91,7 @@ class CreateTrainingDistrict
    
     self.generate_interventions(td)
     self.generate_checklist_definition(td)
+    td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
 
    td
     
@@ -147,6 +148,7 @@ class CreateTrainingDistrict
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
       mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
       unless ckhash[:disabled] or ckhash[:custom]
+        ckhash[:notify_email] = nil
         newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier)) 
         definitionhash[ck[:id]]=newcd.id
       end
@@ -197,21 +199,31 @@ class CreateTrainingDistrict
         newid = nil
       end
 
-      if ck[:url].to_s.include?("/")
-        url = ck[:url]
-      else
-        url = "/file/#{ck[:url]}"
-      end
-      Asset.create!(:attachable_type => ck[:attachable_type], :attachable_id => newid, :url => url, :name => ck[:name]) if newid.present?
-        
+      generate_assets_from_row(newid, ck) if newid.present?
+       
 
     end
+  end
 
+  def self.generate_assets_from_row(attachable_id, row)
+    generate_asset_from_name_and_url(attachable_id, row) if row[:url].present? && row[:url].to_s !="0"
+    generate_asset_from_file(attachable_id,row) if row[:document_file_name].present? && row[:document_file_name].to_s != "0"
+  end
 
-    
-    
+  def self.generate_asset_from_name_and_url(attachable_id, row)
+    if row[:url].to_s.include?("/")
+      url = row[:url]
+    else
+      url = "/file/#{row[:url]}"
+    end
 
+    raise row.inspect if url == "/file/0"
+    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => url, :name => row[:name])
+  end
 
+  def self.generate_asset_from_file(attachable_id, row)
+    filename = row[:document_file_name]
+    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => "/file/#{filename}", :name => filename)
   end
 
   def self.generate_checklist_definition(district, path="db/training")
