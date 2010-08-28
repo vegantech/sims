@@ -16,6 +16,9 @@ Move Goal Definitions
 Move Probe Definitions
 Move Tiers
 
+Generate content
+
+
 
 Decide which tiers to keep
 decide which probe definitions to keep
@@ -23,4 +26,52 @@ decide which intervention definitions to keep
 Follow recommended monitors and intervention_probe_assignments
 
 Intervention Definitions
+intervention_cluster_ids =  tempdist.intervention_clusters.collect(&:id)
+idids = []
+
+idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,:joins => :interventions, :conditions => "interventions.id is not null").collect(&:id);nil
+idids << InterventionDefinition.find_all_by_intervention_cluster_id_and_custom(intervention_cluster_ids,true).collect(&:id)
+idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,:conditions => "updated_at > '2009-08-01'").collect(&:id)
+
+idids.flatten.uniq
+[2215, 2225, 2231, 2278, 2327, 703, 2334]
+
+
+
+
+
+
+
+probe_definitions #record ids
+
+pdids = []
+   find_all_by_custom
+   tempdist.probe_definitions.find(:all,:joins=>:intervention_probe_assignments, :conditions => "intervention_probe_assignments.id is not null")
+#updated in builder
+   tempdist.probe_definitions.find(:all, :conditions => "updated_at > '2009-08-01 00:00:00'")
+
+   pdids.flatten.uniq
+    [886, 905, 906, 929, 944, 946, 948]
+
+    886 problem solving interview A,    no match
+
+
+Recommended Monitors
+
+
+
+
+----
+make sure timestamps are off
+1. update tiers on intervention definitions
+2. review progress monitors and interventions
+if duplicate  (same title??)
+  move assigned content over to corresponding in target district  (note target id for later verification of recommended monitors)
+
+if distinct
+  change to appropriate intervention cluster (for intervention definition) or district (for probe definition)
+
+adjust recommended monitors???
+
+
 
