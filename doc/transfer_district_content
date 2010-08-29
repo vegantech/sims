@@ -1,3 +1,29 @@
+tempdist=Factory(:district,:abbrev=>'temp',:name=>'temp')
+target=District.find_by_abbrev('nbexcellence')
+Tier.record_timestamps = false
+ProbeDefinition.record_timestamps = false
+GoalDefinition.record_timestamps = false
+
+target.tiers.update_all(:district_id => tempdist.id)
+target.probe_definitions.update_all(:district_id => tempdist.id)
+target.goal_definitions.update_all(:district_id => tempdist.id)
+target.instance_variable_set('@intervention_clusters',nil)
+
+CreateTrainingDistrict.generate_interventions(target, "public/system/district_demo_content/madison")
+
+
+
+
+#destroy
+tempdist.probe_definitions.destroy_all
+tempdist.goal_definitions.destroy_all
+tempdist.tiers.destroy_all
+tempdist.destroy
+
+
+
+
+
 Tiers
    checklists assigned to that tier
    principal overrides assigned to that tier
@@ -33,31 +59,59 @@ idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention
 idids << InterventionDefinition.find_all_by_intervention_cluster_id_and_custom(intervention_cluster_ids,true).collect(&:id)
 idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,:conditions => "updated_at > '2009-08-01'").collect(&:id)
 
-idids.flatten.uniq
-[2215, 2225, 2231, 2278, 2327, 703, 2334]
+idids=idids.flatten.uniq
+
+ [15711, 3867, 3825, 3827, 3828, 3832, 3826, 3829, 3830, 3831, 3833, 3865, 3855, 3856, 3834, 3835, 3853, 3854, 3849, 3850, 3859, 3860, 
+ 3851, 3852, 3847, 3848, 3857, 3858, 3845, 3846, 3836, 3837, 3838, 3866, 3868, 3840, 3841, 3842, 3843, 
+ 3844, 3839, 3818, 3821, 3822, 3813, 3814, 3819, 3820, 3824, 3815, 3816, 3817, 3823, 3861, 3862, 3863, 3864]
 
 
 
 
+InterventionDefinition.find(idids).each do |int_def|
 
+target_cluster = target.intervention_clusters.find{|e| e.title == int_def.intervention_cluster.title}
+if target_cluster
+int_def.tier = target.tiers.find_by_position(int_def.tier.position)
+
+target_def = target_cluster.intervention_definitions.find_by_title(int_def.title)
+
+if target_def
+int_def.interventions.update_all("intervention_definition_id = #{target_def.id}")
+int_def.recommended_monitors.update_all("intervention_definition_id = #{target_def.id}")
+int_def.quicklist_items.update_all("intervention_definition_id = #{target_def.id}")
+else
+int_def.intervention_cluster_id = target_cluster.id
+end
+int_def.save!
+else
+puts 'different category'
+end
+
+end;nil
 
 
 probe_definitions #record ids
 
 pdids = []
-   find_all_by_custom
-   tempdist.probe_definitions.find(:all,:joins=>:intervention_probe_assignments, :conditions => "intervention_probe_assignments.id is not null")
-#updated in builder
-   tempdist.probe_definitions.find(:all, :conditions => "updated_at > '2009-08-01 00:00:00'")
+  pdids << tempdist.probe_definitions.find_all_by_custom(true).collect(&:id)
+  pdids <<  tempdist.probe_definitions.find(:all,:joins=>:intervention_probe_assignments, :conditions => "intervention_probe_assignments.id is not null").collect(&:id)
+  pdids <<  tempdist.probe_definitions.find(:all, :conditions => "updated_at > '2009-08-01 00:00:00'").collect(&:id)
 
-   pdids.flatten.uniq
-    [886, 905, 906, 929, 944, 946, 948]
-
-    886 problem solving interview A,    no match
+  pdids= pdids.flatten.uniq
+[1713, 1741, 1701, 1702, 1703, 1704, 1705, 1706, 1707, 1708, 1709, 1710, 1711, 1712, 1714, 1715, 1716, 1717, 1718, 1719, 1720, 1721, 1722, 
+  1723, 1724, 1725, 1726, 1727, 1728, 1729, 1730, 1731, 1732, 1733, 1734, 1735, 1736, 1737, 1738, 1739, 1740]
 
 
-Recommended Monitors
-
+ProbeDefinition.find(pdids).each do |probe_definition|
+target_pd = target.probe_definitions.find_by_title(probe_definition.title)
+if target_pd
+probe_definition.recommended_monitors.update_all("probe_definition_id = #{target_pd.id}")
+probe_definition.intervention_probe_assignments.update_all("probe_definition_id = #{target_pd.id}")
+else
+probe_definition.update_attribute(:district_id, target.id)
+end
+end;nil
 
 
 
@@ -70,8 +124,6 @@ if duplicate  (same title??)
 
 if distinct
   change to appropriate intervention cluster (for intervention definition) or district (for probe definition)
-
-adjust recommended monitors???
 
 
 
