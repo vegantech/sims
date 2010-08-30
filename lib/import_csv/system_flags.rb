@@ -23,15 +23,15 @@ module ImportCSV::SystemFlags
   end
 
   def process_system_flag_line line
-      @category ||= line[:category].to_s.downcase
+      category = @category ||  line[:category].to_s.downcase
     district_student_id =  line[:district_student_id].strip
 
-    if Flag::FLAGTYPES.keys.include?(@category)
+    if Flag::FLAGTYPES.keys.include?(category)
       student_id = @student_ids_by_id_district[district_student_id]
       
-      @inserts << SystemFlag.new(:student_id => student_id, :category => @category, :reason => line[:reason]) unless student_id.nil?
+      @inserts << SystemFlag.new(:student_id => student_id, :category => category, :reason => line[:reason]) unless student_id.nil?
     else
-      @messages << "Unknown category for #{@category} in line"
+      @messages << "Unknown category for #{category} in line"
     end
   end
 end
