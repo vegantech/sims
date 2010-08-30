@@ -28,6 +28,15 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
     "Gr: #{grade_level}  - #{benchmark}"
   end
 
+  def color
+    #used on graphs
+    if new_record?
+      '00ff00'
+    else
+      'ff9c00'
+    end
+  end
+
   protected
   def validate_within_probe_definition_range
     

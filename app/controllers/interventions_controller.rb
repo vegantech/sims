@@ -57,6 +57,7 @@ class InterventionsController < ApplicationController
       @intervention_cluster = @intervention.intervention_cluster
       @intervention_definition = @intervention.intervention_definition
       populate_goals
+      @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
       flash.keep(:custom_intervention)
       # end code to make validation work

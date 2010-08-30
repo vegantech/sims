@@ -27,6 +27,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   delegate :student, :to => :intervention
   validates_associated :probes #,:probe_definition
   validate :last_date_must_be_after_first_date
+  validate :goal_in_range
 
   accepts_nested_attributes_for :probe_definition
 
@@ -85,8 +86,9 @@ class InterventionProbeAssignment < ActiveRecord::Base
  def google_line_chart
    #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
    return ''if probes_for_graph.empty?
+    @chxp=[]
     custom_chm=[numbers_on_line,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
     group=0
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       if group>0
@@ -96,7 +98,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
     
     
       Gchart.line(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :axis_labels => axis_labels(probes_for_this_graph), 
                  :bar_width_and_spacing => '30,25',
                  :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
@@ -110,14 +112,20 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
 
  end
+
+ def chxp
+   "chxp=#{@chxp.join('|')}"
+ end
+
  def google_bar_chart
    #groups of 10
    return ''if probes_for_graph.empty?
+    @chxp=[]
     custom_chm=[numbers_in_bars,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines].compact.join("&")
+    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => [probes_for_graph.collect{|p| p.administered_at.to_s(:report)}, probes_for_this_graph.collect(&:score), [min,0,max],benchmarks.collect{|b| "#{b.benchmark}- Gr. #{b.grade_level}"}], 
+                 :axis_labels => axis_labels(probes_for_this_graph),
                  :bar_width_and_spacing => '30,25',
                  :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
                  :format=>'image_tag',
@@ -134,10 +142,24 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def benchmarks
-    probe_definition.probe_definition_benchmarks
+    probe_definition.probe_definition_benchmarks |goal_benchmark.to_a
+  end
+
+  def goal_benchmark
+      ProbeDefinitionBenchmark.new(:benchmark=>goal, :grade_level => '   Goal') if goal?
   end
 
   protected
+
+  def axis_labels(p_for_this_graph)
+      [
+        p_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, 
+        p_for_this_graph.collect(&:score), 
+        [min,0,max],
+        benchmarks.collect{|b| "#{b.benchmark}-  #{b.grade_level}"},
+      ] 
+  end
+
   def numbers_on_line
     #show the value in black on the graph
       'chm=N,000000,0,,12,,t'
@@ -149,12 +171,14 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def max_min_zero
     #min, zero, max
-    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0&chxp=2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
+    @chxp<<"2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
+    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
   end
 
   def benchmark_lines
     if benchmarks.present?
-      "chm=#{benchmarks.collect{|b| "r,ff9c00,0,#{scale_value(b.benchmark)-0.001},#{scale_value(b.benchmark) + 0.001}"}.join("|")}" + "&chxp=3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      @chxp <<  "3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
+      "chm=#{benchmarks.collect{|b| "h,#{b.color},0,#{scale_value(b.benchmark)},3,1"}.join("|")}" 
     end
   end
 
@@ -187,4 +211,19 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def after_initialize
     self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
   end
+
+  def goal_in_range
+    if goal.present? and self.probe_definition.present?
+      if probe_definition.minimum_score.present? and goal < probe_definition.minimum_score
+        errors.add(:goal, "below minimum") and return false
+      end
+
+      if probe_definition.maximum_score.present? and goal > probe_definition.maximum_score
+        errors.add(:goal, "above maximum") and return false
+      end
+
+    end
+        
+  end
+
 end

@@ -14,14 +14,14 @@ module ProbesHelper
     intervention_probe_assignment.benchmarks.each do |benchmark|
     html += <<-"HTML"
 
-          Benchmark: #{benchmark[:score]} at grade level #{benchmark[:grade_level]} <br />
+          Benchmark: #{benchmark[:benchmark]} at grade level #{benchmark[:grade_level]} <br />
 
     HTML
     end
 
 
     html+ "</p>" +
-     intervention_probe_assignment.send(graph) + params[:graph].to_s
+     intervention_probe_assignment.send(graph)
   end
     
 
