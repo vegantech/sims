@@ -24,6 +24,13 @@ class Intervention < ActiveRecord::Base
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
 
+  END_REASONS = [
+    "Sufficient progress made",
+    "Insufficient progress made",
+    "Beyond intervention interval",
+    "Intervention not matched to student need"
+  ]
+
   belongs_to :user
   belongs_to :student, :touch => true
   belongs_to :intervention_definition

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100829232429) do
+ActiveRecord::Schema.define(:version => 20100831015119) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -440,6 +440,7 @@ ActiveRecord::Schema.define(:version => 20100829232429) do
     t.date     "ended_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "end_reason"
   end
 
   add_index "interventions", ["ended_by_id"], :name => "index_interventions_on_ended_by_id"
