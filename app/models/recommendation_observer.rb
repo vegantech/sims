@@ -13,11 +13,11 @@ class RecommendationObserver < ActiveRecord::Observer
       sch = recommendation.school
       case sch.name.upcase
       when  /HIGH$/
-        user_name ='Scott Zimmerman'
-        user_email = 'slzimmerman@madison.k12.wi.us'
+        user_name ='Noelle Sapiro'
+        user_email = 'nrsapiro@madison.k12.wi.us'
       when /MIDDLE$/
-        user_name ='Scott Zimmerman'
-        user_email = 'slzimmerman@madison.k12.wi.us'
+        user_name ='Noelle Sapiro'
+        user_email = 'nrsapiro@madison.k12.wi.us'
       when *["ALLIS ELEMENTARY", "ELVEHJEM ELEMENTARY", "EMERSON ELEMENTARY", "GLENDALE ELEMENTARY", "GOMPERS ELEMENTARY", "HAWTHORNE ELEMENTARY", "NUESTRO MUNDO ELEMENTARY", "KENNEDY ELEMENTARY", "LAKE VIEW ELEMENTARY", "LAPHAM ELEMENTARY", "LINDBERGH ELEMENTARY", "LOWELL ELEMENTARY", "MARQUETTE ELEMENTARY", "MENDOTA ELEMENTARY", "SANDBURG ELEMENTARY", "SCHENK ELEMENTARY"]
         user_name ='Ted Szalkowski'
         user_email = 'tszalkowski@madison.k12.wi.us'
