@@ -4,7 +4,7 @@
   <% goal.objective_definitions.reject(&:disabled).each do |objective| %>
     <%= content_tag :h2, objective.title %>
     <% objective.intervention_clusters.reject(&:disabled).each do |category| %>
-      <% content_tag :h2, category.title %>
+      <%= content_tag :h2, category.title %>
       <% category.intervention_definitions.reject(&:disabled).group_by(&:tier).sort.each do |tier,interventions| %>
         <%= content_tag :h3, tier %>
         <%interventions.each do |intervention| %>
