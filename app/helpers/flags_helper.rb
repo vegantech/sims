@@ -16,8 +16,22 @@ module FlagsHelper
     str = intervention_status(student)
     str += current_flags(student, changeable)
     str += team_concerns(student)
+    str += team_notes(student)
     str += ignore_flags(student)
     str += custom_flags(student)
+  end
+
+  def team_notes?(student)
+    student.comments.present?
+
+  end
+
+  def team_notes(student)
+    if team_notes?(student)
+       image_with_popup('note.png',"#{pluralize student.comments.count, "team note"}")
+    else
+      ''
+    end
   end
 
   def team_concerns?(student = current_student)

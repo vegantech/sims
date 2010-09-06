@@ -1,5 +1,6 @@
 class Notifications < MailerWithSubdomains
 
+  helper :application
 #  alias_method_chain :url_for, :subdomain
 #  def url_for_with_subdomain(opts ={})
 #    raise 'missing district' if @district.blank?

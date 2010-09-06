@@ -15,7 +15,7 @@
 #Also known as team_note
 class StudentComment < ActiveRecord::Base
   include LinkAndAttachmentAssets
-  belongs_to :student
+  belongs_to :student, :touch => true
   belongs_to :user
   validates_presence_of :body
 
