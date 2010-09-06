@@ -66,9 +66,12 @@ label.checkbox_label {
   white-space: nowrap;
 } 
 
+/*This is now set dynamically on the student search page, as the content to the right has a variable height
 #student_fake_left {
   margin-bottom: 22em;
+
 }
+*/
 
 #student_fake_right label {
   width: 100%;

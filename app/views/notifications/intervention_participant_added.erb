@@ -5,7 +5,7 @@ Hello, <%=@participant.fullname%>:
 The following intervention is scheduled to begin on <%= @interventions.first.start_date %>:
 
 Intervention: <%= @interventions.first.title %>
-Students:     <%= @interventions.collect{|i| link_to(i.student.fullname,edit_intervention_url(i))}.join(",\n") %>
+Students:     <%= @interventions.collect{|i| url_with_text(i.student.fullname,edit_intervention_url(i))}.join(",\n") %>
 
 Team:
   <% @participants.sort_by(&:role).each do |p| %>

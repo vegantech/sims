@@ -46,12 +46,17 @@
         <%= render :partial => 'main/news' %>
       </div>
       <div id="main">
-        <div id="breadcrumbs_and_banners">
+        <div class="breadcrumbs_and_banners">
           <%=breadcrumbs%>
         </div>
           <p style="color: green"><%= flash[:notice] %></p>
           <%= yield %>
           <%= render :partial =>'login/whats_new' if show_whats_new%>
+
+          <div class="breadcrumbs_and_banners_bottom">
+            <hr />
+          <%=breadcrumbs%>
+        </div>
       </div>
       <div id="footer">
          <br style="clear:right;"/>

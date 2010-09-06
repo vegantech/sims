@@ -10,7 +10,7 @@ Re: <%=@student.fullname%> <%=@student.number%>
 <% end %>
 
 The Checklist for Culturally Responsive Practices in Schools has been completed for the above mentioned student.  It is available for review at 
-<%=link_to(url_for(:controller=>'students', :action => 'show', :id => @student.id),
+<%=url_with_text(url_for(:controller=>'students', :action => 'show', :id => @student.id),
 :controller=>'students', :action => 'show', :id => @student.id)
 %>.
 

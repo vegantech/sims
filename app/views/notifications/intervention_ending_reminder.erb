@@ -11,7 +11,7 @@ Student:      <%= intervention.student %>
 End Date:     <%= intervention.end_date %>.
 
 Please login to SIMS to view intervention details and update this student's progress monitoring data: 
-<%= link_to intervention.title, edit_intervention_url(intervention.id) %>
+<%= url_with_text intervention.title, edit_intervention_url(intervention.id) %>
 
 <% end %>
 
