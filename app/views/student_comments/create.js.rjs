@@ -4,3 +4,4 @@ page.select('#no_team_notes').each do |value|
   value.hide()
 end
 page.replace_html('team_notes_count', team_notes_count(@student_comment.student))
+page.replace_html("studentflags", "#{status_display current_student, true}")

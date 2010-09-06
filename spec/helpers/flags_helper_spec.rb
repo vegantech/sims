@@ -11,10 +11,11 @@ describe FlagsHelper do
       self.should_receive(:intervention_status).with(student).and_return("INTERVENTION STATUS ")
       self.should_receive(:current_flags).with(student,change).and_return('CURRENT FLAGS ')
       self.should_receive(:team_concerns).with(student).and_return('TEAM CONCERNS ')
+      self.should_receive(:team_notes).with(student).and_return('TEAM NOTES ')
       self.should_receive(:ignore_flags).with(student).and_return('IGNORE FLAGS ')
       self.should_receive(:custom_flags).with(student).and_return('CUSTOM FLAGS')
 
-      status_display(student,change).should == 'INTERVENTION STATUS CURRENT FLAGS TEAM CONCERNS IGNORE FLAGS CUSTOM FLAGS'
+      status_display(student,change).should == 'INTERVENTION STATUS CURRENT FLAGS TEAM CONCERNS TEAM NOTES IGNORE FLAGS CUSTOM FLAGS'
     end
   end
 
@@ -27,6 +28,21 @@ describe FlagsHelper do
       student=Factory(:student)
       student.team_consultations.create!
       team_concerns(student).should == image_tag('/images/comments.png', :alt => 'Team Consultations')
+    end
+
+  end
+
+  describe 'team_notes' do
+    it 'should return an empty string when there are no comments' do
+      team_notes(Student.new).should == ''
+    end
+
+    it 'should return an image when there are comments' do
+      student=Factory(:student)
+      student.comments.create!(:body=>'This si comment 1')
+      student.comments.create!(:body=>'This si comment 2')
+      team_notes(student).should == image_with_popup("note.png", "2 team notes")
+
     end
 
   end
