@@ -27,6 +27,10 @@ module StudentsHelper
     "</div>"
   end
 
+  def active_intervention_size
+    current_district.search_intervention_by.size
+
+  end
   def active_intervention_select
     current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}
   end
