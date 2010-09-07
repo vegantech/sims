@@ -89,10 +89,11 @@ class Intervention < ActiveRecord::Base
   end
 
 
-  def end(ended_by)
+  def end(ended_by,reason='')
     self.ended_by_id = ended_by
     self.active = false
     self.ended_at = Date.today
+    self.end_reason=reason
     self.save!
   end
 
@@ -100,6 +101,7 @@ class Intervention < ActiveRecord::Base
     self.ended_by_id = nil
     self.active = true
     self.ended_at = nil
+    self.end_reason=nil
     self.save!
   end
 

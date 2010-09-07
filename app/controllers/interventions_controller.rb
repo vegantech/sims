@@ -100,7 +100,7 @@ class InterventionsController < ApplicationController
   end
 
   def end
-    @intervention.end(current_user.id)
+  @intervention.end(current_user.id, params[:end_reason])
      respond_to do |format|
       format.html { redirect_to(current_student) }
     end
