@@ -3,6 +3,7 @@ class PrimeCache
   extend ActionView::Helpers::AssetTagHelper
   extend ActionView::Helpers::UrlHelper
   extend ActionView::Helpers::TagHelper
+  extend ActionView::Helpers::TextHelper
 
   def self.flags
     ctrl = ApplicationController.new
