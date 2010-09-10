@@ -34,6 +34,8 @@ describe InterventionsHelper do
       tiered_quicklist(nil).should == 'Quicklist is empty.'
     end
 
+    it 'should be sorted by objective then tier' 
+
     it 'should return a form if there are  quicklist items' do
       g11=mock_intervention_definition(:title => 'Quicklist1',:id=>6, :objective_definition => 'Objective 1',:tier=>'1-Basic')
       g11b=mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 1',:tier=>'1-Basic')
