@@ -42,7 +42,7 @@ describe InterventionsHelper do
       arr << mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 3',:tier=>'2-Basic')
       arr << mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 1',:tier=>'1-Basic')
       arr << mock_intervention_definition(:title => 'Quicklist3',:id=>3, :objective_definition => '',:tier=>'')
-      raise tiered_quicklist(arr).inspect
+      tiered_quicklist(arr).should =~ /Objective 1 : 1-Basic.*Objective 1 : 2-Basic.*Objective 2 : 3-Basic.*Objective 3 : 2-Basic.*Objective 3 : 3-Basic/
 
     end
 
