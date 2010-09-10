@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Infinite Campus Export to SIMS</title>
+	</head>
+	<body>
+
+            <h1>Infinite Campus</h1>
+            <p> For Infinite Campus we provide a set of scripts that you run on the database server.
+            </p>
+            <h2>Before you begin</h2>
+            <p>
+            You will need to know the following information to run the Infinite Campus to SIMS Export
+            </p>
+
+            <ol>
+              <li> Name of your SQL SERVER computer housing the infinite campus database.  </li>
+              <li> username on that server </li>
+              <li> password on that server </li>
+              <li> name of the database for IC for your district (it's usually something like your district name.) </li>
+            </ol>
+            <p>
+            You will likely have to get these things from Infinite Campus support.   
+            You may also prefer (or need) to have Infinite Campus support perform these tasks.
+            </p>
+
+            <h2> Setting up the scriptss </h2>
+            <ol>
+                        <img src="setup3.png">
+              <li>Connect to your server, you will most likely be using remote desktop.
+              Remote desktop is usually found by going to the start menu, then programs, then accessories, then something like "Remote Desktop Connection."
+              </li>
+
+              <li>
+              Once you've clicked on remote desktop, put in the name of the server (#1 above) and hit connect.  You'll be prompted to enter your username (#2 above) and password #3 above.
+              If you haven't used remote desktop before, it's just like if you were sitting at the machine using it, but a bit slower.  (I'm not sure if I want to keep this sentence.)
+              </li>
+
+
+              <li>
+              Now open a web browser on the remote machine. 
+              Download <a href="http://www.vegantech.com/sims/ic_sims.zip">http://www.vegantech.com/sims/ic_sims.zip</a>
+              Unzip to the remote machine.
+              </li>
+
+
+              <li>
+              Review (using notepad) the README.txt in the zip file, some content will be duplicated here.  However, the readme could be more up to date as we make improvements to these scripts.  Note the assumptions listed in the file.  If you'd like to make changes, then look through the appropriate sql files.  (You will need to find someone familiar with SQL.)
+              </li>
+
+
+              <li>
+              Edit the csvdump.bat file   replace YOUR_DB_NAME with #4 from above.
+              </li>
+
+
+              <li>
+              Now run the csvdump.bat file.  A zip file will be produced.  You can login to SIMS from the remote machine as a district administrator, and upload this file.
+              </li>
+            </ol>
+
+<h2>Automating the Export (Optional)</h2>
+<p>You can also let the batch file submit the data to SIMS directly.  See the scripted module for additional detail.
+</p>
+<ol>
+  
+  <li>
+  Create a user in SIMS with the username "district_upload" put in your email address for the email and pick a password.
+  </li>
+
+  <li>
+ In the csvdump.bat line starting with "echo curl" replace your_created_assword with the password you chose.  Replace your_district_abbrev  with the abbreviation you use for your district in SIMS.   Remove the word echo from the beginning of the line.
+  </li>
+
+  <li>
+ Now when you run the batch file, the zip file will be automatically uploaded, and you will receive an email with the results.
+  </li>
+</ol>
+
+
+	</body>
+</html>

@@ -35,8 +35,8 @@ module InterventionsHelper
         concat(f.label(:intervention_definition_id, "Intervention Quicklist "))
         concat('<select id="quicklist_item_intervention_definition_id" onchange="form.submit()" name="quicklist_item[intervention_definition_id]"')
         concat('<option value=""></option>')
-        gqi=quicklist_items.group_by{|q| "#{q.objective_definition} : #{q.tier}"}
-        gqi.each do |group,col|
+        gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
+        gqi.sort.each do |group,col|
           concat("<optgroup label='#{group}'>")
           concat(options_from_collection_for_select(col, :id, :title))
           concat("</optgroup>")
