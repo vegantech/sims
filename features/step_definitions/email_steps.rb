@@ -74,7 +74,7 @@ end
 
 When /^I click the change_password link in the email$/ do
   current_email.body.should =~ /#{@user.district.abbrev}.example.com/
-  current_email.body.should =~ /change_password\?id=#{@user.id}&amp;token=#{@user.reload.token}/
+  current_email.body.should =~ /change_password\?id=#{@user.id}&token=#{@user.reload.token}/
   visit("/change_password?id=#{@user.id}&token=#{@user.token}&district_abbrev=#{@user.district.abbrev}")
 end
 

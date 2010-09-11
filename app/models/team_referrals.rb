@@ -1,5 +1,4 @@
 class TeamReferrals < MailerWithSubdomains
-  helper :application
 
   def concern_note_created(note, sent_at = Time.now)
     subject    'Team Consultation Form Created'
