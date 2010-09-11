@@ -23,7 +23,7 @@
             You may also prefer (or need) to have Infinite Campus support perform these tasks.
             </p>
 
-            <h2> Setting up the scriptss </h2>
+            <h2> Setting up the scripts </h2>
             <ol>
                         <img src="setup3.png">
               <li>Connect to your server, you will most likely be using remote desktop.
@@ -75,6 +75,73 @@
  Now when you run the batch file, the zip file will be automatically uploaded, and you will receive an email with the results.
   </li>
 </ol>
+
+<h2>Adding a custom tab to link to SIMS</h2>
+<p>
+If your students have the district_student_id popupladed with the
+personID from Infinite Campus, then you can setup a custom tab.
+</p>
+
+<ol>
+  <li>
+login as someone with system administrator access
+</li>
+
+[custom_tab1.png]
+  <li>
+  From the menu pick system administration.
+</li>
+
+  <li>
+custom
+</li>
+  <li>
+Custom Tab
+</li>
+
+[new_custom_tab remove existing tab list, expand detail frame, populate] 
+  <li>
+new Cutom tab
+</li>
+
+  <li>
+For name SIMS
+</li>
+  <li>
+Person Tabset General
+</li>
+  <li>
+Publish to Portal - unchecked
+</li>
+  <li>
+Tab Type
+</li>
+  <li>
+External URL
+</li>
+  <li>
+URL https://district_abbrev.simspilot.org/students/ic_jump/   (replace
+district_abbrev with what your district uses in SIMS.)
+</li>
+  <li>
+Pass User Session   Send username, calendarID, personID, as plain text params
+</li>
+
+  <li>
+Then hit save at the top.
+</li>
+
+<p>
+Note it will not appear in IC until users have
+logged out and logged back in.
+</p>
+
+[infinte_campus_tab]
+<p>
+Users will see an extra tab available for students.  
+If they haven't already logged into SIMS, they'll be prompted for a username and password.  After that, when they choose other students
+the SIMS tab will automatically be populated with their record in SIMS.
+</p>
 
 
 	</body>
