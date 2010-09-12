@@ -1,0 +1,29 @@
+<p><% d = DateTime.now %><%= d.strftime("%B %d, %Y") %> </p>
+
+<p>Dear <%= @user_name %>: </p>
+
+<p> Re: <%=@student.fullname%> <%=@student.number%></p>
+
+<% unless @recommendation.blank? %>
+  <%= "School:  #{@recommendation.school} <br />" unless @recommendation.school.blank? %>
+  <%= "User: #{@recommendation.user} <br />" unless @recommendation.user.blank? %>
+<% end %>
+
+<p>
+The Checklist for Culturally Responsive Practices in Schools has been completed for the above mentioned student.  It is available for review at 
+<%=link_to(url_for(:controller=>'students', :action => 'show', :id => @student.id),
+:controller=>'students', :action => 'show', :id => @student.id)
+%>.
+
+</p>
+<p>
+Please go to this address to view a copy of the document and the  Conclusions and Recommendations.   Please include the checklist when processing the referral.
+</p>
+
+
+
+
+<p>Thank you.</p>
+
+<p>This is a SIMS automated message.
+</p>

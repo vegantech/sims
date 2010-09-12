@@ -5,10 +5,6 @@ module ApplicationHelper
       help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " ) 
   end
 
-  def url_with_text text,url
-    url_for(url) + " (#{text})"
-  end
-
   def show_whats_new
     ["schools","login", "main"].include? params[:controller] or
       params[:controller]=="students" && params[:action] == "search"

@@ -3,6 +3,9 @@
         <title>Infinite Campus Export to SIMS</title>
 	</head>
 	<body>
+       ic_zip_import.png
+    ic_csvdump.bat.png   ic_review_readme.png  
+
 
             <h1>Infinite Campus</h1>
             <p> For Infinite Campus we provide a set of scripts that you run on the database server.
@@ -23,38 +26,59 @@
             You may also prefer (or need) to have Infinite Campus support perform these tasks.
             </p>
 
-            <h2> Setting up the scriptss </h2>
+            <h2> Setting up the scripts </h2>
             <ol>
-                        <img src="setup3.png">
+                        <img src="ic_remote_1.png">
               <li>Connect to your server, you will most likely be using remote desktop.
               Remote desktop is usually found by going to the start menu, then programs, then accessories, then something like "Remote Desktop Connection."
               </li>
 
+                        <img src="ic_remote2.png">
               <li>
               Once you've clicked on remote desktop, put in the name of the server (#1 above) and hit connect.  You'll be prompted to enter your username (#2 above) and password #3 above.
               If you haven't used remote desktop before, it's just like if you were sitting at the machine using it, but a bit slower.  (I'm not sure if I want to keep this sentence.)
               </li>
 
 
+                        <img src="ic_download_zip.png">
               <li>
               Now open a web browser on the remote machine. 
               Download <a href="http://www.vegantech.com/sims/ic_sims.zip">http://www.vegantech.com/sims/ic_sims.zip</a>
-              Unzip to the remote machine.
+
+              (If you are unable to download the zip file due to a firewall, you 
+              will have to find some other way to get this file onto the server.  Contact your network administrator or IC support
+              for assistance.) 
+              </li>
+              
+                        <img src="ic_unzip.png">
+                        <li>
+                        Unzip to the remote machine.  Here we're unzipping to c:\ic_sims.
               </li>
 
 
+              
+                        <img src="ic_cmd_prompt.png">
+                        <li> Open a command prompt and run "cd \ic_sims\ic_sims"</li>
+
+                        <img src="ic_review_readme.png">
               <li>
               Review (using notepad) the README.txt in the zip file, some content will be duplicated here.  However, the readme could be more up to date as we make improvements to these scripts.  Note the assumptions listed in the file.  If you'd like to make changes, then look through the appropriate sql files.  (You will need to find someone familiar with SQL.)
               </li>
 
 
+                        <img src="ic_csvdump.bat.png">
               <li>
               Edit the csvdump.bat file   replace YOUR_DB_NAME with #4 from above.
               </li>
 
 
+                        <img src="ic_run_csvdump_bat.png">
               <li>
-              Now run the csvdump.bat file.  A zip file will be produced.  You can login to SIMS from the remote machine as a district administrator, and upload this file.
+              Now run the csvdump.bat file. (Just type csvdump and hit enter.)  A zip file will be produced  (You'll see a window popup to zip the files.)
+              </li>
+                        <img src="ic_zip_import.png">
+              <li>
+              You can login to SIMS from the remote machine as a district administrator, and upload this file via the import from CSV link in the menu.
               </li>
             </ol>
 
@@ -63,18 +87,91 @@
 </p>
 <ol>
   
+                        <img src="ic_auto1.png">
   <li>
   Create a user in SIMS with the username "district_upload" put in your email address for the email and pick a password.
   </li>
 
+                        <img src="ic_auto_export2.png">
   <li>
- In the csvdump.bat line starting with "echo curl" replace your_created_assword with the password you chose.  Replace your_district_abbrev  with the abbreviation you use for your district in SIMS.   Remove the word echo from the beginning of the line.
+ In the csvdump.bat line starting with "echo curl" replace your_created_password with the password you chose.  Replace your_district_abbrev  with the abbreviation you use for your district in SIMS.   Remove the word echo from the beginning of the line.
   </li>
 
   <li>
- Now when you run the batch file, the zip file will be automatically uploaded, and you will receive an email with the results.
+ Now when you run the batch file, the zip file will be automatically uploaded, and you will receive an email with the results.  You can create a scheduled job to periodically run this file to keep SIMS automatically updated.
   </li>
 </ol>
+
+<h2>Adding a custom tab to link to SIMS</h2>
+<p>
+If your students have the district_student_id popupladed with the
+personID from Infinite Campus, then you can setup a custom tab.
+</p>
+
+<ol>
+  <li>
+login as someone with system administrator access
+</li>
+
+                        <img src="ic_custom_tab1.png">
+  <li>
+  From the menu pick system administration.
+</li>
+
+  <li>
+custom
+</li>
+  <li>
+Custom Tab
+</li>
+
+                        <img src="ic_new_custom_tab.png">
+  <li>
+new Cutom tab
+</li>
+
+  <li>
+For name SIMS
+</li>
+  <li>
+Person Tabset General
+</li>
+  <li>
+Publish to Portal - unchecked
+</li>
+  <li>
+Tab Type
+</li>
+  <li>
+External URL
+</li>
+  <li>
+URL https://district_abbrev.simspilot.org/students/ic_jump/   (replace
+district_abbrev with what your district uses in SIMS.)
+</li>
+  <li>
+Pass User Session   Send username, calendarID, personID, as plain text params
+</li>
+
+  <li>
+Then hit save at the top.
+</li>
+
+<p>
+Note it will not appear in IC until users have
+logged out and logged back in.
+</p>
+
+                        <img src="ic_tab_1.png">
+<p>
+Users will see an extra tab available for students.  
+If they haven't already logged into SIMS, they'll be prompted for a username and password.  After that, when they choose other students
+the SIMS tab will automatically be populated with their record in SIMS.
+</p>
+<p>
+Users may want to click the toggle outline icon so that SIMS can expand to fill the screen.  It's in the upper left hand corner, next to Year.
+(This screenshot has the outline hidden.)
+</p>
 
 
 	</body>
