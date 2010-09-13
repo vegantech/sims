@@ -4,11 +4,56 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta name="robots" content="noarchive,noindex>" />
 <base target="_top">
-<title>Setting up a District</title>
+<title>District Administration And Setting up a District</title>
 </head>
 <body>
   <div id="doc-contents">
-    <h1> Getting Started </h1>
+    <ul>
+      <li> <a href ="#intro">Introduction</a></li>
+      <li> <a href ="#getting_started">Getting Started</a></li>
+      <li> <a href ="#dist_admin_screens">District Administration Screens</a></li>
+      <li> <a href ="#troubleshooting">Troubleshooting</a></li>
+    </ul>
+
+    <h1 id="introduction">Introduction </h1>
+    <h2>Intro to this module</h2>
+    <p>
+    This module will go over the duties of a district admin, show where to find additional information, 
+    help you get started setting up your district, and show the different screens available to a district administrator.
+    </p>
+
+    <h2>Functions of a district administrator</h2>
+    <p>
+  A district admin or LSA is in charge of setting up a district for use in SIMS.
+  </p>
+  Responsibilities:
+  <ul>
+    <li>Manages creation and removal of schools </li>
+    <li>Manages creation and removal of students</li>
+    <li>Manages creation and removal of users</li>
+    <li>Assigns school administrators to schools</li>
+    <li>Manages some district settings</li>
+    <li>Defines the flag descriptions</li>
+    <li>Imports student data into SIMS.  (See the scripted module for an alternative)</li>
+    <li>Exports data from SIMS to files. (See the scripted module for an alternative)</li>
+
+  </ul>
+
+  <h2> Where to get help </h2>
+
+  <img src="district_admin/dist_admin_main.png">
+  Documentation link in menu. <br />
+    
+  <a href ="http://groups.google.com/group/sims-lsa">Local System Administrator User Group</a>(SIMS-LSA google group) <br />
+
+  email SIMS support (if you have signed up for it)   *process for that? email tammy?* <br />
+
+  *Other documentation* <br />
+
+
+
+
+    <h1 id="getting_started"> Getting Started </h1>
     <p>
     It is easiest to setup users with access to all students in the district.   You may wish to start with a small group of users, schools, and students using this level of access control. </p>
 
@@ -125,53 +170,151 @@ The flag descriptions menu allows you to enter content that will appear in the l
 
  </li>
  </ol>
+
+<h1 id ="dist_admin_screens">District Administration Screens</h1>
+<p>I still need to fill in the content here.</p>
+<h2>District Settings</h2>
+<img src="district_admin/edit_district.png">
+<pre>
+   Lock tiers
+   Lock Free/Reduced Lunch
+   Restrict Tiers
+   Key
+   Logo
+</pre>
+
+<h2>Schools</h2>
+<img src="district_admin/schools_list.png">
+<p>
+School index</p>
+
+<img src="district_admin/edit_school.png">
+
+<h2>Users</h2>
+<img src="district_admin/user_list.png">
+<p>User index</p>
+
+<img src="district_admin/edit_user.png">
+<pre>
+  Enrollments
+  Blank password?
+  Roles
+</pre>
+
+<h2>Students</h2>
+<img src="district_admin/student_list.png">
+<p>Here you can add students, edit them, or remove them from the district.    </p>
+
+<img src="district_admin/edit_student.png">
+
+
+<h2>Flag Descriptions</h2>
+<img src="district_admin/flag_descriptions.png">
+
+<p>This allows you to update the flag legend (at the bottom left) for your district.   It's simply text
+that is displayed.  See the students page for manually setting system flags, or the scripted module for 
+generating them in your district (system_flags.csv).</p>
+
+<h2>Logs</h2>
+<img src="district_admin/district_logs.png">
+<p>Currently this tracks successful and failed logins for your district.   When a user inputs an invalid username or password it 
+will show the username they entered.   Additional items may be added to the log in the future.</p>
+
+<h2>Import to CSV</h2>
+ (more indepth module later)
+<img src="district_admin/import1.png">
+<p>On this screen you can upload csv files of student data into SIMS.</p>
+
+<h2>Export to CSV</h2>
+ (more indepth module later)
+<img src="district_admin/dist_admin_main.png">
+<p>Cliking on the Export to CSV link in the menu will create and download file called sims_export.zip containing 
+the content of SIMS for your district.</p>
+
+ <h1 id="troubleshooting">Troubleshooting</h1>
+ <pre>
+Troubleshooting
+  Password not working
+    Check the district logs to make sure they're using the correct username.
+    Reset the password by editing the user.
+
+  No Choose School in menu.
+    Make sure the user has the regular_user role assigned.
+
+  No Schools available
+    Make sure the user has schools assigned, or has access to all students in the district.
+
+  No students available at this school
+   If the user does not have access to all students in the district, 
+then the school admin needs to add them to a group.  (Or you can upload the group related csv files)
+
+  *Contact Tammy for more Q&A that we'd like to see included.  Also update this based on feedback 
+from monthly sessions*
+
+
+ </pre>
+ <hr />
+ 
  <h1>This will get moved to another page</h1>
 <h3>Semiautomated and Unattended batch updates
 </h3>
+<pre>
+First generate the appropriate CSV files for each section. We will provide some documentation about how 
+to do this for some of the more popular Student Information Systems. The file names must match the ones 
+in the list and the headers (and contents) must also match. It is recommended that you zip the files 
+together before doing the upload.
 
-First generate the appropriate CSV files for each section. We will provide some documentation about how to do this for some of the more popular Student Information Systems. The file names must match the ones in the list and the headers (and contents) must also match. It is recommended that you zip the files together before doing the upload.
+The process for generating the CSV's will be the same for either option chosen. Note that each file 
+represents all the data for your district. So if you try to upload half your students in one file, 
+then upload the rest in another file, the second file will overwrite the data in the first. 
 
-The process for generating the CSV's will be the same for either option chosen. Note that each file represents all the data for your district. So if you try to upload half your students in one file, then upload the rest in another file, the second file will overwrite the data in the first. 
+id_district is the primary key in your student information system. You may have to assign your own 
+numbers, just make sure they are unique, persistent, and consistent.
 
-id_district is the primary key in your student information system. You may have to assign your own numbers, just make sure they are unique, persistent, and consistent.
 
+For semiautomated upload, log in as a district admin and click on import_csv in the menu 
+at the left. You can then upload your file.
 
-For semiautomated upload, log in as a district admin and click on import_csv in the menu at the left. You can then upload your file.
-
-For unattended uploads, setup a scheduled job (for example using cron) to generate the CSV files, zip them, and then finish with the following command:
+For unattended uploads, setup a scheduled job (for example using cron) to generate the CSV 
+files, zip them, and then finish with the following command:
 
 curl --user district_upload:your_password https://district_abbrev.simspilot.org/scripted/district_upload -Fupload_file =@yourzip.zip -k
 
-Replace the district_abbrev with what you saw in step 2, and the password with the password you assigned to the district_upload user. A confirmation email will be sent to the email address assigned to district_upload
+Replace the district_abbrev with what you saw in step 2, and the password with the password you assigned to 
+the district_upload user. A confirmation email will be sent to the email address assigned to district_upload.
 
-curl is a tool for interacting with web pages from the command line, feel free to use another tool if you like (as long as it can do https.)
+curl is a tool for interacting with web pages from the command line, feel free to use another tool if you 
+like (as long as it can do https.)
 
-
+</pre>
 <h3>Unattended Export
 
-</h3>This is similar to the unattended batch updates above. Setup a user called district_export
+</h3>
+<pre>This is similar to the unattended batch updates above. Setup a user called district_export
 
 curl -o sims_export.zip --user district_export:your_password https://district_abbrev.simspilot.org/scripted/district_export -k
 
 The sims_export.zip will contain several csv files that you could import into excel, or into a database.
-
+</pre>
 <h3>Functions of School Adminstratior</h3>
-
+<pre>
 Manually creates and assigns groups
 Manages school teams
 Manages quicklist for school
-
+</pre>
 
 <h3>Functions of District Administrator</h3>
+<pre>
 User management (resets passwords, initial creation, etc.)
-Steps 3-14 above
-Generates CSV files for district using SQL or other tool available in the Student Information System (or delegates this.)
+Steps 3-14 above in getting started section
+Generates CSV files for district using SQL or other tool available in
+ the Student Information System (or delegates this.)
 Creates Flag Descriptions
-
+</pre>
 
 
 <h3>Functions of Content Administrator</h3>
-Creates/edits Checklists, Progress Monitors, Intervention Definitions, Tiers, District quicklist, core practice documents
+Creates/edits Checklists, Progress Monitors, Intervention Definitions, Tiers,  core practice documents
 
   <br clear="all"/>
 </div>
