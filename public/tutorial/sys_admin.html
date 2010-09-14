@@ -220,14 +220,39 @@ User to school assignment is also available on the User management screen.
 
 <h2>Users</h2>
 <img src="district_admin/user_list.png">
-<p>User index</p>
+<p>This is the list of users in your district in SIMS.  You can filter the list by last name.  </p>
 
 <img src="district_admin/edit_user.png">
+<p>This screen is for creating and editing users.   The username and password are for logging in.  The password must be entered twice.    If you have a 
+district key defined, and an email assigned then you can opt to leave the password blank.  (See the default password in the intro module for more information.)
+</p>
+<p>The primary key field is what maps this user to your student information system export.</p>
+
+
+<h3>Roles</h3>
+<p>Roles allow users to access different areas of SIMS.</p>
 <pre>
-  Enrollments
-  Blank password?
-  Roles
+District Admin- The sections in this document.  You can assign other district admins.  If you remove this role
+from your account, then you will no longer be able to access these screens.
+
+School Admin- Gives access to school admin menu, the user must also be designated as an admin for a school.  
+See the school admin module for more information.
+News Admin- Create and Edit news for the district.  (See following setion.
+Country Admin- Not used
+State Admin- Not used
+Regular User- Most users should have this, core functionality of SIMS.
+Content Admin- Sets up tiers, intervention definitions, progress monitors, and the checklist.
 </pre>
+<h3>School Assignments</h3>
+<p>The all students in district provides access to all students and schools if checked.</p>
+
+<p>You can assign schools to a user here.  Clicking the Add a school assignment link will 
+let you choose a school and designate if the user is a school admin and has access
+to all students in the school.</p>
+
+<h2>News Admin</h2>
+<p>I think this would be a good place for the news admin slide that was at the end of the school admin section.</o>
+
 
 <h2>Students</h2>
 <img src="district_admin/student_list.png">
@@ -250,16 +275,14 @@ generating them in your district (system_flags.csv).</p>
 will show the username they entered.   Additional items may be added to the log in the future.</p>
 
 <h2>Import to CSV</h2>
- (more indepth module later)
 <img src="district_admin/import1.png">
 <p>On this screen you can upload csv files of student data into SIMS.  You'll see a progress bar while the file is uploading,
-then the results of the upload will be presented.</p>
+then the results of the upload will be presented.  See the scripted module for more information.</p>
 
 <h2>Export to CSV</h2>
- (more indepth module later)
 <img src="district_admin/dist_admin_main.png">
 <p>Cliking on the Export to CSV link in the menu will create and download file called sims_export.zip containing 
-the content of SIMS for your district.</p>
+the content of SIMS for your district.  See the scripted module for more information.</p>
 
  <h1 id="troubleshooting">Troubleshooting</h1>
  <pre>
