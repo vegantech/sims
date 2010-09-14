@@ -180,41 +180,106 @@ The flag descriptions menu allows you to enter content that will appear in the l
  </ol>
 
 <h1 id ="dist_admin_screens">District Administration Screens</h1>
-<p>I still need to fill in the content here.</p>
+<p>This section demonstates theI still need to fill in the content here.</p>
 <h2>District Settings</h2>
 <img src="district_admin/edit_district.png">
 <pre>
-   Lock tiers
-   Lock Free/Reduced Lunch
-   Restrict Tiers
-   Key
-   Logo
+   Restrict tiers - Interventions are grouped into tiers (usually by intensity.)  If this box is checked, then only 
+   the first tier of interventions will be available for a student.   Higher tiers can be unlocked by completing a Recommendation,
+   or requesting a principal override.
+
+   Lock Free/Reduced Lunch - If checked, the lunch status is hidden from the extended profile. (Principals still see it.)
+   
+   Key- This key is used for encrypting the passwords if you're uploading them (and by the system).  
+   It's also a shared default password that users can use if they have an email address listed, but a blank password assigned.
+   (See the first module for more detail on this.)
+
+   Note- changing your key more than twice could lock users out of the system.   If you need to do this, the system will prevent you.
+   You'll need to contact SIMS support to get this unlocked (and potentially reset passwords of users.)
+
+   Logo- This appears in the upper left corner of the screen. It should be 200 pixels wide, and 40 pixels tall.
+
+   Abbrev- This is the subdomain for your district.  In this case it's training, so the SIMS site for the district 
+   woudl be  https://training.simspilot.org
 </pre>
 
 <h2>Schools</h2>
 <img src="district_admin/schools_list.png">
-<p>
-School index</p>
+<p>This is a list of schools available to your district in SIMS.  You need to have the district_student_id assigned if you 
+want to upload any CSV files.  This field allows SIMS to map the data from your Student Information System.  </p>
+
 
 <img src="district_admin/edit_school.png">
+<p>This is the screen for creating and editing a school.  The SIS primary Key is the district_student_id.   
+You can also set the name of the school here. <p>
+
+<p>Users assigned to this school are presented here, you can add and remove them and choose to designate them as a school admin. 
+See the School Administration module for more information about the duties of a school admin.
+User to school assignment is also available on the User management screen.
+</p>
 
 <h2>Users</h2>
 <img src="district_admin/user_list.png">
-<p>User index</p>
+<p>This is the list of users in your district in SIMS.  You can filter the list by last name.  </p>
 
 <img src="district_admin/edit_user.png">
+<p>This screen is for creating and editing users.   The username and password are for logging in.  The password must be entered twice.    If you have a 
+district key defined, and an email assigned then you can opt to leave the password blank.  (See the default password in the intro module for more information.)
+</p>
+<p>The primary key field is what maps this user to your student information system export.</p>
+
+
+<h3>Roles</h3>
+<p>Roles allow users to access different areas of SIMS.</p>
 <pre>
-  Enrollments
-  Blank password?
-  Roles
+District Admin- The sections in this document.  You can assign other district admins.  If you remove this role
+from your account, then you will no longer be able to access these screens.
+
+School Admin- Gives access to school admin menu, the user must also be designated as an admin for a school.  
+See the school admin module for more information.
+News Admin- Create and Edit news for the district.  (See following setion.
+Country Admin- Not used
+State Admin- Not used
+Regular User- Most users should have this, core functionality of SIMS.
+Content Admin- Sets up tiers, intervention definitions, progress monitors, and the checklist.
 </pre>
+<h3>School Assignments</h3>
+<p>The all students in district provides access to all students and schools if checked.</p>
+
+<p>You can assign schools to a user here.  Clicking the Add a school assignment link will 
+let you choose a school and designate if the user is a school admin and has access
+to all students in the school.</p>
+
+<p>The school administrator assigns users to specific groups. </p>
+
+<h2>News Admin</h2>
+<p>I think this would be a good place for the news admin slide that was at the end of the school admin section.</o>
+
 
 <h2>Students</h2>
 <img src="district_admin/student_list.png">
-<p>Here you can add students, edit them, or remove them from the district.    </p>
+<p>Here you can add students, edit them, or remove them from the district.   If you remove them from the
+district then they are still in the system, just not in your district.</p>
 
 <img src="district_admin/edit_student.png">
+<p> In Wisconsin the State ID is the WSLS number. </p>
+<p> The number field is what appears on their student id. </p>
+<p> The district ID field is the primary key in your student information system. </p>
 
+<p>You can enter text in the box for the extended profile.  This will appear after
+other extended profile content.  It's equivalent to the ext_arbitraries.csv. </p>
+
+<p>You can assign a student to a school by clicking the Add Enrollment link.   Choose a grade and 
+the End year.  (The end year is used on the student search screen.  It lets you enter enrollments for multiple
+years which is useful over the summer.)   </p>
+
+<p>Clicking the Add System Flag lets you pick a category and reason for a flag.   These can also be
+included in the system_flags.csv file (or the specific flag files.) </p>
+
+<p>You can upload files, or add links to the student, these are displayed in the extended profile.   Any attached photos will be
+displayed in the extended profile. </p>
+
+<p>The school administrator assigns users to specific groups. </p>
 
 <h2>Flag Descriptions</h2>
 <img src="district_admin/flag_descriptions.png">
@@ -222,6 +287,7 @@ School index</p>
 <p>This allows you to update the flag legend (at the bottom left) for your district.   It's simply text
 that is displayed.  See the students page for manually setting system flags, or the scripted module for 
 generating them in your district (system_flags.csv).</p>
+<p> Note- The thresholds and documents for the core practice reminder on the student search screen are defined by the content admin.</p>
 
 <h2>Logs</h2>
 <img src="district_admin/district_logs.png">
@@ -229,15 +295,14 @@ generating them in your district (system_flags.csv).</p>
 will show the username they entered.   Additional items may be added to the log in the future.</p>
 
 <h2>Import to CSV</h2>
- (more indepth module later)
 <img src="district_admin/import1.png">
-<p>On this screen you can upload csv files of student data into SIMS.</p>
+<p>On this screen you can upload csv files of student data into SIMS.  You'll see a progress bar while the file is uploading,
+then the results of the upload will be presented.  See the scripted module for more information.</p>
 
 <h2>Export to CSV</h2>
- (more indepth module later)
 <img src="district_admin/dist_admin_main.png">
 <p>Cliking on the Export to CSV link in the menu will create and download file called sims_export.zip containing 
-the content of SIMS for your district.</p>
+the content of SIMS for your district.  See the scripted module for more information.</p>
 
  <h1 id="troubleshooting">Troubleshooting</h1>
  <pre>
