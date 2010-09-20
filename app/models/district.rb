@@ -187,6 +187,17 @@ class District < ActiveRecord::Base
     find_by_abbrev('madison')
   end
 
+  def url(path='')
+    if defined? SIMS_DOMAIN
+      host=SIMS_DOMAIN
+    else
+      host="localhost"
+    end
+
+    "#{SIMS_PROTO}://#{host}/#{path}?abbrev=#{abbrev}"
+
+  end
+
 private
 
   def make_sure_there_are_no_schools
