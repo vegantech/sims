@@ -45,6 +45,11 @@ class DistrictExport
 
     self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})")
 
+    curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
+
+    File.open("#{dir}sims_export.bat", 'w') {|f| f.write(curl_string)}
+    File.open("#{dir}sims_export.sh", 'w') {|f| f.write(curl_string)}
+
     system "zip -j -qq #{dir}sims_export.zip #{dir}*"
    
     "#{dir}sims_export.zip"
