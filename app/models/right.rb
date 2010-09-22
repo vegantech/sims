@@ -100,6 +100,9 @@ RIGHTS={"district_admin" =>
     :write_access=>true},
    {:read_access=>true,
     :controller=>"grouped_progress_entries",
+    :write_access=>true},
+   {:read_access=>true,
+    :controller=>"orphaned_interventions",
     :write_access=>true}
   ],
  "school_admin" =>
