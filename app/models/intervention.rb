@@ -175,7 +175,7 @@ class Intervention < ActiveRecord::Base
 
   end
 
-  def orphaned_intervention?
+  def orphaned?
     active? && 
       (end_date < Date.today ||
        participant_users.none?{|ipu| student.belongs_to_user? ipu}
@@ -186,7 +186,7 @@ class Intervention < ActiveRecord::Base
   def self.orphaned
     #an orphaned intervention is one that is unended past the expected end date or one where no participants can access the student  (be sure to check district_id of student as well)
 
-    find(:all).select(&:orphaned_intervention?)
+    find(:all).select(&:orphaned?)
 
   end
   
