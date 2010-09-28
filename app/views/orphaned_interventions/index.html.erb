@@ -1,0 +1,33 @@
+<%form_tag do %>
+<table>
+  <thead>
+    <tr>
+      <th>End</th>
+      <th>Student</th>
+      <th>Intervention</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Participants</th>
+  </tr>
+
+  </thead>
+  <tbody>
+    <%@interventions.each do |intervention| %>
+      <tr>
+        <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
+        <td><%=intervention.student %> </td>
+        <td><%=intervention.title %></td>
+        <td><%=intervention.start_date %> </td>
+        <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> ><%=intervention.end_date %> </td>
+        <td><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+<p>
+<%=submit_tag 'End Selected' %></p>
+<p>
+End Reasons, require one to be checked
+</p>
+<% end %>

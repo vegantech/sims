@@ -234,6 +234,24 @@ class User < ActiveRecord::Base
     !!(user_group_assignments.principal.first || special_user_groups.principal.first)
   end
 
+  def orphaned_interventions_where_principal
+    Intervention.find_all_by_active(true,
+                                    :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
+        left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true   and special_user_groups.district_id = #{self.district_id}
+        left outer join enrollments on enrollments.student_id = students.id
+        left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
+          and user_group_assignments.user_id = #{self.id} and user_group_assignments.is_principal=true
+          ) 
+         on groups_students.student_id = students.id",
+        :conditions => "(special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
+          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id 
+          and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade ) 
+          ) or user_group_assignments.id is not null
+    ").select(&:orphaned?)
+
+
+  end
+
   def all_students_in_district
     #called in district/users/_district_groups.html.erb
     special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
