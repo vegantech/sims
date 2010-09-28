@@ -2,7 +2,7 @@ module CSVImporter
   class SystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
         :district_student_id =>"Key for student",
-        :category =>"Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}",
+        :category =>"Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}  It must match one of these exactly, no spaces, all lowercase",
         :reason =>"A description of the reason the student was flagged.",
     }
     class << self
