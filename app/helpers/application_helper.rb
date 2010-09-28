@@ -141,4 +141,8 @@ module ApplicationHelper
     
   end
 
+
+  def restrict_to_principals?(student)
+    current_district.restrict_free_lunch? && !student.principals.include?(current_user)
+  end
 end

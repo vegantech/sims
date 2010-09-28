@@ -90,10 +90,33 @@ describe ApplicationHelper do
 
     end
     
+  end
 
-    
-      
+  describe 'restrict_to_principals?' do
+    it 'should return false when the user is a principal of the student'  do
+      user = mock_user
+      student=mock_student(:principals => [user])
+      helper.should_receive(:current_district).and_return(mock_district('restrict_free_lunch?'=>true))
+      helper.should_receive(:current_user).and_return(user)
 
+      helper.restrict_to_principals?(student).should be_false
+
+
+    end
+
+    it 'should return false when the district has the flag off'  do
+      helper.should_receive(:current_district).and_return(mock_district('restrict_free_lunch?'=>false))
+      student=mock_student()
+      helper.restrict_to_principals?(student).should be_false
+    end
+
+    it 'should return true when the district has the flag on and the user is not a principal'  do
+      user = mock_user
+      student=mock_student(:principals => [])
+      helper.should_receive(:current_user).and_return(user)
+      helper.should_receive(:current_district).and_return(mock_district('restrict_free_lunch?'=>true))
+      helper.restrict_to_principals?(student).should be_true
+    end
   end
 
   
