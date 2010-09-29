@@ -1,7 +1,7 @@
 <%= selected_navigation %>
 
 <div class = "profile_page">
-  <% cache ["student_topsection", @student] do %>
+  <% cache ["student_topsection", @student,restrict_to_principals?(@student)] do %>
     <%= render :partial => 'student', :locals => {:changeable => true} %>
     <%= render :partial => 'extended_profile' %>
   <% end %>

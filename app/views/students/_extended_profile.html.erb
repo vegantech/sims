@@ -30,8 +30,12 @@
 
 </table>
 
+<%=help_popup("Free/Reduced Lunch status is only available to principals.  (The district admin can change this.)") if restrict_to_principals?(@student) %>
 <table>
-	<tr><td>Lunch Status: <%= ext_pro.mealstatus.to_s%></td></tr>
+
+  <% unless restrict_to_principals?(@student)   %>
+    <tr><td>Lunch Status: <%= ext_pro.mealstatus.to_s%></td></tr>
+  <% end %>
     <tr><td>Current Attendance:</td><td><%=ext_pro.current_attendance_rate%>%</td></tr>
   <tr><td>Previous Attendance:</td><td><%=ext_pro.previous_attendance_rate%>%</td></tr>
 	<tr><td>Suspensions In: <%=ext_pro.suspensions_in.to_s%>  Out: <%=ext_pro.suspensions_out.to_s%></td></tr>
