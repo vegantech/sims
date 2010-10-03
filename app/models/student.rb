@@ -147,13 +147,13 @@ class Student < ActiveRecord::Base
 
   def special_group_principals
     grades = enrollments.collect(&:grade)
-    schools = enrollments.collect(&:school_id)
+    schools = enrollments.collect(&:school)
     principals = []
 
     principals << district.special_user_groups.principal.all_students_in_district.collect(&:user)
     schools.each do |school|
-      principals << district.special_user_groups.principal.all_students_in_school(school).collect(&:user)
-      principals << district.special_user_groups.principal.find_all_by_grouptype_and_grade(SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, grades).collect(&:user)
+      principals << district.special_user_groups.principal.all_students_in_school(school.id).collect(&:user)
+      principals << school.special_user_groups.principal.find_all_by_grouptype_and_grade(SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, grades).collect(&:user)
     end
 
     principals
