@@ -59,7 +59,7 @@ class DistrictExport
 
 
   def self.generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
-     FasterCSV.open("#{dir}#{table}.csv", "w") do |csv|
+     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
