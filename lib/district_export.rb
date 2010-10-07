@@ -2,6 +2,7 @@ require 'fileutils'
 require 'fastercsv'
 class DistrictExport
   def self.generate(district)
+    @files=Hash.new
     dir = "#{RAILS_ROOT}/tmp/district_export/#{district.id}/"
     
     FileUtils.mkdir_p dir unless File.exists? dir
@@ -43,13 +44,14 @@ class DistrictExport
     assets = district.probe_definitions.collect(&:assets).flatten.compact | 
       district.goal_definitions.collect(&:objective_definitions).flatten.collect(&:intervention_clusters).flatten.collect(&:intervention_definitions).flatten.collect(&:assets).flatten.compact
 
-    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})")
+    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
 
     curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
 
     File.open("#{dir}sims_export.bat", 'w') {|f| f.write(curl_string)}
     File.open("#{dir}sims_export.sh", 'w') {|f| f.write(curl_string)}
 
+    self.generate_schema dir
     system "zip -j -qq #{dir}sims_export.zip #{dir}*"
    
     "#{dir}sims_export.zip"
@@ -57,9 +59,24 @@ class DistrictExport
   end
 
 
+  def self.generate_schema dir
+     File.open("#{dir}schema.txt","a+") do |f| 
+       @files.keys.sort.each do |table|
+         f.write("#{table}\r\n")
+         @files[table].split(',').each do |header|
+           obj=table.classify.constantize
+           col=obj.columns.find{|col| col.name == header}
+           f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
+         end
+         f.write("\r\n")
+       end
+     end
+
+  end
 
   def self.generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
-     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
+    @files[table]=headers
+    FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
