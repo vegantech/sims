@@ -2,6 +2,10 @@ require 'fileutils'
 require 'fastercsv'
 class DistrictExport
   def self.generate(district)
+    self.new.generate(district)
+  end
+
+  def generate(district)
     @files=Hash.new
     dir = "#{RAILS_ROOT}/tmp/district_export/#{district.id}/"
     
@@ -59,7 +63,7 @@ class DistrictExport
   end
 
 
-  def self.generate_schema dir
+  def generate_schema dir
      File.open("#{dir}schema.txt","a+") do |f| 
        @files.keys.sort.each do |table|
          f.write("#{table}\r\n")
@@ -74,15 +78,47 @@ class DistrictExport
 
   end
 
-  def self.generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
+  def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
     @files[table]=headers
+    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>"\r\n",:col_sep =>"\t") do |tsv|
     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
+      tsv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
         csv << row
+        tsv << row
       end
-    end
+    end;end
     
+  end
+
+  def create_tables
+    @files.keys.sort.each do |table|
+      puts "CREATE TABLE #{table} ("
+      cols= @files[table].split(',').collect do |header|
+        obj=table.classify.constantize
+        col=obj.columns.find{|col| col.name == header}
+        sql_type=col.sql_type
+        sql_type=sql_type.split("(").first if sql_type.include?("int")
+        sql_type="datetime" if sql_type == "date"
+        sql_type="int" if sql_type == "tinyint"
+        "#{header} #{sql_type}" 
+      end.join(", ")
+      puts cols
+      puts ");"
+
+    end
+  end
+
+  def sqlserver_bulk_import db,dir
+    puts "use #{db}"
+    puts "set nocount on"
+
+    @files.keys.sort.each do |table|
+      puts "truncate table #{table}"
+      puts "bulk insert #{table} from \"#{dir}#{table}.csv\""
+      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR =',', FIRSTROW=2)"
+    end
   end
 end
