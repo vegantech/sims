@@ -5,6 +5,16 @@ class DistrictExport
     self.new.generate(district)
   end
 
+  def no_double_quotes field
+    return if field.blank?
+        string=field.to_s
+        string.gsub! /\342\200\230/m, "'"
+        string.gsub! /\342\200\231/m, "'"
+        string.gsub! /\342\200\234/m, '"'
+        string.gsub! /\342\200\235/m, '"'
+        return (string.gsub /"/m, "''")
+  end
+
   def generate(district)
     @files=Hash.new
     dir = "#{RAILS_ROOT}/tmp/district_export/#{district.id}/"
@@ -80,14 +90,14 @@ class DistrictExport
 
   def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
     @files[table]=headers
-    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>"\r\n",:col_sep =>"\t") do |tsv|
+    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>"\r\n",:col_sep =>"\t" ) do |tsv|
     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       tsv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
         csv << row
-        tsv << row
+        tsv << row.collect{|c| no_double_quotes(c)}
       end
     end;end
     
@@ -117,8 +127,8 @@ class DistrictExport
 
     @files.keys.sort.each do |table|
       puts "truncate table #{table}"
-      puts "bulk insert #{table} from \"#{dir}#{table}.csv\""
-      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR =',', FIRSTROW=2)"
+      puts "bulk insert #{table} from \"#{dir}#{table}.tsv\""
+      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR ='\\t', FIRSTROW=2)"
     end
   end
 end
