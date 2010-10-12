@@ -12,6 +12,7 @@ class DistrictExport
         string.gsub! /\342\200\231/m, "'"
         string.gsub! /\342\200\234/m, '"'
         string.gsub! /\342\200\235/m, '"'
+        string.gsub! /\t/m, '   '
         return (string.gsub /"/m, "''")
   end
 
@@ -90,7 +91,7 @@ class DistrictExport
 
   def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
     @files[table]=headers
-    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>"\r\n",:col_sep =>"\t" ) do |tsv|
+    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       tsv << headers.split(',')
