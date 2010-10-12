@@ -2,6 +2,22 @@ require 'fileutils'
 require 'fastercsv'
 class DistrictExport
   def self.generate(district)
+    self.new.generate(district)
+  end
+
+  def no_double_quotes field
+    return if field.blank?
+        string=field.to_s
+        string.gsub! /\342\200\230/m, "'"
+        string.gsub! /\342\200\231/m, "'"
+        string.gsub! /\342\200\234/m, '"'
+        string.gsub! /\342\200\235/m, '"'
+        string.gsub! /\t/m, '   '
+        return (string.gsub /"/m, "''")
+  end
+
+  def generate(district)
+    @files=Hash.new
     dir = "#{RAILS_ROOT}/tmp/district_export/#{district.id}/"
     
     FileUtils.mkdir_p dir unless File.exists? dir
@@ -43,13 +59,14 @@ class DistrictExport
     assets = district.probe_definitions.collect(&:assets).flatten.compact | 
       district.goal_definitions.collect(&:objective_definitions).flatten.collect(&:intervention_clusters).flatten.collect(&:intervention_definitions).flatten.collect(&:assets).flatten.compact
 
-    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})")
+    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
 
     curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
 
     File.open("#{dir}sims_export.bat", 'w') {|f| f.write(curl_string)}
     File.open("#{dir}sims_export.sh", 'w') {|f| f.write(curl_string)}
 
+    self.generate_schema dir
     system "zip -j -qq #{dir}sims_export.zip #{dir}*"
    
     "#{dir}sims_export.zip"
@@ -57,15 +74,62 @@ class DistrictExport
   end
 
 
+  def generate_schema dir
+     File.open("#{dir}schema.txt","a+") do |f| 
+       @files.keys.sort.each do |table|
+         f.write("#{table}\r\n")
+         @files[table].split(',').each do |header|
+           obj=table.classify.constantize
+           col=obj.columns.find{|col| col.name == header}
+           f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
+         end
+         f.write("\r\n")
+       end
+     end
 
-  def self.generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
-     FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
+  end
+
+  def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
+    @files[table]=headers
+    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
+    FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
+      tsv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
         csv << row
+        tsv << row.collect{|c| no_double_quotes(c)}
       end
-    end
+    end;end
     
+  end
+
+  def create_tables
+    @files.keys.sort.each do |table|
+      puts "CREATE TABLE #{table} ("
+      cols= @files[table].split(',').collect do |header|
+        obj=table.classify.constantize
+        col=obj.columns.find{|col| col.name == header}
+        sql_type=col.sql_type
+        sql_type=sql_type.split("(").first if sql_type.include?("int")
+        sql_type="datetime" if sql_type == "date"
+        sql_type="int" if sql_type == "tinyint"
+        "#{header} #{sql_type}" 
+      end.join(", ")
+      puts cols
+      puts ");"
+
+    end
+  end
+
+  def sqlserver_bulk_import db,dir
+    puts "use #{db}"
+    puts "set nocount on"
+
+    @files.keys.sort.each do |table|
+      puts "truncate table #{table}"
+      puts "bulk insert #{table} from \"#{dir}#{table}.tsv\""
+      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR ='\\t', FIRSTROW=2)"
+    end
   end
 end

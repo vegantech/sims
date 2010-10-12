@@ -206,7 +206,10 @@ class Student < ActiveRecord::Base
   end
 
   def belongs_to_user?(user)
-    user.groups.find_by_id(group_ids) || user.special_user_groups.find_by_school_id(school_ids) || user.special_user_groups.find_by_grouptype(SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
+    user.district_id == district_id && 
+   (user.groups.find_by_id(group_ids) || 
+      user.special_user_groups.find_by_school_id(school_ids) || 
+      user.special_user_groups.find_by_grouptype(SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT))
   end
 
   def active_interventions
