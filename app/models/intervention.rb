@@ -178,7 +178,8 @@ class Intervention < ActiveRecord::Base
   def orphaned?
     active? && 
       (end_date < Date.today ||
-       participant_users.none?{|ipu| student.belongs_to_user? ipu}
+       participant_users.blank? ||
+       !participant_users.all?{|ipu| student.belongs_to_user? ipu}
       ) 
 
   end
