@@ -14,7 +14,7 @@ module CSVImporter
       end
 
       def overwritten
-        "What will get overwritten/changed when this file is uploaded."
+        "This file replaces all freeform content at the bottom of the extended profile."
       end
 
       def load_order
@@ -22,6 +22,9 @@ module CSVImporter
       end
 
       def removed
+        "Any text manually entered for the extended profile and anything
+        previously uploaded that isn't in this file."
+
       end
 
 #      def related
