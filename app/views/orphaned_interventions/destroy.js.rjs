@@ -1,1 +1,9 @@
  page[dom_id(@intervention_participant)].remove() 
+
+ intervention = @intervention_participant.intervention
+ if intervention.participant_users.blank?
+   page[dom_id(
+     intervention,"no_participants")
+   ].innerHTML= "There are no participants assigned." 
+ end
+ 
