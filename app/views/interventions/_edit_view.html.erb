@@ -50,9 +50,10 @@
   <p> If you made changes above, then save them first. </p>
   <% form_tag(end_intervention_path(@intervention), :method => :put) do  %>
     <%Intervention::END_REASONS.each do |end_reason| %>
-      <%= radio_button_tag('end_reason', end_reason) %><label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
+      <%= radio_button_tag('end_reason', end_reason,{}, {:onclick=> "$('end_submit_tag').disabled=false;"}) %>
+      <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
     <% end %>
-    <%= submit_tag 'End Intervention', :confirm=>"Are you sure you want to end this intervention?"  %>
+    <%= submit_tag 'End Intervention', :confirm=>"Are you sure you want to end this intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>
 
 
 
