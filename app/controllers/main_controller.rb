@@ -11,11 +11,15 @@ class MainController < ApplicationController
 
   def stats
     @without=params[:without]
+    @start_date = params[:start] || 10.years.ago
+    @end_date = params[:end] || 5.years.since
 
     @stats=ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation, 
       ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition
     ].each do |klass|
+      klass.filter_all_stats_on(:created_after, "DATE(#{klass.table_name}.created_at) >= DATE(?)") 
+      klass.filter_all_stats_on(:created_before, "DATE(#{klass.table_name}.created_at) <= DATE(?)")
       if @without
         case klass.name
           when 'Recommendation'
@@ -29,9 +33,9 @@ class MainController < ApplicationController
           else
            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end
-        @stats[klass.name] = klass.statistics(:exclude_district_id => @without.to_i)
+        @stats[klass.name] = klass.statistics(:exclude_district_id => @without.to_i, :created_after=> @start_date, :created_before => @end_date)
       else
-       @stats[klass.name] = klass.statistics
+        @stats[klass.name] = klass.statistics(:created_after=> @start_date, :created_before => @end_date)
       end
     end
     flash[:notice]="Excluding district with id #{@without.to_i}" if @without
