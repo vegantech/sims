@@ -10,9 +10,11 @@ class MainController < ApplicationController
   end
 
   def stats
+    flash[:notice]=nil
+    
     @without=params[:without]
-    @start_date = params[:start] || 10.years.ago
-    @end_date = params[:end] || 5.years.since
+    @start_date = (params[:start] || 4.years.ago).to_date
+    @end_date = (params[:end] || 1.day.since).to_date
 
     @stats=ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation, 
