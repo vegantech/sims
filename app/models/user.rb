@@ -234,11 +234,12 @@ class User < ActiveRecord::Base
     !!(user_group_assignments.principal.first || special_user_groups.principal.first)
   end
 
-  def orphaned_interventions_where_principal
+  def orphaned_interventions_where_principal(school)
+    return [] if school.blank?
     Intervention.find_all_by_active(true,
                                     :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
         left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true   and special_user_groups.district_id = #{self.district_id}
-        left outer join enrollments on enrollments.student_id = students.id
+        left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
           and user_group_assignments.user_id = #{self.id} and user_group_assignments.is_principal=true
           ) 

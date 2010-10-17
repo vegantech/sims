@@ -4,4 +4,12 @@
     <%="There are no participants assigned." if intervention.intervention_participants.blank? %>
   <% end %>
   <%= render :partial => "orphaned_interventions/participant", :collection => intervention.intervention_participants %>
+
+  <%= collection_select(:new_participant,:user_id,@users, :id, :to_s, {:prompt => 'Choose a participant to add them.'},
+                        {:id => dom_id(intervention,'new_participant'),
+                          :onchange => remote_function(:url =>  orphaned_intervention_path(intervention), 
+                        :with => "'user_id=' + $('#{dom_id(intervention,"new_participant")}').value",
+                        :method => 'put')}
+                       )
+  %>
 <% end %>
