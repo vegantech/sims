@@ -1,0 +1,6 @@
+if @end_date < Date.today
+  color = 'red'
+else
+  color = 'black'
+end
+page << "$('end_date#{@intervention.id}').up('td').style.color='#{color}'"
