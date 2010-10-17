@@ -1,4 +1,5 @@
 class OrphanedInterventionsController < ApplicationController
+  additional_read_actions :update_end_date
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
@@ -26,6 +27,17 @@ class OrphanedInterventionsController < ApplicationController
 
   def show
     #not used
+  end
+
+  def update_end_date
+    @intervention = Intervention.find_by_id(params[:id])
+    @end_date = Date.civil(params[:year].to_i,params[:month].to_i,params[:day].to_i)
+    @intervention.update_attribute(:end_date, @end_date)
+
+    respond_to do |format|
+      format.html 
+      format.js
+    end
   end
 
   def update
