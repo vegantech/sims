@@ -2,7 +2,13 @@ class OrphanedInterventionsController < ApplicationController
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
-    @interventions = current_user.orphaned_interventions_where_principal
+    if current_school.blank?
+     flash[:notice] = "Please select a school first"  
+    else
+      @users =  current_school.assigned_users
+    end
+    @interventions = current_user.orphaned_interventions_where_principal(current_school)
+    @new_participant = InterventionParticipant.new
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @interventions }
@@ -23,6 +29,20 @@ class OrphanedInterventionsController < ApplicationController
   end
 
   def update
+    @intervention = Intervention.find_by_id(params[:id])
+    if params[:user_id].present?  && !@intervention.participant_user_ids.include?(params[:user_id].to_i)
+      @participant=@intervention.intervention_participants.build(:user_id => params[:user_id])
+      if @participant.valid?
+        @participant.save!
+      else
+        @participant = nil
+      end
+    end
+    
+    respond_to do |format|
+      format.html 
+      format.js
+    end
     #create participant
   end
 
