@@ -1,5 +1,7 @@
 class MainController < ApplicationController
   skip_before_filter :authenticate, :authorize, :only=>[:index,:stats]
+  skip_before_filter :verify_authenticity_tokeen
+
   include  CountryStateDistrict
   def index
     redirect_to logout_url if current_district.blank? and current_user_id.present?
@@ -10,11 +12,23 @@ class MainController < ApplicationController
   end
 
   def stats
+    #TODO test and refactor
     flash[:notice]=nil
     
     @without=params[:without]
-    @start_date = (params[:start] || 4.years.ago).to_date
-    @end_date = (params[:end] || 1.day.since).to_date
+
+    begin
+      @start_date = Date.parse(params[:start]).to_date
+    rescue
+      @start_date = 4.years.ago.to_date
+    end
+
+    begin
+      @end_date = Date.parse(params[:start]).to_date
+    rescue
+      @end_date = 1.day.since.to_date
+    end
+
 
     @stats=ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation, 
