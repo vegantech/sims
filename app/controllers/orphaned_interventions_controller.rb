@@ -62,7 +62,7 @@ class OrphanedInterventionsController < ApplicationController
     #bulk ending,  TODO add validation for end reason
     Intervention.find_all_by_id(params[:id]).each do |intervention|
       if intervention.student.principals.include? current_user
-        intervention.end current_user
+        intervention.end current_user, params[:end_reason]
       end
     end
 

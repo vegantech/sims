@@ -33,9 +33,15 @@
 
   </tbody>
 </table>
-<p>
-<%=submit_tag 'End Selected' %></p>
-<p>
-End Reasons, require one to be checked
-</p>
+<br />
+<br />
+
+<div id="end_intervention_reasons">
+  <p> Please choose a reason for ending the selected interventions. </p>
+  <%Intervention::END_REASONS.each do |end_reason| %>
+    <%= radio_button_tag('end_reason', end_reason,{}, {:onclick=> "$('end_submit_tag').disabled=false;"}) %>
+    <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
+  <% end %>
+  <%= submit_tag 'End Selected', :confirm=>"Are you sure you want to end these intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>
+  </div>
 <% end %>
