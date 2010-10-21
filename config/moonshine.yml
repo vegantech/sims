@@ -66,6 +66,7 @@
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.conf.erb 
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.vhost.erb 
 :passenger:
+  :version: 2.2.15
   :max_pool_size: 6
 #  :max_pool_size: 12
 
