@@ -49,10 +49,40 @@ class Student < ActiveRecord::Base
 
 
   
+  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
+    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
+  }
+  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.student_id = students.id 
+  left outer join student_comments on students.id = student_comments.student_id
+  left outer join team_consultations on team_consultations.student_id = students.id 
+  left outer join consultation_form_requests on consultation_form_requests.student_id = students.id",
+  :conditions => "interventions.id is not null or student_comments.id is not null or 
+                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
 
-  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id'
-  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id'
+
+#FIXDATES on first two
+  FILTER_HASH_FOR_IN_USE_DATE_RANGE=
+  {
+  :created_after => "interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
+    or consultation_form_requests.created_at >=?",
+  :created_before => "interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+    or consultation_form_requests.created_at <=?"
+  }
+
+  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id',
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id',
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_with_students, :count => :all, :select => 'distinct district_id'
+  define_statistic :students_in_use, :count => :with_sims_content, :filter_on => FILTER_HASH_FOR_IN_USE_DATE_RANGE
+  define_statistic :districts_with_students_in_use, :count => :with_sims_content, :select => 'distinct district_id', :filter_on => FILTER_HASH_FOR_IN_USE_DATE_RANGE
+  define_statistic :schools_with_students_in_use, :count => :with_sims_content, :select => 'distinct enrollments.school_id', :filter_on => FILTER_HASH_FOR_IN_USE_DATE_RANGE,
+    :joins => :enrollments
+
+
+
+
+
   
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
@@ -67,9 +97,6 @@ class Student < ActiveRecord::Base
   #  before_validation :clear_extended_profile
 
 
-  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
-    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
-  }
 
   def extended_profile?
     ext_arbitrary.present? || ext_siblings.present? || ext_adult_contacts.present? || ext_test_scores.present? || ext_summary.present? || assets.present?
@@ -265,7 +292,7 @@ class Student < ActiveRecord::Base
   end
 
   def touch
-    #I don't want validations to run
+    #I don't want validations to run, but I need to fix locking here!!!
     self.updated_at = Time.now.utc
     update_without_callbacks
 
