@@ -35,7 +35,7 @@ class CreateTrainingDistrict
   def self.create_with_schools_and_users(abbrev,name)
     td=District.create!(:abbrev=>abbrev, :name =>name)
     #alpha elementary
-    alpha_elem=td.schools.create!(:name => 'Alpha Elementry')
+    alpha_elem=td.schools.create!(:name => 'Alpha Elementary')
 
     oneschool = td.users.create!(:username => 'oneschool', :password => 'oneschool', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'User')
 
