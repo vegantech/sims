@@ -24,7 +24,7 @@ class MainController < ApplicationController
     end
 
     begin
-      @end_date = Date.parse(params[:start]).to_date
+      @end_date = Date.parse(params[:end]).to_date
     rescue
       @end_date = 1.day.since.to_date
     end

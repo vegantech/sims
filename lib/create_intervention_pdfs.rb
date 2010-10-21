@@ -8,8 +8,8 @@ class CreateInterventionPdfs
     district.objective_definitions.each do |o| 
       FileUtils.mkdir_p dir unless File.exists? dir
       basefile = dir+"#{o.title.split(" ").join("_")}.".gsub("/","-").gsub("&","and")
-      pdffile= "#{basefile}.pdf"
-      htmlfile = "#{basefile}.html"
+      pdffile= "#{basefile}pdf"
+      htmlfile = "#{basefile}html"
 
       File.open(pdffile,'w') do |f|o
         f << InterventionDefinitionSummaryReport.render_pdf(:objective_definition => o, :template => :standard)
