@@ -41,7 +41,7 @@ padding: 25px;
 
           <% if @importer.name == "CSVImporter::LanguageartsSystemFlags" and File.exist? "#{Rails.public_path}/system/jonas_sample_test_data.csv" %>
             <br />
-            <%= link_to "jonas_sample_test_data.csv", "/system/jonas_sample_test_data.csv" %>
+            <%= link_to "jonas_sample_test_data.csv", "/system/jonas_sample_test_data.csv" %> (Right click and Save)
           <% end %>
       </td>
       </tr>
