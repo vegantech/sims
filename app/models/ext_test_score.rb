@@ -49,6 +49,10 @@ class ExtTestScore < ActiveRecord::Base
   end
 
   def <=>(rhs)
-    self.date <=> rhs.date
+    if self.date && rhs.date
+      self.date <=> rhs.date
+    else
+      self.name.to_s <=> rhs.name.to_s
+    end
   end
 end
