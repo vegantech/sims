@@ -1,4 +1,5 @@
 class ConsultationFormRequestsController < ApplicationController
+  before_filter :require_current_school
   # GET /consultation_form_requests/1
   # GET /consultation_form_requests/1.xml
   def show
@@ -48,6 +49,16 @@ class ConsultationFormRequestsController < ApplicationController
   
   private
   def set_users_and_teams
+    if current_school.blank?
+
+      if request.xhr?
+        render :nothing => true
+      else
+        redirect_to schools_url
+      end
+      return false 
+
+    end
     @users = current_school.assigned_users
     @teams = current_school.school_teams.named
   end

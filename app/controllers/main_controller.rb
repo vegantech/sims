@@ -20,7 +20,7 @@ class MainController < ApplicationController
     begin
       @start_date = Date.parse(params[:start]).to_date
     rescue
-      @start_date = 4.years.ago.to_date
+      @start_date = "2009-10-01".to_date
     end
 
     begin

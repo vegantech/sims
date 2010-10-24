@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ConsultationFormRequestsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  it_should_behave_like "a schools_requiring controller"
 
   def mock_consultation_form_request(stubs={})
     @mock_consultation_form_request ||= mock_model(ConsultationFormRequest, stubs)

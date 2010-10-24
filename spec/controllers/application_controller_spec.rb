@@ -57,6 +57,9 @@ describe ApplicationController do
     end
   end
 
+  describe 'require_school' do
+    it 'should have specs'
+  end
 
   describe 'action_group_for_current_action' do
     

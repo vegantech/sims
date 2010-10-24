@@ -49,7 +49,7 @@
         <div class="breadcrumbs_and_banners">
           <%=breadcrumbs%>
         </div>
-          <p style="color: green"><%= flash[:notice] %></p>
+          <p id="flash_notice"><%= flash[:notice] %></p>
           <%= yield %>
           <%= render :partial =>'login/whats_new' if show_whats_new%>
 
