@@ -77,7 +77,8 @@ class Student < ActiveRecord::Base
 
   #TODO DRY THESE
   define_calculated_statistic :students_in_use  do 
-    calc_start_date = @filters[:creted_after] || "2000-01-01".to_date
+    
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
@@ -92,7 +93,7 @@ class Student < ActiveRecord::Base
 
 
   define_calculated_statistic :districts_with_students_in_use  do 
-    calc_start_date = @filters[:creted_after] || "2000-01-01".to_date
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
@@ -106,7 +107,7 @@ class Student < ActiveRecord::Base
   end
 
   define_calculated_statistic :schools_with_students_in_use  do 
-    calc_start_date = @filters[:creted_after] || "2000-01-01".to_date
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
