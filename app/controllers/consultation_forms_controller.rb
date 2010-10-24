@@ -1,4 +1,5 @@
 class ConsultationFormsController < ApplicationController
+  before_filter :require_current_school
  # GET /consultation_forms/1
  # GET /consultation_forms/1.xml
   def show

@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TeamConsultationsController do
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  it_should_behave_like "a schools_requiring controller"
       
 
   def mock_team_consultation(stubs={})
@@ -10,14 +11,6 @@ describe TeamConsultationsController do
     @mock_team_consultation ||= mock_model(TeamConsultation, stubs)
   end
   
-  describe "GET index" do
-    it "assigns all team_consultations as @team_consultations" do
-      TeamConsultation.should_receive(:find).with(:all).and_return([mock_team_consultation])
-      get :index
-      assigns[:team_consultations].should == [mock_team_consultation]
-    end
-  end
-
   describe "GET show" do
     it "assigns the requested team_consultation as @team_consultation" do
       TeamConsultation.should_receive(:find).with("37").and_return(mock_team_consultation)

@@ -542,3 +542,6 @@ table.grouped_progress_entry thead {
   display:table-header-group;
 }
 
+#flash_notice {
+  color:green;
+}
