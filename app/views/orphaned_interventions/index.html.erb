@@ -37,7 +37,7 @@ or has no participants at all. </p>" %> </h1>
     <%@interventions.each do |intervention| %>
       <tr>
         <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
-        <td><%=intervention.student %> </td>
+        <td><%=link_to intervention.student, intervention.student, :target => "_blank" %> </td>
         <td><%=intervention.title %></td>
         <td><%=intervention.start_date %> </td>
         <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> >
