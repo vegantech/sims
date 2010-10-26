@@ -299,5 +299,12 @@
   RewriteCond  %{DOCUMENT_ROOT}<%= configuration[:passenger][:page_cache_directory] %>%{REQUEST_URI}.html -f
   RewriteRule  ^(.*)$ <%= configuration[:passenger][:page_cache_directory] %>$1.html [QSA,L]
 
+  # Remove Options calls and _vti_bin 
+  RewriteCond %{REQUEST_METHOD} ^OPTIONS
+  RewriteRule .* - [R=405,L]
+
+  RewriteRule /_vti_.* - [R=405,L]
+
+
   </VirtualHost>
 <% end %>
