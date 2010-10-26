@@ -1,6 +1,14 @@
-if @end_date < Date.today
-  color = 'red'
+if @intervention.end_date_changed? || @end_date.nil?
+  page << "$('end_date#{@intervention.id}-mm').value= #{@intervention.end_date_was.month}"
+  page << "$('end_date#{@intervention.id}-dd').value= #{@intervention.end_date_was.day}"
+  page << "$('end_date#{@intervention.id}').value= #{@intervention.end_date_was.year}"
+
 else
-  color = 'black'
+
+  if @end_date < Date.today || @intervention.invalid?
+    color = 'red'
+  else
+    color = 'black'
+  end
+  page << "$('end_date#{@intervention.id}').up('td').style.color='#{color}'"
 end
-page << "$('end_date#{@intervention.id}').up('td').style.color='#{color}'"
