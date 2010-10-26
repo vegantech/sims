@@ -3,6 +3,7 @@ class DistrictLog < ActiveRecord::Base
 
   named_scope :successful_login, :conditions => ["body like ?","Successful login%"]
   named_scope :failed_login, :conditions => ["body like ?","Failed login%"]
+  named_scope :successful_login_non_admin,  :conditions => ["body like ? and body not like ? and body not like ?","Successful login%", "%Tammy Biever%", "%Administrator%"]
   
 
   define_statistic :successful_logins, :count => [:successful_login]
@@ -10,6 +11,8 @@ class DistrictLog < ActiveRecord::Base
   define_statistic :first_recorded_login, :minimum => :all, :column_name => ['created_at']
   define_statistic :districts_with_successful_login, :count => :successful_login, :select => 'distinct district_id'
   define_statistic :users_that_have_logged_in, :count => :successful_login, :select => 'distinct district_id,body' 
+  define_statistic :non_admin_users_that_have_logged_in, :count => :successful_login_non_admin, :select => 'distinct district_id,body' 
+  define_statistic :districts_with_successful_non_admins, :count => :successful_login_non_admin, :select => 'distinct district_id' 
 
 
   def to_s

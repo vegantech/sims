@@ -45,6 +45,15 @@ Spec::Runner.configure do |config|
   # == Notes
   # 
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
+  describe "a schools_requiring controller", :shared => true do
+    before(:each) do
+      controller.should_receive(:require_current_school).any_number_of_times.and_return(true)
+      controller.class.before_filters.should include(:require_current_school) 
+    end
+  end
+
+
+  
   describe "an authenticated controller", :shared => true do
     before(:each) do
       controller.should_receive(:authenticate).any_number_of_times.and_return(true)
