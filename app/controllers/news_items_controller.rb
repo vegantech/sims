@@ -1,5 +1,5 @@
 class NewsItemsController < ApplicationController
-
+  skip_before_filter :validate_authenticity_token
   # GET /news_items/new
   # GET /news_items/new.xml
   def new
