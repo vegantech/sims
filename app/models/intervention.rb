@@ -231,7 +231,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def autoassign_probe
-    rec_mon_count = intervention_definition.recommended_monitors.count
+    rec_mon_count = intervention_definition.probe_definitions.count
     return true if intervention_probe_assignments.any?
     case rec_mon_count
     when 0
