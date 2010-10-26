@@ -42,8 +42,8 @@ or has no participants at all. </p>" %> </h1>
         <td><%=intervention.start_date %> </td>
         <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> >
           <%= unobtrusive_date_picker_tags intervention.end_date, 
-            {:order => [:month, :day, :year], :start_year => (1.year.ago).year, :end_year => 2.years.since().year, 
-              :prefix => "end_date#{intervention.id}"},
+            {:order => [:month, :day, :year], :start_year => intervention.start_date.year, :end_year => 2.years.since().year, 
+              :prefix => "end_date#{intervention.id}", :range_low => intervention.start_date},
               {:onchange => remote_function(:url =>  update_end_date_orphaned_intervention_path(intervention), 
                                             :with => "'month=' + $('end_date#{intervention.id}-mm').value + '&day=' + $('end_date#{intervention.id}-dd').value +'&year=' + $('end_date#{intervention.id}').value",
                         :method => 'put')}

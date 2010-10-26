@@ -31,8 +31,12 @@ class OrphanedInterventionsController < ApplicationController
 
   def update_end_date
     @intervention = Intervention.find_by_id(params[:id])
-    @end_date = Date.civil(params[:year].to_i,params[:month].to_i,params[:day].to_i)
-    @intervention.update_attribute(:end_date, @end_date)
+    #TODO REFACTOR THIS, date stuff should be handled in update_attributes call in model
+
+    if Date.valid_civil?(params[:year].to_i,params[:month].to_i,params[:day].to_i)
+      @end_date = Date.civil(params[:year].to_i,params[:month].to_i,params[:day].to_i)
+      @intervention.update_attributes(:end_date=> @end_date)
+    end
 
     respond_to do |format|
       format.html 
@@ -62,7 +66,11 @@ class OrphanedInterventionsController < ApplicationController
     #bulk ending,  TODO add validation for end reason
     Intervention.find_all_by_id(params[:id]).each do |intervention|
       if intervention.student.principals.include? current_user
+        if intervention.valid?
         intervention.end current_user, params[:end_reason]
+        else
+          flash[:notice] = "Some interventions could not be ended, #{intervention.errors.full_messages}"
+        end
       end
     end
 
