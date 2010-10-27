@@ -174,7 +174,8 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-      newcd= RecommendedMonitor.create!(ckhash) 
+      newcd= RecommendedMonitor.new(ckhash)  
+      newcd.save! if newcd.probe_definition && newcd.intervention_definition
     end
 
     FasterCSV.table("#{path}/probe_definition_benchmarks.csv").each do |ck|
