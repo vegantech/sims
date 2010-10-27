@@ -30,7 +30,6 @@ class InterventionCluster < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
   acts_as_list :scope=>:objective_definition
   is_paranoid
-  include DeepClone
   define_statistic :count , :count => :all,:joins => {:objective_definition=>:goal_definition} 
   define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_clusters.title', :joins => {:objective_definition=>:goal_definition}
   define_calculated_statistic :districts_with_changes do
@@ -51,15 +50,5 @@ class InterventionCluster < ActiveRecord::Base
   def to_s
     title
   end
-
-  private
-  def deep_clone_parent_field
-    'objective_definition_id'
-  end
-
-  def deep_clone_children
-    %w{intervention_definitions}
-  end
-
 
 end

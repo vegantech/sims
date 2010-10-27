@@ -41,7 +41,6 @@ class GoalDefinition < ActiveRecord::Base
 
 
   is_paranoid
-  include DeepClone
 
   def disable!
     objective_definitions.each(&:disable!)
@@ -52,14 +51,4 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
-  private
-  def deep_clone_parent_field
-    'district_id'
-  end
-
-  def deep_clone_children
-    %w{objective_definitions}
-  end
-
-  
 end

@@ -37,7 +37,7 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :tier
   belongs_to :user
   belongs_to :school
-  has_many :recommended_monitors, :order => :position, :dependent => :destroy
+  has_many :recommended_monitors, :order => :position, :dependent => :delete_all
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
   has_many :interventions 
@@ -150,18 +150,5 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-
-
   
-  private
-  def deep_clone_parent_field
-    'intervention_cluster_id'
-  end
-
-  def deep_clone_children
-    %w{intervention_definitions}
-  end
-
-
-
 end

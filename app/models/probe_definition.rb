@@ -27,7 +27,7 @@ class ProbeDefinition < ActiveRecord::Base
   belongs_to :user
   belongs_to :school
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
-  has_many :recommended_monitors, :dependent => :destroy
+  has_many :recommended_monitors, :dependent => :delete_all
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions
@@ -41,7 +41,6 @@ class ProbeDefinition < ActiveRecord::Base
 
   acts_as_list :scope => :district_id
   is_paranoid
-  include DeepClone
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :select => 'distinct title'
@@ -120,16 +119,6 @@ class ProbeDefinition < ActiveRecord::Base
 
   def cache_key
     super + "-probes-#{probes.empty?}"
-  end
-
-
-  private
-  def deep_clone_parent_field
-    'district_id'
-  end
-
-  def deep_clone_children
-    %w{probe_definition_benchmarks probe_questions}
   end
 
 

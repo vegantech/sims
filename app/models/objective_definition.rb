@@ -25,7 +25,6 @@ class ObjectiveDefinition < ActiveRecord::Base
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title, :deleted_at]
   acts_as_list :scope => :goal_definition_id
   is_paranoid
-  include DeepClone
   acts_as_reportable if defined? Ruport
 
   define_statistic :count , :count => :all, :joins => :goal_definition
@@ -43,16 +42,6 @@ class ObjectiveDefinition < ActiveRecord::Base
 
   def to_s
     title
-  end
-
- private
-
-  def deep_clone_parent_field
-    'goal_definition_id'
-  end
-
-  def deep_clone_children
-    %w{intervention_clusters}
   end
 
 
