@@ -1,3 +1,15 @@
+# == Schema Information
+# Schema version: 20101027022939
+#
+# Table name: district_logs
+#
+#  id          :integer(4)      not null, primary key
+#  district_id :integer(4)
+#  body        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class DistrictLog < ActiveRecord::Base
   belongs_to :district
 

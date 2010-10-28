@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: probe_questions
 #
@@ -11,15 +11,11 @@
 #  second_digit        :integer(4)
 #  created_at          :datetime
 #  updated_at          :datetime
-#  deleted_at          :datetime
-#  copied_at           :datetime
-#  copied_from         :integer(4)
 #
 
 class ProbeQuestion < ActiveRecord::Base
   belongs_to :probe_definition
   has_and_belongs_to_many :probes
-  is_paranoid
 
   def self.find_questions_for_report(assessment_type, intervention_probe_definition)
     #I'm not sure what this is yet

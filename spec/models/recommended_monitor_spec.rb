@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: recommended_monitors
 #
@@ -10,9 +10,6 @@
 #  position                   :integer(4)
 #  created_at                 :datetime
 #  updated_at                 :datetime
-#  deleted_at                 :datetime
-#  copied_at                  :datetime
-#  copied_from                :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

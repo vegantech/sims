@@ -124,27 +124,27 @@ class CreateTrainingDistrict
 
     
     FasterCSV.table("#{path}/goal_definitions.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       newcd= district.goal_definitions.create!(ckhash)
       goalhash[ck[:id]]=newcd.id
     end
 
     FasterCSV.table("#{path}/objective_definitions.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
       newcd= ObjectiveDefinition.create!(ckhash)
       objectivehash[ck[:id]]=newcd.id
     end
 
     FasterCSV.table("#{path}/intervention_clusters.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
       newcd= InterventionCluster.create!(ckhash)
       clusterhash[ck[:id]]=newcd.id
     end
 
     FasterCSV.table("#{path}/intervention_definitions.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
       mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
       unless ckhash[:disabled] or ckhash[:custom]
@@ -163,7 +163,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table(pdf).each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       if ckhash[:active] and !ckhash[:custom]
         newcd= district.probe_definitions.create!(ckhash)
         probe_hash[ck[:id]]=newcd.id
@@ -171,7 +171,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/recommended_monitors.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
       newcd= RecommendedMonitor.new(ckhash)  
@@ -179,7 +179,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/probe_definition_benchmarks.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
       
       newcd= ProbeDefinitionBenchmark.new(ckhash) 

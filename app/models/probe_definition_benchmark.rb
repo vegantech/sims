@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: probe_definition_benchmarks
 #
@@ -9,9 +9,6 @@
 #  grade_level         :string(255)
 #  created_at          :datetime
 #  updated_at          :datetime
-#  deleted_at          :datetime
-#  copied_at           :datetime
-#  copied_from         :integer(4)
 #
 
 class ProbeDefinitionBenchmark < ActiveRecord::Base
@@ -21,7 +18,6 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validates_length_of :grade_level ,:maximum=>GRADE_LEVEL_SIZE
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
-  is_paranoid
 
   def to_s
     "Gr: #{grade_level}  - #{benchmark}"
