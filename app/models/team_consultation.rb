@@ -1,14 +1,16 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: team_consultations
 #
 #  id           :integer(4)      not null, primary key
 #  student_id   :integer(4)
 #  requestor_id :integer(4)
-#  recipient_id :integer(4)
+#  team_id      :integer(4)
 #  created_at   :datetime
 #  updated_at   :datetime
+#  complete     :boolean(1)
+#  draft        :boolean(1)
 #
 
 class TeamConsultation < ActiveRecord::Base

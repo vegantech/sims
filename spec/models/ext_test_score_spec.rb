@@ -1,3 +1,19 @@
+# == Schema Information
+# Schema version: 20101027022939
+#
+# Table name: ext_test_scores
+#
+#  id         :integer(4)      not null, primary key
+#  student_id :integer(4)
+#  name       :string(255)
+#  date       :date
+#  scaleScore :float
+#  result     :string(255)
+#  enddate    :date
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ExtTestScore do

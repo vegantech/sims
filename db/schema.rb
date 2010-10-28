@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100831015119) do
+ActiveRecord::Schema.define(:version => 20101027022939) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -19,9 +19,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.boolean  "autoset_others"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "answer_definitions", ["element_definition_id"], :name => "index_answer_definitions_on_element_definition_id"
@@ -64,9 +61,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.string   "document_content_type"
     t.integer  "document_file_size"
     t.datetime "document_updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "checklist_definitions", ["district_id"], :name => "index_checklist_definitions_on_district_id"
@@ -157,9 +151,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "element_definitions", ["question_definition_id"], :name => "index_element_definitions_on_question_definition_id"
@@ -315,9 +306,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "goal_definitions", ["district_id"], :name => "index_goal_definitions_on_district_id"
@@ -349,9 +337,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "intervention_clusters", ["objective_definition_id"], :name => "index_intervention_clusters_on_objective_definition_id"
@@ -383,9 +368,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
     t.string   "notify_email"
   end
 
@@ -473,9 +455,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "objective_definitions", ["goal_definition_id"], :name => "index_objective_definitions_on_goal_definition_id"
@@ -513,9 +492,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.string   "grade_level"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "probe_definition_benchmarks", ["benchmark"], :name => "index_probe_definition_benchmarks_on_benchmark"
@@ -533,9 +509,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
     t.boolean  "custom",        :default => false, :null => false
   end
 
@@ -553,9 +526,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "second_digit"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "probe_questions", ["probe_definition_id"], :name => "index_probe_questions_on_probe_definition_id"
@@ -586,9 +556,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "question_definitions", ["checklist_definition_id"], :name => "index_question_definitions_on_checklist_definition_id"
@@ -621,9 +588,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "recommendation_answer_definitions", ["recommendation_definition_id"], :name => "rec_def_id"
@@ -647,9 +611,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "score_options"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "recommendation_definitions", ["checklist_definition_id"], :name => "index_recommendation_definitions_on_checklist_definition_id"
@@ -686,9 +647,6 @@ ActiveRecord::Schema.define(:version => 20100831015119) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.datetime "copied_at"
-    t.integer  "copied_from"
   end
 
   add_index "recommended_monitors", ["intervention_definition_id"], :name => "index_recommended_monitors_on_intervention_definition_id"

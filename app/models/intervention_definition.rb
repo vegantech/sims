@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: intervention_definitions
 #
@@ -19,9 +19,7 @@
 #  position                :integer(4)
 #  created_at              :datetime
 #  updated_at              :datetime
-#  deleted_at              :datetime
-#  copied_at               :datetime
-#  copied_from             :integer(4)
+#  notify_email            :string(255)
 #
 
 class InterventionDefinition < ActiveRecord::Base
@@ -37,17 +35,16 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :tier
   belongs_to :user
   belongs_to :school
-  has_many :recommended_monitors, :order => :position, :dependent => :destroy
+  has_many :recommended_monitors, :order => :position, :dependent => :delete_all
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
   has_many :interventions 
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
-  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title, :deleted_at], :unless=>:custom
+  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
   validates_numericality_of :frequency_multiplier, :time_length_num
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :intervention_cluster_id
-  is_paranoid
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
   define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
   define_calculated_statistic :districts_with_changes do
@@ -150,18 +147,5 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-
-
   
-  private
-  def deep_clone_parent_field
-    'intervention_cluster_id'
-  end
-
-  def deep_clone_children
-    %w{intervention_definitions}
-  end
-
-
-
 end

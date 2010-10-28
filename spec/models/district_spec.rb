@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: districts
 #
@@ -7,7 +7,6 @@
 #  name                  :string(255)
 #  abbrev                :string(255)
 #  state_dpi_num         :integer(4)
-#  state_id              :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime
 #  admin                 :boolean(1)
@@ -18,6 +17,8 @@
 #  marked_state_goal_ids :string(255)
 #  key                   :string(255)     default("")
 #  previous_key          :string(255)     default("")
+#  lock_tier             :boolean(1)
+#  restrict_free_lunch   :boolean(1)      default(TRUE)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
@@ -84,34 +85,7 @@ describe District do
 
   end
 
-  describe 'clone_content_from_admin' do
-    it 'should clone the content of its admin district?' do
-      pending
-      district = @local_district
-      district.goal_definitions.destroy_all
-      admin_district = district.state_district
-      gd1 = Factory(:goal_definition, :district=>admin_district)
-      od1 = Factory(:objective_definition, :goal_definition => gd1)
-
-      district.clone_content_from_admin
-
-      district.goal_definitions.reload.should_not == admin_district.goal_definitions
-      district.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
-      district.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
-
-      @district2.clone_content_from_admin
-
-      @district2.goal_definitions.should_not == admin_district.goal_definitions
-      @district2.goal_definitions(true).collect(&:title).should == admin_district.goal_definitions.collect(&:title)
-      @district2.goal_definitions.first.objective_definitions(true).first.title.should == od1.title
-    end
-
-    it 'should do updates, deletes, and handle changes like our intervention_updates document' do
-      pending
-    end
-  end
-
-  describe 'admin district' do
+ describe 'admin district' do
     it 'should return the state admin district for a leaf (normal) district' do
       @local_district.admin_district.should == @state_district
     end
