@@ -1,3 +1,15 @@
+# == Schema Information
+# Schema version: 20101027022939
+#
+# Table name: ext_arbitraries
+#
+#  id         :integer(4)      not null, primary key
+#  student_id :integer(4)
+#  content    :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class ExtArbitrary < ActiveRecord::Base
   belongs_to :student
 

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: probe_definitions
 #
@@ -15,9 +15,7 @@
 #  position      :integer(4)
 #  created_at    :datetime
 #  updated_at    :datetime
-#  deleted_at    :datetime
-#  copied_at     :datetime
-#  copied_from   :integer(4)
+#  custom        :boolean(1)      not null
 #
 
 # Also referred to as "Progress Monitors"
@@ -27,21 +25,19 @@ class ProbeDefinition < ActiveRecord::Base
   belongs_to :user
   belongs_to :school
   has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
-  has_many :recommended_monitors, :dependent => :destroy
+  has_many :recommended_monitors, :dependent => :delete_all
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
-  has_many :probe_questions
+  has_many :probe_questions, :dependent => :delete_all
   accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description
-  validates_uniqueness_of :title, :scope => ['active', 'district_id', :deleted_at]
+  validates_uniqueness_of :title, :scope => ['active', 'district_id']
   validates_numericality_of :maximum_score, :allow_nil => true
   validates_numericality_of :minimum_score, :allow_nil => true
   #validates_associated(:probe_definition_benchmarks)
 
   acts_as_list :scope => :district_id
-  is_paranoid
-  include DeepClone
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :select => 'distinct title'
@@ -120,16 +116,6 @@ class ProbeDefinition < ActiveRecord::Base
 
   def cache_key
     super + "-probes-#{probes.empty?}"
-  end
-
-
-  private
-  def deep_clone_parent_field
-    'district_id'
-  end
-
-  def deep_clone_children
-    %w{probe_definition_benchmarks probe_questions}
   end
 
 

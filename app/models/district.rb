@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: districts
 #
@@ -17,6 +17,8 @@
 #  marked_state_goal_ids :string(255)
 #  key                   :string(255)     default("")
 #  previous_key          :string(255)     default("")
+#  lock_tier             :boolean(1)
+#  restrict_free_lunch   :boolean(1)      default(TRUE)
 #
 
 class District < ActiveRecord::Base
@@ -164,18 +166,6 @@ class District < ActiveRecord::Base
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
-  end
-
-  def clone_content_from_admin
-    admin_district.goal_definitions.each{|g| g.deep_clone(self)}
-    admin_district.probe_definitions.each{|g| g.deep_clone(self)}
-
-    
-    int_defs=InterventionDefinition.find(:all,:joins=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>admin_district.id})
-    int_defs.each do |idef| 
-      idef.recommended_monitors.each {|g| g.deep_clone(self)}
-    end
-    
   end
 
 

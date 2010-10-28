@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101027022939
 #
 # Table name: consultation_forms
 #
@@ -13,6 +13,7 @@
 #  created_at           :datetime
 #  updated_at           :datetime
 #  student_id           :integer(4)
+#  race_culture         :text
 #
 
 class ConsultationForm < ActiveRecord::Base
