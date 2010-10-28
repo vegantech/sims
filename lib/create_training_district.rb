@@ -125,11 +125,13 @@ class CreateTrainingDistrict
     
     FasterCSV.table("#{path}/goal_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
+      next if ck.to_hash[:deleted_at].to_i !=0 
       newcd= district.goal_definitions.create!(ckhash)
-      goalhash[ck[:id]]=newcd.id
+      goalhash[ck[:id]]=newcd.id 
     end
 
     FasterCSV.table("#{path}/objective_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
       newcd= ObjectiveDefinition.create!(ckhash)
@@ -137,6 +139,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/intervention_clusters.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
       newcd= InterventionCluster.create!(ckhash)
@@ -144,6 +147,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/intervention_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
       mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
@@ -163,6 +167,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table(pdf).each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       if ckhash[:active] and !ckhash[:custom]
         newcd= district.probe_definitions.create!(ckhash)
@@ -171,6 +176,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/recommended_monitors.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
@@ -179,6 +185,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/probe_definition_benchmarks.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
       
@@ -233,6 +240,7 @@ class CreateTrainingDistrict
     elementhash = {}
     
     FasterCSV.table("#{path}/checklist_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:active]=!!district.abbrev.match(/^training/) || district.abbrev =='madison'
       
@@ -241,6 +249,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/question_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:checklist_definition_id]= checklisthash[ck[:checklist_definition_id]]
       newcd= QuestionDefinition.create!(ckhash)
@@ -248,6 +257,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/element_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:question_definition_id]= questionhash[ck[:question_definition_id]]
       newcd= ElementDefinition.create!(ckhash)
@@ -255,6 +265,7 @@ class CreateTrainingDistrict
     end
 
     FasterCSV.table("#{path}/answer_definitions.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0 
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:value] ||=0
       ckhash[:element_definition_id]= elementhash[ck[:element_definition_id]]
