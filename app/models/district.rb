@@ -195,7 +195,6 @@ private
       schools.destroy_all
       users.destroy_all
       checklist_definitions.destroy_all
-      recommendation_definitions.destroy_all
       goal_definitions.destroy_all
       probe_definitions.destroy_all
       tiers.destroy_all

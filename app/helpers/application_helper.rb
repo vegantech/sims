@@ -110,7 +110,8 @@ module ApplicationHelper
     ext_match = /\.\w+$/
     ext = (name.match ext_match)
     file = "#{name.split(ext_match).first.to_s.gsub(/_/," ")}#{suffix}"
-    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext[0][1..-1]}.gif"
+    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext[0][1..-1].downcase}.gif"
+    icon = "icon_htm.gif" unless  File.exist?(File.join(Rails.public_path,"images",icon))
     blank={}
     blank[:target]="_blank" unless url=="#"
     link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}", url, blank
