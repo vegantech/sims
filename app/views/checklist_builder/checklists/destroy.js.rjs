@@ -1,1 +1,2 @@
+page.update_content "flash_notice", flash[:notice]
 page.update_content "checklist_definitions", :partial => "checklist_definition", :collection => @checklist_definitions
