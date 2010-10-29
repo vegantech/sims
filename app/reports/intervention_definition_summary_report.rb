@@ -45,6 +45,7 @@ class InterventionDefinitionSummary
 
   def initialize(options = {})
     @obj = ObjectiveDefinition.find options[:objective_definition]
+    @group = options[:group]
   end
 
   def to_table
@@ -54,7 +55,8 @@ class InterventionDefinitionSummary
     a = InterventionDefinition.report_table(:all,
       :conditions => ["intervention_clusters.objective_definition_id = ? and custom = ? and (intervention_definitions.disabled = ?
           or intervention_definitions.disabled is null )", @obj, false, false],
-      :include => {:intervention_cluster => {:only => 'title'}},
+      :include => {:tier=>{:only => ""}, :time_length => {:only => ""}, :frequency => {:only => ""} ,
+        :intervention_cluster => {:only => 'title', :include => {:objective_definition=>{:only => "",:include => {:goal_definition =>{:only => ""}}}}}},
       :only => [:description],
       :methods => ['bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments'])
     if a.column_names.present?
@@ -68,7 +70,11 @@ class InterventionDefinitionSummary
   end
 
   def to_grouping
-    @table ||= to_table
-      Ruport::Data::Grouping(@table, :by => 'Tier', :order => :name) 
+    if @group.present?
+      return @group
+    else
+      @table ||= to_table
+      @group = Ruport::Data::Grouping(@table, :by => 'Tier', :order => :name) 
+    end
   end
 end
