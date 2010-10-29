@@ -31,4 +31,7 @@ class QuestionDefinition < ActiveRecord::Base
     k
   end
 
+  def has_answers?
+    Answer.count(:include => {:answer_definition=>:element_definition}, :conditions => "element_definitions.id = #{id}" ) > 0
+  end
 end

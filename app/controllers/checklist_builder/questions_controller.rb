@@ -71,7 +71,12 @@ class ChecklistBuilder::QuestionsController < ApplicationController
 
   def destroy
     @question_definition = @checklist_definition.question_definitions.find(params[:id])
-    @question_definition.destroy
+     if @question_definition.has_answers?
+      flash[:notice]= "Question definition is in use, please copy the checklist instead"
+    else
+      flash[:notice] = ""
+      @question_definition.destroy
+    end
 
     respond_to do |format|
       format.html { redirect_to checklist_builder_checklist_url(@checklist_definition) }

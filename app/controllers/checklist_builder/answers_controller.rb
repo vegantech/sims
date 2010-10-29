@@ -69,7 +69,13 @@ class ChecklistBuilder::AnswersController < ApplicationController
   def destroy
     @answer_definition = AnswerDefinition.find(params[:id])
     if @answer_definition.sibling_definitions.count >1
-      @answer_definition.destroy
+
+      if @answer_definition.has_answers?
+        flash[:notice]= "Answer definition is in use, please copy the checklist instead"
+      else
+        flash[:notice] = ""
+        @answer_definition.destroy
+      end
     else
       flash[:notice]= 'Every Element requires at least one answer definition'
     end

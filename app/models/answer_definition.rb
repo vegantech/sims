@@ -17,6 +17,7 @@ class AnswerDefinition < ActiveRecord::Base
   acts_as_list :scope => :element_definition
 
   belongs_to :element_definition
+  has_many :answers
 
   delegate :question_definition, :to => :element_definition
   delegate :checklist_definition, :to => :question_definition
@@ -31,6 +32,10 @@ class AnswerDefinition < ActiveRecord::Base
 
   def deep_clone
     clone
+  end
+
+  def has_answers?
+    answers.any?
   end
 
 end
