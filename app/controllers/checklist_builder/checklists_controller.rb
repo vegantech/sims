@@ -85,7 +85,11 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
   def destroy
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
-    @checklist_definition.destroy
+    if @checklist_definition.checklists.blank?
+      @checklist_definition.destroy
+    else
+      flash[:notice]= "Checklist definition is in use, please disable it instead"
+    end
     
     @checklist_definitions = current_district.checklist_definitions
     respond_to do |format|
