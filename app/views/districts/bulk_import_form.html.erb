@@ -1,7 +1,7 @@
 <script>
   function setup_progress_iframe(e) {
     $('progress').show();
-    $$("body").first().insert({bottom: "<iframe id='progressFrame' name='progressFrame' style='display:none; width:0; height:0; position: absolute; top:30000px;'></iframe>"});
+    $$("body").first().insert({bottom: "<iframe id='progressFrame' src='/blank.html'  name='progressFrame' style='display:none; width:0; height:0; position: absolute; top:30000px;'></iframe>"});
     $(e).up('form').writeAttribute("target", "progressFrame");
     var uuid = $('X-Progress-ID').value;
     new PeriodicalExecuter(

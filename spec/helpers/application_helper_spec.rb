@@ -36,11 +36,13 @@ describe ApplicationHelper do
   end
 
   it 'should provide link_to_with_icon' do
-    file="testing_of_Stuff.gif"
+    file="testing_of_Stuff.doc"
     url="http://www.test.com"
     r=helper.link_to_with_icon( file, url, " Suffix")
-    r.should have_tag("a[href=?]>img[src*=?]",url, "icon_gif.gif")
+    r.should have_tag("a[href=?]>img[src*=?]",url, "icon_doc.gif")
     r.should match(/testing of Stuff Suffix/)
+    r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=?]>img[src*=?]",url, "icon_htm.gif")
+
 
   end
 

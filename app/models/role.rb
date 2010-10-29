@@ -62,13 +62,4 @@ class Role
     end
 
   end
-
-  def to_s
-      "<b>#{name.titleize}</b>"
-  end
-
-  def system?
-    district_id.blank?
-  end
-
 end
