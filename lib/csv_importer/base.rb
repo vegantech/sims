@@ -1,6 +1,7 @@
 module CSVImporter
   require 'fastercsv'
   class Base
+    attr_reader :messages
     FIELD_DESCRIPTIONS = {}
     def initialize file_name, district
       @district = district
