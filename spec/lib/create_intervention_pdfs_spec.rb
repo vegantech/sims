@@ -8,8 +8,11 @@ describe CreateInterventionPdfs do
         it 'should write a PDF, and HTML report for each objective_definition' do
           od = mock_objective_definition(:title => 'some objective definition')
           district = mock_district(:objective_definitions => [od], :touch=>true)
-          InterventionDefinitionSummaryReport.should_receive(:render_pdf).with( :objective_definition => od, :template => :standard).and_return('PDF Contents')
-          InterventionDefinitionSummaryReport.should_receive(:render_html).with(:objective_definition => od, :template => :standard).and_return('HTML Contents')
+          d=[]
+          InterventionDefinitionSummaryReport.should_receive(:render_pdf).with( :objective_definition => od, :template => :standard, :group => d).and_return('PDF Contents')
+          InterventionDefinitionSummaryReport.should_receive(:render_html).with(:objective_definition => od, :template => :standard, :group => d).and_return('HTML Contents')
+          InterventionDefinitionSummary.should_receive(:new).with(:objective_definition => od).and_return(mock_object(:to_grouping => d))
+
 
           CreateInterventionPdfs.generate(district)
 
