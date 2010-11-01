@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101027022939) do
+ActiveRecord::Schema.define(:version => 20101101011500) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -279,7 +279,6 @@ ActiveRecord::Schema.define(:version => 20101027022939) do
   create_table "flags", :force => true do |t|
     t.string   "category"
     t.integer  "user_id"
-    t.integer  "district_id"
     t.integer  "student_id"
     t.text     "reason"
     t.string   "type"
@@ -287,7 +286,6 @@ ActiveRecord::Schema.define(:version => 20101027022939) do
     t.datetime "updated_at"
   end
 
-  add_index "flags", ["district_id"], :name => "index_flags_on_district_id"
   add_index "flags", ["student_id"], :name => "index_flags_on_student_id"
   add_index "flags", ["type"], :name => "index_flags_on_type"
   add_index "flags", ["user_id"], :name => "index_flags_on_user_id"
@@ -541,13 +539,11 @@ ActiveRecord::Schema.define(:version => 20101027022939) do
   create_table "probes", :force => true do |t|
     t.date     "administered_at"
     t.integer  "score"
-    t.integer  "district_id"
     t.integer  "intervention_probe_assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "probes", ["district_id"], :name => "index_probes_on_district_id"
   add_index "probes", ["intervention_probe_assignment_id"], :name => "index_probes_on_intervention_probe_assignment_id"
 
   create_table "question_definitions", :force => true do |t|
@@ -604,7 +600,6 @@ ActiveRecord::Schema.define(:version => 20101027022939) do
   add_index "recommendation_answers", ["recommendation_id"], :name => "index_recommendation_answers_on_recommendation_id"
 
   create_table "recommendation_definitions", :force => true do |t|
-    t.integer  "district_id"
     t.boolean  "active"
     t.text     "text"
     t.integer  "checklist_definition_id"
@@ -614,7 +609,6 @@ ActiveRecord::Schema.define(:version => 20101027022939) do
   end
 
   add_index "recommendation_definitions", ["checklist_definition_id"], :name => "index_recommendation_definitions_on_checklist_definition_id"
-  add_index "recommendation_definitions", ["district_id"], :name => "index_recommendation_definitions_on_district_id"
 
   create_table "recommendations", :force => true do |t|
     t.integer  "progress"
