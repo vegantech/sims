@@ -39,7 +39,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
-  has_many :intervention_participants, :dependent => :destroy
+  has_many :intervention_participants, :dependent => :delete_all
   has_many :participant_users, :through => :intervention_participants, :source => :user
 
   has_many :intervention_probe_assignments, :dependent => :destroy 
