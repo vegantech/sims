@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: intervention_probe_assignments
 #
@@ -13,6 +13,7 @@
 #  enabled              :boolean(1)
 #  created_at           :datetime
 #  updated_at           :datetime
+#  goal                 :integer(4)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

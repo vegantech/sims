@@ -25,10 +25,8 @@ module LinkAndAttachmentAssets
   end
   
   def save_assets
-    if !respond_to?(:deleted_at) || deleted_at.blank?
-      assets.each do |asset|
-        asset.save(false) unless asset.frozen? 
-      end
+    assets.each do |asset|
+      asset.save(false) unless asset.frozen? 
     end
   end 
 

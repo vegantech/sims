@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: objective_definitions
 #
@@ -11,9 +11,6 @@
 #  disabled           :boolean(1)
 #  created_at         :datetime
 #  updated_at         :datetime
-#  deleted_at         :datetime
-#  copied_at          :datetime
-#  copied_from        :integer(4)
 #
 
 class ObjectiveDefinition < ActiveRecord::Base
@@ -22,10 +19,8 @@ class ObjectiveDefinition < ActiveRecord::Base
   has_many :intervention_clusters, :order =>:position, :dependent=> :destroy
   
   validates_presence_of :title, :description
-  validates_uniqueness_of :description, :scope => [:goal_definition_id,:title, :deleted_at]
+  validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
   acts_as_list :scope => :goal_definition_id
-  is_paranoid
-  include DeepClone
   acts_as_reportable if defined? Ruport
 
   define_statistic :count , :count => :all, :joins => :goal_definition
@@ -43,16 +38,6 @@ class ObjectiveDefinition < ActiveRecord::Base
 
   def to_s
     title
-  end
-
- private
-
-  def deep_clone_parent_field
-    'goal_definition_id'
-  end
-
-  def deep_clone_children
-    %w{intervention_clusters}
   end
 
 

@@ -1,14 +1,14 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: groups
 #
-#  id          :integer(4)      not null, primary key
-#  title       :string(255)
-#  school_id   :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  id_district :string(255)
+#  id                :integer(4)      not null, primary key
+#  title             :string(255)
+#  school_id         :integer(4)
+#  created_at        :datetime
+#  updated_at        :datetime
+#  district_group_id :string(255)
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')

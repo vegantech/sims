@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: interventions
 #
@@ -18,6 +18,7 @@
 #  ended_at                   :date
 #  created_at                 :datetime
 #  updated_at                 :datetime
+#  end_reason                 :string(255)
 #
 
 class Intervention < ActiveRecord::Base
@@ -222,7 +223,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def autoassign_probe
-    rec_mon_count = intervention_definition.recommended_monitors.count
+    rec_mon_count = intervention_definition.probe_definitions.count
     return true if intervention_probe_assignments.any?
     case rec_mon_count
     when 0

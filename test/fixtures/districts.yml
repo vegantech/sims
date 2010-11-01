@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: districts
 #
@@ -17,6 +17,8 @@
 #  marked_state_goal_ids :string(255)
 #  key                   :string(255)     default("")
 #  previous_key          :string(255)     default("")
+#  lock_tier             :boolean(1)
+#  restrict_free_lunch   :boolean(1)      default(TRUE)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

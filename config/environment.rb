@@ -32,7 +32,6 @@ Rails::Initializer.run do |config|
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
   config.gem 'bluecloth', :version => '> 2.0.0'
-  config.gem "jchupp-is_paranoid", :lib => 'is_paranoid', :version => ">= 0.0.1" ,:source =>'http://gems.github.com'
   config.gem "fastercsv"
   config.gem "pdf-writer", :lib => "pdf/writer"
   config.gem 'rack', :version => '>= 1.0.0'

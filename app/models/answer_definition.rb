@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: answer_definitions
 #
@@ -11,16 +11,13 @@
 #  autoset_others        :boolean(1)
 #  created_at            :datetime
 #  updated_at            :datetime
-#  deleted_at            :datetime
-#  copied_at             :datetime
-#  copied_from           :integer(4)
 #
 
 class AnswerDefinition < ActiveRecord::Base
   acts_as_list :scope => :element_definition
-  is_paranoid
 
   belongs_to :element_definition
+  has_many :answers
 
   delegate :question_definition, :to => :element_definition
   delegate :checklist_definition, :to => :question_definition
@@ -35,6 +32,10 @@ class AnswerDefinition < ActiveRecord::Base
 
   def deep_clone
     clone
+  end
+
+  def has_answers?
+    answers.any?
   end
 
 end

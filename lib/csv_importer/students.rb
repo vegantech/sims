@@ -172,11 +172,11 @@ module CSVImporter
     def reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
       shared="#{temporary_table_name} ts inner join students s on 
           ts.id_state = s.id_state
-          where s.district_id is null and s.district_student_id is not null
+          where s.district_id is null 
           and s.id_state is not null
-          and ((
+          and (
             ts.birthdate != s.birthdate
-            ) or (
+             or (  
               (ts.birthdate is null or s.birthdate is null)
               and ts.last_name != s.last_name
             ))"
@@ -185,6 +185,7 @@ module CSVImporter
       @rejected.each do |reject|
         @messages << "Student with matching id_state: #{reject['id_state']}, #{reject['first_name']} #{reject['last_name']} could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       end
+
 
       q="delete from ts using #{shared}"
       ActiveRecord::Base.connection.execute q

@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: students
 #
-#  id          :integer(4)      not null, primary key
-#  district_id :integer(4)
-#  last_name   :string(255)
-#  first_name  :string(255)
-#  number      :string(255)
-#  district_student_id :integer(4)
-#  id_state    :integer(4)
-#  id_country  :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  birthdate   :date
-#  esl         :boolean(1)
-#  special_ed  :boolean(1)
-#  middle_name :string(255)
-#  suffix      :string(255)
+#  id                  :integer(4)      not null, primary key
+#  district_id         :integer(4)
+#  last_name           :string(255)
+#  first_name          :string(255)
+#  number              :string(255)
+#  district_student_id :string(255)
+#  id_state            :integer(4)
+#  id_country          :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  birthdate           :date
+#  esl                 :boolean(1)
+#  special_ed          :boolean(1)
+#  middle_name         :string(255)
+#  suffix              :string(255)
 #
 
 class Student < ActiveRecord::Base
@@ -27,25 +27,26 @@ class Student < ActiveRecord::Base
 
   belongs_to :district
   has_and_belongs_to_many :groups
-  has_many :checklists
-  has_many :recommendations
+  has_many :checklists, :dependent => :destroy
+  has_many :recommendations, :dependent => :destroy
   has_many :enrollments, :dependent => :destroy
   has_many :schools, :through => :enrollments
-  has_many :comments, :class_name => "StudentComment", :order => 'created_at desc'
-  has_many :principal_overrides
-  has_many :interventions
+  has_many :comments, :dependent => :delete_all ,  :class_name => "StudentComment", :order => 'created_at desc'
+  has_many :principal_overrides, :dependent => :delete_all
+  has_many :interventions, :dependent => :delete_all
   has_many :system_flags
   has_many :custom_flags
   has_many :ignore_flags
-  has_many :flags
-  has_many :team_consultations
+  has_many :flags, :dependent => :delete_all
+  has_many :team_consultations, :dependent => :destroy
   has_many :team_consultations_pending, :conditions => {:complete => false, :draft => false}, :class_name => "TeamConsultation"
-  has_many :consultation_form_requests
-  has_one :ext_arbitrary
-  has_many :ext_siblings
-  has_many :ext_adult_contacts, :order => "guardian desc"
-  has_many :ext_test_scores, :order => "date"
-  has_one :ext_summary
+  has_many :consultation_form_requests, :dependent => :destroy
+  has_one :ext_arbitrary, :dependent => :delete
+  has_many :ext_siblings,:dependent => :delete_all
+  has_many :ext_adult_contacts, :order => "guardian desc", :dependent => :delete_all
+  has_many :ext_test_scores, :order => "date", :dependent => :delete_all
+  has_one :ext_summary, :dependent => :delete
+
 
 
   

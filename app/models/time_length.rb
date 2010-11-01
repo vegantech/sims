@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: time_lengths
 #
@@ -13,4 +13,5 @@
 class TimeLength < ActiveRecord::Base
   @all_cache_order ="days"
   include AllCache
+  acts_as_reportable
 end
