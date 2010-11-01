@@ -58,7 +58,36 @@ describe ApplicationController do
   end
 
   describe 'require_school' do
-    it 'should have specs'
+
+      it 'should redirect and set a flash message if there is no school when html' do
+        controller.should_receive(:current_school).and_return("")
+        controller.should_receive(:schools_url).and_return("schools_url")
+        controller.should_receive(:redirect_to).with('schools_url')
+        controller.should_receive(:flash).and_return(flash)
+        @req.should_receive(:xhr?).and_return(false)
+
+        controller.send(:require_current_school).should == false
+        flash[:notice].should == "Please reselect the school"
+
+      end
+
+      it 'should put up a message when xhr and there is no school' do
+
+        controller.should_receive(:current_school).and_return("")
+        @req.should_receive(:xhr?).and_return(true)
+        page=mock_object
+        page.should_receive(:[]).with(:flash_notice).and_return(page)
+        page.should_receive(:insert).with("<br />Please reselect the school.")
+        controller.should_receive(:render).and_yield(page)
+        controller.send(:require_current_school).should == false
+
+      end
+
+      it 'should return true if there is a school' do
+        controller.should_receive(:current_school).and_return("CURRENT")
+        controller.send(:require_current_school).should == true
+      end
+
   end
 
   describe 'action_group_for_current_action' do
