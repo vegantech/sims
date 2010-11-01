@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20101027022939
+# Schema version: 20101101011500
 #
 # Table name: user_school_assignments
 #

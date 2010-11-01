@@ -1,10 +1,9 @@
 # == Schema Information
-# Schema version: 20101027022939
+# Schema version: 20101101011500
 #
 # Table name: recommendation_definitions
 #
 #  id                      :integer(4)      not null, primary key
-#  district_id             :integer(4)
 #  active                  :boolean(1)
 #  text                    :text
 #  checklist_definition_id :integer(4)
