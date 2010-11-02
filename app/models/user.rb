@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
   has_many :student_comments
-  has_many :intervention_participants
+  has_many :intervention_participants, :dependent => :delete_all
   has_many :interventions_as_participant, :through => :intervention_participants, :class_name => 'Intervention', :source => :intervention
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
@@ -377,14 +377,13 @@ or (user_group_assignments.id is not null)
 
 protected
   def district_special_groups
-    all_students = all_students_in_district || 
-        special_user_groups.build(:district_id=>self.district_id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
 
     if @all_students_in_district == "1"
-      all_students.save
+      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
     elsif @all_students_in_district == "0" or new_record?
-      all_students.destroy
+      special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
     end
+    
   end
 
   def save_user_school_assignments

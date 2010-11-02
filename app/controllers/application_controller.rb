@@ -97,10 +97,12 @@ class ApplicationController < ActionController::Base
           page[:flash_notice].insert  "<br />Please reselect the school." 
         end
       else
+        flash[:notice] = "Please reselect the school"
         redirect_to schools_url 
       end
       return false
     end
+    return true
   end
 
   class_inheritable_array :read_actions,:write_actions
