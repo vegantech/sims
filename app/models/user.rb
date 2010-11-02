@@ -377,14 +377,13 @@ or (user_group_assignments.id is not null)
 
 protected
   def district_special_groups
-    all_students = all_students_in_district || 
-        special_user_groups.build(:district_id=>self.district_id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
 
     if @all_students_in_district == "1"
-      all_students.save
+      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
     elsif @all_students_in_district == "0" or new_record?
-      all_students.destroy
+      special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
     end
+    
   end
 
   def save_user_school_assignments
