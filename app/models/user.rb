@@ -238,19 +238,33 @@ class User < ActiveRecord::Base
 
   def orphaned_interventions_where_principal(school)
     return [] if school.blank?
-    Intervention.find_all_by_active(true,
+    Intervention.find_all_by_active(true,:select => "distinct interventions.*",
                                     :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
         left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true   and special_user_groups.district_id = #{self.district_id}
         left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
           and user_group_assignments.user_id = #{self.id} and user_group_assignments.is_principal=true
           ) 
-         on groups_students.student_id = students.id",
-        :conditions => "(special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
+         on groups_students.student_id = students.id
+        left outer join (intervention_participants ip  inner join users iu  on ip.user_id = iu.id ) on
+        ip.intervention_id = interventions.id 
+        
+        ",
+           :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
+           or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  (( sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  ) 
+           or (sug.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and sug.school_id = enrollments.school_id 
+           and ( sug.grade is null or sug.grade = enrollments.grade ) )
+           ) 
+           union select 2 from groups_students gs inner join user_group_assignments uga on gs.group_id =uga.group_id where gs.student_id = students.id and uga.user_id = iu.id
+           
+           
+           ) 
+           
+           ) and ((special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
           (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id 
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade ) 
-          ) or user_group_assignments.id is not null
-    ").select(&:orphaned?)
+          ) or user_group_assignments.id is not null)
+    ")#.select(&:orphaned?)
 
 
   end
