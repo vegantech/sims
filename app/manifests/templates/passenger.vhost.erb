@@ -119,7 +119,16 @@
   RewriteEngine On
 
   <%= configuration[:passenger][:vhost_extra] %>
+    <Location />
+        # enable tracking uploads in /
+        TrackUploads On
+    </Location>
 
+    <Location /progress>
+        # enable upload progress reports in /progress
+        ReportUploads On
+    </Location>
+ 
   # Prevent access to .git directories
   RewriteRule ^(.*/)?\.git/ - [F,L]
   ErrorDocument 403 "Access Forbidden"
@@ -271,9 +280,27 @@
 
 <% if configuration[:ssl] %>
   <%= configuration[:ssl][:vhost_extra] %>
-<% else %>
+    <Location />
+        # enable tracking uploads in /
+        TrackUploads On
+    </Location>
+
+    <Location /progress>
+        # enable upload progress reports in /progress
+        ReportUploads On
+    </Location>
+ <% else %>
   <%= configuration[:passenger][:vhost_extra] %>
-<% end %>
+    <Location />
+        # enable tracking uploads in /
+        TrackUploads On
+    </Location>
+
+    <Location /progress>
+        # enable upload progress reports in /progress
+        ReportUploads On
+    </Location>
+ <% end %>
 
   # Prevent access to .git directories
   RewriteRule ^(.*/)?\.git/ - [F,L]
