@@ -1,4 +1,5 @@
 class TeamReferrals < MailerWithSubdomains
+  layout 'email'
 
   def concern_note_created(note, sent_at = Time.now)
     subject    'Team Consultation Form Created'

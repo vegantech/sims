@@ -13,7 +13,7 @@ describe TeamReferrals do
       proc{@mail=TeamReferrals.deliver_concern_note_created(note)}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Team Consultation Form Created'
       @mail.header["to"].to_s.should ==  user.email
-      @mail.body.should == "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming team meeting.\n\n\n\n"
+      @mail.body.should == "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming team meeting.\n\n\n\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message, \n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
 
 
     end
@@ -37,7 +37,7 @@ describe TeamReferrals do
       proc{@mail=TeamReferrals.deliver_gather_information_request(users,student,requestor)}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Consultation Form Request'
       @mail.header["to"].to_s.should ==  "#{user.email}, #{user2.email}"
-      @mail.body.should == "First Last has been discussed at our team meeting.  \n\nPlease share information based on your perspective by going to http://www.#{student.district.abbrev}.sims_test_host/students/#{student.id} (First Last), \nthen click on Respond to Request for Information under the Team Consultations section of SIMS.\n\n\nRequested by: #{requestor.first_name} Last_Name\n"
+      @mail.body.should == "First Last has been discussed at our team meeting.  \n\nPlease share information based on your perspective by going to http://www.#{student.district.abbrev}.sims_test_host/students/#{student.id} (First Last), \nthen click on Respond to Request for Information under the Team Consultations section of SIMS.\n\n\nRequested by: #{requestor.first_name} Last_Name\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message, \n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
     end
   end
 
