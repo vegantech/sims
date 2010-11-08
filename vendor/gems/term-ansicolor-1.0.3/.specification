@@ -8,7 +8,7 @@ authors:
 autorequire: 
 bindir: bin
 cert_chain: 
-date: 2007-10-04 00:00:00 -07:00
+date: 2007-10-04 07:00:00 +00:00
 default_executable: 
 dependencies: []
 
