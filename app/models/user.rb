@@ -391,6 +391,25 @@ or (user_group_assignments.id is not null)
   end
 
 protected
+
+  def student_ids_where_principal(school_id)
+    #TODO TEST THIS
+    ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
+ Student.send(:construct_finder_sql, :select => "students.id", 
+                  :joins => 
+"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
+         left outer join enrollments on enrollments.student_id = students.id
+         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id 
+           and user_group_assignments.user_id = #{self.id}) 
+          on groups_students.student_id = students.id",
+                  :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
+
+
+
+  end
+
+
+
   def district_special_groups
 
     if @all_students_in_district == "1"
