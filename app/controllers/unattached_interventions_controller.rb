@@ -1,4 +1,4 @@
-class OrphanedInterventionsController < ApplicationController
+class UnattachedInterventionsController < ApplicationController
   additional_read_actions :update_end_date
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
@@ -74,7 +74,7 @@ class OrphanedInterventionsController < ApplicationController
       end
     end
 
-    redirect_to orphaned_interventions_url
+    redirect_to unattached_interventions_url
   end
 
   def destroy

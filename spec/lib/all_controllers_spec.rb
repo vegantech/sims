@@ -19,11 +19,11 @@ describe AllControllers do
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
         interventions/probe_assignments interventions/probes
         interventions login main news_items
-        orphaned_interventions
         principal_overrides quicklist_items recommendations reports 
         school_teams
         schools scripted spell_check
         student_comments students team_consultations tiers 
+        unattached_interventions
       }
       AllControllers.names.should ==  static_list
     end

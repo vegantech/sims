@@ -89,7 +89,7 @@ RIGHTS={"district_admin" =>
     :controller=>"grouped_progress_entries",
     :write_access=>true},
    {:read_access=>true,
-    :controller=>"orphaned_interventions",
+    :controller=>"unattached_interventions",
     :write_access=>true}
   ],
  "school_admin" =>

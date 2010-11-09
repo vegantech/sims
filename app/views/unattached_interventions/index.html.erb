@@ -1,4 +1,4 @@
-<h1>Orphaned Interventions<%=help_popup "An orphaned intervention is an 
+<h1>Unattached Interventions<%=help_popup "An unattached intervention is an 
 intervention that has not yet been ended
 that has also gone past the end date,  
 has one or more participants that cannot access the student,  
@@ -7,17 +7,11 @@ or has no participants at all. </p>" %> </h1>
 
 
 
-<p>The red fields show why that intervention is considered orphaned.</p>
+<p>The red fields show why that intervention is considered unattached.</p>
 <%form_tag do %>
 <table>
   <thead>
     <tr>
-      <th>End 
-        <%=help_popup" To end one or more interventions, 
-        check the boxes at the left, and then press 
-        the \"End Selected\" Button.  (You may also need to 
-        pick a reason.)" %>
-      </th>
       <th>Student</th>
       <th>Intervention</th>
       <th>Start Date</th>
@@ -30,13 +24,17 @@ or has no participants at all. </p>" %> </h1>
   the dropdown in each intervention row.  
   The X next to a participant will remove him/her." %>
 </th>
+      <th>End Intervention
+        <%=help_popup" To end one or more interventions, 
+        check the boxes at the right, and then press 
+        the \"Update\" Button. " %>
+      </th>
   </tr>
 
   </thead>
   <tbody>
     <%@interventions.each do |intervention| %>
       <tr>
-        <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
         <td><%=link_to intervention.student, intervention.student, :target => "_blank" %> </td>
         <td><%=intervention.title %></td>
         <td><%=intervention.start_date %> </td>
@@ -44,31 +42,18 @@ or has no participants at all. </p>" %> </h1>
           <%= unobtrusive_date_picker_tags intervention.end_date, 
             {:order => [:month, :day, :year], :start_year => intervention.start_date.year, :end_year => 2.years.since().year, 
               :prefix => "end_date#{intervention.id}", :range_low => intervention.start_date},
-              {:onchange => remote_function(:url =>  update_end_date_orphaned_intervention_path(intervention), 
+              {:onchange => remote_function(:url =>  update_end_date_unattached_intervention_path(intervention), 
                                             :with => "'month=' + $('end_date#{intervention.id}-mm').value + '&day=' + $('end_date#{intervention.id}-dd').value +'&year=' + $('end_date#{intervention.id}').value",
                         :method => 'put')}
            %>
-          *</td>
+           * <div style="<%="display:none" unless intervention.end_date < Date.today %>" class="end_date_expired">The end date is in the past.</div>
+         </td>
         <td><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>
+        <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
       </tr>
     <% end %>
 
   </tbody>
 </table>
-<br />
-<br />
-
-<div id="end_intervention_reasons">
-  <p> Please choose a reason for ending the selected interventions. </p>
-  <%Intervention::END_REASONS.each do |end_reason| %>
-    <%= radio_button_tag('end_reason', end_reason,{}, {:onclick=> "$('end_submit_tag').disabled=false;"}) %>
-    <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
-  <% end %>
-  <%= submit_tag 'End Selected', :confirm=>"Are you sure you want to end these intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>
-  </div>
+%=submit_tag 'Update' %> <%=help_popup("This will end the checked interventions and remove interventions that are no longer unattached.  Changes to end dates and participants are immediate.") %>
 <% end %>
-
-<br />
-
-
-
