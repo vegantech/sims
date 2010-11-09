@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: question_definitions
 #
@@ -9,9 +9,6 @@
 #  position                :integer(4)
 #  created_at              :datetime
 #  updated_at              :datetime
-#  deleted_at              :datetime
-#  copied_at               :datetime
-#  copied_from             :integer(4)
 #
 
 class QuestionDefinition < ActiveRecord::Base
@@ -21,7 +18,6 @@ class QuestionDefinition < ActiveRecord::Base
   has_many :answer_definitions, :through=> :element_definitions
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :checklist_definition
-  is_paranoid
 
   validates_presence_of :text
 
@@ -35,4 +31,7 @@ class QuestionDefinition < ActiveRecord::Base
     k
   end
 
+  def has_answers?
+    Answer.count(:include => {:answer_definition=>:element_definition}, :conditions => "element_definitions.id = #{id}" ) > 0
+  end
 end

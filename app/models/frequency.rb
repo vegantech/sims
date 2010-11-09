@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: frequencies
 #
@@ -13,6 +13,7 @@ class Frequency < ActiveRecord::Base
   #TODO ADD POSITION
   @all_cache_order = "id"
   include AllCache
+  acts_as_reportable
 
   def to_s
     title

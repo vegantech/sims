@@ -90,6 +90,21 @@ class ApplicationController < ActionController::Base
     true
   end
 
+  def require_current_school
+    if current_school.blank?
+      if request.xhr?
+        render :update do  |page|
+          page[:flash_notice].insert  "<br />Please reselect the school." 
+        end
+      else
+        flash[:notice] = "Please reselect the school"
+        redirect_to schools_url 
+      end
+      return false
+    end
+    return true
+  end
+
   class_inheritable_array :read_actions,:write_actions
   self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
   self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail

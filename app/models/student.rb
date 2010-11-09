@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: students
 #
-#  id          :integer(4)      not null, primary key
-#  district_id :integer(4)
-#  last_name   :string(255)
-#  first_name  :string(255)
-#  number      :string(255)
-#  district_student_id :integer(4)
-#  id_state    :integer(4)
-#  id_country  :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  birthdate   :date
-#  esl         :boolean(1)
-#  special_ed  :boolean(1)
-#  middle_name :string(255)
-#  suffix      :string(255)
+#  id                  :integer(4)      not null, primary key
+#  district_id         :integer(4)
+#  last_name           :string(255)
+#  first_name          :string(255)
+#  number              :string(255)
+#  district_student_id :string(255)
+#  id_state            :integer(4)
+#  id_country          :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  birthdate           :date
+#  esl                 :boolean(1)
+#  special_ed          :boolean(1)
+#  middle_name         :string(255)
+#  suffix              :string(255)
 #
 
 class Student < ActiveRecord::Base
@@ -27,32 +27,106 @@ class Student < ActiveRecord::Base
 
   belongs_to :district
   has_and_belongs_to_many :groups
-  has_many :checklists
-  has_many :recommendations
+  has_many :checklists, :dependent => :destroy
+  has_many :recommendations, :dependent => :destroy
   has_many :enrollments, :dependent => :destroy
   has_many :schools, :through => :enrollments
-  has_many :comments, :class_name => "StudentComment", :order => 'created_at desc'
-  has_many :principal_overrides
-  has_many :interventions
+  has_many :comments, :dependent => :delete_all ,  :class_name => "StudentComment", :order => 'created_at desc'
+  has_many :principal_overrides, :dependent => :delete_all
+  has_many :interventions, :dependent => :delete_all
   has_many :system_flags
   has_many :custom_flags
   has_many :ignore_flags
-  has_many :flags
-  has_many :team_consultations
+  has_many :flags, :dependent => :delete_all
+  has_many :team_consultations, :dependent => :destroy
   has_many :team_consultations_pending, :conditions => {:complete => false, :draft => false}, :class_name => "TeamConsultation"
-  has_many :consultation_form_requests
-  has_one :ext_arbitrary
-  has_many :ext_siblings
-  has_many :ext_adult_contacts, :order => "guardian desc"
-  has_many :ext_test_scores, :order => "date"
-  has_one :ext_summary
+  has_many :consultation_form_requests, :dependent => :destroy
+  has_one :ext_arbitrary, :dependent => :delete
+  has_many :ext_siblings,:dependent => :delete_all
+  has_many :ext_adult_contacts, :order => "guardian desc", :dependent => :delete_all
+  has_many :ext_test_scores, :order => "date", :dependent => :delete_all
+  has_one :ext_summary, :dependent => :delete
+
 
 
   
+  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
+    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
+  }
+  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.student_id = students.id 
+  left outer join student_comments on students.id = student_comments.student_id
+  left outer join team_consultations on team_consultations.student_id = students.id 
+  left outer join consultation_form_requests on consultation_form_requests.student_id = students.id",
+  :conditions => "interventions.id is not null or student_comments.id is not null or 
+                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
 
-  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id'
-  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id'
+
+#FIXDATES on first two
+  FILTER_HASH_FOR_IN_USE_DATE_RANGE=
+  {
+  :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
+    or consultation_form_requests.created_at >=?)",
+  :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+    or consultation_form_requests.created_at <=?)"
+  }
+
+  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id',
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id',
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_with_students, :count => :all, :select => 'distinct district_id'
+
+  #TODO DRY THESE
+  define_calculated_statistic :students_in_use  do 
+    
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
+
+    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
+      count(:id, :conditions => 
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+             #{d_conditions}
+            ")
+
+  end
+
+
+  define_calculated_statistic :districts_with_students_in_use  do 
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
+
+    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
+      count('distinct district_id', :conditions => 
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+             #{d_conditions}
+            ")
+
+  end
+
+  define_calculated_statistic :schools_with_students_in_use  do 
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
+
+    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
+      count('distinct school_id' ,:joins => :enrollments, :conditions => 
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+             #{d_conditions}
+            ")
+
+  end
+
+
+
+
+
+
+
   
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
@@ -67,9 +141,6 @@ class Student < ActiveRecord::Base
   #  before_validation :clear_extended_profile
 
 
-  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
-    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
-  }
 
   def extended_profile?
     ext_arbitrary.present? || ext_siblings.present? || ext_adult_contacts.present? || ext_test_scores.present? || ext_summary.present? || assets.present?
@@ -265,11 +336,12 @@ class Student < ActiveRecord::Base
   end
 
   def touch
-    #I don't want validations to run
-    self.updated_at = Time.now.utc
-    update_without_callbacks
-
-
+    #I don't want validations to run, but I need to fix locking here!!!
+    begin
+    self.class.update_all( "updated_at = '#{Time.now.utc}'", "id = #{self.id}")
+    rescue ActiveRecord::StatementInvalid
+      logger.warn "Unable to get lock for touch in student!"
+    end
   end
 
   protected

@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: schools
 #
-#  id          :integer(4)      not null, primary key
-#  name        :string(255)
-#  id_district :integer(4)
-#  id_state    :integer(4)
-#  id_country  :integer(4)
-#  district_id :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id                 :integer(4)      not null, primary key
+#  name               :string(255)
+#  district_school_id :integer(4)
+#  id_state           :integer(4)
+#  id_country         :integer(4)
+#  district_id        :integer(4)
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 class School < ActiveRecord::Base
@@ -31,9 +31,10 @@ class School < ActiveRecord::Base
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 
-
-  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id'
-  define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.district_id'
+  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id', 
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+  define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.district_id',
+    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
 
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id

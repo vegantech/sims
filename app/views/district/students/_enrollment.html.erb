@@ -11,7 +11,8 @@
     <%=enrollment_form.label :grade %> 
     <%= enrollment_form.text_field :grade , :size=>5%>
     <%=enrollment_form.label :end_year %> 
-    <%= enrollment_form.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %>
+    <%= enrollment_form.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %> 
+    <%= help_popup "The end year is for the calendar year for this enrollment.  For the 2010-2011 school year it should be 2011. " %>
 
     <%= link_to_function "Remove", "$(this).up('.enrollment').remove()" %>
   </p>

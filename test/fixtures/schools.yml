@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: schools
 #
-#  id          :integer(4)      not null, primary key
-#  name        :string(255)
+#  id                 :integer(4)      not null, primary key
+#  name               :string(255)
 #  district_school_id :integer(4)
-#  id_state    :integer(4)
-#  id_country  :integer(4)
-#  district_id :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id_state           :integer(4)
+#  id_country         :integer(4)
+#  district_id        :integer(4)
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

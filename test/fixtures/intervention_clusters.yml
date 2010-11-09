@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: intervention_clusters
 #
@@ -11,9 +11,6 @@
 #  disabled                :boolean(1)
 #  created_at              :datetime
 #  updated_at              :datetime
-#  deleted_at              :datetime
-#  copied_at               :datetime
-#  copied_from             :integer(4)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

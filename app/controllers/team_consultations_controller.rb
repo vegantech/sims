@@ -1,16 +1,6 @@
 class TeamConsultationsController < ApplicationController
+  before_filter :require_current_school
   additional_write_actions :complete
-  # GET /team_consultations
-  # GET /team_consultations.xml
-  def index
-    @team_consultations = TeamConsultation.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @team_consultations }
-    end
-  end
-
   # GET /team_consultations/1
   # GET /team_consultations/1.xml
   def show

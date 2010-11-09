@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: element_definitions
 #
@@ -10,9 +10,6 @@
 #  position               :integer(4)
 #  created_at             :datetime
 #  updated_at             :datetime
-#  deleted_at             :datetime
-#  copied_at              :datetime
-#  copied_from            :integer(4)
 #
 
 class ElementDefinition < ActiveRecord::Base
@@ -25,12 +22,11 @@ class ElementDefinition < ActiveRecord::Base
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :question_definition
-  is_paranoid
 
 
   validates_presence_of :question_definition_id,  :kind
   validates_presence_of :text, :unless =>:applicable_kind?
-  validates_uniqueness_of :kind, :scope => [:question_definition_id, :deleted_at], :if => :applicable_kind_uniqueness?
+  validates_uniqueness_of :kind, :scope => [:question_definition_id], :if => :applicable_kind_uniqueness?
 
   after_create :move_to_top, :if => :applicable_kind?
 
@@ -54,6 +50,10 @@ class ElementDefinition < ActiveRecord::Base
     k.question_definition=question_definition
     k.answer_definitions = answer_definitions.collect{|o| o.deep_clone}
     k
+  end
+
+  def has_answers?
+    Answer.count(:include => :answer_definition, :conditions => "answer_definitions.id = #{id}" ) > 0
   end
 
 

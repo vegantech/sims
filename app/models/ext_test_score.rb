@@ -1,3 +1,19 @@
+# == Schema Information
+# Schema version: 20101101011500
+#
+# Table name: ext_test_scores
+#
+#  id         :integer(4)      not null, primary key
+#  student_id :integer(4)
+#  name       :string(255)
+#  date       :date
+#  scaleScore :float
+#  result     :string(255)
+#  enddate    :date
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class ExtTestScore < ActiveRecord::Base
   belongs_to :student
 
@@ -49,6 +65,10 @@ class ExtTestScore < ActiveRecord::Base
   end
 
   def <=>(rhs)
-    self.date <=> rhs.date
+    if self.date && rhs.date
+      self.date <=> rhs.date
+    else
+      self.name.to_s <=> rhs.name.to_s
+    end
   end
 end

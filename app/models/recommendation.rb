@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: recommendations
 #
@@ -8,7 +8,7 @@
 #  recommendation               :integer(4)
 #  checklist_id                 :integer(4)
 #  user_id                      :integer(4)
-#  reason                       :text
+#  other                        :text
 #  should_advance               :boolean(1)
 #  created_at                   :datetime
 #  updated_at                   :datetime

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: goal_definitions
 #
@@ -11,9 +11,6 @@
 #  disabled    :boolean(1)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  deleted_at  :datetime
-#  copied_at   :datetime
-#  copied_from :integer(4)
 #
 
 class GoalDefinition < ActiveRecord::Base
@@ -25,7 +22,7 @@ class GoalDefinition < ActiveRecord::Base
       x
     end
   end
-  validates_uniqueness_of :description, :scope=>[:district_id,:title, :deleted_at]
+  validates_uniqueness_of :description, :scope=>[:district_id,:title]
 
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
@@ -40,8 +37,6 @@ class GoalDefinition < ActiveRecord::Base
   end
 
 
-  is_paranoid
-  include DeepClone
 
   def disable!
     objective_definitions.each(&:disable!)
@@ -52,14 +47,4 @@ class GoalDefinition < ActiveRecord::Base
     title
   end
 
-  private
-  def deep_clone_parent_field
-    'district_id'
-  end
-
-  def deep_clone_children
-    %w{objective_definitions}
-  end
-
-  
 end

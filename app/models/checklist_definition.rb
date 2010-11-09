@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: checklist_definitions
 #
@@ -15,9 +15,6 @@
 #  document_content_type        :string(255)
 #  document_file_size           :integer(4)
 #  document_updated_at          :datetime
-#  deleted_at                   :datetime
-#  copied_at                    :datetime
-#  copied_from                  :integer(4)
 #
 
 class ChecklistDefinition < ActiveRecord::Base

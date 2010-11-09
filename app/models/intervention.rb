@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: interventions
 #
@@ -18,6 +18,7 @@
 #  ended_at                   :date
 #  created_at                 :datetime
 #  updated_at                 :datetime
+#  end_reason                 :string(255)
 #
 
 class Intervention < ActiveRecord::Base
@@ -38,7 +39,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
-  has_many :intervention_participants, :dependent => :destroy
+  has_many :intervention_participants, :dependent => :delete_all
   has_many :participant_users, :through => :intervention_participants, :source => :user
 
   has_many :intervention_probe_assignments, :dependent => :destroy 
@@ -231,7 +232,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def autoassign_probe
-    rec_mon_count = intervention_definition.recommended_monitors.count
+    rec_mon_count = intervention_definition.probe_definitions.count
     return true if intervention_probe_assignments.any?
     case rec_mon_count
     when 0

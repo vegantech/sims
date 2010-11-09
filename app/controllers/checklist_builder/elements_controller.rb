@@ -74,8 +74,13 @@ class ChecklistBuilder::ElementsController < ApplicationController
 
   def destroy
     @element_definition = @question_definition.element_definitions.find(params[:id])
-    @element_definition.destroy
 
+    if @element_definition.has_answers?
+      flash[:notice]= "Element definition is in use, please copy the checklist instead"
+    else
+      flash[:notice] = ""
+      @element_definition.destroy
+    end
     respond_to do |format|
       format.html { redirect_to checklist_definition_url(@checklist_definition) }
       format.js

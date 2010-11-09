@@ -1,21 +1,23 @@
 # == Schema Information
-# Schema version: 20090623023153
+# Schema version: 20101101011500
 #
 # Table name: users
 #
-#  id           :integer(4)      not null, primary key
-#  username     :string(255)
-#  passwordhash :binary
-#  first_name   :string(255)
-#  last_name    :string(255)
-#  district_id  :integer(4)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  email        :string(255)
-#  middle_name  :string(255)
-#  suffix       :string(255)
-#  salt         :string(255)     default("")
-#  district_user_id  :integer(4)
+#  id               :integer(4)      not null, primary key
+#  username         :string(255)
+#  passwordhash     :binary
+#  first_name       :string(255)
+#  last_name        :string(255)
+#  district_id      :integer(4)
+#  created_at       :datetime
+#  updated_at       :datetime
+#  email            :string(255)
+#  middle_name      :string(255)
+#  suffix           :string(255)
+#  salt             :string(255)     default("")
+#  district_user_id :string(255)
+#  token            :string(255)
+#  roles_mask       :integer(4)      default(0)
 #
 
 class User < ActiveRecord::Base
@@ -35,7 +37,7 @@ class User < ActiveRecord::Base
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
   has_many :student_comments
-  has_many :intervention_participants
+  has_many :intervention_participants, :dependent => :delete_all
   has_many :interventions_as_participant, :through => :intervention_participants, :class_name => 'Intervention', :source => :intervention
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
@@ -375,14 +377,13 @@ or (user_group_assignments.id is not null)
 
 protected
   def district_special_groups
-    all_students = all_students_in_district || 
-        special_user_groups.build(:district_id=>self.district_id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
 
     if @all_students_in_district == "1"
-      all_students.save
+      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
     elsif @all_students_in_district == "0" or new_record?
-      all_students.destroy
+      special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
     end
+    
   end
 
   def save_user_school_assignments

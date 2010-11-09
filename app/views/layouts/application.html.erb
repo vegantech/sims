@@ -49,7 +49,7 @@
         <div class="breadcrumbs_and_banners">
           <%=breadcrumbs%>
         </div>
-          <p style="color: green"><%= flash[:notice] %></p>
+          <p id="flash_notice"><%= flash[:notice] %></p>
           <%= yield %>
           <%= render :partial =>'login/whats_new' if show_whats_new%>
 
@@ -100,7 +100,7 @@
             src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
         <% end %> 
 
-        <iframe id="upload_frame" name="upload_frame" style="display: none;height:0;width:0;border:0;"></iframe>
+        <iframe id="upload_frame" name="upload_frame" src= "/blank.html" style="display: none;height:0;width:0;border:0;"></iframe>
 
 
 
