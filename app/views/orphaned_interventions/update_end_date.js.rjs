@@ -7,8 +7,10 @@ else
 
   if @end_date < Date.today || @intervention.invalid?
     color = 'red'
+    page << "$('end_date#{@intervention.id}').up('td').down('div.end_date_expired').show()"
   else
     color = 'black'
+    page << "$('end_date#{@intervention.id}').up('td').down('div.end_date_expired').hide()"
   end
   page << "$('end_date#{@intervention.id}').up('td').style.color='#{color}'"
 end

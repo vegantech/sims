@@ -1,4 +1,4 @@
-<h1>Orphaned Interventions<%=help_popup "An orphaned intervention is an 
+<h1>Unattached Interventions<%=help_popup "An unattached intervention is an 
 intervention that has not yet been ended
 that has also gone past the end date,  
 has one or more participants that cannot access the student,  
@@ -7,17 +7,11 @@ or has no participants at all. </p>" %> </h1>
 
 
 
-<p>The red fields show why that intervention is considered orphaned.</p>
+<p>The red fields show why that intervention is considered unattached.</p>
 <%form_tag do %>
 <table>
   <thead>
     <tr>
-      <th>End 
-        <%=help_popup" To end one or more interventions, 
-        check the boxes at the left, and then press 
-        the \"End Selected\" Button.  (You may also need to 
-        pick a reason.)" %>
-      </th>
       <th>Student</th>
       <th>Intervention</th>
       <th>Start Date</th>
@@ -30,13 +24,17 @@ or has no participants at all. </p>" %> </h1>
   the dropdown in each intervention row.  
   The X next to a participant will remove him/her." %>
 </th>
+      <th>End Intervention
+        <%=help_popup" To end one or more interventions, 
+        check the boxes at the right, and then press 
+        the \"Update\" Button. " %>
+      </th>
   </tr>
 
   </thead>
   <tbody>
     <%@interventions.each do |intervention| %>
       <tr>
-        <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
         <td><%=link_to intervention.student, intervention.student, :target => "_blank" %> </td>
         <td><%=intervention.title %></td>
         <td><%=intervention.start_date %> </td>
@@ -48,21 +46,14 @@ or has no participants at all. </p>" %> </h1>
                                             :with => "'month=' + $('end_date#{intervention.id}-mm').value + '&day=' + $('end_date#{intervention.id}-dd').value +'&year=' + $('end_date#{intervention.id}').value",
                         :method => 'put')}
            %>
-          *</td>
+           * <div style="<%="display:none" unless intervention.end_date < Date.today %>" class="end_date_expired">The end date is in the past.</div>
+         </td>
         <td><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>
+        <td><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
       </tr>
     <% end %>
 
   </tbody>
 </table>
-<p>
-<%=submit_tag 'End Selected' %></p>
-<p>
-End Reasons, require one to be checked
-</p>
+<%=submit_tag 'Update' %> <%=help_popup("This will end the checked interventions and remove interventions that are no longer unattached.  Changes to end dates and participants are immediate.") %>
 <% end %>
-
-<br />
-
-
-
