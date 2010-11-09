@@ -175,9 +175,9 @@ module CSVImporter
           where s.district_id is null 
           and s.id_state is not null
           and (
-            ts.birthdate != s.birthdate
+            (ts.birthdate != s.birthdate and ts.birthdate != 0 and s.birthdate != 0 )
              or (  
-              (ts.birthdate is null or s.birthdate is null)
+              (s.birthdate = 0 or ts.birthdate = 0 or  ts.birthdate is null or s.birthdate is null )
               and ts.last_name != s.last_name
             ))"
       q="select ts.id_state, ts.first_name, ts.last_name from #{shared}"
