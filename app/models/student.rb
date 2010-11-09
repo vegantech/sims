@@ -338,7 +338,7 @@ class Student < ActiveRecord::Base
   def touch
     #I don't want validations to run, but I need to fix locking here!!!
     begin
-    self.class.update_all( "updated_at = '#{Time.now.utc}'", "id = #{self.id}")
+    self.class.update_all( "updated_at = '#{Time.now.utc.to_s(:db)}'", "id = #{self.id}")
     rescue ActiveRecord::StatementInvalid
       logger.warn "Unable to get lock for touch in student!"
     end
