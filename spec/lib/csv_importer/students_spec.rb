@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe CSVImporter::Students do
+
   describe 'reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side' do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
       District.delete_all
@@ -10,6 +11,11 @@ describe CSVImporter::Students do
       d.students.create!(:id_state => 98, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MATCHING_NAME", :birthdate => nil)
       d.students.create!(:id_state => 97, :first_name => "NONMATCHING_BIRTHDATE_IN_DB", :last_name => "MATCHED_NAME", :birthdate => '2006-01-02')
       d.students.create!(:id_state => 96, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MISMATCHED_NAME", :birthdate =>nil )
+      d.students.create!(:id_state => 95, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "MATCHED_NAME", :birthdate =>'2006-01-04' )
+      d.students.create!(:id_state => 94, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>nil )
+      d.students.create!(:id_state => 93, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "mismatched_case", :birthdate =>'2006-01-05' )
+      d.students.create!(:id_state => 92, :first_name => "ZERO_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>'0000-00-00' )
+      Student.update_all("birthdate = 0", "id_state = 92")
       Student.update_all("district_id = null")
       file_name = ''
       i=CSVImporter::Students.new file_name,d
@@ -20,7 +26,11 @@ describe CSVImporter::Students do
                                             (99, -1,-1, 'MATCHING_BIRTHDATE',NULL, 'MISMATCHED_NAME', NULL, '2006-01-01', FALSE, FALSE),
                                             (98, -1,-1, 'NULL_BIRTHDATE_IN_DB',NULL, 'MATCHING_NAME', NULL, '2006-01-01', FALSE, FALSE),
                                             (97, -1,-1, 'NON_MATCHING_BIRTHDATE',NULL, 'MATCHED_NAME', NULL, '2006-01-01', FALSE, FALSE),
-                                            (96, -1,-1, 'NULL_BIRTHDATE',NULL, 'MISMATCHED_NAME2', NULL, '2006-01-01', FALSE, FALSE)
+                                            (96, -1,-1, 'NULL_BIRTHDATE',NULL, 'MISMATCHED_NAME2', NULL, '2006-01-01', FALSE, FALSE),
+                                            (95, -1,-1, 'NULL_BIRTHDATE_IN_CSV',NULL, 'MATCHED_NAME', NULL, NULL, FALSE, FALSE),
+                                            (94, -1,-1, 'NULL_BIRTHDATE_IN_DB',NULL, 'MISMATCHED_CASE', NULL, '2006-01-05', FALSE, FALSE),
+                                            (93, -1,-1, 'NULL_BIRTHDATE_IN_CSV',NULL, 'MISMATCHED_CASE', NULL, NULL, FALSE, FALSE),
+                                            (92, -1,-1, 'ZERO_BIRTHDATE_IN_DB',NULL, 'MISMATCHED_CASE', NULL, '2006-01-05', FALSE, FALSE)
                                             
                                             ")
 
@@ -28,8 +38,10 @@ describe CSVImporter::Students do
      i.send(:drop_temporary_table)
       
 
-      i.messages.sort.should == ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.", 
-        "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."]
+      i.messages.sort.should == 
+        ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.", 
+        "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
+      ]
 
 
     end
