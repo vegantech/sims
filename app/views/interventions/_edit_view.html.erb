@@ -48,11 +48,25 @@
 <div id="end_intervention_reasons" style="display:none">
   <% form_tag(end_intervention_path(@intervention), :method => :put) do  %>
     If you made changes above, then save them first. <br />
+    <b> Was it implemented with 80% fidelity based on the criteria above?
+    </b> <br />
+    <%= radio_button_tag('fidelity', true,false, 
+                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
+                        ) %>
+      <label for="fidelity_true">Yes</label><br />
+      <%= radio_button_tag('fidelity', false,false, 
+                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
+                          ) %>
+      <label for="fidelity_false">No</label><br />
+      <br />    
     <b> Please choose a reason for ending this intervention.</b> <br />
     <%Intervention::END_REASONS.each do |end_reason| %>
-      <%= radio_button_tag('end_reason', end_reason,false, {:onclick=> "$('end_submit_tag').disabled=false;"}) %>
+      <%= radio_button_tag('end_reason', end_reason,false, 
+                           {:onclick=> "$('end_check').value |= 2;$('end_submit_tag').disabled=$('end_check').value < 3;"}
+                          ) %>
       <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
     <% end %>
+  <%=hidden_field_tag 'end_check', 0 %>
     <%= submit_tag 'End Intervention', :confirm=>"Are you sure you want to end this intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>
 
 

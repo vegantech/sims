@@ -1,6 +1,8 @@
 class AddEndReasonToInterventions < ActiveRecord::Migration
   def self.up
-    add_column :interventions, :end_reason,:string
+    unless Intervention.column_names.include?("end_reason") 
+      add_column :interventions, :end_reason,:string
+    end
   end
 
   def self.down
