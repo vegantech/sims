@@ -10,6 +10,11 @@
   display: none;
 }
 
+
+.breadcrumbs_and_banners_bottom {
+  display: none;
+}
+
 #main {
   float: left;
   width: 90%;
@@ -28,5 +33,17 @@
 }
 
 #debug {
+  display: none;
+}
+
+.footer {
+  display: none;
+}
+
+.screen-only {
+  display: none;
+}
+
+.help-question {
   display: none;
 }
