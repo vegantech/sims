@@ -47,3 +47,11 @@
 .help-question {
   display: none;
 }
+
+.intervention_participant a {
+  display: none;
+}
+
+select {
+  display: none;
+}
