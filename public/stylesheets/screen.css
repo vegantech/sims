@@ -71,3 +71,7 @@ tr .handle {
   color: #777;
 
 }
+
+.print_only {
+  display:none;
+}
