@@ -6,7 +6,7 @@
   <%= render :partial => "unattached_interventions/participant", :collection => intervention.intervention_participants %>
 
   <%= collection_select(:new_participant,:user_id,@users, :id, :to_s, {:prompt => 'Choose a participant to add them.'},
-                        {:id => dom_id(intervention,'new_participant'),
+                        {:id => dom_id(intervention,'new_participant'), :class => 'screen-only',
                           :onchange => remote_function(:url =>  unattached_intervention_path(intervention), 
                         :with => "'user_id=' + $('#{dom_id(intervention,"new_participant")}').value",
                         :method => 'put')}
