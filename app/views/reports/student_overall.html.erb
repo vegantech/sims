@@ -14,6 +14,17 @@
     <% end %>
   <% end %>
 
+  <% subreport_selected @opts[:consultation_forms] do %>
+    <% if @student.team_consultations.empty? %>
+      Student has no consultation forms
+    <% else %>
+     Team Consultations:<br/>
+      <div id="team_consultation_forms">
+        <%= render :partial => "/team_consultations/show", :collection => @student.team_consultations %>
+      </div>
+    <% end %>
+  <% end %>
+
   <% subreport_selected(@opts[:team_notes]) do %>
     <% unless @student.comments.empty? %>
       <% @user = User.new %>
@@ -74,14 +85,4 @@
     <% end %>
   <% end %>
 
-  <% subreport_selected @opts[:consultation_forms] do %>
-    <% if @student.team_consultations.empty? %>
-      Student has no consultation forms
-    <% else %>
-     Team Consultations:<br/>
-      <div id="team_consultation_forms">
-        <%= render :partial => "/team_consultations/show", :collection => @student.team_consultations %>
-      </div>
-    <% end %>
-  <% end %>
 </div>

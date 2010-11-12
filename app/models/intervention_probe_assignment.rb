@@ -179,7 +179,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def benchmark_lines
     if benchmarks.present?
       @chxp <<  "3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
-      "chm=#{benchmarks.collect{|b| "h,#{b.color},0,#{scale_value(b.benchmark)},3,1"}.join("|")}" 
+      "chm=#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) -0.003},#{scale_value(b.benchmark) +0.003}"}.join("|")}" 
     end
   end
 
@@ -193,12 +193,23 @@ class InterventionProbeAssignment < ActiveRecord::Base
     (value-min).to_f/(max-min).to_f
   end
 
+  def scores
+    probes_for_graph.collect(&:score)
+  end
+
+  def scores_with_goal
+    s=scores
+    s << goal.to_i if goal?
+    s
+    
+  end
+
   def min
-    probe_definition.minimum_score || (probes_for_graph.collect(&:score).min >=0 ? 0 : probes_for_graph.collect(&:score).min)
+     probe_definition.minimum_score || (scores_with_goal.min >=0 ? 0 : scores_with_goal.min)
   end
 
   def max
-    probe_definition.maximum_score || (probes_for_graph.collect(&:score).max <= 10 ? 10 : probes_for_graph.collect(&:score).max)
+     probe_definition.maximum_score || (scores_with_goal.max <= 10 ? 10 : scores_with_goal.max)
   end
    
 
