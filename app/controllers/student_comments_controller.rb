@@ -27,6 +27,7 @@ class StudentCommentsController < ApplicationController
   # POST /student_comments
   # POST /student_comments.xml
   def create
+    #TODO FIX THIS, possible to forge comments for other users
     @student_comment = StudentComment.new(params[:student_comment])
     
     
@@ -49,8 +50,12 @@ class StudentCommentsController < ApplicationController
   # PUT /student_comments/1
   # PUT /student_comments/1.xml
   def update
+    #TODO REFACTOR THIS
+    #
     @student_comment = current_user.student_comments.find(params[:id])
     @student_comment.body=params[:student_comment][:body]
+    @student_comment.existing_asset_attributes = params[:student_comment][:existing_asset_attributes] if params[:student_comment][:existing_asset_attributes] 
+    @student_comment.new_asset_attributes =  params[:student_comment][:new_asset_attributes] if params[:student_comment][:new_asset_attributes]
     
     respond_to do |format|
       if @student_comment.save

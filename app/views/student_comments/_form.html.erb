@@ -18,12 +18,7 @@
     <%= form.text_area :body,  :rows=>5, :class=>"full_width spell_check" %>
   </p>
 
-  <% if form.object.new_record? %>
     <%= render :partial => '/assets/asset_form', :locals => {:form=>form, :parent =>'student_comment'}  %>
-  <% else %>
-    <ul>    <%=links_and_attachments form.object ,'li'%> </ul>
-
-  <% end %>
 
 <div class="center_submit">
     <%= form.submit "Save" %>
