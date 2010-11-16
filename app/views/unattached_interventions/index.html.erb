@@ -1,8 +1,8 @@
-<h1>Unattached Interventions<%=help_popup "An unattached intervention is an 
+<h2>Unattached Interventions<%=help_popup "An unattached intervention is an 
 intervention that has not yet been ended
 that has also gone past the end date,  
 has one or more participants that cannot access the student,  
-or has no participants at all. </p>" %> </h1>
+or has no participants at all." %> </h2>
 
 
 
@@ -38,7 +38,7 @@ or has no participants at all. </p>" %> </h1>
         <td><%=link_to intervention.student, intervention.student, :target => "_blank" %> </td>
         <td><%=intervention.title %></td>
         <td><%=intervention.start_date %> </td>
-        <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> >
+        <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> > <center>
           <span id = "print_end_date<%=intervention.id%>" class ="print-only"> <%= intervention.end_date %> </span>
           
           <%= unobtrusive_date_picker_tags intervention.end_date, 
@@ -48,10 +48,11 @@ or has no participants at all. </p>" %> </h1>
                                             :with => "'month=' + $('end_date#{intervention.id}-mm').value + '&day=' + $('end_date#{intervention.id}-dd').value +'&year=' + $('end_date#{intervention.id}').value",
                         :method => 'put')}
            %>
-           * <div  style="<%="display:none" unless intervention.end_date < Date.today %>" class="end_date_expired screen-only">The end date is in the past.</div>
+           * <div  style="<%="display:none" unless intervention.end_date < Date.today %>" class="end_date_expired screen-only">Expired end date.</div>
+         </center>
          </td>
-        <td><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>
-        <td class = "screen-only"><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></td>
+        <td style="padding-left: 15px"><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>
+        <td class = "screen-only"><center><%= check_box_tag 'id[]',intervention.id, false, :id => "ck_#{intervention.id}" %></center></td>
       </tr>
     <% end %>
 
