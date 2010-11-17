@@ -33,12 +33,13 @@
         <%= f.submit "Save"  %>
         <%= spell_check_button %>
       <% end %>
-    </div>
+    </div> <br />
   <% end %>
 </div>
 <div class="center_submit">
   <% if @intervention.active? %>
-    <%= link_to_function 'End', "$('end_intervention_reasons').show()" %> 
+    <%= link_to_function 'End', "$('end_intervention_reasons').show();location.href='#end_intervention_reasons'" %>
+    <%=help_popup("After clicking end, you will prompted to answer some questions at the bottom of the page about the intervention.") %>
   <% else %>
     <%= link_to 'Undo End', undo_end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to unend this intervention?" %> 
   <% end %>
@@ -48,7 +49,7 @@
 <div id="end_intervention_reasons" style="display:none">
   <% form_tag(end_intervention_path(@intervention), :method => :put) do  %>
     If you made changes above, then save them first. <br />
-    <b> Was it implemented with 80% fidelity based on the criteria above?
+    <b> Was the intervention implemented with 80% fidelity based on the criteria above?
     </b> <br />
     <%= radio_button_tag('fidelity', true,false, 
                            {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
