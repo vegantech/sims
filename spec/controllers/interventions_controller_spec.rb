@@ -223,13 +223,13 @@ describe InterventionsController do
   describe "responding to PUT end" do
     it "should end the requested intervention" do
       controller.should_receive(:current_user).and_return(mock_model(User,:id=>1))
-      @intervention.should_receive(:end).with(1)
+      @intervention.should_receive(:end).with(1,nil,nil)
       put :end, :id => @intervention.id
     end
   
-    it "should redirect to the interventions list" do
+    it "should redirect to the student" do
       controller.should_receive(:current_user).and_return(mock_model(User, :id => 1))
-      @intervention.should_receive(:end).with(1)
+      @intervention.should_receive(:end).with(1,nil,nil)
       put :end, :id => @intervention.id
       response.should redirect_to(student_url(@student))
     end

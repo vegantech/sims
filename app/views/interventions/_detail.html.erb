@@ -22,13 +22,14 @@
     </div>
     <% unless @intervention.active? %>
       <div class ="form_row">
-        <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}"%>
+        <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}- #{@intervention.end_reason}"%>
       </div>
     <% end %>
     <div class ="form_row">
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
     
+  <br class="brclear" />
   <p>
 
   <div class ="fake_label">&nbsp;</div>

@@ -67,7 +67,7 @@ class UnattachedInterventionsController < ApplicationController
     Intervention.find_all_by_id(params[:id]).each do |intervention|
       if intervention.student.principals.include? current_user
         if intervention.valid?
-          intervention.end current_user
+          intervention.end current_user, "Beyond intervention interval"
         else
           flash[:notice] = "Some interventions could not be ended, #{intervention.errors.full_messages}"
         end

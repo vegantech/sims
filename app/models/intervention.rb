@@ -25,6 +25,13 @@ class Intervention < ActiveRecord::Base
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
 
+  END_REASONS = [
+    "Sufficient progress made",
+    "Insufficient progress made",
+    "Beyond intervention interval",
+    "Intervention not matched to student need"
+  ]
+
   belongs_to :user
   belongs_to :student, :touch => true
   belongs_to :intervention_definition
@@ -83,10 +90,12 @@ class Intervention < ActiveRecord::Base
   end
 
 
-  def end(ended_by)
+  def end(ended_by,reason='', fidelity = nil)
     self.ended_by_id = ended_by
     self.active = false
     self.ended_at = Date.today
+    self.end_reason=reason
+    self.fidelity = fidelity
     self.save!
   end
 
@@ -94,6 +103,8 @@ class Intervention < ActiveRecord::Base
     self.ended_by_id = nil
     self.active = true
     self.ended_at = nil
+    self.end_reason=nil
+    self.fidelity=nil
     self.save!
   end
 
