@@ -22,7 +22,7 @@ or has no participants at all." %> </h2>
 <th>Participants
   <%=help_popup "You can add participants by selecting them from 
   the dropdown in each intervention row.  
-  The X next to a participant will remove him/her.  If a name is read, it means the teacher does not have access to the student." %>
+  The X next to a participant will remove him/her.  If a name is red, it means the teacher does not have access to the student." %>
 </th>
       <th class="screen-only">End Intervention
         <%=help_popup" To end one or more interventions, 
@@ -58,5 +58,9 @@ or has no participants at all." %> </h2>
 
   </tbody>
 </table>
+<% if @interventions.empty? %>
+  <p> There are no unattached interventions. </p>
+<% end %>
+
 <%=submit_tag 'Update', :class => "screen-only" %> <%=help_popup("This will end the checked interventions and remove interventions that are no longer unattached.  Changes to end dates and participants are immediate.") %>
 <% end %>
