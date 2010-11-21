@@ -1,0 +1,15 @@
+<% div_for(intervention, "participants_list") do %>
+  
+  <% div_for(intervention, "no_participants", :style=>"color: red;" ) do %>
+    <%="There are no participants assigned." if intervention.intervention_participants.blank? %>
+  <% end %>
+  <%= render :partial => "unattached_interventions/participant", :collection => intervention.intervention_participants %>
+
+  <%= collection_select(:new_participant,:user_id,@users, :id, :to_s, {:prompt => 'Choose a participant to add them.'},
+                        {:id => dom_id(intervention,'new_participant'), :class => 'screen-only',
+                          :onchange => remote_function(:url =>  unattached_intervention_path(intervention), 
+                        :with => "'user_id=' + $('#{dom_id(intervention,"new_participant")}').value",
+                        :method => 'put')}
+                       )
+  %>
+<% end %>

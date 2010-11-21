@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   map.doc '/doc/', :controller => 'doc'
-  map.resources :orphaned_interventions
+  map.resources :unattached_interventions, :member => {:update_end_date => :put }
 
   map.resources :grouped_progress_entries, :member =>{:aggregate => :get }
 
