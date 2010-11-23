@@ -545,3 +545,11 @@ table.grouped_progress_entry thead {
 #flash_notice {
   color:green;
 }
+
+#quicklist_items h2.objective {
+  font-size: 18px;
+}
+#quicklist_items h2.category{
+  font-size: 17px;
+
+}
