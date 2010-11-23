@@ -213,7 +213,7 @@ private
     if users.blank?
       u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
       u.reset_password!
-      u.roles='district_admin'
+      u.roles='local_system_administrator'
       u.save!
     end
   end

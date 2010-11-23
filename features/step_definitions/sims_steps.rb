@@ -80,7 +80,7 @@ end
 Given /^I am a district admin$/ do
   clear_login_dropdowns
   log_in
-  @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["district_admin"])
+  @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["local_system_administrator"])
   @default_user.save!
 end
 
