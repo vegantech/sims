@@ -33,7 +33,8 @@ Feature: Search By Intervention Flags
 		And I start at the the school selection page
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
-		And I choose "List only students flagged for intervention"
+    And show me the page
+    And I choose "List only students flagged for intervention"
     And I check "flag_ignored"
 		When I press "Search for Students"
 		Then I should see "1 student selected"

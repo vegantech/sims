@@ -12,11 +12,11 @@ Feature: School Maintenance
     Given I am a district admin
     And I start at the home page
     Then I follow "Add/Remove Schools"
-    Then I follow "New School"
+    Then I follow "New school"
     Then I fill in "Name" with "Cucumber Elementary"
     Then I press "Create"
     Then I should see "Cucumber Elementary"
-    Then I follow "New School"
+    Then I follow "New school"
     Then I fill in "Name" with "Cucumber Elementary"
     Then I press "Create"
     Then I should see "Name has already been taken"

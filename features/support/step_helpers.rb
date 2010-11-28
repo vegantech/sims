@@ -5,20 +5,20 @@ def go_to_page page_name
     visit '/'
   else
     log_in
-    # flunk response.body
-    click_link 'School Selection' if response.body.include?('School Selection')
+    # flunk page.body
+    click_link 'School Selection' if page.body.include?('School Selection')
 
     page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
     case page_name
     when 'search'
-      click_button 'Choose School' unless response.body.include?("Default School has been automatically selected.")
-      puts response.body unless response.body.include?('Search')
+      click_button 'Choose School' unless page.body.include?("Default School has been automatically selected.")
+      puts page.body unless response.body.include?('Search')
     when 'school selection'
     when 'new role'
     when 'student profile'
       # search
-      unless response.body.include?("Default School has been automatically selected.")
+      unless page.body.include?("Default School has been automatically selected.")
         select("Default School")
         click_button "Choose School"
       end
@@ -32,7 +32,7 @@ def go_to_page page_name
 end
 
 def click_all_name_id_brackets
-  doc=Hpricot(response.body)
+  doc=Hpricot(page.body)
   doc.search("//input[@name='id[]']").each do |elem|
     check(elem[:id])
   end
@@ -40,7 +40,7 @@ end
 
 def verify_select_box id, options
   options=Array(eval(options))
-  response.should have_dropdown(id, options)
+  page.should have_dropdown(id, options)
 end
 
 def log_in
@@ -50,11 +50,11 @@ def log_in
   fill_in 'Login', :with => @default_user.username
   fill_in 'Password', :with => @default_user.username
   click_button 'Login'
-  response.should_not have_text(/Authentication Failure/)
+  page.should_not have_text(/Authentication Failure/)
 end
 
 def find_or_create_user user_name
-  User.find_by_username(user_name) || create_user(user_name)
+  default_district.users.find_by_username(user_name) || create_user(user_name)
 end
 
 def create_user user_name='first_last', password=user_name
@@ -76,9 +76,11 @@ end
 
 def grant_access user_name, group_array
   user = find_or_create_user user_name
+
   groups = Array(eval(group_array))
   groups.each do |group_title|
     group = Group.find_by_title(group_title)
+    user.user_school_assignments.create!(:school_id => group.school_id)
     raise "Missing group: '#{group_title}'" if group.nil?
     UserGroupAssignment.create!(:user => user, :group => group)
   end

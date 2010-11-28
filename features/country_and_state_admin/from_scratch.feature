@@ -11,9 +11,9 @@ Feature: From Scratch
     And I fill in "Password" with "district_admin"
     Then I press "Login"
     Then I follow "Manage Districts"
-    Then I follow "New District"
+    Then I follow "New district"
     And I fill in "Name" with "Cucumber Pickle"
-    And I fill in "abbrev" with "cp"
+    And I fill in "Abbrev" with "cp"
     And I press "Create"
 
     Then I follow "Logout"

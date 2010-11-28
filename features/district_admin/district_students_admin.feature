@@ -13,7 +13,7 @@ Feature: Student Maintenance
     And a school in my district named "Glenn Stephens"
     When I start at the home page
     Then I follow "Add/Remove Students"
-    Then I follow "New Student"
+    Then I follow "New student"
     Then I fill in "First Name" with "George"
     And I fill in "Middle Name" with "Freddie"
     Then I fill in "Last Name" with "Harrelson"
@@ -37,7 +37,7 @@ Feature: Student Maintenance
     And student exists with id_state of 1234
     And I start at the home page
     Then I follow "Add/Remove Students"
-    Then I follow "New Student"
+    Then I follow "New student"
     And I fill in "State ID" with "1234"
     And page should contain "onblur"
     And I call ajax check_id_state with "1234"
@@ -51,7 +51,7 @@ Feature: Student Maintenance
     And student exists with no district and id_state of 1234
     And I start at the home page
     Then I follow "Add/Remove Students"
-    Then I follow "New Student"
+    Then I follow "New student"
     And I fill in "State ID" with "1234"
     And I call ajax check_id_state with "1234"
     # Then I should see a popup that the student was found  

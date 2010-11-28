@@ -27,7 +27,7 @@ Feature: Intervention Builder
     When I follow "See Categories"
     Then I should see "Listing Categories"
 
-    When I follow "New Category"
+    When I follow "New category"
     And I fill in "Title" with "Category Title"
     And I fill in "Description" with "Category Description"
     And I press "Create"

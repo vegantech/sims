@@ -7,7 +7,7 @@ Feature: Tier Builder
     Given I log in as content_builder
     And I follow "Tier Builder"
 
-    When I follow "New Tier"
+    When I follow "New tier"
     And I fill in "Title" with "Spelled Inkorrect"
     And I am now pending
     And I press "Check Spelling"

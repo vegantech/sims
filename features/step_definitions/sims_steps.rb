@@ -215,7 +215,7 @@ Given /^load demo data$/ do
 end
 
 Then /^I Display Body$/i do
-  puts response.body
+  puts page.body
 end
 
 When /^I should click js "all"$/ do 
@@ -224,7 +224,7 @@ end
 
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
 Given /^I should see javascript code that will do xhr for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
-  response.body.should match(/Form.Element.EventObserver\('#{observed_field}'/)
+  page.body.should match(/Form.Element.EventObserver\('#{observed_field}'/)
 end
 
 # When /^xhr "search_criteria_user_id" updates ["search_criteria_group_id"]
@@ -238,17 +238,17 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   elsif observed_field == "search_criteria_user_id"
     xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   else
-    flunk response.body
+    flunk page.body
   end
 
   Array(eval(target_fields)).each do |target_field|
-    response.body.should match(/Element.update\("#{target_field}"/)
+    page.body.should match(/Element.update\("#{target_field}"/)
   end
-  #  response.should hav_text /"<option value=\"996332878\">default user</option>");"/
+  #  page.should hav_text /"<option value=\"996332878\">default user</option>");"/
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
-  response.should have_options(Array(eval(options)))
+  page.should have_options(Array(eval(options)))
 end
 
 Given /^I enter URL "(.*)"$/ do |url|
@@ -307,7 +307,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
 end
 
 When /^page should contain "(.*)"$/ do |arg1|
-  response.body.should =~ /#{arg1}/
+  page.body.should =~ /#{arg1}/
 end
 
 Given /^student "([^\"]*)" directly owns consultation form with team consultation concern "([^\"]*)"$/ do |student_name, concern_label|
