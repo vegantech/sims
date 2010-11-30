@@ -13,7 +13,7 @@ def go_to_page page_name
     case page_name
     when 'search'
       click_button 'Choose School' unless page.body.include?("Default School has been automatically selected.")
-      puts page.body unless response.body.include?('Search')
+      puts page.body unless page.body.include?('Search')
     when 'school selection'
     when 'new role'
     when 'student profile'

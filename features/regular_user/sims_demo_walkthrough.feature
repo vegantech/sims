@@ -1,6 +1,6 @@
 Feature: Sims Demo Walkthrough
   In order to show a demo works
-  
+ 
   Scenario: Run Demo with oneschool
     Given load demo data 
     And I go to the home page
@@ -67,7 +67,7 @@ Feature: Sims Demo Walkthrough
 
 
     Then I follow "Edit/Add Comment"
-    Then I follow "Enter/View scores"
+    Then I follow "Enter/view scores"
     Then I should see ", 2007"
     Then I follow "Edit Score"
     Then I fill in "Score" with "25"

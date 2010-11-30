@@ -12,8 +12,8 @@ class CustomFlagsController < ApplicationController
 
 
     respond_to do |format|
-      format.js # new.js.rjs
       format.html # new.html.erb
+      format.js # new.js.rjs
       format.xml  { render :xml => @custom_flag }
     end
   end

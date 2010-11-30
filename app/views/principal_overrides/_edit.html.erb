@@ -7,7 +7,7 @@
   </p>
   <p>
     
-    <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this  Request" %> <br />
+    <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this Request" %> <br />
     <% if @principal_override.action == "accept" && current_district.principal_override_reasons.present? %>
       <% current_district.principal_override_reasons.each do |por| %>
         <%= f.radio_button :principal_response, por[:reason] %>

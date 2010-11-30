@@ -36,7 +36,7 @@ Feature: Login
   Scenario: Change password
     Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
     And I go to the home page
-    Then I should not see "Change Password"
+    Then I should not see "Change password"
 
     When I fill in "Login" with "cuke_oneschool"
 		And I fill in "Password" with "fr0d0L1v3s"
@@ -44,25 +44,25 @@ Feature: Login
     And I follow "Change Password"
   
 
-    When I fill in "Old Password" with "wrong"
-    And I press "Change Password"
+    When I fill in "Old password" with "wrong"
+    And I press "Change password"
     Then I should see "Old password is incorrect"
 
-    When I fill in "Old Password" with "fr0d0L1v3s"
-    And I press "Change Password"
+    When I fill in "Old password" with "fr0d0L1v3s"
+    And I press "Change password"
     Then I should see "Password cannot be blank"
 
-    When I fill in "Old Password" with "fr0d0L1v3s"
+    When I fill in "Old password" with "fr0d0L1v3s"
     And I fill in "Password" with "New"
-    And I fill in "Password Confirmation" with "Something else"
-    And I press "Change Password"
+    And I fill in "Password confirmation" with "Something else"
+    And I press "Change password"
     Then I should see "Password confirmation must match password"
 
 
-    When I fill in "Old Password" with "fr0d0L1v3s"
+    When I fill in "Old password" with "fr0d0L1v3s"
     And I fill in "Password" with "New"
-    And I fill in "Password Confirmation" with "New"
-    And I press "Change Password"
+    And I fill in "Password confirmation" with "New"
+    And I press "Change password"
     Then I should see "Your password has been changed"
 
     When I follow "Logout"
@@ -98,12 +98,12 @@ Feature: Login
 
 
     When I click the change_password link in the email
-    Then I should see "Change Password"
+    Then I should see "Change password"
 
-    When I fill in "Old Password" with "bnford"
+    When I fill in "Old password" with "bnford"
     And I fill in "Password" with "cucumber"
-    And I fill in "Password Confirmation" with "cucumber"
-    And I press "Change Password"
+    And I fill in "Password confirmation" with "cucumber"
+    And I press "Change password"
 
     Then I should see "Your password has been changed"
 

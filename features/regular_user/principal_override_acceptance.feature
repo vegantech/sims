@@ -8,13 +8,14 @@ Feature: Principal Override Accept and Reject
     And I am the principal
     And there is a principal override request
     And I start at the the search page
-    And I follow "1 pending request"
+    And I follow "1 Pending Request"
 
   Scenario: Reject
     And I follow "Reject"
     And I press "Reject"
     Then I should see "Reason must be provided"
-    When I fill in "Reason for Rejecting this Request" with "Now you are a pickle, rejected by cucumber"
+    And I should see "Reason for Rejecting this Request"
+    When I fill in "principal_override_principal_response" with "Now you are a pickle, rejected by cucumber"
     And I press "Reject"
     Then I should see "Rejected"
     And I should receive an email
@@ -26,7 +27,8 @@ Feature: Principal Override Accept and Reject
     And I follow "Accept"
     And I press "Accept"
     Then I should see "Reason must be provided"
-    When I fill in "Reason for Accepting this Request" with "Approved in Brine"
+    When I should see "Reason for Accepting this Request"
+    When I fill in "principal_override_principal_response" with "Approved in Brine"
     And I press "Accept"
     Then I should see "Approved"
     And I should receive an email
