@@ -11,11 +11,11 @@ Then /^I call ajax check_id_state with "(.*)"$/ do |id_state|
 end
   
 Then /^I should see an alert$/ do
-  response.body.should =~ /alert/
+  page.body.should =~ /alert/
 end
 
 Then /^I should not see an alert$/ do
-  response.body.should_not =~ /alert/
+  page.body.should_not =~ /alert/
 end
 
 Given /^student exists with no district and id_state of (.*)$/ do |id_state|
@@ -24,12 +24,12 @@ Given /^student exists with no district and id_state of (.*)$/ do |id_state|
 end
 
 Then /^page should not contain "([^\"]*)"$/ do |taboo|
-    response.body.should_not =~ /#{taboo}/
+    page.body.should_not =~ /#{taboo}/
 end
   
 When /^I magically visit "([^\"]*)"$/ do |url|
   #'  Element.update("claim_student", "<a href=\"/district/students/claim/996332878?method=put\">Claim First Last for your district</a>"); '
-  response.body.match  /\"\/(dis.*)\?/
+  page.body.match  /\"\/(dis.*)\?/
   visit "#{$1}?method=_put"
 end
   

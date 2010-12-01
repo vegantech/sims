@@ -1,4 +1,5 @@
 When /^I log in with basic auth as "([^"]*)" with password "([^"]*)"$/ do |username, password|
+  visit "/"
   basic_auth(username, password)
 end
 

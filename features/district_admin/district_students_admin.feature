@@ -14,9 +14,9 @@ Feature: Student Maintenance
     When I start at the home page
     Then I follow "Add/Remove Students"
     Then I follow "New student"
-    Then I fill in "First Name" with "George"
-    And I fill in "Middle Name" with "Freddie"
-    Then I fill in "Last Name" with "Harrelson"
+    Then I fill in "First name" with "George"
+    And I fill in "Middle name" with "Freddie"
+    Then I fill in "Last name" with "Harrelson"
     Then I fill in "Suffix" with "Jr IV"
     And I fill in "Grade" with "4"
     And I select "Glenn Stephens" from "School"
