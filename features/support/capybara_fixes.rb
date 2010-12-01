@@ -4,5 +4,5 @@
     end
 
     def xhr
-      set_headers({"HTTP_X_REQUESTED_WITH" => "XMLHttpRequest"}
+      set_headers({"HTTP_X_REQUESTED_WITH" => "XMLHttpRequest"})
     end
