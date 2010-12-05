@@ -26,38 +26,33 @@ end
 
 #  <a href="?enter_score=true" onclick="new Ajax.Request('/interventions/1/probe_assignments?probe_definition_id=1', {asynchronous:true, evalScripts:true, method:'get', onLoading:function(request){$('spinnerscore_link').show();}}); return false;">Enter/view scores</a>     
 
-# Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
-Given /^I should see onchange for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
-  # field_labeled(observed_field).should match(/Ajax.Updater\('#{target_fields}'/)
-  field_labeled(observed_field).element.to_s.should match(/onchange/)
-  field_labeled(observed_field).element.to_s.should match(/Ajax.Updater/)
-  field_labeled(observed_field).element.to_s.should match(/#{target_fields}/)
-end
-
 
 When /^I should see onchange for "([^\"]*)" that calls "([^\"]*)"$/ do |observed_field, target|
-  field_labeled(observed_field).element.to_s.should match(/onchange/)
-  field_labeled(observed_field).element.to_s.should match(/#{target}/)
+  f=find_field(observed_field)
+  f[:onchange].to_s.should match(/#{target}/)
 end
 
 
 When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
+  set_headers({"HTTP_X_REQUESTED_WITH" => "XMLHttpRequest"})
+  set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>"GET"})
+  set_headers({"REQUEST_METHOD"=>"GET"})
 
   case event
   when "onchange"
     if field == "Assign Progress Monitor"
-     @xhr= xml_http_request :get, "/interventions/ajax_probe_assignment/", {:intervention_id => @student.interventions.first.id.to_s, :id=>field_labeled(field).value}, {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
-
-     
+#     @xhr= xml_http_request :get, "/interventions/ajax_probe_assignment/", {:intervention_id => @student.interventions.first.id.to_s, :id=>field_labeled(field).value}, {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
+     visit "/interventions/ajax_probe_assignment.js?intervention_id=#{@student.interventions.last.id.to_s}&id=#{find_field(field).value}"
     else 
       fail
     end
   when "onclick"
     if field == "enter_view_score_link"
       
-      i_id =  @student.interventions.first.id.to_s
+      i_id =  @student.interventions.last.id.to_s
 
-      xhr :get, "/interventions/#{i_id}/probe_assignments", {:probe_definition_id => ProbeDefinition.first.id},  {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
+     visit "/interventions/#{i_id}/probe_assignments.js?probe_definition_id=#{ProbeDefinition.first.id}"
+     # xhr :get, "/interventions/#{i_id}/probe_assignments", {:probe_definition_id => ProbeDefinition.first.id},  {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
     else 
       fail
     end

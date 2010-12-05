@@ -117,8 +117,8 @@ class InterventionsController < ApplicationController
 
     @quicklist_intervention_definitions = (current_school || School.new).quicklist.reject(&:disabled)
     respond_to do |format|
-      format.js
       format.html
+      format.js
     end
   end
 

@@ -140,9 +140,8 @@ def create_default_intervention_pieces
 end
 
 def clear_login_dropdowns
-  #School.destroy_all
-  District.delete_all
-  @default_district=nil
+  system("mysqldump --add-drop-table --no-data sims_open_test | mysql sims_open_test")
+ @default_district=nil
 end
 
 private

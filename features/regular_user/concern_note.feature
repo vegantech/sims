@@ -16,7 +16,6 @@ Feature: Concern Note
     Given Shawn Balestracci is a team contact for "Cucumber"
     When I follow "Create Team Consultation Form"
     #And I should see some sort of forma
-    And show me the page
     And I press "Save"
     Then I should see "The concern note has been sent to Cucumber."
     And I should see "A discussion about this student will occur at an upcoming team meeting."

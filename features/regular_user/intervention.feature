@@ -4,7 +4,8 @@ Feature: Create Intervention
   Should be able to create and select an interventon
   
   Background:
-    Given common data
+    Given clear login dropdowns
+    And common data
 
   Scenario: Create
     Given I start at the student profile page

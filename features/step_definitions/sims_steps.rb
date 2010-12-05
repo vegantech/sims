@@ -1,6 +1,6 @@
 Given /^common data$/i do
-  @default_user = default_user
   clear_login_dropdowns
+  @default_user = default_user
   @district = default_district
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
@@ -233,7 +233,6 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   other_guy=User.find_by_username("Other_Guy")
   set_headers({"HTTP_X_REQUESTED_WITH" => "XMLHttpRequest"})
   set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>"POST"})
-  set_headers({"HTTP_X_HTTP_REQUEST_METHOD"=>"POST"})
   set_headers({"REQUEST_METHOD"=>"POST"})
   if observed_field == "search_criteria_grade"
     visit   "/students/grade_search.js?grade=3"
