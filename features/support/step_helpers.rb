@@ -45,12 +45,23 @@ end
 
 def log_in
   default_user
-  create_school 'Glenn Stephens' unless @additional_student
+  create_school 'Default School' unless @additional_student
   visit '/'
   fill_in 'Login', :with => @default_user.username
   fill_in 'Password', :with => @default_user.username
   click_button 'Login'
+  
+  if page.body.include?("Please Login")
+    set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>"POST"})
+    set_headers({"REQUEST_METHOD"=>"POST"})
+    click_button 'Login'
+    set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>nil})
+    set_headers({"REQUEST_METHOD"=>nil})
+  end
+
+  save_and_open_page if page.body.include?("Please Login")
   page.should_not have_text(/Authentication Failure/)
+  page.should_not have_text(/Please Login/)
 end
 
 def find_or_create_user user_name
@@ -140,7 +151,7 @@ def create_default_intervention_pieces
 end
 
 def clear_login_dropdowns
-  system("mysqldump --add-drop-table --no-data sims_open_test | mysql sims_open_test")
+ system("mysqldump --add-drop-table --no-data sims_open_test | mysql sims_open_test")
  @default_district=nil
 end
 

@@ -3,9 +3,6 @@ Feature: Search By Student Last Name
   A SIMS user
   Should be able to find students by last name
 
-	Background: 
-		Given clear login dropdowns
-  
   Scenario: Search by First Grade
     Given no other schools
     Given school "Glenn Stephens"
@@ -14,8 +11,8 @@ Feature: Search By Student Last Name
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister']
 		And I have access to "My Group"
 		And I start at the the school selection page
-#		And I select "Glenn Stephens" from "school_id"
-#		And I press "Choose School"
+  	And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
 		# And I start at the the search page
 
 		When I fill in "Last Name" with "Aagard"

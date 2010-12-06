@@ -42,9 +42,6 @@ Feature: Student Maintenance
     And page should contain "onblur"
     And I call ajax check_id_state with "1234"
     Then I should see an alert
-    When I fill in "State ID" with ""
-    And I call ajax check_id_state with ""
-    Then I should not see an alert
 
   Scenario: District admin attempts to enter a student that does not belong to any district
     Given I am a district admin
@@ -57,7 +54,12 @@ Feature: Student Maintenance
     # Then I should see a popup that the student was found  
     Then I should see an alert
     And I should see "Claim First Last for your district"
+
+
     When I magically visit "Claim First Last for your district"
+    And show me the page
+
+
     Then I should see "Student is now in your district, remove them if you want to undo"
     And I should see "1234"
 

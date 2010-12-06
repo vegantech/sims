@@ -1,5 +1,6 @@
 module CountryStateDistrict
   def dropdowns
+    @districts=nil
     subdomains
     return if current_user_id
 

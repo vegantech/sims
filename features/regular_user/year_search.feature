@@ -3,10 +3,6 @@ Feature: Search By Student Last Name
   A SIMS user
   Should be able to find students by enrollment year
 
-  Background:
-		Given clear login dropdowns
-    Given no other schools
-  
   Scenario: Search by year
     Given school "Glenn Stephens"
 		And student "Sally" "Carpenter" in grade 1 at "Glenn Stephens"
@@ -15,8 +11,8 @@ Feature: Search By Student Last Name
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister', 'Sally Carpenter']
 		And I have access to "My Group"
 		And I start at the school selection page
-#		And I select "Glenn Stephens" from "school_id"
-#		And I press "Choose School"
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
 		# And I start at the search page
     
     Then I should see select box with id of "search_criteria_year" and contains ['All', '', '2008', '2009']
@@ -49,8 +45,8 @@ Feature: Search By Student Last Name
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard']
 		And I have access to "My Group"
 		And I start at the school selection page
-#		And I select "Glenn Stephens" from "school_id"
-#		When I press "Choose School"
+		And I select "Glenn Stephens" from "school_id"
+		When I press "Choose School"
 		# And I start at the search page
     
     Then I should see select box with id of "search_criteria_year" and contains ['All', '2028']

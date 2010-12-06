@@ -3,10 +3,6 @@ Feature: Search By Student Groups
   A SIMS user
   Should be able to change the lower dropdowns when upper ones are changed
 
-  Background:
-    Given no other schools
-		Given clear login dropdowns
-
   Scenario: User With Two Groups  changes grade
     Given school "Central"
     And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"

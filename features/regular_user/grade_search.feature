@@ -3,9 +3,6 @@ Feature: Search Page
   A SIMS user
   Should be able to find students using search criteria
 
-	Background: 
-		Given clear login dropdowns
-
   Scenario: Search by grade *
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
@@ -13,8 +10,8 @@ Feature: Search Page
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
 		And I start at the the school selection page
-#		And I select "Glenn Stephens" from "school_id"
-#		And I press "Choose School"
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
 		# And I start at the the search page
 
     # When I select "*" from "students_grade"
@@ -32,8 +29,8 @@ Feature: Search Page
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
 		And I start at the the school selection page
-#		And I select "Glenn Stephens" from "school_id"
-#		And I press "Choose School"
+		And I select "Glenn Stephens" from "school_id"
+		And I press "Choose School"
 		# And I start at the the search page
 
     When I select "1" from "Grade"

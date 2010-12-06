@@ -1,5 +1,4 @@
 Given /^common data$/i do
-  clear_login_dropdowns
   @default_user = default_user
   @district = default_district
   @default_user.district = @district
@@ -15,7 +14,6 @@ Given /^common data$/i do
 end
 
 Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |user_name, key|
-  clear_login_dropdowns
   create_user user_name, 't'
 
   @user.update_attribute(:passwordhash,'')
@@ -25,12 +23,6 @@ Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |u
 
 
 end
-
-Given /clear login dropdowns/ do
-  clear_login_dropdowns
-end
-
-
 
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
@@ -52,20 +44,13 @@ Given /^quicklist choices (.*)$/i do |choices_array|
 end
 
 Given /^user "(.*)" with password "(.*)" exists$/ do |user_name, password|
-  clear_login_dropdowns
   create_user user_name, password
 end
 
 Given /^I log in as content_builder$/ do
-  District.destroy_all
-  InterventionDefinition.destroy_all
-  GoalDefinition.destroy_all
-  ObjectiveDefinition.destroy_all
-  InterventionCluster.destroy_all
   Factory(:tier)
   Factory(:time_length)
   Factory(:frequency)
-  clear_login_dropdowns
   u=create_user "content_builder", "content_builder"
   u.roles = "content_admin"
   u.save!
@@ -78,7 +63,6 @@ Given /^I log in as content_builder$/ do
 end
 
 Given /^I am a district admin$/ do
-  clear_login_dropdowns
   log_in
   @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["district_admin"])
   @default_user.save!

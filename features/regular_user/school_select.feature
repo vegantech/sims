@@ -3,16 +3,13 @@ Feature: School Selection
   A SIMS user
   Should be able to select from the available schools
 
-	Background:
-		Given clear login dropdowns
-  
   Scenario: School Choices Displayed
-    Given school "Glenn Stephens"
+    Given school "Default School"
 		And school "Velma Hamilton"
 
     When I start at the school selection page
 
-		Then I should see select box with id of "school_id" and contains ["Glenn Stephens", "Velma Hamilton"]
+		Then I should see select box with id of "school_id" and contains ["Default School", "Velma Hamilton"]
 
 	Scenario: Select Orchard Ridge
 		Given school "Orchard Ridge"
@@ -51,11 +48,11 @@ Feature: School Selection
     And page should contain "Choose School"
 
   Scenario: Auto Select School
-		Given clear login dropdowns
-    Given school "Glenn Stephens"
+    Given school "Default School"
 		#And school "Velma Hamilton"
 
     When I start at the school selection page
-    Then I should see "User doesn't have access to any students at Glenn Stephens"
+    And show me the page
+    Then I should see "User doesn't have access to any students at Default School"
 
 

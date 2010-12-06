@@ -40,6 +40,7 @@ Feature: Intervention Builder
     When I follow "New Intervention"
     And I fill in "Title" with "Intervention Title"
     And I fill in "Description" with "Intervention Description"
+    And I fill in "Time length" with "1"
     And I press "Create"
     Then I should see "Intervention was successfully created."
     Then I should see "Listing Interventions"

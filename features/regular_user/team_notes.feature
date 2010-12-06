@@ -3,9 +3,6 @@ Feature: Team Notes
   A SIMS user
   Should be able to view Team Notes report
 
-	Background:
-		Given clear login dropdowns
-  
   Scenario: Show Team Notes
     Given common data
 		And team note "First Team Note" on "01/09/08"
@@ -16,8 +13,8 @@ Feature: Team Notes
     And other school team note "Sixth Team Note" on "01/11/08"
     And unauthorized student team note "Seventh Team Note" on "01/11/08"
     And I start at the school selection page
-    And I select "Default School" from "school_id"
-    And I press "Choose School"
+#    And I select "Default School" from "school_id"
+#    And I press "Choose School"
     When I follow "Team Notes"
     And I select "January" from "start_date-mm"
     And I select "10" from "start_date-dd"

@@ -1,24 +1,27 @@
 Given /^an intervention with no progress monitors$/ do
-  Factory(:intervention,:student => @student)
+  Factory(:intervention,:student => @student, :intervention_definition => InterventionDefinition.first, :user => @user)
 end
 
 Given /^an intervention with one progress monitor chosen but no recommended monitors$/ do
-  intervention = Factory(:intervention,:student => @student)
-  ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
+
+  intervention = Factory(:intervention,:student => @student, :intervention_definition => InterventionDefinition.first, :user => @user)
+  ipa=Factory(:intervention_probe_assignment, :intervention => intervention, :probe_definitions => ProbeDefinition.first)
 end
 
 
 Given /^an intervention with one progress monitor chosen and one recommended monitor$/ do
-  intervention = Factory(:intervention,:student => @student)
-  ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
+  intervention = Factory(:intervention,:student => @student, :intervention_definition => InterventionDefinition.first, :user => @user)
+
+  ipa=Factory(:intervention_probe_assignment, :intervention => intervention, :probe_definition => ProbeDefinition.first)
   intervention.intervention_definition.probe_definitions << ipa.probe_definition
 end
 
 
 Given /^an intervention with two progress monitors but none selected$/ do
-  intervention = Factory(:intervention,:student => @student)
-  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "First Progress Monitor")
-  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "Second Progress Monitor")
+  intervention = Factory(:intervention,:student => @student,:intervention_definition => InterventionDefinition.first, :user => @user)
+
+  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "First Progress Monitor", :district=>@student.district)
+  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "Second Progress Monitor", :district => @student.district)
 end
 
 # <select onchange="$('spinnerassign_progress').show(); new Ajax.Updater('intervention_probe_assignment', 'http://localhost:3333/interventions/ajax_probe_assignment', {asynchronous:true, evalScripts:true, method:'get', onSuccess:function(request){$('spinnerassign_progress').hide();}, parameters:'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&amp;intervention_id=184330825' + '&amp;authenticity_token=' + encodeURIComponent('y8JC6pkZq5A1TeDKjKAyCRU5sRzodSD27pTWfebGgkI=')})" name="intervention[intervention_probe_assignment][probe_definition_id]" id="intervention_intervention_probe_assignment_probe_definition_id" class="fixed_width">

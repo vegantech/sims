@@ -3,13 +3,10 @@ Feature: Search By Student Groups
   A SIMS user
   Should be able to find students by Student Group criteria
 
-	Background: 
-		Given clear login dropdowns
-
   Scenario: User With One Group
-    Given school "Central"
-    And group "Blue Team" for school "Central" with student "Blue Floyd"
-    And group "Red Team" for school "Central" with student "Red Fred"
+    Given school "Default School"
+    And group "Blue Team" for school "Default School" with student "Blue Floyd"
+    And group "Red Team" for school "Default School" with student "Red Fred"
     And I have access to "Blue Team"
     And I start at the search page
 
@@ -28,9 +25,9 @@ Feature: Search By Student Groups
     And I should not see "Fred, Red"
 
   Scenario: User With Two Groups Picks One
-    Given school "East High"
-    And group "Orange Team" for school "East High" with student "Alfie Orange"
-    And group "Maroon Team" for school "East High" with student "Harold Yerbie"
+    Given school "Default School"
+    And group "Orange Team" for school "Default School" with student "Alfie Orange"
+    And group "Maroon Team" for school "Default School" with student "Harold Yerbie"
     And I have access to "Orange Team"
     And I have access to "Maroon Team"
     And I start at the search page
@@ -44,11 +41,11 @@ Feature: Search By Student Groups
 
 
   Scenario: User with Two groups picks one shared by another user Lighthouse 209
-    Given school "Central"
-    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "1"
-    And group "Red Team" for school "Central" with student "Red Fred" in grade "3"
-    And group "Yellow Team" for school "Central" with student "Yellow Mellow" in grade "3"
-    And group "Green Team" for school "Central" with student "Green Gene" in grade "3"
+    Given school "Default School"
+    And group "Blue Team" for school "Default School" with student "Blue Floyd" in grade "1"
+    And group "Red Team" for school "Default School" with student "Red Fred" in grade "3"
+    And group "Yellow Team" for school "Default School" with student "Yellow Mellow" in grade "3"
+    And group "Green Team" for school "Default School" with student "Green Gene" in grade "3"
     And I have access to ["Blue Team","Red Team", "Yellow Team", "Green Team"]
     And "Other_Guy" has access to ["Blue Team", "Yellow Team", "Green Team"]
     And I start at the search page
@@ -68,9 +65,9 @@ Feature: Search By Student Groups
 
 
   Scenario: User with two groups, changes member  grade 3
-    Given school "Central"
-    And group "Blue Team" for school "Central" with student "Blue Floyd" in grade "3"
-    And group "Red Team" for school "Central" with student "Red Fred" in grade "1"
+    Given school "Default School"
+    And group "Blue Team" for school "Default School" with student "Blue Floyd" in grade "3"
+    And group "Red Team" for school "Default School" with student "Red Fred" in grade "1"
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
     And I start at the search page
