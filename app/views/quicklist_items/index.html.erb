@@ -1,11 +1,16 @@
 <h1>Intervention Quicklist for <%=current_school%> </h1>
 
-<p> After you press "Submit Quicklist Assignments" the checked boxes will to appear in the "Intervention Quicklist" when assigning an intervention to a student.   You can pick
+<p> After you press "Submit Quicklist Assignments" the checked boxes will appear in the "Intervention Quicklist" when assigning an intervention to a student.   You can pick
 the most used interventions, or ones that you recommend.
 </p>
+
+
 <% form_tag '',:id =>'quicklist_items' do %>
+  <% @goals.reject(&:disabled).each do |goal| %>
+  <%=link_to  goal.title,"##{goal.title.to_s.gsub(/ /,"_")}" %>
+<% end %>
 <% @goals.reject(&:disabled).each do |goal| %>
-  <%= content_tag :h2, goal.title  %>
+  <%= content_tag :h2, goal.title, :id => goal.title.to_s.gsub(/ /,"_")  %>
   <% goal.objective_definitions.reject(&:disabled).each do |objective| %>
     <%= content_tag :h2, objective.title, :class => "objective" %>
     <% objective.intervention_clusters.reject(&:disabled).each do |category| %>

@@ -546,10 +546,16 @@ table.grouped_progress_entry thead {
   color:green;
 }
 
+#quicklist_items h2 {
+  color:Navy;
+
+}
 #quicklist_items h2.objective {
   font-size: 18px;
+  color:blue;
 }
 #quicklist_items h2.category{
   font-size: 17px;
+  color:DodgerBlue;
 
 }
