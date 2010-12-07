@@ -23,6 +23,7 @@ Feature: Create Intervention
     And I fill in "Add new comment about the intervention plan and progress" with "test cucumber comment"
     And I should not see "Edit/view scores"
     And I press "Save"
+    And I clear the headers in rack_test
     When I follow "Edit/Add Comment"
     Then I should see "test cucumber comment"
 

@@ -225,6 +225,9 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   else
     flunk page.body
   end
+  set_headers({"HTTP_X_REQUESTED_WITH" => nil})
+  set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>nil})
+  set_headers({"REQUEST_METHOD"=>nil})
 
   Array(eval(target_fields)).each do |target_field|
     page.body.should match(/Element.update\("#{target_field}"/)

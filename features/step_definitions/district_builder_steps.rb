@@ -9,6 +9,7 @@ end
 Then /^I call ajax check_id_state with "(.*)"$/ do |id_state|
   set_headers({"HTTP_X_REQUESTED_WITH" => "XMLHttpRequest"})
   visit check_id_state_district_students_url(:student=>{:id_state=>id_state})
+  set_headers({"HTTP_X_REQUESTED_WITH" => nil})
 end
   
 Then /^I should see an alert$/ do
@@ -35,6 +36,8 @@ When /^I magically visit "([^\"]*)"$/ do |url|
     set_headers({"REQUEST_METHOD"=>"PUT"})
 
     visit "/#{$1}"
+    set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>nil})
+    set_headers({"REQUEST_METHOD"=>nil})
 end
   
 

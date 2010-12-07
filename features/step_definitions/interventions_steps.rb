@@ -62,6 +62,9 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
   else
     fail
   end
+  set_headers({"HTTP_X_REQUESTED_WITH" => nil})
+  set_headers({"HTTP_X_HTTP_METHOD_OVERRIDE"=>nil})
+  set_headers({"REQUEST_METHOD"=>nil})
 end
   
 

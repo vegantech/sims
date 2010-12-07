@@ -15,6 +15,8 @@ Feature: Team Notes
     And I start at the school selection page
 #    And I select "Default School" from "school_id"
 #    And I press "Choose School"
+    And I clear the headers in rack_test
+
     When I follow "Team Notes"
     And I select "January" from "start_date-mm"
     And I select "10" from "start_date-dd"
