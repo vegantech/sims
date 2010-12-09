@@ -7,7 +7,7 @@ module CSVImporter
         :middle_name =>"Middle Name",
         :last_name =>"Last Name",
         :suffix =>"Suffix",
-        :email =>"Email address",
+        :email =>"Email address (must be valid)",
         :passwordhash =>'The encoded password.   Encode the password using the following:  
 SHA1.encode("#{system_hash}#{password.downcase}#{district_key}#{salt}")
   replacing the #{} with the appropriate values.  system_hash is currently blank.   
