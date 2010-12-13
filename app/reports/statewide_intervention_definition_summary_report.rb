@@ -6,7 +6,6 @@ end
 
 class StatewideInterventionDefinitionSummaryReport < DefaultReport 
   stage :header, :body
-  required_option :objective_definition
   load_html_csv_text
 
   def setup
@@ -52,44 +51,34 @@ class StatewideInterventionDefinitionSummary
     return unless defined? Ruport
 
     #group concat works well!
-    InterventionDefinition.find(:all,
+    eee= InterventionDefinition.connection.send(:select, 
+    InterventionDefinition.send( :construct_finder_sql,{
      :group=>"intervention_definitions.title, intervention_clusters.title, objective_definitions.title, goal_definitions.title", 
-     :select => "intervention_definitions.*,intervention_clusters.title as category, objective_definitions.title as objective, 
+     :select => "intervention_definitions.title, intervention_definitions.description, intervention_clusters.title as category, objective_definitions.title as objective, 
      goal_definitions.title as goal, frequencies.title as frequency_title, 
-     time_lengths.title as time_length_title,count(goal_definitions.district_id) as count_of_districts, count(interventions.id) as count_of_interventions,
-     group_concat(distinct probe_definitions.title separator ', ' ) as progress_monitors
+     time_lengths.title as time_length_title,
+     count(goal_definitions.district_id) as count_of_districts, count(interventions.id) as count_of_interventions,
+     group_concat(distinct probe_definitions.title separator ', ' ) as progress_monitors,
+     concat(tiers.position,' - ',tiers.title) as tier
      ",
      :joins => "inner join intervention_clusters on intervention_clusters.id = intervention_definitions.intervention_cluster_id
     inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id
     inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id
     inner join frequencies on frequencies.id = intervention_definitions.frequency_id
     inner join time_lengths on time_lengths.id = intervention_definitions.time_length_id
+    inner join tiers on tiers.id = intervention_definitions.tier_id
     left outer join interventions on interventions.intervention_definition_id = intervention_definitions.id
     left outer join recommended_monitors on recommended_monitors.intervention_definition_id = intervention_definitions.id
     left join probe_definitions on recommended_monitors.probe_definition_id = probe_definitions.id
     
     ", :order => "goal, objective, category, title",
     :conditions => "intervention_definitions.custom=false and intervention_definitions.disabled=false"
-                                                          )
-
-    a = InterventionDefinition.report_table(:all,
-      :conditions => ["intervention_clusters.objective_definition_id = ? and custom = ? and (intervention_definitions.disabled = ?
-          or intervention_definitions.disabled is null )", @obj, false, false],
-      :include => {:tier=>{:only => ""}, :time_length => {:only => ""}, :frequency => {:only => ""} ,
-        :intervention_cluster => {:only => 'title', :include => {:objective_definition=>{:only => "",:include => {:goal_definition =>{:only => ""}}}}}},
-      :only => [:description],
-      :methods => ['bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments'])
-    if a.column_names.present?
-      a.rename_columns(a.column_names,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
-      a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
-      a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
-    else
-      a.add_columns(['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ])
-      
-    end
+                                                          }))
+    Table :data => eee, :column_names => eee.first.keys
   end
 
   def to_grouping
+    return to_table
     if @group.present?
       return @group
     else
