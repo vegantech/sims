@@ -54,7 +54,7 @@ class StatewideInterventionDefinitionSummary
      :select => "intervention_definitions.title, intervention_definitions.description, intervention_clusters.title as category, objective_definitions.title as objective, 
      goal_definitions.title as goal, concat(intervention_definitions.frequency_multiplier, ' - ',frequencies.title) as frequency, 
      concat(intervention_definitions.time_length_num,' - ',time_lengths.title) as duration,
-     count(goal_definitions.district_id) as count_of_districts, count(interventions.id) as count_of_interventions,
+     count(distinct goal_definitions.district_id) as count_of_districts, count(distinct interventions.id) as count_of_interventions,
      group_concat(distinct probe_definitions.title separator ', ' ) as progress_monitors,
      concat(tiers.position,' - ',tiers.title) as tier
      ",

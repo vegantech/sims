@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary, :user_interventions, :grouped_progress_entry
+  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, 
+    :student_flag_summary, :user_interventions, :grouped_progress_entry, :statewide_interventions, :statewide_progress_monitors
   skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
 
   # TODO: Add an actual link to this in the GUI!
@@ -20,6 +21,16 @@ class ReportsController < ApplicationController
     render :text => @report
 
   end
+
+  def statewide_progress_monitors
+    fmt='html'
+    report_options = {}
+    @report = StatewideProgressMonitorSummaryReport.render_html
+    render :text => @report
+
+  end
+
+
 
   def grouped_progress_entry
     flash[:notice]="You must complete a search first" and redirect_to root_url and return  if session[:search].blank?

@@ -51,20 +51,23 @@ class StatewideProgressMonitorSummary
     eee= ProbeDefinition.connection.send(:select, 
     ProbeDefinition.send( :construct_finder_sql,{
      :group=>"probe_definitions.title", 
-     :select => "probe_definitions.* ,
+     :select => "probe_definitions.title, probe_definitions.minimum_score, probe_definitions.maximum_score,probe_definitions.description, 
       group_concat(distinct intervention_definitions.title separator ', ' ) as interventions,
-     count(probe_definitions.district_id) as count_of_districts 
+     count(distinct probe_definitions.district_id) as count_of_districts ,
+     count(distinct probes.id) as count_of_scores
      ",
 #     count(interventions.id) as count_of_interventions,
      :joins => "
     left outer join recommended_monitors on recommended_monitors.probe_definition_id = probe_definitions.id
     left join intervention_definitions on recommended_monitors.probe_definition_id = intervention_definitions.id
+    left outer join intervention_probe_assignments on probe_definitions.id = intervention_probe_assignments.probe_definition_id
+    left outer join probes on probes.intervention_probe_assignment_id = intervention_probe_assignments.id
     
     ", :order => "title",
     :conditions => "probe_definitions.active=true and probe_definitions.custom=false"
                                                           }))
     t=Table :data => eee, :column_names => eee.first.keys
-#    t.reorder 'goal','objective','category','tier','title','description', 'frequency', 'duration', 'progress_monitors','count_of_districts', 'count_of_interventions'
+    t.reorder 'title','description', 'minimum_score', 'maximum_score', 'interventions','count_of_districts', 'count_of_scores'
   end
 
   def to_grouping
