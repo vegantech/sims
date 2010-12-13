@@ -17,7 +17,6 @@ class StatewideInterventionDefinitionSummaryReport < DefaultReport
 
     build :header do
       pad_bottom(10) do
-        add_text ObjectiveDefinition.find(options.objective_definition).title, :justification => :center
       end
     end
 
@@ -43,8 +42,6 @@ end
 class StatewideInterventionDefinitionSummary
 
   def initialize(options = {})
-#    @obj = ObjectiveDefinition.find options[:objective_definition]
-#    @group = options[:group]
   end
 
   def to_table
@@ -55,8 +52,8 @@ class StatewideInterventionDefinitionSummary
     InterventionDefinition.send( :construct_finder_sql,{
      :group=>"intervention_definitions.title, intervention_clusters.title, objective_definitions.title, goal_definitions.title", 
      :select => "intervention_definitions.title, intervention_definitions.description, intervention_clusters.title as category, objective_definitions.title as objective, 
-     goal_definitions.title as goal, frequencies.title as frequency_title, 
-     time_lengths.title as time_length_title,
+     goal_definitions.title as goal, concat(intervention_definitions.frequency_multiplier, ' - ',frequencies.title) as frequency, 
+     concat(intervention_definitions.time_length_num,' - ',time_lengths.title) as duration,
      count(goal_definitions.district_id) as count_of_districts, count(interventions.id) as count_of_interventions,
      group_concat(distinct probe_definitions.title separator ', ' ) as progress_monitors,
      concat(tiers.position,' - ',tiers.title) as tier
@@ -71,19 +68,19 @@ class StatewideInterventionDefinitionSummary
     left outer join recommended_monitors on recommended_monitors.intervention_definition_id = intervention_definitions.id
     left join probe_definitions on recommended_monitors.probe_definition_id = probe_definitions.id
     
-    ", :order => "goal, objective, category, title",
+    ", :order => "goal, objective, category, tier, title",
     :conditions => "intervention_definitions.custom=false and intervention_definitions.disabled=false"
                                                           }))
-    Table :data => eee, :column_names => eee.first.keys
+    t=Table :data => eee, :column_names => eee.first.keys
+    t.reorder 'goal','objective','category','tier','title','description', 'frequency', 'duration', 'progress_monitors','count_of_districts', 'count_of_interventions'
   end
 
   def to_grouping
-    return to_table
     if @group.present?
       return @group
     else
       @table ||= to_table
-      @group = Ruport::Data::Grouping(@table, :by => 'Tier', :order => :name) 
+#      @group = Ruport::Data::Grouping(@table, :by => ['goal','objective'])
     end
   end
 end

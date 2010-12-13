@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
   additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, :student_flag_summary, :user_interventions, :grouped_progress_entry
+  skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
 
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA
@@ -10,6 +11,14 @@ class ReportsController < ApplicationController
       :user => current_user)
     request.env['HTTP_REFERER'] ||= '/'
     handle_report_postback StudentFlagReport, 'student_flag_summary', :search=>search_criteria
+  end
+
+  def statewide_interventions
+    fmt='html'
+    report_options = {}
+    @report = StatewideInterventionDefinitionSummaryReport.render_html
+    render :text => @report
+
   end
 
   def grouped_progress_entry
