@@ -16,7 +16,38 @@
         </tr>
       </thead>
       <tbody>
-        <%= render :partial =>'enrolled_student', :collection=>@students -%>
+        <% @students.each do |enrolled_student|  %>  
+      <% if current_district.id == enrolled_student.student.district_id %>
+        <tr class="<%= cycle('', 'list-line-even') %>">
+          <td style="text-align:center;">
+            <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
+          </td>
+
+          <td style="text-align:left;">
+            <%= label_tag(dom_id(enrolled_student.student),"#{enrolled_student.student.last_name}, #{enrolled_student.student.first_name}") %>
+          </td>
+          <td style="text-align: center;">
+            <%= enrolled_student.student.number %>
+          </td>
+          <td style="text-align: center;">
+            <%= enrolled_student.grade %>
+          </td>
+          <td style="text-align: center;">
+            <%= yes_or_no enrolled_student.student.esl %>
+          </td>
+          <td style="text-align: center;">
+            <%= yes_or_no enrolled_student.student.special_ed %>
+          </td>
+
+          
+          <td>
+            <%cache ["status_display",enrolled_student.student] do %>
+              <%=status_display(enrolled_student.student) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
       </tbody>
     </table>
   </div>
