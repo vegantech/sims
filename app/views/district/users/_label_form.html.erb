@@ -6,7 +6,7 @@
   <%= label_form.text_field :middle_name %>
   <%= label_form.text_field :last_name %>
   <%= label_form.text_field :suffix %>
-  <%= label_form.text_field :email %>
+  <%= label_form.text_field :email ,:help =>"This must be a valid email address" %>
   <%= label_form.text_field :district_user_id, :label => "Primary key in your <br />Student Information System", 
         :help => "The primary key used to identify this user in your Student Information System.  It might be a personID, or userID or something similar." %>
 

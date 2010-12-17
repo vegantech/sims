@@ -27,7 +27,7 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
     options = args.extract_options!
     label = @template.content_tag(:b,label(field, options[:label], :class => options[:label_class]))
     help = options[:help]? ' ' +@template.help_popup(options[:help]) : ''
-    @template.content_tag(:div, '' + super + label + help, :class => 'form_row')  #wrap with a div form_Row
+    @template.content_tag(:div, '' +  label + help + super, :class => 'form_row')  #wrap with a div form_Row
   end
 
 

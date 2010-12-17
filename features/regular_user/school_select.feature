@@ -11,21 +11,22 @@ Feature: School Selection
 
 		Then I should see select box with id of "school_id" and contains ["Default School", "Velma Hamilton"]
 
-	Scenario: Select Orchard Ridge
-		Given school "Orchard Ridge"
+	Scenario: Select Empty School
+		Given school "Empty School"
 		And school "Ridge View"
-    And group "My Group" for school "Orchard Ridge"
+    And group "My Group" for school "Empty School"
     And I have access to "My Group"
 		And I start at the school selection page
 
-		When I select "Orchard Ridge" from "school_id"
+		When I select "Empty School" from "school_id"
 		And I press "Choose School"
-                And I should see "User doesn't have access to any students at Orchard Ridge"
+    And I should see "Empty School has no students enrolled."
 
 
 	Scenario: Select Ridge View
 		Given school "Orchard Ridge"
 		And school "Ridge View"
+    And group "Maroon Team" for school "Ridge View" with student "Harold Yerbie"
     And group "My Group" for school "Ridge View"
     And I have access to "My Group"
 		And I start at the school selection page
@@ -52,7 +53,6 @@ Feature: School Selection
 		#And school "Velma Hamilton"
 
     When I start at the school selection page
-    And show me the page
-    Then I should see "User doesn't have access to any students at Default School"
+    Then I should see "Default School has no students enrolled"
 
 
