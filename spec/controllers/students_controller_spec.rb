@@ -126,7 +126,35 @@ describe StudentsController do
 
   describe 'search' do
     describe 'GET' do
-          
+
+      it 'should redirect with a flash when the school is empty' do
+        user=mock_user
+        school=mock_school
+        controller.stub!(:current_school => school)
+        controller.stub!(:current_user => user)
+        school.should_receive(:grades_by_user).with(user).and_return([])
+        school.should_receive(:students).and_return([])
+        get :search
+        flash[:notice].should == "#{school} has no students enrolled."
+        response.should redirect_to(schools_url)
+
+      end
+
+      it 'should redirect with a flash when there are no authorized students' do
+        user=mock_user
+        school=mock_school
+        controller.stub!(:current_school => school)
+        controller.stub!(:current_user => user)
+        school.should_receive(:grades_by_user).with(user).and_return([])
+        school.should_receive(:students).and_return([1])
+        get :search
+        flash[:notice].should == "User doesn't have access to any students at #{school}."
+        response.should redirect_to(schools_url)
+
+      end
+ 
+
+
       it 'should set @grades and render search template' do
         user=mock_user
         school=mock_school
