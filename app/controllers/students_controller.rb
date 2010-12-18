@@ -48,17 +48,7 @@ class StudentsController < ApplicationController
 
   def search
     if request.get?
-      @grades = current_school.grades_by_user(current_user) unless current_school.blank?
-      if @grades.blank?
-        if current_school.students.empty?
-          flash[:notice] = "#{current_school} has no students enrolled."
-        else
-          flash[:notice] = "User doesn't have access to any students at #{current_school}." 
-        end
-        redirect_to schools_url and return
-      end
-
-
+      check_school_and_set_grades or return false
       @groups=current_user.filtered_groups_by_school(current_school)
       @users=current_user.filtered_members_by_school(current_school)
       @years = current_school.enrollment_years
@@ -153,4 +143,36 @@ class StudentsController < ApplicationController
       end
       redirect_to session[:requested_url] and return false
   end
+
+  def check_school_and_set_grades
+    if current_school.blank?
+      try_to_auto_select_school or return false
+    end
+
+    @grades = current_school.grades_by_user(current_user)
+    if @grades.blank?
+      if current_school.students.empty?
+        flash[:notice] = "#{current_school} has no students enrolled."
+      else
+        flash[:notice] = "User doesn't have access to any students at #{current_school}." 
+      end
+      redirect_to schools_url and return
+    end
+    return true
+  end
+
+  def try_to_auto_select_school
+    s=current_user.authorized_schools
+    if s.size == 1
+      session[:school_id] = s.first.id
+      flash[:notice]=s.first.name + "has been automatically selected"
+      return true
+    else
+      flash[:notice]="No school selected."
+      redirect_to schools_url
+      return false
+    end
+  end
+
+
 end

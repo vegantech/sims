@@ -126,6 +126,12 @@ describe StudentsController do
 
   describe 'search' do
     describe 'GET' do
+      it 'should redirect with a flash when there is no school selected' do
+        get :search
+        flash[:notice].should == "No school selected."
+        response.should redirect_to(schools_url)
+
+      end
 
       it 'should redirect with a flash when the school is empty' do
         user=mock_user
