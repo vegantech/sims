@@ -15,19 +15,14 @@ class ReportsController < ApplicationController
   end
 
   def statewide_interventions
-    fmt='html'
-    report_options = {}
-    @report = StatewideInterventionDefinitionSummaryReport.render_html
-    render :text => @report
-
+    request.env['HTTP_REFERER'] ||= '/'
+    handle_report_postback StatewideInterventionDefinitionSummaryReport, 
+      'statewide_interventions', :search=>{}
   end
 
   def statewide_progress_monitors
-    fmt='html'
-    report_options = {}
-    @report = StatewideProgressMonitorSummaryReport.render_html
-    render :text => @report
-
+    request.env['HTTP_REFERER'] ||= '/'
+    handle_report_postback StatewideProgressMonitorSummaryReport, "statewide_progress_monitors", :search=>{}
   end
 
 
