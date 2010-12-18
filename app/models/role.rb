@@ -1,8 +1,8 @@
 class Role 
 
   SYSTEM_ROLES ={
-                  "district_admin" => 'Add a logo, set the district key, add users, add schools, 
-                  assign roles, add students, enroll students, import files, set district abbreviation',
+                  "local_system_administrator" => 'Add a logo, set the district key, add users, add schools, 
+                  assign roles, add students, enroll students, import files, set district abbreviation (formerly district admin)',
                   "content_admin" => 'Setup Goals, Objectives, Categories, Interventions, Tiers, Checklists, and Progress Monitors', 
                   "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
                   "regular_user" => 'Regular user of SIMS', 
@@ -13,11 +13,11 @@ class Role
 
 
 
-  ROLES = %w{ district_admin content_admin school_admin regular_user news_admin state_admin country_admin}
+  ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin state_admin country_admin}
   CSV_HEADERS = [:district_user_id]
 
   HELP = {
-    "district_admin" => [{:name => "Change your logo and url", :url=> "/help/edit_district"}]
+    "local_system_administrator" => [{:name => "Change your logo and url", :url=> "/help/edit_district"}]
   }
 
   HELP.default = []

@@ -81,7 +81,7 @@ district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_test
-  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin district_admin} %>
+  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin local_system_administrator} %>
   <<: *DEFAULTS
 
 
@@ -99,7 +99,7 @@ system_admin:
   username: district_admin
   district: admin_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin district_admin} %>
+  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin local_system_administrator} %>
  
 us_admin:
   first_name: UnitedStates
@@ -107,7 +107,7 @@ us_admin:
   username: district_admin
   district: us_admin_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin district_admin} %>
+  roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin local_system_administrator} %>
  
 wi_admin:
   first_name: Wisconsin
@@ -115,6 +115,6 @@ wi_admin:
   username: district_admin
   district: wi_admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
-  roles_mask: <%=Role.roles_to_mask %w{news_admin state_admin district_admin} %>
+  roles_mask: <%=Role.roles_to_mask %w{news_admin state_admin local_system_administrator} %>
   
 
