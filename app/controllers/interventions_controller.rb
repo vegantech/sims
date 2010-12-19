@@ -19,6 +19,11 @@ class InterventionsController < ApplicationController
 
   # GET /interventions/new
   def new
+    if current_student.blank?
+      flash[:notice] = "Please select a student."
+      redirect_to students_url and return
+    end
+
     flash.keep(:custom_intervention)
     flash[:custom_intervention] ||= params[:custom_intervention]
     @quicklist = true if params[:quicklist]

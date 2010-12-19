@@ -85,6 +85,15 @@ describe InterventionsController do
 
   end
 
+  describe 'without student' do
+    it 'should redirect to select students with a flash message' do
+      controller.should_receive(:current_student).and_return(nil)
+      get :new
+      response.should redirect_to(students_url)
+      flash[:notice].should == "Please select a student."
+    end
+  end
+
   describe "responding to GET new" do
     before do
       controller.stub_association!(:current_school, :quicklist_items=>[])
