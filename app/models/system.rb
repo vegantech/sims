@@ -14,7 +14,7 @@ class System
     if admin_district.nil?
       d=District.create(:admin => true, :name => "Administration", :abbrev => 'admin')
       u=d.users.first
-      u.roles=['district_admin','state_admin']
+      u.roles=['local_system_administrator','state_admin']
       u.save!
     end
 

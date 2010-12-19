@@ -1,16 +1,27 @@
-<% form_tag do %>
+<h1>Intervention Quicklist for <%=current_school%> </h1>
+
+<p> After you press "Submit Quicklist Assignments" the checked boxes will appear in the "Intervention Quicklist" when assigning an intervention to a student.   You can pick
+the most used interventions, or ones that you recommend.
+</p>
+
+
+<% form_tag '',:id =>'quicklist_items' do %>
+  <% @goals.reject(&:disabled).each do |goal| %>
+  <%=link_to  goal.title,"##{goal.title.to_s.gsub(/ /,"_")}" %>
+<% end %>
 <% @goals.reject(&:disabled).each do |goal| %>
-  <%= content_tag :h2, goal.title %>
+  <%= content_tag :h2, goal.title, :id => goal.title.to_s.gsub(/ /,"_")  %>
   <% goal.objective_definitions.reject(&:disabled).each do |objective| %>
-    <%= content_tag :h2, objective.title %>
+    <%= content_tag :h2, objective.title, :class => "objective" %>
     <% objective.intervention_clusters.reject(&:disabled).each do |category| %>
-      <%= content_tag :h2, category.title %>
+      <%= content_tag :h2, category.title ,:class => "category" %>
       <% category.intervention_definitions.reject(&:disabled).group_by(&:tier).sort.each do |tier,interventions| %>
         <%= content_tag :h3, tier %>
         <%interventions.each do |intervention| %>
+          <div class="quicklist_item">
           <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
           <%= label_tag dom_id(intervention), intervention.title %> 
-          <br />
+        </div>
         <% end %>
       <% end %>
     <% end %>

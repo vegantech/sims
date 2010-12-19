@@ -1,6 +1,6 @@
 class Right 
 
-RIGHTS={"district_admin" =>
+RIGHTS={"local_system_administrator" =>
   [
   {:read_access=>true,
     :controller=>"district/users",

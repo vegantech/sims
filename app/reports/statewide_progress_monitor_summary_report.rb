@@ -8,32 +8,35 @@ class StatewideProgressMonitorSummaryReport < DefaultReport
   stage :header, :body
   load_html_csv_text
 
+
   def setup
     self.data = StatewideProgressMonitorSummary.new(options)
   end
 
   class PDF < Ruport::Formatter::PDF
     renders :pdf, :for => StatewideProgressMonitorSummaryReport
-
     build :header do
       pad_bottom(10) do
       end
     end
 
+
     build :body do
       pdf_writer.start_page_numbering(350, 10, 8, :center, 'Page: <PAGENUM>')
-      pdf_writer.font_size = 8
-      render_grouping data.to_grouping, :table_format => {
+      pdf_writer.font_size = 6
+      #757
+      table_format = {
         :column_options => {
-          'Category' => {:width => 95},
-          'Title' => {:width => 110},
-          'Description' => {:width => 230},
-          'Progress Monitors' => {:width => 115},
-          'Duration / Frequency' => {:width => 68},
-          'Links and Attachments' => {:width => 90},
-          'Bus. Key' => {:width => 49}
-        }
-      }, :formatter => pdf_writer
+          'Title' => {:width => 125},
+          'Description' => {:width => 125},
+          'Min Score' => {:width => 75},
+          'Max Score' => {:width => 75},
+          'Interventions' => {:width => 150},
+          'Districts' => {:width => 100},
+          'Scores' => {:width => 100}
+      }}
+
+      render_table data.to_table, :table_format =>  {}     , :formatter => pdf_writer
     end
   end
 end
@@ -51,10 +54,10 @@ class StatewideProgressMonitorSummary
     eee= ProbeDefinition.connection.send(:select, 
     ProbeDefinition.send( :construct_finder_sql,{
      :group=>"probe_definitions.title", 
-     :select => "probe_definitions.title, probe_definitions.minimum_score, probe_definitions.maximum_score,probe_definitions.description, 
-      group_concat(distinct intervention_definitions.title separator ', ' ) as interventions,
-     count(distinct probe_definitions.district_id) as count_of_districts ,
-     count(distinct probes.id) as count_of_scores
+     :select => "probe_definitions.title as Title, probe_definitions.minimum_score as 'Min Score', probe_definitions.maximum_score as 'Max Score',probe_definitions.description as Description, 
+      group_concat(distinct intervention_definitions.title separator ', ' ) as Interventions,
+     count(distinct probe_definitions.district_id) as 'Districts' ,
+     count(distinct probes.id) as 'Scores'
      ",
 #     count(interventions.id) as count_of_interventions,
      :joins => "
@@ -63,19 +66,19 @@ class StatewideProgressMonitorSummary
     left outer join intervention_probe_assignments on probe_definitions.id = intervention_probe_assignments.probe_definition_id
     left outer join probes on probes.intervention_probe_assignment_id = intervention_probe_assignments.id
     
-    ", :order => "title",
+    ", :order => "Title",
     :conditions => "probe_definitions.active=true and probe_definitions.custom=false"
                                                           }))
     t=Table :data => eee, :column_names => eee.first.keys
-    t.reorder 'title','description', 'minimum_score', 'maximum_score', 'interventions','count_of_districts', 'count_of_scores'
+    t.reorder 'Title','Description', 'Min Score', 'Max Score', 'Interventions','Districts', 'Scores'
   end
 
   def to_grouping
     if @group.present?
       return @group
     else
+      
       @table ||= to_table
-#      @group = Ruport::Data::Grouping(@table, :by => ['goal','objective'])
     end
   end
 end
