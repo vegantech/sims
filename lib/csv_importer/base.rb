@@ -8,6 +8,8 @@ module CSVImporter
       @file_name = file_name
       @messages = []
       @clean_file = nil
+      @deleted,@updated,@created=nil
+      @other_messages = ""
     end
 
     def import
@@ -20,9 +22,18 @@ module CSVImporter
         end
       end
 
-       @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
+      @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
+      status_count = []
+      status_count << "\nCreated- #{@created}" if @created
+      status_count << "Deleted- #{@deleted}" if @deleted
+      status_count << "Updated- #{@updated}" if @updated
+      status_count << @other_messages unless @other_messages.blank?
+
+      @messages << status_count.compact.join("; ") unless status_count.compact.blank?
+
+
        
-      @messages.join(", ")
+      @messages.compact.join(", ")
     end
 
     class << self
@@ -143,9 +154,9 @@ module CSVImporter
     
     def insert_update_delete
       #override this for a different order
-      delete
-      update
-      insert
+      @deleted=delete
+      @updated=update
+      @created=insert
     end
 
     def delete

@@ -193,11 +193,11 @@ module CSVImporter
     
     def claim_students_with_nil_district
       
-      claimed_count = ActiveRecord::Base.connection.update_sql("update students s inner join #{temporary_table_name} ts on 
+      claimed_count = ActiveRecord::Base.connection.update("update students s inner join #{temporary_table_name} ts on 
       ts.id_state = s.id_state or (ts.id_state is null and s.id_state is null) set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id where s.district_id is null and
                                                                (ts.id_state is not null or (ts.birthdate = s.birthdate and ts.first_name = s.first_name and 
                                                                ts.last_name = s.last_name and ts.birthdate is not null and ts.id_state is null and s.id_state is null ) ) ")
-      @messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
+      @other_messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
       
      
       #do select and add to messages
@@ -218,7 +218,7 @@ module CSVImporter
       q="update students s inner join #{temporary_table_name} ts on 
           ts.district_student_id = s.district_student_id set s.updated_at = CURDATE(), #{updates}
           where s.district_id = #{@district.id} and s.district_student_id is not null"
-      ActiveRecord::Base.connection.update_sql(q)
+      @updated=ActiveRecord::Base.connection.update(q)
     end
 
     def delete
@@ -227,7 +227,8 @@ module CSVImporter
           ts.district_student_id = s.district_student_id set s.district_id = null
           where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
      
-      ActiveRecord::Base.connection.update_sql(q)
+      removed=ActiveRecord::Base.connection.update(q)
+      @other_messages << "#{removed} students removed from district; "
        
       #prune the districtless students
       
@@ -250,7 +251,7 @@ module CSVImporter
       )
 
      
-     ActiveRecord::Base.connection.update_sql(query)
+     @created = ActiveRecord::Base.connection.update(query)
     end
 
     def confirm_count?

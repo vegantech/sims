@@ -64,7 +64,7 @@ module CSVImporter
       where users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_SCHOOLS_IN_DISTRICT}
       "
-      SpecialUserGroup.connection.execute query
+      SpecialUserGroup.connection.delete query
     end
 
     def insert
@@ -75,7 +75,7 @@ module CSVImporter
       and u.district_id = #{@district.id}  
       "
       )
-      SpecialUserGroup.connection.execute query
+      SpecialUserGroup.connection.update query
     end
   end
 end
