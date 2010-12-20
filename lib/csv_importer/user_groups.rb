@@ -95,7 +95,7 @@ extra ="      where not exists (
         select 1 from #{temporary_table_name} tug
         where tug.district_user_id = users.district_user_id and tug.district_group_id = groups.district_group_id)
       )"
-      UserGroupAssignment.connection.execute query
+      UserGroupAssignment.connection.update query
     end
 
     def insert
@@ -108,7 +108,7 @@ extra ="      where not exists (
       and u.district_id = #{@district.id}  
       "
       )
-      Group.connection.execute query
+      Group.connection.update query
     end
   end
 end

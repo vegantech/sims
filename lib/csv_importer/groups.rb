@@ -70,13 +70,7 @@ module CSVImporter
         where sch.district_id= #{@district.id}
       "
       )
-      ActiveRecord::Base.connection.execute query
-    end
-
-    def insert_update_delete
-      delete
-            update
-            insert
+      ActiveRecord::Base.connection.update query
     end
 
     def delete
@@ -87,7 +81,7 @@ module CSVImporter
        inner join schools sch on g.school_id = sch.id and sch.district_id= #{@district.id}
        where tg.district_school_id is null and sch.district_school_id is not null and g.district_group_id is not null and g.district_group_id != ''
         "
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
 
     def insert
@@ -102,7 +96,7 @@ module CSVImporter
       and sch.district_school_id is not null
       "
       )
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
   end
 end

@@ -78,8 +78,7 @@ module CSVImporter
        where 
        stu.district_student_id is not null
         "
-        puts query
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
 
     def insert
@@ -91,8 +90,7 @@ module CSVImporter
       and  stu.district_student_id is not null 
       "
       )
-        puts query
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
    def confirm_count?
      return true

@@ -62,7 +62,7 @@ module CSVImporter
        inner join schools sch on usa.school_id = sch.id and sch.district_id= #{@district.id}
        where sch.district_school_id is not null
         "
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
 
     def insert
@@ -74,7 +74,7 @@ module CSVImporter
       where sch.district_id= #{@district.id} and u.district_id = #{@district.id}
       "
       )
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
    
 

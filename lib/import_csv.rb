@@ -109,7 +109,6 @@ class ImportCSV
     
     base_file_name = File.basename(file_name)
     c="CSVImporter/#{base_file_name.sub(/.csv/,'')}".classify.pluralize
-    puts c
     @messages << c.constantize.new(file_name,@district).import
   end
     

@@ -86,7 +86,6 @@ module CSVImporter
         )
         and sch.district_school_id is not null and stu.district_student_id is not null
        "
-       puts query
        ActiveRecord::Base.connection.update query
     end
 
@@ -102,7 +101,6 @@ module CSVImporter
       and e.school_id is null and stu.district_student_id is not null and sch.district_school_id is not null
       "
             )
-            puts query
             ActiveRecord::Base.connection.update query
     end
     def confirm_count?

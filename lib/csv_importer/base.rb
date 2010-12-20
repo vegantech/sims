@@ -131,7 +131,6 @@ module CSVImporter
       if h.join(",") == csv_headers.join(",")
         return h
       else
-        puts row.inspect
         @messages << "Invalid file,  file must have headers #{ csv_headers.join(",")}"
         return false
       end

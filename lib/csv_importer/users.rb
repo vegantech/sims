@@ -90,16 +90,18 @@ password is the user\'s password in lowercase, district_key is set by the distri
     where district_id = #{@district.id}"
     )
 
-    User.connection.execute query
+    User.connection.update query
 
     end
 
     def insert_update_delete
-      delete
-      update
-      insert
-      update_passwords
+      @deleted=delete
+      @updated=update
+      @created=insert
+      @other_messages << "#{update_passwords} passwords updated"
     end
+
+
 
     def delete
       query = "delete  from u
@@ -108,7 +110,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
       on u.district_user_id = tu.district_user_id
       where u.district_user_id is not null and u.district_id = #{@district.id}
       and tu.district_user_id is null"
-      User.connection.execute query
+      User.connection.update query
     end
 
     def update_passwords
@@ -121,7 +123,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
     where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null and tu.passwordhash <> '' and tu.salt <> ''"
     )
 
-      User.connection.execute query
+      User.connection.update query
 
     end
 
@@ -137,7 +139,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
       and tu.district_user_id is not null
       "
       )
-      User.connection.execute query
+      User.connection.update query
     end
 
 

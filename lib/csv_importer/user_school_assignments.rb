@@ -62,8 +62,7 @@ module CSVImporter
        where sch.district_school_id is not null
         and (usa.admin = false or usa.admin is null)
         "
-        puts query
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
 
     def insert
@@ -75,8 +74,7 @@ module CSVImporter
       where sch.district_id= #{@district.id} and u.district_id = #{@district.id}
       "
       )
-        puts query
-      ActiveRecord::Base.connection.execute query
+      ActiveRecord::Base.connection.update query
     end
    
 
