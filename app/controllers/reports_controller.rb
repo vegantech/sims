@@ -2,6 +2,7 @@ class ReportsController < ApplicationController
   additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, 
     :student_flag_summary, :user_interventions, :grouped_progress_entry, :statewide_interventions, :statewide_progress_monitors
   skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
+  skip_before_filter :verify_authenticity_token
 
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA

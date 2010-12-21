@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   layout 'main'
   def index
     @schools = current_user.authorized_schools

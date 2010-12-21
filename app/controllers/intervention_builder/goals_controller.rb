@@ -1,6 +1,6 @@
 class InterventionBuilder::GoalsController < ApplicationController
   additional_write_actions :regenerate_intervention_pdfs, :interventions_without_recommended_monitors
-  skip_before_filter :validate_authenticity_token, :only => :regenerate_intervention_pdfs
+  skip_before_filter :verify_authenticity_token, :only => :regenerate_intervention_pdfs
   helper_method :move_path
 
   def regenerate_intervention_pdfs
