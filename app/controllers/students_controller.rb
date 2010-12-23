@@ -76,7 +76,7 @@ class StudentsController < ApplicationController
     end
         
 
-    session[:selected_student] = @student.id
+    session[:selected_student] ||= @student.id.to_s  #537 hopefully this will fix it
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @student }
