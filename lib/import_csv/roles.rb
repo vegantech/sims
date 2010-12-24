@@ -16,10 +16,11 @@ module ImportCSV::Roles
         )
       
       # insert desired - existing
-      Role.add_users(role, @desired_users  -@existing_users)
+      to_insert=Role.add_users(role, @desired_users  -@existing_users)
       
       # remove existing - desired
-      Role.remove_users(role,@existing_users - @desired_users)
+      to_remove=Role.remove_users(role,@existing_users - @desired_users)
+      @messages << "#{to_insert} users added, #{to_remove} users removed"
     end
   end
 

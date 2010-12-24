@@ -7,7 +7,7 @@ class DailyJobs
 
   def self.regenerate_intervention_reports
     District.all.each do |d|
-      CreateInterventionPdfs.generate(d)
+      CreateInterventionPdfs.generate(d)  rescue Errno::EACCES
     end
   end
 

@@ -73,7 +73,7 @@ module CSVImporter
                                                   where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id
                                                         )"
 
-      UserGroupAssignment.connection.execute query
+      UserGroupAssignment.connection.update query
     end
 
     def insert
@@ -89,7 +89,7 @@ module CSVImporter
         where gs.group_id = g.id and gs.student_id = u.id)
       "
       )
-      Group.connection.execute query
+      Group.connection.update query
     end
 
 
