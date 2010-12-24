@@ -1,0 +1,39 @@
+Identify parts that need to change, track using a session variable
+
+Do I care if the district logo changes?   Not really.  
+
+header
+change the district on login
+
+
+left column
+menu
+
+School Administration
+District Administration
+
+Principal Override requests
+Principal Override Responses
+
+News
+
+
+
+
+
+
+right column
+breadcrumbs and banners (2)   change on every page
+flash notice
+
+Main content
+
+
+
+what's new
+
+
+Footer
+change every time in dev
+in production 
+
