@@ -102,6 +102,7 @@ class DistrictsController < ApplicationController
     else
       if defined?MEMCACHE
         @results =  MEMCACHE.get("#{current_district.id}_import")
+        @results.to_s.gsub!(/#{ImportCSV::EOF}$/, '<script>keep_polling=false</script>')
         if request.xhr?
           render :text => @results and return
         end

@@ -11,6 +11,8 @@ class ImportCSV
   CLEAN_CSV_OPTS ={:converters => [STRIP_FILTER,:symbol]}
   DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
+  EOF = '@@END UPLOAD RESULTS@@'
+
 
   VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
     "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
@@ -49,6 +51,7 @@ class ImportCSV
       @messages << "No csv files uploaded" if sorted_filenames.blank? 
     end
     @messages << b
+    @messages << EOF
     update_memcache
   end
 
@@ -61,7 +64,7 @@ class ImportCSV
   def update_memcache
     begin
       if defined?MEMCACHE
-        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "), 30.minutes)
+        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "), 120.minutes)
       end
     rescue 
       nil
