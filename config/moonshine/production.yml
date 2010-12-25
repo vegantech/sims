@@ -16,6 +16,18 @@
 # Directory where application is deployed to
 :deploy_to: /srv/sims
 
+# Primary domain application will be accessed as 
+:domain: simspilot.org 
+#wisims.org 
+
+:default_url: https://www.simspilot.org
+
+# Domain aliases for applaction. One common use of this is for asset hosts.
+:domain_aliases:
+  - *.simspilot.org 
+#  - assets2.sims.managedmachine.com
+
+
 
 :ssl:
   :only: true

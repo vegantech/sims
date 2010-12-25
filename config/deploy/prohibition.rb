@@ -8,8 +8,8 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 set :user, 'shawn'
-
-after "deploy:update_code", :copy_database_yml, :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory
+set :stage, 'production'
+after "deploy:update_code", :copy_database_yml
 
 
 namespace :deploy do
@@ -27,6 +27,11 @@ namespace :moonshine do
   task :apply do
     puts 'ignoring moonshine for this recipe'
   end
+
+  task :configure_stage do
+    puts 'ignoring moonshine for this recipe'
+  end 
+
 end
 
 namespace :shared_config do

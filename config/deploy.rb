@@ -14,6 +14,7 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret
+after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory, :create_secret
 
 
@@ -30,6 +31,11 @@ namespace :deploy do
 
   task :stop, :roles=> "app" do
     puts "go stop passenger"
+  end
+
+  task :kickstart, :roles => "app" do
+    kickstart_url = fetch(:default_url) || fetch(:domain)
+    system("curl -s -I #{kickstart_url} -o /dev/null &")
   end
 end 
 
