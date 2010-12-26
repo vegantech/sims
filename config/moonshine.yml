@@ -60,7 +60,7 @@
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.vhost.erb 
 :passenger:
   :max_pool_size: 6
-#  :version: 2.2.15
+  :version: 3.0.2
 #  :max_pool_size: 12
 
 # MySQL-specific options. Refer to the following templates for details about what values are used:
