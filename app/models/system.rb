@@ -1,5 +1,5 @@
 class System
-  RESERVED_SUBDOMAINS = %w{ www asset demo asset2 asset1 asset0 mail staging }
+  RESERVED_SUBDOMAINS = %w{ www asset demo asset2 asset1 asset0 mail staging assets }
   HASH_KEY = ''
   
   def self.news
