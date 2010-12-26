@@ -35,7 +35,7 @@ namespace :deploy do
 
   task :kickstart, :roles => "app" do
     kickstart_url = fetch(:default_url) || fetch(:domain)
-    system("curl -s -I #{kickstart_url} -o /dev/null &")
+    system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
   end
 end 
 
