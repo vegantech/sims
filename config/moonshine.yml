@@ -62,8 +62,8 @@
   :max_pool_size: 10
   :version: 3.0.2
   :pool_idle_time: 300
-  :max_requests: 2
-  :min_instances: 2
+  :max_requests: 2000
+  :min_instances: 3
 
 #PassengerMaxPoolSize 15
 #        PassengerPoolIdleTime 300
