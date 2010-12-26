@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'activesupport/core_ext/hash'
+require 'active_support/core_ext/hash'
 
 require "#{File.dirname(__FILE__)}/../../vendor/plugins/moonshine/lib/moonshine.rb"
 class ApplicationManifest < Moonshine::Manifest::Rails
