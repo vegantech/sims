@@ -62,7 +62,8 @@ task :load_fixtures do
 end
 
 task :setup_domain_constant do
-  run "cd #{release_path}/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{domain}\"/' host_info.rb "
+  puts fetch(:domain)
+  run "cd #{release_path}/config/initializers && sed -i  -e 's/#SIMS_DOMAIN =/SIMS_DOMAIN =\"#{fetch(:domain)}\"/' host_info.rb "
 end
 
 task :setup_https_protocol do
