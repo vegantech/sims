@@ -77,7 +77,7 @@ private
     return session[:requested_url] if session[:requested_url]
     begin
     if ENABLE_SUBDOMAINS 
-      subdomain = district.abbrev #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
+      subdomain = current_district.abbrev #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
     end
     return root_url(:subdomain=>subdomain)
     rescue NameError

@@ -1,13 +1,14 @@
 # Primary domain application will be accessed as 
-:domain: staging.simspilot.org  #wisims.org 
+:domain: staging.sims-staging.info  #wisims.org 
 
-:default_url: https://staging.simspilot.org
+:default_url: https://staging.sims-staging.info
 
 # Domain aliases for applaction. One common use of this is for asset hosts.
 :domain_aliases:
   - *.staging.sims.widpi.managedmachine.com
   - staging.sims.widpi.managedmachine.com
   - *.staging.simspilot.org
+  - *.staging.sims-staging.info
 #  - assets2.sims.managedmachine.com
 
 
