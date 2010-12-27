@@ -45,18 +45,6 @@ class LoginController < ApplicationController
     render :action=>"login"
   end
 
-  def choose_state
-    @state=State.find(params[:state][:id])
-    if request.subdomains.last.to_s.match(SUBDOMAIN_MATCH) && @state
-     state_and_country=[@state.abbrev]
-
-      redirect_to "#{request.protocol}#{state_and_country.join(".")}.#{request.host_with_port}" and return
-    end
-    @user=User.new
-    dropdowns
-    render :action => "login"
-  end
-
   def change_password
     reset_session_and_district if params['token'].present?
     @user = current_user
@@ -89,8 +77,7 @@ private
     return session[:requested_url] if session[:requested_url]
     begin
     if ENABLE_SUBDOMAINS 
-      district_state = [current_district.abbrev,current_district.state.abbrev]
-      subdomain = district_state.join('-') #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
+      subdomain = district.abbrev #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
     end
     return root_url(:subdomain=>subdomain)
     rescue NameError
