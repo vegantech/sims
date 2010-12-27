@@ -167,7 +167,7 @@ class User < ActiveRecord::Base
     end
 
     if @user
-      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast.downcase))
+      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast.downcase[0..39]))
          @user = nil unless ENV["RAILS_ENV"] =="development" || ENV["SKIP_PASSWORD"]=="skip-password"
       end
       @user
