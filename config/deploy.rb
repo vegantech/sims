@@ -13,7 +13,7 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 
 
-after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret
+after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret, "deploy:clean_vendored_submodules"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory, :create_secret
 
@@ -37,6 +37,12 @@ namespace :deploy do
     kickstart_url = fetch(:default_url) || fetch(:domain)
     system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
   end
+
+  desc 'clean out vendor directory to remove submodules that are no longer used' 
+  task :clean_vendored_submodules, :roles => "app" do
+    run "cd #{deploy_to}/shared/cached-copy && git clean -d -f vendor && cd #{release_path} && git clean -d -f vendor"
+  end
+
 end 
 
 task :update_new_relic_name do
