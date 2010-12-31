@@ -25,6 +25,6 @@ config.action_mailer.delivery_method = :test
 
 #Test requirements
 config.gem 'rcov',  :version => "> 0.8.1.2", :lib => false
-config.gem 'hpricot', :lib => false
+config.gem 'hpricot', :lib => false, :version => '=0.6.161'
 #config.gem 'treetop'
 

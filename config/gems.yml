@@ -1,5 +1,4 @@
 --- 
-- :name: hpricot
 - :name: bluecloth
   :version: "> 2.0.0"
 - :name: fastercsv
