@@ -1,8 +1,10 @@
+
 # Be sure to restart your server when you modify this file
 
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
+
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
@@ -27,7 +29,6 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'hpricot' #used by html_matchers, need to fix this as it is only needed in testing, but the plugin causes problems
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
@@ -54,7 +55,19 @@ Rails::Initializer.run do |config|
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
   #
-  config.plugins = [ :validates_date_time, :all ]
+#config.plugins =  [ :validates_date_time, :all ]
+  SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
+    :railmail, :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate]
+
+
+  #I'd prefer to do this in the environment specific files, but the rails initializer processes this just before it processes the environment specific file
+  if ENV['RAILS_ENV'] == "test" || ENV['RAILS_ENV'] == 'cucumber'
+    config.plugins =  [ :validates_date_time, :all ]
+  else
+    config.plugins =  SIMS_BASE_PLUGINS
+  end
+
+#  config.plugins = SIMS_BASE_PLUGINS
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
