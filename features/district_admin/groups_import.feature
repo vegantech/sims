@@ -15,7 +15,7 @@ Feature: CSV Import of Groups
     And group "No id_district" for school "Fish School"
     When I import_csv with "test/csv/groups/telophia/groups.csv"
     Then the command should have succeeded
-    Then I show groups
+#    Then I show groups
     Then "Fish School" should have "4" groups
     And "Fish school" should have groups ["Group A", "Group B", "No Change", "No id_district"]
     # changing may not make sense since we're matching on all fields

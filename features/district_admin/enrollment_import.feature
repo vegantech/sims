@@ -9,6 +9,9 @@ Feature: CSV Import of Enrollments
   Scenario: Import enrollments csv with 1 change, 1 deletion, 1 insert and 1 noop
     Given no other students
     And no other enrollments
+    And no other schools
+    And no other groups
+    And no other users
     Given a student "Bob Smith"
     And a school "Fish School"
     And enrollment "Bob Smith" in "Fish School" for grade "change_me"

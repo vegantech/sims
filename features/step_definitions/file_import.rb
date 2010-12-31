@@ -45,7 +45,6 @@ Then /^the command should have failed$/ do
 end
 
 Then /^the command should have succeeded$/ do
-  puts @command_return_val
   @command_return_val.should match(/Successful import/)
 end
 
@@ -100,7 +99,6 @@ Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |arg1, arg
 end
 
 When /^I import_enrollments_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district|
-  puts Enrollment.all.inspect
   i=ImportCSV.new(filename, @district)
   i.import
   @command_return_val = i.messages.join(", ")
@@ -135,7 +133,7 @@ Given /^no other enrollments$/ do
 end
 
 Given /^no other schools$/ do
-   User.delete_all
+   School.delete_all
 end
 
 Given /^no other users$/ do
