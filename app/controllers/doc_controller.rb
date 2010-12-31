@@ -15,7 +15,7 @@ class DocController < ActionController::Base
       doc=params[:id].gsub(/[^a-zA-Z0-9_]/,"")
       if doc
         @importer = "CSVImporter/#{doc}".classify.pluralize.constantize
-        render :action => "district_upload/file_api" and return
+        render :action => "doc/district_upload/file_api" and return
       end
     end
   end
