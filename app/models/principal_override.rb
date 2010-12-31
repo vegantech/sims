@@ -108,12 +108,12 @@ class PrincipalOverride < ActiveRecord::Base
     #Refactor this
     @send_email=true unless @skip_email
     case self.action
-    when 'accept':
+    when 'accept' then
       self.status=APPROVED_NOT_SEEN
       check_autopromote
-    when 'reject':
+    when 'reject' then
       self.status=REJECTED_NOT_SEEN
-    when 'undo'
+    when 'undo' then
       @send_email=false
     else
       @send_email=false
