@@ -44,7 +44,6 @@
             <% if controller.send(:cache_configured?) && @cached_status.keys.include?(enrolled_student.index_cache_key) %>
               <%= @cached_status[enrolled_student.index_cache_key] %>
             <% else %>
-              miss
               <%sd= status_display(enrolled_student.student) %>
               <%Rails.cache.write(enrolled_student.index_cache_key, sd) if controller.send(:cache_configured?)%>
               <%= sd %>

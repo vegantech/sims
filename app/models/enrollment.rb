@@ -113,7 +113,7 @@ class Enrollment < ActiveRecord::Base
       ids=scope.collect(&:id)
       res=Enrollment.find(ids,:joins => :student, :order => 'students.last_name, students.first_name',
       :select => "students.id, grade, students.district_id, last_name, first_name, number, esl, special_ed, student_id,
-      concat('views/status_display/students/',students.id,'-',date_format(students.updated_at,'%Y%m%e%H%i%s' )) as index_cache_key
+      concat('views/status_display/students/',students.id,'-',date_format(students.updated_at,'%Y%m%d%H%i%s' )) as index_cache_key
       ")
 #this is worse.
 #      Enrollment.send(:preload_associations, res,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
