@@ -85,7 +85,7 @@ task :enable_subdomains do
 end
 
 task :change_railmail_to_smtp do
-  run "cd #{release_path}/config/ && sed -i  -e 's/railmail/smtp/' environment.rb "
+  run "cd #{release_path}/config/ && sed -i  -e 's/railmail$/smtp/' -e 's/:railmail,//' environment.rb "
 end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
