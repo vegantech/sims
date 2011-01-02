@@ -17,32 +17,37 @@
       </thead>
       <tbody>
         <% @students.each do |enrolled_student|  %>  
-      <% if current_district.id == enrolled_student.student.district_id %>
+      <% if current_district.id == enrolled_student.district_id.to_i %>
         <tr class="<%= cycle('', 'list-line-even') %>">
           <td style="text-align:center;">
-            <%= check_box_tag('id[]', enrolled_student.student.id,false,:id=>dom_id(enrolled_student.student)) %>
+            <%= check_box_tag('id[]', enrolled_student.id,false,:id=>dom_id(enrolled_student)) %>
           </td>
 
           <td style="text-align:left;">
-            <%= label_tag(dom_id(enrolled_student.student),"#{enrolled_student.student.last_name}, #{enrolled_student.student.first_name}") %>
+            <%= label_tag(dom_id(enrolled_student),"#{enrolled_student.last_name}, #{enrolled_student.first_name}") %>
           </td>
           <td style="text-align: center;">
-            <%= enrolled_student.student.number %>
+            <%= enrolled_student.number %>
           </td>
           <td style="text-align: center;">
             <%= enrolled_student.grade %>
           </td>
           <td style="text-align: center;">
-            <%= yes_or_no enrolled_student.student.esl %>
+            <%= yes_or_no enrolled_student.esl %>
           </td>
           <td style="text-align: center;">
-            <%= yes_or_no enrolled_student.student.special_ed %>
+            <%= yes_or_no enrolled_student.special_ed %>
           </td>
 
           
           <td>
-            <%cache ["status_display",enrolled_student.student] do %>
-              <%=status_display(enrolled_student.student) %>
+            <% if controller.send(:cache_configured?) && @cached_status.keys.include?(enrolled_student.index_cache_key) %>
+              <%= @cached_status[enrolled_student.index_cache_key] %>
+            <% else %>
+              miss
+              <%sd= status_display(enrolled_student.student) %>
+              <%Rails.cache.write(enrolled_student.index_cache_key, sd) if controller.send(:cache_configured?)%>
+              <%= sd %>
             <% end %>
           </td>
         </tr>

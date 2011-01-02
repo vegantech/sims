@@ -7,7 +7,22 @@ class StudentsController < ApplicationController
   def index
     try_to_auto_select_school or return false unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
+
+
     @students = student_search index_includes=true
+
+    if cache_configured?
+      cache_keys =@students.collect{|s| s.index_cache_key}
+      @cached_status = Rails.cache.read_multi(cache_keys)
+      misses= (cache_keys - @cached_status.keys)
+      missed_students =@students.select{|s| misses.include?s.index_cache_key}
+    else
+      missed_students = @students
+    end
+    Enrollment.send(:preload_associations, missed_students,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
+                    {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]})
+
+
     @flags_above_threshold= flags_above_threshold
     respond_to do |format|
       format.html # index.html.erb
