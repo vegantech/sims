@@ -22,12 +22,11 @@ Feature: Sims Demo Walkthrough
 
     Then I follow "Student Search"
     Then I press "Search for Students"
-
-
-
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
-    And I should click js "all"
+    When I press "select for problem solving"
+    Then I should see "No students selected"
+    When I should click js "all"
     Then I press "select for problem solving"
     And I should see "Student 1 of 2"
     Then I follow "Next"

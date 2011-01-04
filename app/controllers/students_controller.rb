@@ -7,8 +7,12 @@ class StudentsController < ApplicationController
   def index
     try_to_auto_select_school or return false unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
-    @students = student_search index_includes=true
-    @flags_above_threshold= flags_above_threshold
+
+
+    @students = student_search(index_includes=true)
+
+    setup_students_for_index
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @students }
@@ -18,8 +22,8 @@ class StudentsController < ApplicationController
   def select
     # add selected students to session, then redirect to show
 
-    @students = student_search
-    authorized_student_ids = @students.collect {|s| s.student.id.to_s}
+    @students = student_search( index_includes=true)
+    authorized_student_ids = @students.collect {|s| s.student_id.to_s}
 
     if params[:id].blank?
       flash[:notice] = 'No students selected'
@@ -40,7 +44,7 @@ class StudentsController < ApplicationController
     session[:selected_students]= nil
     session[:selected_student]= nil
 
-   @flags_above_threshold= flags_above_threshold
+    setup_students_for_index
 
 
     render :action=>"index" 
@@ -175,5 +179,20 @@ class StudentsController < ApplicationController
     end
   end
 
+  def setup_students_for_index
+    if cache_configured?
+      cache_keys =@students.collect{|s| s.index_cache_key}
+      @cached_status = Rails.cache.read_multi(cache_keys)
+      misses= (cache_keys - @cached_status.keys)
+      missed_students =@students.select{|s| misses.include?s.index_cache_key}
+    else
+      missed_students = @students
+    end
+    Enrollment.send(:preload_associations, missed_students,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
+                    {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]})
+
+
+    @flags_above_threshold= flags_above_threshold
+  end
 
 end

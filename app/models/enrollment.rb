@@ -111,7 +111,14 @@ class Enrollment < ActiveRecord::Base
 
     if search_hash.delete(:index_includes)
       ids=scope.collect(&:id)
-      Enrollment.find(ids,:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]}, :order => 'students.last_name, students.first_name')
+      res=Enrollment.find(ids,:joins => :student, :order => 'students.last_name, students.first_name',
+      :select => "students.id, grade, students.district_id, last_name, first_name, number, esl, special_ed, student_id,
+      concat('views/status_display/students/',students.id,'-',date_format(students.updated_at,'%Y%m%d%H%i%s' )) as index_cache_key
+      ")
+#this is worse.
+#      Enrollment.send(:preload_associations, res,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
+#                      {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]})
+      res
     else
 
       scope#=scope.scoped #:include => :student

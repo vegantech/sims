@@ -57,7 +57,7 @@ Rails::Initializer.run do |config|
   #
 #config.plugins =  [ :validates_date_time, :all ]
   SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
-    :railmail, :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate]
+    :railmail, :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :hoptoad_notifier]
 
 
   #I'd prefer to do this in the environment specific files, but the rails initializer processes this just before it processes the environment specific file
