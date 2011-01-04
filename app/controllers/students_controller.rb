@@ -44,7 +44,6 @@ class StudentsController < ApplicationController
     session[:selected_students]= nil
     session[:selected_student]= nil
 
-    redirect_to students_url and return
     setup_students_for_index
 
 

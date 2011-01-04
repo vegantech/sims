@@ -9,9 +9,9 @@ describe StudentsController do
       a=mock_enrollment(:student_id => 1)
       b=mock_enrollment(:student_id => 2)
       c=mock_enrollment(:student_id => 3)
+      controller.should_receive(:setup_students_for_index)
       controller.should_receive(:student_search).and_return([a,b,c])
       controller.should_receive(:current_school_id).and_return(['a','b','c'])
-      controller.should_receive(:current_district).and_return(District.new)
       get :index, {},{:search=>{}}
       response.should be_success
       assigns(:students).should == [a,b,c]
@@ -30,7 +30,7 @@ describe StudentsController do
    describe 'without selected_students' do
       it 'should put error in flash, and rerender students index' do
         controller.should_receive(:student_search).and_return([])
-        controller.should_receive(:flags_above_threshold).and_return([])
+        controller.should_receive(:setup_students_for_index)
         get :select,{}, {:search=>{}}
 
         session[:selected_students].should be_nil
@@ -41,12 +41,10 @@ describe StudentsController do
 
     describe 'with unauthorized student chosen' do
       before do
-        e1=mock_enrollment
-        e2=mock_enrollment
-        e1.stub_association!(:student,:id=>5)
-        e2.stub_association!(:student,:id=>6)
+        e1=mock_enrollment(:student_id=>5)
+        e2=mock_enrollment(:student_id=>6)
 
-        controller.should_receive(:flags_above_threshold).and_return([])
+        controller.should_receive(:setup_students_for_index)
         controller.should_receive(:student_search).and_return([e1,e2])
         get :select, {:id=>['1','5','6']}, {:search=>{}}
 
@@ -69,10 +67,9 @@ describe StudentsController do
 
     describe 'with selected_students' do
        before do
-        e1 = mock_enrollment
-        e2 = mock_enrollment
+        e1 = mock_enrollment(:student_id=>'5')
+        e2 = mock_enrollment(:student_id => '16')
         e1.stub_association!(:student,:id => "5")
-        e2.stub_association!(:student,:id => "16")
         controller.should_receive(:student_search).and_return([e1,e2])
         get :select, {:id => ["5", "16"]},  {:search=>{}}
 
@@ -91,12 +88,9 @@ describe StudentsController do
     # This tests ticket #94
     describe 'without selecting all possible authorized students' do
       it 'should set selected_students and selected_student' do
-        e1 = mock_enrollment
-        e2 = mock_enrollment
-        e3 = mock_enrollment
-        e1.stub_association!(:student, :id => "5")
-        e2.stub_association!(:student, :id => "16")
-        e3.stub_association!(:student, :id => '37')
+        e1 = mock_enrollment(:student_id=>'5')
+        e2 = mock_enrollment(:student_id=>'16')
+        e3 = mock_enrollment(:student_id=>'37')
         controller.should_receive(:student_search).and_return([e1,e2,e3])
 
         get :select, {:id => ["5", "16"]},  {:search=>{}}
@@ -121,8 +115,19 @@ describe StudentsController do
       controller.should_receive(:current_school).at_least(:once).and_return(school)
     end
 
+
+    it 'should test setup_students_for_index' do
+      pending
+      controller.should_receive(:flags_above_threshold).and_return([])
+    end
+
+    it 'should test flags_above_threshold' do
+      pending
+      controller.should_receive(:current_district).and_return(District.new)
+
+    end
   end
-    
+
 
   describe 'search' do
     describe 'GET' do
