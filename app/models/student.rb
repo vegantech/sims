@@ -242,7 +242,7 @@ class Student < ActiveRecord::Base
       if attributes
         system_flag.attributes = attributes
       else
-        system_flags.delete(system_flag)
+        system_flags.destroy(system_flag)
       end
     end
   end
