@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101224164653) do
+ActiveRecord::Schema.define(:version => 20110109022903) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -727,6 +727,7 @@ ActiveRecord::Schema.define(:version => 20101224164653) do
 
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
   add_index "students", ["district_student_id"], :name => "index_students_on_id_district"
+  add_index "students", ["id_state", "district_id", "birthdate", "first_name", "last_name"], :name => "null_id_state_match"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
 
   create_table "team_consultations", :force => true do |t|
