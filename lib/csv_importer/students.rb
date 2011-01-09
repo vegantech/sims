@@ -102,7 +102,7 @@ module CSVImporter
  
                                   
     def index_options
-      [:id_state, :district_student_id]
+      [[:id_state, :birthdate, :first_name, :last_name], :district_student_id]
     end
 
 
@@ -170,13 +170,13 @@ module CSVImporter
     end
 
     def reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
-      shared="#{temporary_table_name} ts inner join students s on 
+      shared="#{temporary_table_name} ts inner join students s on
           ts.id_state = s.id_state
-          where s.district_id is null 
+          where s.district_id is null
           and s.id_state is not null
           and (
             (ts.birthdate != s.birthdate and ts.birthdate != 0 and s.birthdate != 0 )
-             or (  
+             or (
               (s.birthdate = 0 or ts.birthdate = 0 or  ts.birthdate is null or s.birthdate is null )
               and ts.last_name != s.last_name
             ))"
@@ -192,11 +192,16 @@ module CSVImporter
     end
     
     def claim_students_with_nil_district
-      
+
+
       claimed_count = ActiveRecord::Base.connection.update("update students s inner join #{temporary_table_name} ts on 
-      ts.id_state = s.id_state or (ts.id_state is null and s.id_state is null) set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id where s.district_id is null and
-                                                               (ts.id_state is not null or (ts.birthdate = s.birthdate and ts.first_name = s.first_name and 
-                                                               ts.last_name = s.last_name and ts.birthdate is not null and ts.id_state is null and s.id_state is null ) ) ")
+      ts.id_state = s.id_state and s.district_id is null set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id")
+
+      claimed_count += ActiveRecord::Base.connection.update("update students s inner join #{temporary_table_name} ts on s.district_id is null and
+      ts.id_state is null and s.id_state is null
+      set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id
+      where ts.birthdate = s.birthdate and ts.first_name = s.first_name and
+                                                               ts.last_name = s.last_name and ts.birthdate is not null    ")
       @other_messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
       
      
