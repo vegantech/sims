@@ -88,20 +88,34 @@ class DistrictsController < ApplicationController
   end
 
   def bulk_import
+   # TODO REFACTOR THIS
     Spawn::method :yield, 'test'
 
     if request.post?
+      MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
       spawn do
-        importer= ImportCSV.new params[:import_file], current_district
-        x=Benchmark.measure{importer.import}
+        begin
+          importer= ImportCSV.new params[:import_file], current_district
+          x=Benchmark.measure{importer.import}
 
-        @results = "#{importer.messages.join(", ")} #{x}"
-        #request redirect_to root_url
+          @results = "#{importer.messages.join(", ")} #{x}"
+          #request redirect_to root_url
+        rescue => e
+          Rails.logger.error "Spawn Exception #{Time.now} #{e.message}"
+          HoptoadNotifier.notify(
+            :error_class => "Spawn Error",
+            :error_message => "Spawn Error: #{e.message}"
+          )
+          MEMCACHE.set("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}") if defined?MEMCACHE
+          raise e
+        end
+
       end
       render :layout => 'bulk_import'
     else
       if defined?MEMCACHE
-        @results =  MEMCACHE.get("#{current_district.id}_import")
+        @results =
+          MEMCACHE.get("#{current_district.id}_import")
         @results.to_s.gsub!(/#{ImportCSV::EOF}$/, '<script>keep_polling=false</script>')
         if request.xhr?
           render :text => @results and return
