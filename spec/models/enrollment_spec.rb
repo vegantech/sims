@@ -79,8 +79,8 @@ describe Enrollment do
         group3=Factory(:group, :school_id=>999)
         @user1=Factory(:user)
         @user2=Factory(:user)
-        student1=Factory(:student)
-        student2=Factory(:student)
+        student1=Factory(:student, :esl=>true, :special_ed => true)
+        student2=Factory(:student, :esl=>false, :special_ed => false)
         student3=Factory(:student)
         student1.groups << group1
         student2.groups << group2
@@ -103,9 +103,19 @@ describe Enrollment do
     end
 
     describe 'with index_includes' do
-      it 'should include student, custom flags, interventions with intervon, flags' do
-        #        Enrollment.should_receive(:find).with({:include => {:student => [{:custom_flags=>:user}, {:interventions => :intervention_definition}, {:flags => :user}, {:ignore_flags=>:user} ]}})
-        Enrollment.search(:search_type=>'list_all',:index_includes=>true)
+      it 'should return proper esl and special_ed values [ LH #570 ]  associations are preloaded in controller for now' do
+
+        Enrollment.delete_all
+        student1=Factory(:student, :esl=>true, :special_ed => true)
+        student2=Factory(:student, :esl=>false, :special_ed => false)
+        @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999)
+        @e2 = student2.enrollments.create!(:grade=>"1",:school_id=>999)
+        res= Enrollment.search(:search_type=>'list_all',:index_includes=>true)
+        res.first.esl.should == true
+        res.first.special_ed.should == true
+        res.last.esl.should == false
+        res.last.special_ed.should == false
+
 
       end
       
