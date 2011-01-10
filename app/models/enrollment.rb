@@ -22,6 +22,15 @@ class Enrollment < ActiveRecord::Base
 
   named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
 
+  def esl
+    Student.columns_hash["esl"].type_cast(attributes['esl'])
+
+  end
+
+  def special_ed
+    Student.columns_hash["special_ed"].type_cast(attributes['special_ed'])
+  end
+
   def self.search(search_hash)
     search_hash.symbolize_keys!
     #    raise "This is broken, it destroys the scoping via the association proxy"
