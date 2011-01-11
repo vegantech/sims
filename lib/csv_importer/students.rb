@@ -20,7 +20,7 @@ module CSVImporter
         :last_name =>"Last name of student.",
         :suffix =>"Suffix of student (jr. III).",
         :birthdate =>"Date of Birth  (YYYY-MM-DD or MM/DD/YYYY)",
-        :esl =>"true if student is considered English as a Second Language  (false or blank if not Y/N also works)  ",
+        :esl =>"true if student is considered English as a Second Language  (false or blank if not Y/N also works).  You can also use the language proficiency here.  Values 1-6 will be true,  7 is false.  ",
         :special_ed =>"true if student is in Special Educatin (false or blank if not Y/N also works)"
     }
     class << self
@@ -73,28 +73,33 @@ module CSVImporter
       headers[-1]="@special_ed"
       headers[-2]="@esl"
       <<-EOF
-          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+          LOAD DATA LOCAL INFILE "#{@clean_file}"
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
             set birthdate=ifnull(str_to_date(@birthdate,"%Y-%m-%d"),str_to_date(@birthdate,"%m/%d/%Y")),
-            special_ed= case trim(lower(@special_ed)) 
-        when 't' then true 
-        when 'y' then true 
-        when 'yes' then true 
-        when 'true' then true 
-        when '-1' then true 
-        when '1' then true 
-        else false 
+            special_ed= case trim(lower(@special_ed))
+        when 't' then true
+        when 'y' then true
+        when 'yes' then true
+        when 'true' then true
+        when '-1' then true
+        when '1' then true
+        else false
         end,
-        esl = case trim(lower(@esl)) 
-        when 'y' then true 
-        when  't' then true 
-        when 'yes' then true 
-        when 'true' then true 
-        when '-1' then true 
-        when '1' then true 
+        esl = case trim(lower(@esl))
+        when 'y' then true
+        when  't' then true
+        when 'yes' then true
+        when 'true' then true
+        when '-1' then true
+        when '1' then true
+        when '2' then true
+        when '3' then true
+        when '4' then true
+        when '5' then true
+        when '6' then true
         else false 
         end ;
         EOF
