@@ -106,8 +106,8 @@ describe Enrollment do
       it 'should return proper esl and special_ed values [ LH #570 ]  associations are preloaded in controller for now' do
 
         Enrollment.delete_all
-        student1=Factory(:student, :esl=>true, :special_ed => true)
-        student2=Factory(:student, :esl=>false, :special_ed => false)
+        student1=Factory(:student, :esl=>true, :special_ed => true, :last_name => 'A')
+        student2=Factory(:student, :esl=>false, :special_ed => false, :last_name => 'B')
         @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999)
         @e2 = student2.enrollments.create!(:grade=>"1",:school_id=>999)
         res= Enrollment.search(:search_type=>'list_all',:index_includes=>true)

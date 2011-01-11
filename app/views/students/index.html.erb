@@ -1,6 +1,11 @@
 <a onclick="selectStudents();">all</a> | <a onclick="unselectStudents();">none</a> <%=spinner %>
 <% form_tag({:action=>'select'}, {:name => "select_students_form"}) do %>
 
+  <p class="center_submit">
+    <%= submit_tag "select for problem solving", :name => 'process' %>
+  </p>
+
+
   <div id='table'>
     <table class="rowstyle-list-line-even">
       <thead>
