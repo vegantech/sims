@@ -1,6 +1,31 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe CSVImporter::Students do
+  describe 'make sure esl and special_ed are correct' do
+    it 'should upload properly' do
+      District.delete_all
+      Student.delete_all
+      d=Factory(:district)
+      i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students.csv",d
+      i.import
+      expected=  {997 => [false,true], 992 => [false,false], 993 => [false, false],
+          994 => [false,false], 995 => [false,false], 996 => [false,false],
+          998 => [true, true], 999 => [true,true],
+          1000 => [false, false], 1001 =>[true,false], 1002 => [true,false]
+        }
+
+
+      Student.find_all_by_id_state(expected.keys).each do |student|
+        esl = expected[student[:id_state].to_i][0]
+        spec_ed = expected[student[:id_state].to_i][1]
+        student.esl.should be(esl)
+        student.special_ed.should be(spec_ed)
+      end
+
+
+    end
+
+  end
 
   describe 'reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side' do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
