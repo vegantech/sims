@@ -65,7 +65,7 @@
   <%= render :partial => 'interventions/probe_assignments/assign_progress_monitor', :locals => {:form => form, :readonly => readonly, :custom => custom} unless !readonly and @recommended_monitors.blank? and !custom %>
   <br class="brclear" />
 
-  <%= render :partial => "interventions/comments" %>
+  <%= render :partial => "interventions/comments/index" %>
 
   <br class="brclear" />
   <% unless readonly %>

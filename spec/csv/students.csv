@@ -1,0 +1,12 @@
+id_state,district_student_id,number,first_name,middle_name,last_name,suffix,birthdate,esl,special_ed
+997,7,UP1,Uploaded,Mid,Student,,2003-01-31,false,"Y"
+992,2,UP2,"WORD_NULL",,"Nothing",,2003-01-31,NULL,
+993,3,UP3,"blank",,"false",,,2003-01-31,"",false
+994,4,UP4,"f",,"F",,2003-01-31,"f","F"
+995,5,UP5,"0",,0,,2003-01-31,"0",0
+996,6,UP6,"no",,"N",,2003-01-31,"no","N"
+998,8,UP7,"1",,1,,2003-01-31,"1",1
+999,9,UP9,"true",,1,,2003-01-31,"true",true
+1000,10,UP10,"space",, ,,2003-01-31," ",
+1001,11,UP11,"2 for esl no quotes" , ,,,2003-01-31,2,
+1002,12,UP12,"3 for esl with quotes" , ,,,2003-01-31,"3",

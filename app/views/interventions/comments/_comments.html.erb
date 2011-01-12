@@ -1,0 +1,2 @@
+  <%= content_tag :table, render_with_empty(:partial => "interventions/comments/comment", :collection => @intervention.comments.reject(&:new_record?),
+    :empty => "<tr><td>There are no comments for this intervention.</td></tr>"), :id => "intervention_comments_div" %>

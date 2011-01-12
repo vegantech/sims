@@ -9,7 +9,6 @@
     <% if current_user == comment.user and !readonly %>
       <td>
         <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank"} %>
-        <%=periodically_call_remote(:url => intervention_comment_path(@intervention,comment), :method => :get,:update => dom_id(comment,'span'), :frequency => '20') %>
       </td>
       <td>
         <%= link_to_remote_degrades 'Delete', :url => intervention_comment_path(@intervention, comment),
