@@ -1,2 +1,2 @@
-  <%= content_tag :table, render_with_empty(:partial => "interventions/comments/comment", :collection => @intervention.comments.reject(&:new_record?),
+<%= content_tag :table, render_with_empty(:partial => "interventions/comments/comment", :collection => @intervention.comments.find(:all, :include => :user),
     :empty => "<tr><td>There are no comments for this intervention.</td></tr>"), :id => "intervention_comments_div" %>

@@ -11,7 +11,7 @@ describe Interventions::CommentsController do
   before :each do 
     @student = mock_student
     @intervention = mock_intervention
-    @student.stub_association!(:interventions,:find_by_id=>@intervention)
+    @student.stub_association!(:interventions,:find=>@intervention)
     @intervention.stub!(:comments).and_return(InterventionComment)
     controller.stub!(:current_student).and_return(@student)
     @user = mock_user

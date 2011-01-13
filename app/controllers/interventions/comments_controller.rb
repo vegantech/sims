@@ -1,9 +1,9 @@
 class Interventions::CommentsController < ApplicationController
-  before_filter :load_intervention
+  before_filter :load_intervention, :except => :index
 
   def index
+    @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?
     @last_comment = params[:last_comment]
-
   end
   # GET /comments/new
   # GET /comments/new.xml
@@ -84,7 +84,7 @@ class Interventions::CommentsController < ApplicationController
 protected
   def load_intervention
     if current_student.present?
-      @intervention=current_student.interventions.find_by_id(params[:intervention_id]) if current_student.present?
+      @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?
     else
       false
     end
