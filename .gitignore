@@ -1,5 +1,6 @@
 log/*.log
 tmp/**/*
+tmp/*
 tmp/webrat*.html
 tmp/restart.txt
 doc/api
