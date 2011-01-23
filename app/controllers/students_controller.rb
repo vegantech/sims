@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
 	before_filter :enforce_session_selections, :except => [:index, :select, :search]
+  skip_before_filter :verify_authenticity_token
   additional_read_actions %w{grade_search member_search search}
 
   # GET /students

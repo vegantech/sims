@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   skip_before_filter :authenticate, :authorize, :only=>[:index,:stats]
-  skip_before_filter :verify_authenticity_tokeen
+  skip_before_filter :verify_authenticity_token
 
   include  CountryStateDistrict
   def index
