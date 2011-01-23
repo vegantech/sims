@@ -30,6 +30,7 @@ class LoginController < ApplicationController
         redirect_to successful_login_destination and return
       end
     end
+    @district = current_district #LH582
 
   end
 
