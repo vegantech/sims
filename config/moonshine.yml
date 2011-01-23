@@ -59,10 +59,10 @@
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.conf.erb 
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.vhost.erb 
 :passenger:
-  :max_pool_size: 10
+  :max_pool_size: 6
   :version: 3.0.2
   :pool_idle_time: 300
-  :max_requests: 2000
+  :max_requests: 350
   :min_instances: 2
 
 #PassengerMaxPoolSize 15
