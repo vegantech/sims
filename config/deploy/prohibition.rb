@@ -8,7 +8,7 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 set :user, 'shawn'
-set :rails_env, 'production'
+#set :rails_env, 'production'
 after "deploy:update_code", :copy_database_yml
 
 

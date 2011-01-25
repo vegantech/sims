@@ -1,4 +1,4 @@
-set :stages, %w(staging production wip pilot2 veg-open open2 other)
+set :stages, %w(staging production wip pilot2 veg_open open2 other)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
 
@@ -84,9 +84,6 @@ task :enable_subdomains do
   put("ENABLE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", :via => :scp)
 end
 
-task :change_railmail_to_smtp do
-  run "cd #{release_path}/config/ && sed -i  -e 's/railmail$/smtp/' -e 's/:railmail,//' environment.rb "
-end
 desc 'Create the intervention pdf reports'
 task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} ruby script/runner DailyJobs.regenerate_intervention_reports"

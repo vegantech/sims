@@ -227,3 +227,11 @@ staging:
   <<: *default_settings
   monitor_mode: true
 
+veg_open:
+  <<: *default_settings
+  monitor_mode: true
+
+wip:
+  <<: *default_settings
+  monitor_mode: true
+

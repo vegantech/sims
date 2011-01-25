@@ -57,14 +57,16 @@ Rails::Initializer.run do |config|
   #
 #config.plugins =  [ :validates_date_time, :all ]
   SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
-    :railmail, :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :hoptoad_notifier]
+     :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :hoptoad_notifier]
 
 
   #I'd prefer to do this in the environment specific files, but the rails initializer processes this just before it processes the environment specific file
   if ENV['RAILS_ENV'] == "test" || ENV['RAILS_ENV'] == 'cucumber'
     config.plugins =  [ :validates_date_time, :all ]
-  else
-    config.plugins =  SIMS_BASE_PLUGINS
+    elsif ENV['RAILS_ENV'] == "production"
+      config.plugins =  SIMS_BASE_PLUGINS
+    else
+      config.plugins =  SIMS_BASE_PLUGINS | [:railmail]
   end
 
 #  config.plugins = SIMS_BASE_PLUGINS
