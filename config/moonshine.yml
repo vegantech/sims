@@ -91,11 +91,3 @@
     :max_memory: 256
     :client:  1.8.1
     :enable_on_boot:  true
-
-:rails_logrotate:
-    :options: daily 
-              missingok
-              compress
-              delaycompress
-              sharedscripts
-              rotate 52
