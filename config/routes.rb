@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+#TODO FIXME The path prefixes are missing, I might want to remove the deep nesting.
 
   map.doc '/doc/', :controller => 'doc'
   map.resources :unattached_interventions, :member => {:update_end_date => :put }
