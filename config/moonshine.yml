@@ -93,7 +93,7 @@
     :enable_on_boot:  true
 
 :rails_logrotate:
-    :options: daily
+    :options: daily 
               missingok
               compress
               delaycompress
