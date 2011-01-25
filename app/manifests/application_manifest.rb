@@ -72,6 +72,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
 
     # Logs for Rails, MySQL, and Apache are rotated by default
     # logrotate '/var/log/some_service.log', :options => %w(weekly missingok compress), :postrotate => '/etc/init.d/some_service restart'
+    configure(:rails_logrotate => {:options => %w(daily missingok compress delaycompress sharedscripts rotate\ 52 ) })
 
     # Only run the following on the 'testing' stage using capistrano-ext's multistage functionality.
     # on_stage 'testing' do
