@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-06-09 05:00:00 +00:00
+date: 2008-06-08 22:00:00 -07:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -38,7 +38,6 @@ files:
 - Rakefile
 has_rdoc: true
 homepage: http://rubyreports.org
-licenses: 
 post_install_message: 
 rdoc_options: 
 - --title
@@ -65,7 +64,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: ruport
-rubygems_version: 1.3.5
+rubygems_version: 1.3.1
 signing_key: 
 specification_version: 2
 summary: ActiveRecord support for Ruby Reports
