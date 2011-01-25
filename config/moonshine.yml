@@ -93,4 +93,4 @@
     :enable_on_boot:  true
 
 :rails_logrotate:
-    :options: %w(daily missingok compress delaycompress sharedscripts rotate52)
+    :options: daily\n missingok\n compress\n delaycompress\n sharedscripts\n rotate 52
