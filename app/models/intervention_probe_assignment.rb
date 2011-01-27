@@ -76,7 +76,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def google_line_or_bar_chart graph_type=nil
-    if probes_for_graph.size <2 or graph_type=="bar"
+    if graph_type=="bar"
       google_bar_chart
     else
       google_line_chart or "graph_type"=="line"
@@ -88,17 +88,21 @@ class InterventionProbeAssignment < ActiveRecord::Base
    #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
    return ''if probes_for_graph.empty?
     @chxp=[]
-    custom_chm=[numbers_on_line,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
     group=0
-    probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
+    probes_for_graph.in_groups_of(10,false).collect{ |probes_for_this_graph|
+      custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].join("|")
       if group>0
         probes_for_this_graph= [probes_for_graph[group*10-1]] + probes_for_this_graph
       end
       group+=1
+      if probes_for_this_graph.size == 1
+        custom_chm << "@o,000000,0,0:#{scale_value(probes_for_this_graph[0].score)},4"
+      else
+      end
+
+      custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
     
-    
-      Gchart.line(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
+      Gchart.line({:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
                  :axis_labels => axis_labels(probes_for_this_graph), 
                  :bar_width_and_spacing => '30,25',
                  :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
@@ -108,7 +112,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
                  :custom => custom_string,
                  :size => '600x250'
 
-                 )}.join("<br />")
+                 })}.join("<br />")
 
 
 
@@ -122,8 +126,8 @@ class InterventionProbeAssignment < ActiveRecord::Base
    #groups of 10
    return ''if probes_for_graph.empty?
     @chxp=[]
-    custom_chm=[numbers_in_bars,max_min_zero].join("|")
-    custom_string = [custom_chm,chart_margins,benchmark_lines,chxp].compact.join("&")
+    custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].join("|")
+    custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
                  :axis_labels => axis_labels(probes_for_this_graph),
@@ -161,6 +165,11 @@ class InterventionProbeAssignment < ActiveRecord::Base
       ] 
   end
 
+  def dots_for_line_graph
+      'o,000000,0,,3.0'
+
+  end
+
   def numbers_on_line
     #show the value in black on the graph
       'chm=N,000000,0,,12,,t'
@@ -173,13 +182,13 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def max_min_zero
     #min, zero, max
     @chxp<<"2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
-    "chm=r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
+    "r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
   end
 
   def benchmark_lines
     if benchmarks.present?
       @chxp <<  "3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
-      "chm=#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) -0.003},#{scale_value(b.benchmark) +0.003}"}.join("|")}" 
+      "#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) -0.003},#{scale_value(b.benchmark) +0.003}"}.join("|")}"
     end
   end
 
