@@ -2,12 +2,12 @@
 - :name: bluecloth
   :version: "> 2.0.0"
 - :name: fastercsv
+  :version: = 1.2.3
 - :name: pdf-writer
 - :name: rack
   :version: ">= 1.0.0"
 - :name: system_timer
 - :name: googlecharts
-- :name: responds_to_parent
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails
