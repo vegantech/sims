@@ -33,7 +33,7 @@ Rails::Initializer.run do |config|
   config.gem 'ruport', :version => '1.6.1'
   config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
   config.gem 'bluecloth', :version => '> 2.0.0'
-  config.gem "fastercsv"
+  config.gem "fastercsv",  :version => '= 1.2.3'
   config.gem "pdf-writer", :lib => "pdf/writer"
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
