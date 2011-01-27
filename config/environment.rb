@@ -19,6 +19,7 @@ Rails::Initializer.run do |config|
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
   # See Rails::Configuration for more options.
+  config.middleware.use 'ExtendedLogger'
 
   # Skip frameworks you're not going to use. To use Rails without a database
   # you must remove the Active Record framework.
