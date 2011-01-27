@@ -3,6 +3,7 @@ defaults: &defaults
   encoding: utf8
   username: root
   reconnect: true
+  collation: utf8_general_ci
 #  password: root
 
 development: &DEVELOPMENT
@@ -13,11 +14,16 @@ test: &TEST
   database: sims_open_test 
   <<: *defaults
 
-production:
+production: &PRODUCTION
   database: sims_open_production
   <<: *defaults
 
 
+wip:
+ <<: *PRODUCTION
+
+veg_open:
+ <<: *PRODUCTION
 
 
 development_with_cache:
