@@ -50,9 +50,10 @@ class GroupedProgressEntriesController < ApplicationController
     require 'net/http'
     require 'uri'
     @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
+    google_params= @grouped_progress_entry.aggregate_chart(params[:page])
+    logger.info(google_params)
 
-    res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'),
-                              @grouped_progress_entry.aggregate_chart(params[:page]))
+    res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'),google_params)
     send_data res.body, :type =>'image/png', :disposition => 'inline'
   end
 

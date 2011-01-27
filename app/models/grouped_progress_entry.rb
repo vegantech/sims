@@ -101,7 +101,7 @@ class GroupedProgressEntry
       scores=probes.flatten.collect(&:score)
       dates = probes.flatten.collect(&:administered_at)
       max_score = scores.max
-      min_score = scores.min
+      min_score =[0,scores.min].min || 0
       min_date = dates.min
       max_date =dates.max
 
@@ -113,13 +113,26 @@ class GroupedProgressEntry
       students=students[low..high]
 
 
+      chm=[]
+
+      idx=0
       scaled_scores=probes.collect do |probe_groups|
-        probe_groups.collect do |probe|
-          100*(probe.score-min_score)/(max_score - min_score + 0.0001)
-        end.join(",") 
+        scaled_dates=[]
+        scaled_scores = []
+        probe_groups.each do |probe|
+          scaled_scores << 100*(probe.score-min_score)/(max_score - min_score + 0.0001)
+          scaled_dates << 100 * (probe.administered_at - min_date) / (max_date - min_date + 0.0001)
+        end
+        if probe_groups.size == 1
+          chm << "@o,#{COLORS[idx]},0,#{scaled_dates.first/100}:#{scaled_scores.first/100},4"
+        end
+        idx = idx+1
+        [scaled_dates.join(","),scaled_scores.join(",")].join("|")
+
       end.join("|")
 
 
+      students.each_with_index{|s,idx| chm << "o,#{COLORS[idx]},#{idx},,4"}
 
   #    student_names
    #   probe_defintion
@@ -130,11 +143,12 @@ class GroupedProgressEntry
       
       { 'chdl' => students.collect(&:fullname).join("|"),
         'chco' => COLORS[low..high].join(","),
-        'cht' => 'lc',
+        'cht' => 'lxy',
         'chs' => '600x500',
         'chxt'=> 'x,y',
         'chxr' => "1,#{min_score},#{max_score}",
         'chxl' => "0:|#{min_date}|#{max_date}",
+        'chm' => chm.join("|"),
         'chid' => Time.now.usec,
         'chd' => "t:#{scaled_scores}"}
     end
