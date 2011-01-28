@@ -31,6 +31,20 @@ Feature: Login
     And I should not see "Authentication Failure"
 		Then I should see "Logout"
 
+  Scenario: Failed Login multiple districts persist district
+    Given district "A"
+    Given district "B"
+    Given district "C"
+    And I go to the home page
+    Then "district" should have "A" district selected
+
+    When I fill in "Login" with "cuke_oneschool"
+		And I fill in "Password" with "fr0d0L1v3s2"
+    And I select "B" from "district"
+		And I press "Login"
+    Then I should see "Authentication Failure"
+    And "district" should have "B" district selected
+
 
 
   Scenario: Change password

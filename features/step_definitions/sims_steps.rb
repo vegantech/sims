@@ -340,3 +340,14 @@ Then /^"([^\"]*)" should have "([^\"]*)" groups$/ do |school_name, num_groups|
   school = School.find_by_name(school_name)
   school.groups.size.should == num_groups.to_i
 end
+
+
+Given /^district "([^"]*)"$/ do |district|
+  Factory(:district, :name => district)
+end
+
+Then /^"([^"]*)" should have "([^"]*)" district selected$/ do |field, district|
+    i=District.find_by_name(district).id
+    steps %Q{Then the "#{field}" field should contain "#{i}"}
+end
+
