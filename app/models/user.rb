@@ -390,6 +390,10 @@ or (user_group_assignments.id is not null)
     ")
   end
 
+  def last_login
+    @last_login ||=district.logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+  end
+
 protected
 
   def student_ids_where_principal(school_id)
