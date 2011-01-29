@@ -90,7 +90,11 @@ RIGHTS={"local_system_administrator" =>
     :write_access=>true},
    {:read_access=>true,
     :controller=>"unattached_interventions",
-    :write_access=>true}
+    :write_access=>true},
+   {:read_access=>true,
+    :controller=>"personal_groups",
+    :write_access=>true},
+
   ],
  "school_admin" =>
   [{:read_access=>true,

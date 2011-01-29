@@ -19,6 +19,7 @@ describe AllControllers do
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
         interventions/probe_assignments interventions/probes
         interventions login main news_items
+        personal_groups
         principal_overrides quicklist_items recommendations reports 
         school_teams
         schools scripted spell_check
