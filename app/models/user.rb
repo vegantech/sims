@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
   has_many :team_consultations,:foreign_key => :requestor_id
+  has_many :personal_groups
 
   attr_accessor :password, :all_students_in_district, :old_password
 
@@ -92,7 +93,9 @@ class User < ActiveRecord::Base
         u_group.users.exists?(opts["user"].to_i)
       end
     end
+
     
+    grps = personal_groups.by_school_and_grade(school,grade) |grps
     if grps.length > 1 or special_user_groups.all_students_in_school?(school)
       grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text))
     end

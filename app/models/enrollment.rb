@@ -65,6 +65,13 @@ class Enrollment < ActiveRecord::Base
     end
 
     scope=scope.scoped(:conditions=>search_hash.slice(:grade))
+    if search_hash[:group_id].to_s =~ /^pg/
+      pg=search_hash.delete(:group_id)[2..-1]
+      
+      scope= scope.scoped :joins => "inner join personal_groups_students on personal_groups_students.student_id = enrollments.student_id", :conditions => { "personal_groups_students.personal_group_id" => pg}
+    end
+
+      
 
     if search_hash[:group_id].blank? or search_hash[:group_id] == "*" or search_hash[:user_id].blank?
       scope =scope.scoped :joins => "inner join groups_students on groups_students.student_id = enrollments.student_id", :conditions => {"groups_students.group_id" => search_hash[:group_id]} unless search_hash[:group_id].blank? or search_hash[:group_id] == "*"

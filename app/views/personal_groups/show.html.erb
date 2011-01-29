@@ -1,0 +1,18 @@
+<p>
+  <b>User:</b>
+  <%=h @personal_group.user %>
+</p>
+
+<p>
+  <b>School:</b>
+  <%=h @personal_group.school %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @personal_group.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_personal_group_path(@personal_group) %> |
+<%= link_to 'Back', personal_groups_path %>

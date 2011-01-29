@@ -1,0 +1,24 @@
+<h1>Listing personal_groups</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>School</th>
+    <th>Name</th>
+  </tr>
+
+<% @personal_groups.each do |personal_group| %>
+  <tr>
+    <td><%=h personal_group.user %></td>
+    <td><%=h personal_group.school %></td>
+    <td><%=h personal_group.name %></td>
+    <td><%= link_to 'Show', personal_group %></td>
+    <td><%= link_to 'Edit', edit_personal_group_path(personal_group) %></td>
+    <td><%= link_to 'Destroy', personal_group, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New personal_group', new_personal_group_path %>
