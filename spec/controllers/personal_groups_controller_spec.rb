@@ -1,11 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PersonalGroupsController do
+  it_should_behave_like "an authenticated controller"
+  it_should_behave_like "an authorized controller"
 
   def mock_personal_group(stubs={})
     @mock_personal_group ||= mock_model(PersonalGroup, stubs)
   end
-  
+ 
+  before do
+    @user = mock_user
+    @school = mock_school
+    controller.stub!(:current_user => @user)
+    controller.stub!(:current_school => @school )
+    @user.stub!(:personal_groups =>PersonalGroup)
+  end
+
   describe "GET index" do
     it "assigns all personal_groups as @personal_groups" do
       PersonalGroup.should_receive(:find).with(:all).and_return([mock_personal_group])
@@ -14,17 +24,11 @@ describe PersonalGroupsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested personal_group as @personal_group" do
-      PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
-      get :show, :id => "37"
-      assigns[:personal_group].should equal(mock_personal_group)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new personal_group as @personal_group" do
       PersonalGroup.should_receive(:new).and_return(mock_personal_group)
+      controller.should_receive(:selected_students_ids).and_return([1,2,3])
+      Student.should_receive(:find_all_by_id)
       get :new
       assigns[:personal_group].should equal(mock_personal_group)
     end
@@ -32,7 +36,9 @@ describe PersonalGroupsController do
 
   describe "GET edit" do
     it "assigns the requested personal_group as @personal_group" do
-      PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
+      PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group(:student_ids =>[]))
+      controller.should_receive(:selected_students_ids).and_return([1,2,3])
+      Student.should_receive(:find_all_by_id)
       get :edit, :id => "37"
       assigns[:personal_group].should equal(mock_personal_group)
     end
@@ -42,27 +48,31 @@ describe PersonalGroupsController do
     
     describe "with valid params" do
       it "assigns a newly created personal_group as @personal_group" do
-        PersonalGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_personal_group(:save => true))
+        PersonalGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_personal_group('school=' =>'', :save => true))
         post :create, :personal_group => {:these => 'params'}
         assigns[:personal_group].should equal(mock_personal_group)
       end
 
       it "redirects to the created personal_group" do
-        PersonalGroup.stub!(:new).and_return(mock_personal_group(:save => true))
+        PersonalGroup.stub!(:new).and_return(mock_personal_group(:save => true, 'school=' =>''))
         post :create, :personal_group => {}
-        response.should redirect_to(personal_group_url(mock_personal_group))
+        response.should redirect_to(personal_groups_url)
       end
     end
     
     describe "with invalid params" do
+      before do
+        controller.should_receive(:selected_students_ids).and_return([1,2,3])
+        Student.should_receive(:find_all_by_id)
+      end
       it "assigns a newly created but unsaved personal_group as @personal_group" do
-        PersonalGroup.stub!(:new).with({'these' => 'params'}).and_return(mock_personal_group(:save => false))
+        PersonalGroup.stub!(:new).with({'these' => 'params'}).and_return(mock_personal_group(:save => false, 'school=' =>''))
         post :create, :personal_group => {:these => 'params'}
         assigns[:personal_group].should equal(mock_personal_group)
       end
 
       it "re-renders the 'new' template" do
-        PersonalGroup.stub!(:new).and_return(mock_personal_group(:save => false))
+        PersonalGroup.stub!(:new).and_return(mock_personal_group(:save => false, 'school=' =>''))
         post :create, :personal_group => {}
         response.should render_template('new')
       end
@@ -71,43 +81,47 @@ describe PersonalGroupsController do
   end
 
   describe "PUT udpate" do
-    
+   
     describe "with valid params" do
       it "updates the requested personal_group" do
         PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
-        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params', "student_ids" => []}).and_return(true)
         put :update, :id => "37", :personal_group => {:these => 'params'}
       end
 
       it "assigns the requested personal_group as @personal_group" do
         PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :personal_group=>{}
         assigns[:personal_group].should equal(mock_personal_group)
       end
 
       it "redirects to the personal_group" do
         PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(personal_group_url(mock_personal_group))
+        put :update, :id => "1", :personal_group =>{}
+        response.should redirect_to(personal_groups_url)
       end
     end
     
     describe "with invalid params" do
+      before do
+        controller.should_receive(:selected_students_ids).and_return([1,2,3])
+        Student.should_receive(:find_all_by_id)
+      end
       it "updates the requested personal_group" do
-        PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
-        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params'})
+        PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group(:student_ids =>[]))
+        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params', "student_ids" => []})
         put :update, :id => "37", :personal_group => {:these => 'params'}
       end
 
       it "assigns the personal_group as @personal_group" do
-        PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => false))
-        put :update, :id => "1"
+        PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => false, "student_ids" => []))
+        put :update, :id => "1", :personal_group => {}
         assigns[:personal_group].should equal(mock_personal_group)
       end
 
       it "re-renders the 'edit' template" do
-        PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => false))
-        put :update, :id => "1"
+        PersonalGroup.stub!(:find).and_return(mock_personal_group(:update_attributes => false,"student_ids" => []))
+        put :update, :id => "1", :personal_group => {}
         response.should render_template('edit')
       end
     end
@@ -116,6 +130,8 @@ describe PersonalGroupsController do
 
   describe "DELETE destroy" do
     it "destroys the requested personal_group" do
+      controller.should_receive(:current_user).at_least(:once).and_return(@user)
+      @user.should_receive(:personal_groups).and_return(PersonalGroup)
       PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
       mock_personal_group.should_receive(:destroy)
       delete :destroy, :id => "37"
