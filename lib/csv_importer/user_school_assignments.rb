@@ -6,7 +6,7 @@ module CSVImporter
     }
     class << self
       def description
-        "Assigns users to schools. This provides access in the school selection screen"
+        "Assigns users to schools. This provides access in the school selection screen.  "
       end
 
       def csv_headers
@@ -16,6 +16,7 @@ module CSVImporter
       end
 
       def load_order
+        "This should be done before all_students_in_schools.csv and after users and schools.  "
       end
 
       def removed

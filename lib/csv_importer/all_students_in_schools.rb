@@ -10,7 +10,8 @@ module CSVImporter
 
     class << self
       def description
-        "List of users with access to all students in a given school, or all students in a given grade. Be sure to also give them regular user access."
+        "List of users with access to all students in a given school, or all students in a given grade. Be sure to also give them regular user access.
+        Users in this file will automatically assigned to this school."
       end
       
       def file_name
@@ -25,7 +26,7 @@ module CSVImporter
       end
 
       def load_order
-        "This should be uploaded after schools and users."
+        "This should be uploaded after schools and users and after user_school_assignments."
       end
 
       def removed
@@ -110,6 +111,15 @@ module CSVImporter
       "
       )
       SpecialUserGroup.connection.update query
+    end
+
+    def after_import
+      sum=0
+        @district.schools.each do |school|
+          sum += school.special_user_groups.autoassign_user_school_assignments.size
+        end
+
+      @messages << "#{sum} Users automatically assigned to a school" if sum > 0
     end
   end
 end

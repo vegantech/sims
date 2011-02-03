@@ -21,6 +21,7 @@ class UserSchoolAssignment < ActiveRecord::Base
 
   named_scope :admin, :conditions => {:admin => true}
   after_save :create_all_students
+  after_destroy :remove_special_user_groups
 
   def all_students
     !!user.special_user_groups.find_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL) if user
@@ -37,6 +38,10 @@ class UserSchoolAssignment < ActiveRecord::Base
   end
 
 private
+  def remove_special_user_groups
+    SpecialUserGroup.delete_all("user_id = #{user_id} and school_id = #{school_id}")
+  end
+
   def create_all_students
     if @all_students
       d=user.special_user_groups.find_or_create_by_school_id_and_grade_and_grouptype_and_district_id(school_id,nil,SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,user.district_id) 

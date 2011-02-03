@@ -1,5 +1,5 @@
 module ImportCSV::FileHandling
-  FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv']
+  FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv', 'user_school_assignments.csv']
   def sorted_filenames filenames=@filenames
 
     filenames.compact.sort_by do |f|

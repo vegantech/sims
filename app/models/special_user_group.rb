@@ -53,5 +53,13 @@ class SpecialUserGroup < ActiveRecord::Base
     1
   end
 
+  def self.autoassign_user_school_assignments
+    find_all_by_grouptype(ALL_STUDENTS_IN_SCHOOL,
+       :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id
+         and uga.school_id = special_user_groups.school_id
+         inner join users on special_user_groups.user_id = users.id",
+       :conditions => "uga.id is null").each{|sug| UserSchoolAssignment.create!(:user_id => sug.user_id, :school_id => sug.school_id)}
+  end
+
 end
 
