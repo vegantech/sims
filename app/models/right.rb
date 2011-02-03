@@ -1,7 +1,7 @@
 class Right 
 
-RIGHTS={"local_system_administrator" =>
-  [
+RIGHTS={
+  "local_system_administrator" => [
   {:read_access=>true,
     :controller=>"district/users",
     :write_access=>true},
@@ -16,10 +16,9 @@ RIGHTS={"local_system_administrator" =>
     :write_access=>true},
    {:read_access=>true,
     :controller=>"district/students",
-    :write_access=>true}
-  ],
- "regular_user" => 
-  [{:read_access=>true,
+    :write_access=>true} ],
+ "regular_user" => [
+   {:read_access=>true,
     :controller=>"custom_flags",
     :write_access=>true},
    {:read_access=>true,
@@ -90,10 +89,9 @@ RIGHTS={"local_system_administrator" =>
     :write_access=>true},
    {:read_access=>true,
     :controller=>"unattached_interventions",
-    :write_access=>true}
-  ],
- "school_admin" =>
-  [{:read_access=>true,
+    :write_access=>true} ],
+ "school_admin" => [
+   {:read_access=>true,
     :controller=>"school_teams",
     :write_access=>true},
    {:read_access=>true,
@@ -108,8 +106,8 @@ RIGHTS={"local_system_administrator" =>
    {:read_access=>true,
     :controller=>"groups",
     :write_access=>true}],
- "content_admin" =>
-  [{:read_access=>true,
+ "content_admin" => [
+   {:read_access=>true,
     :controller=>"intervention_builder/recommended_monitors",
     :write_access=>true},
    {:read_access=>true,
@@ -150,16 +148,16 @@ RIGHTS={"local_system_administrator" =>
    {:read_access=>true,
     :controller=>"railmail",
     :write_access=>true}],
- "state_admin" =>
-  [{:read_access=>true,
+ "state_admin" => [
+   {:read_access=>true,
     :controller=>"states",
     :write_access=>true}],
- "news_admin" =>
-  [{:read_access=>true,
+ "news_admin" => [
+   {:read_access=>true,
     :controller=>"news_items",
     :write_access=>true}],
- "country_admin" =>
-  [{:read_access=>true,
+ "country_admin" => [
+   {:read_access=>true,
     :controller=>"countries",
     :write_access=>true}]
 }
