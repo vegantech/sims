@@ -26,4 +26,14 @@ describe UserSchoolAssignment do
     pending
     UserSchoolAssignment.create!(@valid_attributes)
   end
+
+  it "should remove special user groups when it is removed" do
+    UserSchoolAssignment.delete_all
+    SpecialUserGroup.delete_all
+    usa=UserSchoolAssignment.create!(:user_id => 1, :school_id => 1)
+    sug= SpecialUserGroup.create!(:school_id => 1, :user_id => 1, :grouptype=>3, :district_id=>1)
+    SpecialUserGroup.count.should == 1
+    usa.destroy
+    SpecialUserGroup.count.should == 0
+  end
 end

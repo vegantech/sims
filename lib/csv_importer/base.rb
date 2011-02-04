@@ -156,6 +156,10 @@ module CSVImporter
       @deleted=delete
       @updated=update
       @created=insert
+      after_import
+    end
+
+    def after_import
     end
 
     def delete
