@@ -70,14 +70,6 @@
   # RailsBaseURI <uri>
   <% end %>
 
-  ## RailsAllowModRewrite
-  #
-  # Passenger will not override mod_rewrite rules if this option
-  # is enabled. This option is deprecated and ignored in recent versions
-  # of Passenger.
-  # Options: <on|off>
-
-  RailsAllowModRewrite <%= passenger_config_boolean(configuration[:passenger][:allow_mod_rewrite]) %>
 <% if rails_root.join('config.ru').exist? %>
   ## RackEnv
   #

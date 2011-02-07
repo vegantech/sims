@@ -1,0 +1,2 @@
+#List of districts that have successful login by most recent login in ascending order
+puts DistrictLog.find(:all, :group => "districts.name", :joins => :district, :conditions => "body like 'Successful login of %' and body not like '% Tammy Biever'", :select => "districts.name, max(district_logs.created_at) as created_at", :order => "max(district_logs.created_at)" ).collect{|e| [e.name, e.created_at].join(", ")}
