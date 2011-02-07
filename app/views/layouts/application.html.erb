@@ -67,6 +67,7 @@
          <%="Logged in as #{current_user} (#{current_school})" if current_user  && !current_user.new_record? %>
         <br /><br />
 
+        <%= render :partial =>'districts/google_lsa'  if current_user.roles.include?("local_system_administrator") %>
         <% if ENV["RAILS_ENV"] == "development" %>
           <div id="debug">
             <a href="#" onclick="Element.toggle('params_debug_info');return false">
