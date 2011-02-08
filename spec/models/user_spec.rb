@@ -376,5 +376,11 @@ describe User do
 
   end
 
+  describe 'remove from district' do
+    it 'should test the class method'
+    it 'should test the instance method'
+
+  end
+
 
 end

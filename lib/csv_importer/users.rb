@@ -104,13 +104,13 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
 
     def delete
-      query = "delete  from u
-      using users u 
-      left outer join #{temporary_table_name} tu 
-      on u.district_user_id = tu.district_user_id
-      where u.district_user_id is not null and u.district_id = #{@district.id}
-      and tu.district_user_id is null"
-      User.connection.update query
+     query = "select id from users u left outer join #{temporary_table_name} tu
+        on u.district_user_id = tu.district_user_id
+        where u.district_user_id is not null and u.district_id = #{@district.id}
+        and tu.district_user_id is null"
+      user_ids_to_remove=User.connection.select_rows(query)
+      User.remove_from_district(user_ids_to_remove)
+      user_ids_to_remove.length
     end
 
     def update_passwords
