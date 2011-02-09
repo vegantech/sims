@@ -301,13 +301,14 @@ class User < ActiveRecord::Base
   end
 
   def self.remove_from_district(user_ids = [])
-    user_ids = Array(user_ids).collect(&:to_a)
+    user_ids = Array(user_ids).flatten.collect(&:to_i)
     return nil if user_ids.blank?
-    User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL where id in (#{user_ids.join(",")})")
+    User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL where id in (#{user_ids.join(",")})")
     UserSchoolAssignment.delete_all(["user_id in (?)",user_ids])
     SpecialUserGroup.delete_all(["user_id in (?)",user_ids])
     UserGroupAssignment.delete_all(["user_id in (?)",user_ids])
     StaffAssignment.delete_all(["user_id in (?)",user_ids])
+    SchoolTeamMembership.delete_all(["user_id in (?)",user_ids])
   end
   def remove_from_district
     User.remove_from_district(self[:id])
