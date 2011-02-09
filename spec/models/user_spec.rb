@@ -376,5 +376,34 @@ describe User do
 
   end
 
+  describe 'remove from district' do
+
+    def check_user user
+      user.reload
+      user.district_id.should be_nil
+      user.passwordhash.should == 'disabled'
+      user.roles.should == []
+      user.groups.should == []
+      user.schools.should == []
+      user.school_teams.should == []
+      user.staff_assignments.should == []
+      user.email.should be_blank
+    end
+    it 'should remove a user from a district and clear out noncontent settings' do
+      user = Factory(:user, :username=>'user1', :email=>'woo')
+      user.remove_from_district
+      check_user user
+   end
+    it 'should remove users in a list of ids form the district and clear out concontent settings' do
+      user1 = Factory(:user, :username=>'user1', :email=>'woo')
+      user2 = Factory(:user, :username=>'user2', :email=>'woo2')
+      User.remove_from_district( [user1.id, user2.id])
+      check_user user1
+      check_user user2
+    end
+
+
+  end
+
 
 end

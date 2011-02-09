@@ -16,7 +16,7 @@ class LoginController < ApplicationController
       session[:user_id] = @user.id
       if @user.new_record?
         logger.info "Failed login of #{params[:username]} at #{current_district.name}"
-        current_district.logs.create(:body => "Failed login of #{params[:username]}")
+        current_district.logs.create(:body => "Failed login of #{params[:username]}") unless current_district.new_record?
         if @user.token
           flash[:notice] = 'An email has been sent, follow the link to change your password.'
         else

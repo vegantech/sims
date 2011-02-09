@@ -43,13 +43,14 @@ class User < ActiveRecord::Base
   has_many :school_teams, :through => :school_team_memberships
   has_many :team_consultations,:foreign_key => :requestor_id
   has_many :personal_groups
+  has_many :staff_assignments
 
   attr_accessor :password, :all_students_in_district, :old_password
 
   define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
   
 
-  validates_presence_of :username, :last_name, :first_name, :district
+  validates_presence_of :username, :last_name, :first_name
   validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
   validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
@@ -302,13 +303,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.remove_from_district(user_ids = [])
+    user_ids = Array(user_ids).flatten.collect(&:to_i)
+    return nil if user_ids.blank?
+    User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL where id in (#{user_ids.join(",")})")
+    UserSchoolAssignment.delete_all(["user_id in (?)",user_ids])
+    SpecialUserGroup.delete_all(["user_id in (?)",user_ids])
+    UserGroupAssignment.delete_all(["user_id in (?)",user_ids])
+    StaffAssignment.delete_all(["user_id in (?)",user_ids])
+    SchoolTeamMembership.delete_all(["user_id in (?)",user_ids])
+  end
   def remove_from_district
-    #TODO delete the student if they aren't in use anymore
-    user_school_assignments.destroy_all
-    special_user_groups.destroy_all
-    user_group_assignments.destroy_all
-    update_attribute(:roles_mask,0)
-    update_attribute(:district_id,nil)
+    User.remove_from_district(self[:id])
   end
 
   def change_password(params)
