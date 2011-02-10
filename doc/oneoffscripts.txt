@@ -27,4 +27,6 @@ SpecialUserGroup.all(:include => :user, :conditions => "user_id is not null and 
 StaffAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
 UserGroupAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
 UserSchoolAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+#fix updated_at
+User.reflect_on_all_associations(:has_many).reject(&:through_reflection).select{|e| e.klass.column_names.include?("created_at")}.collect(&:name).each{|ua| u.send(ua).update_all("updated_at = created_at")}
 
