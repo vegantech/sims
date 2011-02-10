@@ -43,6 +43,17 @@ class User < ActiveRecord::Base
   has_many :school_teams, :through => :school_team_memberships
   has_many :team_consultations,:foreign_key => :requestor_id
   has_many :staff_assignments
+  has_many :checklists
+  has_many :consultation_forms
+  has_many :consultation_form_requests
+  has_many :custom_flags
+  has_many :ignore_flags
+  has_many :intervention_comments
+  has_many :intervention_definitions
+  has_many :interventions
+  has_many :probe_definitions
+  has_many :recommendations
+
 
   attr_accessor :password, :all_students_in_district, :old_password
 
