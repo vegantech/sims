@@ -1,2 +1,30 @@
 #List of districts that have successful login by most recent login in ascending order
 puts DistrictLog.find(:all, :group => "districts.name", :joins => :district, :conditions => "body like 'Successful login of %' and body not like '% Tammy Biever'", :select => "districts.name, max(district_logs.created_at) as created_at", :order => "max(district_logs.created_at)" ).collect{|e| [e.name, e.created_at].join(", ")}
+
+
+
+
+#create former user and assign all content from deleted users to it
+u=User.create!(:username=>"former_user",:first_name => "Former", :last_name => "User", :email => "former_user@simspilot.org",:password=>'former')
+u.update_attribute(:passwordhash,'former')
+Checklist.all(:include => :teacher, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+ConsultationForm.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+ConsultationFormRequest.all(:include => :requestor, :conditions => "requestor_id is not null and users.id is null").each {|e| e.update_attribute(:requestor_id, u.id)}
+TeamConsultation.all(:include => :requestor, :conditions => "requestor_id is not null and users.id is null").each {|e| e.update_attribute(:requestor_id, u.id)}
+Flag.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+InterventionComment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+InterventionDefinition.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+Intervention.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+ProbeDefinition.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+Recommendation.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+StudentComment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each {|e| e.update_attribute(:user_id, u.id)}
+PrincipalOverride.all(:include => :teacher, :conditions => "teacher_id is not null and users.id is null").each {|e| e.update_attribute(:teacher_id, u.id)}
+PrincipalOverride.all(:include => :principal, :conditions => "principal_id is not null and users.id is null").each {|e| e.update_attribute(:principal_id, u.id)}
+#Remove assignments to deleted users
+InterventionParticipant.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+SchoolTeamMembership.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+SpecialUserGroup.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+StaffAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+UserGroupAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+UserSchoolAssignment.all(:include => :user, :conditions => "user_id is not null and users.id is null").each(&:delete)
+
