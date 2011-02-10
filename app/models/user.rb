@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   has_many :staff_assignments
   has_many :checklists
   has_many :consultation_forms
-  has_many :consultation_form_requests
+  has_many :consultation_form_requests, :foreign_key =>:requestor_id
   has_many :custom_flags
   has_many :ignore_flags
   has_many :intervention_comments
