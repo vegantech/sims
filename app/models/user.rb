@@ -57,7 +57,61 @@ class User < ActiveRecord::Base
 
   attr_accessor :password, :all_students_in_district, :old_password
 
+named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id 
+  left outer join student_comments on users.id = student_comments.user_id
+  left outer join team_consultations on team_consultations.requestor_id = users.id 
+  left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id",
+  :conditions => "interventions.id is not null or student_comments.id is not null or 
+                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
+
+
+  FILTER_HASH_FOR_IN_USE_DATE_RANGE=
+  {
+  :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
+    or consultation_form_requests.created_at >=?)",
+  :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+    or consultation_form_requests.created_at <=?)"
+  }
+
+  define_calculated_statistic :users_in_use  do 
+    
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
+
+    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
+      count(:id, :conditions => 
+            "(exists (select 1 from interventions where interventions.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from student_comments where student_comments.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from team_consultations where team_consultations.requestor_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+             #{d_conditions}
+            ")
+
+  end
+
+
+  define_calculated_statistic :districts_with_users_in_use  do 
+    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
+
+    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
+      count('distinct district_id', :conditions => 
+            "(exists (select 1 from interventions where interventions.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from student_comments where student_comments.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
+             exists (select 1 from team_consultations where team_consultations.requestor_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+             #{d_conditions}
+            ")
+
+  end
+
+
   define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
+
+
+
+
+
+#  define_statistic :users_with_content
+#  define_statistic :districts_with_users_with_content
   
 
   validates_presence_of :username, :last_name, :first_name
