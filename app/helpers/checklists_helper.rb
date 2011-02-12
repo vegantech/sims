@@ -116,7 +116,9 @@ module ChecklistsHelper
   end
 
   def recommendation_other_extras(form)
-    (form.text_field(:other,:size=>"90", :class =>'spell_check')     )
+    form.text_field(:other,:size=>"90", :class =>'spell_check')   +
+    form.check_box(:advance_tier) + form.label(:advance_tier) + ' ' +
+    help_popup("Choose to advance the tier or not, only applies if you are choosing 'Other'")
   end
      
   def markdown_note  

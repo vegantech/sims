@@ -37,6 +37,7 @@ class RecommendationsController < ApplicationController
     params[:recommendation][:draft]=!!params[:draft]
     params[:recommendation][:user_id]=current_user.id
     @recommendation = current_student.recommendations.find(params[:id])
+    @recommendation.promoted=false
 
     if  @recommendation.update_attributes(params[:recommendation])
       redirect_to current_student
