@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110109022903) do
+ActiveRecord::Schema.define(:version => 20110211170843) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -458,6 +458,21 @@ ActiveRecord::Schema.define(:version => 20110109022903) do
 
   add_index "objective_definitions", ["goal_definition_id"], :name => "index_objective_definitions_on_goal_definition_id"
 
+  create_table "personal_groups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "personal_groups_students", :id => false, :force => true do |t|
+    t.integer "personal_group_id", :null => false
+    t.integer "student_id",        :null => false
+  end
+
+  add_index "personal_groups_students", ["personal_group_id", "student_id"], :name => "personal_groups_habtm_index", :unique => true
+
   create_table "principal_override_reasons", :force => true do |t|
     t.integer  "district_id"
     t.text     "reason"
@@ -626,6 +641,7 @@ ActiveRecord::Schema.define(:version => 20110109022903) do
     t.integer  "tier_id"
     t.integer  "student_id"
     t.boolean  "promoted",                     :default => false
+    t.boolean  "advance_tier",                 :default => true
   end
 
   add_index "recommendations", ["checklist_id"], :name => "index_recommendations_on_checklist_id"

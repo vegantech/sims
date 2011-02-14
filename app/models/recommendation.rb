@@ -65,6 +65,14 @@ class Recommendation < ActiveRecord::Base
           :optional_checklist => "Optional Checklist Completed."
         }  
 
+  def should_promote?
+    if RECOMMENDATION[recommendation][:text] == "Other" then
+      self.advance_tier
+    else
+      RECOMMENDATION[recommendation][:promote]
+    end
+  end
+
   def status
     if draft?
       STATUS[:draft]
@@ -75,10 +83,10 @@ class Recommendation < ActiveRecord::Base
     elsif !promoted? and RECOMMENDATION[recommendation][:show_elig]
       checklist.fake_edit= checklist == student.checklists.last
       (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer] 
-    elsif !promoted? and RECOMMENDATION[recommendation][:promote]
+    elsif !promoted? and should_promote?
       checklist.fake_edit = checklist == student.checklists.last if checklist
       STATUS[:failing_score]
-    elsif !promoted? and !RECOMMENDATION[recommendation][:promote]
+    elsif !promoted? and !should_promote?
       STATUS[:nonadvancing]
     else
       return STATUS[:unknown]
@@ -147,14 +155,14 @@ class Recommendation < ActiveRecord::Base
   end
 
   def should_advance
-     RECOMMENDATION[recommendation][:promote] unless recommendation.blank? or self.draft?
+     should_promote? unless recommendation.blank? or self.draft?
   end
 
   def before_save
     if draft?
       self.promoted=false
       return true
-    elsif errors.empty? and recommendation and RECOMMENDATION[recommendation][:promote]
+    elsif errors.empty? and recommendation and should_promote?
       if checklist 
         self.promoted=validate_for_tier_escalation
       else

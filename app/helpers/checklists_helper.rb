@@ -108,14 +108,18 @@ module ChecklistsHelper
      next  if  v[:show_elig] && !show_referral_option?  
      opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +
-       form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ?form.text_field(:other,:size=>"90", :class =>'spell_check') : "") if form.object.show_button?(k)
+       form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
    a.compact.join("<br />\n")
 
    #
   end
 
-
+  def recommendation_other_extras(form)
+    form.text_field(:other,:size=>"90", :class =>'spell_check')   +
+    form.check_box(:advance_tier) + form.label(:advance_tier) + ' ' +
+    help_popup("Choose to advance the tier or not, only applies if you are choosing 'Other'")
+  end
      
   def markdown_note  
       link_to "You can use markdown","http://www.deveiate.org/projects/BlueCloth/wiki/AboutMarkdown",:target=>"_blank"
