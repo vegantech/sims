@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110128233208) do
+ActiveRecord::Schema.define(:version => 20110211170843) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -641,6 +641,7 @@ ActiveRecord::Schema.define(:version => 20110128233208) do
     t.integer  "tier_id"
     t.integer  "student_id"
     t.boolean  "promoted",                     :default => false
+    t.boolean  "advance_tier",                 :default => true
   end
 
   add_index "recommendations", ["checklist_id"], :name => "index_recommendations_on_checklist_id"
