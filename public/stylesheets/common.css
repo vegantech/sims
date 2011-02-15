@@ -66,6 +66,15 @@ label.checkbox_label {
   white-space: nowrap;
 } 
 
+label.checkbox_label_span {
+  float: none;
+  display: inline;
+  text-align: left;
+  white-space: nowrap;
+} 
+
+
+
 /*This is now set dynamically on the student search page, as the content to the right has a variable height
 #student_fake_left {
   margin-bottom: 22em;
