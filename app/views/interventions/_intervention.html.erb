@@ -9,9 +9,17 @@
           <div class="fake_label">
             <%= f.check_box :apply_to_all %> 
           </div>
+          <div style ="float: right; width: 60%">
+            <%= link_to_function "Show/Hide" , "$('intervention_student_list').toggle()" %>
+        <div id="intervention_student_list" style="display:none">
+          <%=Student.find_all_by_id(@intervention.selected_ids).collect(&:fullname).join(", ")%>
+        </div>
+          </div>
           <%= f.label :apply_to_all, "Apply to all selected students", {:class => 'checkbox_label'} %>
+          
+
         <% end %>
-        <br class="brclear" />
+        <br class="brclear" /> 
 
         <div class="fake_label">
           <%= f.check_box :auto_implementer %> 
