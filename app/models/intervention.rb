@@ -32,6 +32,12 @@ class Intervention < ActiveRecord::Base
     "Intervention not matched to student need"
   ]
 
+  UNATTACHED_DESCRIPTION="An unattached intervention is an
+  intervention that has not yet been ended
+  that has also gone past the end date,
+    has one or more participants that cannot access the student,
+    or has no participants at all."
+
   belongs_to :user
   belongs_to :student, :touch => true
   belongs_to :intervention_definition

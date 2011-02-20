@@ -10,8 +10,10 @@
 
     <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,current_school.blank?,current_student.blank?,session[:search].blank?] do %>
 
-      <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path if session[:search]%>
-      <%= li_link_to_if_authorized 'Personal Groups',personal_groups_path if session[:search]%>
+      <% if session[:search] %>
+      <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
+      <%= li_link_to_if_authorized "Personal Groups",personal_groups_path,{},help_popup(PersonalGroup::DESCRIPTION)%>
+      <% end %>
       <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
       <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
       <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>

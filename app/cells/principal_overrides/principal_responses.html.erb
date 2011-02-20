@@ -4,6 +4,6 @@
   <%=link_to(pluralize(@new_requests,'Pending Request'), principal_overrides_path)%> <br />
   <%=link_to(pluralize(@responses,'Your responses'), principal_overrides_path)%>
     <ul><li>
-      <%=link_to "Unattached Interventions", unattached_interventions_path %> </li></ul>
+      <%=link_to "Unattached Interventions", unattached_interventions_path %><%=help_popup Intervention::UNATTACHED_DESCRIPTION %> </li></ul>
 <% end %>
 </div>

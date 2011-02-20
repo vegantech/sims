@@ -7,6 +7,7 @@ class PersonalGroup < ActiveRecord::Base
   FAKE_GROUP=OpenStruct.dup
   FAKE_GROUP.__send__(:define_method, :id) { @table[:id] || self.object_id }
 
+  DESCRIPTION="Allows you to manage your own custom groups.  These will appear at the top of the group dropdown on the search screen."
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => [:user_id, :school_id]
 

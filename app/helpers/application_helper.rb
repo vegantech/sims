@@ -11,11 +11,11 @@ module ApplicationHelper
   end
 
   def li_link_to(name, options = {}, html_options = {}, *rest)
-    content_tag :li,link_to(name,options,html_options)
+    content_tag :li,(link_to(name,options,html_options) + rest.join(" "))
   end
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
-     content_tag :li,r if r.present?
+     content_tag :li,(r + rest.join(" ")) if r.present?
   end
 
   def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
