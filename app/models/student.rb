@@ -41,6 +41,7 @@ class Student < ActiveRecord::Base
   has_many :team_consultations, :dependent => :destroy
   has_many :team_consultations_pending, :conditions => {:complete => false, :draft => false}, :class_name => "TeamConsultation"
   has_many :consultation_form_requests, :dependent => :destroy
+  has_many :consultation_forms
   has_one :ext_arbitrary, :dependent => :delete
   has_many :ext_siblings,:dependent => :delete_all
   has_many :ext_adult_contacts, :order => "guardian desc", :dependent => :delete_all
@@ -166,7 +167,7 @@ class Student < ActiveRecord::Base
 
   def has_content?
     flags.any? || team_consultations.any? || interventions.any? || checklists.any? || recommendations.any? || principal_overrides.any? ||
-    consultation_form_requests.any? || comments.any?
+    consultation_form_requests.any? || comments.any? || consultation_forms.any?
   end
 
   def max_tier
