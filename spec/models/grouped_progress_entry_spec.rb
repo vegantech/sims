@@ -4,6 +4,7 @@ describe GroupedProgressEntry do
   before(:each) do
   end
 
-  it "should have some specs" do
-  end
+  it "should have some specs" 
+
+  it "should test intervention probe assignments that are not enabled [#494]"
 end
