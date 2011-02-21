@@ -36,7 +36,7 @@ class PersonalGroupsController < ApplicationController
 
     respond_to do |format|
       if @personal_group.save
-        flash[:notice] = 'PersonalGroup was successfully created.'
+        flash[:notice] = "The #{@personal_group.name} group is now available in the student search screen."
         format.html { redirect_to(personal_groups_url) }
         format.xml  { render :xml => @personal_group, :status => :created, :location => @personal_group }
       else
@@ -56,7 +56,7 @@ class PersonalGroupsController < ApplicationController
 
     respond_to do |format|
       if @personal_group.update_attributes(params[:personal_group])
-        flash[:notice] = 'PersonalGroup was successfully updated.'
+        flash[:notice] = "The students in the #{@personal_group.name} group have been updated. If you've changed students and want to work with all students in this group you will need to go back to the student search screen and select the group and select the students on the next screen."
         format.html { redirect_to(personal_groups_url) }
         format.xml  { head :ok }
       else
