@@ -16,7 +16,7 @@ class GroupedProgressEntry
 
   def initialize(obj,user,student_ids, search={})
     @intervention = obj
-    @probe_definition = @intervention.intervention_probe_assignment.try(&:probe_definition)
+    @probe_definition = @intervention.intervention_probe_assignment.probe_definition
     @user=user
     @student_ids =student_ids
     @school = School.find(search[:school_id])
