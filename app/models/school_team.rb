@@ -18,6 +18,9 @@ class SchoolTeam < ActiveRecord::Base
   has_many :team_contacts, :through =>:school_team_memberships, :source=>:user,:conditions => ["school_team_memberships.contact =?", true]
   has_many :team_consultations
 
+
+  DESCRIPTION="Used to set up teams to be used to identify the potential team recipients of the Team Consultation Form."
+
   named_scope :named, {:conditions => {:anonymous => false }, :order => 'name'}
   validates_presence_of :name, :unless => :anonymous?
   validates_presence_of :contact_ids, :unless => :anonymous?, :message =>'There must be at least one contact'

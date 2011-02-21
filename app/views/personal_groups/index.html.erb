@@ -19,6 +19,9 @@
   </tr>
 <% end %>
 </table>
+<% if @personal_groups.blank? %>
+  <p>You do not have any personal groups for this school.</p>
+<% end %>
 
 <br />
 
