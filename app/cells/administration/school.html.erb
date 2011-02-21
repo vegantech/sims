@@ -2,8 +2,7 @@
   <h2><%=@school%> Administration</h2>
   <ul>
     <li><%=link_to 'Manage Groups', groups_url %> 
-      <%=help_popup("Used to set up and edit groups for assigning students to users.  
-                  They're most commonly sections of classes.  They can also be used for entering group progress monitoring data.")%></li> 
+    <%=help_popup(Group::DESCRIPTION) %> </li> 
     <li><%=link_to 'Manage Quicklist', quicklist_items_url %>
                   <%=help_popup("Used to identify the most frequent interventions used within the school. 
                                 This allows staff to assign a new intervention more efficiently from the quicklist.")%> </li>

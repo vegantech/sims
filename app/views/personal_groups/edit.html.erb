@@ -1,5 +1,12 @@
 <h1>Editing Personal Group</h1>
 
+<p><%=PersonalGroup::DESCRIPTION%> </p>
+<p> The students here are based on your student
+selection.  If you'd like to add students to this group then 
+ click "Student Search" or "Student Selection"
+ in the breadcrumbs.  You don't need to reselect
+ the students already in the group, just the ones that you 
+ wish to add.  </p>
 <% form_for(@personal_group) do |f| %>
   <%= f.error_messages %>
 

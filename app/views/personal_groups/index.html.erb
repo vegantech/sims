@@ -1,5 +1,9 @@
-<h1>Listing Personal Groups for <%=current_school %></h1>
+<h1>Personal Groups for <%=current_school %></h1>
+<h2>Create New Personal Group</h2>
+<p><%=PersonalGroup::DESCRIPTION%></p>
 
+<%= link_to 'New Personal Group', new_personal_group_path %>
+<h2>Already created personal groups for <%=current_school %></h2>
 <table>
   <tr>
     <th>Name</th>
@@ -18,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New personal_group', new_personal_group_path %>
+<%= link_to 'New Personal Group', new_personal_group_path %>

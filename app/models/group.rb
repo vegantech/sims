@@ -12,6 +12,9 @@
 #
 
 class Group < ActiveRecord::Base
+  DESCRIPTION="Used to set up and edit groups for assigning students to users.  
+               They're most commonly sections of classes.  
+               They can also be used for entering group progress monitoring data."
   belongs_to :school
   has_and_belongs_to_many :students
   has_many :user_group_assignments

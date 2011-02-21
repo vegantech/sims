@@ -1,6 +1,16 @@
-<h1>Listing groups</h1>
+<h1>Groups</h1>
 
-<h2> Virtual Groups </h2>
+<h2>Create New Group</h2>
+  <p><%=Group::DESCRIPTION%></p>
+
+  <p><%= link_to 'New group', new_group_path %></p>
+  <h2>Virtual Groups </h2>
+  <p>In a virtual group, the users are assigned by the School Administrator, 
+  but the sudents are assigned dynamically by SIMS.  The student assignments
+  are based on enrollments. If a student is enrolled in a school, that student will
+  belong to the "All Students In School" and their respective "All Students In Grade: X."
+  When the enrollments change, the students in these groups will change automatically.
+  </p>
 
 <table>
   <tr>
@@ -20,7 +30,7 @@
 
 
 <h2> Assigned Groups </h2>
-
+<p> In an assigned group, the students and users are assigned by the School Admin. </p>
 <% form_tag groups_path, :method=>:get do %>
   <%=label_tag :title, "title, Any part"%>
   <%=text_field_tag :title %>
@@ -28,7 +38,6 @@
 <% end %>
 
   <%= will_paginate @groups %>
-<%= link_to 'New group', new_group_path %>
 <table>
   <tr>
     <th>Title</th>
@@ -44,6 +53,9 @@
   </tr>
 <% end %>
 </table>
+<% if @groups.blank? %>
+  <p>No groups have been assigned for this school.</p>
+<% end %>
 
 <br />
 
