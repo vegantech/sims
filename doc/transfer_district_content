@@ -73,7 +73,8 @@ Intervention Definitions
 intervention_cluster_ids =  tempdist.intervention_clusters.collect(&:id)
 idids = []
 
-idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,:joins => :interventions, :conditions => "interventions.id is not null").collect(&:id);nil
+idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,
+    :joins => :interventions, :conditions => "interventions.id is not null").collect(&:id);nil
 idids << InterventionDefinition.find_all_by_intervention_cluster_id_and_custom(intervention_cluster_ids,true).collect(&:id)
 idids << InterventionDefinition.find_all_by_intervention_cluster_id(intervention_cluster_ids,:conditions => "updated_at > '2009-08-01'").collect(&:id)
 

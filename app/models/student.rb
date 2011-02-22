@@ -220,7 +220,7 @@ class Student < ActiveRecord::Base
 
   def special_group_principals
     grades = enrollments.collect(&:grade)
-    schools = enrollments.collect(&:school)
+    schools = enrollments.collect(&:school).compact
     principals = []
 
     principals << district.special_user_groups.principal.all_students_in_district.collect(&:user)
