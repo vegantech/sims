@@ -465,6 +465,11 @@ or (user_group_assignments.id is not null)
     @last_login ||=district.logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
   end
 
+
+  def self.find_by_fullname(fullname)
+    find_by_first_name_and_last_name(*(fullname.split(" ")))
+  end
+
 protected
 
   def student_ids_where_principal(school_id)
