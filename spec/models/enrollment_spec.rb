@@ -100,6 +100,13 @@ describe Enrollment do
         Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user2.id.to_s, :school_id=>999).should == [@e2]
         Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user2.id.to_s, :school_id=>999,:group_id=>@group2.id.to_s).should == [@e2]
       end
+
+      it 'should restrict to a user with access to all students but filtering to him/herself #607' do
+
+        @user1.special_user_groups.create!(:grouptype =>SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district_id => @user1.district_id)
+        Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user1.id.to_s, :school_id=>999).should == [@e1,@e2]
+        @user1.special_user_groups.clear
+      end
     end
 
     describe 'with index_includes' do
