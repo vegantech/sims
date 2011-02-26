@@ -233,6 +233,12 @@ module CSVImporter
 
     def delete
       #unset the district of  all students that are not in the temporary table
+       q="delete e from enrollments e inner join students s on s.id = e.student_id
+       left outer join #{temporary_table_name} ts on
+          ts.district_student_id = s.district_student_id
+          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
+
+       clear_enrollments=ActiveRecord::Base.connection.update(q)
        q="update students s left outer join #{temporary_table_name} ts on 
           ts.district_student_id = s.district_student_id set s.district_id = null
           where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
@@ -240,10 +246,6 @@ module CSVImporter
       removed=ActiveRecord::Base.connection.update(q)
       @other_messages << "#{removed} students removed from district; "
        
-      #prune the districtless students
-      
-      
-      puts 'You still need to prune the existing students at some point'
       #      @messages << 'Shawn still needs to prune the existing students that are not in districts'
 
       #remove_students_in_district_not_in_temporary_table #delete_or_disable?  or just disable
