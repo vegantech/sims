@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
-    :current_student_id, :current_student, :current_district, :current_school, :current_user
+    :current_student_id, :current_student, :current_district, :current_school, :current_user,
+    :current_user_id
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store

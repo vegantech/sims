@@ -1,5 +1,5 @@
 class MainController < ApplicationController
-  skip_before_filter :authenticate, :authorize, :only=>[:index,:stats]
+  skip_before_filter :authenticate, :authorize, :only=>[:index,:stats, :check_session]
   skip_before_filter :verify_authenticity_token
 
   include  CountryStateDistrict
@@ -55,6 +55,24 @@ class MainController < ApplicationController
       end
     end
     flash[:notice]="Excluding district with id #{@without.to_i}" if @without
+  end
+
+  def check_session
+    #move this to metal
+    result=""
+    if params[:user_id].present?
+      if params[:current_student_id].present? && (current_student_id.to_s != params[:current_student_id].to_s)
+        result += "Currently, you cannot select two different students in different windows or tabs.  "
+      end
+      if current_user_id.to_s != params[:user_id].to_s
+        result += "You've been logged out or another user is using SIMS in another window or tab."
+      end
+
+    end
+
+    result = "<br />Using multiple windows or tabs can cause errors or misplaced data in SIMS. <br /> " + result if result.present?
+
+    render :text => result
   end
 
 end
