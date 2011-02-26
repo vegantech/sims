@@ -27,6 +27,41 @@ describe CSVImporter::Students do
 
   end
 
+
+  describe 'delete' do
+    it 'should remove the students from the district and clear out the enrollments' do
+      District.delete_all
+      Student.delete_all
+      d=Factory(:district)
+      s1=d.students.create!(:id_state=>1, :first_name => 'keep', :last_name => 'student', :district_student_id => 's1')
+      s1.enrollments.create(:school_id=>1, :grade =>'01')
+      s2=d.students.create!(:id_state=>2, :first_name => 'destroy', :last_name => 'student', :district_student_id => 's2')
+      s2.enrollments.create!(:school_id=>1, :grade =>'02')
+      e3=Enrollment.create!(:student_id=>-1,:grade=>-1,:school_id=>-1)
+      file_name = ''
+      i=CSVImporter::Students.new file_name,d
+      i.send(:create_temporary_table)
+      ActiveRecord::Base.connection.execute("Insert into #{i.send(:temporary_table_name)}
+                                            (#{i.send(:csv_headers).collect(&:to_s).join(",")})
+                                            values
+                                            (1, 's1',-1, 'keep',NULL, 'student', NULL, '2006-01-01', FALSE, FALSE)
+                                            ")
+
+     del_count =  i.send :delete
+     i.send(:drop_temporary_table)
+
+     i.instance_variable_get('@other_messages').should == "1 students removed from district; "
+     s2.reload.district.should == nil
+     s1.reload.district.should == d
+     s1.enrollments.size.should == 1
+     e3.reload.grade.should == '-1'
+     s2.enrollments.should be_empty
+
+    end
+  end
+
+
+
   describe 'reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side' do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
       District.delete_all
