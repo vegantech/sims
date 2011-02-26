@@ -555,6 +555,15 @@ table.grouped_progress_entry thead {
   color:green;
 }
 
+#session_notice {
+  color:red;
+  font-size:150%;
+/*  display:none; */
+}
+
+
+
+
 #quicklist_items h2 {
   color:Navy;
 
