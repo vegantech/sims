@@ -134,8 +134,17 @@ module CSVImporter
       end
     end
 
+    def remove_duplicates
+      ActiveRecord::Base.connection.update "alter ignore table #{temporary_table_name} add constraint unique key (#{index_options.join(",")})"
+    end
+
+    def remove_duplicates?
+      false
+    end
+
     def populate_temporary_table
       ActiveRecord::Base.connection.execute load_data_infile
+      remove_duplicates if remove_duplicates?
     end
 
     def load_data_infile

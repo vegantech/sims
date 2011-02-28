@@ -89,6 +89,10 @@ module CSVImporter
       t.string :district_group_id
     end
 
+    def remove_duplicates?
+      true
+    end
+
     def delete
       query = "delete from sug using special_user_groups sug
       inner join users on sug.user_id = users.id
