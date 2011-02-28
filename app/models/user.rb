@@ -120,6 +120,11 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
+  validate :validate_unique_user_school_assignments
+
+
+
+
   before_save :nullify_blank_district_user_id
   after_save :district_special_groups
 
@@ -513,4 +518,10 @@ protected
   def blank_password_ok?
     email.present? && district && district.key.present?
   end
+
+  def validate_unique_user_school_assignments
+    validate_uniqueness_of_in_memory(
+      user_school_assignments, [:school_id, :admin], 'Duplicate User.')
+  end
+
 end
