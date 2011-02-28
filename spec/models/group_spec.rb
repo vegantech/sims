@@ -20,9 +20,9 @@ describe Group do
   end
 
   it "shoulld return an array of users when members is called" do
-    Group.members.should == []
     User.destroy_all
     Group.destroy_all
+    Group.members.should == []
     
     g1=Factory(:group,:title=>"Group 1")
     g2=Factory(:group,:title=>"Group 2")

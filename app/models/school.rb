@@ -40,6 +40,12 @@ class School < ActiveRecord::Base
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id
 
+  validate :validate_unique_user_school_assignments
+  def validate_unique_user_school_assignments
+    validate_uniqueness_of_in_memory(
+      user_school_assignments, [:user_id, :admin], 'Duplicate User.')
+  end
+
   def grades_by_user(user)
     school_grades = enrollments.grades
     if user.special_user_groups.all_students_in_school?(self)
@@ -63,7 +69,6 @@ class School < ActiveRecord::Base
   def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
     user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
       attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
-
       if attributes
         user_school_assignment.attributes = attributes
       else
@@ -93,7 +98,7 @@ class School < ActiveRecord::Base
 
   def save_user_school_assignments
     user_school_assignments.each do |user_school_assignment|
-      user_school_assignment.save(false)
+      user_school_assignment.save
     end
   end
 

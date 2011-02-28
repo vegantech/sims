@@ -405,5 +405,60 @@ describe User do
 
   end
 
+   describe 'setting user_school_assignments' do
+     before :each do
+       @user=Factory(:user)
+       @e1=@user.user_school_assignments.create!(:school_id=>'1',:admin=>false)
+       @e2=@user.user_school_assignments.create!(:school_id=>'2',:admin=>true)
+     end
+
+     it 'should remove existing ones whene there are none' do
+       @user.update_attribute('existing_user_school_assignment_attributes',{})
+       @user.user_school_assignments.should be_empty
+     end
+
+     it 'should change existing ones when there are none' do
+       @user.update_attributes('existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:school_id=>'3'}})
+       @e1.reload.school_id.should == 3
+       @user.user_school_assignments.should ==[@e1]
+     end
+
+     it 'should not validate when changing existing to match' do
+       @user.update_attributes('existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:school_id=>'2',:admin=>true}, @e2.id.to_s=>{:school_id=>'2'}})
+       @user.should_not be_valid
+       @user.user_school_assignments.first.errors_on(:admin).should_not be_nil
+       @user.user_school_assignments.first.errors_on(:school_id).should_not be_nil
+       @user.user_school_assignments.last.errors_on(:admin).should_not be_nil
+       @user.user_school_assignments.last.errors_on(:school_id).should_not be_nil
+     end
+
+     it 'should add new user_school_assignment' do
+       @user.update_attributes('new_user_school_assignment_attributes'=>[{:school_id=>1, :admin=>true}]).should be_true
+       @user.user_school_assignments.find_by_school_id_and_admin(1,true).should_not be_nil
+       @user.user_school_assignments[0..1].should == [@e1,@e2]
+     end
+
+     it 'should not new user_school_assignment that matches existing ' do
+       @user.update_attributes('new_user_school_assignment_attributes'=>[{:school_id=>'1', :admin=>false}]).should be_false
+       @user.should_not be_valid
+     end
+
+     it 'should not new user_school_assignment that matches changed existing ' do
+       @user.update_attributes({'new_user_school_assignment_attributes'=>[{:school_id=>1, :admin=>true}],
+                              'existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:admin=>true}}}
+                             ).should be_false
+       @user.should_not be_valid
+     end
+
+
+     it 'should not new user_school_assignment that matches itself' do
+       @user.update_attributes('new_user_school_assignment_attributes'=>
+                              [{:school_id=>'3', :admin=>false},{:school_id=>'3', :admin=>false}]).should be_false
+       @user.should_not be_valid
+     end
+
+
+   end
+
 
 end

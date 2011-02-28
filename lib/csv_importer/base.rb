@@ -110,13 +110,11 @@ module CSVImporter
       return false unless confirm_header head
       
       system "tail -n +2 #{@file_name} > #{@clean_file}"
-      remove_dashes = '/^\-\-\+/ d'
-      remove_count = '/\([0-9] rows affected\)/ d'
+      remove_count = '/\([0-9] rows affected\)/d'
       hexify = 's/0[xX]\([a-fA-F0-9]\{40\}\)/\1/'
 
-
       
-      a =  "sed -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_dashes}' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//' -e '/^$/d'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
+      a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
 
