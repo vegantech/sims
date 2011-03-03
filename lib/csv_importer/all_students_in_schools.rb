@@ -95,6 +95,7 @@ module CSVImporter
       inner join schools on schools.id = sug.school_id
       where schools.district_id = #{@district.id} and users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL}
+      and users.district_user_id is not null
       "
 
      SpecialUserGroup.connection.update query
