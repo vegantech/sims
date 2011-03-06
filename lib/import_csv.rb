@@ -4,7 +4,7 @@ class ImportCSV
   require 'lib/csv_importer/base_system_flags'
 
   DELETE_COUNT_THRESHOLD = 5
-  DELETE_PERCENT_THRESHOLD = 0.6
+  DELETE_PERCENT_THRESHOLD = 0.3
   STRIP_FILTER = lambda{ |field| field.to_s.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
@@ -176,7 +176,7 @@ class ImportCSV
   def reasonable_size?(lines, model_name)
     model_count = @district.send(model_name.pluralize).count
     if lines.length < (model_count * DELETE_PERCENT_THRESHOLD  ) && model_count > DELETE_COUNT_THRESHOLD
-      @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
+      @messages << "Probable bad CSV file.  We are refusing to delete over 80% of your #{model_name.pluralize} records."
       false
     else
       true

@@ -222,8 +222,8 @@ private
   def create_admin_user
     if users.blank?
       u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
-      u.reset_password!
       u.roles='local_system_administrator'
+      u.reset_password!
       u.save!
     end
   end

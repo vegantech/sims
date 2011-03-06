@@ -3,7 +3,7 @@ module CSVImporter
     #    77.6728281974792
     #
     FIELD_DESCRIPTIONS = { 
-      :district_group_id =>"Key for group, this could be a string.  I recommend using a prefix, so sect314 would represent a section with a primary key of 314, then nei445 could be a neighborhood with id 445.   Keys must be unique so this is necessary if you're going to be combining data from different tables from your student information system",
+      :district_group_id =>"Key for group, this could be a string.  I recommend using a prefix, so sect314 would represent a section with a primary key of 314, then nei445 could be a neighborhood with id 445.   Keys must be unique so this is necessary if you're going to be combining data from different tables from your student information system (20 char limit)",
       :district_school_id =>"Key for school",
       :name =>"The name of the group that will appear in SIMS."
     }
@@ -50,17 +50,21 @@ module CSVImporter
       [[:district_group_id, :district_school_id] ]
     end
 
-    
-
-    def migration t
-      t.string :district_group_id
-      t.string :district_school_id
-      t.string :name
-    end
-
     def sims_model
       Group
     end
+
+    def migration t
+      @cols = sims_model.columns_hash.merge(School.columns_hash)
+
+      csv_headers.each do |col|
+        c=col.to_s
+        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
+      end
+    end
+
+
+
 
     def update
       query=("update groups
@@ -79,7 +83,7 @@ module CSVImporter
        left outer join #{temporary_table_name} tg 
        on tg.district_group_id = g.district_group_id
        inner join schools sch on g.school_id = sch.id and sch.district_id= #{@district.id}
-       where tg.district_school_id is null and sch.district_school_id is not null and g.district_group_id is not null and g.district_group_id != ''
+       where tg.district_school_id is null and sch.district_school_id !='' and g.district_group_id != ''
         "
       ActiveRecord::Base.connection.update query
     end
@@ -93,7 +97,7 @@ module CSVImporter
       inner join schools sch on sch.district_school_id = tg.district_school_id
       left outer join groups g on g.district_group_id = tg.district_group_id
       where sch.district_id= #{@district.id} and g.id is null
-      and sch.district_school_id is not null
+      and sch.district_school_id != ''
       "
       )
       ActiveRecord::Base.connection.update query

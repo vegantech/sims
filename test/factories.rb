@@ -27,6 +27,7 @@ Factory.define :user do |u|
   u.password {|u| u.username}
   u.password_confirmation {|u| u.password}
   u.last_name "Last_Name"
+  u.district_user_id ''
   u.first_name {|u| "First#{u.username}"}
   u.association :district
 end
@@ -46,6 +47,7 @@ end
 Factory.define :group do |g|
   g.title {Factory.next :abbrev}
   g.association :school
+  g.district_group_id ''
   end
 
 Factory.define :tier do |t|
@@ -56,6 +58,7 @@ Factory.define :student do |s|
   s.last_name "Last"
   s.first_name "First"
   s.association :district
+  s.district_student_id ''
 end
 
 Factory.define :question_definition do |q|

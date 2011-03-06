@@ -125,7 +125,6 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
 
 
-  before_save :nullify_blank_district_user_id
   after_save :district_special_groups
 
   acts_as_reportable # if defined? Ruport
@@ -509,10 +508,6 @@ protected
     user_school_assignments.each do |user_school_assignment|
       user_school_assignment.save(false)
     end
-  end
-
-  def nullify_blank_district_user_id
-    self.district_user_id = nil if district_user_id.blank?
   end
 
   def blank_password_ok?

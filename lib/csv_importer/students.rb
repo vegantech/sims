@@ -13,7 +13,7 @@ module CSVImporter
 =end
     FIELD_DESCRIPTIONS = { 
         :id_state =>"WSLS# (or other state id for student)",
-        :district_student_id =>"Key used by district for student",
+        :district_student_id =>"Key used by district for student (40 char limit)",
         :number =>"Student number that would appear on report card or student id card.",
         :first_name =>"First name of student.",
         :middle_name =>"Middle name (or initial) of student.",
@@ -116,11 +116,10 @@ module CSVImporter
     end
 
     def migration t
-      @cols = sims_model.columns.inject({}){|hash, col| hash[col.name.to_sym] = col.type; hash}
-      @cols[:esl]=:string
-
+      @cols = sims_model.columns_hash
       csv_headers.each do |col|
-        t.column col, @cols[col]
+        c=col.to_s
+        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
       end
     end
 
@@ -129,7 +128,7 @@ module CSVImporter
     end
 
     def postprocess_uploaded_csv
-      to_strip=csv_headers.select{|col| @cols[col] == :string || @cols[col] == :text}
+      to_strip=csv_headers.select{|col| @cols[col.to_s].type == :string || @cols[col.to_s].type == :text}
       
       s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')}  "
       
