@@ -1,6 +1,6 @@
 class DailyJobs
   def self.run
-    CreateTrainingDistrict.generate  if  defined?(SIMS_DOMAIN) && SIMS_DOMAIN == "sims-open.vegantech.com"
+    CreateTrainingDistrict.generate  if  Rails.env.veg_open?
     self.regenerate_intervention_reports
 
   end
