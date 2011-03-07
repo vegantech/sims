@@ -7,13 +7,11 @@ class Role
                   "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
                   "regular_user" => 'Regular user of SIMS', 
                   "news_admin"  => 'Create and edit news items that appear on the left' , 
-                  "state_admin" => 'Creates and edits states',
-                  "country_admin" => 'Creates and edits countries'
                 }
 
 
 
-  ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin state_admin country_admin}
+  ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin}
   CSV_HEADERS = [:district_user_id]
 
   HELP = {

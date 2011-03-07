@@ -58,7 +58,6 @@ class ImportCSV
 
   private
 
-  include  ImportCSV::Roles
   include  ImportCSV::SystemFlags
 
   def update_memcache
@@ -80,16 +79,6 @@ class ImportCSV
     
 
     case base_file_name.downcase
-    when 'district_admins.csv'
-      load_user_roles_from_csv file_name, 'district_admin'
-    when 'news_admins.csv'
-      load_user_roles_from_csv file_name, 'news_admin'
-    when 'content_admins.csv'
-      load_user_roles_from_csv file_name, 'content_admin'
-    when 'school_admins.csv'
-      load_user_roles_from_csv file_name, 'school_admin'
-    when 'regular_users.csv'
-      load_user_roles_from_csv file_name, 'regular_user'
     when 'system_flags.csv'
       load_system_flags_from_csv file_name
     when *Flag::TYPES.keys.collect{|e| "#{e}_system_flags.csv"}

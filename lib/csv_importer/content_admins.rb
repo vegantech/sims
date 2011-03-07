@@ -1,5 +1,5 @@
 module CSVImporter
-  class ContentAdmins < CSVImporter::Base
+  class ContentAdmins < CSVImporter::BaseRoles
     FIELD_DESCRIPTIONS = { 
       :district_user_id =>"Key for user"
     }

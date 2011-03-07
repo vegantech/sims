@@ -1,5 +1,5 @@
 module CSVImporter
-  class NewsAdmins < CSVImporter::Base
+  class NewsAdmins < CSVImporter::BaseRoles
     FIELD_DESCRIPTIONS = { 
       :district_user_id =>"Key for user"
     }

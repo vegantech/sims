@@ -1,5 +1,5 @@
 module CSVImporter
-  class SchoolAdmins < CSVImporter::Base
+  class SchoolAdmins < CSVImporter::BaseRoles
     FIELD_DESCRIPTIONS = { 
       :district_user_id =>"Key for user"
     }

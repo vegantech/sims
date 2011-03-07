@@ -148,18 +148,10 @@ RIGHTS={
    {:read_access=>true,
     :controller=>"railmail",
     :write_access=>true}],
- "state_admin" => [
-   {:read_access=>true,
-    :controller=>"states",
-    :write_access=>true}],
  "news_admin" => [
    {:read_access=>true,
     :controller=>"news_items",
     :write_access=>true}],
- "country_admin" => [
-   {:read_access=>true,
-    :controller=>"countries",
-    :write_access=>true}]
 }
 
   def self.cache_key
