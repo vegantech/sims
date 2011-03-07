@@ -13,6 +13,7 @@ class ImportCSV
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
   EOF = '@@END UPLOAD RESULTS@@'
 
+  FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv', 'user_school_assignments.csv']
 
   VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
     "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
@@ -57,7 +58,6 @@ class ImportCSV
 
   private
 
-  include  ImportCSV::FileHandling
   include  ImportCSV::Roles
   include  ImportCSV::SystemFlags
 
@@ -247,4 +247,52 @@ class ImportCSV
   def self.starts_with?(should_start_with, candidate)
     candidate[0..(should_start_with.length-1)] == should_start_with
   end
+
+
+
+
+  def sorted_filenames filenames=@filenames
+
+    filenames.compact.sort_by do |f|
+      FILE_ORDER.index(File.basename(f.downcase))  ||
+      FILE_ORDER.length + 1
+    end
+  end
+
+  def identify_and_unzip
+    FileUtils.mkdir_p(@f_path)
+    if @file.respond_to?(:original_filename)
+      try_to_unzip(@file.path, @file.original_filename) or move_to_import_directory
+    else  #passed in a string
+      try_to_unzip(@file, @file) or @filenames =[@file]
+    end
+  end
+
+  def move_to_import_directory
+    base_filename = File.basename(@file.original_filename)
+    new_filename= File.join(@f_path,base_filename)
+    FileUtils.mv @file.path,new_filename
+    @filenames = [new_filename]
+  end
+
+  #string nonzip
+  #string zip
+  #file nonzip
+  #file zip
+
+
+  def try_to_unzip filename, originalname
+    if originalname =~ /\.zip$/
+      @messages << "Trying to unzip #{originalname}"
+      update_memcache
+
+      @messages << "Problem with zipfile #{originalname}" unless
+        system "unzip  -qq -o #{filename} -d #{@f_path}"
+      @filenames = Dir.glob(File.join(@f_path, "*.csv")).collect
+    else
+      false
+    end
+
+  end
+
 end

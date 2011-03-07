@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110211170843) do
+ActiveRecord::Schema.define(:version => 20110303213209) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -313,7 +313,7 @@ ActiveRecord::Schema.define(:version => 20110211170843) do
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "district_group_id"
+    t.string   "district_group_id", :limit => 20, :default => "", :null => false
   end
 
   add_index "groups", ["district_group_id"], :name => "index_groups_on_id_district"
@@ -729,7 +729,7 @@ ActiveRecord::Schema.define(:version => 20110211170843) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "number"
-    t.string   "district_student_id"
+    t.string   "district_student_id", :limit => 40, :default => "", :null => false
     t.integer  "id_state"
     t.integer  "id_country"
     t.datetime "created_at"
@@ -798,7 +798,7 @@ ActiveRecord::Schema.define(:version => 20110211170843) do
   add_index "user_school_assignments", ["user_id"], :name => "index_user_school_assignments_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "username"
+    t.string   "username",         :limit => 100
     t.binary   "passwordhash"
     t.string   "first_name"
     t.string   "last_name"
@@ -808,10 +808,10 @@ ActiveRecord::Schema.define(:version => 20110211170843) do
     t.string   "email"
     t.string   "middle_name"
     t.string   "suffix"
-    t.string   "salt",             :default => ""
-    t.string   "district_user_id"
+    t.string   "salt",                            :default => ""
+    t.string   "district_user_id", :limit => 40,  :default => "", :null => false
     t.string   "token"
-    t.integer  "roles_mask",       :default => 0,  :null => false
+    t.integer  "roles_mask",                      :default => 0,  :null => false
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"
