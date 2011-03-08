@@ -66,7 +66,7 @@ module CSVImporter
     def migration t
       
       t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
-      t.column :category,  "ENUM(#{Flag::ORDERED_TYPE_KEYS.collect{|e| '"' + e + '"'}.join(",")})"
+      t.column :category,  :string, :limit => Flag.columns_hash["category"].limit, :null => false
       t.column :reason, :text
       
     end
