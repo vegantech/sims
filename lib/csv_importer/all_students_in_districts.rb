@@ -69,7 +69,7 @@ module CSVImporter
       inner join users on sug.user_id = users.id
       where users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}
-      and users.district_user_id is not null
+      and users.district_user_id != ''
       "
       SpecialUserGroup.connection.delete query
     end

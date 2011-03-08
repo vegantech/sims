@@ -71,7 +71,7 @@ module CSVImporter
         inner join  #{temporary_table_name} tg on tg.district_group_id = groups.district_group_id
         inner join schools sch on sch.district_school_id = tg.district_school_id
         set groups.school_id = sch.id, groups.district_group_id = tg.district_group_id, groups.title = tg.name,  groups.updated_at = curdate()
-        where sch.district_id= #{@district.id}
+        where sch.district_id= #{@district.id} and sch.district_school_id != ''
       "
       )
       ActiveRecord::Base.connection.update query

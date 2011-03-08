@@ -16,7 +16,7 @@ module ImportCSV::SystemFlags
     if load_from_csv file_name, 'system_flag'
      deletions= SystemFlag.connection.delete("delete from flags using flags inner join students on flags.student_id = students.id 
                                     where type='SystemFlag' and students.district_id = #{@district.id} and 
-                                    students.district_student_id is not null #{category_text}")
+                                    students.district_student_id != '' #{category_text}")
       bulk_insert SystemFlag
       @messages << "#{deletions} flag(s) removed; #{@inserts.size} flag(s) created"
     

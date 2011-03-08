@@ -84,7 +84,7 @@ module CSVImporter
           where te.district_school_id = sch.district_school_id and te.district_student_id = stu.district_student_id 
           and te.end_year = e.end_year  and te.grade = e.grade 
         )
-        and sch.district_school_id is not null and stu.district_student_id is not null
+        and sch.district_school_id != '' and stu.district_student_id != ''
        "
        ActiveRecord::Base.connection.update query
     end
@@ -98,7 +98,7 @@ module CSVImporter
       left outer join enrollments e
       on sch.id = e.school_id and stu.id = e.student_id and te.grade = e.grade and te.end_year = e.end_year
       where sch.district_id= #{@district.id} and stu.district_id = #{@district.id}
-      and e.school_id is null and stu.district_student_id is not null and sch.district_school_id is not null
+      and e.school_id is null and stu.district_student_id != ''  and sch.district_school_id != '' 
       "
             )
             ActiveRecord::Base.connection.update query

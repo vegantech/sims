@@ -67,7 +67,7 @@ module CSVImporter
               inner join students on sg.student_id = students.id
               inner join groups on sg.group_id = groups.id
               inner join schools on groups.school_id = schools.id
-              where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and groups.district_group_id is not null and groups.district_group_id !=''
+              where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and schools.district_school_id != '' and groups.district_group_id !=''
               and not exists (
                                           select 1 from #{temporary_table_name} tug
                                                   where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id

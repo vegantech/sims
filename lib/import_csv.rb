@@ -49,6 +49,7 @@ class ImportCSV
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
       @district.students.update_all(:updated_at => Time.now) #expire any student related cache
+      @district.users.update_all(:updated_at => Time.now) #expire any user related cache
       @messages << "No csv files uploaded" if sorted_filenames.blank? 
     end
     @messages << b
@@ -79,8 +80,6 @@ class ImportCSV
     
 
     case base_file_name.downcase
-    when 'system_flags.csv'
-      load_system_flags_from_csv file_name
     when *Flag::TYPES.keys.collect{|e| "#{e}_system_flags.csv"}
       load_system_flags_from_csv file_name
     when *csv_importers

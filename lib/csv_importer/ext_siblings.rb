@@ -84,7 +84,7 @@ module CSVImporter
        delete from ea using  ext_siblings ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
-       stu.district_student_id is not null
+       stu.district_student_id != '' 
         "
       ActiveRecord::Base.connection.update query
     end
@@ -95,7 +95,7 @@ module CSVImporter
       select stu.id, te.first_name, te.middle_name, te.last_name, te.student_number, te.grade, te.school_name, te.age, curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
-      and  stu.district_student_id is not null 
+      and  stu.district_student_id != '' 
       "
       )
       ActiveRecord::Base.connection.update query

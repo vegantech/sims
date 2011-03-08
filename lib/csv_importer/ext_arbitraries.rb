@@ -76,7 +76,7 @@ module CSVImporter
        delete from ea using  ext_arbitraries ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
-       stu.district_student_id is not null
+       stu.district_student_id != ''
         "
       ActiveRecord::Base.connection.update query
     end
@@ -87,7 +87,7 @@ module CSVImporter
       select stu.id, te.arbitrary, curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
-      and  stu.district_student_id is not null 
+      and  stu.district_student_id != '' 
       "
       )
       ActiveRecord::Base.connection.update query

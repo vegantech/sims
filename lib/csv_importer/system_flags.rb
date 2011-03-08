@@ -52,6 +52,56 @@ module CSVImporter
       end
 
     end
+
+
+    def index_options
+      [:district_student_id, :category]
+    end
+
+
+    def sims_model
+      SystemFlag
+    end
+
+    def migration t
+      
+      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :category,  "ENUM(#{Flag::ORDERED_TYPE_KEYS.collect{|e| '"' + e + '"'}.join(",")})"
+      t.column :reason, :text
+      
+    end
+
+    def temporary_table?
+      true
+    end
+
+    def delete
+      query ="
+       delete from sf using flags sf
+       inner join students stu on stu.id=sf.student_id and stu.district_id = #{@district.id}
+       where 
+       stu.district_student_id != '' and type= 'SystemFlag'
+        "
+      ActiveRecord::Base.connection.update query
+    end
+
+    def insert
+      query=("insert into flags 
+      (student_id, category,reason,type, created_at, updated_at)
+      select stu.id,te.category,te.reason,'SystemFlag', curdate(), curdate() from #{temporary_table_name} te
+      inner join students stu on stu.district_student_id = te.district_student_id
+      where stu.district_id = #{@district.id}
+      and  stu.district_student_id != '' 
+      "
+      )
+      ActiveRecord::Base.connection.update query
+    end
+   def confirm_count?
+     return true
+   end
+ 
+
+
   end
 end
 

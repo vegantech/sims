@@ -277,11 +277,11 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
   add_index "flag_descriptions", ["district_id"], :name => "index_flag_descriptions_on_district_id"
 
   create_table "flags", :force => true do |t|
-    t.string   "category"
+    t.string   "category",   :limit => 15, :null => false
     t.integer  "user_id"
     t.integer  "student_id"
     t.text     "reason"
-    t.string   "type"
+    t.string   "type",       :limit => 10, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

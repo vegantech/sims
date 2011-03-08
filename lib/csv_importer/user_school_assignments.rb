@@ -60,7 +60,8 @@ module CSVImporter
       query ="
        delete from usa using  user_school_assignments usa 
        inner join schools sch on usa.school_id = sch.id and sch.district_id= #{@district.id}
-       where sch.district_school_id is not null
+       inner join users u on usa.user_id = u.id
+       where sch.district_school_id != ''  and u.district_user_id != ''
         and (usa.admin = false or usa.admin is null)
         "
       ActiveRecord::Base.connection.update query
