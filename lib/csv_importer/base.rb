@@ -150,11 +150,15 @@ module CSVImporter
     end
     
     def insert_update_delete
+      before_import
       #override this for a different order
       @deleted=delete
       @updated=update
       @created=insert
       after_import
+    end
+
+    def before_import
     end
 
     def after_import

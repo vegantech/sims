@@ -99,6 +99,18 @@ module CSVImporter
    def confirm_count?
      return true
    end
+
+   def before_import
+     keys=Flag::FLAGTYPES.keys.collect{|e| "'" + e + "'"}.join(",")
+     query ="select * from #{temporary_table_name}
+             where category not in (#{keys})"
+
+     res=ActiveRecord::Base.connection.select_rows query
+     unless res.blank?
+       msg = res.collect{|e| e.join(",")}.join("; ")
+       @messages << "Unknown Categories for #{msg}"
+     end
+   end
  
 
 
