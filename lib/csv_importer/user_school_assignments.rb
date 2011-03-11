@@ -50,6 +50,9 @@ module CSVImporter
       [:district_school_id, :district_user_id]
     end
 
+    def remove_duplicates?
+      true
+    end
 
     def migration t
       t.column :district_school_id, :integer

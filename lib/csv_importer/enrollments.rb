@@ -58,6 +58,10 @@ module CSVImporter
       [[:district_school_id, :district_student_id],[:end_year,:grade]]
     end
 
+    def remove_duplicates?
+      true
+    end
+
     def sims_model
       Enrollment
     end

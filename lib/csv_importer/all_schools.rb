@@ -54,6 +54,10 @@ module CSVImporter
       [[:district_user_id]]
     end
 
+    def remove_duplicates?
+      true
+    end
+
     def migration t
       t.string :district_user_id
     end
