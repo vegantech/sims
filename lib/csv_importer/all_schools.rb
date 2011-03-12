@@ -59,7 +59,7 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_user_id
+      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
     end
 
     def delete
