@@ -34,16 +34,19 @@ describe SpecialUserGroup do
   end
 
 
-  it "should autoassign a user assignment" do
-    UserSchoolAssignment.delete_all
-    SpecialUserGroup.delete_all
-    user = Factory(:user)
-    sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1)
-    UserSchoolAssignment.count.should == 0
-    SpecialUserGroup.autoassign_user_school_assignments
-    UserSchoolAssignment.first.school_id.should == 1
-    UserSchoolAssignment.first.user_id.should == user.id
-    UserSchoolAssignment.count.should == 1
+  describe 'autoassign user assignments' do
+    it "should autoassign a user assignment" do
+      UserSchoolAssignment.delete_all
+      SpecialUserGroup.delete_all
+      user = Factory(:user, :district_id => 1)
+      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1)
+      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1, :grade=>'02') #make sure duplicates are not created
+      UserSchoolAssignment.count.should == 0
+      SpecialUserGroup.autoassign_user_school_assignments
+      UserSchoolAssignment.count.should == 1
+      UserSchoolAssignment.first.school_id.should == 1
+      UserSchoolAssignment.first.user_id.should == user.id
 
+    end
   end
 end

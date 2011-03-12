@@ -53,13 +53,23 @@ class SpecialUserGroup < ActiveRecord::Base
     1
   end
 
-  def self.autoassign_user_school_assignments
-    find_all_by_grouptype(ALL_STUDENTS_IN_SCHOOL,
-       :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id
-         and uga.school_id = special_user_groups.school_id
-         inner join users on special_user_groups.user_id = users.id",
-       :conditions => "uga.id is null").each{|sug| UserSchoolAssignment.create!(:user_id => sug.user_id, :school_id => sug.school_id)}
+  def self.trying_something
+    finder_sql = construct_finder_sql(:select => "school_id, user_id",
+      :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = uga.school_id
+      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id",
+      :group => "special_user_groups.school_id, special_user_groups.user_id",
+      :conditions => {:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil}
+                                     )
   end
-
+  def self.autoassign_user_school_assignments
+    finder_sql = construct_finder_sql(:select => 'special_user_groups.school_id, special_user_groups.user_id',
+      :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = uga.school_id
+      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id",
+      :group => "special_user_groups.school_id, special_user_groups.user_id",
+      :conditions => {:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil}
+                                     )
+     query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
+     SpecialUserGroup.connection.update query
+  end
 end
 
