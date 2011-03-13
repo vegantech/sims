@@ -12,7 +12,7 @@ describe CSVImporter::AllStudentsInSchools do
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
       @school_no_link = Factory(:school, :district_id => @district.id)
-      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 'linked_school')
+      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
       @school_with_link_admin = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin')
       @school_with_link_admin.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true) 
       @school_with_link_admin2 = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin2')

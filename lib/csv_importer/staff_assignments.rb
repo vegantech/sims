@@ -51,8 +51,11 @@ module CSVImporter
     end
 
 
+    def remove_duplicates?
+      true
+    end
     def migration t
-      t.column :district_user_id, :string
+      t.column :district_user_id, :string, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
       t.column :district_school_id, :integer
     end
 
@@ -60,7 +63,8 @@ module CSVImporter
       query ="
        delete from usa using  staff_assignments  usa 
        inner join schools sch on usa.school_id = sch.id and sch.district_id= #{@district.id}
-       where sch.district_school_id is not null
+       inner join users u on usa.user_id = u.id
+       where sch.district_school_id is not null and u.district_user_id != ''
         "
       ActiveRecord::Base.connection.update query
     end

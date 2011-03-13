@@ -12,7 +12,7 @@ describe CSVImporter::AllStudentsInSchools do
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
       @school_no_link = Factory(:school, :district_id => @district.id)
-      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 'linked_school')
+      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
       
       @no_role_or_district_user_id.special_user_groups.create!(:district_id => @district.id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school_id => @school_no_link.id)
       @no_role_or_district_user_id.special_user_groups.create!(:district_id => @district.id, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school_id => @school_no_link.id, :grade=>'02')
