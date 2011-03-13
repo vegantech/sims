@@ -1,0 +1,9 @@
+district_user_id,district_school_id
+should_gain_role,linked_school
+should_gain_role,linked_school
+should_keep_role,linked_school
+should_keep_role,linked_school
+should_keep_role,linked_school
+should_keep_role,linked_school
+school_with_link_admin,linked_school
+tests_505,linked_school
