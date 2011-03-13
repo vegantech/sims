@@ -82,11 +82,11 @@ module CSVImporter
 
 
     def migration t
-      t.string :district_user_id
-      t.integer :district_school_id
+      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.integer :district_school_id, :limit => School.columns_hash["district_school_id"].limit, :null => School.columns_hash["district_school_id"].null
       t.boolean :principal
       t.string :grade
-      t.string :district_group_id
+      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
     end
 
     def remove_duplicates?
@@ -99,7 +99,7 @@ module CSVImporter
       inner join schools on schools.id = sug.school_id
       where schools.district_id = #{@district.id} and users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL}
-      and users.district_user_id != ''
+      and users.district_user_id != '' and schools.district_school_id is not null
       "
 
      SpecialUserGroup.connection.update query
@@ -113,17 +113,21 @@ module CSVImporter
       users u on u.district_user_id = tug.district_user_id
       inner join schools on tug.district_school_id = schools.district_school_id
       where u.district_id = #{@district.id}  and schools.district_id = #{@district.id}
+      and schools.district_school_id is not null
       "
       )
       SpecialUserGroup.connection.update query
     end
 
     def after_import
-      sum=0
-        @district.schools.each do |school|
-          sum += school.special_user_groups.autoassign_user_school_assignments.size
-        end
-
+      sum=@district.special_user_groups.autoassign_user_school_assignments
+     query= "insert into user_school_assignments (school_id,user_id) 
+      select sug.school_id, sug.user_id from special_user_groups sug 
+      left outer join user_school_assignments uga on uga.user_id = sug.user_id and uga.school_id = uga.school_id 
+      inner join users on sug.user_id = users.id 
+      where grouptype=3 and uga.user_id is null and users.district_id = #{@district.id} and sug.district_id = #{@district.id}
+      group by sug.school_id,sug.user_id"
+      sum=SpecialUserGroup.connection.update query
       @messages << "#{sum} Users automatically assigned to a school" if sum > 0
     end
   end
