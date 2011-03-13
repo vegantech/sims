@@ -1,0 +1,8 @@
+district_group_id,district_school_id,name
+existing_group,2,"Existing Group"
+new_group,1, "New Group"
+new_group,2, "New Group"
+duplicate_group,2, "Duplicated Group"
+duplicate_group,2, "Duplicate Group2"
+duplicate_group,2, "Duplicate Group3"
+
