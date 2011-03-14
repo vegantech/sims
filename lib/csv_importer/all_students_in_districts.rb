@@ -61,7 +61,11 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_user_id
+      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+    end
+
+    def remove_duplicates?
+      true
     end
 
     def delete
@@ -69,7 +73,7 @@ module CSVImporter
       inner join users on sug.user_id = users.id
       where users.district_id = #{@district.id}
       and sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}
-      and users.district_user_id is not null
+      and users.district_user_id != ''
       "
       SpecialUserGroup.connection.delete query
     end

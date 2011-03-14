@@ -1,6 +1,6 @@
 class CreateHabtmStudentsPersonalGroups < ActiveRecord::Migration
   def self.up
-    create_table :personal_groups_students, :id => false do |t|
+    create_table :personal_groups_students, :id => false, :force =>true do |t|
       t.references :personal_group, :null => false
       t.references :student, :null => false
     end

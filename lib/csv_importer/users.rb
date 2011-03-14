@@ -1,8 +1,8 @@
 module CSVImporter
   class Users < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_user_id =>"Key for user",
-        :username =>"Used at login",
+        :district_user_id =>"Key for user (30 char limit)",
+        :username =>"Used at login (30 char limit)",
         :first_name =>"First Name",
         :middle_name =>"Middle Name",
         :last_name =>"Last Name",
@@ -68,17 +68,13 @@ password is the user\'s password in lowercase, district_key is set by the distri
     end
 
     def migration t
-      t.string :district_user_id
-      t.string :username
-      t.string :first_name
-      t.string :middle_name
-      t.string :last_name
-      t.string :suffix
-      t.string :email
-      t.string :passwordhash
-      t.string :salt
-
+      @cols = User.columns_hash
+      csv_headers.each do |col|
+        c=col.to_s
+        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
+      end
     end
+
 
     def update
     updates=csv_headers[0..-3].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
@@ -106,7 +102,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
     def delete
      query = "select id from users u left outer join #{temporary_table_name} tu
         on u.district_user_id = tu.district_user_id
-        where u.district_user_id is not null and u.district_id = #{@district.id}
+        where u.district_user_id !='' and u.district_id = #{@district.id}
         and tu.district_user_id is null"
       user_ids_to_remove=User.connection.select_rows(query)
       User.remove_from_district(user_ids_to_remove)
@@ -117,7 +113,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
     updates=csv_headers[-3..-1].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
     query = ("update users u
       inner join #{temporary_table_name} tu
-      on u.district_user_id = tu.district_user_id and u.district_user_id is not null
+      on u.district_user_id = tu.district_user_id and u.district_user_id !=''
       set u.updated_at=CURDATE(), 
       #{updates}
     where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null and tu.passwordhash <> '' and tu.salt <> ''"

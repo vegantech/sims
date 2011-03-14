@@ -63,7 +63,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string
+      t.column :district_student_id, :string, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
       t.column :name, :string
       t.column :date, :date
       t.column :scale_score, :float
@@ -80,7 +80,7 @@ module CSVImporter
        delete from ea using  ext_test_scores ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
-       stu.district_student_id is not null
+       stu.district_student_id != ''
         "
       ActiveRecord::Base.connection.update query
     end
@@ -93,7 +93,7 @@ module CSVImporter
        curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
-      and  stu.district_student_id is not null 
+      and  stu.district_student_id != '' 
       "
       )
       ActiveRecord::Base.connection.update query

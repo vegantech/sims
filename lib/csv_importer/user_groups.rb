@@ -78,8 +78,8 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
 
 
     def migration t
-      t.string :district_user_id
-      t.string :district_group_id
+      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
       t.boolean :principal
     end
 
@@ -88,7 +88,7 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       inner join users on uga.user_id = users.id
       inner join groups on uga.group_id = groups.id
       inner join schools on groups.school_id = schools.id
-      where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and groups.district_group_id is not null and groups.district_group_id !=''
+      where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !='' and users.district_user_id !=''
       "
 
 extra ="      where not exists (
@@ -106,6 +106,7 @@ extra ="      where not exists (
       inner join groups g
       on tug.district_group_id = g.district_group_id
       and u.district_id = #{@district.id}  
+      group by u.id,g.id,principal
       "
       )
       Group.connection.update query

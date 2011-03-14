@@ -1,6 +1,6 @@
 class CreatePersonalGroups < ActiveRecord::Migration
   def self.up
-    create_table :personal_groups do |t|
+    create_table :personal_groups, :force => true do |t|
       t.belongs_to :user
       t.belongs_to :school
       t.string :name

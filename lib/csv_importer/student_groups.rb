@@ -58,8 +58,8 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_student_id
-      t.string :district_group_id
+      t.string :district_student_id, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
     end
 
     def delete
@@ -67,7 +67,8 @@ module CSVImporter
               inner join students on sg.student_id = students.id
               inner join groups on sg.group_id = groups.id
               inner join schools on groups.school_id = schools.id
-              where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and groups.district_group_id is not null and groups.district_group_id !=''
+              where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !=''
+              and students.district_student_id != ''
               and not exists (
                                           select 1 from #{temporary_table_name} tug
                                                   where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id
@@ -87,6 +88,7 @@ module CSVImporter
       where not exists (
       select 1 from groups_students gs
         where gs.group_id = g.id and gs.student_id = u.id)
+      group by u.id,g.id
       "
       )
       Group.connection.update query

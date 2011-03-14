@@ -86,7 +86,7 @@ module CSVImporter
       using schools s
       left outer join #{temporary_table_name} ts
       on ts.district_school_id=s.district_school_id
-      where s.district_id=#{@district.id} and  s.district_school_id is not null and ts.district_school_id is null" 
+      where s.district_id=#{@district.id} and  s.district_school_id is not null and ts.district_school_id is null"
       ActiveRecord::Base.connection.update(query)
     end
 

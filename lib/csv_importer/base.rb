@@ -27,9 +27,9 @@ module CSVImporter
       status_count << "\nCreated- #{@created}" if @created
       status_count << "Deleted- #{@deleted}" if @deleted
       status_count << "Updated- #{@updated}" if @updated
-      status_count << @other_messages unless @other_messages.blank?
 
       @messages << status_count.compact.join("; ") unless status_count.compact.blank?
+      @messages << @other_messages unless @other_messages.blank?
 
 
        
@@ -134,8 +134,17 @@ module CSVImporter
       end
     end
 
+    def remove_duplicates
+      ActiveRecord::Base.connection.update "alter ignore table #{temporary_table_name} add constraint unique key (#{index_options.join(",")})"
+    end
+
+    def remove_duplicates?
+      false
+    end
+
     def populate_temporary_table
       ActiveRecord::Base.connection.execute load_data_infile
+      remove_duplicates if remove_duplicates?
     end
 
     def load_data_infile
@@ -150,11 +159,15 @@ module CSVImporter
     end
     
     def insert_update_delete
+      before_import
       #override this for a different order
       @deleted=delete
       @updated=update
       @created=insert
       after_import
+    end
+
+    def before_import
     end
 
     def after_import
