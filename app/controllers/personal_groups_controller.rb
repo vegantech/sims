@@ -13,6 +13,7 @@ class PersonalGroupsController < ApplicationController
   # GET /personal_groups/new
   # GET /personal_groups/new.xml
   def new
+    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_students_ids.blank?
     @personal_group = PersonalGroup.new
     @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i))
 
@@ -24,6 +25,7 @@ class PersonalGroupsController < ApplicationController
 
   # GET /personal_groups/1/edit
   def edit
+    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_students_ids.blank?
     @personal_group = current_user.personal_groups.find(params[:id])
     @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i) | @personal_group.student_ids)
   end

@@ -5,7 +5,7 @@ describe PersonalGroupsController do
   it_should_behave_like "an authorized controller"
 
   def mock_personal_group(stubs={})
-    @mock_personal_group ||= mock_model(PersonalGroup, stubs)
+    @mock_personal_group ||= mock_model(PersonalGroup, stubs.merge(:name=>'mock_group'))
   end
  
   before do
