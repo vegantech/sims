@@ -92,6 +92,7 @@ module CSVImporter
       inner join students stu on stu.district_student_id = te.district_student_id
       where stu.district_id = #{@district.id}
       and  stu.district_student_id != '' 
+      and te.category in (#{valid_categories})
       "
       )
       ActiveRecord::Base.connection.update query
@@ -100,15 +101,21 @@ module CSVImporter
      return true
    end
 
-   def before_import
+   def valid_categories
      keys=Flag::FLAGTYPES.keys.collect{|e| "'" + e + "'"}.join(",")
+
+   end
+
+
+   def before_import
+     keys=valid_categories
      query ="select * from #{temporary_table_name}
              where category not in (#{keys})"
 
      res=ActiveRecord::Base.connection.select_rows query
      unless res.blank?
        msg = res.collect{|e| e.join(",")}.join("; ")
-       @messages << "Unknown Categories for #{msg}"
+       @other_messages << "Unknown Categories for #{msg}"
      end
    end
  

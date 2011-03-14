@@ -73,7 +73,7 @@ module CSVImporter
        delete from sf using flags sf
        inner join students stu on stu.id=sf.student_id and stu.district_id = #{@district.id}
        where
-       stu.district_student_id != '' and type= 'SystemFlag'and category = '#{self.class.flag_category}'
+       stu.district_student_id != '' and type= 'SystemFlag' and category = '#{self.class.flag_category}'
         "
       ActiveRecord::Base.connection.update query
     end

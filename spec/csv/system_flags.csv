@@ -1,0 +1,4 @@
+district_student_id,category,reason
+keep,math,'test math'
+keep,invalid,'invalid flag category'
+new_flag,suspension,'behavior flag'
