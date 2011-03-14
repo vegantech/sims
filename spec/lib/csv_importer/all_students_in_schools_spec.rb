@@ -35,6 +35,8 @@ describe CSVImporter::AllStudentsInSchools do
       @i=CSVImporter::AllStudentsInSchools.new "#{Rails.root}/spec/csv/all_students_in_schools.csv",@district
       @i.import
 
+      @i.messages.should include("7 Users automatically assigned to a school")
+
 
       @no_role_or_district_user_id.reload.special_user_groups.size.should == 2
       @no_role_or_district_user_id.user_school_assignments.find_all_by_school_id(@school_no_link.id).size.should == 1

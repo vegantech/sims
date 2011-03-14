@@ -120,15 +120,8 @@ module CSVImporter
     end
 
     def after_import
-      sum=@district.special_user_groups.autoassign_user_school_assignments
-     query= "insert into user_school_assignments (school_id,user_id) 
-      select sug.school_id, sug.user_id from special_user_groups sug 
-      left outer join user_school_assignments uga on uga.user_id = sug.user_id and uga.school_id = uga.school_id 
-      inner join users on sug.user_id = users.id 
-      where grouptype=3 and uga.user_id is null and users.district_id = #{@district.id} and sug.district_id = #{@district.id}
-      group by sug.school_id,sug.user_id"
-      sum=SpecialUserGroup.connection.update query
-      @messages << "#{sum} Users automatically assigned to a school" if sum > 0
+     sum=@district.special_user_groups.autoassign_user_school_assignments
+     @other_messages << "#{sum} Users automatically assigned to a school" if sum > 0
     end
   end
 end
