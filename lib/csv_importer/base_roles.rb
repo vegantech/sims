@@ -68,6 +68,7 @@ module CSVImporter
       set u.roles_mask = u.roles_mask & ~#{role_mask},
       u.updated_at = CURDATE()
       where t_r.district_user_id is null and u.district_user_id != '' and u.roles_mask & #{role_mask}
+      and u.district_id = #{@district.id}
       "
       User.connection.update query
     end
@@ -78,6 +79,7 @@ module CSVImporter
       set u.roles_mask = u.roles_mask ^ #{role_mask},
       u.updated_at = CURDATE()
       where u.district_user_id != '' and (~u.roles_mask & #{role_mask})
+      and u.district_id = #{@district.id}
       "
       User.connection.update query
     end
