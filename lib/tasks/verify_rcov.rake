@@ -30,7 +30,7 @@ end
 #http://vegantech.lighthouseapp.com/projects/17513/tickets/176-test-coverage-775-unit-775-functional-675-integration
 RCov::VerifyTask.new('verify_rcov_unit') do |t|
   t.require_exact_threshold=false
-  t.threshold = 60  #now doind code instead of total coverage
+  t.threshold = 62  #now doind code instead of total coverage
   t.index_html = index_base_path + '/unit/index.html'
 end
 

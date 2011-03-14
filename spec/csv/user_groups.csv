@@ -1,0 +1,5 @@
+district_user_id, district_group_id,principal
+linked_principal,existing_group,true
+linked_principal,new_group,true
+linked_user,new_group,false
+linked_user,new_group,false
