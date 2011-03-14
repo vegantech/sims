@@ -114,7 +114,7 @@ module CSVImporter
 
     def migration t
 
-      t.column :district_student_id, :string
+      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
       t.column :home_language, :string
      t.column :street_address, :string
      t.column :city_state_zip, :string

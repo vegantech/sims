@@ -27,9 +27,9 @@ module CSVImporter
       status_count << "\nCreated- #{@created}" if @created
       status_count << "Deleted- #{@deleted}" if @deleted
       status_count << "Updated- #{@updated}" if @updated
-      status_count << @other_messages unless @other_messages.blank?
 
       @messages << status_count.compact.join("; ") unless status_count.compact.blank?
+      @messages << @other_messages unless @other_messages.blank?
 
 
        
