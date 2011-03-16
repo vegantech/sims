@@ -9,6 +9,14 @@ describe CSVImporter::StudentGroups do
       Group.delete_all
       District.delete_all
 
+      @other_district = Factory(:district)
+      @other_student = Factory(:student, :district_student_id =>'other district', :district_id => @other_district.id)
+      @other_school  = Factory(:school, :district_school_id => 99, :district_id => @other_district.id)
+      @other_group = Factory(:group, :district_group_id => 'existing_group', :school_id => @other_school.id)
+
+      @other_student.groups << @other_group
+      @other_student.reload.group_ids.should == [@other_group.id]
+
 
       @district = Factory(:district)
       @school_no_link = Factory(:school, :district_id => @district.id)
@@ -46,6 +54,8 @@ describe CSVImporter::StudentGroups do
       @linked_to_empty.student_ids.should == [@unlinked_user.id]
       @existing_group.student_ids.sort.should == [@unlinked_user.id,@linked_principal.id].sort
       @new_group.student_ids.sort.should == [@linked_user.id,@linked_principal.id].sort
+
+      @other_student.reload.group_ids.should == [@other_group.id]
 
 
     end
