@@ -85,6 +85,8 @@ module CSVImporter
       inner join groups g
       on tug.district_group_id = g.district_group_id
       and u.district_id = #{@district.id}  
+      inner join schools sch
+      on g.school_id = sch.id and sch.district_id = #{@district.id}
       where not exists (
       select 1 from groups_students gs
         where gs.group_id = g.id and gs.student_id = u.id)

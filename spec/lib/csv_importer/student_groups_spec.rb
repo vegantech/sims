@@ -12,7 +12,7 @@ describe CSVImporter::StudentGroups do
       @other_district = Factory(:district)
       @other_student = Factory(:student, :district_student_id =>'other district', :district_id => @other_district.id)
       @other_school  = Factory(:school, :district_school_id => 99, :district_id => @other_district.id)
-      @other_group = Factory(:group, :district_group_id => 'existing_group', :school_id => @other_school.id)
+      @other_group = Factory(:group, :district_group_id => 'new_group', :school_id => @other_school.id)
 
       @other_student.groups << @other_group
       @other_student.reload.group_ids.should == [@other_group.id]
@@ -28,7 +28,6 @@ describe CSVImporter::StudentGroups do
       @linked_to_empty = Factory(:group, :school_id => @school_with_link.id, :title => "should get emptied", :district_group_id=>'linked_to_empty')
       @existing_group = Factory(:group, :school_id => @school_with_link.id, :title => "existing group", :district_group_id=>'existing_group')
       @new_group = Factory(:group, :school_id => @school_with_link.id, :title => "new group", :district_group_id=>'new_group')
-
 
 
 
@@ -55,6 +54,8 @@ describe CSVImporter::StudentGroups do
       @existing_group.student_ids.sort.should == [@unlinked_user.id,@linked_principal.id].sort
       @new_group.student_ids.sort.should == [@linked_user.id,@linked_principal.id].sort
 
+      @linked_user.reload.group_ids.sort.should == [@unlinked_group_at_linked_school,@linked_group_at_unlinked_school,@unlinked_group_at_unlinked_school,@new_group].collect(&:id).sort
+      @linked_principal.reload.group_ids.sort.should == [@existing_group,@new_group].collect(&:id).sort
       @other_student.reload.group_ids.should == [@other_group.id]
 
 
