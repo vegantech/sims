@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
     t.string   "district_group_id", :limit => 20, :default => "", :null => false
   end
 
+  add_index "groups", ["district_group_id"], :name => "index_groups_on_district_group_id"
   add_index "groups", ["district_group_id"], :name => "index_groups_on_id_district"
   add_index "groups", ["school_id"], :name => "index_groups_on_school_id"
 
