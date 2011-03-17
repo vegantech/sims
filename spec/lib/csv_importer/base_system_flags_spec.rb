@@ -10,6 +10,15 @@ describe CSVImporter::BaseSystemFlags do
 
 
       @district = Factory(:district)
+      @other_district = Factory(:district)
+      @other_lose_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'lose')
+      @other_new_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'new_flag')
+      @other_lose_flags.system_flags.create!(:category=>'math', :reason => 'lose this one in another district')
+      
+      
+
+
+
       @unlinked_student = Factory(:student, :district_id => @district.id)
       @keep_flags = Factory(:student, :district_id => @district.id, :district_student_id => 'keep')
       @lose_flags = Factory(:student, :district_id => @district.id, :district_student_id => 'lose')
@@ -36,6 +45,9 @@ describe CSVImporter::BaseSystemFlags do
 
       @new_flags.should have(1).system_flags
       @new_flags.should have(1).ignore_flags
+
+      @other_new_flags.reload.should have(0).system_flags
+      @other_lose_flags.reload.should have(1).system_flags
 
     end
 
