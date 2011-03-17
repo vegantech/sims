@@ -12,7 +12,7 @@
 
       <% if session[:search] %>
       <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
-      <%= li_link_to_if_authorized "Personal Groups",personal_groups_path,{},help_popup(PersonalGroup::DESCRIPTION)%>
+      <%= li_link_to_if_authorized "Personal Groups",personal_groups_path,{},help_popup(PersonalGroup::DESCRIPTION) if current_district.show_personal_groups? %>
       <% end %>
       <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
       <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>

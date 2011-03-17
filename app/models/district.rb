@@ -198,6 +198,10 @@ class District < ActiveRecord::Base
     end
   end
 
+  def show_personal_groups?
+    Rails.env.wip? || ['madison','mmsd'].include?(self.abbrev)
+  end
+
 
 private
 
