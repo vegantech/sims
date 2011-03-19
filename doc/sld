@@ -1,0 +1,10 @@
+oral expression
+listening comprehension
+written expression
+basic reading skill
+reading fluency
+reading comprehension
+mathematics calculation
+mathematics problem solving
+'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'
+t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'",                    :null => false
