@@ -16,7 +16,7 @@
 </td>
 
   <td><%=h intervention_definition.title %> <%=content_tag :b, "QuickList" if intervention_definition.district_quicklist %></td>
-  <td><%=h intervention_definition.description %></td>
+  <td><%=h intervention_definition.description_with_sld %></td>
   <td><%=h intervention_definition.tier.title  if intervention_definition.tier%></td>
   <td><%=h pluralize(intervention_definition.time_length_num, intervention_definition.time_length.title) if intervention_definition.time_length %></td>
   <td><%=h intervention_definition.frequency_summary %> </td>

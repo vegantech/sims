@@ -46,6 +46,11 @@
 
   <% end %>
 
+  <p><%=form.label :sld %>
+  <%= form.select :sld_array, InterventionDefinition::SLD_CRITERIA,{}, {:multiple => true} %>
+
+  </p>
+
 
   <br class='brclear' />
 

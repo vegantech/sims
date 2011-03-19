@@ -127,8 +127,8 @@ module ApplicationHelper
     end)
   end
 
-  def description(obj, name="Description")
-    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
+  def description(obj, name="Description",field="description")
+    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.send field}</td></tr></table>" if obj
   end
 
   def labelled_form_for(record_or_name_or_array, *args, &proc)

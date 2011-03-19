@@ -6,7 +6,7 @@
       <%= spinner("definitions") %>
       <%= content_tag :noscript, submit_tag("Choose Intervention") %> 
       <br class="brclear" />
-      <div id="intervention_description"><%= description(@intervention_definition) %></div>
+      <div id="intervention_description"><%= description(@intervention_definition,'Description', "description_with_sld") %></div>
     <% end %>
   <% end %>
 </div>

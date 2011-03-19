@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110303213209) do
+ActiveRecord::Schema.define(:version => 20110319143847) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -354,20 +354,21 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                  :default => false
+    t.boolean  "custom",                                                                                                                                                                                                                        :default => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"
-    t.integer  "time_length_num",         :default => 1
+    t.integer  "time_length_num",                                                                                                                                                                                                               :default => 1
     t.integer  "frequency_id"
-    t.integer  "frequency_multiplier",    :default => 1
+    t.integer  "frequency_multiplier",                                                                                                                                                                                                          :default => 1
     t.integer  "user_id"
     t.integer  "school_id"
-    t.boolean  "disabled",                :default => false
+    t.boolean  "disabled",                                                                                                                                                                                                                      :default => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "notify_email"
+    t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'", :default => ""
   end
 
   add_index "intervention_definitions", ["frequency_id"], :name => "index_intervention_definitions_on_frequency_id"

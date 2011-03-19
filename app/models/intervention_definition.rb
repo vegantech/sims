@@ -26,6 +26,7 @@ class InterventionDefinition < ActiveRecord::Base
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
+  SLD_CRITERIA = columns_hash['sld'].limit.gsub(/'/,'').split(",").collect(&:titleize) if table_exists?
   
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
@@ -50,6 +51,8 @@ class InterventionDefinition < ActiveRecord::Base
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
+
+  
 
 
 
@@ -131,6 +134,21 @@ class InterventionDefinition < ActiveRecord::Base
     else
       recommended_monitors
     end
+
+  end
+
+  def sld_array
+    sld.split(",").collect(&:titleize)
+  end
+
+  def sld_array=(arr)
+    self.sld = arr.join(",")
+  end
+
+  def description_with_sld
+    d=""
+    d= " This meets the SLD criteria: " + sld_array.join(", ") +"." if sld?
+    description + d
 
   end
   
