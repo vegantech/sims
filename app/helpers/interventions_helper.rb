@@ -6,8 +6,6 @@ module InterventionsHelper
     collection.each do |option_item|
       ret.gsub!(/value=\"#{option_item.send(option_value)}\"/, "\\0 class=\"#{css_class}\"") if option_item.send(method_for_using_class)
     end
-
-    puts ret
     ret
   end
 
