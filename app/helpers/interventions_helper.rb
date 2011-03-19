@@ -58,7 +58,7 @@ module InterventionsHelper
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|
           concat("<optgroup label='#{group}'>")
-          concat(options_from_collection_for_select(col, :id, :title))
+          concat(options_from_collection_for_select_with_css_class(col, :id, :title,'sld','sld?'))
           concat("</optgroup>")
         end
         concat('</select>')
