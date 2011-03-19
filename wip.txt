@@ -1,0 +1,12 @@
+614 SLD criteria
+add column to intervention_definitions in table
+put in content builder edit/new as multiselect list
+show in builder on index and show page
+on intervention selection screen
+make category blue if it has any interventions qualifying for sld
+make intervention definitions blue if they are sld qualifing
+put sld criteria in description
+quicklist coloring
+TODO
+test everything
+make video about it?
