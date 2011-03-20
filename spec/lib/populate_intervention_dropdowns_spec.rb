@@ -73,9 +73,13 @@ describe "Populate Intervention Dropdowns Module" do
   end
  
   describe 'populate_categories' do
+    it 'should have test for sld'
+
     it 'should populate @intervention_clusters' do
       self.should_receive(:find_intervention_cluster).twice
-      @objective_definition=mock_objective_definition(:intervention_clusters => [])
+      @objective_definition=mock_objective_definition(:intervention_clusters => InterventionCluster)
+      InterventionCluster.should_receive(:find).twice.and_return([])
+
       populate_categories
       @intervention_clusters.should == []
       @intervention_cluster = true
