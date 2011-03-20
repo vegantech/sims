@@ -25,9 +25,10 @@ describe PersonalGroupsController do
   end
 
   describe "GET new" do
+    it 'should redirect if thre are no selected students'
     it "assigns a new personal_group as @personal_group" do
       PersonalGroup.should_receive(:new).and_return(mock_personal_group)
-      controller.should_receive(:selected_students_ids).and_return([1,2,3])
+      controller.should_receive(:selected_students_ids).twice.and_return([1,2,3])
       Student.should_receive(:find_all_by_id)
       get :new
       assigns[:personal_group].should equal(mock_personal_group)
@@ -35,9 +36,10 @@ describe PersonalGroupsController do
   end
 
   describe "GET edit" do
+    it 'should redirect if thre are no selected students'
     it "assigns the requested personal_group as @personal_group" do
       PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group(:student_ids =>[]))
-      controller.should_receive(:selected_students_ids).and_return([1,2,3])
+      controller.should_receive(:selected_students_ids).twice.and_return([1,2,3])
       Student.should_receive(:find_all_by_id)
       get :edit, :id => "37"
       assigns[:personal_group].should equal(mock_personal_group)
