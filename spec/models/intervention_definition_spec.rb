@@ -29,6 +29,34 @@ describe InterventionDefinition do
     Factory(:intervention_definition)
   end
 
+  describe 'SLD_CRITERIA' do
+    it 'SLD CRITERIA Constant should be set' do
+      InterventionDefinition::SLD_CRITERIA.should ==  ["Oral Expression", "Listening Comprehension",
+        "Written Expression", "Basic Reading Skill", "Reading Fluency", "Reading Comprehension", "Mathematics Calculation", "Mathematics Problem Solving"]
+    end
+
+    it 'should set based on sld array' do
+      f=Factory(:intervention_definition)
+      f.update_attribute(:sld_array, ["Oral Expression", "Mathematics Calculation"])
+      f.reload.sld.should == "oral expression,mathematics calculation"
+    end
+
+    it 'should retrieve based on sld array' do
+      f=Factory(:intervention_definition)
+      f.update_attribute(:sld, "oral expression,mathematics calculation")
+      f.reload.sld_array.should ==  ["Oral Expression", "Mathematics Calculation"]
+    end
+
+    it 'should have a description with sld' do
+      f=Factory(:intervention_definition, :sld => "oral expression,mathematics calculation", :description => "This is the description.")
+      f.description_with_sld.should == "This is the description. This meets the SLD criteria: Oral Expression, Mathematics Calculation."
+
+    end
+
+
+
+  end
+
   describe 'district_quicklist' do
     it 'should return true and false if not if it is a member of the quicklist' do
       k=Factory(:intervention_definition)
