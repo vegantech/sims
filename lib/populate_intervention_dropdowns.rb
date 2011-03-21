@@ -39,11 +39,7 @@ protected
 
   def populate_categories
     find_intervention_cluster
-    @intervention_clusters = @objective_definition.intervention_clusters.find(:all, :joins => :intervention_definitions, 
-                                                                              :group => 'intervention_clusters.id', 
-                                                                              :select => 'intervention_clusters.id, intervention_clusters.title, intervention_clusters.description, intervention_clusters.disabled,
-                                                                               bit_or(intervention_definitions.sld) as sld' 
-                                                                              ) if @objective_definition
+    @intervention_clusters = @objective_definition.intervention_clusters.include_sld_criteria_from_definitions if @objective_definition
     @intervention_clusters.reject!(&:disabled) if @intervention_clusters
     populate_definitions if @intervention_cluster
   end
