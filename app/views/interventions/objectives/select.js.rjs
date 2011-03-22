@@ -4,3 +4,4 @@ page.remove "definitions"
 page.replace "categories", :partial=>"interventions/categories/select"
 page << "datePickerController.create();"
 page.hide 'spinnerobjectives'
+page[:intervention_cluster_id].focus() if @intervention_cluster
