@@ -17,7 +17,7 @@
       <br class="brclear" />
       <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
       <br class="brclear" />
-      <%= description(@intervention) %>
+      <%= description(@intervention,'Description', "description_with_sld") %>
       
     </div>
     <% unless @intervention.active? %>

@@ -147,7 +147,7 @@ class InterventionDefinition < ActiveRecord::Base
 
   def description_with_sld
     d=""
-    d= " This meets the SLD criteria: " + sld_array.join(", ") +"." if sld?
+    d= " This meets the SLD criteria: " + sld_array.join(", ") +"." unless self.sld.blank?
     description + d
 
   end
