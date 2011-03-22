@@ -62,7 +62,7 @@ protected
   def find_goal_definition
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
-        current_district.goal_definitions.find(params[:goal_id] || params[:goal_definition][:id])
+        current_district.goal_definitions.find_by_id(params[:goal_id] || params[:goal_definition][:id])
       elsif current_district.goal_definitions.reject(&:disabled).size == 1
         current_district.goal_definitions.first
       else

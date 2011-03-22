@@ -4,3 +4,5 @@ page.replace "intervention", :partial => "interventions/intervention"
 page.replace_html "intervention_description", description(@intervention_definition)
 page << "datePickerController.create();"
 page.hide("spinnerdefinitions")
+page[:intervention_frequency_multiplier].focus() if @intervention_definition
+
