@@ -199,7 +199,7 @@ class District < ActiveRecord::Base
   end
 
   def show_personal_groups?
-    Rails.env.wip? || ['madison','mmsd'].include?(self.abbrev)
+    Rails.env.wip? || ['madison','mmsd','ripon'].include?(self.abbrev)
   end
 
 
