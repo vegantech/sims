@@ -97,7 +97,72 @@ describe InterventionDefinition do
     end
   end
 
-    
+
+
+  describe 'restrict_tiers_and_disabled' do
+    before do
+      Tier.delete_all
+      InterventionDefinition.delete_all
+      @id1=Factory(:intervention_definition)
+      @id2=Factory(:intervention_definition, :intervention_cluster => @id1.intervention_cluster)
+      @id3=Factory(:intervention_definition, :intervention_cluster => @id1.intervention_cluster, :disabled=>true)
+      @district = @id1.district
+      @tier1=@district.tiers.create!(:title => 'tier 1')
+      @tier2=@district.tiers.create!(:title => 'tier 2')
+      @id1.update_attribute(:tier_id, @tier1.id)
+      @id2.update_attribute(:tier_id, @tier2.id)
+    end
+
+    it 'should show all when there are no restrictions' do
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+    end
+
+    it 'should restrict when the district lock tiers' do
+      @district.toggle!(:lock_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1]
+    end
+
+    it 'should allow when the district lock tiers but exemptions are in place' do
+      @district.toggle!(:lock_tier)
+      #goal definition
+      @id1.goal_definition.toggle!(:exempt_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.goal_definition.toggle!(:exempt_tier)
+      #objective definition
+      @id1.objective_definition.toggle!(:exempt_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.objective_definition.toggle!(:exempt_tier)
+      #category
+      @id1.intervention_cluster.toggle!(:exempt_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.toggle!(:exempt_tier)
+      #first itnervention
+      @id1.toggle!(:exempt_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1]
+      @id1.toggle!(:exempt_tier)
+      #second intervention
+      @id2.toggle!(:exempt_tier)
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      @id1.intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+
+
+
+    end
+
+
+
+
+
+
+  end
+
+
     
   
 
