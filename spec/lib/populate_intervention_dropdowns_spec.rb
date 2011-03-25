@@ -15,11 +15,16 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def current_student
-   @current_student ||= mock_student(:interventions => mock_intervention)
+   @current_student ||= mock_student(:interventions => mock_intervention, :max_tier => max_tier)
   end
 
   def current_school
    @current_school ||= mock_school(:quicklist => [])
+  end
+
+  def max_tier
+   @mock_tier ||= mock_tier()
+
   end
 
   def current_district
@@ -87,7 +92,8 @@ describe "Populate Intervention Dropdowns Module" do
   describe 'populate_definitions' do
     it 'should populate @intervention_definitions if not custom' do
       self.should_receive(:find_intervention_definition)
-      @intervention_cluster=mock_intervention_cluster(:intervention_definitions => [])
+      @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
+      InterventionDefinition.should_receive(:restrict_tiers_and_disabled).with(max_tier).and_return([])
       populate_definitions
       @intervention_definitions.should == []
     end

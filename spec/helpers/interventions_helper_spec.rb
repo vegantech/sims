@@ -4,9 +4,6 @@ describe InterventionsHelper do
   include InterventionsHelper
 
   describe 'tiered_intervention_select' do
-    before do
-      self.should_receive(:current_district).and_return(mock_district('lock_tier?' => false))
-    end
     it 'should have select tag with default blank' do
       tier=Tier.create!(:title=>'Tiered Intervention Select')
       int_def=Factory(:intervention_definition,:tier=>tier)
