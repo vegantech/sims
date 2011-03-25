@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110303213209) do
+ActiveRecord::Schema.define(:version => 20110324231240) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
     t.string   "marked_state_goal_ids"
     t.string   "key",                   :default => ""
     t.string   "previous_key",          :default => ""
-    t.boolean  "lock_tier",             :default => false
+    t.boolean  "lock_tier",             :default => false, :null => false
     t.boolean  "restrict_free_lunch",   :default => true
   end
 
@@ -304,6 +304,7 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "exempt_tier", :default => false, :null => false
   end
 
   add_index "goal_definitions", ["district_id"], :name => "index_goal_definitions_on_district_id"
@@ -336,6 +337,7 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "exempt_tier",             :default => false, :null => false
   end
 
   add_index "intervention_clusters", ["objective_definition_id"], :name => "index_intervention_clusters_on_objective_definition_id"
@@ -354,20 +356,22 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                  :default => false
+    t.boolean  "custom",                                                                                                                                                                                                                        :default => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"
-    t.integer  "time_length_num",         :default => 1
+    t.integer  "time_length_num",                                                                                                                                                                                                               :default => 1
     t.integer  "frequency_id"
-    t.integer  "frequency_multiplier",    :default => 1
+    t.integer  "frequency_multiplier",                                                                                                                                                                                                          :default => 1
     t.integer  "user_id"
     t.integer  "school_id"
-    t.boolean  "disabled",                :default => false
+    t.boolean  "disabled",                                                                                                                                                                                                                      :default => false, :null => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "notify_email"
+    t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'", :default => ""
+    t.boolean  "exempt_tier",                                                                                                                                                                                                                   :default => false, :null => false
   end
 
   add_index "intervention_definitions", ["frequency_id"], :name => "index_intervention_definitions_on_frequency_id"
@@ -455,6 +459,7 @@ ActiveRecord::Schema.define(:version => 20110303213209) do
     t.boolean  "disabled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "exempt_tier",        :default => false, :null => false
   end
 
   add_index "objective_definitions", ["goal_definition_id"], :name => "index_objective_definitions_on_goal_definition_id"

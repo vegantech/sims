@@ -30,8 +30,7 @@ protected
       @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
       @tiers=current_district.tiers
     else
-      @intervention_definitions = @intervention_cluster.intervention_definitions if @intervention_cluster
-      @intervention_definitions.reject!(&:disabled) if @intervention_definitions
+      @intervention_definitions = @intervention_cluster.intervention_definitions.restrict_tiers_and_disabled(current_student.max_tier) if @intervention_cluster
       @intervention_definitions.reject!{|id| id.custom?  && id.school_id != session[:school_id] && session[:user_id] != id.user_id} if @intervention_definitions and session[:school_id]
     end
     populate_intervention if @intervention_definition
