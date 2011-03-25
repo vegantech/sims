@@ -52,9 +52,13 @@ class InterventionDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
 
-  
-
-
+ named_scope :restrict_tiers_and_disabled, lambda {|student_tier|
+    {:conditions => "intervention_definitions.disabled=false and
+      (!districts.lock_tier or goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
+      tiers.position <= #{student_tier.position})",
+    :joins => [:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}]
+  }
+  }
 
   def title
     if custom and self[:title].present?
