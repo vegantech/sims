@@ -4,7 +4,16 @@
   <%# Remove old entries after 1 year %>
 
 
-  <tr><th width="10%">WIP</th><td><b>SLD criteria in intervention builder, and indicators in the intervention creation and quicklist screen. (614) </b> <br />
+  <tr><th width="10%">WIP</th><td><b>Tier Locking Exemptions (615) </b> <br />
+      If a district chooses to lock their tiers (higher tiers cannot be completed for a student unless a recommendation or principal override is completed.) <br />
+      They can now exempt goals, objectives, categories and intervention definitions in the builder.  If exempted, interventions in one of those exempted builders <br />
+      will be available to students at any tier.  <br />
+      To test this: 1. Login as district_admin, edit your district, check the Restrict Tiers box and save.  <br />
+      2. Logout and login as content_admin, navigate through the intervention builder.  There is now a checkbox when you edit or create to exempt tier. <br />
+      3. Logout and login as oneschool, navigate to a student and assign an intervention.  Tier 2 and 3 interventions will be hidden unless you exempted them or their parents in 2 above. <br />
+      <i>Note, the tier exemption in the builder is only available if the district has chosen to restrict tiers.   Otherwise it has no effect and is hidden from view.</i>
+      <hr />
+      <b>SLD criteria in intervention builder, and indicators in the intervention creation and quicklist screen. (614) </b> <br />
       Login as content_builder and navigate to an intervention to assign SLD criteria to intervention definitions. <br />
       Login as oneschool and navigate to a student.   Select from Intervention Quicklist and click on the select box, the SLD criteria is in blue. <br />
       Select new Intervention and Progress Monitor from Menu, then choose Learning, Proficient Math.  <br />

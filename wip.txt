@@ -1,3 +1,4 @@
+615 tier exemption for goals,objectives,categories,intervention definitions in builder
 614 SLD criteria
 add column to intervention_definitions in table
 put in content builder edit/new as multiselect list
