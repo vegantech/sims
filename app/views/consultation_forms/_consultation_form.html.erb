@@ -24,3 +24,10 @@
   <%= consultation_form.label :desired_outcome, 'What is the desired outcome from the team consultation?' %> <br />
   <%= consultation_form.text_area :desired_outcome, :size => ConsultationForm::FIELD_SIZE , :class => 'spell_check'%>
 </p>
+
+<% if consultation_form.respond_to?(:assets) %>
+  <%=consultation_form.assets %>
+<%  else %>
+  <%= render :partial => '/assets/asset_form', :locals => {:form=>consultation_form, :parent =>'consultation_form'}  %>
+<% end %>
+

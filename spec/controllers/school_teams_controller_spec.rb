@@ -20,14 +20,6 @@ describe SchoolTeamsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested school_team as @school_team" do
-      SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-      get :show, :id => "37"
-      assigns[:school_team].should equal(mock_school_team)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new school_team as @school_team" do
       SchoolTeam.should_receive(:new).and_return(mock_school_team)

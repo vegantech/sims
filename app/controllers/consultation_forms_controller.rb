@@ -41,11 +41,11 @@ class ConsultationFormsController < ApplicationController
     respond_to do |format|
       if @consultation_form.update_attributes(params[:consultation_form])
         msg= 'ConsultationForm was updated.'
-        format.js { flash.now[:notice] = msg}
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
-        format.js 
+        format.js  {responds_to_parnt {render}}
         format.html { render :action => "edit" }
         format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
@@ -71,11 +71,12 @@ class ConsultationFormsController < ApplicationController
       if @consultation_form.save
         msg= 'ConsultationForm was successfully created.'
 
-        format.js { flash.now[:notice] = msg}
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
         format.html { render :action => "new" }
+        format.js { responds_to_parent{render} }
         format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
     end
