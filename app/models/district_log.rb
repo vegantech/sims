@@ -12,6 +12,7 @@
 
 class DistrictLog < ActiveRecord::Base
   belongs_to :district
+  belongs_to :user
 
   named_scope :successful_login, :conditions => ["body like ?","Successful login%"]
   named_scope :failed_login, :conditions => ["body like ?","Failed login%"]

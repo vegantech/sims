@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   has_many :interventions
   has_many :probe_definitions
   has_many :recommendations
+  has_many :logs, :class_name => 'DistrictLog'
 
 
   attr_accessor :password, :all_students_in_district, :old_password
@@ -469,12 +470,17 @@ or (user_group_assignments.id is not null)
   end
 
   def last_login
-    @last_login ||=district.logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+  end
+
+  def record_successful_login
+    logs.create(:body => "Successful login of #{fullname}",:district_id => district_id)
+    logger.info "Successful login of #{fullname} at #{district.name}"
   end
 
 
   def self.find_by_fullname(fullname)
-    find_by_first_name_and_last_name(*(fullname.split(" ")))
+    find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
 
 protected

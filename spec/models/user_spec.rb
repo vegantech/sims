@@ -460,5 +460,15 @@ describe User do
 
    end
 
+   describe 'record_successful_login' do
+    it 'should create a district log entry' do
+      u=Factory(:user)
+      u.record_successful_login
+      u.logs.last.body.should == "Successful login of #{u.fullname}"
+      log=u.district.logs.last
+      log.body.should == "Successful login of #{u.fullname}"
+      u.last_login.should == log.updated_at
+    end
+   end
 
 end
