@@ -45,7 +45,7 @@ class ConsultationFormsController < ApplicationController
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
-        format.js  {responds_to_parnt {render}}
+        format.js  {responds_to_parent {render}}
         format.html { render :action => "edit" }
         format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
