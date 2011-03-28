@@ -38,6 +38,8 @@ Feature: Concern Note
     When I follow "Respond to Request for Information"
     And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
     And I press "Create"
+#   this is js so I cannot test it
+    Given I enter default student url
     When I follow "view" within "tr.consultation_form:last-of-type"
     Then I should see "Spinach"
 
