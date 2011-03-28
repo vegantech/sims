@@ -1,5 +1,4 @@
-
-<% remote_form_for(@consultation_form) do |f| %>
+<% form_for(@consultation_form,:url => '/consultation_forms.js', :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
 
