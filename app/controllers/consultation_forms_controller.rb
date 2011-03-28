@@ -16,7 +16,7 @@ class ConsultationFormsController < ApplicationController
   # GET /consultation_forms/new
   # GET /consultation_forms/new.xml
   def new
-    @consultation_form = ConsultationForm.new
+    @consultation_form = current_student.team_consultations.find(params[:team_consultation_id]).consultation_forms.build
 
     respond_to do |format|
       format.js
