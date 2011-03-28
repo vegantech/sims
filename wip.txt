@@ -1,3 +1,4 @@
+617 manage groups help/description  update
 604 attachments for school teams and consultation forms, show/hide consultation form,   show school team attachments.
 
 615 tier exemption for goals,objectives,categories,intervention definitions in builder
