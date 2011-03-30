@@ -23,7 +23,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
   def custom_networking
     file '/etc/network/interfaces',
       :ensure => :present,
-      :content => template('interfaces.erb'), binding),
+      :content => template('interfaces.erb', binding),
       :group => 'root',
       :owner => 'root',
       :mode => '644'
