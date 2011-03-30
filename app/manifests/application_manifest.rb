@@ -20,6 +20,19 @@ class ApplicationManifest < Moonshine::Manifest::Rails
   #   :custom => { :random => random  }
   # })
 
+  def custom_networking
+    file '/etc/network/interfaces',
+      :ensure => :present,
+      :content => template('interfaces.erb'), binding),
+      :group => 'root',
+      :owner => 'root',
+      :mode => '644'
+  end
+
+  if configuration[:network] && configuration[:network][:interfaces]
+    recipe :custom_networking
+  end
+
   recipe :scout if deploy_stage == 'production'
   recipe :xsendfile
   configure(:passenger => { :vhost_extra => """
