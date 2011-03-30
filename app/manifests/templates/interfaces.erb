@@ -3,7 +3,7 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-<% configuration[:network][:ifaces].each do |iface| %>
+<% configuration[:network][:interfaces].each do |iface| %>
 # <%= iface.desc %>
 auto <%= iface.name %>
 iface <%= iface.name %> inet static
