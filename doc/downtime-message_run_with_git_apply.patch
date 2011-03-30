@@ -1,0 +1,46 @@
+
+
+diff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb
+index d9a2959..5644a6e 100644
+--- a/app/views/layouts/application.html.erb
++++ b/app/views/layouts/application.html.erb
+@@ -49,6 +49,8 @@
+         <div class="breadcrumbs_and_banners">
+           <%=breadcrumbs%>
+         </div>
++          <div id="system_maintenance">SIMS will be unavailable at 6pm today for a system maintenance.  We expect it should be back up within 1/2 hour.  We recommend that you save anything you are working on as a
++            draft prior to 6pm.  Thank you. </div>
+         <p id="flash_notice"><%= flash[:notice] %>
+           <span id="session_notice"></span>
+         </p>
+diff --git a/public/stylesheets/print.css b/public/stylesheets/print.css
+index c529829..6bfd8fd 100644
+--- a/public/stylesheets/print.css
++++ b/public/stylesheets/print.css
+@@ -55,3 +55,7 @@
+ select {
+   display: none;
+ }
++
++#system_maintenance {
++  display: none;
++}
+diff --git a/public/stylesheets/screen.css b/public/stylesheets/screen.css
+index c63c4d6..b9efa6f 100644
+--- a/public/stylesheets/screen.css
++++ b/public/stylesheets/screen.css
+@@ -75,3 +75,13 @@ tr .handle {
+ .print-only {
+   display:none;
+ }
++
++
++#system_maintenance {
++  background-color: red;
++  text-color: black;
++  border-color: black;
++  border-style: solid;
++  border-width: thin;
++  font-size: larger;
++}
+
