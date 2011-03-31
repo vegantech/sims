@@ -3,23 +3,23 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-<% configuration[:network][:ifaces].each do |iface| %>
-# <%= iface.desc %>
-auto <%= iface.name %>
-iface <%= iface.name %> inet static
-  <%- if iface[:address] %>
+<% configuration[:network][:interfaces].each do |iface| %>
+# <%= iface[:desc] %>
+auto <%= iface[:name] %>
+iface <%= iface[:name] %> inet static
+  <% if iface[:address] %>
   address <%= iface[:address] %>
-  <%- end %>
-  <%- if iface[:netmask] %>
+  <% end %>
+  <% if iface[:netmask] %>
   netmask <%= iface[:netmask] %>
-  <%- end %>
-  <%- if iface[:network] %>
+  <% end %>
+  <% if iface[:network] %>
   network <%= iface[:network] %>
-  <%- end %>
-  <%- if iface[:broadcast] %>
+  <% end %>
+  <% if iface[:broadcast] %>
   broadcast <%= iface[:broadcast] %>
-  <%- end %>
-  <%- if iface[:gateway] %>
-  gateway <%= iface.gateway %>
-  <%- end %>
+  <% end %>
+  <% if iface[:gateway] %>
+  gateway <%= iface[:gateway] %>
+  <% end %>
 <% end %>
