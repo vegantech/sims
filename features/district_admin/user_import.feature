@@ -33,8 +33,10 @@ Feature: CSV Import of Users
     Then the command should have failed
 
   Scenario: Importing an invalid file
-    When I import_users_from_csv with "test/users/invalid_format/users.csv", "Telophia"
+    When I import_users_from_csv with "test/csv/users/invalid_format/users.csv", "Telophia"
     Then the command should have failed
+    And the command should have "Invalid file,  file must have headers district_user_id,username,first_name,middle_name,last_name,suffix,email,passwordhash,salt"
+    And the command should have "this, is not , a , valid, header"
     
   Scenario: Import two user csv when all are new
     When I import_users_from_csv with "test/csv/users/two/users.csv", "Telophia"

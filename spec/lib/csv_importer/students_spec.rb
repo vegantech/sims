@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
 describe CSVImporter::Students do
+  it_should_behave_like "csv importer"
   describe 'make sure esl and special_ed are correct' do
     it 'should upload properly' do
       District.delete_all
