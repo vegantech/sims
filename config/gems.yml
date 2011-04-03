@@ -8,6 +8,7 @@
   :version: ">= 1.0.0"
 - :name: system_timer
 - :name: googlecharts
+- :name: newrelic_rpm
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails
