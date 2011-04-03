@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
   config.gem 'googlecharts'
   config.gem 'hoptoad_notifier'
   config.gem 'responds_to_parent'
+  config.gem 'newrelic_rpm'
 
  # deployment
  config.gem "capistrano", :lib => false
