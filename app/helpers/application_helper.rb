@@ -67,8 +67,8 @@ module ApplicationHelper
     link_to_unless_current(title,path) if conditions || path == request.path
   end
 
-  def if_student_selected(session = session)
-    if session[:selected_students] && session[:selected_student]
+  def if_student_selected
+    if current_student
       yield
     end
   end

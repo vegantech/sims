@@ -18,7 +18,7 @@ describe StudentCommentsController do
       @u=mock_user(:student_comments=>StudentComment, :id=>999)
       controller.should_receive(:current_user).at_least(:once).and_return(@u)
       @s.should_receive(:belongs_to_user?).with(@u).and_return(true)
-      Student.should_receive(:find).with("2").and_return(@s)
+      Student.should_receive(:find_by_id).with("2").and_return(@s)
 
     end
     describe "responding to GET new" do
@@ -156,10 +156,6 @@ describe StudentCommentsController do
         response.should redirect_to(student_url(1))
       end
 
-    end
-
-    describe "check_student" do
-      it "should have specs"
     end
 
   end
