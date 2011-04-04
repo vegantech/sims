@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user=User.find_by_id(current_user_id) || User.new
+    @user = User.find_by_id(current_user_id) || User.new
   end
 
   def selected_students_ids
