@@ -4,6 +4,8 @@ class ReportsController < ApplicationController
   skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
   skip_before_filter :verify_authenticity_token
 
+  before_filter :check_student, :only => [:student_interventions, :student_overall_options, :student_overall]
+
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA
   # flagged students for a given school (and optional grade)

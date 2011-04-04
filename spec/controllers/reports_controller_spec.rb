@@ -110,22 +110,25 @@ describe ReportsController do
   end # student_flag_summary
 
   describe 'student overall options' do
+
     integrate_views
 
     before do
       @district = Factory(:district)
       @student = Factory(:student)
+      @student.should_receive(:belongs_to_user?).and_return(true)
+      Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
     end
 
     it 'should show up' do
-      get :student_overall_options, {}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
+      get :student_overall_options, {:student_id => @student.id}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should have_text(/Student Intervention Monitoring System/)
       response.should be_success
     end
   
     it 'should show checkbox for each section' do
-      get :student_overall_options, {}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
+      get :student_overall_options, {:student_id => @student.id}, {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should be_success
       response.should have_tag('input[type=checkbox][checked=checked][id=report_params_top_summary]')
@@ -141,12 +144,14 @@ describe ReportsController do
     before do
       @district = Factory(:district)
       @student = Factory(:student)
+      @student.should_receive(:belongs_to_user?).and_return(true)
+      Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
     end
 
     it 'should show top summary when selected' do
       controller.should_receive(:render).with(:partial => 'students/student', :locals => {:changeable => false})
 
-      get :student_overall, {:report_params => {:format => "html", :top_summary => "1"}},
+      get :student_overall, {:report_params => {:format => "html", :top_summary => "1"},:student_id => @student.id},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should be_success
@@ -155,7 +160,7 @@ describe ReportsController do
 
     it 'should not show top summary when not selected' do
       controller.should_receive(:render).with(:partial => 'students/student').never
-      get :student_overall, {:report_params => {:format => "html"}}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:report_params => {:format => "html"}, :student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
       response.should be_success
     end
 
@@ -163,7 +168,7 @@ describe ReportsController do
       @student.comments << StudentComment.create!(:body => 'Comment Body')
       @student.save!
 
-      get :student_overall, {:report_params => {:format => "html", :team_notes => "1"}},
+      get :student_overall, {:report_params => {:format => "html", :team_notes => "1"},:student_id => @student.id},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should be_success
@@ -175,7 +180,7 @@ describe ReportsController do
     it 'should not show team notes when not selected' do
       controller.should_receive(:render).with(:partial => 'student_comment/comment').never
 
-      get :student_overall, {:report_params => {:format => "html"}}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:report_params => {:format => "html"},:student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
 
       response.should be_success
       response.should_not have_text(/Team Notes/)
@@ -186,7 +191,7 @@ describe ReportsController do
       FlagsForStudentReport.should_receive(:render_html)
       @student.flags << SystemFlag.create!(:category => 'attendance', :reason => 'Late every day')
 
-      get :student_overall, {:report_params => {:format => "html", :flags => "1"}},
+      get :student_overall, {:report_params => {:format => "html", :flags => "1"},:student_id => @student.id},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should be_success
@@ -194,17 +199,16 @@ describe ReportsController do
 
     it 'should not show flags when not selected' do
       FlagsForStudentReport.should_not_receive(:render_html)
-      get :student_overall, {:report_params => {:format => "html"}}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:report_params => {:format => "html"}, :student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
       response.should be_success
     end
 
     it 'should show student interventions when selected' do
-      intervention = Factory(:intervention)
-      @student = Factory(:student, :interventions => [intervention])
+      intervention = Factory(:intervention, :student_id => @student.id)
+      @student.interventions << intervention
       @student.interventions.should_not be_empty
-      Student.should_receive(:find).with(:first, {:conditions=>{:id=>@student.id}}).and_return(@student)
 
-      get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"}},
+      get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"},:student_id => @student.id},
         {:user_id => 1, :district_id => @district.id, :selected_student => @student.id}
 
       response.should be_success
@@ -212,7 +216,7 @@ describe ReportsController do
 
     it 'should not show student interventions when not selected' do
       StudentInterventionsReport.should_not_receive(:render_html)
-      get :student_overall, {:format => "html"}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:format => "html",:student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
       response.should be_success
     end
 
@@ -236,7 +240,7 @@ describe ReportsController do
       end
 
       controller.should_not_receive(:render_to_pdf).and_return('PDF')
-      get :student_overall, {:report_params => {:format=>"pdf"}}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:report_params => {:format=>"pdf"},:student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
       PDF.send(:const_set,"HTMLDoc", OLD_HTMLDOC) if defined? OLD_HTMLDOC
       response.should be_success
     end
@@ -250,13 +254,13 @@ describe ReportsController do
 
       controller.should_receive(:render_to_pdf).and_return('PDF')
 
-      get :student_overall, {:report_params => {:format => "pdf"}}, {:user_id => 1, :selected_student => @student.id}
+      get :student_overall, {:report_params => {:format => "pdf"},:student_id => @student.id}, {:user_id => 1, :selected_student => @student.id}
       PDF.send(:remove_const, "HTMLDoc") if loaded
       response.should be_success
     end
 
     it 'should show up when html' do
-      get :student_overall, {:report_params => {:format => "html"}}, {:user_id => 1, :district_id => @district.id}
+      get :student_overall, {:report_params => {:format => "html"},:student_id => @student.id}, {:user_id => 1, :district_id => @district.id}
       controller.should_not_receive(:render_to_pdf).and_return('PDF')
       response.should be_success
     end
