@@ -70,8 +70,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :checklists
   map.resources :recommendations
 
-  map.resources :student_comments
-
 
   map.delete_custom_flag '/custom_flags/delete/:id', :controller=>"custom_flags",:action=>'destroy'
 
@@ -80,7 +78,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :enrollments
 
-  map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post}
+  map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post} do |student|
+    student.resources :student_comments
+
+  end
 
   map.resources :schools, :collection => {:select => :post}
 
