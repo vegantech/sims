@@ -166,4 +166,21 @@ class ApplicationController < ActionController::Base
     response.headers['P3P']= 'CP = "CAO PSA OUR"'
   end
 
+def check_student
+    #TODO generalize this
+    student=Student.find_by_id(params[:student_id]) || Student.new
+
+    if student.belongs_to_user?(current_user)
+      @student=student
+    else
+      flash[:notice] = "The student is not accessible for this user"
+      respond_to do |format|
+        format.js { render :template => "/main/inaccessible_student.js"}
+        format.html  {redirect_to :back }
+      end
+     return false
+    end
+
+  end
+
 end

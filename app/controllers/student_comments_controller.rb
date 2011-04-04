@@ -85,21 +85,4 @@ class StudentCommentsController < ApplicationController
   end
 
 
-  private
-  def check_student
-    #TODO generalize this
-    student=Student.find(params[:student_id])
-
-    if student.belongs_to_user?(current_user)
-      @student=student
-    else
-      flash[:notice] = "The student is not accessible for this user"
-      respond_to do |format|
-        format.js { render :action => "inaccessible_student.js"}
-        format.html  {redirect_to :back }
-      end
-     return false
-    end
-
-  end
 end
