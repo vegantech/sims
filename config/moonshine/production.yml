@@ -9,6 +9,13 @@
   - *.simspilot.org 
 #  - assets2.sims.managedmachine.com
 
+:ssl:
+  :only: true
+  :certificate_file: /home/rails/certs/2048/simspilot.org.crt
+  :certificate_key_file: /home/rails/certs/2048/simspilot.org.key
+  :certificate_chain_file: /home/rails/certs/2048/rapidssl-ca.crt
+
+
 :network:
   :interfaces:
   - :name: eth0
