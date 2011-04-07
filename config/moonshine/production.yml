@@ -24,21 +24,18 @@
     :netmask: 255.255.255.0
     :network: 216.180.248.0
     :broadcast: 216.180.248.255
-    :gateway: 216.180.248.1
   - :name: eth0:2
     :desc: newdomain.sims.widpi.managedmachine.com
     :address: 216.180.248.244
     :netmask: 255.255.255.0
     :network: 216.180.248.0
     :broadcast: 216.180.248.255
-    :gateway: 216.180.248.1
   - :name: eth0:3
     :desc: *.newdomain.sims.widpi.managedmachine.com
     :address: 216.180.248.245
     :netmask: 255.255.255.0
     :network: 216.180.248.0
     :broadcast: 216.180.248.255
-    :gateway: 216.180.248.1
   - :name: eth1
     :desc: private sims.widpi
     :address: 10.0.4.243
