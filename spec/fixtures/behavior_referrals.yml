@@ -1,0 +1,29 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: 
+  student: 
+  end_year: 1
+  recorder_id: 1
+  reported_by: 1
+  motivation: 1
+  behavior: 1
+  admin_decision: 1
+  half_days_of_suspension: 1
+  time: 2011-04-09 19:20:17
+  location: 1
+  other: MyText
+
+two:
+  school: 
+  student: 
+  end_year: 1
+  recorder_id: 1
+  reported_by: 1
+  motivation: 1
+  behavior: 1
+  admin_decision: 1
+  half_days_of_suspension: 1
+  time: 2011-04-09 19:20:17
+  location: 1
+  other: MyText

@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :personal_groups
 
 #TODO FIXME The path prefixes are missing, I might want to remove the deep nesting.
@@ -83,7 +84,7 @@ ActionController::Routing::Routes.draw do |map|
 
   end
 
-  map.resources :schools, :collection => {:select => :post}
+  map.resources :schools, :collection => {:select => :post}, :has_many => 'behavior_referrals'
 
 
   map.resources :users

@@ -28,6 +28,7 @@ class School < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
+  has_many :behavior_referrals
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
@@ -45,6 +46,11 @@ class School < ActiveRecord::Base
     validate_uniqueness_of_in_memory(
       user_school_assignments, [:user_id, :admin], 'Duplicate User.')
   end
+
+  def end_years
+    connection.select_values "select distinct end_year from enrollments where school_id = #{self.id}"
+  end
+    
 
   def grades_by_user(user)
     school_grades = enrollments.grades
