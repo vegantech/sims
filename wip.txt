@@ -4,7 +4,7 @@
 604 attachments for school teams and consultation forms, show/hide consultation form,   show school team attachments.
 
 615 tier exemption for goals,objectives,categories,intervention definitions in builder
-614 SLD criteria
+614,632 SLD criteria
 add column to intervention_definitions in table
 put in content builder edit/new as multiselect list
 show in builder on index and show page
