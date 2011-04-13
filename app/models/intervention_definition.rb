@@ -27,7 +27,9 @@ class InterventionDefinition < ActiveRecord::Base
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
   SLD_CRITERIA = columns_hash['sld'].limit.gsub(/'/,'').split(",").collect(&:titleize) if table_exists?
-  
+  INTENSIVE_INTERVENTIONS_DEFINITION='"Intensive interventions" means interventions used with individual or small groups of pupils, focusing on single or small numbers of discrete skills, with substantial numbers of instructional minutes in addition to those provided to all pupils.'
+  ADEQUATE_FIDELITY_DEFINITION='"Adequate fidelity" means the intervention has been applied in a manner highly consistent with its design, and was provided to the pupil at least 80 percent of the recommended number of weeks, sessions, and minutes per session.'
+
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   belongs_to :intervention_cluster
