@@ -50,7 +50,9 @@
   <% form_tag(end_intervention_path(@intervention), :method => :put) do  %>
     If you made changes above, then save them first. <br />
     <b> Was the intervention implemented with 80% fidelity based on the criteria above?
-    </b> <br />
+    </b> <%=help_popup InterventionDefinition::ADEQUATE_FIDELITY_DEFINITION %>
+
+    <br />
     <%= radio_button_tag('fidelity', true,false, 
                            {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
                         ) %>
