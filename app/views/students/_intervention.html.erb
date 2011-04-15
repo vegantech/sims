@@ -1,6 +1,6 @@
 <tr>
   <td><%=content_tag :div, intervention.objective_definition, :class=>"trunc" %>
-  <td><%=content_tag :div, intervention.title, :class=>"trunc" %></td>
+    <td><%=content_tag :div, intervention.title, :class=>"trunc #{intervention.sld? ? 'sld' : '' }" %></td>
   <td><%=content_tag :div, intervention.start_date , :class=>"trunc"%></td>
   <td><%=content_tag :div, intervention.assigned_probes, :class=>"trunc" %></td>
 <% unless defined?(no_action ) && no_action %>
