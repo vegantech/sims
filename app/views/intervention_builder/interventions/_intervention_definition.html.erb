@@ -15,7 +15,7 @@
   <%= link_to 'Recommend Progress Monitors', url_for(:controller=>'intervention_builder/recommended_monitors',:action=>"assign_probes_to_intervention",:id=>intervention_definition) %> 
 </td>
 
-  <td><%=h intervention_definition.title %> <%=content_tag :b, "QuickList" if intervention_definition.district_quicklist %></td>
+<td <%="class='sld'" if intervention_definition.sld? %>><%=h intervention_definition.title %> <%=content_tag :b, "QuickList" if intervention_definition.district_quicklist %></td>
   <td><%=h intervention_definition.description_with_sld %></td>
   <td><%=h intervention_definition.tier.title  if intervention_definition.tier%></td>
   <td><%=h pluralize(intervention_definition.time_length_num, intervention_definition.time_length.title) if intervention_definition.time_length %></td>
