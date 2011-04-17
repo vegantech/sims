@@ -8,7 +8,7 @@ describe HtmlCsvText do
   describe 'HTML' do
     describe 'buid_header' do
       it 'should show the current time' do
-        HtmlCsvText::HTML.new.build_header.should == "Report Generated at June 04, 2009 03:33" 
+        HtmlCsvText::HTML.new.build_header.should == "<html><head><style type=\"text/css\">i {color:blue}</style></head><body>Report Generated at June 04, 2009 03:33"
       end
     end
 

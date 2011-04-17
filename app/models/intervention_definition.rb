@@ -103,7 +103,11 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def bolded_title
-    "<b>#{title}</b>"
+    if sld?
+      "<i><c:alink uri='http://dpi.wi.gov/SPED/pi11_0701.html#ld'>" + "<b>#{title}</b>" + "</c:alink></i>"
+    else
+      "<b>#{title}</b>"
+    end
   end
 
   def frequency_duration_summary
