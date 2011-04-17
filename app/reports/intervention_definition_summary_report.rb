@@ -57,10 +57,11 @@ class InterventionDefinitionSummary
           or intervention_definitions.disabled is null )", @obj, false, false],
       :include => {:tier=>{:only => ""}, :time_length => {:only => ""}, :frequency => {:only => ""} ,
         :intervention_cluster => {:only => 'title', :include => {:objective_definition=>{:only => "",:include => {:goal_definition =>{:only => ""}}}}}},
-      :only => [:description],
-      :methods => ['bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments'])
+        :only => [],
+      :methods => ['description_with_sld','bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments','sld?'])
+
     if a.column_names.present?
-      a.rename_columns(a.column_names,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
+      a.rename_columns(a.column_names,['Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title','sld?','Description', 'Category'])
       a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
       a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
     else
