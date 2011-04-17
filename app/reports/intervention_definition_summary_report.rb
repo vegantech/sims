@@ -5,7 +5,7 @@ Ruport::Formatter::Template.create(:standard) do |format|
 end
 
 class InterventionDefinitionSummaryReport < DefaultReport 
-  stage :header, :body
+  stage :header, :body, :footer
   required_option :objective_definition
   load_html_csv_text
 
@@ -23,6 +23,7 @@ class InterventionDefinitionSummaryReport < DefaultReport
     end
 
     build :body do
+      ::PDF::Writer::TagAlink.style={:factor=>0.05, :text_color=>Color::RGB::Blue, :draw_line=>false, :line_style=>{:dash=>{:phase=>0, :pattern=>[]}}, :color=>Color::RGB::Blue}
       pdf_writer.start_page_numbering(350, 10, 8, :center, 'Page: <PAGENUM>')
       pdf_writer.font_size = 8
       render_grouping data.to_grouping, :table_format => {
@@ -36,6 +37,7 @@ class InterventionDefinitionSummaryReport < DefaultReport
           'Bus. Key' => {:width => 49}
         }
       }, :formatter => pdf_writer
+      ::PDF::Writer::TagAlink.style=nil
     end
   end
 end
