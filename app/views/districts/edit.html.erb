@@ -44,6 +44,8 @@
         </div>
       <% end %>
 
+      <%= render :partial => 'assets/asset_form', :locals => {:form=>f, :parent =>'district'}  %>
+
       <div class="form_row center_submit">
         <%= f.submit "Update" %>
       </div>
