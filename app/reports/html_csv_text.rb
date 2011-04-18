@@ -4,9 +4,6 @@ class HtmlCsvText
   class HTML < Ruport::Formatter::HTML
     renders :html, :for => Class.nesting[2]
     build :header do
-      output << "<html><head>"
-      output << '<style type="text/css">i {color:blue}</style>'
-      output << "</head><body>"
       output << "Report Generated at #{Time.now.to_s(:long)}"
     end
 
@@ -14,9 +11,6 @@ class HtmlCsvText
       output << data.to_grouping.to_html
     end
 
-    build :footer do
-      output << "</body></html>"
-    end
   end
 
   class Text < Ruport::Formatter
