@@ -14,7 +14,7 @@ class InterventionDefinitionSummaryReport < DefaultReport
   end
 
   class HTML < Ruport::Formatter::HTML
-    renders :html, :for => Class.nesting[2]
+    renders :html, :for => InterventionDefinitionSummaryReport
     build :header do
       output << "<html><head>"
       output << '<style type="text/css">i {color:blue}</style>'
