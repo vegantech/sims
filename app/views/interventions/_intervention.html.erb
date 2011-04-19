@@ -11,8 +11,9 @@
           </div>
           <div>
             <%= f.label :apply_to_all, "Apply to all selected students", {:class => 'checkbox_label_span'} %>
-            <%= link_to_function "Show/Hide" , "$('intervention_student_list').toggle()" %>
+            <%= link_to_function "Student List" , "$('intervention_student_list').toggle()" %>
             <div id="intervention_student_list" style="display:none">
+              The following students have been assigned to this intervention: <br />
               <%=Student.find_all_by_id(@intervention.selected_ids).collect(&:fullname).join(", ")%>
             </div>
           </div>
