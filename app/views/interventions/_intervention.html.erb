@@ -13,8 +13,12 @@
             <%= f.label :apply_to_all, "Apply to all selected students", {:class => 'checkbox_label_span'} %>
             <%= link_to_function "Student List" , "$('intervention_student_list').toggle()" %>
             <div id="intervention_student_list" style="display:none">
-              The following students have been assigned to this intervention: <br />
-              <%=Student.find_all_by_id(@intervention.selected_ids).collect(&:fullname).join(", ")%>
+              The following students have been selected to be assigned to this intervention: <br />
+              <ul>
+                <%Student.find_all_by_id(@intervention.selected_ids).each do |assigned_student| %>
+                  <li><%=assigned_student.fullname%></li>
+                <% end %>
+                </ul>
             </div>
           </div>
           
