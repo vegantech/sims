@@ -1,0 +1,63 @@
+this is just a demo of check-in check-out <br />
+Previous
+<%=Date.today%> [datepicker]
+Next
+<br />
+School Status [statuses select box]
+
+<table>
+  <tr>
+    <th>Student</th>
+    <th></th>
+  </tr>
+
+  <%CicoTest::STUDENTS.each do |student| %>
+  <tr>
+    <th>
+      <%=student %>
+    </th>
+    <th>
+      Status Dropdown
+    </th>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <th>Period</th>
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <th><%=expectation%> </th>
+          <% end %>
+          <th>Total</th>
+        </tr>
+
+        <%CicoTest::PERIODS.each do |period| %>
+          <tr>
+            <th><%=period%> </th>
+
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <td>score dropdown </th>
+          <% end %>
+          <td>total [jscalc]</td>
+        </tr>
+        <% end %>
+
+        <tr>
+          <th>
+            Total
+          </th>
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <td>exptotal [jscalc] </td>
+          <% end %>
+          <td> total% [jscalc]</td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
+<% end %>
+
+</table>
+
+[Submit button] [Cancel Button]
