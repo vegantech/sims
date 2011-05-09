@@ -1,13 +1,15 @@
 this is just a demo of check-in check-out <br />
+
+<% form_tag do %>
 Previous
-<%=Date.today%> [datepicker]
+<%= unobtrusive_date_picker_tags Date.today %>
 Next
 <br />
-School Status [statuses select box]
+School Status <%=select_tag(:schoolday_status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]})) %>
 
 <table>
   <tr>
-    <th>Student</th>
+    <th></th>
     <th></th>
   </tr>
 
@@ -17,7 +19,7 @@ School Status [statuses select box]
       <%=student %>
     </th>
     <th>
-      Status Dropdown
+      <%=select_tag(:studentday_status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]})) %>
     </th>
   </tr>
   <tr>
@@ -27,7 +29,9 @@ School Status [statuses select box]
         <tr>
           <th>Period</th>
           <%CicoTest::EXPECTATIONS.each do |expectation| %>
-            <th><%=expectation%> </th>
+            <th>
+              <%=expectation%> 
+            </th>
           <% end %>
           <th>Total</th>
         </tr>
@@ -37,9 +41,11 @@ School Status [statuses select box]
             <th><%=period%> </th>
 
           <%CicoTest::EXPECTATIONS.each do |expectation| %>
-            <td>score dropdown </th>
+            <td>
+              <%=select_tag(:expectation_status, options_for_select(CicoTest::EXPECTATIONSTATUS.collect{|e| [e,e]}))%>
+            </th>
           <% end %>
-          <td>total [jscalc]</td>
+          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
         </tr>
         <% end %>
 
@@ -48,9 +54,9 @@ School Status [statuses select box]
             Total
           </th>
           <%CicoTest::EXPECTATIONS.each do |expectation| %>
-            <td>exptotal [jscalc] </td>
+            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
           <% end %>
-          <td> total% [jscalc]</td>
+          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
 
         </tr>
       </table>
@@ -61,3 +67,4 @@ School Status [statuses select box]
 </table>
 
 [Submit button] [Cancel Button]
+<% end %>

@@ -1,7 +1,10 @@
 class CicoTest
-  STUDENTS=['Student 1', 'Student 2', 'Student N']
+  STUDENTS=(1...9).collect{|e| "Student #{e}"} +['Student N']
   EXPECTATIONS=['Expectation 1', 'Expectation 2', 'Expectation N']
-  PERIODS=['Period 1', 'Period 2', 'Period N']
+  PERIODS=(1..6).collect{|e| "Period #{e}"} + ['Period N']
+  DAYSTATUS=["School Out", "No Data", "In School"]
+  STUDENTSTATUS=["Absent", "School Out","No Data","Present"]
+  EXPECTATIONSTATUS=["0","1","2","N","Absent", "No Data", "School Out"]
   class Dog
   end
 
