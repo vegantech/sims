@@ -50,6 +50,16 @@ class ReportsController < ApplicationController
     handle_report_postback UserInterventionsReport, user.fullname, :user => current_user
   end
 
+  STUDENT_OVERALL_OPTIONS_HELP={
+    :top_summary =>"",
+    :extended_profile => "",
+    :flags => "",
+    :consultation_forms => "",
+    :team_notes => "",
+    :intervention_summary => "",
+    :intervention_detail => "",
+    :checklists_and_or_recommendations => ""
+  }
   def student_overall_options
     # present choices for report, maybe merge this in via postback if it seems right. 
     @opts = [:top_summary, :extended_profile, :flags, :consultation_forms, :team_notes, :intervention_summary,:intervention_detail, :checklists_and_or_recommendations]
