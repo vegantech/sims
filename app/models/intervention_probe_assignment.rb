@@ -90,7 +90,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
     @chxp=[]
     group=0
     probes_for_graph.in_groups_of(10000,false).collect{ |probes_for_this_graph|
-      custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].join("|")
+      custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
       if group>0
         probes_for_this_graph= [probes_for_graph[group*10-1]] + probes_for_this_graph
       end
@@ -136,7 +136,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
    #groups of 10
    return ''if probes_for_graph.empty?
     @chxp=[]
-    custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].join("|")
+    custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].compact.join("|")
     custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
       Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
