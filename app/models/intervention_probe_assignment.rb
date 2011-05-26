@@ -89,7 +89,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
    return ''if probes_for_graph.empty?
     @chxp=[]
     group=0
-    probes_for_graph.in_groups_of(10,false).collect{ |probes_for_this_graph|
+    probes_for_graph.in_groups_of(10000,false).collect{ |probes_for_this_graph|
       custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].join("|")
       if group>0
         probes_for_this_graph= [probes_for_graph[group*10-1]] + probes_for_this_graph
@@ -105,18 +105,27 @@ class InterventionProbeAssignment < ActiveRecord::Base
       Gchart.line_xy({:data => line_graph_data(probes_for_this_graph),
                  :axis_with_labels => 'x,x,y,r',
                  :axis_labels => line_axis_labels,
-                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|")+"|000000",
+                 :bar_colors => "8DACD0,99DD99",
                  :format=>'image_tag',
                  :encoding => 'text',
                  :custom => custom_string,
                  :bar_width_and_spacing => nil,
                  :size => '600x250',
-                 :chds => [0,line_graph_date_denom,min,max].join(",")
-
+                 :chds => chds,
+                 :axis_range => [[0,line_graph_date_denom],[],[0,100],[0,100]]
                  })}.join("<br />")
 
 
 
+ end
+
+ def chds
+   a=[0,line_graph_date_denom,min,max].join(",")
+   if goal?
+     [a,a].join(",")
+   else
+     a
+   end
  end
 
  def chxp
@@ -170,11 +179,13 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def line_graph_data(probes_for_this_graph)
     a=[]
-    a << scaled_dates(probes_for_this_graph)
+    lg_dates=scaled_dates(probes_for_this_graph)
+    a << lg_dates
     a << probes_for_this_graph.collect(&:score)
-#    a << [0,13]
-#    a << [80,100]
-
+    if goal?
+      a << [lg_dates.first, (end_date - line_graph_left_date).to_i]
+      a << [probes_for_this_graph.first.score, goal]
+    end
     a
   end
 
