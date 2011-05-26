@@ -100,7 +100,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
       else
       end
 
-      custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
+      custom_string = [custom_chm,chart_margins,chxp,chls].compact.join("&")
     
       Gchart.line_xy({:data => line_graph_data(probes_for_this_graph),
                  :axis_with_labels => 'x,x,y,r',
@@ -116,6 +116,11 @@ class InterventionProbeAssignment < ActiveRecord::Base
                  })}.join("<br />")
 
 
+
+ end
+
+ def chls
+   "chls=2|1,4,2"
 
  end
 
