@@ -102,15 +102,16 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
       custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
     
-      Gchart.line({:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => axis_labels(probes_for_this_graph), 
-                 :bar_width_and_spacing => '30,25',
-                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+      Gchart.line_xy({:data => line_graph_data(probes_for_this_graph),
+                 :axis_with_labels => 'x,x,y,r',
+                 :axis_labels => line_axis_labels,
+                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|")+"|000000",
                  :format=>'image_tag',
-                 :min_value=>min, :max_value=>max,
                  :encoding => 'text',
                  :custom => custom_string,
-                 :size => '600x250'
+                 :bar_width_and_spacing => nil,
+                 :size => '600x250',
+                 :chds => [0,line_graph_date_denom,min,max].join(",")
 
                  })}.join("<br />")
 
@@ -156,6 +157,27 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   protected
 
+  def line_axis_labels
+      [
+        [line_graph_left_date, line_graph_left_date + line_graph_date_denom/4 , line_graph_left_date + line_graph_date_denom/2, line_graph_left_date + 0.75 * line_graph_date_denom, line_graph_right_date].uniq,
+        [],
+        [min,0,max],
+        benchmarks.collect{|b| "#{b.benchmark}-  #{b.grade_level}"},
+      ]
+
+
+  end
+
+  def line_graph_data(probes_for_this_graph)
+    a=[]
+    a << scaled_dates(probes_for_this_graph)
+    a << probes_for_this_graph.collect(&:score)
+#    a << [0,13]
+#    a << [80,100]
+
+    a
+  end
+
   def axis_labels(p_for_this_graph)
       [
         p_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, 
@@ -165,6 +187,30 @@ class InterventionProbeAssignment < ActiveRecord::Base
       ] 
   end
 
+  #TODO
+  def line_graph_left_date
+    [probes.minimum('administered_at'), first_date].min
+  end
+
+  def line_graph_right_date
+    [probes.maximum('administered_at'), end_date].max
+  end
+
+  def line_graph_date_denom
+    scale_denom=line_graph_right_date - line_graph_left_date
+    scale_denom = 0.0001 if scale_denom.zero?
+    scale_denom
+  end
+  def scaled_dates pp
+    pp.collect{|e| (e.administered_at - line_graph_left_date).to_i}
+  end
+
+  
+
+
+
+
+  ############### END TODO #################
   def dots_for_line_graph
       'o,000000,0,,3.0'
 
