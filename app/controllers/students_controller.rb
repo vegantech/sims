@@ -30,7 +30,7 @@ class StudentsController < ApplicationController
       flash[:notice] = 'No students selected'
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
-      max_students = 250
+      max_students = 200
       params[:id].uniq!
       if params[:id].length > max_students
         flash[:notice] ="Selection limited to #{max_students} students"
