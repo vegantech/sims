@@ -205,11 +205,11 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   #TODO
   def line_graph_left_date
-    [probes.minimum('administered_at'), first_date].min
+    (probes_for_graph.collect(&:administered_at) |[first_date]).min
   end
 
   def line_graph_right_date
-    [probes.maximum('administered_at'), end_date].max
+    (probes_for_graph.collect(&:administered_at) |[end_date]).max
   end
 
   def line_graph_date_denom
