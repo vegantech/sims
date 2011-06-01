@@ -51,14 +51,14 @@ class ReportsController < ApplicationController
   end
 
   STUDENT_OVERALL_OPTIONS_HELP={
-    :top_summary =>"",
-    :extended_profile => "",
-    :flags => "",
-    :consultation_forms => "",
-    :team_notes => "",
-    :intervention_summary => "",
-    :intervention_detail => "",
-    :checklists_and_or_recommendations => ""
+    :top_summary =>"Includes basic student information, flag icons, enrollments.  This is what is in the gray box at the top of the profile.",
+    :extended_profile => "The content of the extended profile, if available (Adult contacts, address, test scores, siblings, extra info)",
+    :flags => "A list of the system, custom, and ignored flags for this student",
+    :consultation_forms => "A breakdown of the team consultations and replies for this student",
+    :team_notes => "A list of team notes (student comments.)",
+    :intervention_summary => "The summary table for interventions (what you see on the profile page.)  Does not include scores or intervention comments.",
+    :intervention_detail => "The details of interventions including scores, graphs, and comments.",
+    :checklists_and_or_recommendations => "Checklists and  Recommendations detail"
   }
   def student_overall_options
     # present choices for report, maybe merge this in via postback if it seems right. 
