@@ -134,7 +134,12 @@ end
     #need to handle special user groups as well
     @group = current_school.groups.find(params[:id])
     @user_assignment = @group.user_group_assignments.find(params[:user_assignment_id])
-#    @user_assignment.destroy
+    @user_assignment.destroy
+    respond_to do |format|
+      format.html {redirect_to @group}
+      format.js {}
+
+    end
   end
 
   def show_special

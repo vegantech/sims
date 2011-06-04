@@ -36,13 +36,13 @@ end
 
 RCov::VerifyTask.new('verify_rcov_functional') do |t|
   t.require_exact_threshold=false
-  t.threshold = 69.9 #79.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 70.4 #79.0 # Make sure you have rcov 0.7 or higher!
   t.index_html = index_base_path + '/functional/index.html'
 end
 
 RCov::VerifyTask.new('verify_rcov_integration') do |t|
   t.require_exact_threshold=false
-  t.threshold = 58.0 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 58.5 # Make sure you have rcov 0.7 or higher!
   t.index_html = index_base_path + '/integration/index.html'
 end
 task "default" => ["test:coverage"]
