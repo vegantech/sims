@@ -1,3 +1,5 @@
+595 help for auto implementer and assign selected students,   auto_assign implementer
+
 631 aim line
 cicotest Test cico form
 
