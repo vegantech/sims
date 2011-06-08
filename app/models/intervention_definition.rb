@@ -45,6 +45,7 @@ class InterventionDefinition < ActiveRecord::Base
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
   validates_numericality_of :frequency_multiplier, :time_length_num
+  validates_numericality_of :mins_per_week, :greater_than => 0, :less_than =>3000, :if => "sld?"
 
   acts_as_reportable if defined? Ruport
   acts_as_list :scope => :intervention_cluster_id

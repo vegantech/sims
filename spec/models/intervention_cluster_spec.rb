@@ -41,8 +41,8 @@ describe InterventionCluster do
 
 
     it 'should return sld for intervention definitions with sld' do
-      f=Factory(:intervention_definition, :sld_array => InterventionDefinition::SLD_CRITERIA[0..4])
-      g=Factory(:intervention_definition, :intervention_cluster_id => f.intervention_cluster_id, :sld_array =>  InterventionDefinition::SLD_CRITERIA[5..-1])
+      f=Factory(:intervention_definition, :sld_array => InterventionDefinition::SLD_CRITERIA[0..4], :mins_per_week=>1)
+      g=Factory(:intervention_definition, :intervention_cluster_id => f.intervention_cluster_id, :sld_array =>  InterventionDefinition::SLD_CRITERIA[5..-1], :mins_per_week=>1)
       ics=InterventionCluster.include_sld_criteria_from_definitions
       ics.should == [f.intervention_cluster]
       ics.first.should be_sld
