@@ -48,9 +48,21 @@ describe InterventionDefinition do
     end
 
     it 'should have a description with sld' do
-      f=Factory(:intervention_definition, :sld => "oral expression,mathematics calculation", :description => "This is the description.")
+      f=Factory(:intervention_definition, 
+                :sld => "oral expression,mathematics calculation", 
+                :description => "This is the description.", 
+                :mins_per_week => 2)
       f.description_with_sld.should == "This is the description. This meets the SLD criteria: Oral Expression, Mathematics Calculation."
 
+    end
+
+    it 'should have mins_per_week set when sld criteria is set' do
+      f=Factory(:intervention_definition)
+      f.should be_valid
+      f.update_attribute(:sld, "oral expression,mathematics calculation")
+      f.should_not be_valid
+      f.mins_per_week = 10
+      f.should be_valid
     end
 
 

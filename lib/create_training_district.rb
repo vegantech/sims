@@ -4,7 +4,7 @@ class CreateTrainingDistrict
     generate_one
     2.upto(20){ |i| generate_one(i.to_s)}
     generate_named_districts
-    InterventionDefinition.update_all("sld ='Mathematics problem solving' where title = 'Make the Verb Active '")
+    InterventionDefinition.update_all("sld ='Mathematics problem solving', mins_per_week=30","where title = 'Make the Verb Active '")
     InterventionDefinition.find_all_by_title('Make the Verb Active ').each{|idd| idd.district.schools.first.quicklist_interventions << idd.intervention_cluster.intervention_definitions}
 
   end

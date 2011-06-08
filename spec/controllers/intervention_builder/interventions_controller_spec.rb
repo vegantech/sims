@@ -106,7 +106,7 @@ describe InterventionBuilder::InterventionsController do
       end
 
       it "should update the requested intervention" do
-        @intervention_definition.should_receive(:attributes=).with({"these" => 'params'})
+        @intervention_definition.should_receive(:attributes=).with({"these" => 'params', "sld_array" => []})
         put :update, :id => "37", :intervention_definition => {:these => 'params'}
       end
 
@@ -131,7 +131,7 @@ describe InterventionBuilder::InterventionsController do
          
 
       it "should update the requested intervention" do
-        @intervention_definition.should_receive(:attributes=).with({'these' => 'params'})
+        @intervention_definition.should_receive(:attributes=).with({'these' => 'params', "sld_array" => []})
         put :update, :id => "37", :intervention_definition => {:these => 'params'}
       end
 
