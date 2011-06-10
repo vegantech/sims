@@ -17,6 +17,7 @@ class ImportCSV
     "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
     "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv", "ext_summaries.csv",
     "district_admins.csv","news_admins.csv", "content_admins.csv", "school_admins.csv", "regular_users.csv", "system_flags.csv",
+    "admins_of_schools.csv",
     *Flag::FLAGTYPES.keys.collect{|e| "#{e}_system_flags.csv"}
     ]
 
