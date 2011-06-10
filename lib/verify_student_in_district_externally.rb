@@ -22,11 +22,14 @@ module VerifyStudentInDistrictExternally
 
 
    uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
+   #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/lookup")
    http=Net::HTTP.new(uri.host, uri.port)
    http.use_ssl=true
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
    request = Net::HTTP::Post.new(uri.request_uri)
+#   request.basic_auth[offband, offband]
+   #   
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
    #set timeout here
