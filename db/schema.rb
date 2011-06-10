@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327175111) do
+ActiveRecord::Schema.define(:version => 20110610163912) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -82,6 +82,20 @@ ActiveRecord::Schema.define(:version => 20110327175111) do
   add_index "checklists", ["district_id"], :name => "index_checklists_on_district_id"
   add_index "checklists", ["student_id"], :name => "index_checklists_on_student_id"
   add_index "checklists", ["user_id"], :name => "index_checklists_on_user_id"
+
+  create_table "cico_settings", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "probe_definition_id"
+    t.boolean  "enabled",                                                                                                    :default => false,                                      :null => false
+    t.integer  "default_participant_id"
+    t.integer  "points_per_expectation",                                                                                     :default => 2
+    t.integer  "default_goal"
+    t.set      "days_to_collect",        :limit => "'monday','tuesday','wednesday','thursday','friday','saturday','sunday'", :default => "monday,tuesday,wednesday,thursday,friday", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cico_settings", ["school_id", "enabled"], :name => "index_cico_settings_on_school_id_and_enabled"
 
   create_table "consultation_form_concerns", :force => true do |t|
     t.integer  "area"
@@ -362,21 +376,23 @@ ActiveRecord::Schema.define(:version => 20110327175111) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                  :default => false
+    t.boolean  "custom",                                                                                                                                                                                                                        :default => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"
-    t.integer  "time_length_num",         :default => 1
+    t.integer  "time_length_num",                                                                                                                                                                                                               :default => 1
     t.integer  "frequency_id"
-    t.integer  "frequency_multiplier",    :default => 1
+    t.integer  "frequency_multiplier",                                                                                                                                                                                                          :default => 1
     t.integer  "user_id"
     t.integer  "school_id"
-    t.boolean  "disabled",                :default => false, :null => false
+    t.boolean  "disabled",                                                                                                                                                                                                                      :default => false, :null => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "notify_email"
-    t.boolean  "exempt_tier",             :default => false, :null => false
+    t.boolean  "exempt_tier",                                                                                                                                                                                                                   :default => false, :null => false
+    t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'", :default => ""
+    t.integer  "mins_per_week",                                                                                                                                                                                                                 :default => 0,     :null => false
   end
 
   add_index "intervention_definitions", ["frequency_id"], :name => "index_intervention_definitions_on_frequency_id"
@@ -432,6 +448,7 @@ ActiveRecord::Schema.define(:version => 20110327175111) do
     t.datetime "updated_at"
     t.string   "end_reason"
     t.boolean  "fidelity"
+    t.integer  "mins_per_week",              :default => 0,    :null => false
   end
 
   add_index "interventions", ["ended_by_id"], :name => "index_interventions_on_ended_by_id"
@@ -535,8 +552,10 @@ ActiveRecord::Schema.define(:version => 20110327175111) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "custom",        :default => false, :null => false
+    t.boolean  "cico",          :default => false, :null => false
   end
 
+  add_index "probe_definitions", ["district_id", "cico"], :name => "index_probe_definitions_on_district_id_and_cico"
   add_index "probe_definitions", ["district_id"], :name => "index_probe_definitions_on_district_id"
   add_index "probe_definitions", ["maximum_score"], :name => "index_probe_definitions_on_maximum_score"
   add_index "probe_definitions", ["minimum_score"], :name => "index_probe_definitions_on_minimum_score"

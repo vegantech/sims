@@ -1,0 +1,13 @@
+<% if current_school && cicos=current_school.cico_settings.where_participant(current_user) %>
+  <ul>
+    <% cicos.each do |cico| %>
+      <li>
+      <%=link_to h(cico.title), cico_url(:id=>cico.id) %>
+
+      </li>
+
+    <% end %>
+
+
+  </ul>
+<% end %>
