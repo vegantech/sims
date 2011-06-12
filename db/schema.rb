@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110610163912) do
+ActiveRecord::Schema.define(:version => 20110612171205) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -83,6 +83,39 @@ ActiveRecord::Schema.define(:version => 20110610163912) do
   add_index "checklists", ["student_id"], :name => "index_checklists_on_student_id"
   add_index "checklists", ["user_id"], :name => "index_checklists_on_user_id"
 
+  create_table "cico_expectations", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "cico_setting_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cico_period_expectations", :force => true do |t|
+    t.integer  "cico_student_day_id"
+    t.integer  "cico_period_id"
+    t.integer  "cico_expectation_id"
+    t.integer  "score"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cico_periods", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "cico_setting_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cico_school_days", :force => true do |t|
+    t.integer  "cico_setting_id"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "cico_settings", :force => true do |t|
     t.integer  "school_id"
     t.integer  "probe_definition_id"
@@ -96,6 +129,15 @@ ActiveRecord::Schema.define(:version => 20110610163912) do
   end
 
   add_index "cico_settings", ["school_id", "enabled"], :name => "index_cico_settings_on_school_id_and_enabled"
+
+  create_table "cico_student_days", :force => true do |t|
+    t.integer  "cico_school_day_id"
+    t.integer  "intervention_probe_assignment_id"
+    t.integer  "score"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "consultation_form_concerns", :force => true do |t|
     t.integer  "area"

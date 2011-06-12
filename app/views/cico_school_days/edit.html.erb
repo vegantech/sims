@@ -1,0 +1,24 @@
+<h1>Editing cico_school_day</h1>
+
+<% form_for(@cico_school_day) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :cico_setting %><br />
+    <%= f.text_field :cico_setting %>
+  </p>
+  <p>
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.label :date %><br />
+    <%= f.date_select :date %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @cico_school_day %> |
+<%= link_to 'Back', cico_school_days_path %>

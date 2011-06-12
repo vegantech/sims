@@ -93,6 +93,9 @@ RIGHTS={
    {:read_access=>true,
     :controller=>"personal_groups",
     :write_access=>true},
+   {:read_access=>true,
+    :controller=>"cico_school_days",
+    :write_access=>true},
   ],
  "school_admin" => [
     {:read_access=>true,

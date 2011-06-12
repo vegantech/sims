@@ -1,5 +1,13 @@
 class CicoSetting < ActiveRecord::Base
   DESCRIPTION = "Enable and setup check-in check-out progress monitors for this school"
+  
+  STUDENTS=(1...9).collect{|e| "Student #{e}"} +['Student N']
+  EXPECTATIONS=['Expectation 1', 'Expectation 2', 'Expectation N']
+  PERIODS=(1..6).collect{|e| "Period #{e}"} + ['Period N']
+  DAYSTATUS=["School Out", "No Data", "In School"]
+  STUDENTSTATUS=["Absent", "School Out","No Data","Present"]
+  EXPECTATIONSTATUS=["0","1","2","N","Absent", "No Data", "School Out"]
+  
   belongs_to :school
   belongs_to :probe_definition
   belongs_to :default_participant, :class_name=>'User'
@@ -7,6 +15,10 @@ class CicoSetting < ActiveRecord::Base
 
   delegate :title, :to => :probe_definition
 
+  def expectation_values
+    (0..points_per_expectation).to_a | EXPECTATIONSTATUS[-3..-1]
+
+  end
   def to_param
     probe_definition_id.to_s
   end
@@ -20,8 +32,15 @@ class CicoSetting < ActiveRecord::Base
       inner join enrollments e on s.id = e.student_id and e.school_id = cico_settings.school_id
       inner join intervention_participants ip on ip.intervention_id = i.id and ip.user_id = #{user.id} 
       "
-                )
+                ).uniq
     
+  end
+
+  def intervention_probe_assignments(user)
+    probe_definition.intervention_probe_assignments.find(:all, :include => {:intervention => [{:student=>:enrollments},:intervention_participants]}, 
+                                                         :conditions => "enrollments.school_id = #{school_id} 
+                                                         and intervention_participants.user_id = #{user.id}")
+ 
   end
 
 

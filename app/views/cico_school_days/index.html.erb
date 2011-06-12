@@ -1,0 +1,24 @@
+<h1>Listing cico_school_days</h1>
+
+<table>
+  <tr>
+    <th>Cico setting</th>
+    <th>Status</th>
+    <th>Date</th>
+  </tr>
+
+<% @cico_school_days.each do |cico_school_day| %>
+  <tr>
+    <td><%=h cico_school_day.cico_setting %></td>
+    <td><%=h cico_school_day.status %></td>
+    <td><%=h cico_school_day.date %></td>
+    <td><%= link_to 'Show', cico_school_day %></td>
+    <td><%= link_to 'Edit', edit_cico_school_day_path(cico_school_day) %></td>
+    <td><%= link_to 'Destroy', cico_school_day, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New cico_school_day', new_cico_school_day_path %>
