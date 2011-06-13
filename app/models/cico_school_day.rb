@@ -12,7 +12,8 @@ class CicoSchoolDay < ActiveRecord::Base
     cico_setting.probe_definition.intervention_probe_assignments.find(:all, :include => {:intervention => [{:student=>:enrollments},:intervention_participants]}, 
        :conditions => "enrollments.school_id = #{school_id} 
        and intervention_participants.user_id = #{user.id}").each do |ipa|
-      cico_student_days.find_by_intervention_probe_assignment_id(ipa.id) || cico_student_days.build(:intervention_probe_assignment => ipa)
+      (cico_student_days.find_by_intervention_probe_assignment_id(ipa.id) || 
+       cico_student_days.build(:intervention_probe_assignment => ipa)).setup(cico_setting)
        end
 
     self

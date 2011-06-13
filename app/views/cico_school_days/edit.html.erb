@@ -37,12 +37,21 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
           <th>Total</th>
         </tr>
 
+        <%#= ff.object.cico_period_expectations.size %>
+
+        <% grid = ff.object.cico_period_expectations.group_by {|e| [e.cico_period_id, e.cico_expectation_id]} %>
+        <%#=grid.size %>
+
         <%@cico_setting.cico_periods.each do |period| %>
           <tr>
             <th><%=period%> </th>
 
           <%@cico_setting.cico_periods.each do |expectation| %>
             <td>
+                <% ff.fields_for :cico_period_expectations, Array(grid[[period.id, expectation.id]]).first do |fff| %> 
+                <%#=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
+                <%#=fff.select(:status, options_for_select(@expectation_values,fff)) %>
+            <% end %>
               <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
             </th>
           <% end %>
