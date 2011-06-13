@@ -13,7 +13,7 @@ class CicoSchoolDay < ActiveRecord::Base
        :conditions => "enrollments.school_id = #{school_id} 
        and intervention_participants.user_id = #{user.id}").each do |ipa|
       (cico_student_days.find_by_intervention_probe_assignment_id(ipa.id) || 
-       cico_student_days.build(:intervention_probe_assignment => ipa)).setup(cico_setting)
+       cico_student_days.build(:intervention_probe_assignment => ipa))
        end
 
     self

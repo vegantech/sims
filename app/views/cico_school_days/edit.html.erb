@@ -39,20 +39,19 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
         <%#= ff.object.cico_period_expectations.size %>
 
-        <% grid = ff.object.cico_period_expectations.group_by {|e| [e.cico_period_id, e.cico_expectation_id]} %>
-        <%#=grid.size %>
-
         <%@cico_setting.cico_periods.each do |period| %>
           <tr>
             <th><%=period%> </th>
 
-          <%@cico_setting.cico_periods.each do |expectation| %>
+          <%@cico_setting.cico_expectations.each do |expectation| %>
             <td>
-                <% ff.fields_for :cico_period_expectations, Array(grid[[period.id, expectation.id]]).first do |fff| %> 
-                <%#=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
-                <%#=fff.select(:status, options_for_select(@expectation_values,fff)) %>
+              <% ff.fields_for :cico_period_expectations, 
+                ff.object.cico_period_expectations.find_by_cico_period_id_and_cico_expectation_id(period.id, expectation.id) ||
+                CicoPeriodExpectation.new(:cico_period=>period,:cico_expectation => expectation) do |fff| %> 
+                 <%=fff.hidden_field :cico_period_id %>
+                 <%= fff.hidden_field :cico_expectation_id %>
+                <%=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
             <% end %>
-              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
             </th>
           <% end %>
           <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
