@@ -4,7 +4,7 @@ class CreateCicoStudentDays < ActiveRecord::Migration
       t.references :cico_school_day
       t.references :intervention_probe_assignment
       t.integer :score
-      t.integer :status
+      t.string :status
 
       t.timestamps
     end

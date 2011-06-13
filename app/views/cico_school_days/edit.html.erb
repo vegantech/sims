@@ -1,24 +1,72 @@
-<h1>Editing cico_school_day</h1>
+<% form_for [@cico_setting, @cico_school_day],
+  :url => cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.date), 
+  :html => {:method => 'put' } do  |f| %>
+Previous
+<%= f.unobtrusive_date_picker :date %>
+Next
+<br />
+School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status)) %>
 
-<% form_for(@cico_school_day) do |f| %>
-  <%= f.error_messages %>
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
 
-  <p>
-    <%= f.label :cico_setting %><br />
-    <%= f.text_field :cico_setting %>
-  </p>
-  <p>
-    <%= f.label :status %><br />
-    <%= f.text_field :status %>
-  </p>
-  <p>
-    <%= f.label :date %><br />
-    <%= f.date_select :date %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
+  <% f.fields_for :cico_student_days do |ff| %>
+   <tr>
+    <th>
+      <%=ff.object.student %>
+      <%=ff.hidden_field(:intervention_probe_assignment_id) %>
+    </th>
+    <th>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status)) %>
+    </th>
+  </tr>
+ <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <th>Period</th>
+          <%@cico_setting.cico_expectations.each do |expectation| %>
+            <th>
+              <%=expectation%> 
+            </th>
+          <% end %>
+          <th>Total</th>
+        </tr>
+
+        <%@cico_setting.cico_periods.each do |period| %>
+          <tr>
+            <th><%=period%> </th>
+
+          <%@cico_setting.cico_periods.each do |expectation| %>
+            <td>
+              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
+            </th>
+          <% end %>
+          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+        </tr>
+        <% end %>
+
+        <tr>
+          <th>
+            Total
+          </th>
+          <%@cico_setting.cico_expectations.each do |expectation| %>
+            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+          <% end %>
+          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
 <% end %>
 
-<%= link_to 'Show', @cico_school_day %> |
-<%= link_to 'Back', cico_school_days_path %>
+</table>
+
+<%=submit_tag%>
+[Cancel Button]
+<% end %>

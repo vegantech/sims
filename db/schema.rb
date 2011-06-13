@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
 
   create_table "cico_school_days", :force => true do |t|
     t.integer  "cico_setting_id"
+    t.string   "status"
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -134,7 +135,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.integer  "cico_school_day_id"
     t.integer  "intervention_probe_assignment_id"
     t.integer  "score"
-    t.integer  "status"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

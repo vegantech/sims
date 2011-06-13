@@ -1,6 +1,6 @@
 <h1>Settings for CICO for <%=@cico_setting.probe_definition.title %> at <%=current_school %> </h1>
 
-<% form_for(@cico_setting) do |f| %>
+<% form_for(setup_cico_setting(@cico_setting)) do |f| %>
   <%= f.error_messages %>
 
     <%= f.hidden_field :probe_definition_id %>
@@ -20,10 +20,39 @@
     <%= f.label :default_goal %><br />
     <%= f.text_field :default_goal %>
   </p>
-  <p>
+  <p>3
     <%= f.label :days_to_collect %><br />
     <%= f.text_field :days_to_collect %>
+    </p>
+
+    <h2>Expectations </h2>
+    
+    <div>
+      <% f.fields_for(:cico_expectations) do |ff| %>
+  <p>
+    <%= ff.label :name %><br />
+    <%= ff.text_field :name %>
   </p>
+      <% end %>
+
+
+
+    </div>
+
+    <h2>Periods</h2>
+    <div>
+      <% f.fields_for(:cico_periods) do |ff| %>
+  <p>
+    <%= ff.label :name %><br />
+    <%= ff.text_field :name %>
+  </p>
+      <% end %>
+
+
+
+    </div>
+
+
   <p>
     <%= f.submit 'Update' %>
   </p>

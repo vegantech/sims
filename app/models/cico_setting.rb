@@ -11,6 +11,22 @@ class CicoSetting < ActiveRecord::Base
   belongs_to :school
   belongs_to :probe_definition
   belongs_to :default_participant, :class_name=>'User'
+  has_many :cico_periods
+  has_many :cico_expectations
+  has_many :cico_school_days do
+    def by_date_and_user(date, user)
+      (find_by_date(date) || build(:date => date)).setup_for_user_and_school_id(user,proxy_owner.school_id)
+    end
+
+  end
+
+
+
+  accepts_nested_attributes_for :cico_expectations,
+    :allow_destroy => true
+  accepts_nested_attributes_for :cico_periods,
+    :allow_destroy => true
+
   named_scope :enabled, :conditions => {:enabled => true}
 
   delegate :title, :to => :probe_definition

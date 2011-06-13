@@ -1,7 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :cico_school_days
-
-  map.resources :cico_settings
+  map.resources :cico_settings, :has_many => :cico_school_days
 
   map.resources :personal_groups
 

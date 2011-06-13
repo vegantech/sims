@@ -3,12 +3,9 @@ class CicoSchoolDaysController < ApplicationController
   # GET /cico_school_days.xml
   def index
     #use current date and render edit
-    @cico_school_days = CicoSchoolDay.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @cico_school_days }
-    end
+    params[:id]=Date.today.to_s
+    edit
+    render :action => 'edit'
   end
 
   # GET /cico_school_days/1
@@ -35,35 +32,33 @@ class CicoSchoolDaysController < ApplicationController
 
   # GET /cico_school_days/1/edit
   def edit
-    @cico_school_day = CicoSchoolDay.find(params[:id])
+    @cico_setting = current_school.cico_settings.find(params[:cico_setting_id])
+    @cico_school_day = @cico_setting.cico_school_days.by_date_and_user(params[:id], current_user)
+
+      @ipas=@cico_setting.intervention_probe_assignments(current_user)
+      @students = @ipas.collect(&:student)
+      @expectation_values = @cico_setting.expectation_values.collect{|e| [e,e]}
+
   end
 
   # POST /cico_school_days
   # POST /cico_school_days.xml
   def create
-    @cico_school_day = CicoSchoolDay.new(params[:cico_school_day])
-
-    respond_to do |format|
-      if @cico_school_day.save
-        flash[:notice] = 'CicoSchoolDay was successfully created.'
-        format.html { redirect_to(@cico_school_day) }
-        format.xml  { render :xml => @cico_school_day, :status => :created, :location => @cico_school_day }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @cico_school_day.errors, :status => :unprocessable_entity }
-      end
-    end
+    params[:id]=params[:cico_school_day][:date]
+    update
   end
 
   # PUT /cico_school_days/1
   # PUT /cico_school_days/1.xml
   def update
-    @cico_school_day = CicoSchoolDay.find(params[:id])
+    @cico_setting = current_school.cico_settings.find(params[:cico_setting_id])
+    @cico_school_day = @cico_setting.cico_school_days.find_by_date(params[:id]) || 
+      @cico_setting.cico_school_days.build(:date => params[:id])
 
     respond_to do |format|
       if @cico_school_day.update_attributes(params[:cico_school_day])
         flash[:notice] = 'CicoSchoolDay was successfully updated.'
-        format.html { redirect_to(@cico_school_day) }
+        format.html { redirect_to(:action => "edit") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

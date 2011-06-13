@@ -2,7 +2,7 @@
   <ul>
     <% cicos.each do |cico| %>
       <li>
-      <%=link_to h(cico.title), cico_url(:id=>cico.id) %>
+      <%=link_to h(cico.title), cico_setting_cico_school_days_url(cico.id) %>
 
       </li>
 
