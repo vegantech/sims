@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cico_student_day: 
+  cico_period: 
+  cico_expectation: 
+  score: 1
+  status: MyString
+
+two:
+  cico_student_day: 
+  cico_period: 
+  cico_expectation: 
+  score: 1
+  status: MyString

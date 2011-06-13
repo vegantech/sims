@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  school: 
+  probe_definition: 
+  enabled: false
+  default_participant: 
+  points_per_expectation: 1
+  default_goal: 1
+  days_to_collect: 
+
+two:
+  school: 
+  probe_definition: 
+  enabled: false
+  default_participant: 
+  points_per_expectation: 1
+  default_goal: 1
+  days_to_collect: 

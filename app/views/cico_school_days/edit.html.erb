@@ -1,0 +1,81 @@
+<% form_for [@cico_setting, @cico_school_day],
+  :url => cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.date), 
+  :html => {:method => 'put' } do  |f| %>
+Previous
+<%= f.unobtrusive_date_picker :date %>
+Next
+<br />
+School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status)) %>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% f.fields_for :cico_student_days do |ff| %>
+   <tr>
+    <th>
+      <%=ff.object.student %>
+      <%=ff.hidden_field(:intervention_probe_assignment_id) %>
+    </th>
+    <th>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status)) %>
+    </th>
+  </tr>
+ <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <th>Period</th>
+          <%@cico_setting.cico_expectations.each do |expectation| %>
+            <th>
+              <%=expectation%> 
+            </th>
+          <% end %>
+          <th>Total</th>
+        </tr>
+
+        <%#= ff.object.cico_period_expectations.size %>
+
+        <% grid = ff.object.cico_period_expectations.group_by {|e| [e.cico_period_id, e.cico_expectation_id]} %>
+        <%#=grid.size %>
+
+        <%@cico_setting.cico_periods.each do |period| %>
+          <tr>
+            <th><%=period%> </th>
+
+          <%@cico_setting.cico_periods.each do |expectation| %>
+            <td>
+                <% ff.fields_for :cico_period_expectations, Array(grid[[period.id, expectation.id]]).first do |fff| %> 
+                <%#=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
+                <%#=fff.select(:status, options_for_select(@expectation_values,fff)) %>
+            <% end %>
+              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
+            </th>
+          <% end %>
+          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+        </tr>
+        <% end %>
+
+        <tr>
+          <th>
+            Total
+          </th>
+          <%@cico_setting.cico_expectations.each do |expectation| %>
+            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+          <% end %>
+          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
+<% end %>
+
+</table>
+
+<%=submit_tag%>
+[Cancel Button]
+<% end %>

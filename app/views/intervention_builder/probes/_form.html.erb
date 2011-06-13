@@ -17,6 +17,15 @@
     <td width="15%"><%= form.label  :maximum_score %></td>
     <td width="35%"><%= form.text_field :maximum_score, 'size' => 5 %></td>
   </tr>
+
+ <tr>
+    <td width="15%"><%= form.label :cico, 'CICO'%></td>
+    <td colspan="3"><%= form.check_box :cico  %> <%=help_popup "Check if this progress monitor is for check-in check-out.  It uses
+      a special form for scoring.   It also has to be enabled per school by the school administrator." %>
+    </td>
+  </tr>
+  
+
   <tr>
     <% if form.object.school_id %>
     <td></td>

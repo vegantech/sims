@@ -13,7 +13,7 @@ School Status <%=select_tag(:schoolday_status, options_for_select(CicoTest::DAYS
     <th></th>
   </tr>
 
-  <%CicoTest::STUDENTS.each do |student| %>
+  <% @students.each do |student| %>
   <tr>
     <th>
       <%=student %>
@@ -42,7 +42,7 @@ School Status <%=select_tag(:schoolday_status, options_for_select(CicoTest::DAYS
 
           <%CicoTest::EXPECTATIONS.each do |expectation| %>
             <td>
-              <%=select_tag(:expectation_status, options_for_select(CicoTest::EXPECTATIONSTATUS.collect{|e| [e,e]}))%>
+              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
             </th>
           <% end %>
           <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>

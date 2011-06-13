@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cico_setting: 
+  status: 
+  date: 2011-06-12
+
+two:
+  cico_setting: 
+  status: 
+  date: 2011-06-12

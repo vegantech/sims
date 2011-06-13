@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cico_school_day: 
+  intervention_probe_assignment: 
+  score: 1
+  status: 1
+
+two:
+  cico_school_day: 
+  intervention_probe_assignment: 
+  score: 1
+  status: 1
