@@ -1,0 +1,7 @@
+<% f.fields_for(:cico_periods, cico_period,  :child_index => child_index(cico_period)) do |ff| %>
+  <p>
+    <%= ff.label :name %><br />
+    <%= ff.text_field :name %>
+  </p>
+<% end %>
+

@@ -1,0 +1,6 @@
+<% f.fields_for(:cico_expectations, cico_expectation, :child_index => child_index(cico_expectation)) do |ff| %>
+  <p>
+    <%= ff.label :name %><br />
+    <%= ff.text_field :name %>
+    </p>
+<% end %>
