@@ -1,7 +1,7 @@
 module CicoSettingsHelper
   def setup_cico_setting(cico_setting)
-    cico_setting.cico_expectations << CicoExpectation.new if cico_setting.cico_expectations.blank?
-    cico_setting.cico_periods << CicoPeriod.new if cico_setting.cico_periods.blank?
+  #  cico_setting.cico_expectations << CicoExpectation.new if cico_setting.cico_expectations.blank?
+  #  cico_setting.cico_periods << CicoPeriod.new if cico_setting.cico_periods.blank?
     cico_setting
   end
 
@@ -16,6 +16,13 @@ module CicoSettingsHelper
   end
 
 #MOVE these to application
+  def delete_nested_object_link(name, f)
+    (f.hidden_field "_delete") +
+    (link_to_function name, %{
+      nested_object_delete(this);
+    })
+  end
+
   def child_index(obj)
     (obj.new_record? ? (obj.errors.any? ? rand.to_s : "index_to_replace_with_js" ) : nil)
   end

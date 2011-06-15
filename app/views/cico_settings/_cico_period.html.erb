@@ -1,7 +1,8 @@
 <% f.fields_for(:cico_periods, cico_period,  :child_index => child_index(cico_period)) do |ff| %>
-  <p>
+  <div>
     <%= ff.label :name %><br />
     <%= ff.text_field :name %>
-  </p>
+    <%= delete_nested_object_link "Delete", ff %>
+  </div>
 <% end %>
 

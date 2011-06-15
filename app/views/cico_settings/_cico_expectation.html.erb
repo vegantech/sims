@@ -1,6 +1,7 @@
 <% f.fields_for(:cico_expectations, cico_expectation, :child_index => child_index(cico_expectation)) do |ff| %>
-  <p>
+<div>
     <%= ff.label :name %><br />
     <%= ff.text_field :name %>
-    </p>
+    <%= delete_nested_object_link "Delete", ff %>
+</div>
 <% end %>

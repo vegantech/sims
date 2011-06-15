@@ -14,6 +14,12 @@ function check_same_boxes(obj) {
 
 }
 
+function nested_object_delete(obj) {
+  obj.up().hide();
+  obj.previous().value=true;
+
+}
+
 function searchByIntervention() {
   document.getElementById('search_criteria_search_type_active_intervention').checked = true;
 }
