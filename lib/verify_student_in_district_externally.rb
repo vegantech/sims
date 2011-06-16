@@ -28,7 +28,7 @@ module VerifyStudentInDistrictExternally
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
    request = Net::HTTP::Post.new(uri.request_uri)
-#   request.basic_auth[offband, offband]
+   #request.basic_auth("xxx", "yyy")
    #   
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
