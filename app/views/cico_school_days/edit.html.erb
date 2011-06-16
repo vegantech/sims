@@ -1,9 +1,10 @@
 <% form_for [@cico_setting, @cico_school_day],
   :url => cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.date), 
   :html => {:method => 'put' } do  |f| %>
-Previous
+    <%= link_to "Previous", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.previous_date) %>
+    <%= f.object.pretty_date %>
 <%= f.unobtrusive_date_picker :date %>
-Next
+    <%= link_to "Next", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.next_date)  if @cico_school_day.next_date <= Date.today() %>
 <br />
 School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status)) %>
 
@@ -18,6 +19,7 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
     <th>
       <%=ff.object.student %>
       <%=ff.hidden_field(:intervention_probe_assignment_id) %>
+      <%=totals,counts = Hash.new(0),Hash.new(0)  %>
     </th>
     <th>
       <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status)) %>
@@ -50,11 +52,12 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
                 CicoPeriodExpectation.new(:cico_period=>period,:cico_expectation => expectation) do |fff| %> 
                  <%=fff.hidden_field :cico_period_id %>
                  <%= fff.hidden_field :cico_expectation_id %>
-                <%=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
+                 <%=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
+                 <%cico_add_to_total(totals,counts,fff.object) %>
             <% end %>
             </th>
           <% end %>
-          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+          <td><%=totals[period] %> <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
         </tr>
         <% end %>
 
@@ -63,9 +66,9 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
             Total
           </th>
           <%@cico_setting.cico_expectations.each do |expectation| %>
-            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+            <td><%=totals[expectation]%> <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
           <% end %>
-          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+          <td> <%=cico_total(totals,counts,@cico_setting) %>% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
 
         </tr>
       </table>

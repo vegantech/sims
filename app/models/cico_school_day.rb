@@ -19,4 +19,18 @@ class CicoSchoolDay < ActiveRecord::Base
     self
 
   end
+
+  def next_date
+    #TODO skip weekends or days not in setting
+    date.next
+  end
+
+  def pretty_date
+    date.strftime("%A")
+  end
+
+  def previous_date
+    #TODO skip weekends or days not in setting
+    (self.date - 1.day)
+  end
 end
