@@ -7,6 +7,29 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
+function update_cico_totals() {
+
+  $$('#cico_form  table.student_day').each(function(student_day){
+    count=0;
+    total=0;
+      student_day.select(".period_expectation_value select").each(function(score){
+        score_value=score.options[score.selectedIndex].value
+        v=parseInt(score_value)
+        if (score_value == 'No Data') {v=0};
+        if (v>=0) {
+          count=count+1;
+          total=total+v;
+          }
+
+        });
+      percent = 100*(total/(count * parseInt($('cico_max_score').value)) )
+      if (percent > 100) {percent = 0};
+      student_day.down(".student_day_total span.total_value").innerHTML=percent + "%";
+
+      });
+}
+
+
 function check_same_boxes(obj) {
   $$('.'+obj.className).each(function(s){
       s.checked=obj.checked;
