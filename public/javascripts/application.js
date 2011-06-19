@@ -52,8 +52,7 @@ function student_row_change(student_row) {
   obs.invoke('enable');
   };
 
-
-
+  update_cico_totals();
 
 }
 
@@ -99,7 +98,7 @@ function update_cico_totals() {
           }
 
         });
-      percent = 100*(total/(count * parseInt($('cico_max_score').value)) )
+      percent = Math.round(100*(100*(total/(count * parseInt($('cico_max_score').value)) )),2)/100;
       if (isNaN(percent)) {percent = ''}
       else {percent = percent + '%'};
       student_day.down(".student_day_total span.total_value").innerHTML=percent;

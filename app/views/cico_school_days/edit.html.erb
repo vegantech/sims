@@ -18,13 +18,14 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
   <% f.fields_for :cico_student_days do |ff| %>
    <tr>
-    <th>
+     <th>
+       <%disabled = (f.object.status != 'In School') %>
       <%=ff.object.student %>
       <%=ff.hidden_field(:intervention_probe_assignment_id) %>
       <%=totals,counts = Hash.new(0),Hash.new(0)  %>
     </th>
     <th>
-      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:onchange=>"student_day_change(this);"}) %>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:disabled => disabled, :onchange=>"student_day_change(this);"}) %>
     </th>
   </tr>
  <tr>
@@ -49,6 +50,7 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
             <%@cico_setting.cico_expectations.each_with_index do |expectation,index| %>
               <%disabled = index.zero? ? []: ['No Data','Absent', 'School Out'] %>
+              <%disabled_select = (ff.object.status != 'Present') %>
             <td class="period_expectation_value">
               <% ff.fields_for :cico_period_expectations, 
                 ff.object.cico_period_expectations.find_by_cico_period_id_and_cico_expectation_id(period.id, expectation.id) ||
@@ -59,7 +61,7 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
                                                            :selected=>fff.object.status,
                                                            :disabled => disabled
 
-                                                ),{},{:onchange=>"student_row_change(this);"}) %>
+                                                          ),{},{:disabled=>disabled_select, :onchange=>"student_row_change(this);"}) %>
                  <%cico_add_to_total(totals,counts,fff.object) %>
             <% end %>
             </th>
