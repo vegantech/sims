@@ -25,7 +25,7 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
       <%=totals,counts = Hash.new(0),Hash.new(0)  %>
     </th>
     <th>
-      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:disabled => disabled, :onchange=>"student_day_change(this);"}) %>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:disabled => disabled, :onchange=>"student_day_change(this);", :class=>'student_day'}) %>
     </th>
   </tr>
  <tr>
@@ -44,12 +44,12 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
         <%#= ff.object.cico_period_expectations.size %>
 
-        <%@cico_setting.cico_periods.each do |period| %>
+        <%@cico_setting.cico_periods.each_with_index do |period,pindex| %>
           <tr>
             <th><%=period%> </th>
 
-            <%@cico_setting.cico_expectations.each_with_index do |expectation,index| %>
-              <%disabled = index.zero? ? []: ['No Data','Absent', 'School Out'] %>
+            <%@cico_setting.cico_expectations.each_with_index do |expectation,eindex| %>
+              <%disabled = eindex.zero? ? []: ['No Data','Absent', 'School Out'] %>
               <%disabled_select = (ff.object.status != 'Present') %>
             <td class="period_expectation_value">
               <% ff.fields_for :cico_period_expectations, 
@@ -61,12 +61,13 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
                                                            :selected=>fff.object.status,
                                                            :disabled => disabled
 
-                                                          ),{},{:disabled=>disabled_select, :onchange=>"student_row_change(this);"}) %>
+                                                          ),{},{:disabled=>disabled_select, :onchange=>"student_row_change(this);",
+                                                            :class => "cico_grid_#{pindex}_#{eindex}"}) %>
                  <%cico_add_to_total(totals,counts,fff.object) %>
             <% end %>
             </th>
           <% end %>
-          <td class="period_total"><%=totals[period] %> <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+          <td class="period_total period_<%=pindex%>"><%=totals[period] %> <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
         </tr>
         <% end %>
 
@@ -74,11 +75,11 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
           <th>
             Total
           </th>
-          <%@cico_setting.cico_expectations.each do |expectation| %>
-            <td class="expectation_total"><%=totals[expectation]%> <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+          <%@cico_setting.cico_expectations.each_with_index do |expectation, ei| %>
+            <td class="expectation_total expectation_<%=ei%>"><%=totals[expectation]%> <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
           <% end %>
           <td class="student_day_total"><span class="total_value"> <%=cico_total(totals,counts,@cico_setting) %>% </span>
-            <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+            </td>
 
         </tr>
       </table>
