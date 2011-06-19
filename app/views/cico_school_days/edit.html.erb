@@ -6,7 +6,7 @@
 <%= f.unobtrusive_date_picker :date %>
     <%= link_to "Next", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.next_date)  if @cico_school_day.next_date <= Date.today() %>
 <br />
-School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status)) %>
+School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status),{},{:onchange=>"school_day_change();"}) %>
 
 <%=hidden_field_tag :cico_max_score,  @cico_setting.points_per_expectation %>
 
@@ -24,7 +24,7 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
       <%=totals,counts = Hash.new(0),Hash.new(0)  %>
     </th>
     <th>
-      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status)) %>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:onchange=>"student_day_change(this);"}) %>
     </th>
   </tr>
  <tr>
@@ -47,14 +47,19 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
           <tr>
             <th><%=period%> </th>
 
-          <%@cico_setting.cico_expectations.each do |expectation| %>
+            <%@cico_setting.cico_expectations.each_with_index do |expectation,index| %>
+              <%disabled = index.zero? ? []: ['No Data','Absent', 'School Out'] %>
             <td class="period_expectation_value">
               <% ff.fields_for :cico_period_expectations, 
                 ff.object.cico_period_expectations.find_by_cico_period_id_and_cico_expectation_id(period.id, expectation.id) ||
                 CicoPeriodExpectation.new(:cico_period=>period,:cico_expectation => expectation) do |fff| %> 
                  <%=fff.hidden_field :cico_period_id %>
                  <%= fff.hidden_field :cico_expectation_id %>
-                 <%=fff.select(:status, options_for_select(@expectation_values,fff.object.status),{},{:onchange=>"update_cico_totals();"}) %>
+                 <%=fff.select(:status, options_for_select(@expectation_values,
+                                                           :selected=>fff.object.status,
+                                                           :disabled => disabled
+
+                                                ),{},{:onchange=>"student_row_change(this);"}) %>
                  <%cico_add_to_total(totals,counts,fff.object) %>
             <% end %>
             </th>
