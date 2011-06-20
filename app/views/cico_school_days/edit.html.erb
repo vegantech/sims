@@ -1,11 +1,19 @@
+
+
+<% form_tag(cico_setting_cico_school_days_url(@cico_setting.id), :method => 'post') do   %>
+    <%= link_to "Previous", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.previous_date) %>
+    <%= @cico_school_day.pretty_date %>
+    <%= hidden_field_tag :date_change %>
+    <%= unobtrusive_date_text_picker_tag :date, @cico_school_day.date,{},{:onchange=>'form.submit();'} %>
+    <%=submit_tag :go %>
+    <%= link_to "Next", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.next_date)  if @cico_school_day.next_date <= Date.today() %>
+    <br />
+  <% end %>
+
+
 <% form_for [@cico_setting, @cico_school_day],
   :url => cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.date), 
   :html => {:method => 'put' } do  |f| %>
-    <%= link_to "Previous", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.previous_date) %>
-    <%= f.object.pretty_date %>
-<%= f.unobtrusive_date_picker :date %>
-    <%= link_to "Next", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.next_date)  if @cico_school_day.next_date <= Date.today() %>
-<br />
 School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status),{},{:onchange=>"school_day_change();"}) %>
 
 <%=hidden_field_tag :cico_max_score,  @cico_setting.points_per_expectation %>
