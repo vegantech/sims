@@ -11,27 +11,6 @@ class CicoSettingsController < ApplicationController
     end
   end
 
-  # GET /cico_settings/1
-  # GET /cico_settings/1.xml
-  def show
-    @cico_setting = CicoSetting.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @cico_setting }
-    end
-  end
-
-  # GET /cico_settings/new
-  # GET /cico_settings/new.xml
-  def new
-    @cico_setting = CicoSetting.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @cico_setting }
-    end
-  end
 
   # GET /cico_settings/1/edit
   def edit
@@ -64,15 +43,4 @@ class CicoSettingsController < ApplicationController
     end
   end
 
-  # DELETE /cico_settings/1
-  # DELETE /cico_settings/1.xml
-  def destroy
-    @cico_setting = CicoSetting.find(params[:id])
-    @cico_setting.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(cico_settings_url) }
-      format.xml  { head :ok }
-    end
-  end
 end

@@ -1,13 +1,24 @@
+
+
+<% form_tag(cico_setting_cico_school_days_url(@cico_setting.id), :method => 'post') do   %>
+    <%= link_to "Previous", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.previous_date) %>
+    <%= @cico_school_day.pretty_date %>
+    <%= hidden_field_tag :date_change %>
+    <%= unobtrusive_date_text_picker_tag :date, @cico_school_day.date,{},{:onchange=>'form.submit();'} %>
+    <%=submit_tag :go %>
+    <%= link_to "Next", edit_cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.next_date)  if @cico_school_day.next_date <= Date.today() %>
+    <br />
+  <% end %>
+
+
 <% form_for [@cico_setting, @cico_school_day],
   :url => cico_setting_cico_school_day_url(@cico_setting.id, @cico_school_day.date), 
   :html => {:method => 'put' } do  |f| %>
-Previous
-<%= f.unobtrusive_date_picker :date %>
-Next
-<br />
-School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status)) %>
+School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]}, f.object.status),{},{:onchange=>"school_day_change();"}) %>
 
-<table>
+<%=hidden_field_tag :cico_max_score,  @cico_setting.points_per_expectation %>
+
+<table id="cico_form">
   <tr>
     <th></th>
     <th></th>
@@ -15,18 +26,20 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
   <% f.fields_for :cico_student_days do |ff| %>
    <tr>
-    <th>
+     <th>
+       <%disabled = (f.object.status != 'In School') %>
       <%=ff.object.student %>
       <%=ff.hidden_field(:intervention_probe_assignment_id) %>
+      <%=totals,counts = Hash.new(0),Hash.new(0)  %>
     </th>
     <th>
-      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status)) %>
+      <%=ff.select(:status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]},ff.object.status),{},{:disabled => disabled, :onchange=>"student_day_change(this);", :class=>'student_day'}) %>
     </th>
   </tr>
  <tr>
     <td></td>
     <td>
-      <table>
+      <table class="student_day">
         <tr>
           <th>Period</th>
           <%@cico_setting.cico_expectations.each do |expectation| %>
@@ -39,23 +52,30 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
 
         <%#= ff.object.cico_period_expectations.size %>
 
-        <% grid = ff.object.cico_period_expectations.group_by {|e| [e.cico_period_id, e.cico_expectation_id]} %>
-        <%#=grid.size %>
-
-        <%@cico_setting.cico_periods.each do |period| %>
+        <%@cico_setting.cico_periods.each_with_index do |period,pindex| %>
           <tr>
             <th><%=period%> </th>
 
-          <%@cico_setting.cico_periods.each do |expectation| %>
-            <td>
-                <% ff.fields_for :cico_period_expectations, Array(grid[[period.id, expectation.id]]).first do |fff| %> 
-                <%#=fff.select(:status, options_for_select(@expectation_values,fff.object.status)) %>
-                <%#=fff.select(:status, options_for_select(@expectation_values,fff)) %>
+            <%@cico_setting.cico_expectations.each_with_index do |expectation,eindex| %>
+              <%disabled = eindex.zero? ? []: ['No Data','Absent', 'School Out'] %>
+              <%disabled_select = (ff.object.status != 'Present') %>
+            <td class="period_expectation_value">
+              <% ff.fields_for :cico_period_expectations, 
+                ff.object.cico_period_expectations.find_by_cico_period_id_and_cico_expectation_id(period.id, expectation.id) ||
+                CicoPeriodExpectation.new(:cico_period=>period,:cico_expectation => expectation) do |fff| %> 
+                 <%=fff.hidden_field :cico_period_id %>
+                 <%= fff.hidden_field :cico_expectation_id %>
+                 <%=fff.select(:status, options_for_select(@expectation_values,
+                                                           :selected=>fff.object.status,
+                                                           :disabled => disabled
+
+                                                          ),{},{:disabled=>disabled_select, :onchange=>"student_row_change(this);",
+                                                            :class => "cico_grid_#{pindex}_#{eindex}"}) %>
+                 <%cico_add_to_total(totals,counts,fff.object) %>
             <% end %>
-              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
             </th>
           <% end %>
-          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+          <td class="period_total period_<%=pindex%>"><%=totals[period] %> <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
         </tr>
         <% end %>
 
@@ -63,10 +83,11 @@ School Status <%=f.select(:status, options_for_select(CicoTest::DAYSTATUS.collec
           <th>
             Total
           </th>
-          <%@cico_setting.cico_expectations.each do |expectation| %>
-            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+          <%@cico_setting.cico_expectations.each_with_index do |expectation, ei| %>
+            <td class="expectation_total expectation_<%=ei%>"><%=totals[expectation]%> <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
           <% end %>
-          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+          <td class="student_day_total"><span class="total_value"> <%=cico_total(totals,counts,@cico_setting) %>% </span>
+            </td>
 
         </tr>
       </table>

@@ -20,37 +20,23 @@
     <%= f.label :default_goal %><br />
     <%= f.text_field :default_goal %>
   </p>
-  <p>3
+  <p>
     <%= f.label :days_to_collect %><br />
     <%= f.text_field :days_to_collect %>
     </p>
 
     <h2>Expectations </h2>
     
-    <div>
-      <% f.fields_for(:cico_expectations) do |ff| %>
-  <p>
-    <%= ff.label :name %><br />
-    <%= ff.text_field :name %>
-  </p>
-      <% end %>
-
-
-
+    <div id="cico_expectations">
+      <%= render :partial => 'cico_expectation', :locals => {:f => f}, :collection => f.object.cico_expectations %>
     </div>
+      <%= add_cico_expectation_link(f) %>
 
     <h2>Periods</h2>
-    <div>
-      <% f.fields_for(:cico_periods) do |ff| %>
-  <p>
-    <%= ff.label :name %><br />
-    <%= ff.text_field :name %>
-  </p>
-      <% end %>
-
-
-
+    <div id = "cico_periods">
+      <%= render :partial => 'cico_period', :locals => {:f => f}, :collection => f.object.cico_periods %>
     </div>
+      <%= add_cico_period_link(f) %>
 
 
   <p>

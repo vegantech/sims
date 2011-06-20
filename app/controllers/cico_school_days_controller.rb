@@ -44,6 +44,13 @@ class CicoSchoolDaysController < ApplicationController
   # POST /cico_school_days
   # POST /cico_school_days.xml
   def create
+    if params[:date_change]
+      d=params[:date]
+      params[:id]=Date.parse(d)
+      edit
+      render :action => 'edit' and return
+
+    end
     params[:id]=params[:cico_school_day][:date]
     update
   end
@@ -52,7 +59,7 @@ class CicoSchoolDaysController < ApplicationController
   # PUT /cico_school_days/1.xml
   def update
     @cico_setting = current_school.cico_settings.find(params[:cico_setting_id])
-    @cico_school_day = @cico_setting.cico_school_days.find_by_date(params[:id]) || 
+    @cico_school_day = @cico_setting.cico_school_days.find_by_date(params[:id]) ||
       @cico_setting.cico_school_days.build(:date => params[:id])
 
     respond_to do |format|

@@ -32,8 +32,7 @@ class CicoSetting < ActiveRecord::Base
   delegate :title, :to => :probe_definition
 
   def expectation_values
-    (0..points_per_expectation).to_a | EXPECTATIONSTATUS[-3..-1]
-
+    ((0..points_per_expectation).to_a | EXPECTATIONSTATUS[-3..-1]).collect(&:to_s)
   end
   def to_param
     probe_definition_id.to_s
