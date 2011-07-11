@@ -20,9 +20,8 @@ module VerifyStudentInDistrictExternally
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 
-
-   uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
-   #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/lookup")
+   #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
+   uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/lookup")
    http=Net::HTTP.new(uri.host, uri.port)
    http.use_ssl=true
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -32,10 +31,12 @@ module VerifyStudentInDistrictExternally
    #   
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
+   request["Auth-token"]= "TOKEN"
    #set timeout here
    response=http.request(request)
    #throw if timeout
    parsed_response=Nokogiri.parse(response.body)
+   @@response=response
 
    if parsed_response.css('error').first.content == "false"
      return parsed_response.css('found').first.content == "true"
