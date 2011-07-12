@@ -7,19 +7,6 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
-function verify_fidelity(sld) {
-  if(sld == true) {
-    rec_mins = parseInt($('rec_mins_per_week').innerHTML);
-    mins=parseInt(givem_mins = $('intervention_mins_per_week').value);
-    if (rec_mins * 0.80 > mins ) {
-      $('sld_fidelity_notice').show();}
-    else {
-      $('sld_fidelity_notice').hide();}
-
-  }
-
-}
-
 
 function check_same_boxes(obj) {
   $$('.'+obj.className).each(function(s){
@@ -219,4 +206,20 @@ function new_probe_scores() {
 
 
 }
+
+
+function verify_fidelity(sld) {
+  if(sld == true) {
+    rec_mins = parseInt($('rec_mins_per_week').innerHTML);
+    mins=parseInt(givem_mins = $('intervention_mins_per_week').value);
+    if (rec_mins * 0.80 > mins ) {
+      $('sld_fidelity_notice').show();}
+    else {
+      $('sld_fidelity_notice').hide();}
+
+  }
+
+}
+
+
 
