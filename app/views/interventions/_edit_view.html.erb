@@ -54,11 +54,14 @@
 
     <br />
     <%= radio_button_tag('fidelity', true,false, 
-                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
+                         {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;",
+                           :disabled => !(@intervention.verify_fidelity?) 
+    }
                         ) %>
       <label for="fidelity_true">Yes</label><br />
-      <%= radio_button_tag('fidelity', false,false, 
-                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
+      <%= radio_button_tag('fidelity', false,!(@intervention.verify_fidelity?), 
+                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;", 
+      }
                           ) %>
       <label for="fidelity_false">No</label><br />
       <br />    
@@ -69,7 +72,7 @@
                           ) %>
       <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
     <% end %>
-  <%=hidden_field_tag 'end_check', 0 %>
+  <%=hidden_field_tag 'end_check', @intervention.verify_fidelity? ? 0 : 1  %>
     <%= submit_tag 'End Intervention', :confirm=>"Are you sure you want to end this intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>
 
 

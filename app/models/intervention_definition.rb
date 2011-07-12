@@ -173,6 +173,7 @@ class InterventionDefinition < ActiveRecord::Base
       self.time_length_num = int.time_length_number
       self.frequency = int.frequency
       self.frequency_multiplier = int.frequency_multiplier
+      self.mins_per_week = int.mins_per_week
     end
   end
 
