@@ -178,6 +178,7 @@ class Intervention < ActiveRecord::Base
       self.frequency_multiplier ||= intervention_definition.frequency_multiplier
       self.time_length ||= intervention_definition.time_length
       self.time_length_number ||= intervention_definition.time_length_num
+      self.mins_per_week = intervention_definition.mins_per_week if self.mins_per_week.zero?
     end
   end
 
@@ -212,6 +213,10 @@ class Intervention < ActiveRecord::Base
 
     find(:all).select(&:orphaned?)
 
+  end
+
+  def verify_fidelity?
+    !sld? || (mins_per_week >= 0.8 * intervention_definition.mins_per_week)
   end
   
   protected
