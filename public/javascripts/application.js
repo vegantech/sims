@@ -179,7 +179,14 @@ function new_probe_scores() {
   var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
   var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
   var goal=$('intervention_intervention_probe_assignment_goal').getValue();
+
+  var first2=$('intervention[intervention_probe_assignment]_first_date-mm');
+  var first3=$('intervention[intervention_probe_assignment]_first_date-dd');
+  var first1=$('intervention[intervention_probe_assignment]_first_date');
   
+  var last2=$('intervention[intervention_probe_assignment]_end_date-mm');
+  var last3=$('intervention[intervention_probe_assignment]_end_date-dd');
+  var last1=$('intervention[intervention_probe_assignment]_end_date');
 
   var s="";
 
@@ -200,6 +207,14 @@ function new_probe_scores() {
 
   }
     s=s + 'goal='+goal + '&' ;
+
+    s= s + 'first_date(1i)='+first1.getValue() + '&';
+    s= s + 'first_date(2i)='+first2.getValue() + '&';
+    s= s + 'first_date(3i)='+first3.getValue() + '&';
+
+    s= s + 'end_date(1i)='+last1.getValue() + '&';
+    s= s + 'end_date(2i)='+last2.getValue() + '&';
+    s= s + 'end_date(3i)='+last3.getValue() + '&';
 
   return s;
 
