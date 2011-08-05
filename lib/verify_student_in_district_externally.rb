@@ -2,9 +2,14 @@ module VerifyStudentInDistrictExternally
   require 'net/https'
   require 'uri'
   require 'nokogiri'
+  require 'timeout'
+
+  class StudentVerificationError < StandardError; end
+
+
 
   def self.verify(student,district)
-    if true 
+    if true
       verify_at_dpi(student,district)
     else
       raise "Unsupported"
@@ -16,7 +21,7 @@ module VerifyStudentInDistrictExternally
 #false return false
 #error throw exception
 
-  def self.verify_at_dpi(student,district)
+  def self.verify_at_dpi(student,district,msg)
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 
@@ -28,12 +33,25 @@ module VerifyStudentInDistrictExternally
 
    request = Net::HTTP::Post.new(uri.request_uri)
    #request.basic_auth("xxx", "yyy")
-   #   
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
    request["Auth-token"]= "TOKEN"
    #set timeout here
-   response=http.request(request)
+   retries =2
+   begin
+     timeout(5) do
+     response=http.request(request)
+   end
+   rescue TimeoutError
+     if retries >0
+       retries -=1
+       retry
+     else
+       throw '
+       puts 'Connection timeout'
+     end
+   end
+
    #throw if timeout
    parsed_response=Nokogiri.parse(response.body)
    @@response=response
@@ -48,10 +66,6 @@ module VerifyStudentInDistrictExternally
    #check for error and error string
    #if error throw error string
    #return found
-
-
-
-
   end
 
 
