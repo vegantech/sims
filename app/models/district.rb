@@ -38,6 +38,7 @@ class District < ActiveRecord::Base
   has_many :recommended_monitors, :through => :probe_definitions
   has_many :tiers, :order => 'position', :dependent => :delete_all
   has_many :schools, :order => :name
+  has_many :enrollments, :through => :schools
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
