@@ -86,7 +86,7 @@ class District::StudentsController < ApplicationController
         if  @student.district
           page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
         else
-          page.alert('Follow the link if you want to claim this student for your district')
+          page.alert('Follow the link if you want to try to claim this student for your district')
           page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
         end
       end
@@ -94,13 +94,12 @@ class District::StudentsController < ApplicationController
   end
 
   def claim
-    @student = Student.find_by_district_id_and_id(nil,params[:id])
-     if @student
-       @student.update_attribute(:district_id, current_district.id)
-       flash[:notice] = 'Student is now in your district, remove them if you want to undo'
+    @student = Student.find(params[:id])
+     res,msg= current_district.claim(@student)
+       flash[:notice] = msg
+     if res
        redirect_to edit_district_student_url(@student)
      else
-       flash[:notice] = 'Student could not be claimed'
        redirect_to :back 
      end
   end
