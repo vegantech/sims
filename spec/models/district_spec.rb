@@ -109,14 +109,39 @@ describe District do
 
       @local_district.previous_key.should == 'dog'
 
-      
-      
-      
-
-      
-      
-
     end
 
   end
+
+
+
+  describe 'claim student' do
+    it 'should not call external verification if it is not setup' do
+      district=District.new
+      VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(false)
+      VerifyStudentInDistrictExternally.should_not_receive(:verify)
+      district.claim(Student.new)
+    end
+
+    it 'should call external verification if it is setup' do
+      district=District.new
+      VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(true)
+      VerifyStudentInDistrictExternally.should_receive(:verify)
+      district.claim(Student.new)
+    end
+
+    #initially I just want to try to claim the student if STUDENT_LOCATION_VERIFICATION_URL is defined
+    it 'should have specs'
+
+    it 'should' do
+     puts %q{check hash
+      2. if districtless check historical enrollments, if last district was current district allow reclaimaing
+       3.check dpi location verification}
+    end
+
+
+
+
+  end
+
 end

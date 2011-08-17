@@ -203,6 +203,29 @@ class District < ActiveRecord::Base
   end
 
 
+  def claim(student)
+    res=false
+    msg = nil
+    if VerifyStudentInDistrictExternally.enabled?
+      begin
+        res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
+      rescue StudentVerificationError => e
+        logger.info "Student verification error e.inspect"
+        msg='Error verifiying student location'
+      end
+    else
+      res = student.district.blank?
+    end
+
+    if res
+      student.update_attribute(:district_id,id)
+      msg= 'Student is now in your district'
+    else
+      msg ||= 'Student could not be claimed, student may belong to another district'
+    end
+    return res,msg
+  end
+
 private
 
   def make_sure_there_are_no_schools

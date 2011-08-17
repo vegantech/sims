@@ -58,6 +58,6 @@ Feature: Student Maintenance
     Then I should see an alert
     And I should see "Claim First Last for your district"
     When I magically visit "Claim First Last for your district"
-    Then I should see "Student is now in your district, remove them if you want to undo"
+    Then I should see "Student is now in your district"
     And I should see "1234"
 

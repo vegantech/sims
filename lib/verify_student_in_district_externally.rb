@@ -1,32 +1,55 @@
-module VerifyStudentInDistrictExternally
+
+class StudentVerificationError < StandardError; end
+class VerifyStudentInDistrictExternally
   require 'net/https'
   require 'uri'
   require 'nokogiri'
   require 'timeout'
+  require 'yaml'
 
-  class StudentVerificationError < StandardError; end
+
+
+
+
+  def self.enabled?
+    if defined?@@enabled
+      @@enabled
+    else
+      setup
+    end
+  end
+
+  def self.setup
+    file = File.join(Rails.root,"config","external_student_location_verify.yml")
+    if File.exist?(file)
+      @@config = YAML::load_file(file)
+    else
+      @@enabled = false
+    end
+  end
 
 
 
   def self.verify(student,district)
-    if true
-      verify_at_dpi(student,district)
+    if enabled?
+      verify_externally(student,district)
     else
-      raise "Unsupported"
+      raise StudentVerificationError, 'External Verification is not enabled'
     end
 
   end
 
 #true return true
 #false return false
-#error throw exception
+#error raise exception
 
-  def self.verify_at_dpi(student,district,msg)
+  def self.verify_externally(student,district)
+
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 
    #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
-   uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/lookup")
+   uri = URI.parse(@@config['url'])
    http=Net::HTTP.new(uri.host, uri.port)
    http.use_ssl=true
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -35,38 +58,32 @@ module VerifyStudentInDistrictExternally
    #request.basic_auth("xxx", "yyy")
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
-   request["Auth-token"]= "TOKEN"
+   request["Auth-token"]= @@config['token']
    #set timeout here
    retries =2
    begin
      timeout(5) do
-     response=http.request(request)
+     @@response=http.request(request)
    end
    rescue TimeoutError
      if retries >0
        retries -=1
        retry
      else
-       throw '
+       raise StudentVerificationError, 'Connection Timeout'
        puts 'Connection timeout'
      end
+   rescue Exception => err 
+     raise StudentVerificationError, 'Connection Timeout'
    end
 
-   #throw if timeout
-   parsed_response=Nokogiri.parse(response.body)
-   @@response=response
+   #raise if timeout
+   parsed_response=Nokogiri.parse(@@response.body)
 
    if parsed_response.css('error').first.content == "false"
      return parsed_response.css('found').first.content == "true"
    else
-     #throw parsed_response.css('errorString').first.content
+     raise StudentVerificationError, parsed_response.css('errorString').first.content
    end
-
-   #timeout
-   #check for error and error string
-   #if error throw error string
-   #return found
   end
-
-
 end
