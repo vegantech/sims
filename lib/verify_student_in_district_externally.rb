@@ -59,6 +59,8 @@ class VerifyStudentInDistrictExternally
    request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
    request["Accept"]="text/xml"
    request["Auth-token"]= @@config['token']
+   request["Cookie"] = Rails.cache.read "ext_verify_cookie"
+
    #set timeout here
    retries =2
    begin
@@ -78,6 +80,7 @@ class VerifyStudentInDistrictExternally
    end
 
    #raise if timeout
+   Rails.cache.write("ext_verify_cookie", @@response.response['set-cookie'], :ttl=>25.minutes.to_i)
    parsed_response=Nokogiri.parse(@@response.body)
 
    if parsed_response.css('error').first.content == "false"
