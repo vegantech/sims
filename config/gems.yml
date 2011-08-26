@@ -14,4 +14,3 @@
 - :name: capistrano-ext
 - :name: rails
   :version: 2.3.3
-  :name: newrelic_rpm
