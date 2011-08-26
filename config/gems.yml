@@ -14,4 +14,4 @@
 - :name: rails
   :version: 2.3.3
   :name: nokogiri
-  :version: ">= 1.4.0"
+  :version: "= 1.4.4"
