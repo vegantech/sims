@@ -8,10 +8,10 @@
   :version: ">= 1.0.0"
 - :name: system_timer
 - :name: googlecharts
-- :name: newrelic_rpm
+- :name: nokogiri
+  :version: = 1.4.4
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails
   :version: 2.3.3
-  :name: nokogiri
-  :version: "= 1.4.4"
+  :name: newrelic_rpm
