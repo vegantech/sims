@@ -40,7 +40,7 @@ class StudentsController < ApplicationController
       session[:selected_student] = session[:selected_students].first
       redirect_to student_url(session[:selected_student]) and return
     else
-      flash[:notice] = 'Unauthorized Student selected'
+      flash[:notice] = 'Unauthorized Student selected, try searching again'
     end
     session[:selected_students]= nil
     session[:selected_student]= nil
