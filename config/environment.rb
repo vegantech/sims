@@ -106,7 +106,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
-  config.active_record.observers = :principal_override_observer , :recommendation_observer
+  config.active_record.observers = :principal_override_observer , :recommendation_observer, :student_observer, :enrollment_observer
   config.action_mailer.delivery_method = :railmail
 
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )

@@ -4,7 +4,7 @@ class HistoricalEnrollment < ActiveRecord::Base
   belongs_to :school
 
   #add indexes
-  #when student is assigned a district, district_id and start_date should be set
+  #when student is assigned a district, district_id and start_date should be set [happens on import or create]
   #when student leaves district, end_date should be set
 
 

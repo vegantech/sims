@@ -46,6 +46,7 @@ class District < ActiveRecord::Base
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
+  has_many :historical_enrollments
 
 
   has_attached_file  :logo

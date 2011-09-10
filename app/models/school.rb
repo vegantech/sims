@@ -28,6 +28,7 @@ class School < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
+  has_many :historical_enrollments
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"

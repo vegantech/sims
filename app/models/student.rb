@@ -47,6 +47,7 @@ class Student < ActiveRecord::Base
   has_many :ext_adult_contacts, :order => "guardian desc", :dependent => :delete_all
   has_many :ext_test_scores, :order => "date", :dependent => :delete_all
   has_one :ext_summary, :dependent => :delete
+  has_many :historical_enrollments
   has_and_belongs_to_many :personal_groups
 
 
