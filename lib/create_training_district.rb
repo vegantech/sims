@@ -609,5 +609,30 @@ class CreateTrainingDistrict
   
   end
 
- 
+
+  def setup_sci_demo_content(district)   #cico
+    d=district
+    pd=d.probe_definitions.create!(:title => 'SCI', :description => 'Student Check-In', :cico => true, :minimum_score => 0, :maximum_score => 100)
+    ic= d.intervention_clusters.find{|ic| ic.title == 'Behavior Management'}
+    id=ic.intervention_definitions.build(:title => 'SCI', :description => 'Student Check-In', :tier => d.tiers[1], :frequency=>Frequency.first,:time_length =>TimeLength.first )
+    id.probe_definitions << pd
+    id.save!
+
+
+    d.schools.each do |sch|
+      cico_setting = sch.cico_settings.create!(:enabled => true, :probe_definition => pd)
+      cico_setting.cico_expectations.create!(:name => 'Respect')
+      cico_setting.cico_expectations.create!(:name => 'Attendance')
+      cico_setting.cico_expectations.create!(:name => 'Participation')
+      1.upto(5){|p| cico_setting.cico_periods.create!(:name => "Period #{p}")}
+    end
+
+    #setup interventions  with start dates in the past
+    #assign content for previous week
+
+
+
+
+  end
+
 end
