@@ -424,6 +424,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
     self.roles_mask = Role.roles_to_mask(roles)
   end
 
+
   def roles
     @roles ||= Role.mask_to_roles(roles_mask)
   end
@@ -480,6 +481,7 @@ or (user_group_assignments.id is not null)
 
 
   def self.find_by_fullname(fullname)
+    #this fails if the middle name is excluded from the search
     find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
 
