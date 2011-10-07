@@ -5,7 +5,7 @@ describe CicoPeriod do
     @valid_attributes = {
       :name => "value for name",
       :position => 1,
-      :cico_setting => 
+      :cico_setting => CicoSetting.new
     }
   end
 
