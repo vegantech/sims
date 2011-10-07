@@ -424,6 +424,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
     self.roles_mask = Role.roles_to_mask(roles)
   end
 
+
   def roles
     @roles ||= Role.mask_to_roles(roles_mask)
   end
