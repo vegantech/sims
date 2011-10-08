@@ -3,9 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe CicoPeriodExpectation do
   before(:each) do
     @valid_attributes = {
-      :cico_student_day => ,
-      :cico_period => ,
-      :cico_expectation => ,
+      :cico_student_day => CicoStudentDay.new,
+      :cico_period => CicoPeriod.new,
+      :cico_expectation => CicoExpectation.new,
       :score => 1,
       :status => "value for status"
     }

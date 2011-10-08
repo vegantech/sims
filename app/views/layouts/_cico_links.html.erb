@@ -1,4 +1,5 @@
-<% if current_school && cicos=current_school.cico_settings.where_participant(current_user) %>
+<% if current_school && cicos=current_school.cico_settings.where_participant(current_user) && cicos.present? %>
+  <li>Student Check-In</li>
   <ul>
     <% cicos.each do |cico| %>
       <li>

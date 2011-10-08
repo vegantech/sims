@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CicoSetting do
   before(:each) do
+=begin    
     @valid_attributes = {
       :school => ,
       :probe_definition => ,
@@ -11,6 +12,8 @@ describe CicoSetting do
       :default_goal => 1,
       :days_to_collect => 
     }
+=end
+  @valid_attributes = {}
   end
 
   it "should create a new instance given valid attributes" do

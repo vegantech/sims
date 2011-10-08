@@ -5,7 +5,4 @@ class CicoTest
   DAYSTATUS=["School Out", "No Data", "In School"]
   STUDENTSTATUS=["Absent", "School Out","No Data","Present"]
   EXPECTATIONSTATUS=["0","1","2","N","Absent", "No Data", "School Out"]
-  class Dog
-  end
-
 end
