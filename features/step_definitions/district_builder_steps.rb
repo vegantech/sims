@@ -38,4 +38,10 @@ Given /^a school in my district named "([^\"]*)"$/ do |name|
   @default_user.district.schools.find_by_name(name) or Factory(:school,:name => name, :district_id => @default_user.district_id)
 end
 
+Given /^I am assigned to "([^"]*)"$/ do |name|
+    s=Factory(:school, :district_id => @user.district_id)
+    @user.staff_assignments.create!(:school=> s)
+end
+
+
 
