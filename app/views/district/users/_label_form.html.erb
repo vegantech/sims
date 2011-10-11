@@ -32,6 +32,5 @@ Choosing 'All students' gives the user access to every student in the school.   
 
 <% unless current_district.staff_assignments.empty? %>
   <h2>Staff Assignments</h2>
-  <div id="user_staff_assignments">
-</div>
+    <%= render :partial => '/district/users/staff_assignments', :locals => {:form => label_form} %>
 <% end %>

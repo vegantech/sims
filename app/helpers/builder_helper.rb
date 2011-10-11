@@ -9,6 +9,16 @@ module BuilderHelper
     end
   end
 
+  def add_user_staff_assignment_link(name,fields)
+    link_to_function name do |page|
+      fields.fields_for(:staff_assignments, StaffAssignment.new) do |staff_assignment|
+        page.insert_html :bottom, :user_staff_assignments, :partial => "staff_assignment", :object => staff_assignment
+      end
+    end
+  end
+
+
+
   def new_probe_definition(pd=ProbeDefinition.new)
 #    pd.assets.build if pd.assets.blank?
 #    pd.probe_definition_benchmarks.build if pd.probe_definition_benchmarks.blank?
