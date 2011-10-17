@@ -3,7 +3,7 @@
     <% if staff_assignment.object.new_record? %>
       <%remove_link = link_to_function("Remove", "$(this).up('.staff_assignment').remove()") %>
     <% else %>
-      <%remove_link = staff_assignment.hidden_field(:delete) +
+      <%remove_link = staff_assignment.hidden_field(:_delete) +
        link_to_function("Remove", "$(this).up('.staff_assignment').hide();$(this).previous().value ='1'") %>
     <% end %>
     <%= staff_assignment.collection_select('school_id', @schools, :id, :to_s, :remove_link => remove_link) %>

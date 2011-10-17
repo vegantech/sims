@@ -43,5 +43,8 @@ Given /^I am assigned to "([^"]*)"$/ do |name|
     @user.staff_assignments.create!(:school=> s)
 end
 
+Given /^the other district admin is gone$/ do
+  User.delete_all("username = 'district_admin'")
+end
 
 
