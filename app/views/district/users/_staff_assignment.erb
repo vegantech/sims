@@ -1,11 +1,18 @@
 <div class="staff_assignment">
-    <p>
-    <% if staff_assignment.object.new_record? %>
-      <%remove_link = link_to_function("Remove", "$(this).up('.staff_assignment').remove()") %>
-    <% else %>
-      <%remove_link = staff_assignment.hidden_field(:_delete) +
-       link_to_function("Remove", "$(this).up('.staff_assignment').hide();$(this).previous().value ='1'") %>
-    <% end %>
+  <p>
+  <% if staff_assignment.object.new_record? %>
+    <%remove_link = link_to_function("Remove", "$(this).up('.staff_assignment').remove()") %>
     <%= staff_assignment.collection_select('school_id', @schools, :id, :to_s, :remove_link => remove_link) %>
-    </p>
+    <script>
+      a=$("user_staff_assignments_attributes_change_me_in_js_school_id");
+      a.name = "user[staff_assignments_attributes][" + (new Date()).valueOf()+ "][school_id]" ;
+      a.id = "usaa_" + (new Date()).valueOf();
+    </script>
+
+  <% else %>
+    <%remove_link = staff_assignment.hidden_field(:_delete) +
+      link_to_function("Remove", "$(this).up('.staff_assignment').hide();$(this).previous().value ='1'") %>
+    <%= staff_assignment.object.school %> <%= remove_link %>
+  <% end %>
+  </p>
 </div>

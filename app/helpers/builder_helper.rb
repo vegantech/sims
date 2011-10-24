@@ -11,7 +11,7 @@ module BuilderHelper
 
   def add_user_staff_assignment_link(name,fields)
     link_to_function name do |page|
-      fields.fields_for(:staff_assignments, StaffAssignment.new) do |staff_assignment|
+      fields.fields_for(:staff_assignments, StaffAssignment.new, :child_index => 'change_me_in_js') do |staff_assignment|
         page.insert_html :bottom, :user_staff_assignments, :partial => "staff_assignment", :object => staff_assignment
       end
     end

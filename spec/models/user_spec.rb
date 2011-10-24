@@ -497,4 +497,48 @@ describe User do
     end
    end
 
+   describe 'staff_assignment' do
+     before do
+       @u=Factory(:user)
+       @s1=Factory(:school, :district_id => @u.district_id)
+       @s2=Factory(:school, :district_id => @u.district_id)
+       @s3=Factory(:school, :district_id => @u.district_id)
+     end
+     it 'should add a staff assignment' do
+       @u.staff_assignments_attributes = [{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+
+     end
+     it 'should remove a staff assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_delete => true}]
+       @u.save
+       @u.staff_assignments.reload.should be_empty
+     end
+     it 'should add and delete the same staff_assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_delete => true}, {:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+     it 'should remove new assignments when they already exist' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
+     it 'should add only 1 new staff assignment when new ones are duplicated' do
+       @u.staff_assignments_attributes =[{:school_id => @s1.id},{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
+   end
+
 end
