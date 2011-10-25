@@ -505,7 +505,7 @@ div.questionDiv label ul
 }
   
 
-.user_school_assignment,.staff_assignment label {
+.user_school_assignment label,.staff_assignment label {
   float: none;
   margin-left: .5em;
   display: inline;
