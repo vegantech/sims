@@ -43,4 +43,8 @@ class Group < ActiveRecord::Base
       :conditions=> ['title like ?', "%#{title}%"],
       :order => 'title'
   end
+
+  def to_s
+    title
+  end
 end

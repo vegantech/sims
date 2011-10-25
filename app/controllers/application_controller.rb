@@ -183,4 +183,8 @@ def check_student
 
   end
 
+  def edit_obj_link(u)
+    self.class.helpers.link_to u, self.send("edit_#{params[:controller].gsub(/\//,"_").singularize}_path",u)
+  end
+
 end
