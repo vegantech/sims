@@ -57,8 +57,14 @@ describe District::UsersController do
         post :create, :user => {}
         response.should redirect_to(district_users_url)
       end
-    end
-    
+
+      it "should should set the flash with a link back to edit the created user" do
+        User.stub!(:build).and_return(mock_user(:save => true))
+        post :create, :user => {}
+        flash[:notice].should match(/#{edit_district_user_path(mock_user)}/)
+      end
+     end
+
     describe "with invalid params" do
       it "should expose a newly created but unsaved user as @user" do
         User.stub!(:build).with({'these' => 'params'}).and_return(mock_user(:save => false))
@@ -98,32 +104,33 @@ describe District::UsersController do
         before(:each) do
           @mock_user = mock_user(:update_attributes => true)
           User.stub!(:find).and_return(@mock_user)
+        end
+
+        def user_string
+          "<a href=\"#{edit_district_user_path(@mock_user)}\">#{@mock_user.to_s}</a>"
 
         end
 
         it 'should set the flash when complete when there have been no staff assignment changes' do
           put :update, :id => "1"
-          flash[:notice].should == "#{@mock_user.to_s} was successfully updated."
+          flash[:notice].should == "#{user_string} was successfully updated."
         end
 
         it 'should set the flash when complete when are still staff assignments' do
           @district.should_receive(:staff_assignments).and_return([1,2,3])
           put :update, :id => "1", :user => {:staff_assignments_attributes => []}
-          flash[:notice].should == "#{@mock_user.to_s} was successfully updated."
+          flash[:notice].should == "#{user_string} was successfully updated."
 
         end
 
         it 'should append a message to the flash if the staff assignments have been emptied' do
           @district.should_receive(:staff_assignments).and_return([])
           put :update, :id => "1", :user => {:staff_assignments_attributes => []}
-          flash[:notice].should == "#{@mock_user.to_s} was successfully updated.  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature."
+          flash[:notice].should == "#{user_string} was successfully updated.  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature."
 
         end
-
       end
-
-
-    end
+   end
 
     describe "with invalid params" do
       it "should update the requested user" do
