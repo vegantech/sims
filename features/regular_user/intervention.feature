@@ -4,6 +4,7 @@ Feature: Create Intervention
   Should be able to create and select an interventon
   
   Background:
+    Given no other users
     Given common data
 
   Scenario: Create
