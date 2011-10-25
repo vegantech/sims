@@ -21,6 +21,9 @@ make intervention definitions blue if they are sld qualifing
 put sld criteria in description
 quicklist coloring
 recommended minutes per week in builder
+
+649 staff assignments manual interface
+
 TODO
 test everything
 make video about it?
