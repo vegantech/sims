@@ -1,5 +1,5 @@
 Given /^an intervention with no progress monitors$/ do
-  Factory(:intervention,:student => @student)
+  setup_intervention(:student => @student, :district => @student.district)
 end
 
 Given /^an intervention with one progress monitor chosen but no recommended monitors$/ do
