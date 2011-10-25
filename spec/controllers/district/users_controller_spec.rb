@@ -57,8 +57,14 @@ describe District::UsersController do
         post :create, :user => {}
         response.should redirect_to(district_users_url)
       end
-    end
-    
+
+      it "should should set the flash with a link back to edit the created user" do
+        User.stub!(:build).and_return(mock_user(:save => true))
+        post :create, :user => {}
+        flash[:notice].should match(/#{edit_district_user_path(mock_user)}/)
+      end
+     end
+
     describe "with invalid params" do
       it "should expose a newly created but unsaved user as @user" do
         User.stub!(:build).with({'these' => 'params'}).and_return(mock_user(:save => false))
@@ -92,6 +98,11 @@ describe District::UsersController do
         User.stub!(:find).and_return(mock_user(:update_attributes => true))
         put :update, :id => "1"
         response.should redirect_to(district_users_url)
+      end
+      it "should set the flash with a link back to edit the user" do
+        User.stub!(:find).and_return(mock_user(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_district_user_path(mock_user)}/)
       end
     end
 

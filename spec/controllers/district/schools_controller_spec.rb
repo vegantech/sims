@@ -62,6 +62,14 @@ describe District::SchoolsController do
         post :create, :school => {}
         response.should redirect_to(district_schools_url)
       end
+
+      it "should set the flash with a link back to the newschool" do
+        School.stub!(:build).and_return(mock_schools(:save => true))
+        post :create, :school => {}
+        flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
+      end
+
+
     end
     
     describe "with invalid params" do
@@ -98,6 +106,14 @@ describe District::SchoolsController do
         put :update, :id => "1"
         response.should redirect_to(district_schools_url)
       end
+
+      it "should set the flash with a link back to the school" do
+        School.stub!(:find).and_return(mock_schools(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
+      end
+
+
     end
     
     describe "with invalid params" do

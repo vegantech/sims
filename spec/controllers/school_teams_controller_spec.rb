@@ -53,11 +53,19 @@ describe SchoolTeamsController do
         assigns[:school_team].should equal(mock_school_team)
       end
 
-      it "redirects to the created school_team" do
+      it "redirects to the school_team index" do
         SchoolTeam.stub!(:build).and_return(mock_school_team(:save => true))
         post :create, :school_team => {}
         response.should redirect_to(school_teams_url)
       end
+
+      it "provides a link to the created school_team" do
+        SchoolTeam.stub!(:build).and_return(mock_school_team(:save => true))
+        post :create, :school_team => {}
+        flash[:notice].should match(/#{edit_school_team_path(mock_school_team)}/)
+      end
+
+
     end
     
     describe "with invalid params" do
@@ -96,6 +104,13 @@ describe SchoolTeamsController do
         put :update, :id => "1"
         response.should redirect_to(school_teams_url)
       end
+
+      it "provides a link to the edited school_team" do
+        SchoolTeam.stub!(:find).and_return(mock_school_team(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_school_team_path(mock_school_team)}/)
+      end
+
     end
     
     describe "with invalid params" do

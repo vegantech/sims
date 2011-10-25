@@ -38,7 +38,7 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        flash[:notice] = "#{@student} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully created."
         format.html { redirect_to(district_students_url) }
         format.xml  { render :xml => @student, :status => :created, :location => @student }
       else
@@ -56,7 +56,7 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] = "#{@student} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully updated."
         format.html { redirect_to(district_students_url) }
         format.xml  { head :ok }
       else
