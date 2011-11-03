@@ -75,4 +75,4 @@ Feature: Create Intervention
     And I fill in "Add new comment about the intervention plan and progress" with "test cucumber comment"
     And I press "Save"
     When I follow "Edit/Add Comment"
-    Then I should see "test cucumber comment by default user"
+    Then I should see "test cucumber comment by"
