@@ -16,7 +16,8 @@ describe District::UsersController do
 
   describe "responding to GET index" do
     before do
-      @district.stub_association!(:users,:paged_by_last_name=>[mock_user])
+      @district.stub_association!(:users,:paged_by_last_name=>users=[mock_user])
+      users.stub!(:out_of_bounds? => false)
     end
 
     it "should expose all users as @users" do

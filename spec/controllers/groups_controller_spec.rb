@@ -20,7 +20,8 @@ describe GroupsController do
     end
 
     it "should expose all groups as @groups" do
-      Group.should_receive(:paged_by_title).and_return([mock_group])
+      Group.should_receive(:paged_by_title).and_return(g=[mock_group])
+      g.stub!(:out_of_bounds? => false)
       get :index
       assigns[:groups].should == [mock_group]
     end
