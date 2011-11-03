@@ -175,14 +175,6 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
   end
 
-  def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
-      :conditions=> ['last_name like ?', "%#{last_name}%"],
-      :order => 'last_name'
-  end
-
-
-  
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
   #default prompt is "*-Filter by Group Member"
@@ -350,7 +342,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
   end
 
   def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
+    paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
   end
