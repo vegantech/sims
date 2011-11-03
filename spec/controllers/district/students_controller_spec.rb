@@ -19,6 +19,7 @@ describe District::StudentsController do
     end
 
     it "should expose all district_students as @district_students" do
+      @mock_students.stub!(:out_of_bounds? => false )
       get :index
       assigns[:students].should == [mock_student]
     end

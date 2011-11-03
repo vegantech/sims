@@ -6,7 +6,8 @@ class District::StudentsController < ApplicationController
   # GET /district_students.xml
   def index
     @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
-
+    redirect_to(index_url_with_page(:last_name => params[:last_name], :page => @students.total_pages)) and return if @students.out_of_bounds?
+    capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @district_students }
@@ -39,7 +40,7 @@ class District::StudentsController < ApplicationController
     respond_to do |format|
       if @student.save
         flash[:notice] = "#{edit_obj_link(@student)} was successfully created."
-        format.html { redirect_to(district_students_url) }
+        format.html { redirect_to(index_url_with_page) }
         format.xml  { render :xml => @student, :status => :created, :location => @student }
       else
         format.html { render :action => "new" }
@@ -57,7 +58,7 @@ class District::StudentsController < ApplicationController
     respond_to do |format|
       if @student.update_attributes(params[:student])
         flash[:notice] = "#{edit_obj_link(@student)} was successfully updated."
-        format.html { redirect_to(district_students_url) }
+        format.html { redirect_to(index_url_with_page) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -73,7 +74,7 @@ class District::StudentsController < ApplicationController
     @student.remove_from_district
 
     respond_to do |format|
-      format.html { redirect_to(district_students_url) }
+      format.html { redirect_to(index_url_with_page) }
       format.xml  { head :ok }
     end
   end
@@ -100,7 +101,7 @@ class District::StudentsController < ApplicationController
      if res
        redirect_to edit_district_student_url(@student)
      else
-       redirect_to :back 
+       redirect_to :back
      end
   end
 
