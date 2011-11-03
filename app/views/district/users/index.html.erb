@@ -4,6 +4,7 @@
   <%=label_tag :last_name, "Last Name, Any part"%>
   <%=text_field_tag :last_name %>
   <%=submit_tag "Search by Last Name", :name=>nil %>
+  <span style="color:blue"><%= params[:last_name] %></span>
 <% end %>
 
 <%= will_paginate @users %>

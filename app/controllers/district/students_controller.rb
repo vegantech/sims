@@ -6,7 +6,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students.xml
   def index
     @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
-    redirect_to(index_url_with_page(:last_name => params[:last_name], :page => @students.total_pages)) and return if @students.out_of_bounds?
+    redirect_to(district_students_url(:last_name => params[:last_name], :page => @students.total_pages)) and return if wp_out_of_bounds?(@students)
     capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
