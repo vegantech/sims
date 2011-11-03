@@ -6,7 +6,7 @@ class GroupsController < ApplicationController
   def index
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])
     @virtual_groups = current_school.virtual_groups
-    redirect_to(index_url_with_page(:title => params[:title], :page => @groups.total_pages)) and return if @groups.out_of_bounds?
+    redirect_to(index_url_with_page(:title => params[:title], :page => @groups.total_pages)) and return if wp_out_of_bounds?(@groups)
     capture_paged_controller_params
 
     respond_to do |format|

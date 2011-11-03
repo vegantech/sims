@@ -202,4 +202,8 @@ def check_student
   def patherize_controller
     params[:controller].gsub(/\//,"_")
   end
+
+  def wp_out_of_bounds?(wp_collection)
+    wp_collection.out_of_bounds? && wp_collection.total_entries > 0
+  end
 end

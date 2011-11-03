@@ -35,6 +35,7 @@
   <%=label_tag :title, "title, Any part"%>
   <%=text_field_tag :title %>
   <%=submit_tag "Search by Title", :name=>nil %>
+  <span style="color:blue"><%= params[:title] %></span>
 <% end %>
 
   <%= will_paginate @groups %>

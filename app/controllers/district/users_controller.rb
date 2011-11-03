@@ -3,7 +3,7 @@ class District::UsersController < ApplicationController
   # GET /users.xml
   def index
     @users = current_district.users.paged_by_last_name(params[:last_name],params[:page])
-    redirect_to(district_users_url(:last_name => params[:last_name], :page => @users.total_pages)) and return if @users.out_of_bounds?
+    redirect_to(district_users_url(:last_name => params[:last_name], :page => @users.total_pages)) and return if wp_out_of_bounds?(@users)
     capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
