@@ -9,8 +9,8 @@ class CreateTrainingDistrict
       InterventionDefinition.find_all_by_title('Make the Verb Active ').each{|idd| idd.district.schools.first.quicklist_interventions << idd.intervention_cluster.intervention_definitions}
     end
 
-    setup_sci_demo_content(District.find_by_abbrev 'training20')
-    setup_staff_assignment_demo_content(District.find_by_abbrev 'training20')
+    setup_sci_demo_content District.find_by_abbrev('training20')
+    setup_staff_assignment_demo_content District.find_by_abbrev('training20')
   end
 
   def self.generate_named_districts
