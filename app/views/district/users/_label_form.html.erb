@@ -31,6 +31,8 @@ Choosing 'All students' gives the user access to every student in the school.   
 
 
 <% unless current_district.staff_assignments.empty? %>
-  <h2>Staff Assignments</h2>
+  <h2>Staff Assignments
+    <%=help_popup "The staff assignments limit who is in the dropdown for participants, and other fields.  If there are no staff assignments for a <b>district</b> then those fields will be populated by the user school assignments." %>
+  </h2>
     <%= render :partial => '/district/users/staff_assignments', :locals => {:form => label_form} %>
 <% end %>
