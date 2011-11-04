@@ -23,6 +23,10 @@ quicklist coloring
 recommended minutes per week in builder
 
 649 staff assignments manual interface
+483 back link remembers pagination
+651 link back to student/user/group when editing
+
+
 
 TODO
 test everything

@@ -10,6 +10,7 @@ class CreateTrainingDistrict
     end
 
     setup_sci_demo_content(District.find_by_abbrev 'training20')
+    setup_staff_assignment_demo_content(District.find_by_abbrev 'training20')
   end
 
   def self.generate_named_districts
@@ -667,6 +668,17 @@ class CreateTrainingDistrict
     #assign content for previous week
 
 
+
+  end
+
+  def self.setup_staff_assignment_demo_content(district)
+    district.schools.each do |sch|
+      sch.user_school_assignments.each do |usa|
+        sch.staff_assignments.create(:user_id => usa.user_id)
+      end
+    end
+
+    district.schools.create!(:name => 'Beta Elementary')
 
   end
 
