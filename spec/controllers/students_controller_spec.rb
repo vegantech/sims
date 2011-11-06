@@ -51,7 +51,7 @@ describe StudentsController do
 
       end
       it 'should put error in flash' do
-        flash[:notice].should == 'Unauthorized Student selected'
+        flash[:notice].should == 'Unauthorized Student selected, try searching again'
       end
 
       it 'should clear the selected students from the session' do
