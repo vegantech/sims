@@ -13,7 +13,7 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 
 
-after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret, "deploy:clean_vendored_submodules"
+after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret, "deploy:clean_vendored_submodules", "link_external_student_verification_config"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory, :create_secret
 
@@ -109,9 +109,16 @@ task :overwrite_login_pilot_note do
 end
 
 
+desc 'Link External Student Verification Config if it exists'
+task :link_external_student_verification_config do
+  run "cd #{deploy_to}; if [ -e 'external_student_location_verify.yml' ]; then ln -s #{deploy_to}/external_student_location_verify.yml #{release_path}/config; fi"
+end
+
 
 Dir[File.join(File.dirname(__FILE__), '..', 'vendor', 'gems', 'hoptoad_notifier-*')].each do |vendored_notifier|
   $: << File.join(vendored_notifier, 'lib')
 end
+
+
 
 require 'hoptoad_notifier/capistrano'

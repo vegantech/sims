@@ -37,3 +37,21 @@ UserSchoolAssignment.all(:include => :user, :conditions => "user_id is not null 
 #fix updated_at
 User.reflect_on_all_associations(:has_many).reject(&:through_reflection).select{|e| e.klass.column_names.include?("created_at")}.collect(&:name).each{|ua| u.send(ua).update_all("updated_at = created_at")}
 
+
+
+CUSTOM_CONTENT = %w{ custom_flags comments team_consultations interventions checklists recommendations principal_overrides consultation_forms consultation_form_requests ignore_flags }
+
+def has_content?
+  CUSTOM_CONTENT.any?{|c| s.send(c).any?}
+end
+
+#move content
+def move_content(old_student, new_student,delete_old = false)
+  return if old_student.blank? or new_student.blank?
+  CUSTOM_CONTENT.each do |c|
+    old_student.send(c).update_all("student_id = #{new_student.id}")
+  end
+  new_student.touch
+
+  old_student.destroy if delete_old
+end

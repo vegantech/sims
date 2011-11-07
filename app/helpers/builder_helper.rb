@@ -1,11 +1,11 @@
 module BuilderHelper
   def add_user_school_assignment_link(name)
     if @users || @schools
-      link_to_function name do |page| 
-        page.insert_html :bottom, :user_school_assignments, :partial => "user_school_assignment", :object => UserSchoolAssignment.new 
+      link_to_function name do |page|
+        page.insert_html :bottom, :user_school_assignments, :partial => "user_school_assignment", :object => UserSchoolAssignment.new
       end
     else
-      "<p>There are more than 100 users in the district; please assign new  school assignments through the add/remove users interface.</p>" 
+      "<p>There are more than 100 users in the district; please assign new  school assignments through the add/remove users interface.</p>"
     end
   end
 
@@ -14,4 +14,18 @@ module BuilderHelper
 #    pd.probe_definition_benchmarks.build if pd.probe_definition_benchmarks.blank?
     pd
   end
+
+  def exempt_tiers_box form, popup
+    str = ""
+    if current_district.lock_tier?
+      str += "<p><div class='fake_label'>"
+      str += form.check_box(:exempt_tier)
+      str += "</div>"
+      str += form.label(:exempt_tier, "Available to all tiers", {:class => "checkbox_label_span"})
+      str += help_popup(popup)
+      str += "</p>"
+    end
+    str
+  end
+
 end

@@ -12,9 +12,11 @@
 #
 
 class Group < ActiveRecord::Base
-  DESCRIPTION="Used to set up and edit groups for assigning students to users.  
-               They're most commonly sections of classes.  
-               They can also be used for entering group progress monitoring data."
+  DESCRIPTION="
+  This feature allows administrators to set up and edit groups that are used to assign students to staff.
+  The most common group is sections of classes which are assigned by the school administrator or uploaded by the local systems administrator.
+  The other common group is a group of students that have the same interventions and progress monitors
+  which allows staff to enter progress monitoring data for all the students in the group on one screen."
   belongs_to :school
   has_and_belongs_to_many :students
   has_many :user_group_assignments

@@ -50,10 +50,11 @@
 
 # Specify native dependencies of gems. Moonshine comes with some default values of this, but this allows you to add to thim.
 # Please file an issue at http://github.com/railsmachine/moonshine/issues if there are additional gem dependencies moonshine should know about.
-#:apt_gems:
-#  :awesomegem:
-#    - awesome
-#    - libawesome-dev
+:apt_gems:
+  :nokogiri:
+    - libxml2-dev
+    - libxslt1e-dev
+
 
 # Passenger-specific options. Refer to the following templates for details about what values are used:
 # - vendor/plugins/moonshine/lib/moonshine/manifest/rails/templates/passenger.conf.erb 

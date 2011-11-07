@@ -39,9 +39,14 @@ describe InterventionsHelper do
       arr << mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 3',:tier=>'2-Basic')
       arr << mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 1',:tier=>'1-Basic')
       arr << mock_intervention_definition(:title => 'Quicklist3',:id=>3, :objective_definition => '',:tier=>'')
-      tiered_quicklist(arr).should =~ /Objective 1 : 1-Basic.*Objective 1 : 2-Basic.*Objective 2 : 3-Basic.*Objective 3 : 2-Basic.*Objective 3 : 3-Basic/
 
-    end
+      tq=tiered_quicklist(arr)
+      tq.should =~ /Objective 1 : 1-Basic.*Objective 1 : 2-Basic.*Objective 2 : 3-Basic.*Objective 3 : 2-Basic.*Objective 3 : 3-Basic/
+      tq.should =~ /<select .*><option value=""/  #tests LH647
+      tq.should have_tag("select#quicklist_item_intervention_definition_id[onchange=?]","form.submit()") do
+        with_tag("option[value=?]","")
+      end
+   end
 
     it 'should return a form if there are  quicklist items' do
       g11=mock_intervention_definition(:title => 'Quicklist1',:id=>6, :objective_definition => 'Objective 1',:tier=>'1-Basic')

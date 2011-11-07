@@ -63,7 +63,6 @@ def create_user user_name='first_last', password=user_name
     :last_name => user_name.split("_").last || 'Last',
     :password=> password,
     :district_id => default_district.id
-    
 end
 
 def create_school school_name
@@ -141,6 +140,16 @@ def clear_login_dropdowns
   #School.destroy_all
   District.delete_all
   @default_district=nil
+end
+
+def setup_intervention(opts = {})
+  dist = opts.delete :district
+  i=Factory(:intervention,opts)
+  if dist
+    d=i.intervention_definition.district
+    i.goal_definition.update_attribute(:district_id, dist.id)
+    d.toggle!(:admin)
+  end
 end
 
 private
