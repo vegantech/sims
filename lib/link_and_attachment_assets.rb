@@ -25,8 +25,13 @@ module LinkAndAttachmentAssets
   end
   
   def save_assets
+    touch_me = false
     assets.each do |asset|
-      asset.save(false) unless asset.frozen? 
+      touch_me = true if asset.frozen? or asset.changed?
+      asset.save(false) if !asset.frozen? and asset.changed?
+    end
+    if attributes["updated_at"] && touch_me
+      self.class.update_all(["updated_at = ?", Time.now], "id = #{self.id}")
     end
   end 
 
