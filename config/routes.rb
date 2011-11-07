@@ -87,7 +87,7 @@ ActionController::Routing::Routes.draw do |map|
 
   end
 
-  map.resources :schools, :collection => {:select => :post}, :has_many => 'behavior_referrals'
+  map.resources :schools, :collection => {:select => :post}
 
 
   map.resources :users

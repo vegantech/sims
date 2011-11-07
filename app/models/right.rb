@@ -162,16 +162,6 @@ RIGHTS={
    {:read_access=>true,
     :controller=>"news_items",
     :write_access=>true}],
- "behavior_referral" => [
-   {:read_access=>true,
-    :controller=>"behavior_referrals",
-    :write_access=>true},
-   {:read_access=>true,
-    :controller=>"schools",
-    :write_access=>true}
-
-],
-
 }
 
   def self.cache_key

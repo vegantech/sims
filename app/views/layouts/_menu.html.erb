@@ -28,7 +28,6 @@
       <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
       <% end %>
-      <%= li_link_to_if_authorized('Behavior Referrals', new_school_behavior_referral_path(current_school)) if current_school %>
       <% plus_minus_li "Reports" do %>
           <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
           <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",

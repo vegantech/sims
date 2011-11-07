@@ -7,12 +7,11 @@ class Role
                   "school_admin" => 'Create groups, assign students and groups, maintain quicklist', 
                   "regular_user" => 'Regular user of SIMS', 
                   "news_admin"  => 'Create and edit news items that appear on the left' , 
-                  "behavior_referral" => 'Create and edit behavior referrals',
                 }
 
 
 
-  ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin behavior_referral}
+  ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin}
   CSV_HEADERS = [:district_user_id]
 
   HELP = {
