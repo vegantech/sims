@@ -159,4 +159,19 @@ describe GroupsController do
 
   end
 
+
+  describe "responding to DELETE remove_user"  do
+    it "should remove the user from the group" do
+      mg=mock_group
+      Group.should_receive(:find).and_return(mg)
+      mg.should_receive(:user_group_assignments).and_return( UserGroupAssignment)
+      UserGroupAssignment.should_receive(:find).with("222").and_return(muga=mock_user_group_assignment)
+      muga.should_receive(:destroy)
+      delete "remove_user", :id=>"1", :user_assignment_id=>"222"
+      response.should redirect_to group_url(mg)
+    end
+
+  end
+
+
 end

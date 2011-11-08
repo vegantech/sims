@@ -122,7 +122,7 @@ class Enrollment < ActiveRecord::Base
     when 'no_intervention'
       scope = scope.scoped :conditions=> ["not exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
     else
-      raise 'Unrecognized search_type'
+      return Enrollment.find_all_by_id(nil)
     end
 
     if search_hash.delete(:index_includes)
