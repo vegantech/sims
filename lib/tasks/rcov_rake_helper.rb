@@ -12,7 +12,7 @@ end
     (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') 
   end
   def default_rcov_params_for_unit   
-    '-i "app\/reports" -x "app\/controllers",'+global_exclude
+    '-i "app\/reports" -x "app\/controllers","app\/metal",'+global_exclude
   end  
   
   def default_rcov_params_for_functional   
@@ -29,7 +29,7 @@ end
   
   def specs_corresponding_to_functional
     #maybe add views later
-    %w( controllers routing).collect{|e| "spec/#{e}/**/*_spec.rb"}
+    %w( controllers routing metal).collect{|e| "spec/#{e}/**/*_spec.rb"}
     
   end
   
