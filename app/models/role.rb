@@ -10,6 +10,7 @@ class Role
                 }
 
 
+  ADMIN_ROLES = ["local_system_administrator", "school_admin"]
 
   ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin}
   CSV_HEADERS = [:district_user_id]

@@ -1,5 +1,5 @@
 START_DATE = "2011-07-01"
-END_DATE = "2011-10-31"
+END_DATE = "2011-11-09"
 
 e=DistrictLog.successful_login_non_admin.find(:all, :conditions => {:created_at => START_DATE..END_DATE}, :group => :district_id, :select => 'district_id, count(id) as total_logins, count(distinct user_id) as distinct_user_logins')
 e=e.collect(&:attributes)
