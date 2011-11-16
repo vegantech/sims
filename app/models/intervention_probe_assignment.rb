@@ -96,11 +96,11 @@ class InterventionProbeAssignment < ActiveRecord::Base
       end
       group+=1
       if probes_for_this_graph.size == 1
-        custom_chm << "@o,000000,0,0:#{scale_value(probes_for_this_graph[0].score)},4"
-      else
+        probes_for_this_graph[1] = probes_for_this_graph[0]
+#        custom_chm << "|@o,000000,0,0:#{scale_value(probes_for_this_graph[0].score)},4"
       end
 
-      custom_string = [custom_chm,chart_margins,chxp,chls].compact.join("&")
+      custom_string = [custom_chm,chart_margins,chxp,chls,line_chds].compact.join("&")
     
       Gchart.line_xy({:data => line_graph_data(probes_for_this_graph),
                  :axis_with_labels => 'x,x,y,r',
@@ -111,7 +111,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
                  :custom => custom_string,
                  :bar_width_and_spacing => nil,
                  :size => '600x250',
-                 :chds => chds,
+                 :chds => nil,
                  :axis_range => [[0,line_graph_date_denom],[],[0,100],[0,100]]
                  })}.join("<br />")
 
@@ -121,7 +121,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
  def chls
    "chls=2|1,4,2"
+ end
 
+ def line_chds
+   "chds=#{chds}"
  end
 
  def chds
@@ -162,7 +165,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def benchmarks
-    probe_definition.probe_definition_benchmarks |goal_benchmark.to_a
+    probe_definition.probe_definition_benchmarks |Array(goal_benchmark)
   end
 
   def goal_benchmark
@@ -220,11 +223,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
   def scaled_dates pp
     pp.collect{|e| (e.administered_at - line_graph_left_date).to_i}
   end
-
-  
-
-
-
 
   ############### END TODO #################
   def dots_for_line_graph
