@@ -8,6 +8,7 @@
     <%=form.label :description %>
     <%= form.text_area :description , :class => 'spell_check' %>
   </p>
+  <%= exempt_tiers_box form, 'All interventions under this category will be available to students at any tier.' %>
   <p>
     <%= submit_tag submit_name , :class=>"submit"%>
      <%= spell_check_button %>

@@ -8,6 +8,8 @@
   :version: ">= 1.0.0"
 - :name: system_timer
 - :name: googlecharts
+- :name: nokogiri
+  :version: = 1.4.4
 - :name: capistrano
 - :name: capistrano-ext
 - :name: rails

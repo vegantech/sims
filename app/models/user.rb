@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   has_many :interventions
   has_many :probe_definitions
   has_many :recommendations
+  has_many :logs, :class_name => 'DistrictLog'
 
 
   attr_accessor :password, :all_students_in_district, :old_password
@@ -174,14 +175,6 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
   end
 
-  def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
-      :conditions=> ['last_name like ?', "%#{last_name}%"],
-      :order => 'last_name'
-  end
-
-
-  
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
   #default prompt is "*-Filter by Group Member"
@@ -349,7 +342,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
   end
 
   def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
+    paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
   end
@@ -423,6 +416,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
     self.roles_mask = Role.roles_to_mask(roles)
   end
 
+
   def roles
     @roles ||= Role.mask_to_roles(roles_mask)
   end
@@ -469,12 +463,18 @@ or (user_group_assignments.id is not null)
   end
 
   def last_login
-    @last_login ||=district.logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+  end
+
+  def record_successful_login
+    logs.create(:body => "Successful login of #{fullname}",:district_id => district_id)
+    logger.info "Successful login of #{fullname} at #{district.name}"
   end
 
 
   def self.find_by_fullname(fullname)
-    find_by_first_name_and_last_name(*(fullname.split(" ")))
+    #this fails if the middle name is excluded from the search
+    find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
 
 protected

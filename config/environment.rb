@@ -39,8 +39,9 @@ Rails::Initializer.run do |config|
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
   config.gem 'googlecharts'
-  config.gem 'hoptoad_notifier'
+  config.gem 'airbrake', :version => "~> 3.0.5"
   config.gem 'responds_to_parent'
+  config.gem 'newrelic_rpm'
 
  # deployment
  config.gem "capistrano", :lib => false
@@ -58,7 +59,7 @@ Rails::Initializer.run do |config|
   #
 #config.plugins =  [ :validates_date_time, :all ]
   SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
-     :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :hoptoad_notifier, :mysql_sets]
+     :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :airbrake, :mysql_sets]
 
 
   #I'd prefer to do this in the environment specific files, but the rails initializer processes this just before it processes the environment specific file

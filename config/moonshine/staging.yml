@@ -11,4 +11,18 @@
   - *.staging.sims-staging.info
 #  - assets2.sims.managedmachine.com
 
-
+:network:
+  :interfaces:
+  - :name: eth0
+    :desc: staging.sims.widpi.managedmachine.com
+    :address: 216.180.248.242
+    :netmask: 255.255.255.0
+    :network: 216.180.248.0
+    :broadcast: 216.180.248.255
+    :gateway: 216.180.248.1
+  - :name: eth1
+    :desc: private staging.sims.widpi
+    :address: 10.0.4.242
+    :netmask: 255.255.255.0
+    :network: 10.0.4.0
+    :broadcast: 10.0.4.255

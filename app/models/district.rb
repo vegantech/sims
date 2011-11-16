@@ -36,8 +36,9 @@ class District < ActiveRecord::Base
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
   has_many :recommended_monitors, :through => :probe_definitions
-  has_many :tiers, :order => 'position'
+  has_many :tiers, :order => 'position', :dependent => :delete_all
   has_many :schools, :order => :name
+  has_many :enrollments, :through => :schools
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
@@ -199,9 +200,32 @@ class District < ActiveRecord::Base
   end
 
   def show_personal_groups?
-    Rails.env.wip? || ['madison','mmsd','ripon','maps'].include?(self.abbrev)
+    Rails.env.wip? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
   end
 
+
+  def claim(student)
+    res=false
+    msg = nil
+    if VerifyStudentInDistrictExternally.enabled?
+      begin
+        res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
+      rescue StudentVerificationError => e
+        logger.info "Student verification error e.inspect"
+        msg='Error verifiying student location'
+      end
+    else
+      res = student.district.blank?
+    end
+
+    if res
+      student.update_attribute(:district_id,id)
+      msg= "Student #{student.to_s} has been added to your district"
+    else
+      msg ||= "Student #{student.to_s} could not be claimed, student may belong to another district"
+    end
+    return res,msg
+  end
 
 private
 

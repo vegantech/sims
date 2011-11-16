@@ -4,7 +4,10 @@
   </head>
   <body>
     <h1>SIMS District Upload API</h1>
-    <p> Each file when uploaded will overwrite the current content in the district.   For example, if you create a students.csv with just first graders, then upload another one with just second graders, SIMS will only have the second graders in the system.   Combine all your students into a single file.  
+    <p> Each file when uploaded will overwrite the current content in the district.
+    For example, if you create a students.csv with just first graders,
+    then upload another one with just second graders, SIMS will only have the second graders in the system.
+    Combine all your students into a single file.
     </p>
 
     <p> Each file has one or more references to district keys in the form district_table_id. These must be: <ul>
@@ -15,12 +18,12 @@
     </p>
 
     <p> The files must match the specified format.  
-    Headers must be in the order listed and all must be present.   If you're not using a column then leave it blank (with nothing between the ",'s" or with NULL between them.)
+    Headers must be in the order listed and all must be present.   If you're not using a column then leave it blank (with nothing between the ","'s or with NULL between them.)
     </p>
 
     <ul>
-			<li><a href="/district_upload/empty/empty.zip">Sample CSV files, with just headers for all files</a></li>
-      <li><a href="/district_upload/sample/sample.zip">Example CSV files (more coming soon.)</a></li>
+			<li><a href="/district_upload/empty/empty.zip">Sample (empty) CSV files, with just headers for all files</a></li>
+      <li><a href="/district_upload/sample/sample.zip">Example (with data) CSV files</a></li>
     </ul>
 
     <%= render :partial => 'file_summary', :object => CSVImporter::Examples, :locals=> {:head_extra => '(Filename)',:field_extra => '(fields)'} %>

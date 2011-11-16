@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user=User.find_by_id(current_user_id) || User.new
+    @user = User.find_by_id(current_user_id) || User.new
   end
 
   def selected_students_ids
@@ -164,6 +164,23 @@ class ApplicationController < ActionController::Base
 
   def fixie6iframe
     response.headers['P3P']= 'CP = "CAO PSA OUR"'
+  end
+
+def check_student
+    #TODO generalize this
+    student=Student.find_by_id(params[:student_id]) || Student.new
+
+    if student.belongs_to_user?(current_user)
+      @student=student
+    else
+      flash[:notice] = "The student is not accessible for this user"
+      respond_to do |format|
+        format.js { render :template => "/main/inaccessible_student.js"}
+        format.html  {redirect_to :back }
+      end
+     return false
+    end
+
   end
 
 end
