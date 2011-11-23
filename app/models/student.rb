@@ -25,6 +25,8 @@ class Student < ActiveRecord::Base
   include FullName
   include LinkAndAttachmentAssets
 
+  CUSTOM_CONTENT = %w{ custom_flags comments team_consultations interventions checklists recommendations principal_overrides consultation_forms consultation_form_requests ignore_flags }
+
   belongs_to :district
   has_and_belongs_to_many :groups
   has_many :checklists, :dependent => :destroy
@@ -166,8 +168,7 @@ class Student < ActiveRecord::Base
 
 
   def has_content?
-    flags.any? || team_consultations.any? || interventions.any? || checklists.any? || recommendations.any? || principal_overrides.any? ||
-    consultation_form_requests.any? || comments.any? || consultation_forms.any?
+    CUSTOM_CONTENT.any?{|c| s.send(c).any?}
   end
 
   def max_tier

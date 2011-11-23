@@ -6,6 +6,7 @@ describe InterventionDefinitionSummaryReport do
       ic = Factory(:intervention_cluster, :title => 'IC-TITLE')
       id = Factory(:intervention_definition, :title => 'ID-TITLE', :intervention_cluster => ic)
       od = ic.objective_definition
+      Tier.update_all("position = 1")
       
       Time.stub!(:now => Date.new(2008, 12, 12).to_time)
 
