@@ -3,8 +3,6 @@
 631 aim line
 cicotest Test cico form
 
-633 district assets and district docs
-
 617 manage groups help/description  update, apply to all students for intervention student list
 604 attachments for school teams and consultation forms, show/hide consultation form,   show school team attachments.
 
@@ -19,12 +17,6 @@ make intervention definitions blue if they are sld qualifing
 put sld criteria in description
 quicklist coloring
 recommended minutes per week in builder
-
-649 staff assignments manual interface
-483 back link remembers pagination
-651 link back to student/user/group when editing
-
-
 
 TODO
 test everything
