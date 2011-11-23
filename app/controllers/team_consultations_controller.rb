@@ -43,6 +43,7 @@ class TeamConsultationsController < ApplicationController
   def create
     params[:team_consultation] ||= {}
     params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user_id)
+    params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 
     respond_to do |format|
@@ -53,13 +54,13 @@ class TeamConsultationsController < ApplicationController
           msg = 'The Team Consultation Draft was saved.'
         end
         
-        format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.xml  { render :xml => @team_consultation, :status => :created, :location => @team_consultation }
       else
         @recipients = current_school.school_teams
-        format.js { render :action => "new" }
         format.html { render :action => "new" }
+        format.js {  responds_to_paremt {render}  }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
     end

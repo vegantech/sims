@@ -1,4 +1,4 @@
-<% form_for(@consultation_form,:url => formatted_consultation_forms_path(:js), :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
+<% form_for(@consultation_form,:url => consultation_forms_path(:format =>:js), :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
 

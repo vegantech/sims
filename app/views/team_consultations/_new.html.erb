@@ -1,5 +1,5 @@
 <% unless @teams.blank? %>
-<% remote_form_for(@team_consultation) do |f| %>
+  <% team_consultation_form(@team_consultation) do |f| %>
   <%= f.error_messages %>
 
   <p>
