@@ -1,7 +1,7 @@
 <% consultation_form ||= @consultation_form || show %>
 <% content_tag_for :tr, consultation_form, "edit_form" do %>
   <td colspan="6">
-    <% form_for(@consultation_form,:url => "/consultation_forms/#{@consultation_form.id}.js", :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
+    <% form_for(@consultation_form,:url => consultation_form_path(consultation_form, :format =>:js), :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
       <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
       <%=submit_tag 'Update' %>
       <%= spell_check_button %>

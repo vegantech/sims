@@ -1,16 +1,19 @@
 <% unless @teams.blank? %>
-<% remote_form_for(@team_consultation) do |f| %>
+  <% team_consultation_form(@team_consultation) do |f| %>
   <%= f.error_messages %>
+
+  <p>
+    <%= f.label :recipient_id, 'Recipient' %>
+    <%= f.collection_select :team_id, @teams, :id, :to_s, {}, show_or_hide_form_onchange %>
+  </p>
+
+  <p>
   <% f.fields_for :consultation_forms do |consultation_form| %> 
     <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
   <% end %>
 
-
   <p>
-    <%= f.label :recipient_id, 'Recipient' %>
-    <%= f.collection_select :team_id, @teams, :id, :to_s %>
     <%= f.hidden_field :draft %>
-
   </p>
   <p>
 

@@ -348,7 +348,6 @@ function new_probe_scores() {
 
 }
 
-
 function verify_fidelity(sld) {
   if(sld == true) {
     rec_mins = parseInt($('rec_mins_per_week').innerHTML);
@@ -364,3 +363,16 @@ function verify_fidelity(sld) {
 
 
 
+function show_or_hide_team_consultation_form(e,team_ids_with_assets) {
+  //if the team has no attachments, and the form is blank
+  if(!team_ids_with_assets.include(e.value) ||
+  $$('form.new_team_consultation textarea').any(function(textarea) { return textarea.value != ""}))
+  {
+    $("form_consultation_form").show();
+    }
+  else{
+    $("form_consultation_form").hide();
+  }
+
+
+}
