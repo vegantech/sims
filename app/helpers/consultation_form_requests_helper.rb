@@ -22,7 +22,6 @@ module ConsultationFormRequestsHelper
   end
 
   def team_consultation_form(team_consultation)
-#   form_for(@consultation_form,:url => formatted_consultation_forms_path(:js), :html=>{:multipart => true, :target=>"upload_frame"})
     html_options = {:multipart => true, :target =>"upload_frame"}
 
     unless team_consultation.new_record?
@@ -32,7 +31,7 @@ module ConsultationFormRequestsHelper
       url = team_consultations_path(:format =>:js)
     end
 
-    form_for(@team_consultation, :url => url, :html => html_options) do |f|
+    form_for(team_consultation, :url => url, :html => html_options) do |f|
       yield f
     end
   end
