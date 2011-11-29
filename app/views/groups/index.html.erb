@@ -33,7 +33,7 @@
 <p> In an assigned group, the students and users are assigned by the School Admin. </p>
 <% form_tag groups_path, :method=>:get do %>
   <%=label_tag :title, "title, Any part"%>
-  <%=text_field_tag :title %>
+  <%=text_field_tag :title, params[:title] %>
   <%=submit_tag "Search by Title", :name=>nil %>
 <% end %>
 

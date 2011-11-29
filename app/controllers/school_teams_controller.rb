@@ -46,7 +46,7 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.save
-        flash[:notice] = 'SchoolTeam was successfully created.'
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully created."
         format.html { redirect_to(school_teams_url) }
         format.xml  { render :xml => @school_team, :status => :created, :location => @school_team }
       else
@@ -65,7 +65,7 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.update_attributes(params[:school_team])
-        flash[:notice] = 'SchoolTeam was successfully updated.'
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully updated."
         format.html { redirect_to(school_teams_url) }
         format.xml  { head :ok }
       else

@@ -19,7 +19,8 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
       end
 
       help = options[:help]? ' '+@template.help_popup(options[:help]) : ''
-      @template.content_tag(:div, label  + super + help, :class => 'form_row')  #wrap with a div form_Row
+      remove_link = ' ' + (options[:remove_link] || '')
+      @template.content_tag(:div, label  + super + help + remove_link, :class => 'form_row')  #wrap with a div form_Row
     end
   end
 
