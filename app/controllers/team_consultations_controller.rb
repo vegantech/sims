@@ -60,7 +60,7 @@ class TeamConsultationsController < ApplicationController
       else
         @recipients = current_school.school_teams
         format.html { render :action => "new" }
-        format.js {  responds_to_paremt {render}  }
+        format.js {  responds_to_parent {render}  }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
     end
@@ -70,6 +70,7 @@ class TeamConsultationsController < ApplicationController
   # PUT /team_consultations/1.xml
   def update
     @team_consultation = TeamConsultation.find(params[:id])
+    params[:team_consultation][:draft] = false if params[:commit] == "Save"   #the js in the view does not work in ff
 
     respond_to do |format|
       if @team_consultation.update_attributes(params[:team_consultation])
@@ -78,12 +79,12 @@ class TeamConsultationsController < ApplicationController
         else
           msg = 'TeamConsultation was successfully updated.'
         end
-        format.js { flash.now[:notice] = msg; render :action => 'create'}
         format.html { redirect_to(@team_consultation.student) }
+        format.js { flash.now[:notice] = msg; responds_to_parent{render :action => 'create'} }
         format.xml  { head :ok }
       else
-        format.js { render :action => 'new'}
-        format.html { render :action => "edit" }
+        format.html { render :action => "new" }
+        format.js { responds_to_parent{render :action => 'new'} }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
     end
@@ -96,8 +97,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation.destroy
 
     respond_to do |format|
-      format.js
       format.html { redirect_to(@team_consultation.student) }
+      format.js
       format.xml  { head :ok }
     end
   end
