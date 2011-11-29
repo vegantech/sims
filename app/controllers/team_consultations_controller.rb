@@ -83,7 +83,7 @@ class TeamConsultationsController < ApplicationController
         format.js { flash.now[:notice] = msg; responds_to_parent{render :action => 'create'} }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "new" }
         format.js { responds_to_parent{render :action => 'new'} }
         format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
@@ -97,8 +97,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation.destroy
 
     respond_to do |format|
-      format.js
       format.html { redirect_to(@team_consultation.student) }
+      format.js
       format.xml  { head :ok }
     end
   end

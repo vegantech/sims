@@ -7,7 +7,7 @@ describe TeamConsultationsController do
       
 
   def mock_team_consultation(stubs={})
-    stubs.merge!(:draft? =>false)
+    stubs.reverse_merge!(:draft? =>false, :student => mock_student)
     @mock_team_consultation ||= mock_model(TeamConsultation, stubs)
   end
   
@@ -75,7 +75,7 @@ describe TeamConsultationsController do
     
   end
 
-  describe "PUT udpate" do
+  describe "PUT update" do
     
     describe "with valid params" do
       it "updates the requested team_consultation" do
@@ -91,9 +91,10 @@ describe TeamConsultationsController do
       end
 
       it "behaves like create" do
-        TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => true))
+        @student = mock_student
+        TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => true, :student => @student))
         put :update, :id => "1"
-        response.should render_template("create")
+        response.should redirect_to(student_url(@student))
       end
     end
     
@@ -126,7 +127,7 @@ describe TeamConsultationsController do
       delete :destroy, :id => "37"
     end
   
-    it "redirects to the team_consultations list" do
+    it "redirects to the team_consultations list (student)" do
       TeamConsultation.stub!(:find).and_return(mock_team_consultation(:destroy => true, :student => stu=mock_student))
       delete :destroy, :id => "1", :format =>'html'
       response.should redirect_to(student_url(stu))
