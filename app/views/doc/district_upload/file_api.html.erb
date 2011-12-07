@@ -7,6 +7,10 @@ border-width: 1px 0px 0px 0px;
 border-style: solid;
 padding: 25px;
 }
+span.append_file_name {
+  color: blue;
+}
+
   </style>
 </head>
   <body>
@@ -14,11 +18,11 @@ padding: 25px;
     <table>
       <tr>
         <th> File Name </th>
-        <td><%=@importer.file_name %> &nbsp;  (This must match exactly) </td>
+        <td><%=@importer.file_name %> &nbsp;  (This must match exactly) &nbsp; <span class="append_file_name"><%=@importer.file_name_with_append %> </span></td>
       </tr>
  
 
-      <% %w{description fields load_order overwritten removed how_often how_many_rows}.each do |field| %>
+      <% %w{description fields load_order overwritten removed how_often how_many_rows append_info}.each do |field| %>
       <tr>
         <th><%=field.titleize %> </th>
         <td><%=@importer.try field %> </td>

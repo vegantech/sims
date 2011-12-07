@@ -13,7 +13,7 @@ class ImportCSV
 
   FILE_ORDER = ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv', 'user_school_assignments.csv']
 
-  VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv", 
+  VALID_FILES= ["enrollments.csv", "schools.csv", "students.csv", "groups.csv", "user_groups.csv", "student_groups.csv", "users.csv",
     "all_schools.csv", "all_students_in_district.csv","all_students_in_school.csv", "user_school_assignments.csv", "staff_assignments.csv",
     "ext_arbitraries.csv", "ext_siblings.csv", "ext_adult_contacts.csv", "ext_test_scores.csv", "ext_summaries.csv",
     "district_admins.csv","news_admins.csv", "content_admins.csv", "school_admins.csv", "regular_users.csv", "system_flags.csv",
@@ -33,7 +33,7 @@ class ImportCSV
   @@file_handlers={}
 
   attr_reader :district, :messages, :filenames
-  
+
   def initialize file, district
     @district = district
     @messages = []
@@ -42,13 +42,13 @@ class ImportCSV
   end
 
   def import
-    b= Benchmark.measure do 
+    b= Benchmark.measure do
       identify_and_unzip
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
       @district.students.update_all(:updated_at => Time.now) #expire any student related cache
       @district.users.update_all(:updated_at => Time.now) #expire any user related cache
-      @messages << "No csv files uploaded" if sorted_filenames.blank? 
+      @messages << "No csv files uploaded" if sorted_filenames.blank?
     end
     @messages << b
     @messages << EOF
@@ -61,7 +61,7 @@ class ImportCSV
       if defined?MEMCACHE
         MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "), 120.minutes)
       end
-    rescue 
+    rescue
       nil
     end
 
@@ -71,10 +71,8 @@ class ImportCSV
     base_file_name = File.basename(file_name)
     @messages << "Processing file: #{base_file_name}"
     update_memcache
-    f = base_file_name.downcase
-    
-
-    case base_file_name.downcase
+    f = base_file_name.downcase.gsub(/_appends/,'')
+    case f
     when *csv_importers
       csv_importer file_name
     else
@@ -85,19 +83,17 @@ class ImportCSV
     update_memcache
   end
 
-  def csv_importers 
+  def csv_importers
     VALID_FILES
   end
 
   def csv_importer file_name
-    
-    base_file_name = File.basename(file_name)
+    base_file_name = File.basename(file_name).gsub(/_append(s)?/,'')
     c="CSVImporter/#{base_file_name.sub(/.csv/,'')}".classify.pluralize
     @messages << c.constantize.new(file_name,@district).import
   end
 
   def file_exists? file_name,model_name
-    
     if File.exist?(file_name)
       true
     else
@@ -106,7 +102,7 @@ class ImportCSV
     end
 
   end
- 
+
   def sorted_filenames filenames=@filenames
 
     filenames.compact.sort_by do |f|
