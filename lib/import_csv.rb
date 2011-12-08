@@ -1,6 +1,7 @@
 class ImportCSV
   require 'lib/csv_importer/base_system_flags'
 
+  APPEND_FILE_MATCHER = /_append(s)?/
   DELETE_COUNT_THRESHOLD = 5
   DELETE_PERCENT_THRESHOLD = 0.3
   STRIP_FILTER = lambda{ |field| field.to_s.strip}
@@ -71,7 +72,7 @@ class ImportCSV
     base_file_name = File.basename(file_name)
     @messages << "Processing file: #{base_file_name}"
     update_memcache
-    f = base_file_name.downcase.gsub(/_appends/,'')
+    f = base_file_name.downcase.gsub(APPEND_FILE_MATCHER,'')
     case f
     when *csv_importers
       csv_importer file_name
@@ -88,7 +89,7 @@ class ImportCSV
   end
 
   def csv_importer file_name
-    base_file_name = File.basename(file_name).gsub(/_append(s)?/,'')
+    base_file_name = File.basename(file_name).gsub(APPEND_FILE_MATCHER,'')
     c="CSVImporter/#{base_file_name.sub(/.csv/,'')}".classify.pluralize
     @messages << c.constantize.new(file_name,@district).import
   end
@@ -106,8 +107,8 @@ class ImportCSV
   def sorted_filenames filenames=@filenames
 
     filenames.compact.sort_by do |f|
-      FILE_ORDER.index(File.basename(f.downcase))  ||
-      FILE_ORDER.length + 1
+      2 * (FILE_ORDER.index(File.basename(f.downcase.gsub(APPEND_FILE_MATCHER,'')))  || FILE_ORDER.length) +
+      (f.match(APPEND_FILE_MATCHER) ? 1 : 0)
     end
   end
 

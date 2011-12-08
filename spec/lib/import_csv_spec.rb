@@ -38,7 +38,33 @@ describe ImportCSV do
       i.import
       i.messages.should include('Unknown file invalid')
     end
+  end
 
+  describe "sorted_filenames" do
+    before(:all) do
+      @files =["users.csv","other_append.csv","ext_test_scores_appends.csv","students.csv", "schools.csv", "other.csv",
+        "ext_test_scores.csv", "groups.csv", "system_flags.csv", "user_school_assignments.csv"]
+      end
+
+    it 'should pick out the initial files and put them in order' do
+      i = ImportCSV.new '', District.new
+      sorted_files = i.send(:sorted_filenames,@files)
+      sorted_files[0..5].should == ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv', 'user_school_assignments.csv']
+      sorted_files = i.send(:sorted_filenames,@files.reverse)
+      sorted_files[0..5].should == ['schools.csv', 'students.csv', 'users.csv', 'groups.csv','system_flags.csv', 'user_school_assignments.csv']
+    end
+
+    it 'should put the appends right after the nonappended file and other appends at the end' do
+      files = @files + ["schools_append.csv" , "schools_appends.csv"]
+      i = ImportCSV.new '', District.new
+      sorted_files = i.send(:sorted_filenames,files)
+      sorted_files[-2..-1].sort.should == ['ext_test_scores_appends.csv', 'other_append.csv']
+      sorted_files[0..2].sort.should == ["schools.csv", "schools_append.csv","schools_appends.csv"]
+      sorted_files = i.send(:sorted_filenames,files.reverse)
+      sorted_files[-2..-1].sort.should == ['ext_test_scores_appends.csv', 'other_append.csv']
+      sorted_files[0..2].sort.should == ["schools.csv", "schools_append.csv","schools_appends.csv"]
+
+    end
   end
 
   describe "process_file" do
@@ -51,6 +77,9 @@ describe ImportCSV do
       i = ImportCSV.new("users_appends.csv", District.new)
       i.should_receive("csv_importer").with("users_appends.csv")
       i.send :process_file, "users_appends.csv"
+      i = ImportCSV.new("users_append.csv", District.new)
+      i.should_receive("csv_importer").with("users_append.csv")
+      i.send :process_file, "users_append.csv"
     end
 
     it 'should return an error if the importer/filename is unknown' do
@@ -75,11 +104,11 @@ describe ImportCSV do
     end
 
     it "should call the csv importer when the filename does contain _appends" do
-      i = ImportCSV.new("users.csv", d=District.new)
-      CSVImporter::Users.should_receive(:new).with("users_appends.csv",d).and_return(mock_object(:import => nil))
-      i.send :csv_importer, "users_appends.csv"
-      CSVImporter::Users.should_receive(:new).with("users_append.csv",d).and_return(mock_object(:import => nil))
-      i.send :csv_importer, "users_append.csv"
+      i = ImportCSV.new("ext_test_scores_appends.csv", d=District.new)
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock_object(:import => nil))
+      i.send :csv_importer, "ext_test_scores_appends.csv"
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock_object(:import => nil))
+      i.send :csv_importer, "ext_test_scores_append.csv"
 
     end
 
