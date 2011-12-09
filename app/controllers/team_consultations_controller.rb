@@ -1,6 +1,6 @@
 class TeamConsultationsController < ApplicationController
   before_filter :require_current_school
-  additional_write_actions :complete
+  additional_write_actions :complete, :undo_complete
   # GET /team_consultations/1
   # GET /team_consultations/1.xml
   def show
@@ -108,7 +108,16 @@ class TeamConsultationsController < ApplicationController
     respond_to do |format|
       format.js
     end
-    
-
   end
+
+def undo_complete
+    @team_consultation = TeamConsultation.find(params[:id])
+    @team_consultation.undo_complete! and flash[:notice] = "Task is no longer complete" if @team_consultation.recipients.include?(current_user)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+
 end

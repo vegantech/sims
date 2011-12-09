@@ -11,6 +11,7 @@
   <% if team_consultation.complete? %>
     <%content_tag_for :span, team_consultation, "show_hide_view" do %>
       <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>&nbsp;&nbsp;&nbsp;
+      <%= link_to_remote_degrades "Undo Complete" , {:url =>undo_complete_team_consultation_path(team_consultation), :method => :put} %>&nbsp;&nbsp;&nbsp;
 
     <% end %>
   <% else %>

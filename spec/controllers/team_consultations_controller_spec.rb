@@ -133,4 +133,7 @@ describe TeamConsultationsController do
     end
   end
 
+
+  it 'should test complete'
+  it 'should test undo complete'
 end
