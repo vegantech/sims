@@ -20,7 +20,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :consultation_forms
 
-  map.resources :team_consultations, :member => {:complete => :put}
+  map.resources :team_consultations, :member => {:complete => :put, :undo_complete => :put}
 
   map.stats '/stats', :controller => 'main', :action => 'stats'
 

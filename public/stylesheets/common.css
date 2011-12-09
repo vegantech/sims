@@ -551,7 +551,7 @@ table.grouped_progress_entry thead {
   display:table-header-group;
 }
 
-#flash_notice {
+#flash_notice,.flash_notice {
   color:green;
 }
 

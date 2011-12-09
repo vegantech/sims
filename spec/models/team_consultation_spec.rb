@@ -35,4 +35,7 @@ describe TeamConsultation do
     it 'should return an array of users when there is a school team' 
 
   end
+
+  it 'should test complete'
+  it 'should test incomplete'  #656
 end
