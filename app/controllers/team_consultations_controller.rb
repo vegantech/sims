@@ -112,7 +112,7 @@ class TeamConsultationsController < ApplicationController
 
 def undo_complete
     @team_consultation = TeamConsultation.find(params[:id])
-    @team_consultation.undo_complete! and flash[:notice] = "Task is no longer complete" if @team_consultation.recipients.include?(current_user)
+    @team_consultation.undo_complete! and flash[:notice] = "Consultation is no longer complete" if @team_consultation.recipients.include?(current_user)
     respond_to do |format|
       format.js
     end
