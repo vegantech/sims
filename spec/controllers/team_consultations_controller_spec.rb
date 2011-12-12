@@ -135,6 +135,46 @@ describe TeamConsultationsController do
   end
 
 
-  it 'should test complete'
-  it 'should test undo complete'
+  describe 'complete and undo' do
+    before do
+      @mock_team_consultation = mock_team_consultation
+      TeamConsultation.should_receive(:find).with("37").and_return(@mock_team_consultation)
+      @current_user = mock_user
+      controller.stub!(:current_user => @current_user)
+    end
+    describe 'when user is team contact' do
+      before do
+        @mock_team_consultation.should_receive(:recipients).and_return([@current_user])
+      end
+      it 'should complete' do
+        @mock_team_consultation.should_receive(:complete!).and_return(true)
+        put :complete, :id => "37"
+        flash[:notice].should == "Marked complete"
+      end
+      it 'should undo complete' do
+        @mock_team_consultation.should_receive(:undo_complete!).and_return(true)
+        put :undo_complete, :id => "37"
+        flash[:notice].should == "Consultation is no longer complete"
+      end
+    end
+
+    describe 'when user is not team contact' do
+      before do
+        @mock_team_consultation.should_receive(:recipients).and_return([])
+      end
+      it 'should should not call complete' do
+        @mock_team_consultation.should_not_receive(:complete!)
+        put :complete, :id => "37"
+        flash[:notice].should be_blank
+      end
+      it 'should not call undo complete' do
+        @mock_team_consultation.should_not_receive(:undo_complete!)
+        put :undo_complete, :id => "37"
+        flash[:notice].should be_blank
+      end
+
+    end
+
+
+  end
 end
