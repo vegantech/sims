@@ -35,18 +35,20 @@ describe SpecialUserGroup do
 
 
   describe 'autoassign user assignments' do
-    it "should autoassign a user assignment" do
+    it 'should autoassign a user assignment when a user was previously assigned to another school' do #657
       UserSchoolAssignment.delete_all
       SpecialUserGroup.delete_all
       user = Factory(:user, :district_id => 1)
+      user.user_school_assignments.create!(:school_id => 2)
       sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1)
-      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1, :grade=>'02') #make sure duplicates are not created
-      UserSchoolAssignment.count.should == 0
-      SpecialUserGroup.autoassign_user_school_assignments
+      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1, :grade=>'02')
       UserSchoolAssignment.count.should == 1
-      UserSchoolAssignment.first.school_id.should == 1
+      SpecialUserGroup.autoassign_user_school_assignments
+      UserSchoolAssignment.count.should == 2
+      UserSchoolAssignment.first.school_id.should == 2
+      UserSchoolAssignment.last.school_id.should == 1
       UserSchoolAssignment.first.user_id.should == user.id
-
+      UserSchoolAssignment.last.user_id.should == user.id
     end
   end
 end
