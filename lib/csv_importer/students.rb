@@ -234,12 +234,12 @@ module CSVImporter
        q="delete e from enrollments e inner join students s on s.id = e.student_id
        left outer join #{temporary_table_name} ts on
           ts.district_student_id = s.district_student_id
-          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
+          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null and s.district_student_id != ''"
 
        clear_enrollments=ActiveRecord::Base.connection.update(q)
        q="update students s left outer join #{temporary_table_name} ts on
           ts.district_student_id = s.district_student_id set s.district_id = null
-          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null"
+          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null and s.district_student_id != ''"
 
       removed=ActiveRecord::Base.connection.update(q)
       @other_messages << "#{removed} students removed from district; "
