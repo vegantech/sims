@@ -14,6 +14,10 @@ describe ConsultationFormRequestsHelper do
     end
   end
   describe 'show_consultation_form' do
+    before do
+      district = mock_district(:show_team_consultation_attachments? => true)
+      self.stub!(:current_district=>district)
+    end
     it 'should return true when the form is filled in' do
       o=mock_object(:filled_in? => true,:school_team => SchoolTeam.new)
       f=mock_object(:object => o)

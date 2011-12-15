@@ -2,22 +2,25 @@
   <% team_consultation_form(@team_consultation) do |f| %>
   <%= f.error_messages %>
 
-  <p>
+  <% if current_district.show_team_consultation_attachments? %>
+    <p>
     <%= f.label :recipient_id, 'Recipient' %>
     <%= f.collection_select :team_id, @teams, :id, :to_s, {}, show_or_hide_form_onchange %>
-  </p>
+    </p>
+  <% end %>
 
-  <p>
   <% f.fields_for :consultation_forms do |consultation_form| %> 
     <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
   <% end %>
 
   <p>
-    <%= f.hidden_field :draft %>
+  <%= f.hidden_field :draft %>
+  <% unless current_district.show_team_consultation_attachments? %>
+    <%= f.label :recipient_id, 'Recipient' %>
+    <%= f.collection_select :team_id, @teams, :id, :to_s, {} %>
+  <% end %>
   </p>
   <p>
-
-  
   <%= f.submit 'Save', :onclick =>'this.form.elements("team_consultation[draft]").value=false' %>
   <%= f.submit 'Save as Draft', :onclick =>'this.form.elements("team_consultation[draft]").value=true' %>
   <%= spell_check_button %>
