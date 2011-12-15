@@ -8,6 +8,7 @@ module ConsultationFormRequestsHelper
   end
 
   def show_consultation_form?(f)
+    return true unless current_district.show_team_consultation_attachments?
     team=f.object.school_team
     if team.nil? && defined?(@teams)
       team = @teams.first

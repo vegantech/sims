@@ -201,7 +201,12 @@ class District < ActiveRecord::Base
   end
 
   def show_personal_groups?
-    Rails.env.wip? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+    Rails.env.wip? || Rails.env.development? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+  end
+
+  def show_team_consultation_attachments?
+    #Remove all references to this when put into production
+    Rails.env.wip? || Rails.env.development?  ||  ['grafton'].include?(self.abbrev)
   end
 
 
