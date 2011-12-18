@@ -44,9 +44,10 @@ Rails::Initializer.run do |config|
   config.gem 'newrelic_rpm'
 
  # deployment
- config.gem "capistrano", :lib => false
- config.gem "capistrano-ext", :lib => false
-
+unless ENV['TRAVIS']
+  config.gem "capistrano", :lib => false
+  config.gem "capistrano-ext", :lib => false
+end
  # need to upgrade rubygems
   # config.gem 'hpricot'
   # config.gem 'treetop'
