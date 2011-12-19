@@ -1,5 +1,5 @@
 rvm: 1.8.7
-before_install: rvm install rubygems 1.4.2; gem install rails -v=2.3.4 --no-rdoc --no-ri && cp config/database.yml.mysql config/database.yml && RAILS_ENV=cucumber rake gems:install
+before_install: rvm install rubygems 1.4.2; gem install rails -v=2.3.4 --no-rdoc --no-ri && cp config/database.yml.mysql config/database.yml && RAILS_ENV=cucumber rake gems:install && rake db:create:all
 
 branches:
   only:
