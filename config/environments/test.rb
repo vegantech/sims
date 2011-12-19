@@ -24,7 +24,7 @@ config.action_mailer.delivery_method = :test
 
 
 #Test requirements
-config.gem 'rcov',  :version => "=> 0.9.9", :lib => false
+config.gem 'rcov',  :version => ">=0.9.9", :lib => false
 config.gem 'hpricot', :lib => false, :version => '=0.6.161'
 config.gem 'rspec', :version => '=1.2.4', :lib => false
 config.gem 'rspec-rails', :version => '=1.2.4', :lib => false
