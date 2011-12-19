@@ -4,9 +4,6 @@
 [submodule "vendor/plugins/rspec-rails"]
 	path = vendor/plugins/rspec-rails
 	url = git://github.com/dchelimsky/rspec-rails.git
-[submodule "vendor/plugins/coveralls"]
-	path = vendor/plugins/coveralls
-	url = git://github.com/vegantech/coveralls.git
 [submodule "vendor/plugins/cells"]
 	path = vendor/plugins/cells
 	url = git://github.com/apotonick/cells.git
