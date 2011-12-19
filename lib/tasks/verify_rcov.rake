@@ -1,6 +1,6 @@
 begin
 require File.dirname(__FILE__)+ '/rcov_rake_helper'
-require File.expand_path("vendor/plugins/rspec/lib/spec/rake/verify_rcov")
+require "spec/rake/verify_rcov"
 
 Rake::TaskManager.class_eval do
   def remove_task(task_name)

@@ -38,10 +38,11 @@ Rails::Initializer.run do |config|
   config.gem "pdf-writer", :lib => "pdf/writer"
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
-  config.gem 'googlecharts'
+  config.gem 'googlecharts', :version => '=1.6.3'
   config.gem 'airbrake', :version => "~> 3.0.5"
   config.gem 'responds_to_parent'
   config.gem 'newrelic_rpm'
+  config.gem 'mysql'
 
  # deployment
 unless ENV['TRAVIS']
