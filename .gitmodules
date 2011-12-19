@@ -7,6 +7,3 @@
 [submodule "vendor/plugins/cells"]
 	path = vendor/plugins/cells
 	url = git://github.com/apotonick/cells.git
-[submodule "vendor/rails"]
-	path = vendor/rails
-	url = git://github.com/rails/rails.git
