@@ -37,7 +37,7 @@ class Role
   r=  Role::ROLES.reject do |r|
       ((mask || 0) & 2**Role::ROLES.index(r)).zero?
     end
-  r.metaclass.send(:define_method, "<<") do
+  r.singleton_class.send(:define_method, "<<") do
     puts 'You probably want to use += instead'
     #Switching to rails 3 would allow me to redefine array as an association
     super

@@ -1,2 +1,2 @@
---exclude "spec/*,gems/*,bluecloth.rb" 
+--exclude "spec/*,gems/*"
 --rails

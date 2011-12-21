@@ -513,13 +513,13 @@ describe User do
      end
      it 'should remove a staff assignment' do
        sa=@u.staff_assignments.create!(:school_id => @s1.id)
-       @u.staff_assignments_attributes =[{:id =>sa.id, :_delete => true}]
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}]
        @u.save
        @u.staff_assignments.reload.should be_empty
      end
      it 'should add and delete the same staff_assignment' do
        sa=@u.staff_assignments.create!(:school_id => @s1.id)
-       @u.staff_assignments_attributes =[{:id =>sa.id, :_delete => true}, {:school_id => @s1.id}]
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}, {:school_id => @s1.id}]
        @u.save
        @u.staff_assignments.count.should == 1
        @u.staff_assignments.first.school_id.should == @s1.id
