@@ -43,11 +43,12 @@ Feature: Assign Participants to Intervention
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_ids_"
     And I check "Assign yourself to this intervention"
     And I press "Save"
-    Then there are "1" emails
-      #(One to both users)
     When I follow "Edit/Add Comment"
     Then I should see "default user" within "div#participants_list"
     And I should see "Firstcucumber_another Last_Name" within "div#participants_list"
+    And I am pending while I investigate email counts
+    Then there are "1" emails
+      #(One to both users)
 
   
  Scenario: Add same Participant and select checkbox

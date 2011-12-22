@@ -130,7 +130,6 @@ class User < ActiveRecord::Base
   after_save :district_special_groups
 
   acts_as_reportable # if defined? Ruport
-#  alias_method_chain :staff_assignment_school_ids=,:uniqueness
 
   def authorized_groups_for_school(school,grade=nil)
     if special_user_groups.all_students_in_school?(school)
