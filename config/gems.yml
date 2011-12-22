@@ -14,3 +14,5 @@
 - :name: capistrano-ext
 - :version: 2.3.4
   :name: rails
+  :version: ">= 2.12.0"
+  :name: hoe
