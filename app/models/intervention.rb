@@ -51,7 +51,6 @@ class Intervention < ActiveRecord::Base
   has_many :intervention_probe_assignments, :dependent => :destroy 
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
-  validates_associated :intervention_definition, :if => Proc.new {|i| i.intervention_definition && i.intervention_definition.new_record?}
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}

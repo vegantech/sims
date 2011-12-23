@@ -49,7 +49,7 @@ module ApplicationHelper
   end
 
   def link_to_if_present(name, path)
-    link_to(name,path) if File.exist?("#{RAILS_ROOT}/public/#{path}")
+    link_to(name,path) if File.exist?("#{Rails.root}/public/#{path}")
   end
 
 

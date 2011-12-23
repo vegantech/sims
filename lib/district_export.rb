@@ -18,7 +18,7 @@ class DistrictExport
 
   def generate(district)
     @files=Hash.new
-    dir = "#{RAILS_ROOT}/tmp/district_export/#{district.id}/"
+    dir = "#{Rails.root}/tmp/district_export/#{district.id}/"
     
     FileUtils.mkdir_p dir unless File.exists? dir
     FileUtils.rm(Dir.glob(dir +"*"))

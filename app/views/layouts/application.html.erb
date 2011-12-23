@@ -72,7 +72,7 @@
         <br /><br />
 
         <%= render :partial =>'districts/google_lsa'  if current_user.roles.include?("local_system_administrator") %>
-        <% if ENV["RAILS_ENV"] =~ /development/ %>
+        <% if Rails.env.development? %>
           <div id="debug">
             <a href="#" onclick="Element.toggle('params_debug_info');return false">
               params</a> |
