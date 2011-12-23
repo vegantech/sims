@@ -3,4 +3,5 @@ before_install: rvm install rubygems 1.4.2; gem install rails -v=2.3.4  && cp co
 
 branches:
   only:
-  - travis-ci
+  - master
+  - wip
