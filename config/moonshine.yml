@@ -92,3 +92,5 @@
     :max_memory: 256
     :client:  1.8.1
     :enable_on_boot:  true
+
+:rubygems_version: 1.4.2

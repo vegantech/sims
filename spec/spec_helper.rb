@@ -1,10 +1,16 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
 require 'spec/autorun'
 require 'spec/rails'
-require File.expand_path(File.dirname(__FILE__) + '/mock_helper')
+
+# Uncomment the next line to use webrat's matchers
+#require 'webrat/integrations/rspec-rails'
+
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
@@ -35,7 +41,7 @@ Spec::Runner.configure do |config|
   #
   # == Mock Framework
   #
-  # RSpec uses it's own mocking framework by default. If you prefer to
+  # RSpec uses its own mocking framework by default. If you prefer to
   # use mocha, flexmock or RR, uncomment the appropriate line:
   #
   # config.mock_with :mocha
@@ -43,39 +49,6 @@ Spec::Runner.configure do |config|
   # config.mock_with :rr
   #
   # == Notes
-  # 
+  #
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
-  describe "a schools_requiring controller", :shared => true do
-    before(:each) do
-      controller.should_receive(:require_current_school).any_number_of_times.and_return(true)
-      controller.class.before_filters.should include(:require_current_school) 
-    end
-  end
-
-
-  
-  describe "an authenticated controller", :shared => true do
-    before(:each) do
-      controller.should_receive(:authenticate).any_number_of_times.and_return(true)
-      controller.class.before_filters.should include(:authenticate) 
-    end
-  end
-
-
-  describe "an authorized controller", :shared => true do
-    before(:each) do
-     controller.should_receive(:authorize).any_number_of_times.and_return(true)
-     controller.class.before_filters.should include(:authorize)
-    end
-
-    it 'should have all actions in action_groups (read or write for now.)' do
-      controller.class.public_instance_methods(false).each do |public_action|
-        controller.stub!(:action_name => public_action.to_s)
-        # controller.send(:action_group_for_current_action).should_not be_nil
-        flunk public_action.to_s if controller.send(:action_group_for_current_action).blank?
-      end
-    end
-  end
 end
-
-

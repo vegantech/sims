@@ -1,0 +1,36 @@
+Coveralls
+=========
+
+  A rails plugin to make sure all files are required and show up in the code coverage report. (Untouched files are excluded and can thus inflate the overall code coverage.)   If you forget to test a new library or module, it may not show up on the report, and thus you won't see that the coverage for that file is low.
+
+
+Install
+=======
+git submodule add git://github.com/vegantech/coveralls.git vendor/plugins/coveralls
+git submodule init
+git submodule install
+
+
+
+Example
+=======
+
+After installing the plugin create a test or spec that contains Coveralls.require_all_ruby_files
+
+This will require all ruby files in /lib and /app if they haven't already been required.     
+
+You can also pass in an array of directories to require.
+
+Coveralls.require_all_ruby_files ["/app/models","/app/lib"]
+
+
+
+
+Thanks
+=======
+
+Special thanks go to Stephen Anderson for the name and for encouraging me to create this plugin.
+
+
+Copyright (c) 2008 Shawn Balestracci, released under the MIT license
+
