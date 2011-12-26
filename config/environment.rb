@@ -43,6 +43,7 @@ Rails::Initializer.run do |config|
   config.gem 'responds_to_parent'
   config.gem 'newrelic_rpm'
   config.gem 'mysql'
+  config.gem 'nokogiri', :version => '1.4.4', :lib => false
 
  # deployment
 unless ENV['TRAVIS']
