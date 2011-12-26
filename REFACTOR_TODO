@@ -1,0 +1,23 @@
+1. extract resources where they are namespaced
+
+groups
+  special user group membership
+  user_group_membership
+  student_group_membership
+
+flags
+  custom flags
+  system flags?
+  ignore flags
+
+
+
+2. Memoize?
+
+3. Remove references to flatten
+
+4. Clean up link to to point to just the action or just the model.  Same with render to just the model or array when possible
+
+5. Refactor enrollment search, get it out of enrollments
+
+
