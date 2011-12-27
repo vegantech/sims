@@ -20,4 +20,5 @@ flags
 
 5. Refactor enrollment search, get it out of enrollments
 
+6 Remove ruport/pdf:writer and use prawn
 
