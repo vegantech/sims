@@ -12,7 +12,7 @@
 - :name: mysql
 - :name: capistrano
 - :name: capistrano-ext
-- :version: 2.3.4
+- :version: 2.3.14
   :name: rails
   :version: 1.4.4
   :name: nokogiri
