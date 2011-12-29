@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe CicoSchoolDaysController do
+  before do
+    pending "These are all incomplete"
+  end
 
   def mock_cico_school_day(stubs={})
     @mock_cico_school_day ||= mock_model(CicoSchoolDay, stubs)
