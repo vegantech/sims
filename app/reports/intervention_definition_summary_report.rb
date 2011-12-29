@@ -84,7 +84,7 @@ class InterventionDefinitionSummary
       :methods => ['description_with_sld','bolded_title', 'frequency_duration_summary', 'tier_summary', 'monitor_summary', 'business_key', 'links_and_attachments','sld?'])
 
     if a.column_names.present?
-      cls = ["description", "monitor_summary", "frequency_duration_summary", "tier_summary", "business_key","links_and_attachments", "bolded_title",  "intervention_cluster.title"]
+      cls = ["description_with_sld", "monitor_summary", "frequency_duration_summary", "tier_summary", "business_key","links_and_attachments", "bolded_title",  "intervention_cluster.title"]
       a.rename_columns(cls,['Description', 'Progress Monitors', 'Duration / Frequency','Tier', 'Bus. Key', 'Links and Attachments', 'Title', 'Category'])
       a.reorder ['Bus. Key', 'Category', 'Title', 'Description', 'Tier', 'Duration / Frequency', 'Progress Monitors', 'Links and Attachments' ]
       a.sort_rows_by(['Tier', 'Category', 'Bus. Key'])
