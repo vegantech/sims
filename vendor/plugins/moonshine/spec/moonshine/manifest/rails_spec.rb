@@ -148,46 +148,6 @@ describe Moonshine::Manifest::Rails do
   end
 
   describe "passenger support" do
-    it "installs gem" do
-      @manifest.configure(:passenger => { :version => nil })
-
-      @manifest.passenger_configure_gem_path
-      @manifest.passenger_gem
-
-      @manifest.should have_package('passenger').version(:latest)
-    end
-
-    it "can be pinned to a specific version" do
-      @manifest.configure(:passenger => { :version => '2.2.2' })
-      @manifest.passenger_configure_gem_path
-      @manifest.passenger_gem
-
-      @manifest.should have_package('passenger').version('2.2.2')
-    end
-
-    it "installs passenger apache module" do
-      @manifest.passenger_configure_gem_path
-      @manifest.passenger_apache_module
-
-      @manifest.should have_package('apache2-threaded-dev')
-      @manifest.should have_file('/etc/apache2/mods-available/passenger.load')
-      @manifest.should have_file('/etc/apache2/mods-available/passenger.conf').with_content(
-        /PassengerUseGlobalQueue On/
-      )
-      @manifest.should exec_command('/usr/sbin/a2enmod passenger')
-      @manifest.should exec_command('sudo /usr/bin/ruby -S rake clean apache2')
-    end
-
-    it "allows setting booleans configurations to false" do
-      @manifest.configure(:passenger => { :use_global_queue => false })
-      @manifest.passenger_configure_gem_path
-      @manifest.passenger_apache_module
-
-      @manifest.should have_file('/etc/apache2/mods-available/passenger.conf').with_content(
-        /PassengerUseGlobalQueue Off/
-      )
-    end
-
 
     describe "passenger_site" do
       it "enables passenger vhost, disables default vhost, and configures mod_rewrite" do
@@ -215,6 +175,23 @@ describe Moonshine::Manifest::Rails do
         )
       end
 
+      it "makes the maintenance.html page return a 503" do
+        @manifest.passenger_configure_gem_path
+
+        @manifest.passenger_site
+
+        vhost_conf_path = "/etc/apache2/sites-available/#{@manifest.configuration[:application]}"
+        @manifest.should have_file(vhost_conf_path).with_content(
+          /ErrorDocument 503 \/system\/maintenance\.html/
+        )
+        @manifest.should have_file(vhost_conf_path).with_content(
+          /RewriteCond \%\{SCRIPT_FILENAME\} \!maintenance\.html/
+        )
+        @manifest.should have_file(vhost_conf_path).with_content(
+          /RewriteRule \^\.\*\$ - \[R=503,L\]/
+        )
+      end
+
       it "supports configuring gzip" do
         @manifest.passenger_configure_gem_path
         @manifest.configure(:apache => {
@@ -229,13 +206,36 @@ describe Moonshine::Manifest::Rails do
         )
       end
 
+      it "sets the X-Request-Start header" do
+        @manifest.passenger_configure_gem_path
+        @manifest.passenger_site
+
+        vhost_conf_path = "/etc/apache2/sites-available/#{@manifest.configuration[:application]}"
+        @manifest.should have_file(vhost_conf_path).with_content(
+          /RequestHeader set X-Request-Start "%t"/
+        )
+      end
+
+      it "supports configuring FileETag" do
+        @manifest.passenger_configure_gem_path
+        @manifest.configure(:apache => { :file_etag => "MTime Size" })
+        
+        @manifest.passenger_site
+
+        vhost_conf_path = "/etc/apache2/sites-available/#{@manifest.configuration[:application]}"
+        @manifest.should have_file(vhost_conf_path).with_content(
+          /FileETag MTime Size/
+        )
+      end
+
       it "supports configuring ssl" do
         @manifest.passenger_configure_gem_path
         @manifest.configure(:ssl => {
           :certificate_file => 'cert_file',
           :certificate_key_file => 'cert_key_file',
           :certificate_chain_file => 'cert_chain_file',
-          :protocol => 'all -SSLv2'
+          :protocol => 'all -SSLv2',
+          :cipher_suite => 'ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM'
         })
 
         @manifest.passenger_site
@@ -248,6 +248,9 @@ describe Moonshine::Manifest::Rails do
         )
         @manifest.should have_file("/etc/apache2/sites-available/#{@manifest.configuration[:application]}").with_content(
           /SSLProtocol all -SSLv2/
+        )
+        @manifest.should have_file("/etc/apache2/sites-available/#{@manifest.configuration[:application]}").with_content(
+          /ALL:\!aNULL:\!ADH:\!eNULL:\!LOW:\!EXP:RC4\+RSA:\+HIGH:\+MEDIUM/
         )
       end
 
@@ -488,6 +491,20 @@ describe Moonshine::Manifest::Rails do
 
       libmagick9_dev.should_not == nil
       libmagick9_dev.type.should == 'Package'
+    end
+  end
+
+  describe "rake" do
+    it "installs :installed by default" do
+      @manifest.configure(:rake_version => nil)
+      @manifest.rails_rake_environment
+      @manifest.should have_package('rake').version(:installed)
+    end
+
+    it "can be pinned to a specific version" do
+      @manifest.configure(:rake_version => '1.2.3')
+      @manifest.rails_rake_environment
+      @manifest.should have_package('rake').version('1.2.3')
     end
   end
 

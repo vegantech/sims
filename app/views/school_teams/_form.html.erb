@@ -31,3 +31,9 @@ Members
   </tbody>
 </table>
 
+<% if current_district.show_team_consultation_attachments? %>
+  <p> You can upload a blank form here that users can download, complete, and upload if you prefer a different format for the consultation form.  </p>
+  </p>
+  <%= render :partial => '/assets/asset_form', :locals => {:form=>form, :parent =>'school_team'}  %>
+<% end %>
+

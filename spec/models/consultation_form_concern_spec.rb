@@ -28,4 +28,18 @@ describe ConsultationFormConcern do
   it "should create a new instance given valid attributes" do
     ConsultationFormConcern.create!(@valid_attributes)
   end
+
+  describe "filled_in?" do
+    it "should return false when there is no content" do
+      ConsultationFormConcern.new.filled_in?.should be_false
+      ConsultationFormConcern.new(:strengths => "").filled_in?.should be_false
+      ConsultationFormConcern.new(:strengths => "",:concerns => "", :recent_changes => "").filled_in?.should be_false
+    end
+
+    it "should return true when there is concent" do
+      ConsultationFormConcern.new(:strengths => "a").filled_in?.should be_true
+      ConsultationFormConcern.new(:concerns => "a").filled_in?.should be_true
+      ConsultationFormConcern.new(:recent_changes => "a").filled_in?.should be_true
+    end
+  end
 end

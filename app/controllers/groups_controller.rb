@@ -4,9 +4,10 @@ class GroupsController < ApplicationController
       :add_special_form, :add_special
   # GET /groups
   def index
-    
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])
     @virtual_groups = current_school.virtual_groups
+    redirect_to(index_url_with_page(:title => params[:title], :page => @groups.total_pages)) and return if wp_out_of_bounds?(@groups)
+    capture_paged_controller_params
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,7 +43,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        flash[:notice] = 'Group was successfully created.'
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully created."
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "new" }
@@ -56,7 +57,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        flash[:notice] = 'Group was successfully updated.'
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated."
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "edit" }
@@ -134,7 +135,12 @@ end
     #need to handle special user groups as well
     @group = current_school.groups.find(params[:id])
     @user_assignment = @group.user_group_assignments.find(params[:user_assignment_id])
-#    @user_assignment.destroy
+    @user_assignment.destroy
+    respond_to do |format|
+      format.html {redirect_to @group}
+      format.js {}
+
+    end
   end
 
   def show_special
@@ -168,7 +174,6 @@ end
     grade = @group.split("_").last.downcase
     grade= nil if grade == "school"
     @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => current_district))
-    
 
     if @special_user_group.save
     else

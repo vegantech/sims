@@ -12,7 +12,7 @@ class CreateTrainingDistrict
   end
 
   def self.generate_named_districts
-    Dir.glob(File.join(RAILS_ROOT,"public","system", "district_demo_content","*")).each {|d| generate_named_district d}
+    Dir.glob(File.join(Rails.root,"public","system", "district_demo_content","*")).each {|d| generate_named_district d}
   end
 
   def self.generate_named_district district_dir

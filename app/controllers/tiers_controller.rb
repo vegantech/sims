@@ -12,17 +12,6 @@ class TiersController < ApplicationController
     end
   end
 
-  # GET /tiers/1
-  # GET /tiers/1.xml
-  def show
-    @tier = current_district.tiers.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @tier }
-    end
-  end
-
   # GET /tiers/new
   # GET /tiers/new.xml
   def new

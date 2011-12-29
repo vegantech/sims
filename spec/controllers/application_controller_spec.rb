@@ -193,6 +193,12 @@ describe ApplicationController do
     response.should be_success
   end 
 
+  describe 'check_student' do
+    it 'should have specs'
+
+
+  end
+
 
 
 

@@ -44,7 +44,7 @@ module InterventionsHelper
     else
       form_for :quicklist_item,  :url => quicklist_interventions_path do |f|
         concat(f.label(:intervention_definition_id, "Intervention Quicklist "))
-        concat('<select id="quicklist_item_intervention_definition_id" onchange="form.submit()" name="quicklist_item[intervention_definition_id]"')
+        concat('<select id="quicklist_item_intervention_definition_id" onchange="form.submit()" name="quicklist_item[intervention_definition_id]">')
         concat('<option value=""></option>')
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|

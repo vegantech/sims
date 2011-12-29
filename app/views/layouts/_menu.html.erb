@@ -5,10 +5,11 @@
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
       <%= render :partial => "layouts/core_practices" %>
       <%= render :partial => "layouts/intervention_pdf_html_list" %>
+      <%= render :partial => "layouts/district_docs" %>
 
     <% end %>
 
-    <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,current_school.blank?,current_student.blank?,session[:search].blank?] do %>
+    <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,session[:search].blank?] do %>
 
       <% if session[:search] %>
       <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
@@ -24,6 +25,7 @@
         current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
       <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
+      <% end %>
       <% plus_minus_li "Reports" do %>
           <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
           <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
@@ -31,9 +33,9 @@
 
           <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
               interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
-          <% if_student_selected do %>
-            <%= li_link_to_if_authorized "<b>Student Report</b>", '/reports/student_overall_options' %>
-            <%= li_link_to_if_authorized "Student Interventions", '/reports/student_interventions' %>
+          <% if current_student  %>
+            <%= li_link_to_if_authorized "<b>Student Report</b>", {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
+            <%= li_link_to_if_authorized "Student Interventions", {:controller => 'reports', :action => 'student_interventions', :student_id => current_student.id } %>
           <% end %>
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
           <%= li_link_to_if_authorized "Grouped Progress Monitors and Comments", '/reports/grouped_progress_entry' if session[:search] %>
@@ -42,7 +44,6 @@
 
       <li><%= link_to "Change Password", change_password_path %></li>
       <li><%= render :partial => 'login/logout' %></li>
-    <% end %>
     <% elsif !defined?DEFAULT_URL %>
       <li>Please login.</li>
       <% if @districts.blank? or @districts.size < 100 %>

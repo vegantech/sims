@@ -17,6 +17,7 @@
 #
 
 class ConsultationForm < ActiveRecord::Base
+  include LinkAndAttachmentAssets
   belongs_to :user
   belongs_to :team_consultation
   
@@ -38,6 +39,11 @@ class ConsultationForm < ActiveRecord::Base
 
   def build_concerns
      0.upto(ConsultationFormConcern::AREAS.length() -1 ){|i| consultation_form_concerns.build(:area => i)} if consultation_form_concerns.blank?
+  end
+
+  def filled_in?
+    do_differently.present? || parent_notified.present? || not_in_sims.present? ||
+      desired_outcome.present? || race_culture.present? || consultation_form_concerns.any?(&:filled_in?)
   end
 
  private

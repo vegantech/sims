@@ -7,25 +7,36 @@
       <p>
         <% if @intervention.selected_ids %>
           <div class="fake_label">
-            <%= f.check_box :apply_to_all %> 
+            <%= f.check_box :apply_to_all %>
           </div>
           <div>
             <%= f.label :apply_to_all, "Apply to all selected students", {:class => 'checkbox_label_span'} %>
-            <%= link_to_function "Show/Hide" , "$('intervention_student_list').toggle()" %>
+            <%= help_popup "When checked, all students you selected will be assigned this intervention.  If there is a progress monitor assigned, then
+            participants of this intervention will be able to use the grouped progress assignments to enter comments and scores for this
+            intervention." %>
+            <%= link_to_function "Student List" , "$('intervention_student_list').toggle()" %>
             <div id="intervention_student_list" style="display:none">
-              <%=Student.find_all_by_id(@intervention.selected_ids).collect(&:fullname).join(", ")%>
+              The following students have been selected to be assigned to this intervention: <br />
+              <ul>
+                <%Student.find_all_by_id(@intervention.selected_ids).each do |assigned_student| %>
+                  <li><%=assigned_student.fullname%></li>
+                <% end %>
+                </ul>
             </div>
           </div>
-          
+
 
         <% end %>
-        <br class="brclear" /> 
+        <br class="brclear" />
 
         <div class="fake_label">
-          <%= f.check_box :auto_implementer %> 
+          <%= f.check_box :auto_implementer %>
         </div>
-        <%= f.label :auto_implementer, "Assign yourself to this intervention", {:class => 'checkbox_label'} %>
-      <br class="brclear" />
+          <%= f.label :auto_implementer, "Assign yourself to this intervention", {:class => 'checkbox_label_span'} %>
+          <%= help_popup "When checked, you will be a participant in this intervention.   You must be a participant for the intervention
+        to show up in the grouped progress assignments.  This is now checked by default,  unselect it if you are not going to participate.
+        (If you're recording for someone else, then you are a participant.)" %>
+        <br class="brclear" />
       </p>
 
       <div class="center_submit">

@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
 describe CSVImporter::Students do
+  it_should_behave_like "csv importer"
   describe 'make sure esl and special_ed are correct' do
     it 'should upload properly' do
       District.delete_all
@@ -38,6 +40,8 @@ describe CSVImporter::Students do
       s2=d.students.create!(:id_state=>2, :first_name => 'destroy', :last_name => 'student', :district_student_id => 's2')
       s2.enrollments.create!(:school_id=>1, :grade =>'02')
       e3=Enrollment.create!(:student_id=>-1,:grade=>-1,:school_id=>-1)
+      s3=d.students.create!(:id_state=>nil, :first_name => 'blank_district_student_id', :last_name => 'student', :district_student_id => '')
+
       file_name = ''
       i=CSVImporter::Students.new file_name,d
       i.send(:create_temporary_table)
@@ -91,15 +95,14 @@ describe CSVImporter::Students do
                                             (94, -1,-1, 'NULL_BIRTHDATE_IN_DB',NULL, 'MISMATCHED_CASE', NULL, '2006-01-05', FALSE, FALSE),
                                             (93, -1,-1, 'NULL_BIRTHDATE_IN_CSV',NULL, 'MISMATCHED_CASE', NULL, NULL, FALSE, FALSE),
                                             (92, -1,-1, 'ZERO_BIRTHDATE_IN_DB',NULL, 'MISMATCHED_CASE', NULL, '2006-01-05', FALSE, FALSE)
-                                            
                                             ")
 
-      i.send :reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side                                      
+      i.send :reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
      i.send(:drop_temporary_table)
-      
 
-      i.messages.sort.should == 
-        ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.", 
+
+      i.messages.sort.should ==
+        ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.",
         "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       ]
 

@@ -130,9 +130,9 @@ describe Enrollment do
     end
 
     describe 'passed no search criteria' do
-      it 'should raise an exception' do
-        lambda {Enrollment.search}.should raise_error
-        lambda {Enrollment.search(:search_type=>'fake')}.should raise_error
+      it 'should return an empty array' do
+        Enrollment.search({}).should == []
+        Enrollment.search(:search_type => 'fake').should == []
       end
     end
 

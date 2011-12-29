@@ -23,4 +23,8 @@ class ConsultationFormConcern < ActiveRecord::Base
   def area_text
     AREAS[area]
   end
+
+  def filled_in?
+    strengths.present? || concerns.present? || recent_changes.present?
+  end
 end

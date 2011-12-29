@@ -9,15 +9,6 @@ describe ConsultationFormRequestsController do
     @mock_consultation_form_request ||= mock_model(ConsultationFormRequest, stubs)
   end
   
-  describe "GET show" do
-    it "assigns the requested consultation_form_request as @consultation_form_request" do
-      controller.should_receive(:current_district).and_return(d=mock_district)
-      ConsultationFormRequest.should_receive(:find).with("37").and_return(mock_consultation_form_request(:district=>d))
-      get :show, :id => "37"
-      assigns[:consultation_form_request].should equal(mock_consultation_form_request)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new consultation_form_request as @consultation_form_request" do
       ConsultationFormRequest.should_receive(:new).and_return(mock_consultation_form_request)

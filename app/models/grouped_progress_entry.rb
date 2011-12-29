@@ -79,7 +79,7 @@ class GroupedProgressEntry
         "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
 
 
-    def student_count
+    def students_with_scores_count
       ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
          @probe_definition.id,
         :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",

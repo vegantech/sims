@@ -505,7 +505,7 @@ div.questionDiv label ul
 }
   
 
-.user_school_assignment label {
+.user_school_assignment label,.staff_assignment label {
   float: none;
   margin-left: .5em;
   display: inline;
@@ -551,7 +551,7 @@ table.grouped_progress_entry thead {
   display:table-header-group;
 }
 
-#flash_notice {
+#flash_notice,.flash_notice {
   color:green;
 }
 

@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :consultation_forms
 
-  map.resources :team_consultations, :member => {:complete => :put}
+  map.resources :team_consultations, :member => {:complete => :put, :undo_complete => :put}
 
   map.stats '/stats', :controller => 'main', :action => 'stats'
 
@@ -62,15 +62,13 @@ ActionController::Routing::Routes.draw do |map|
   map.logout '/logout',:controller=>'login',:action=>'logout'
 
   map.resources :groups, :member=>{:add_student_form => :get,:add_student => :post , :remove_student => :delete,
-            :add_user_form => :get, :add_user => :post, :remove_user => :delete,
+            :add_user_form => :get, :add_user => :post, :remove_user => :delete, :remove_user => :get,
             :show_special => :get, :remove_special => :delete, :add_special_form => :get, :add_special =>:post }
 
 
 
   map.resources :checklists
   map.resources :recommendations
-
-  map.resources :student_comments
 
 
   map.delete_custom_flag '/custom_flags/delete/:id', :controller=>"custom_flags",:action=>'destroy'
@@ -80,7 +78,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :enrollments
 
-  map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post}
+  map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post} do |student|
+    student.resources :student_comments
+
+  end
 
   map.resources :schools, :collection => {:select => :post}
 

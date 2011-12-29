@@ -16,7 +16,7 @@ class ConsultationFormsController < ApplicationController
   # GET /consultation_forms/new
   # GET /consultation_forms/new.xml
   def new
-    @consultation_form = ConsultationForm.new
+    @consultation_form = current_student.team_consultations.find(params[:team_consultation_id]).consultation_forms.build
 
     respond_to do |format|
       format.js
@@ -41,11 +41,11 @@ class ConsultationFormsController < ApplicationController
     respond_to do |format|
       if @consultation_form.update_attributes(params[:consultation_form])
         msg= 'ConsultationForm was updated.'
-        format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
-        format.js 
+        format.js  {responds_to_parent {render}}
         format.html { render :action => "edit" }
         format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
@@ -70,12 +70,12 @@ class ConsultationFormsController < ApplicationController
     respond_to do |format|
       if @consultation_form.save
         msg= 'ConsultationForm was successfully created.'
-
-        format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
         format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
         format.html { render :action => "new" }
+        format.js { responds_to_parent{render} }
         format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
     end

@@ -24,7 +24,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:all) do
-      System::HASH_KEY=nil
+    System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
+    System::HASH_KEY=nil
     User.destroy_all
     @user = Factory(:user, :username => "oneschool")
   end
@@ -34,17 +35,18 @@ describe User do
       u = User.authenticate('oneschool', 'oneschool')
       u.username.should == 'oneschool'
     end
-  
+
     it 'should not allow bad password' do
       User.authenticate('oneschool', 'badpass').should be_nil
     end
-  
+
     it 'should not allow bad login' do
       User.authenticate('doesnotexist', 'ignored').should be_nil
     end
 
     describe 'additional hash keys and salts' do
       before :all do
+        System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
         System::HASH_KEY='mms'
       end
 
@@ -57,11 +59,11 @@ describe User do
 
           pnn = Digest::SHA1.hexdigest("#{password}#{salt}")
           pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{salt}")
-          ppn = Digest::SHA1.hexdigest("#{password}#{next_dk}#{salt}") 
+          ppn = Digest::SHA1.hexdigest("#{password}#{next_dk}#{salt}")
           pps = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{next_dk}#{salt}")
-          pdn = Digest::SHA1.hexdigest("#{password}#{dk}#{salt}") 
+          pdn = Digest::SHA1.hexdigest("#{password}#{dk}#{salt}")
           pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}#{salt}")
-          
+
           u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds, ppn, pps]
         end
       end
@@ -71,10 +73,10 @@ describe User do
         User.should_receive(:find_by_username).with('oneschool').and_return(@user)
         # User.any_instance.should_receive(:allowed_password_hashes).with('fail')
         User.authenticate('oneschool','fail')
-        
+
       end
 
-      
+
       it 'should store new users passwords including system hash_key when present' do
         u = Factory(:user, :password => 'test')
         u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test", u.salt, nil, nil)
@@ -110,7 +112,7 @@ describe User do
 
       it 'should use the generated salt, system key, and district key' do
         d = Factory(:district, :key => 'DisKye')
-        
+
         u = Factory(:user, :district => d)
         u.password = 'motest'
         u.password_confirmation = 'motest'
@@ -136,8 +138,8 @@ describe User do
     end
 
   end
-  
-  
+
+
   describe 'passwordhash' do
     it 'should be stored encrypted' do
       System::HASH_KEY=nil
@@ -145,7 +147,7 @@ describe User do
       @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
     end
   end
-  
+
   describe 'password=' do
     it 'should change the password hash when not blank' do
       u=User.new(:password=>"DOG")
@@ -169,7 +171,7 @@ describe User do
     u.fullname.should == ("0First. noschools")
     u.to_s.should == ("0First. noschools")
   end
-  
+
   describe 'authorized_groups_for_school' do
     it 'should return school groups when user is a member of all groups in school' do
       u=User.new
@@ -189,20 +191,20 @@ describe User do
 
     end
   end
-  
+
   describe 'filtered_groups_by_school' do
     it 'should return all authorized_groups for school if prompt is blank' do
       @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 2', 'group 1'])
       g1=Group.new
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
-      
+
       @user.filtered_groups_by_school('s1').should == [g1,'group 2', 'group 1']
     end
 
     it 'should return one authorized group with prompt depending on special user groups' do
       g1=Group.new
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
-     
+
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
       @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 1'])
       @user.filtered_groups_by_school('s1').should == ['group 1']
@@ -215,13 +217,13 @@ describe User do
       @user.filtered_groups_by_school(s,:grade=>'E',:user=>5 ).should == []
     end
   end
- 
+
   describe 'filtered_members_by_school' do
     before do
       @g1=User.new
 
     end
-    
+
      it 'should return all authorized_members if prompt is blank' do
         User.should_receive(:new).with(:id=>"*", :first_name =>"All", :last_name => "Staff").any_number_of_times.and_return(@g1)
         @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra", "Elephant", "Tiger"])
@@ -235,7 +237,7 @@ describe User do
       @user.filtered_members_by_school('s1').should == ['Zebra']
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
       @user.filtered_members_by_school('s1').should == [@g1,'Zebra']
-     
+
     end
 
     it 'should filter groups if prompt' do
@@ -244,7 +246,7 @@ describe User do
     end
   end
 
-  describe 'authorized_ for' do 
+  describe 'authorized_ for' do
     it 'should return false if unknown action_group_type' do
       User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
     end
@@ -285,7 +287,7 @@ describe User do
       @user.stub!(:principal? => true)
       @user.stub!(:principal_override_responses => ["Principal Override Response"])
       PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
-      @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"], 
+      @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"],
           :pending_requests => ["Pending For Principal"]}
     end
   end
@@ -312,7 +314,7 @@ describe User do
       s1=Factory(:school, :district => @user.district)
       s2=Factory(:school, :district => @user.district)
       s3=Factory(:school, :district => @user.district)
-      
+
       @user.schools << s1
       @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3, :district => @user.district)
       @user.authorized_schools.should == [s1,s3]
@@ -356,10 +358,10 @@ describe User do
       @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => @authorized_students_user.district, :school => @oneschool_elementary)
       @authorized_students_user.authorized_students.should == @oneschool_elementary.students
     end
- 
+
     it 'should return all students in a school of a certain grade when user has access to all students in school for that grade' do
       @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, 
+      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,
           :district => @authorized_students_user.district, :school => @oneschool_elementary, :grade => 6)
       @authorized_students_user.authorized_students.should == @oneschool_elementary.enrollments.find_all_by_grade(6).collect(&:student).flatten
     end
@@ -370,9 +372,33 @@ describe User do
       @authorized_students_user.groups << @red_team
       @authorized_students_user.authorized_students.should == @red_team.students
     end
- 
-    
-    
+
+
+
+
+  end
+
+  describe 'roles' do
+    it 'should test roles'
+    it 'should assign the role when added with +=' do
+      #also tests =
+      u=User.new
+      u.roles_mask.should == 0
+      u.roles += [Role::ROLES.first]
+      u.roles_mask.should == 1
+    end
+
+
+    it 'should assign the role when appended with <<' do
+      u=Factory(:user)
+      u.roles_mask.should == 0
+      $stdout.should_receive(:write).with("You probably want to use += instead").once
+      $stdout.should_receive(:write).with("\n").once
+      u.roles << Role::ROLES.first
+#      u.roles_mask.should == 1   warning for now
+
+
+    end
 
   end
 
@@ -460,5 +486,59 @@ describe User do
 
    end
 
+   describe 'record_successful_login' do
+    it 'should create a district log entry' do
+      u=Factory(:user)
+      u.record_successful_login
+      u.logs.last.body.should == "Successful login of #{u.fullname}"
+      log=u.district.logs.last
+      log.body.should == "Successful login of #{u.fullname}"
+      u.last_login.should == log.updated_at
+    end
+   end
+
+   describe 'staff_assignment' do
+     before do
+       @u=Factory(:user)
+       @s1=Factory(:school, :district_id => @u.district_id)
+       @s2=Factory(:school, :district_id => @u.district_id)
+       @s3=Factory(:school, :district_id => @u.district_id)
+     end
+     it 'should add a staff assignment' do
+       @u.staff_assignments_attributes = [{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+
+     end
+     it 'should remove a staff assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}]
+       @u.save
+       @u.staff_assignments.reload.should be_empty
+     end
+     it 'should add and delete the same staff_assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}, {:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+     it 'should remove new assignments when they already exist' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
+     it 'should add only 1 new staff assignment when new ones are duplicated' do
+       @u.staff_assignments_attributes =[{:school_id => @s1.id},{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
+   end
 
 end

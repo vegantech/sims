@@ -4,7 +4,7 @@ end %>
 <br />
 <div style="display:none" id ='aggregate_graph'>
 
-  <% (@grouped_progress_entry.student_count.to_f/GroupedProgressEntry::NUMBER_OF_STUDENTS_ON_GRAPH).ceil.times do |t| %>
+  <% (@grouped_progress_entry.students_with_scores_count.to_f/GroupedProgressEntry::NUMBER_OF_STUDENTS_ON_GRAPH).ceil.times do |t| %>
     <%=image_tag(aggregate_grouped_progress_entry_path(@grouped_progress_entry,:page=>t)) %> <br />
  <% end %>
 </div>
