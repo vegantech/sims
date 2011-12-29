@@ -427,7 +427,7 @@ class User < ActiveRecord::Base
 
   def self.find_all_by_role(role,options = {})
     with_scope :find => options do
-      find(:all,:conditions => ["roles_mask & ? ",2**Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+      find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
 =begin
