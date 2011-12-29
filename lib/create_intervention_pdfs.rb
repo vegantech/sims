@@ -13,7 +13,7 @@ class CreateInterventionPdfs
       htmlfile = "#{basefile}html"
       group= InterventionDefinitionSummary.new(:objective_definition => o).to_grouping()
 
-      File.open(pdffile,'w') do |f|o
+      File.open(pdffile,'w') do |f|
         f << InterventionDefinitionSummaryReport.render_pdf(:objective_definition => o, :template => :standard, :group => group)
       end
 
