@@ -20,8 +20,12 @@ describe ConsultationFormsController do
 
   describe "GET new" do
     it "assigns a new consultation_form as @consultation_form" do
-      ConsultationForm.should_receive(:new).and_return(mock_consultation_form)
-      get :new
+      cur_student = mock_student(:team_consultations => TeamConsultation, :district_id => 566)
+      controller.should_receive(:current_student).and_return(cur_student)
+      mtc = mock_team_consultation(:consultation_forms => ConsultationForm)
+      TeamConsultation.should_receive(:find).with("1").and_return(mtc)
+      ConsultationForm.should_receive(:build).and_return(mock_consultation_form)
+      get :new, :team_consultation_id => 1
       assigns[:consultation_form].should equal(mock_consultation_form)
     end
   end
@@ -32,6 +36,7 @@ describe ConsultationFormsController do
       it "assigns a newly created consultation_form as @consultation_form" do
         ConsultationForm.should_receive(:new).with({'these' => 'params'}).and_return(mock_consultation_form(:save => true))
         mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
+        controller.should_receive(:current_student).twice.and_return(mock_student)
         post :create, :consultation_form => {:these => 'params'}
         assigns[:consultation_form].should equal(mock_consultation_form)
       end

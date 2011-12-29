@@ -1,0 +1,5 @@
+district_student_id,name,date,scale_score,result,end_date
+"s1","Update 1","2011-01-01", 3,"2", NULL
+"s1","Update 2","2011-01-01", 3,"1", "2011-02-02"
+"s1","Update 3","2011-01-01", 2,"1", "2011-02-02"
+"s1","Append 1","2011-10-10", 10,"5",NULL

@@ -152,7 +152,6 @@ describe Intervention do
         tl=TimeLength.new(:days => 3, :title => 'Triad')
         attrs = {:time_length => tl, :time_length_number => 5, :start_date =>"2006-05-05"}
         Intervention.new(attrs).end_date.should == "2006-05-20".to_date
-
       end
     end
 
@@ -174,9 +173,16 @@ describe Intervention do
         intervention.end_date.should == 210.days.since(Date.today)
       end
     end
-      
 
-    
+    describe 'build and initialize' do
+      it 'should set auto_implementor to true if it has not already been set' do
+        Intervention.build_and_initialize({}).auto_implementer.should be_true
+      end
 
+      it 'should leave auto_implementor alone if it is set to 0' do
+        Intervention.build_and_initialize({:auto_implementer => "0"}).auto_implementer.should == "0"
+      end
+      it 'should also have proper specs for build and initialize'
+    end
   end
 end

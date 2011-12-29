@@ -7,7 +7,7 @@ describe TeamConsultationsController do
       
 
   def mock_team_consultation(stubs={})
-    stubs.merge!(:draft? =>false)
+    stubs.reverse_merge!(:draft? =>false, :student => mock_student)
     @mock_team_consultation ||= mock_model(TeamConsultation, stubs)
   end
   
@@ -75,7 +75,7 @@ describe TeamConsultationsController do
     
   end
 
-  describe "PUT udpate" do
+  describe "PUT update" do
     
     describe "with valid params" do
       it "updates the requested team_consultation" do
@@ -91,9 +91,10 @@ describe TeamConsultationsController do
       end
 
       it "behaves like create" do
-        TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => true))
+        @student = mock_student
+        TeamConsultation.stub!(:find).and_return(mock_team_consultation(:update_attributes => true, :student => @student))
         put :update, :id => "1"
-        response.should render_template("create")
+        response.should redirect_to(student_url(@student))
       end
     end
     
@@ -126,11 +127,54 @@ describe TeamConsultationsController do
       delete :destroy, :id => "37"
     end
   
-    it "redirects to the team_consultations list" do
+    it "redirects to the team_consultations list (student)" do
       TeamConsultation.stub!(:find).and_return(mock_team_consultation(:destroy => true, :student => stu=mock_student))
       delete :destroy, :id => "1", :format =>'html'
       response.should redirect_to(student_url(stu))
     end
   end
 
+
+  describe 'complete and undo' do
+    before do
+      @mock_team_consultation = mock_team_consultation
+      TeamConsultation.should_receive(:find).with("37").and_return(@mock_team_consultation)
+      @current_user = mock_user
+      controller.stub!(:current_user => @current_user)
+    end
+    describe 'when user is team contact' do
+      before do
+        @mock_team_consultation.should_receive(:recipients).and_return([@current_user])
+      end
+      it 'should complete' do
+        @mock_team_consultation.should_receive(:complete!).and_return(true)
+        put :complete, :id => "37"
+        flash[:notice].should == "Marked complete"
+      end
+      it 'should undo complete' do
+        @mock_team_consultation.should_receive(:undo_complete!).and_return(true)
+        put :undo_complete, :id => "37"
+        flash[:notice].should == "Consultation is no longer complete"
+      end
+    end
+
+    describe 'when user is not team contact' do
+      before do
+        @mock_team_consultation.should_receive(:recipients).and_return([])
+      end
+      it 'should should not call complete' do
+        @mock_team_consultation.should_not_receive(:complete!)
+        put :complete, :id => "37"
+        flash[:notice].should be_blank
+      end
+      it 'should not call undo complete' do
+        @mock_team_consultation.should_not_receive(:undo_complete!)
+        put :undo_complete, :id => "37"
+        flash[:notice].should be_blank
+      end
+
+    end
+
+
+  end
 end

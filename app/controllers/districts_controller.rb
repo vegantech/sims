@@ -102,7 +102,7 @@ class DistrictsController < ApplicationController
           #request redirect_to root_url
         rescue => e
           Rails.logger.error "Spawn Exception #{Time.now} #{e.message}"
-          HoptoadNotifier.notify(
+          Airbrake.notify(
             :error_class => "Spawn Error",
             :error_message => "Spawn Error: #{e.message}"
           )

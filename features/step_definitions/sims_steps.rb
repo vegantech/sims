@@ -84,6 +84,24 @@ Given /^I am a district admin$/ do
   @default_user.save!
 end
 
+Given /^I am a school admin$/ do
+  clear_login_dropdowns
+  log_in
+  @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["school_admin"])
+  @default_user.user_school_assignments.create(:school_id => @school.id, :admin=>true)
+  @default_user.save!
+end
+
+Given /^there is a student in my group$/ do
+  s=create_student "A", "Student", "05", @school
+  g=@school.groups.create!(:title => "My Group")
+  g.students << s
+  g.users << @default_user
+end
+
+
+
+
 Given /^I am a state admin$/ do
   Given "I am a district admin"
   @default_user.roles = (Role.mask_to_roles(@default_user.reload.roles_mask) | ['state_admin'])
@@ -350,4 +368,3 @@ Then /^"([^"]*)" should have "([^"]*)" district selected$/ do |field, district|
     i=District.find_by_name(district).id
     steps %Q{Then the "#{field}" field should contain "#{i}"}
 end
-

@@ -2,7 +2,7 @@ require 'fileutils'
 class CreateInterventionPdfs
   def self.generate(district)
     InterventionDefinitionSummaryReport
-      dir = "#{RAILS_ROOT}/public/system/district_generated_docs/#{district.id}/"
+      dir = "#{Rails.root}/public/system/district_generated_docs/#{district.id}/"
     old_files = Dir.glob("#{dir}*")
     new_files = []
     
@@ -13,7 +13,7 @@ class CreateInterventionPdfs
       htmlfile = "#{basefile}html"
       group= InterventionDefinitionSummary.new(:objective_definition => o).to_grouping()
 
-      File.open(pdffile,'w') do |f|o
+      File.open(pdffile,'w') do |f|
         f << InterventionDefinitionSummaryReport.render_pdf(:objective_definition => o, :template => :standard, :group => group)
       end
 
@@ -31,7 +31,7 @@ class CreateInterventionPdfs
   end
 
   def self.destroy(district)
-      dir = "#{RAILS_ROOT}/public/system/district_generated_docs/#{district.id}/"
+      dir = "#{Rails.root}/public/system/district_generated_docs/#{district.id}/"
       FileUtils.rm_rf(dir) if File.exists?dir
   end
 end

@@ -6,7 +6,8 @@ class District::StudentsController < ApplicationController
   # GET /district_students.xml
   def index
     @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
-
+    redirect_to(district_students_url(:last_name => params[:last_name], :page => @students.total_pages)) and return if wp_out_of_bounds?(@students)
+    capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @district_students }
@@ -38,8 +39,8 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        flash[:notice] = "#{@student} was successfully created."
-        format.html { redirect_to(district_students_url) }
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully created."
+        format.html { redirect_to(index_url_with_page) }
         format.xml  { render :xml => @student, :status => :created, :location => @student }
       else
         format.html { render :action => "new" }
@@ -56,8 +57,8 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] = "#{@student} was successfully updated."
-        format.html { redirect_to(district_students_url) }
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully updated."
+        format.html { redirect_to(index_url_with_page) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -73,7 +74,7 @@ class District::StudentsController < ApplicationController
     @student.remove_from_district
 
     respond_to do |format|
-      format.html { redirect_to(district_students_url) }
+      format.html { redirect_to(index_url_with_page) }
       format.xml  { head :ok }
     end
   end
@@ -86,7 +87,7 @@ class District::StudentsController < ApplicationController
         if  @student.district
           page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
         else
-          page.alert('Follow the link if you want to claim this student for your district')
+          page.alert('Follow the link if you want to try to claim this student for your district')
           page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
         end
       end
@@ -94,14 +95,13 @@ class District::StudentsController < ApplicationController
   end
 
   def claim
-    @student = Student.find_by_district_id_and_id(nil,params[:id])
-     if @student
-       @student.update_attribute(:district_id, current_district.id)
-       flash[:notice] = 'Student is now in your district, remove them if you want to undo'
+    @student = Student.find(params[:id])
+     res,msg= current_district.claim(@student)
+       flash[:notice] = msg
+     if res
        redirect_to edit_district_student_url(@student)
      else
-       flash[:notice] = 'Student could not be claimed'
-       redirect_to :back 
+       redirect_to :back
      end
   end
 

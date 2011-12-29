@@ -44,6 +44,10 @@
         </div>
       <% end %>
 
+      <h4> District documents (optional) <%=help_popup 'These files will appear in the menu at the left for all users under District Documents.  They are optional.' %>
+      </h4>
+      <%= render :partial => 'assets/asset_form', :locals => {:form=>f, :parent =>'district'}  %>
+
       <div class="form_row center_submit">
         <%= f.submit "Update" %>
       </div>

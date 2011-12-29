@@ -7,7 +7,7 @@
 
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -38,15 +38,18 @@ Rails::Initializer.run do |config|
   config.gem "pdf-writer", :lib => "pdf/writer"
   config.gem 'rack', :version => '>= 1.0.0'
   config.gem 'system_timer'
-  config.gem 'googlecharts'
-  config.gem 'hoptoad_notifier'
+  config.gem 'googlecharts', :version => '=1.6.3'
+  config.gem 'airbrake', :version => "~> 3.0.5"
   config.gem 'responds_to_parent'
   config.gem 'newrelic_rpm'
+  config.gem 'mysql'
+  config.gem 'nokogiri', :version => '1.4.4', :lib => false
 
  # deployment
- config.gem "capistrano", :lib => false
- config.gem "capistrano-ext", :lib => false
-
+unless ENV['TRAVIS']
+  config.gem "capistrano", :lib => false
+  config.gem "capistrano-ext", :lib => false
+end
  # need to upgrade rubygems
   # config.gem 'hpricot'
   # config.gem 'treetop'
@@ -59,7 +62,7 @@ Rails::Initializer.run do |config|
   #
 #config.plugins =  [ :validates_date_time, :all ]
   SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
-     :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :hoptoad_notifier, :mysql_sets]
+     :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :airbrake, :mysql_sets]
 
 
   #I'd prefer to do this in the environment specific files, but the rails initializer processes this just before it processes the environment specific file
@@ -90,7 +93,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_sims-open_session',
+    :key => '_sims-open_session',
     :secret => 'c3486d7d4f714a0edf8187077b3eed7f4bbc2d715a5511ca03e89f8e45746a6a2ace9b3d786a21b8036eb5ec24231d4a1226c41a1041c9d7d5a45c7b0083c7b6'
   }
 
@@ -109,7 +112,11 @@ Rails::Initializer.run do |config|
   config.active_record.observers = :principal_override_observer , :recommendation_observer
   config.action_mailer.delivery_method = :railmail
 
-  config.load_paths += %W( #{RAILS_ROOT}/app/reports )
+  if RAILS_GEM_VERSION == "2.3.4"
+    config.load_paths += %W( #{RAILS_ROOT}/app/reports )
+  else
+    config.autoload_paths += %W( #{RAILS_ROOT}/app/reports )
+  end
   config.time_zone = 'Central Time (US & Canada)'
   config.cache_store = :mem_cache_store
 end
