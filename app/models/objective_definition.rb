@@ -29,6 +29,17 @@ class ObjectiveDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => :goal_definition).length
   end
 
+  def intervention_definitions
+    InterventionDefinition.scoped(:joins => :intervention_cluster, :conditions => {:intervention_clusters => {:objective_definition_id => id}})
+  end
+
+  def intervention_definitions_including_associations
+    InterventionDefinition.scoped(:include =>  [{:intervention_cluster => [{:objective_definition => :goal_definition}]}, :frequency, :tier, :time_length],
+                                  :conditions => {:intervention_clusters => {:objective_definition_id => id}},
+                                  :order => "tiers.position, intervention_clusters.title, intervention_definitions.title"
+                                 )
+  end
+
 
 
   def disable!

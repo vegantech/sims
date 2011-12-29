@@ -25,6 +25,11 @@ describe ObjectiveDefinition do
     }
   end
 
+  it 'should test intervention_definitions' do
+    raise 'do not forget this'
+  end
+  it 'should test intervention_definitions_include_associations'
+
   it "should create a new instance given valid attributes" do
     ObjectiveDefinition.create!(@valid_attributes)
   end
