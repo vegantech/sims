@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110607190626) do
+ActiveRecord::Schema.define(:version => 20110612171205) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
