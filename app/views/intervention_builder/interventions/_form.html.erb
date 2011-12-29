@@ -58,6 +58,7 @@
   <%= render :partial => 'assets/asset_form', :locals => {:form=>form, :parent =>'intervention_definition'}  %>
 
 
+  <%= exempt_tiers_box form, 'This intervention will be available to students at any tier.' %>
   <p>
     <%= submit_tag submit_name , :class =>"submit"%>
     <%= spell_check_button %>

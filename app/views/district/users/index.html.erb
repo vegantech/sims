@@ -2,14 +2,11 @@
 
 <% form_tag district_users_path, :method=>:get do %>
   <%=label_tag :last_name, "Last Name, Any part"%>
-  <%=text_field_tag :last_name %>
+  <%=text_field_tag :last_name, params[:last_name] %>
   <%=submit_tag "Search by Last Name", :name=>nil %>
 <% end %>
 
-<%= will_paginate @students %>
-
-
-
+<%= will_paginate @users %>
 
 <table>
   <tr>

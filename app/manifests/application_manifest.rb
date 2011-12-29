@@ -20,6 +20,19 @@ class ApplicationManifest < Moonshine::Manifest::Rails
   #   :custom => { :random => random  }
   # })
 
+  def custom_networking
+    file '/etc/network/interfaces',
+      :ensure => :present,
+      :content => template('interfaces.erb', binding),
+      :group => 'root',
+      :owner => 'root',
+      :mode => '644'
+  end
+
+  if configuration[:network] && configuration[:network][:interfaces]
+    recipe :custom_networking
+  end
+
   recipe :scout if deploy_stage == 'production'
   recipe :xsendfile
   configure(:passenger => { :vhost_extra => """
@@ -47,6 +60,8 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     # :apt_gems in <tt>moonshine.yml</tt> you do not need to include it here.
     package 'aspell', :ensure => :installed
     package 'zip', :ensure => :installed
+    package 'libxml2-dev'#, :before => exec('bundle install')
+    package 'libxslt1-dev'#, :before => exec('bundle install')
 
     daily_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
     cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 6

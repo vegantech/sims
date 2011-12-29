@@ -60,4 +60,8 @@ class TeamConsultation < ActiveRecord::Base
   def complete!
     update_attribute(:complete, true)
   end
+
+  def undo_complete!
+    update_attribute(:complete, false)
+  end
 end

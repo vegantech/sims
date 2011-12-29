@@ -20,14 +20,6 @@ describe SchoolTeamsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested school_team as @school_team" do
-      SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-      get :show, :id => "37"
-      assigns[:school_team].should equal(mock_school_team)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new school_team as @school_team" do
       SchoolTeam.should_receive(:new).and_return(mock_school_team)
@@ -53,11 +45,19 @@ describe SchoolTeamsController do
         assigns[:school_team].should equal(mock_school_team)
       end
 
-      it "redirects to the created school_team" do
+      it "redirects to the school_team index" do
         SchoolTeam.stub!(:build).and_return(mock_school_team(:save => true))
         post :create, :school_team => {}
         response.should redirect_to(school_teams_url)
       end
+
+      it "provides a link to the created school_team" do
+        SchoolTeam.stub!(:build).and_return(mock_school_team(:save => true))
+        post :create, :school_team => {}
+        flash[:notice].should match(/#{edit_school_team_path(mock_school_team)}/)
+      end
+
+
     end
     
     describe "with invalid params" do
@@ -96,6 +96,13 @@ describe SchoolTeamsController do
         put :update, :id => "1"
         response.should redirect_to(school_teams_url)
       end
+
+      it "provides a link to the edited school_team" do
+        SchoolTeam.stub!(:find).and_return(mock_school_team(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_school_team_path(mock_school_team)}/)
+      end
+
     end
     
     describe "with invalid params" do

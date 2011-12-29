@@ -49,7 +49,7 @@ module ApplicationHelper
   end
 
   def link_to_if_present(name, path)
-    link_to(name,path) if File.exist?("#{RAILS_ROOT}/public/#{path}")
+    link_to(name,path) if File.exist?("#{Rails.root}/public/#{path}")
   end
 
 
@@ -67,8 +67,8 @@ module ApplicationHelper
     link_to_unless_current(title,path) if conditions || path == request.path
   end
 
-  def if_student_selected(session = session)
-    if session[:selected_students] && session[:selected_student]
+  def if_student_selected
+    if current_student
       yield
     end
   end

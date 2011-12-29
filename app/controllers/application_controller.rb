@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_students_ids, 
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :current_user_id
+    :current_user_id, :index_url_with_page
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user=User.find_by_id(current_user_id) || User.new
+    @user = User.find_by_id(current_user_id) || User.new
   end
 
   def selected_students_ids
@@ -166,4 +166,44 @@ class ApplicationController < ActionController::Base
     response.headers['P3P']= 'CP = "CAO PSA OUR"'
   end
 
+def check_student
+    #TODO generalize this
+    student=Student.find_by_id(params[:student_id]) || Student.new
+
+    if student.belongs_to_user?(current_user)
+      @student=student
+    else
+      flash[:notice] = "The student is not accessible for this user"
+      respond_to do |format|
+        format.js { render :template => "/main/inaccessible_student.js"}
+        format.html  {redirect_to :back }
+      end
+     return false
+    end
+
+  end
+
+  def edit_obj_link(u)
+    self.class.helpers.link_to u, self.send("edit_#{patherize_controller.singularize}_path",u)
+  end
+
+  def capture_paged_controller_params
+    session[:paged_controller]={:path => params[:controller], :opts =>{ :last_name => params[:last_name],:page => params[:page], :title => params[:title] }}
+  end
+
+  def index_url_with_page
+    if session[:paged_controller] && session[:paged_controller][:path] == params[:controller]
+      self.send("#{patherize_controller}_path", session[:paged_controller][:opts])
+    else
+      self.send("#{patherize_controller}_path")
+    end
+  end
+
+  def patherize_controller
+    params[:controller].gsub(/\//,"_")
+  end
+
+  def wp_out_of_bounds?(wp_collection)
+    wp_collection.out_of_bounds? && wp_collection.total_entries > 0
+  end
 end

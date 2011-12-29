@@ -25,6 +25,7 @@ Feature: Concern Note
     And I should see "A team consultation form has been generated for \(Common Last\) on" in the email
     And I should see "by \(default user\)" in the email
     And I should see "Please schedule an initial discussion at an upcoming team meeting" in the email
+    And I go to the current student profile page
 
     When I follow "view"
     Then I should see "Strength"
@@ -35,9 +36,11 @@ Feature: Concern Note
     When I follow "Create Team Consultation Form"
     #And I should see some sort of forma
     And I press "Save"
+    And I go to the current student profile page
     When I follow "Respond to Request for Information"
     And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
     And I press "Create"
+    And I go to the current student profile page
     When I follow "view" within "tr.consultation_form:last-of-type"
     Then I should see "Spinach"
 

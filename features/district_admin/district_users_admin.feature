@@ -37,6 +37,28 @@ Feature: User Maintenance
     Then I should see "unused_username_cuke"
    
 
-    
-    
+  Scenario: District admin should not see staff assignments section if none have been added
+    Given I am a district admin
+    And I start at the home page
+    Then I follow "Add/Remove Users"
+    When I follow "Edit"
+    Then I should not see "Staff Assignments"
+
+  Scenario: District admin should see staff assignments section if some have been added
+    Given I am a district admin
+    And the other district admin is gone
+    And I am assigned to "Test School"
+    And I start at the home page
+    Then I follow "Add/Remove Users"
+    When I follow "Edit"
+    Then I should see "Staff Assignments"
+#submit existing
+    When I press "Update"
+    Then I should see "was successfully updated"
+    And I should not see "All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature."
+#add one
+    And I am pending
+
+#delete one
+#delete last
 

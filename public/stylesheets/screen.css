@@ -75,3 +75,21 @@ tr .handle {
 .print-only {
   display:none;
 }
+
+#intervention_student_list ul {
+  float: left;
+  width: 90%;
+  margin: 0;
+  padding-left: 9%;
+  list-style: none;
+}
+
+
+#intervention_student_list li{
+  float: left;
+  width: 20em;
+  margin: 0;
+  padding: 0;
+
+}
+

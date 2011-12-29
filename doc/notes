@@ -1,3 +1,11 @@
+Restoring deleted data
+restore backup
+mysql sims_open_production -u root -p  <backup.sql
+
+select  ext_test_scores.* from ext_test_scores inner join students on ext_test_scores.student_id = students.id and students.district_id = xx into outfile 'xx_scores.sql';
+
+
+
 create concern note
 
 

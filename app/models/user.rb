@@ -23,7 +23,6 @@
 class User < ActiveRecord::Base
 
   
-  
   include FullName
   after_update :save_user_school_assignments
 
@@ -54,17 +53,19 @@ class User < ActiveRecord::Base
   has_many :interventions
   has_many :probe_definitions
   has_many :recommendations
+  has_many :logs, :class_name => 'DistrictLog'
 
 
   attr_accessor :password, :all_students_in_district, :old_password
 
-named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id 
+  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
   left outer join team_consultations on team_consultations.requestor_id = users.id 
   left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id",
   :conditions => "interventions.id is not null or student_comments.id is not null or 
                   team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
 
+  accepts_nested_attributes_for :staff_assignments, :allow_destroy => true
 
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -174,14 +175,6 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
   end
 
-  def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
-      :conditions=> ['last_name like ?', "%#{last_name}%"],
-      :order => 'last_name'
-  end
-
-
-  
   def filtered_members_by_school(school,opts={})
   #opts can be grade, user_id and prompt
   #default prompt is "*-Filter by Group Member"
@@ -349,7 +342,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
   end
 
   def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
+    paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
   end
@@ -423,6 +416,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
     self.roles_mask = Role.roles_to_mask(roles)
   end
 
+
   def roles
     @roles ||= Role.mask_to_roles(roles_mask)
   end
@@ -433,7 +427,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
   def self.find_all_by_role(role,options = {})
     with_scope :find => options do
-      find(:all,:conditions => ["roles_mask & ? ",2**Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+      find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
 =begin
@@ -469,12 +463,18 @@ or (user_group_assignments.id is not null)
   end
 
   def last_login
-    @last_login ||=district.logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+  end
+
+  def record_successful_login
+    logs.create(:body => "Successful login of #{fullname}",:district_id => district_id)
+    logger.info "Successful login of #{fullname} at #{district.name}"
   end
 
 
   def self.find_by_fullname(fullname)
-    find_by_first_name_and_last_name(*(fullname.split(" ")))
+    #this fails if the middle name is excluded from the search
+    find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
 
 protected
