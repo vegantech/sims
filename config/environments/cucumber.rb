@@ -23,3 +23,4 @@ config.action_mailer.delivery_method = :test
 
 #config.gem 'cucumber',   :lib => false, :version => '=1.1.0'  #covered by cucumber-rails above
 SIMS_DOMAIN='example.com'
+Bundler.require :test

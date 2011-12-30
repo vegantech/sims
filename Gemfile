@@ -1,6 +1,6 @@
 source :rubygems
 gem 'rails','2.3.14'
-gem 'factory_girl'
+gem 'factory_girl', "1.2.1"
 gem 'ruport','1.6.1'
 gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'bluecloth','> 2.0.0'
@@ -11,7 +11,7 @@ gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake',"~> 3.0.5"
 gem 'responds_to_parent'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', "2.14.1"
 gem 'mysql'
 gem 'nokogiri','1.4.4', :require => false
 
