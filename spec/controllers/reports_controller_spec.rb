@@ -117,7 +117,7 @@ describe ReportsController do
       @district = Factory(:district)
       @student = Factory(:student)
       @student.should_receive(:belongs_to_user?).and_return(true)
-      Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
+      Student.should_receive(:find_by_id).with(@student.id).and_return(@student)
     end
 
     it 'should show up' do
@@ -145,7 +145,7 @@ describe ReportsController do
       @district = Factory(:district)
       @student = Factory(:student)
       @student.should_receive(:belongs_to_user?).and_return(true)
-      Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
+      Student.should_receive(:find_by_id).with(@student.id).and_return(@student)
     end
 
     it 'should show top summary when selected' do
