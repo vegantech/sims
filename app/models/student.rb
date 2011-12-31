@@ -302,17 +302,6 @@ class Student < ActiveRecord::Base
     end.group_by(&:category)
   end
 
-
-  def find_checklist(checklist_id, show=true)
-    if show
-      @checklist=checklists.find(checklist_id,:include=>{:answers=>:answer_definition})
-      @checklist.score_checklist if @checklist.show_score?
-      @checklist
-    else
-      @checklist=checklists.find(checklist_id)
-    end
-  end
-
   def all_staff_for_student
     (groups.collect(&:users) | special_group_principals).flatten.compact.uniq
   end
