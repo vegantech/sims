@@ -121,11 +121,6 @@ When /^I start at (.*)$/ do |page_name|
   go_to_page page_name
 end
 
-
-When /^I am on (.*)$/ do |page_name|
-  pending 'change me to start_at'
-end
-
 Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
   grant_access user_name, group_array
 end
