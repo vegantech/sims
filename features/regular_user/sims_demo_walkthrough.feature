@@ -117,7 +117,9 @@ Feature: Sims Demo Walkthrough
     Then I press "Save"
     Then I should see "Please assign a progress monitor"
     Then I follow "Edit/Add Comment"
-    And page should contain "<option value=\"\"></option>\n<option value=\"777239083\">Fact Interview A</option>\n<option value=\"777239084">Fact Interview B</option></select>"
+    And page should contain "<option value=\"\"></option>"
+    And page should contain "Fact Interview A</option>\n"
+    And page should contain"Fact Interview B</option></select>"
     And I follow "Delete"
  
 
