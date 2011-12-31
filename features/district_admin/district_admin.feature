@@ -40,12 +40,12 @@ Feature: District Admin
 
   #Edit User
     When I follow "Add/Remove Users"
-    When I follow "edit" within "#tr_880270606"
+    When I follow "edit" within "#tr_659073605"
     Then I should see "Editing user"
     Then I press "Update"
 
   # lighthouse ticket 158 editing a second time causes a validation error
-    When I follow "edit" within "#tr_880270606"
+    When I follow "edit" within "#tr_659073605"
     Then I should see "Editing user"
     Then I press "Update"
 
