@@ -11,7 +11,7 @@
 %>
 
 
-  <%= render :partial => "/checklists/relevant", :collection=>relevant  %>
+<%= render :partial => "/checklists/relevant", :collection=>relevant , :form => form %>
 <% unless element_definitions.blank? %>
   <table border ="1">
     <thead>
@@ -27,14 +27,16 @@
     <tbody>
       <% element_definitions.each do |element_definition| %>
         
-      <%= content_tag :tr,render(:partial => "checklists/#{element_definition.kind}", :locals => { :element_definition => element_definition, :question_definition=> question_definition, :view=>view ,:edit=>edit, :max_count => max_count })%>
+        <%= content_tag :tr,render(:partial => "checklists/#{element_definition.kind}", :locals => { :element_definition => element_definition, :question_definition=> question_definition, :view=>view ,
+                                   :edit=>edit, :max_count => max_count, :form => form })%>
       <% end %>
  </tbody>
  </table>
 <% end %>
 
 <%- sa.each do |element_definition| -%>
-<%= render :partial => "checklists/sa",  :locals => { :element_definition => element_definition, :checklist => checklist , :question_definition=> question_definition, :view=>view ,:edit=>edit, :max_count => max_count } %>
+  <%= render :partial => "checklists/sa",  :locals => { :element_definition => element_definition, :checklist => checklist , :question_definition=> question_definition, 
+    :view=>view ,:edit=>edit, :max_count => max_count, :form => form } %>
 <%- end -%>
 
  </div>

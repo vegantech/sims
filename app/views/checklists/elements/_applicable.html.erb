@@ -1,0 +1,17 @@
+applicable?
+<% if false %>
+<table>
+  <%- radio_button_group(@checklist,applicable) do |answer_definition, is_checked| %>
+    <tr>
+  <td>
+<%= check_box_tag "element_definition[#{applicable.id}]", answer_definition.id, is_checked if answer_definition.value == "0" %>
+</td>
+  <td>
+<label for="<%="element_definition[#{applicable.id}]" %>">
+    <%= (answer_definition.text) %>
+  </label>
+
+</td></tr>
+  <%- end -%>
+</table>
+<% end %>

@@ -1,0 +1,20 @@
+<p>
+ <a href="#<%= dom_id(question.definition,'link') %>" class="questionLink" name="<%= dom_id(question.definition,'link') %>">
+
+   <span <%=highlight_if_wrong_question(question.checklist,question.definition)%>><%= "#{question.position}. #{question.text}" %></span>
+</a>
+</p>
+
+<div class="questionDiv">
+  <%= render question.elements.select(&:applicable?), :form => form %>
+  <%= render "checklists/questions/table", :elements => question.elements.select(&:inside_table?), :form => form %>
+</div>
+
+<% if false %>
+<%- sa.each do |element_definition| -%>
+  <%= render :partial => "checklists/sa",  :locals => { :element_definition => element_definition, :checklist => checklist , :question_definition=> question_definition, 
+    :view=>view ,:edit=>edit, :max_count => max_count, :form => form } %>
+  <%- end -%>
+<% end %>
+
+

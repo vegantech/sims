@@ -1,2 +1,22 @@
-<%= render :partial => 'view', :locals=>{:checklist=>@checklist} %>
+<%#= render :partial => 'view', :locals=>{:checklist=>@checklist} %>
+<div id="checklist">
+  <p>Completed by <%= @checklist.teacher %> on 
+  <%= @checklist.updated_at.to_date %> </p>
+  
+  <%- form_for @checklist do |f| -%>
+    <%#= render :partial => 'checklists/form', 
+      :locals => { :view=>true } %>
+      <h3><%= @checklist.text %></h3>
+      <em>Directions:</em>
+      <p><%= @checklist.directions %></p>
+      <%#= render :partial => 'checklists/question_definition', :collection=>@checklist.question_definitions, :locals=>{:view=>view,:edit=>edit, :form => form} %>
+      <% unless  @checklist.checklist_definition.recommendation_definition %>
+        <p> Please submit a recommendation after completing the checklist. </p>
+      <% end %>
+
+    <%= render @checklist.questions, :form => f %>
+    <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>@checklist.recommendation} if @checklist.recommendation%>
+    <%- end -%>
+</div>
+
 <%=link_to "Back", @checklist.student%>

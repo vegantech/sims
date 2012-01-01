@@ -1,0 +1,32 @@
+<tr>
+  <th>
+    <em style="margin-left:2em"><%=markdown_with_span(sa.text)%></em>
+  </th>
+  <td colspan="<%=sa.max_count%>">
+    woo
+  </td>
+</tr>
+<% if false %>
+<% view = false unless view 
+edit = false unless edit
+text_of_comment = nil 
+carry_answer_forward = view || edit
+carry_answer_forward ||=(!@checklist.score_results.blank? && correct_element?(@checklist,question_definition,element_definition)) 
+text_of_comment = @checklist.answers.detect {|e| e.answer_definition.element_definition_id == element_definition.id}   if carry_answer_forward
+text_of_comment = text_of_comment.text if text_of_comment
+
+#raise text_of_comment
+-%>
+<th><em style="margin-left:2em" <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> >
+    <%= markdown_with_span(element_definition.text) -%> <%= reason_if_wrong_element(@checklist,question_definition,element_definition) %></em></th>
+    <td colspan="<%=max_count%>">
+
+      <span><%= hidden_field_tag "element_definition[#{element_definition.id}][id]", element_definition.answer_definitions[0].id %>
+        <%= text_area_tag "element_definition[#{element_definition.id}][text]", text_of_comment, :size => "60x4", :class => 'spell_check' %></span>
+<% unless view %>
+<%- previous_answers(@checklist, element_definition.answer_definitions[0]) do |answer| -%>
+  <div style="color:gray;margin-left:1em">By <%= answer.checklist.teacher.fullname %> on <%= answer.created_at.to_s(:chatty) %>:</div><div style="color:gray;margin-left:2em"><%= answer.text %></div>
+  <%- end -%>
+<% end -%>
+</td>
+<% end %>

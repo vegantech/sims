@@ -1,0 +1,28 @@
+<th>
+  <h5> <%= markdown_with_span(scale.text) -%> </h5>
+</th>
+
+<% if false %>
+<th>
+  <h5 <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> >
+    <%= markdown_with_span(element_definition.text) -%> <%= reason_if_wrong_element(@checklist,question_definition,element_definition) %>
+  </h5>
+</th>
+  <%- radio_button_group(@checklist,element_definition) do |answer_definition, is_checked| -%>
+    <% unless  answer_definition.text.blank? %>
+    <td <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> valign="top" >
+      <center> 
+
+        <%= radio_button_tag "element_definition[#{element_definition.id}]", answer_definition.id, is_checked , autoset_onclick(question_definition,answer_definition)
+%> 
+      </center>
+
+      <label for="<%="element_definition[#{element_definition.id}]_#{answer_definition.id}"%>">
+        <%=autoset_message(answer_definition)-%>
+        <%= markdown_with_span(answer_definition.text) %>
+      </label>
+    </td>
+  <% end %>
+
+  <%- end -%>
+<% end %>

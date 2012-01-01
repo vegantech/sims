@@ -3,7 +3,7 @@
 <h3><%= @checklist.text %></h3>
 <em>Directions:</em>
 <p><%= @checklist.directions %></p>
-  <%= render :partial => 'checklists/question_definition', :collection=>@checklist.question_definitions, :locals=>{:view=>view,:edit=>edit} %>
+<%= render :partial => 'checklists/question_definition', :collection=>@checklist.question_definitions, :locals=>{:view=>view,:edit=>edit, :form => form} %>
 <% unless  @checklist.checklist_definition.recommendation_definition %>
   <p> Please submit a recommendation after completing the checklist. </p>
 <% end %>

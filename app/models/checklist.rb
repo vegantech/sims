@@ -271,6 +271,11 @@ class Checklist < ActiveRecord::Base
     recommendation.blank?  && recommendation_definition_id && !is_draft?
   end
 
+
+  def questions
+    @questions ||= checklist_definition.question_definitions.collect{|qd| Checklists::Question.new(self,qd) } 
+  end
+
   private
 
   def valid_list?(list)
