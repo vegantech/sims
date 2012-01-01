@@ -33,6 +33,7 @@ class Checklist < ActiveRecord::Base
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
 
+  accepts_nested_attributes_for :answers
 
 
 

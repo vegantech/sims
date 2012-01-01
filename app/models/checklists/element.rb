@@ -33,12 +33,16 @@ class Checklists::Element
     kind == :sa
   end
 
-  def answers
+  def my_answers
     @answers ||= @element_definition.answer_definitions.collect{|ad| Checklists::Answer.new(self,ad)}
   end
 
+  def answer
+    checklist.answers.detect{|e| e.answer_definition_id == @element_definition.answer_definitions.first.id} || Answer.new(:answer_definition_id => @element_definition.answer_definitions.first)
+  end
+
   def answer_count
-    answers.size
+    my_answers.size
   end
 
   def max_count

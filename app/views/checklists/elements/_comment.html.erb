@@ -1,6 +1,12 @@
 <tr>
   <th><%=markdown_with_span(comment.text)%></th>
-  <td colspan = "<%=comment.max_count%>"><span>Woo</span></td>
+  <td colspan = "<%=comment.max_count%>"><span>
+
+      <%form.fields_for 'answers', comment.answer, :child_index => comment.answer.answer_definition_id do |f|%>
+        <%=f.hidden_field :answer_definition_id %>
+        <%= f.text_area :text %>
+      <% end %>
+      </span></td>
 </tr>
 <% if false %>
 

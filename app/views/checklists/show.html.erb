@@ -13,8 +13,8 @@
       <% unless  @checklist.checklist_definition.recommendation_definition %>
         <p> Please submit a recommendation after completing the checklist. </p>
       <% end %>
-
-    <%= render @checklist.questions, :form => f %>
+      <%= render @checklist.questions, :form => f %>
+      <%= f.submit %>
     <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>@checklist.recommendation} if @checklist.recommendation%>
     <%- end -%>
 </div>
