@@ -10,3 +10,20 @@ Feature: Student Checkist
     When I try to view an invalid checklist
     Then I should be at the student profile page
     And I should see a notice for "Checklist no longer exists."
+
+  Scenario: Trying to view a checklist that does exist
+    Given a completed checklist
+    And I am at the student profile page
+    When I view the checklist
+    Then I should see the completed checklist
+
+  Scenario: Editing a checklist
+
+  Scenario: Removing a checklist
+
+  Scenario: Creating a new checklist
+
+  Scenario: Attempting to create a new checklist after first creating a draft
+
+
+
