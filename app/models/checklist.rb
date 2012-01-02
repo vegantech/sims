@@ -32,6 +32,8 @@ class Checklist < ActiveRecord::Base
   attr_accessor :skip_cache
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
+  after_update :remove_deleted_answers
+  before_validation_on_create :assign_associated_from_student
 
 
 
@@ -92,6 +94,7 @@ class Checklist < ActiveRecord::Base
 
 
   def self.new_from_teacher(teacher)
+    #this builds a new checklist and scores it by copying the old values?
     checklist = Checklist.new(:teacher => teacher)
     return nil unless checklist.student
     checklist.checklist_definition = checklist.student.checklist_definition
@@ -106,48 +109,6 @@ class Checklist < ActiveRecord::Base
       checklist.score_results = c.score_results
     end
     checklist
-  end
-
-   def self.new_from_student_and_teacher(student, teacher,
-                                        import_previous_answers = false,
-                                        score = false)
-     # fixme deprecate this
-    returning checklist = Checklist.new(:student => student, :teacher=> teacher ) do
-      checklist.checklist_definition = student.checklist_definition
-      checklist.from_tier = student.max_tier
-      checklist.district_id=student.district_id
-#      checklist.checklist_definition.reload  why?
-      if import_previous_answers or score
-      #c=student.checklists.find(:first,:conditions=>["checklist_definition_id=? and from_tier = ? and teacher_id =? and calendar_id =?", checklist.checklist_definition, checklist.from_tier, checklist.teacher_id, checklist.calendar_id],
-#      :order=>"created_at DESC")
-      c=student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id,
-      :order=>"created_at DESC")
-        c.answers.each {|e| checklist.answers.build e.attributes} if c and import_previous_answers
-        c.score_checklist  if c and score and c.show_score?(false)
-        checklist.score_results = c.score_results if c and score
-      end
-    end
-  end
-
-  def self.new_from_params_and_teacher(params, teacher)
-
-    params[:element_definition] ||=[]
-    returning checklist = Checklist.new_from_teacher(teacher) do
-      checklist.is_draft=!!params[:save_draft]
-      params[:element_definition].each do |element_definition_id, answer|
-        element_definition = ElementDefinition.find(element_definition_id)
-        if ['scale','applicable'].include?(element_definition.kind)
-          checklist.answers.build({:checklist => checklist,
-                                    :answer_definition_id => answer.to_i})
-        elsif ['comment','sa'].include?(element_definition.kind)
-          if answer['text'].any?
-            checklist.answers.build({:checklist => checklist,
-                                      :answer_definition_id => answer['id'].to_i,
-                                      :text => answer['text']})
-          end
-        end
-      end
-    end
   end
 
   def self.find_and_score(checklist_id)
@@ -205,18 +166,6 @@ class Checklist < ActiveRecord::Base
     @edfa||= answers.collect(&:answer_definition).collect(&:element_definition)
   end
 
-  def all_valid?
-    valid? and
-      valid_list?(answers)
-  end
-
-  def save_all!
-    save! and
-      answers.each(&:save!) #and
-  #      update_attributes(:promoted=>(score_checklist))
-
-  end
-
   def text
     checklist_definition_cache.text
   end
@@ -271,11 +220,50 @@ class Checklist < ActiveRecord::Base
     recommendation.blank?  && recommendation_definition_id && !is_draft?
   end
 
+#used to support actually editing a checklist instead of creating a new version and deleting! the old one!!!
+#TODO Clean this up when I finish up the view changes
+  def commit=(ignore)
+    self.is_draft = false
+  end
+
+  def save_draft=(ignore)
+    self.is_draft = true
+  end
+
+  def element_definition=(element_definition_hash)
+    @answer_definition_ids = []
+    element_definition_hash.each do |element_definition_id, answer|
+      element_definition = ElementDefinition.find(element_definition_id)
+      if ['scale','applicable'].include?(element_definition.kind)
+        answer_hash = {:answer_definition_id => answer.to_i}
+      elsif ['comment','sa'].include?(element_definition.kind) && answer['text'].present?
+          answer_hash = { :answer_definition_id => answer['id'].to_i,
+                                  :text => answer['text']}
+      else
+        next  #text is empty
+      end
+      (answers.find_by_answer_definition_id(answer_hash[:answer_definition_id]) || answers.build).attributes=answer_hash
+      @answer_definition_ids << answer_hash[:answer_definition_id]
+    end
+
+  end
+
   private
 
-  def valid_list?(list)
-    list.all?(&:valid?)
+  def remove_deleted_answers
+    if @answer_definition_ids.present?
+      answers.each{|a| a.destroy unless @answer_definition_ids.include?(a.answer_definition_id) }
+    end
   end
+
+  def assign_associated_from_student
+    self.checklist_definition = student.checklist_definition if checklist_definition.blank?
+    self.tier = student.max_tier if tier.blank?
+    self.district_id = student.district_id if district.blank?
+  end
+
+
+  #End of refactoring for edit/create  These might change when I refactor the view ^^^^^
 
   def cannot_pass_if_draft
     errors.add(:is_draft,"Checklist was not submitted") if promoted && is_draft?

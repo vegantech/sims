@@ -273,14 +273,12 @@ describe Checklist do
     assert_equal @answer2, @student.checklists.build.previous_answer_for(@element_definition), "Existing checklist (2) element has answer"
   end
   
-  def test_all_valid?
+  def test_valid?
     @checklist.user_id=2
     @checklist.student_id=nil
-    assert !@checklist.all_valid?
+    assert !@checklist.valid?
     @checklist.student_id=1
-    assert @checklist.all_valid?
-
-
+    assert @checklist.valid?
   end
 
   def test_definition_references
