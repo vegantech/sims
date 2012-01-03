@@ -57,6 +57,7 @@ class User < ActiveRecord::Base
 
 
   attr_accessor :password, :all_students_in_district, :old_password
+  attr_protected :district_id
 
   named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
