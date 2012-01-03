@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user = User.find_by_id(current_user_id) || User.new
+    @current_user ||= (User.find_by_id(current_user_id) || User.new )
   end
 
   def selected_students_ids
@@ -205,5 +205,10 @@ def check_student
 
   def wp_out_of_bounds?(wp_collection)
     wp_collection.out_of_bounds? && wp_collection.total_entries > 0
+  end
+
+  def current_user=(user)
+    session[:user_id] = user.id
+    @curret_user = user
   end
 end
