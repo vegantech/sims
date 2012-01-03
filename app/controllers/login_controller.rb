@@ -25,6 +25,7 @@ class LoginController < ApplicationController
       else
         @user.record_successful_login
         session[:district_id]=current_district.id
+        current_user = @user
         flash[:notice] = nil if flash[:notice] == 'Authentication Failure'
         redirect_to successful_login_destination and return
       end
@@ -68,7 +69,7 @@ class LoginController < ApplicationController
 private
   def reset_session_and_district
     reset_session
-    session[:user_id]=nil
+    current_user = User.new
     session[:district_id]=nil
     
   end
