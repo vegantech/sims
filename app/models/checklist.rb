@@ -30,6 +30,7 @@ class Checklist < ActiveRecord::Base
   delegate :recommendation_definition_id, :to => :checklist_definition
   acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
+  attr_reader :build_errors
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
   after_update :remove_deleted_answers
@@ -212,8 +213,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def previous_checklist
-    @previous_checklist = Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now]) if @previous_checklist.nil?
-    @previous_checklist
+    @previous_checklist ||= Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now])
   end
 
   def needs_recommendation?
@@ -222,6 +222,14 @@ class Checklist < ActiveRecord::Base
 
 #used to support actually editing a checklist instead of creating a new version and deleting! the old one!!!
 #TODO Clean this up when I finish up the view changes
+  #
+  def can_build?
+    @build_errors = []
+    @build_errors <<("No tiers available.  Using the checklist requires at least one tier.") unless  district.tiers.any?
+    @build_errors << ("No checklist available.  Have the content builder create one.") unless district.checklist_definitions.any?
+    @build_errors <<("Please submit/edit or delete the already started checklist first") if pending?
+    @build_errors.blank?
+  end
   def commit=(ignore)
     self.is_draft = false
   end

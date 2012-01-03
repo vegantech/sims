@@ -10,25 +10,14 @@ class ChecklistsController < ApplicationController
 
   # GET /checklists/new
   def new
-    @checklist = current_student.checklists.new_from_teacher(current_user)
-    if @checklist.pending?
-      flash[:notice]="Please submit/edit or delete the already started checklist first"
-      redirect_to current_student and return
-    end
-
-    if @checklist.missing_checklist_definition?
-      flash[:notice] = "No checklist available.  Have the content builder create one."
-      redirect_to current_student and return
-    end
-
-    if current_district.tiers.blank?
-      flash[:notice] = "No tiers available.  Using the checklist requires at least one tier."
-      redirect_to current_student and return
-    end
-
-
-    respond_to do |format|
-      format.html # new.html.erb
+    @checklist = current_student.checklists.new_from_teacher(current_user) #imports the latest checklist if available
+    if @checklist.can_build?
+      respond_to do |format|
+        format.html # new.html.erb
+      end
+    else
+      flash[:notice] = @checklist.build_errors.join("; ")
+      redirect_to current_student
     end
   end
 

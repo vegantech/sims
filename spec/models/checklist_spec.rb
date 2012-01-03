@@ -360,6 +360,9 @@ describe Checklist do
     end
   end
 
+  describe 'can_build?' do
+  end
+
 
 
   describe 'max_tier' do
