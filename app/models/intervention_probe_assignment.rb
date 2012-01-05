@@ -75,156 +75,19 @@ class InterventionProbeAssignment < ActiveRecord::Base
     end
   end
 
+  def graph(graph_type=nil)
+    ProbeGraph.new(:graph_type => graph_type, 
+                   :probes => probes.to_a, 
+                   :probe_definition => probe_definition, 
+                   :district => student.district,
+                   :goal => goal)
+  end
+
   def google_line_or_bar_chart graph_type=nil
-    if graph_type=="bar"
-      google_bar_chart
-    else
-      google_line_chart or "graph_type"=="line"
-    end
-
+    graph(graph_type)
   end
 
- def google_line_chart
-   #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
-   return ''if probes_for_graph.empty?
-    @chxp=[]
-    group=0
-    probes_for_graph.in_groups_of(10,false).collect{ |probes_for_this_graph|
-      custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
-      if group>0
-        probes_for_this_graph= [probes_for_graph[group*10-1]] + probes_for_this_graph
-      end
-      group+=1
-      if probes_for_this_graph.size == 1
-        custom_chm << "@o,000000,0,0:#{scale_value(probes_for_this_graph[0].score)},4"
-      else
-      end
-
-      custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
-    
-      Gchart.line({:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => axis_labels(probes_for_this_graph), 
-                 :bar_width_and_spacing => '30,25',
-                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
-                 :format=>'image_tag',
-                 :min_value=>min, :max_value=>max,
-                 :encoding => 'text',
-                 :custom => custom_string,
-                 :size => '600x250'
-
-                 })}.join("<br />")
-
-
-
- end
-
- def chxp
-   "chxp=#{@chxp.join('|')}"
- end
-
- def google_bar_chart
-   #groups of 10
-   return ''if probes_for_graph.empty?
-    @chxp=[]
-    custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].compact.join("|")
-    custom_string = [custom_chm,chart_margins,chxp].compact.join("&")
-    probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
-      Gchart.bar(:data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-                 :axis_labels => axis_labels(probes_for_this_graph),
-                 :bar_width_and_spacing => '30,25',
-                 :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
-                 :format=>'image_tag',
-                 :min_value=>min, :max_value=>max,
-                 :encoding => 'text',
-                 :custom => custom_string,
-                 :size => '600x250'
-
-                )}.join("<br />")
-  end
-
-  def probes_for_graph
-    probes.reject{|e| e.administered_at.blank? || e.score.blank?}.sort_by(&:administered_at)
-  end
-
-  def benchmarks
-    probe_definition.probe_definition_benchmarks |goal_benchmark.to_a
-  end
-
-  def goal_benchmark
-      ProbeDefinitionBenchmark.new(:benchmark=>goal, :grade_level => '   Goal') if goal?
-  end
-
-  protected
-
-  def axis_labels(p_for_this_graph)
-      [
-        p_for_this_graph.collect{|p| p.administered_at.to_s(:report)}, 
-        p_for_this_graph.collect(&:score), 
-        [min,0,max],
-        benchmarks.collect{|b| "#{b.benchmark}-  #{b.grade_level}"},
-      ] 
-  end
-
-  def dots_for_line_graph
-      'o,000000,0,,3.0'
-
-  end
-
-  def numbers_on_line
-    #show the value in black on the graph
-      'chm=N,000000,0,,12,,t'
-  end
-  def numbers_in_bars
-    #show the value in white in the bar
-      'chm=N,FFFFFF,0,,12,,c'
-  end
-
-  def max_min_zero
-    #min, zero, max
-    @chxp<<"2,#{scale_value(min)*100},#{scale_value(0)*100},#{scale_value(max)*100}"
-    "r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
-  end
-
-  def benchmark_lines
-    if benchmarks.present?
-      @chxp <<  "3,#{benchmarks.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
-      "#{benchmarks.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) -0.003},#{scale_value(b.benchmark) +0.003}"}.join("|")}"
-    end
-  end
-
-  def chart_margins
-    "chma=20,20,20,20"
-    ""
-  end
-
-  
-  def scale_value(value)
-    (value-min).to_f/(max-min).to_f
-  end
-
-  def scores
-    probes_for_graph.collect(&:score)
-  end
-
-  def scores_with_goal
-    s=scores
-    s << goal.to_i if goal?
-    s
-    
-  end
-
-  def min
-     probe_definition.minimum_score || (scores_with_goal.min >=0 ? 0 : scores_with_goal.min)
-  end
-
-  def max
-     probe_definition.maximum_score || (scores_with_goal.max <= 10 ? 10 : scores_with_goal.max)
-  end
-   
-
-
-
-
+protected
   def last_date_must_be_after_first_date
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end
