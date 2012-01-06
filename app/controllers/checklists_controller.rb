@@ -1,7 +1,7 @@
 class ChecklistsController < ApplicationController
   # GET /checklists/1
   def show
-    @checklist=current_student.find_checklist(params[:id])
+    @checklist=current_student.checklists.find_and_score(params[:id])
     flash[:notice] = "Checklist no longer exists." and redirect_to :back and return if @checklist.blank?
     respond_to do |format|
       format.html # show.html.erb
@@ -75,7 +75,7 @@ class ChecklistsController < ApplicationController
   # DELETE /checklists/1
   # DELETE /checklists/1.xml
   def destroy
-    @checklist = current_student.find_checklist(params[:id], show=false)
+    @checklist = current_student.checklists.find_by_id(params[:id])
     @checklist.destroy if @checklist
 
     respond_to do |format|

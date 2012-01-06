@@ -23,14 +23,6 @@ describe TiersController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested tier as @tier" do
-      Tier.should_receive(:find).with("37").and_return(mock_tier)
-      get :show, :id => "37"
-      assigns[:tier].should equal(mock_tier)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new tier as @tier" do
       Tier.should_receive(:build).and_return(mock_tier)

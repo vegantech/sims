@@ -12,6 +12,8 @@
 #
 
 class SchoolTeam < ActiveRecord::Base
+  include LinkAndAttachmentAssets
+
   belongs_to :school
   has_many :school_team_memberships
   has_many :users, :through => :school_team_memberships

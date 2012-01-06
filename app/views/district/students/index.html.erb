@@ -2,7 +2,7 @@
 
 <% form_tag district_students_path, :method=>:get do %>
   <%=label_tag :last_name, "Last Name, Any part"%>
-  <%=text_field_tag :last_name %>
+  <%=text_field_tag :last_name, params[:last_name] %>
   <%=submit_tag "Search by Last Name", :name=>nil %>
 <% end %>
 

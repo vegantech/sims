@@ -19,6 +19,7 @@ describe District::StudentsController do
     end
 
     it "should expose all district_students as @district_students" do
+      @mock_students.stub!(:out_of_bounds? => false )
       get :index
       assigns[:students].should == [mock_student]
     end
@@ -54,12 +55,17 @@ describe District::StudentsController do
         assigns(:student).should equal(mock_student)
       end
 
-      it "should redirect to the created student" do
+      it "should redirect to the index" do
         Student.stub!(:build).and_return(mock_student(:save => true))
         post :create, :student => {}
         response.should redirect_to(district_students_url)
       end
-      
+
+      it "should have flash link to the created student" do
+        Student.stub!(:build).and_return(mock_student(:save => true))
+        post :create, :student => {}
+        flash[:notice].should match(/#{edit_district_student_path(mock_student)}/)
+      end
     end
     
     describe "with invalid params" do
@@ -96,10 +102,16 @@ describe District::StudentsController do
         assigns(:student).should equal(mock_student)
       end
 
-      it "should redirect to the student" do
+      it "should redirect to the student index" do
         Student.stub!(:find).and_return(mock_student(:update_attributes => true))
         put :update, :id => "1", :student => {}
         response.should redirect_to(district_students_url)
+      end
+
+      it "should include a link in the flash" do
+        Student.stub!(:find).and_return(mock_student(:update_attributes => true))
+        put :update, :id => "1", :student => {}
+        flash[:notice].should match(/#{edit_district_student_path(mock_student)}/)
       end
 
     end

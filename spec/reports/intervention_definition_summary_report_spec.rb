@@ -4,7 +4,7 @@ describe InterventionDefinitionSummaryReport do
   describe 'render_text' do
     it 'should generate correct text output' do
       ic = Factory(:intervention_cluster, :title => 'IC-TITLE')
-      id = Factory(:intervention_definition, :title => 'ID-TITLE', :intervention_cluster => ic)
+      id = Factory(:intervention_definition, :title => 'ID-TITLE', :description => "ID-DESCRIPTION", :intervention_cluster => ic)
       od = ic.objective_definition
       Tier.update_all("position = 1")
       
@@ -17,11 +17,11 @@ Report Generated at December 12, 2008 00:00
 
 1 - Some tier:
 
-+------------------------------------------------------------------------------------------------------------------------------------------+
-| Bus. Key  | Category |      Title      |     Description     |     Duration / Frequency      | Progress Monitors | Links and Attachments |
-+------------------------------------------------------------------------------------------------------------------------------------------+
-| 1-1-1-1-1 | IC-TITLE | <b>ID-TITLE</b> | ID-TITLEDescription | 1 Default / 1 time Freq Title |                   |                       |
-+------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------+
+| Bus. Key  | Category |      Title      |  Description   |     Duration / Frequency      | Progress Monitors | Links and Attachments |
++-------------------------------------------------------------------------------------------------------------------------------------+
+| 1-1-1-1-1 | IC-TITLE | <b>ID-TITLE</b> | ID-DESCRIPTION | 1 Default / 1 time Freq Title |                   |                       |
++-------------------------------------------------------------------------------------------------------------------------------------+
 
 EOS
     end

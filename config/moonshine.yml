@@ -1,6 +1,6 @@
 # ruby to install at `cap deploy:setup` time. If you change this value, you need to run `cap ruby:upgrade`
 # Currently allowed values include: mri, src187, ree, ree187
-:ruby: ree
+:ruby: ree187
 
 # Name of your application. Should be something with only alphanumerics, hypens and underscores.
 :application: sims
@@ -92,3 +92,5 @@
     :max_memory: 256
     :client:  1.8.1
     :enable_on_boot:  true
+
+:rubygems_version: 1.4.2

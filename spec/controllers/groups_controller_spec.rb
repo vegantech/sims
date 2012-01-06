@@ -20,7 +20,8 @@ describe GroupsController do
     end
 
     it "should expose all groups as @groups" do
-      Group.should_receive(:paged_by_title).and_return([mock_group])
+      Group.should_receive(:paged_by_title).and_return(g=[mock_group])
+      g.stub!(:out_of_bounds? => false)
       get :index
       assigns[:groups].should == [mock_group]
     end
@@ -74,7 +75,16 @@ describe GroupsController do
         post :create, :group => {}
         response.should redirect_to(group_url(mock_group))
       end
-      
+
+      it "should have a link to the group in the flash" do
+        Group.stub!(:build).and_return(mock_group(:save => true))
+        post :create, :group => {}
+        flash[:notice].should match(/#{edit_group_path(mock_group)}/)
+      end
+
+
+
+
     end
     
     describe "with invalid params" do
@@ -116,6 +126,13 @@ describe GroupsController do
         put :update, :id => "1"
         response.should redirect_to(group_url(mock_group))
       end
+
+      it "should have a link to the group in the flash" do
+        Group.stub!(:find).and_return(mock_group(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_group_path(mock_group)}/)
+      end
+
 
     end
     
@@ -168,7 +185,7 @@ describe GroupsController do
       UserGroupAssignment.should_receive(:find).with("222").and_return(muga=mock_user_group_assignment)
       muga.should_receive(:destroy)
       delete "remove_user", :id=>"1", :user_assignment_id=>"222"
-      response.should redirect_to group_url(mg)
+      response.should redirect_to(group_url(mg))
     end
 
   end

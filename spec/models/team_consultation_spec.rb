@@ -35,4 +35,16 @@ describe TeamConsultation do
     it 'should return an array of users when there is a school team' 
 
   end
+
+  it 'should test complete' do
+    tc=TeamConsultation.create!(:complete => false)
+    tc.complete!
+    tc.reload.complete.should be_true
+  end
+  it 'should test incomplete' do
+    #656
+    tc = TeamConsultation.create(:complete => true)
+    tc.undo_complete!
+    tc.reload.complete.should be_false
+  end
 end

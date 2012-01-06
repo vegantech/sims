@@ -1,6 +1,6 @@
 begin
   require 'rcov/rcovtask'
-  require File.expand_path("vendor/plugins/rspec/lib/spec/rake/spectask")
+  require 'spec/rake/spectask'
 
 rescue LoadError
   #allow rake to continue to function is rcov gem is not installed

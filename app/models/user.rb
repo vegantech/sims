@@ -23,7 +23,6 @@
 class User < ActiveRecord::Base
 
   
-  
   include FullName
   after_update :save_user_school_assignments
 
@@ -58,14 +57,16 @@ class User < ActiveRecord::Base
 
 
   attr_accessor :password, :all_students_in_district, :old_password
+  attr_protected :district_id
 
-named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id 
+  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
   left outer join team_consultations on team_consultations.requestor_id = users.id 
   left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id",
   :conditions => "interventions.id is not null or student_comments.id is not null or 
                   team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
 
+  accepts_nested_attributes_for :staff_assignments, :allow_destroy => true
 
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -427,7 +428,7 @@ named_scope :with_sims_content, :joins => "left outer join interventions on inte
 
   def self.find_all_by_role(role,options = {})
     with_scope :find => options do
-      find(:all,:conditions => ["roles_mask & ? ",2**Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+      find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
 =begin

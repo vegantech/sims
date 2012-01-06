@@ -24,7 +24,7 @@
 class District < ActiveRecord::Base
   ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
-
+  include LinkAndAttachmentAssets
   has_many :users, :order => :username
   has_many :checklist_definitions
   has_many :flag_categories
@@ -46,6 +46,7 @@ class District < ActiveRecord::Base
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
+  has_many :staff_assignments,:through => :schools
 
 
   has_attached_file  :logo
@@ -200,7 +201,12 @@ class District < ActiveRecord::Base
   end
 
   def show_personal_groups?
-    Rails.env.wip? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+    Rails.env.wip? || Rails.env.development? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+  end
+
+  def show_team_consultation_attachments?
+    #Remove all references to this when put into production
+    Rails.env.wip? || Rails.env.development?  ||  ['grafton'].include?(self.abbrev)
   end
 
 

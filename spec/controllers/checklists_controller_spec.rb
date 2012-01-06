@@ -17,14 +17,14 @@ describe ChecklistsController do
   describe "responding to GET show" do
 
     it "should expose the requested checklist as @checklist" do
-      @current_student.should_receive(:find_checklist).with("37").and_return(mock_checklist)
+      Checklist.should_receive(:find_and_score).with("37").and_return(mock_checklist)
       get :show, :id => "37"
       assigns[:checklist].should equal(mock_checklist)
     end
 
     it "should set the flash if the checklist isn't found" do
       request.env['HTTP_REFERER'] = "http://test.host/previous/page"
-      @current_student.should_receive(:find_checklist).with("37").and_return(nil)
+      Checklist.should_receive(:find_and_score).with("37").and_return(nil)
       get :show, :id => "37"
       assigns[:checklist].should be_nil
       flash[:notice].should == "Checklist no longer exists."
@@ -70,14 +70,14 @@ describe ChecklistsController do
 
   describe "responding to GET edit" do
    it "should expose the requested checklist as @checklist" do
-      @current_student.should_receive(:find_checklist).with("37").and_return(mock_checklist)
+      Checklist.should_receive(:find_and_score).with("37").and_return(mock_checklist)
       get :edit, :id => "37"
       assigns[:checklist].should equal(mock_checklist)
     end
 
     it "should set the flash if the checklist isn't found" do
       request.env['HTTP_REFERER'] = "http://test.host/previous/page"
-      @current_student.should_receive(:find_checklist).with("37").and_return(nil)
+      Checklist.should_receive(:find_and_score).with("37").and_return(nil)
       get :edit, :id => "37"
       assigns[:checklist].should be_nil
       flash[:notice].should == "Checklist no longer exists."
@@ -182,14 +182,14 @@ describe ChecklistsController do
 
   describe "responding to DELETE destroy" do
     it "should destroy the requested checklist" do
-      @current_student.should_receive(:find_checklist).with("37",false).and_return(mc=mock_checklist)
+      Checklist.should_receive(:find_by_id).with("37").and_return(mc=mock_checklist)
       mc.should_receive(:destroy)
       get :destroy, :id => "37"
       response.should redirect_to(student_url(@current_student))
     end
 
     it "should set the flash if the checklist isn't found" do
-      @current_student.should_receive(:find_checklist).with("37",false).and_return(nil)
+      Checklist.should_receive(:find_by_id).with("37").and_return(nil)
       get :destroy, :id => "37"
       response.should redirect_to(student_url(@current_student))
     end
