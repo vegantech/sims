@@ -83,9 +83,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
                    :goal => goal)
   end
 
-  def google_line_or_bar_chart graph_type=nil
-    graph(graph_type)
-  end
 
 protected
   def last_date_must_be_after_first_date
