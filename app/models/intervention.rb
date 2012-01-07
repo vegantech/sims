@@ -59,6 +59,7 @@ class Intervention < ActiveRecord::Base
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
+  before_update :assign_user_to_comment
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
@@ -153,7 +154,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def comment=(txt)
-    @comment=comments.build(:comment=>txt[:comment], :user_id=>comment_author || self.user_id) if !txt[:comment].blank?
+    @comment=comments.build(:comment=>txt[:comment]) if txt[:comment].present?
   end
   def comment
     @comment
@@ -326,5 +327,11 @@ class Intervention < ActiveRecord::Base
     
     self.end_date ||= default_end_date 
   end
-  
+
+  def assign_user_to_comment
+    if @comment && @comment.user.blank?
+      @comment.user_id = comment_author || self.user
+    end
+  end
+
 end
