@@ -28,7 +28,7 @@ describe PersonalGroupsController do
     it 'should redirect if thre are no selected students'
     it "assigns a new personal_group as @personal_group" do
       PersonalGroup.should_receive(:new).and_return(mock_personal_group)
-      controller.should_receive(:selected_students_ids).twice.and_return([1,2,3])
+      controller.should_receive(:selected_student_ids).twice.and_return([1,2,3])
       Student.should_receive(:find_all_by_id)
       get :new
       assigns[:personal_group].should equal(mock_personal_group)
@@ -39,7 +39,7 @@ describe PersonalGroupsController do
     it 'should redirect if thre are no selected students'
     it "assigns the requested personal_group as @personal_group" do
       PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group(:student_ids =>[]))
-      controller.should_receive(:selected_students_ids).twice.and_return([1,2,3])
+      controller.should_receive(:selected_student_ids).twice.and_return([1,2,3])
       Student.should_receive(:find_all_by_id)
       get :edit, :id => "37"
       assigns[:personal_group].should equal(mock_personal_group)
@@ -64,7 +64,7 @@ describe PersonalGroupsController do
     
     describe "with invalid params" do
       before do
-        controller.should_receive(:selected_students_ids).and_return([1,2,3])
+        controller.should_receive(:selected_student_ids).and_return([1,2,3])
         Student.should_receive(:find_all_by_id)
       end
       it "assigns a newly created but unsaved personal_group as @personal_group" do
@@ -106,7 +106,7 @@ describe PersonalGroupsController do
     
     describe "with invalid params" do
       before do
-        controller.should_receive(:selected_students_ids).and_return([1,2,3])
+        controller.should_receive(:selected_student_ids).and_return([1,2,3])
         Student.should_receive(:find_all_by_id)
       end
       it "updates the requested personal_group" do
