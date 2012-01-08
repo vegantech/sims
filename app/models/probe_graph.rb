@@ -28,7 +28,11 @@ class ProbeGraph
   end
 
   def line_chart
-    google_line_chart
+    if @district.show_aim_line?
+      google_line_chart_mmsd
+    else
+      google_line_chart
+    end
   end
 
   def google_line_chart_mmsd
