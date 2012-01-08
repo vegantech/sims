@@ -200,7 +200,12 @@ describe Intervention do
       i.comment = {:comment => "dogs"}
       i.save!
       i.comments.first.user.should == other_user
+    end
 
+    it "should set the author to the intervention creator when no comment-author is specified" do
+      i = Factory(:intervention)
+      i.update_attributes!(:comment => {:comment => "Woo"})
+      i.comments.first.user.should == i.user
     end
 
 

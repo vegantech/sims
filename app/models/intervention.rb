@@ -330,7 +330,7 @@ class Intervention < ActiveRecord::Base
 
   def assign_user_to_comment
     if @comment && @comment.user.blank?
-      @comment.user_id = comment_author || self.user
+      @comment.user_id = comment_author || self.user_id
     end
   end
 
