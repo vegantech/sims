@@ -10,20 +10,10 @@ describe ProbesHelper do
   end
 
   describe 'probe_graph' do
+    it 'should have better specs!'
     it 'should show a graph when the intervention_probe_assignment has probes' do
-      ipa=InterventionProbeAssignment.new
-
-      #ipa.should_receive(:student_grade).and_return('03')
-      ipa.probe_definition=Factory.build(:probe_definition)
-      ipa.end_date=Time.now
-      ipa.first_date=1.day.ago
-      ipa.save!
-      ipa.probes.create!(:score=>2,:administered_at =>Time.now)
+      ipa = Factory(:intervention_probe_assignment)
       probe_graph(ipa,1).should match(/style/)
-      
-
-
-
     end
 
   end
