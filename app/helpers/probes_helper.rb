@@ -1,27 +1,24 @@
 module ProbesHelper
   def probe_graph(intervention_probe_assignment, count)
-    if params[:graph] == 'line'
-      graph=:google_line_chart
-    else
-      graph=:google_bar_chart
-    end
+    graph = intervention_probe_assignment.graph(params[:graph])
+
     html = <<-"HTML"
         <p style="text-align:center;">
         
-          Current scores for "#{intervention_probe_assignment.probe_definition.title}"<br />
+          Current scores for "#{graph.title}"<br />
     HTML
 
-    intervention_probe_assignment.benchmarks.each do |benchmark|
+    graph.benchmarks.each do |benchmark|
     html += <<-"HTML"
 
           Benchmark: #{benchmark[:benchmark]} at grade level #{benchmark[:grade_level]} <br />
 
     HTML
     end
+    html += "Goal: #{graph.goal} <br />"  if graph.goal
 
-
-    html+ "</p>" +
-     intervention_probe_assignment.send(graph)
+    html + "</p>" +
+      graph.graph
   end
     
 

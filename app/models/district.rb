@@ -200,6 +200,10 @@ class District < ActiveRecord::Base
     end
   end
 
+  def show_aim_line?
+    Rails.env.wip? || Rails.env.development?  || ['madison'].include?(self.abbrev)
+  end
+
   def show_personal_groups?
     Rails.env.wip? || Rails.env.development? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
   end
