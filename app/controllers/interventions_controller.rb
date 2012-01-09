@@ -175,7 +175,7 @@ class InterventionsController < ApplicationController
         student = intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
         session[:selected_student] = student.id
-        session[:selected_students] = [student.id]
+        self.selected_student_ids = [student.id]
         @intervention = intervention
       else
         flash[:notice] = 'Intervention not available'

@@ -50,7 +50,7 @@ describe StudentsHelper do
     describe 'when multiple students selected' do
       it 'should show all of navigation when middle student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(2)
 
         o=selected_navigation
@@ -67,7 +67,7 @@ describe StudentsHelper do
 
       it 'should only show next and last when the first student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(1)
 
         o=selected_navigation
@@ -86,7 +86,7 @@ describe StudentsHelper do
 
       it 'should only show previous  and first when the last student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(3)
 
         o=selected_navigation
