@@ -17,10 +17,10 @@ Feature: Principal Override Accept and Reject
     When I fill in "Reason for Rejecting this Request" with "Now you are a pickle, rejected by cucumber"
     And I press "Reject"
     Then I should see "Rejected"
-    And I should receive an email
-    When I open the email
-    Then I should see "Now you are a pickle, rejected by cucumber" in the email
-    And I should see "Principal Override Rejected" in the subject
+    And "sims_cucumber_principal@example.com" should receive an email
+    When "sims_cucumber_principal@example.com" open the email
+    Then they should see "Now you are a pickle, rejected by cucumber" in the email body
+    And they should see "[SIMS] Principal Override Rejected" in the email subject
 
   Scenario: Accept without prepared reasons
     And I follow "Accept"
@@ -29,10 +29,10 @@ Feature: Principal Override Accept and Reject
     When I fill in "Reason for Accepting this Request" with "Approved in Brine"
     And I press "Accept"
     Then I should see "Approved"
-    And I should receive an email
-    When I open the email
-    Then I should see "Approved in Brine" in the email
-    And I should see "Principal Override Accepted" in the subject
+    And "sims_cucumber_principal@example.com" should receive an email
+    When "sims_cucumber_principal@example.com" open the email
+    Then they should see "Approved in Brine" in the email body
+    And they should see "[SIMS] Principal Override Accepted" in the email subject
 
   Scenario: Accept via radio button without autopromote
     Given Principal Override Reason "predefined reason 1" ""
