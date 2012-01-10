@@ -30,6 +30,7 @@ group :cucumber do
   gem 'webrat','>=0.7.0', :require => false
   gem 'rspec-rails', '=1.3.4', :require => false
   gem 'hpricot','0.6.161', :require => false
+  gem 'email_spec',"0.6.6", :require => false
 end
 
 group :development do
