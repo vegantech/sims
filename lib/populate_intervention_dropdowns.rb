@@ -2,7 +2,7 @@ module PopulateInterventionDropdowns
 protected
   def values_from_session
     { :user_id => session[:user_id],
-      :selected_ids => selected_students_ids,
+      :selected_ids => selected_student_ids,
       :school_id => session[:school_id]
     }
   end

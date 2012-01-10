@@ -30,4 +30,5 @@ config.gem 'webrat',           :lib => false, :version => '>=0.7.0' unless File.
 config.gem 'rspec-rails',      :version => '=1.3.4', :lib => false
 config.gem 'nokogiri', :lib => false
 config.gem 'hpricot', :lib => false, :version => '=0.6.161'
+config.gem 'email_spec', :lib => false, :version => '0.6.6'
 SIMS_DOMAIN='example.com'
