@@ -24,7 +24,7 @@ end
 group :cucumber do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'cucumber-rails','=0.3.2', :require => false
-  gem 'cucumber','=1.1.0', :require => false#covered by cucumber-rails above
+  gem 'cucumber','=1.1.4', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
   gem 'webrat','>=0.7.0', :require => false
