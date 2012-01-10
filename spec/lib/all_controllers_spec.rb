@@ -19,7 +19,7 @@ describe AllControllers do
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
-        interventions/probe_assignments interventions/probes
+        interventions/probe_assignments interventions/probes interventions/quicklists
         interventions login main news_items
         personal_groups
         principal_overrides quicklist_items recommendations reports 
