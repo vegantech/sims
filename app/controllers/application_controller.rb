@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
 
 
   def options_for_microsoft_office_protocol_discovery
-    render :nothing => true, :status => 200 if request.method == :options
+    render :nothing => true, :status => :ok if request.method == :options #:ok => 200
   end
 
   def fixie6iframe

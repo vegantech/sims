@@ -60,6 +60,8 @@ class InterventionDefinition < ActiveRecord::Base
   }
   }
 
+  delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
+
   def title
     if custom and self[:title].present?
       "(c) #{self[:title]}"

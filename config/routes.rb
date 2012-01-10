@@ -116,6 +116,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.namespace :interventions do |intervention|
+    intervention.resources :quicklists, :only => [:index, :create]
     intervention.resources :goals, :collection=>{:select=>:post} do |goal|
       goal.resources :objectives, :collection => {:select=> :post},:name_prefix=>"interventions_" do |objective|
         objective.resources :categories, :collection => {:select=> :post},:name_prefix=>"interventions_" do |category|
@@ -125,7 +126,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:quicklist_options =>:get,:quicklist=>:post, :ajax_probe_assignment => :get} do |intervention|
+  map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:ajax_probe_assignment => :get} do |intervention|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put}, :member => {:preview_graph =>:get} do |probe_assignment|
