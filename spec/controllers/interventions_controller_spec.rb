@@ -96,7 +96,6 @@ describe InterventionsController do
 
   describe "responding to GET new" do
     before do
-      controller.stub_association!(:current_school, :quicklist_items=>[])
       controller.should_receive(:populate_goals)
     end
 
@@ -244,15 +243,4 @@ describe InterventionsController do
     end
   end
 
-  describe 'quicklist_options' do
-    it 'should return an empty array when school is nil' do
-      #LH 462
-      controller.stub!(:current_school=>nil)
-      get :quicklist_options
-      assigns(:quicklist_intervention_definitions).should be_empty
-    end
-
-    it 'should return an array of interventions for a school'
-
-  end
 end

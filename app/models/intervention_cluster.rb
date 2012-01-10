@@ -20,6 +20,7 @@ class InterventionCluster < ActiveRecord::Base
   has_many :intervention_definitions, :order =>'disabled, custom, position', :dependent => :destroy
 
   delegate :goal_definition, :to => :objective_definition
+  delegate :goal_definition_id, :to => :objective_definition
 
   validates_presence_of :title
   validates_uniqueness_of :description, :scope => [:objective_definition_id, :title]
