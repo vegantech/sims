@@ -83,7 +83,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :enrollments
 
   map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post} do |student|
-    student.resources :student_comments
+    student.resources :student_comments, :except => :index
 
   end
 

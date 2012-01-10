@@ -7,12 +7,6 @@ class StudentCommentsController < ApplicationController
   # GET /student_comments/new.xml
   def new
     @student_comment = @student.comments.build
-
-    respond_to do |format|
-      format.js
-      format.html # new.html.erb
-      format.xml  { render :xml => @student_comment }
-    end
   end
 
   # GET /student_comments/1/edit

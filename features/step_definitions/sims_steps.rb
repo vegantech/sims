@@ -103,9 +103,7 @@ end
 
 
 Given /^I am a state admin$/ do
-  Given "I am a district admin"
-  @default_user.roles = (Role.mask_to_roles(@default_user.reload.roles_mask) | ['state_admin'])
-  @default_user.save!
+  step "I am a district admin"
   @default_user.district.update_attribute(:admin , true)
 end
 
