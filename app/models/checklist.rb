@@ -16,7 +16,7 @@
 #
 
 class Checklist < ActiveRecord::Base
-  has_many :answers, :dependent => :destroy 
+  has_many :answers, :dependent => :destroy
   belongs_to :checklist_definition, :include => {:question_definitions => {:element_definitions => :answer_definitions}}
   belongs_to :student
   belongs_to :teacher, :class_name => "User", :foreign_key => :user_id  #e xplicitly needed for validation
@@ -50,7 +50,7 @@ class Checklist < ActiveRecord::Base
           :optional_checklist => "Optional Checklist Completed"
         }
 
-  #  has_many :answers_with_includes, :class_name => "Answer", 
+  #  has_many :answers_with_includes, :class_name => "Answer",
   # :include => {:answer_definition=>:element_definition}
   attr_accessor :score_results, :deletable, :needs_recommendation, :fake_edit
   @checklist_definition = {}
@@ -101,14 +101,14 @@ class Checklist < ActiveRecord::Base
     c = checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id, :order => "created_at DESC")
 
     if c
-      c.answers.each {|e| checklist.answers.build e.attributes} 
+      c.answers.each {|e| checklist.answers.build e.attributes}
       c.score_checklist if c.show_score?(false)
-      checklist.score_results = c.score_results 
+      checklist.score_results = c.score_results
     end
     checklist
   end
 
-   def self.new_from_student_and_teacher(student, teacher, 
+   def self.new_from_student_and_teacher(student, teacher,
                                         import_previous_answers = false,
                                         score = false)
      # fixme deprecate this
@@ -128,7 +128,7 @@ class Checklist < ActiveRecord::Base
       end
     end
   end
-    
+
   def self.new_from_params_and_teacher(params, teacher)
 
     params[:element_definition] ||=[]
@@ -141,8 +141,8 @@ class Checklist < ActiveRecord::Base
                                     :answer_definition_id => answer.to_i})
         elsif ['comment','sa'].include?(element_definition.kind)
           if answer['text'].any?
-            checklist.answers.build({:checklist => checklist, 
-                                      :answer_definition_id => answer['id'].to_i, 
+            checklist.answers.build({:checklist => checklist,
+                                      :answer_definition_id => answer['id'].to_i,
                                       :text => answer['text']})
           end
         end
@@ -150,6 +150,11 @@ class Checklist < ActiveRecord::Base
     end
   end
 
+  def self.find_and_score(checklist_id)
+    c=find_by_id(checklist_id,:include=>{:answers=>:answer_definition})
+    c.score_checklist if c && c.show_score?
+    c
+  end
 
   def score_checklist
     @score_results=Hash.new{|h,k| h[k]={}}
@@ -179,13 +184,13 @@ class Checklist < ActiveRecord::Base
     when 2
         #All question 9 completed (done above),  Questions 1-8 needs an answer of 2 or better
         answers.each do |answer|
-          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] = 
+          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
             "Need to score 2 or better." if answer.answer_definition.value <"2" and answer.answer_definition.element_definition.kind=="scale"
         end #do
     when 3
         #All question 9 completed (done above),  Questions 1-8 needs an answer of 3 or better
         answers.each do |answer|
-          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =  
+          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
             "Need to score 3 or better" if answer.answer_definition.value < "3" and answer.answer_definition.element_definition.kind=="scale"
         end #do
     end # case
@@ -258,10 +263,10 @@ class Checklist < ActiveRecord::Base
   end
 
   def previous_checklist
-    @previous_checklist = Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now]) if @previous_checklist.nil? 
+    @previous_checklist = Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now]) if @previous_checklist.nil?
     @previous_checklist
   end
- 
+
   def needs_recommendation?
     recommendation.blank?  && recommendation_definition_id && !is_draft?
   end
@@ -277,6 +282,6 @@ class Checklist < ActiveRecord::Base
   end
 
   def cannot_pass_unless_recommended
-    errors.add(:recommendation, "Must have recommendation") if  promoted and  needs_recommendation? 
+    errors.add(:recommendation, "Must have recommendation") if  promoted and  needs_recommendation?
   end
 end

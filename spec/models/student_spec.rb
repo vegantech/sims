@@ -139,23 +139,6 @@ describe Student do
     Student.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
-  describe 'find_checklist' do
-    before do
-      Checklist.stub!({:find=>@mc=mock_checklist(:show_score? => true)})
-
-    end
-    it 'should include the answes and score by default' do
-      @mc.should_receive(:score_checklist)
-      Student.new.find_checklist('55').should ==@mc
-    end
-
-    it 'should just find if show is false' do
-      Student.new.find_checklist('55', show=false).should == @mc
-    end
-
-
-  end
-
   describe 'max_tier' do
     before do
       @district=@student.district

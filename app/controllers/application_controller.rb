@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   #TODO replace this default district constant
 
   helper :all # include all helpers, all the time
-  helper_method :multiple_selected_students?, :selected_students_ids, 
+  helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
     :current_user_id, :index_url_with_page
 
@@ -30,15 +30,31 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user = User.find_by_id(current_user_id) || User.new
+    @current_user ||= (User.find_by_id(current_user_id) || User.new )
   end
 
-  def selected_students_ids
-    session[:selected_students]  
+  def student_id_cache_key
+    "student_ids_#{current_user_id}_#{session[:session_id][0..40]}"
+  end
+  def selected_student_ids
+    if session[:selected_students] == "memcache"
+      @memcache_student_ids ||= Rails.cache.read(student_id_cache_key)
+    else
+      session[:selected_students]
+    end
+  end
+
+  def selected_student_ids=(student_ids=[])
+    if student_ids.blank? || student_ids.length <50
+      session[:selected_students] = student_ids
+    else
+      session[:selected_students] = "memcache"
+      Rails.cache.write(student_id_cache_key, student_ids)
+    end
   end
 
   def multiple_selected_students?
-    selected_students_ids.to_a.size > 1
+    selected_student_ids.to_a.size > 1
   end
 
   def current_student_id
@@ -59,16 +75,16 @@ class ApplicationController < ActionController::Base
   end
 
   def current_district_id
-    session[:district_id] 
+    session[:district_id]
   end
 
   def current_district
-    @current_district ||= District.find_by_id(current_district_id) 
+    @current_district ||= District.find_by_id(current_district_id)
   end
 
   def authenticate
     subdomains
-    redirect_to logout_url() if current_district_id and current_district.blank? 
+    redirect_to logout_url() if current_district_id and current_district.blank?
     unless current_user_id 
       flash[:notice] = "You must be logged in to reach that page"
       session[:requested_url] = request.url
@@ -159,7 +175,7 @@ class ApplicationController < ActionController::Base
 
 
   def options_for_microsoft_office_protocol_discovery
-    render :nothing => true, :status => 200 if request.method == :options
+    render :nothing => true, :status => :ok if request.method == :options #:ok => 200
   end
 
   def fixie6iframe
@@ -205,5 +221,10 @@ def check_student
 
   def wp_out_of_bounds?(wp_collection)
     wp_collection.out_of_bounds? && wp_collection.total_entries > 0
+  end
+
+  def current_user=(user)
+    session[:user_id] = user.id
+    @curret_user = user
   end
 end
