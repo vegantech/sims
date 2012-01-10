@@ -13,9 +13,9 @@ class PersonalGroupsController < ApplicationController
   # GET /personal_groups/new
   # GET /personal_groups/new.xml
   def new
-    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_students_ids.blank?
+    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = PersonalGroup.new
-    @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i))
+    @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
 
     respond_to do |format|
       format.html # new.html.erb
@@ -25,9 +25,9 @@ class PersonalGroupsController < ApplicationController
 
   # GET /personal_groups/1/edit
   def edit
-    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_students_ids.blank?
+    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = current_user.personal_groups.find(params[:id])
-    @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i) | @personal_group.student_ids)
+    @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
   end
 
   # POST /personal_groups
@@ -43,7 +43,7 @@ class PersonalGroupsController < ApplicationController
         format.xml  { render :xml => @personal_group, :status => :created, :location => @personal_group }
       else
         flash[:notice] = ''
-        @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i))
+        @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
         format.html { render :action => "new" }
         format.xml  { render :xml => @personal_group.errors, :status => :unprocessable_entity }
       end
@@ -63,7 +63,7 @@ class PersonalGroupsController < ApplicationController
         format.xml  { head :ok }
       else
         flash[:notice] = ''
-        @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i) | @personal_group.student_ids)
+        @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @personal_group.errors, :status => :unprocessable_entity }
       end

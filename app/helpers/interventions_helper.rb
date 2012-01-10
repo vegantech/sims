@@ -19,21 +19,20 @@ module InterventionsHelper
   end
 
   def tiered_intervention_definition_select(intervention_definitions, include_blank=true, selected = nil)
-
-   ret=%q{<select id="intervention_definition_id" class="fixed_width" onchange="$('spinnerdefinitions').show();form.onsubmit()" name="intervention_definition[id]">}
-    ret += '<option value=""></option>' if include_blank
+    opts = ""
+    opts += content_tag :option,{},:value => "" if include_blank
     c=intervention_definitions.group_by{|e| e.tier.to_s}
     selected = selected.id if selected.present?
     d=c.keys.sort
-    ret << selected.to_s
+    opts << selected.to_s
     d.each do |group|
-      ret << '<optgroup label ="' + group + '">'
-      ret << options_from_collection_for_select_with_css_class(  c[group], :id, :title,'sld','sld?', :selected => selected) if c[group]
-#      ret << options_from_collection_for_select(  c[group], :id, :title, :selected => selected) if c[group]
-      ret << '</optgroup>'
+      opts += content_tag(:optgroup, :label => group.to_s) do
+        options_from_collection_for_select_with_css_class(  c[group], :id, :title,'sld','sld?', :selected => selected) if c[group]
+      end
     end
-    ret << '</select>'
-    ret
+    select_tag("intervention_definition_id", opts, :class => "fixed_width",
+               :onchange => "$('spinnerdefinitions').show();form.onsubmit()",
+               :name => "intervention_definition[id]")
   end
 
 
@@ -42,26 +41,19 @@ module InterventionsHelper
     if quicklist_items.blank?
       concat("Quicklist is empty.")
     else
-      form_for :quicklist_item,  :url => quicklist_interventions_path do |f|
-        concat(f.label(:intervention_definition_id, "Intervention Quicklist "))
-        concat('<select id="quicklist_item_intervention_definition_id" onchange="form.submit()" name="quicklist_item[intervention_definition_id]">')
-        concat('<option value=""></option>')
+      form_tag "/interventions/quicklists" do
+        concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
+        options = ""
+        options += content_tag :option,{},:value => ""
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|
-          concat("<optgroup label='#{group}'>")
-          concat(options_from_collection_for_select_with_css_class(col, :id, :title,'sld','sld?'))
-          concat("</optgroup>")
+          options += content_tag(:optgroup, :label => group.to_s) do
+            options_from_collection_for_select_with_css_class(col, :id, :title,'sld','sld?')
+          end
         end
-        concat('</select>')
-
-
-
-        #        concat(f.collection_select(:intervention_definition_id, quicklist_items, :id, :title ,{:prompt=>""},:onchange=>"submit()"))
-
-        concat("<noscript>#{ f.submit "Pick from Quicklist"}</noscript>")
-
+        concat(select_tag("intervention_definition_id",options, :onchange => "form.submit()"))
+        concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
-
     end
 
   end

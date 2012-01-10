@@ -27,9 +27,8 @@
 
   <% subreport_selected(@opts[:team_notes]) do %>
     <% unless @student.comments.empty? %>
-      <% @user = User.new %>
       <h2>Team Notes</h2>
-      <%= render :partial => "student_comments/comment", :collection => @student.comments %>
+      <%= render :partial => "student_comments/comment", :collection => @student.comments, :locals =>{:no_actions=> true} %>
     <% end %>
   <% end %>
 

@@ -185,4 +185,29 @@ describe Intervention do
       it 'should also have proper specs for build and initialize'
     end
   end
+
+  describe "adding a comment" do
+    it "should not depend on the order of the params hash #659" do
+      i =Factory(:intervention)
+      other_user = Factory(:user)
+      i.comment = {:comment => "dogs"}
+      i.comment_author = other_user.id
+      i.save!
+      i.comments.first.user.should == other_user
+
+      i.comments.delete_all
+      i.comment_author = other_user.id
+      i.comment = {:comment => "dogs"}
+      i.save!
+      i.comments.first.user.should == other_user
+    end
+
+    it "should set the author to the intervention creator when no comment-author is specified" do
+      i = Factory(:intervention)
+      i.update_attributes!(:comment => {:comment => "Woo"})
+      i.comments.first.user.should == i.user
+    end
+
+
+  end
 end

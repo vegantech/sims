@@ -348,6 +348,21 @@ describe Checklist do
     end
   end
 
+  describe 'find_and_score_checklist' do
+    it 'should include the answes and score by default' do
+      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(c=Checklist.new)
+      c.should_receive(:show_score?).and_return(true)
+      c.should_receive(:score_checklist)
+      Checklist.find_and_score('55').should == c
+    end
+
+    it 'should return nil if it is not found' do
+      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(nil)
+      Checklist.find_and_score('55').should be_nil
+    end
+  end
+
+
 
   describe 'max_tier' do
     it 'should return nil when there are no checklists' do
