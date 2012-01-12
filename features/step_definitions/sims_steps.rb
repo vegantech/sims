@@ -290,18 +290,18 @@ end
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
-  StudentComment.create!(:student => nondistrict_student, :body => content, :created_at => date)
+  nondistrict_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  StudentComment.create!(:student => @student, :body => content, :created_at => date)
+  @student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   non_selected_school_student = Factory(:student, :district => @student.district) #will create student in an unselected school
-  StudentComment.create!(:student => non_selected_school_student, :body => content, :created_at => date)
+  non_selected_school_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
@@ -314,7 +314,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
   @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
                                            :district => @default_user.district)
 
-  StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
+  unauthorized_student.comments.create!(:body => content, :created_at => date)
 end
 
 When /^page should contain "(.*)"$/ do |arg1|

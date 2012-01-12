@@ -9,7 +9,7 @@
   <%=h comment.body %>
 
   <ul>    <%=links_and_attachments comment ,'li'%> </ul>
-  <% if current_user.id == comment.user_id  && !(defined?no_actions && no_actions)%>
+  <% if current_user == comment.user && !(defined?no_actions && no_actions)%>
     <br />
         <%= link_to_remote_degrades 'Edit', :url => edit_student_student_comment_path(@student,comment), :method=> :get %>
         <%= link_to_remote_degrades 'Delete', :url=>[@student,comment], :confirm => 'Are you sure you want to remove this note??', :method => :delete %>
