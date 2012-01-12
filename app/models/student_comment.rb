@@ -18,9 +18,9 @@ class StudentComment < ActiveRecord::Base
   belongs_to :student, :touch => true
   belongs_to :user
   validates_presence_of :body
+  attr_accessible :body, :existing_asset_attributes, :new_asset_attributes, :created_at
 
   acts_as_reportable if defined? Ruport
-  
   define_statistic :team_notes , :count => :all, :joins => :student
   define_statistic :students_with_notes , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_team_notes, :count => :all, :select => 'distinct district_id', :joins => :student
