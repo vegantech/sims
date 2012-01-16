@@ -36,4 +36,5 @@ describe InterventionProbeAssignment do
     ipa = InterventionProbeAssignment.new(@valid_attributes.merge({:end_date => Date.today.yesterday}))
     ipa.should_not be_valid
   end
+
 end

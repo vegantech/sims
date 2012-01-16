@@ -49,15 +49,17 @@ describe StudentCommentsController do
       describe "with valid params" do
 
         it "should expose a newly created student_comment as @student_comment" do
-          StudentComment.should_receive(:build).with({'these' => 'params',"user_id" =>@u.id}).and_return(mock_student_comment(:save => true))
+          StudentComment.should_receive(:build).with({'these' => 'params'}).and_return(mc=mock_student_comment(:save => true))
+          mc.should_receive(:user=).with(@u)
           #controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
           post :create, :student_comment => {:these => 'params'},:student_id => "2"
           assigns(:student_comment).should equal(mock_student_comment)
         end
 
         it "should redirect to the created student_comment" do
-          StudentComment.stub!(:build).and_return(mock_student_comment(:save => true))
-          #        controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+          StudentComment.stub!(:build).and_return(mc=mock_student_comment(:save => true))
+          mc.should_receive(:user=).with(@u)
+
           post :create, {:student_comment => {},:student_id => "2"}, :selected_student_ids=>[1]
           flash[:notice].should ==('Team Note was successfully created.')
           response.should redirect_to(student_url(@s.id))
@@ -68,13 +70,13 @@ describe StudentCommentsController do
       describe "with invalid params" do
 
         it "should expose a newly created but unsaved student_comment as @student_comment" do
-          StudentComment.stub!(:build).with({'these' => 'params', "user_id" => @u.id}).and_return(mock_student_comment(:save => false))
+          StudentComment.stub!(:build).with('these' => 'params').and_return(mock_student_comment(:save => false, 'user=' => true))
           post :create, :student_comment => {:these => 'params'},:student_id => "2"
           assigns(:student_comment).should equal(mock_student_comment)
         end
 
         it "should re-render the 'new' template" do
-          StudentComment.stub!(:build).and_return(mock_student_comment(:save => false))
+          StudentComment.stub!(:build).and_return(mock_student_comment(:save => false, 'user=' => true))
           post :create, :student_comment => {},:student_id => "2"
           response.should render_template('new')
         end
@@ -85,49 +87,42 @@ describe StudentCommentsController do
 
     describe "responding to PUT udpate" do
       before do
+        @mock_student = mock_student(:id=>1, 'new_record?'=>false)
         controller.stub_association!(:current_user, :student_comments=>StudentComment)
-        controller.stub!(:current_student=>mock_student(:id=>1, 'new_record?'=>false))
+        controller.stub!(:current_student=>@mock_student)
       end
 
       describe "with valid params" do
 
         it "should update the requested student_comment" do
-          StudentComment.should_receive(:find).with("37").and_return(mock_student_comment(:save=>true))
-          mock_student_comment.should_receive('body=').with('params')
+          StudentComment.should_receive(:find).with("37").and_return(mock_student_comment(:update_attributes=>true))
           put :update, :id => "37", :student_comment => {:body => 'params'},:student_id => "2"
         end
 
         it "should expose the requested student_comment as @student_comment" do
-          StudentComment.stub!(:find).and_return(mock_student_comment(:save => true, 'body=' => false))
+          StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => true))
           put :update, :id => "1", :student_comment => {:body => 'params'},:student_id => "2"
           assigns(:student_comment).should equal(mock_student_comment)
         end
 
-        it "should redirect to the student_comment" do
-          pending
-          StudentComment.stub!(:find).and_return(mock_student_comment(:save => true, 'body=' => false))
+        it "should redirect to the student" do
+          StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => true))
           put :update, {:id => "37", :student_comment => {},:student_id => "2"}, {:selected_students=>[1]}
-          response.should redirect_to(student_url(1))
+          response.should redirect_to(student_url(@mock_student))
         end
 
       end
 
       describe "with invalid params" do
 
-        it "should update the requested student_comment" do
-          StudentComment.should_receive(:find).with("37").and_return(mock_student_comment(:save=>false))
-          mock_student_comment.should_receive('body=').with('params')
-          put :update, :id => "37", :student_comment => {:body => 'params'},:student_id => "2"
-        end
-
         it "should expose the student_comment as @student_comment" do
-          StudentComment.stub!(:find).and_return(mock_student_comment('body=' => false, :save => false))
+          StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => false))
           put :update, :id => "1", :student_comment => {:body => 'params'},:student_id => "2"
           assigns(:student_comment).should equal(mock_student_comment)
         end
 
         it "should re-render the 'edit' template" do
-          StudentComment.stub!(:find).and_return(mock_student_comment(:save => false, 'body=' =>false))
+          StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => false))
           put :update, :id => "1", :student_comment => {:body => 'params'},:student_id => "2"
           response.should render_template('edit')
         end
@@ -152,8 +147,7 @@ describe StudentCommentsController do
         StudentComment.stub!(:find).and_return(mock_student_comment(:destroy => true))
         #      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
         delete :destroy, {:id => "37",:student_id => "2"}, {:selected_students=>[1]}
-        pending "We should check the assert"
-        response.should redirect_to(student_url(1))
+        response.should redirect_to(student_url(@mock_student))
       end
 
     end

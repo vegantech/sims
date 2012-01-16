@@ -103,9 +103,7 @@ end
 
 
 Given /^I am a state admin$/ do
-  Given "I am a district admin"
-  @default_user.roles = (Role.mask_to_roles(@default_user.reload.roles_mask) | ['state_admin'])
-  @default_user.save!
+  step "I am a district admin"
   @default_user.district.update_attribute(:admin , true)
 end
 
@@ -119,11 +117,6 @@ end
 
 When /^I start at (.*)$/ do |page_name|
   go_to_page page_name
-end
-
-
-When /^I am on (.*)$/ do |page_name|
-  pending 'change me to start_at'
 end
 
 Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
@@ -297,18 +290,18 @@ end
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
-  StudentComment.create!(:student => nondistrict_student, :body => content, :created_at => date)
+  nondistrict_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  StudentComment.create!(:student => @student, :body => content, :created_at => date)
+  @student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   non_selected_school_student = Factory(:student, :district => @student.district) #will create student in an unselected school
-  StudentComment.create!(:student => non_selected_school_student, :body => content, :created_at => date)
+  non_selected_school_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
@@ -321,7 +314,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
   @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
                                            :district => @default_user.district)
 
-  StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
+  unauthorized_student.comments.create!(:body => content, :created_at => date)
 end
 
 When /^page should contain "(.*)"$/ do |arg1|

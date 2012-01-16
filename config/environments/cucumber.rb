@@ -21,13 +21,6 @@ config.action_controller.allow_forgery_protection    = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-config.gem 'rcov',  :version => ">=0.9.9", :lib => false
-config.gem 'cucumber-rails',   :lib => false, :version => '=0.3.2'
 #config.gem 'cucumber',   :lib => false, :version => '=1.1.0'  #covered by cucumber-rails above
-config.gem 'rack-test',   :lib => 'rack/test'
-config.gem 'database_cleaner', :lib => false, :version => '>=0.5.0' unless File.directory?(File.join(Rails.root, 'vendor/plugins/database_cleaner'))
-config.gem 'webrat',           :lib => false, :version => '>=0.7.0' unless File.directory?(File.join(Rails.root, 'vendor/plugins/webrat'))
-config.gem 'rspec-rails',      :version => '=1.3.4', :lib => false
-config.gem 'nokogiri', :lib => false
-config.gem 'hpricot', :lib => false, :version => '=0.6.161'
 SIMS_DOMAIN='example.com'
+Bundler.require :test

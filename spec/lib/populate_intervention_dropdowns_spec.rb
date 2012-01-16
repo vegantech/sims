@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 include PopulateInterventionDropdowns
 describe "Populate Intervention Dropdowns Module" do
-  def selected_students_ids
+  def selected_student_ids
     [1, 2]
   end
 
