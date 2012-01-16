@@ -6,7 +6,7 @@ gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'bluecloth','> 2.0.0'
 gem "fastercsv", '1.2.3'
 gem "pdf-writer", :require => "pdf/writer"
-gem 'rack','>= 1.0.0'
+gem 'rack','~> 1.1.0'
 gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake',"~> 3.0.5"
@@ -14,6 +14,7 @@ gem 'responds_to_parent'
 gem 'newrelic_rpm', "2.14.1"
 gem 'mysql'
 gem 'nokogiri','1.4.4', :require => false
+gem 'rdoc', '>2.4.2', :require => false
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
