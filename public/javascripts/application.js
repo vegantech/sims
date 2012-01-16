@@ -128,7 +128,6 @@ function update_cico_totals() {
 
       expectation_totals.each(function(e,ei){
           student_day.down(".expectation_"+ei).innerHTML=e;
-          
           });
       });
 
@@ -311,7 +310,6 @@ function new_probe_scores() {
   var first2=$('intervention[intervention_probe_assignment]_first_date-mm');
   var first3=$('intervention[intervention_probe_assignment]_first_date-dd');
   var first1=$('intervention[intervention_probe_assignment]_first_date');
-  
   var last2=$('intervention[intervention_probe_assignment]_end_date-mm');
   var last3=$('intervention[intervention_probe_assignment]_end_date-dd');
   var last1=$('intervention[intervention_probe_assignment]_end_date');
