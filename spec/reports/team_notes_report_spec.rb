@@ -12,8 +12,8 @@ describe TeamNotesReport do
 
       start_date = Date.new(2008, 12, 11)
       end_date = Date.new(2008, 12, 13)
-      sc1 = StudentComment.create!(:student => student, :user => user, :body => 'First Comment', :created_at => Time.zone.parse(start_date.to_s))
-      sc2 = StudentComment.create!(:student => student, :user => user, :body => 'Second Comment', :created_at => Time.zone.parse(end_date.to_s))
+      sc1 = Factory(:student_comment, :student => student, :user => user, :body => 'First Comment', :created_at => Time.zone.parse(start_date.to_s))
+      sc2 = Factory(:student_comment, :student => student, :user => user, :body => 'Second Comment', :created_at => Time.zone.parse(end_date.to_s))
       StudentComment.should_receive(:find).and_return([sc1, sc2])
       Time.stub!(:now => Date.new(2008, 12, 12).to_time)
 

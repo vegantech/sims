@@ -165,3 +165,9 @@ Factory.define :intervention_probe_assignment do |f|
   f.first_date "2005-01-01"
   f.end_date "2006-01-01"
 end
+
+Factory.define :student_comment do |f|
+  f.association :student
+  f.association :user
+  f.body  "This is the factory generated note"
+end
