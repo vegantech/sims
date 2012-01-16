@@ -20,6 +20,7 @@ group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'hpricot','0.6.161', :require => false
   gem 'rspec-rails','1.3.4', :require => false
+  gem 'rake'
 end
 
 group :cucumber do
