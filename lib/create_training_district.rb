@@ -615,7 +615,7 @@ class CreateTrainingDistrict
   def self.setup_sci_demo_content(district)   #cico
     d=district
     pd=d.probe_definitions.create!(:title => 'SCI', :description => 'Student Check-In', :cico => true, :minimum_score => 0, :maximum_score => 100)
-    ic= d.intervention_clusters.find{|ic| ic.title == 'Behavior Management'}
+    ic= d.intervention_clusters.find_by_title('Behavior Management')
     id=ic.intervention_definitions.build(:title => 'SCI', :description => 'Student Check-In', :tier => d.tiers[1], :frequency=>Frequency.first,:time_length =>TimeLength.first )
     id.probe_definitions << pd
     id.save!
