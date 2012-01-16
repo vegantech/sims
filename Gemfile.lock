@@ -117,6 +117,7 @@ DEPENDENCIES
   rack (~> 1.1.0)
   rack-test
   rails (= 2.3.14)
+  rake
   rcov (>= 0.9.9)
   rdoc (> 2.4.2)
   responds_to_parent
