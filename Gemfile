@@ -35,6 +35,6 @@ group :cucumber do
 end
 
 group :development do
-gem "capistrano", :require => false
+gem "capistrano",'2.5.0', :require => false
 gem "capistrano-ext", :require => false
 end
