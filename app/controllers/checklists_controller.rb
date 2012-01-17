@@ -10,25 +10,14 @@ class ChecklistsController < ApplicationController
 
   # GET /checklists/new
   def new
-    @checklist = current_student.checklists.new_from_teacher(current_user)
-    if @checklist.pending?
-      flash[:notice]="Please submit/edit or delete the already started checklist first"
-      redirect_to current_student and return
-    end
-
-    if @checklist.missing_checklist_definition?
-      flash[:notice] = "No checklist available.  Have the content builder create one."
-      redirect_to current_student and return
-    end
-
-    if current_district.tiers.blank?
-      flash[:notice] = "No tiers available.  Using the checklist requires at least one tier."
-      redirect_to current_student and return
-    end
-
-
-    respond_to do |format|
-      format.html # new.html.erb
+    @checklist = current_student.checklists.new_from_teacher(current_user) #imports the latest checklist if available
+    if @checklist.can_build?
+      respond_to do |format|
+        format.html # new.html.erb
+      end
+    else
+      flash[:notice] = @checklist.build_errors.join("; ")
+      redirect_to current_student
     end
   end
 
@@ -38,16 +27,20 @@ class ChecklistsController < ApplicationController
   end
 
   def update
-    #FIXME editing checklists shouldn't be this messy, and shouldn't delete the old record.
-    @checklist=Checklist.find(params[:id])
-    @oldchecklist=@checklist
-    @old_created_at = @checklist.created_at 
-    create
-    @checklist.created_at = @old_created_at if @old_created_at
-    @checklist.save
-    @oldchecklist.destroy if @oldchecklist
-    return
-  end
+    @checklist=current_student.checklists.find(params[:id])
+    @checklist.teacher = current_user
+    if @checklist.update_attributes(params.slice("commit","save_draft","element_definition"))
+      flash[:notice] = "Checklist has been updated"
+      if @checklist.needs_recommendation?
+          redirect_to new_recommendation_url(:checklist_id=>@checklist.id) and return
+      else
+          redirect_to(current_student) and return
+      end
+    else
+      flash[:notice] = "There was a problem with updating the checklist"
+      render :action => 'edit' and return
+    end
+ end
 
 
 
@@ -55,16 +48,16 @@ class ChecklistsController < ApplicationController
   # POST /checklists.xml
   def create
     #FIXME should be skinnier model
-    @checklist = current_student.checklists.new_from_params_and_teacher(params,current_user)
+    @checklist = current_student.checklists.build(params.slice("commit","save_draft","element_definition"))
+    @checklist.teacher = current_user
 
     respond_to do |format|
-      if @checklist.all_valid?
-        @checklist.save_all!
+      if @checklist.save
         flash[:notice] = 'Checklist was successfully created.'
-        unless @checklist.needs_recommendation? 
-          format.html { redirect_to(current_student) }
-        else
+        if @checklist.needs_recommendation?
           format.html {redirect_to new_recommendation_url(:checklist_id=>@checklist.id)}
+        else
+          format.html { redirect_to(current_student) }
         end
       else
         format.html { render :action => "new" }

@@ -18,6 +18,13 @@ Feature: Student Checkist
     Then I should see the completed checklist
 
   Scenario: Editing a checklist
+    Given a completed checklist
+    And I am at the student profile page
+    When I edit the checklist
+    Then I should be at the student profile page
+    When I view the checklist
+    Then I should see the completed checklist
+
 
   Scenario: Removing a checklist
 

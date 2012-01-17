@@ -33,8 +33,12 @@ When /^I view the checklist$/ do
 end
 
 Then /^I should see the completed checklist$/ do
+  URI.parse(current_url).path.should == checklist_path(@checklist)
     pending # express the regexp above with the code you wish you had
 end
 
-
-
+When /^I edit the checklist$/ do
+  click_link_within(".profile_page #checklists", "edit")
+  #change a scale, leave one alone, pick a new one, edit a comment, clear out a comment, add a new comment
+  click_button "Submit"
+end

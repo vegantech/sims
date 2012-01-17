@@ -38,34 +38,19 @@ describe ChecklistsController do
   
     it "should expose a new checklist as @checklist" do
       controller.stub_association!(:current_district,:tiers => [1])
-      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>false))
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('can_build?'=>true))
       get :new
       assigns[:checklist].should equal(mock_checklist)
+      response.should render_template('new')
+      response.should be_success
     end
 
-    it 'should redirect to current student if there is a checklist in progress' do
-      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>true,'missing_checklist_definition?'=>false))
+    it 'should redirect to current student if a new checklist cannot be built' do
+      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('can_build?'=>false, :build_errors =>["error 1", "error 2"] ))
       get :new
-      flash[:notice].should == "Please submit/edit or delete the already started checklist first"
+      flash[:notice].should == "error 1; error 2"
       response.should redirect_to(student_url(@current_student))
     end
-
-    it 'should redirect to current_student if there is no checklist defined' do
-      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>true))
-      get :new
-      flash[:notice].should == "No checklist available.  Have the content builder create one."
-      response.should redirect_to(student_url(@current_student))
-    end
-
-    it 'shoudl redirect to current_student if there are no tiers defined in the district' do
-      controller.stub_association!(:current_district,:tiers => [])
-      Checklist.should_receive(:new_from_teacher).with(@current_user).and_return(mock_checklist('pending?'=>false,'missing_checklist_definition?'=>false))
-      get :new
-      flash[:notice].should == "No tiers available.  Using the checklist requires at least one tier."
-      response.should redirect_to(student_url(@current_student))
-    end
-      
-
   end
 
   describe "responding to GET edit" do
