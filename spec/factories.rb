@@ -6,13 +6,6 @@ Factory.sequence :abbrev do |a|
   "test#{a}#{Time.now.to_i}"
 end
 
-Factory.define :checklist do |c|
-  c.association :student
-  c.association :teacher, :factory => :user
-  c.association :tier
-  c.association :checklist_definition
-end
-
 Factory.define :team_consultation do |tc|
 end
 
@@ -30,12 +23,6 @@ Factory.define :user do |u|
   u.district_user_id ''
   u.first_name {|u| "First#{u.username}"}
   u.association :district
-end
-
-Factory.define :checklist_definition do |c|
-  c.directions "Please folow the directions"
-  c.text "Text for Checklist"
-  c.question_definitions {|question_definitions| [question_definitions.association(:question_definition)]}
 end
 
 Factory.define :enrollment do |e|
@@ -59,26 +46,6 @@ Factory.define :student do |s|
   s.first_name "First"
   s.association :district
   s.district_student_id ''
-end
-
-Factory.define :question_definition do |q|
-  q.text  "Question"
-  q.element_definitions {|ed| [ed.association(:element_definition, :question_definition_id=>Time.now.to_i)]}
-end
-
-Factory.define :element_definition do |e|
-  e.text  "Element"
-  e.kind  'applicable'
-  e.answer_definitions {|ad| [ad.association(:answer_definition)]}
-end
-
-Factory.define :answer do |a|
-  a.association :answer_definition
-  a.text "Answer"
-end
-
-Factory.define :answer_definition do |a|
-  a.value 0
 end
 
 Factory.define :district do |d|
