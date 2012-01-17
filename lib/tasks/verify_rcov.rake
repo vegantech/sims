@@ -10,7 +10,7 @@ end
 def remove_task(task_name)
     Rake.application.remove_task(task_name)
 end
- 
+
 
 
 
@@ -19,13 +19,12 @@ remove_task :default
 remove_task :test
 task "test" => ["spec", "features"]
 
-task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration] 
+task "verify_rcov" => [:verify_rcov_unit, :verify_rcov_functional, :verify_rcov_integration]
 task "test:coverage" => [:verify_rcov]
 
 def index_base_path
-  (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') 
+  (ENV['CC_BUILD_ARTIFACTS'] || 'spec/coverage')
 end
-  
 
 #http://vegantech.lighthouseapp.com/projects/17513/tickets/176-test-coverage-775-unit-775-functional-675-integration
 RCov::VerifyTask.new('verify_rcov_unit') do |t|
