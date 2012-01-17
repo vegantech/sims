@@ -1,6 +1,6 @@
 source :rubygems
 gem 'rails','2.3.4'
-gem 'factory_girl', "1.2.1"
+gem 'factory_girl', "1.3.3"
 gem 'ruport','1.6.1'
 gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'bluecloth','> 2.0.0'
@@ -37,4 +37,7 @@ end
 group :development do
 gem "capistrano",'2.5.0', :require => false
 gem "capistrano-ext", :require => false
+gem "thin"
+gem "metrical", :platforms => :ruby_19
+gem "ripper", :platforms => :ruby_19
 end

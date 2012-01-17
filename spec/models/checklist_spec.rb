@@ -210,9 +210,9 @@ describe Checklist do
   end
   
   def test_new_from_params_and_teacher
-    @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>:sa)
-    @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>:comment)
-    @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>:scale)
+    @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>'sa')
+    @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>'comment')
+    @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
     Answer.delete_all
  
  

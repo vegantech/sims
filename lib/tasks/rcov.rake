@@ -29,7 +29,7 @@ if defined? Rcov and defined? Spec
           t.spec_files = FileList[send("specs_corresponding_to_#{target}")]
           # t.spec_files = FileList['spec/**/*_spec.rb']
           t.rcov = true
-          t.rcov_dir= (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') +"/#{target}"
+          t.rcov_dir= (ENV['CC_BUILD_ARTIFACTS'] || 'spec/coverage') +"/#{target}"
           t.rcov_opts << "--rails --aggregate coverage.data --text-summary --sort coverage"
           t.rcov_opts << send("default_rcov_params_for_#{target}")
         end

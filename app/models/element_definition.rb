@@ -13,6 +13,13 @@
 #
 
 class ElementDefinition < ActiveRecord::Base
+  KINDS_OF_ELEMENTS = {
+    :scale => "Scale",
+    :sa => "Short Answer",
+    :comment => "Comment",
+    :applicable => "Applicable Choice"
+  }
+
   belongs_to :question_definition
 
   has_many :answer_definitions, :dependent => :destroy, :order => "position ASC"
@@ -27,15 +34,9 @@ class ElementDefinition < ActiveRecord::Base
   validates_presence_of :question_definition_id,  :kind
   validates_presence_of :text, :unless =>:applicable_kind?
   validates_uniqueness_of :kind, :scope => [:question_definition_id], :if => :applicable_kind_uniqueness?
+  validates_inclusion_of :kind, :in=>KINDS_OF_ELEMENTS.keys.collect(&:to_s)
 
   after_create :move_to_top, :if => :applicable_kind?
-
-  KINDS_OF_ELEMENTS = { 
-    :scale => "Scale",
-    :sa => "Short Answer",
-    :comment => "Comment",
-    :applicable => "Applicable Choice"
-  }
 
   def self.kinds_of_elements
     KINDS_OF_ELEMENTS
@@ -66,11 +67,10 @@ class ElementDefinition < ActiveRecord::Base
 
   def applicable_kind_uniqueness?
     applicable_kind? && (!question_definition || !question_definition.new_record?)
-  end 
-
-  def applicable_kind?
-    !kind.blank?  && kind.to_sym == :applicable 
   end
 
+  def applicable_kind?
+    !kind.blank?  && kind.to_sym == :applicable
+  end
 end
 
