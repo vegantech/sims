@@ -72,37 +72,42 @@ describe ChecklistsController do
   end
 
   describe "responding to POST create" do
-
     describe "with valid params" do
-      
       it "should expose a newly created checklist as @checklist" do
-    pending
-        Checklist.should_receive(:new).with({'these' => 'params'}).and_return(mock_checklist(:save => true))
-        post :create, :checklist => {:these => 'params'}
+        Checklist.should_receive(:build).with('element_definition'=>'aaa', 'commit' => 'raa').and_return(mock_checklist(:save => true, 'needs_recommendation?' => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
+        post :create, :these => 'params', 'element_definition'=>'aaa', 'commit' => 'raa'
         assigns(:checklist).should equal(mock_checklist)
       end
 
-      it "should redirect to the created checklist" do
-    pending
-        Checklist.stub!(:new).and_return(mock_checklist(:save => true))
-        post :create, :checklist => {}
-        response.should redirect_to(checklist_url(mock_checklist))
+      describe 'needs recommendation' do
+        it "should redirect to the recommendation when one is needed" do
+          Checklist.stub!(:build).and_return(mock_checklist(:save => true, 'needs_recommendation?' => true))
+          mock_checklist.should_receive(:teacher=).with(@current_user)
+          post :create, :checklist => {}
+          response.should redirect_to(new_recommendation_url(:checklist_id => mock_checklist.id))
+        end
+        it "should redirect to the student when no recommendation is needed" do
+          Checklist.stub!(:build).and_return(mock_checklist(:save => true, 'needs_recommendation?' => false))
+          mock_checklist.should_receive(:teacher=).with(@current_user)
+          post :create, :checklist => {}
+          response.should redirect_to(student_url(@current_student))
+        end
       end
-      
     end
     
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved checklist as @checklist" do
-    pending
-        Checklist.stub!(:new).with({'these' => 'params'}).and_return(mock_checklist(:save => false))
-        post :create, :checklist => {:these => 'params'}
+        Checklist.stub!(:build).with('element_definition'=>'aaa', 'commit' => 'raa').and_return(mock_checklist(:save => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
+        post :create,  :these => 'params',:element_definition=>'aaa', :commit => 'raa'
         assigns(:checklist).should equal(mock_checklist)
       end
 
       it "should re-render the 'new' template" do
-    pending
-        Checklist.stub!(:new).and_return(mock_checklist(:save => false))
+        Checklist.stub!(:build).and_return(mock_checklist(:save => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
         post :create, :checklist => {}
         response.should render_template('new')
       end
@@ -111,58 +116,57 @@ describe ChecklistsController do
     
   end
 
-  describe "responding to PUT udpate" do
+  describe "responding to PUT update" do
 
     describe "with valid params" do
 
       it "should update the requested checklist" do
-    pending
-        Checklist.should_receive(:find).with("37").and_return(mock_checklist)
-        mock_checklist.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :checklist => {:these => 'params'}
+        Checklist.should_receive(:find).with("37").and_return(mock_checklist('needs_recommendation?' => false))
+        mock_checklist.should_receive(:update_attributes).with('element_definition'=>'aaa', 'commit' => 'raa')
+        mock_checklist.should_receive(:teacher=).with(@current_user)
+        put :update, :id => "37", :these => 'params', 'element_definition'=>'aaa', 'commit' => 'raa'
       end
 
       it "should expose the requested checklist as @checklist" do
-    pending
-        Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => true))
+        Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => true, 'needs_recommendation?' => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
         put :update, :id => "1"
         assigns(:checklist).should equal(mock_checklist)
       end
 
-      it "should redirect to the checklist" do
-    pending
-        Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(checklist_url(mock_checklist))
+      describe 'needs_recommendation' do
+        it "should redirect to the recommendation when one is needed" do
+          Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => true, 'needs_recommendation?' => true))
+          mock_checklist.should_receive(:teacher=).with(@current_user)
+          put :update, :id => "1"
+          response.should redirect_to(new_recommendation_url(:checklist_id => mock_checklist.id))
+        end
+        it "should redirect to the student when no recommendation is needed" do
+          Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => true, 'needs_recommendation?' => false))
+          mock_checklist.should_receive(:teacher=).with(@current_user)
+          put :update, :id => "1"
+          response.should redirect_to(student_url(@current_student))
+        end
+
       end
 
     end
     
     describe "with invalid params" do
-
-      it "should update the requested checklist" do
-    pending
-        Checklist.should_receive(:find).with("37").and_return(mock_checklist)
-        mock_checklist.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :checklist => {:these => 'params'}
-      end
-
       it "should expose the checklist as @checklist" do
-    pending
         Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
         put :update, :id => "1"
         assigns(:checklist).should equal(mock_checklist)
       end
 
       it "should re-render the 'edit' template" do
-    pending
         Checklist.stub!(:find).and_return(mock_checklist(:update_attributes => false))
+        mock_checklist.should_receive(:teacher=).with(@current_user)
         put :update, :id => "1"
         response.should render_template('edit')
       end
-
     end
-
   end
 
   describe "responding to DELETE destroy" do
@@ -178,9 +182,5 @@ describe ChecklistsController do
       get :destroy, :id => "37"
       response.should redirect_to(student_url(@current_student))
     end
- 
-
- 
   end
-
 end
