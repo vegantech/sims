@@ -31,17 +31,21 @@ span.append_file_name {
 
       <tr>
         <th>Empty File</th>
-        <td><%=link_to @importer.file_name,"/district_upload/empty/#{@importer.file_name}" %></td>
+        <td><%=link_to @importer.file_name,"/district_upload/empty/#{@importer.file_name}" %> <br />
+        <%=link_to(@importer.file_name_with_append,"/district_upload/empty/#{@importer.file_name_with_append}")  if @importer.supports_append? %>
+        </td>
       </tr>
 
       <tr>
         <th>Sample File</th>
-        <td><%=link_to_if_present @importer.file_name,"/district_upload/sample/#{@importer.file_name}"  %></a></td>
+        <td><%=link_to_if_present @importer.file_name,"/district_upload/sample/#{@importer.file_name}"  %> <br />
+        <%=link_to(@importer.file_name_with_append,"/district_upload/sample/#{@importer.file_name_with_append}")  if @importer.supports_append? %>
+        </td>
       </tr>
 
       <tr>
         <th>Related Files </th>
-        <td> <%=render :partial => 'doc/district_upload/related', :object => @importer, :locals => {:method => :related} %>  
+        <td> <%=render :partial => 'doc/district_upload/related', :object => @importer, :locals => {:method => :related} %>
 
           <% if @importer.name == "CSVImporter::LanguageartsSystemFlags" and File.exist? "#{Rails.public_path}/system/jonas_sample_test_data.csv" %>
             <br />
@@ -64,7 +68,7 @@ span.append_file_name {
 
       <tr>
         <th>Field Detail</th>
-        <td> 
+        <td>
           <dl>
             <% @importer.csv_headers.each do |field| %>
               <dt><%= field %></dt> <dd><%= @importer::FIELD_DESCRIPTIONS[field] %> </dd>

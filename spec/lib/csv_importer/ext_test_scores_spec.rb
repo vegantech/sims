@@ -51,6 +51,10 @@ describe CSVImporter::ExtTestScores do
   end
 
   describe "with append" do
+    it 'should have append_file_name' do
+      CSVImporter::ExtTestScores.file_name_with_append..should == "ext_test_scores_append.csv"
+
+    end
     it 'should fail with a message when there are duplicates' do
         @i=CSVImporter::ExtTestScores.new append_file,@district
         @i.import
