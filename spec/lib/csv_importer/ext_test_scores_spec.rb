@@ -52,7 +52,7 @@ describe CSVImporter::ExtTestScores do
 
   describe "with append" do
     it 'should have append_file_name' do
-      CSVImporter::ExtTestScores.file_name_with_append..should == "ext_test_scores_append.csv"
+      CSVImporter::ExtTestScores.file_name_with_append.should == "ext_test_scores_append.csv"
 
     end
     it 'should fail with a message when there are duplicates' do
