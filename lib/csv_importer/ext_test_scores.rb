@@ -57,6 +57,11 @@ module CSVImporter
       def supports_append?
         true
       end
+
+      def append_file_name
+        file_name.sub(/.csv$/, "_append.csv")
+      end
+
     end
 
   private
