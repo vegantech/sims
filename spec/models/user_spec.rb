@@ -28,6 +28,7 @@ describe User do
     System::HASH_KEY=nil
     User.destroy_all
     @user = Factory(:user, :username => "oneschool")
+    @mock_school = mock_school(:id => 123)
   end
 
   describe 'authenticate' do
@@ -142,6 +143,8 @@ describe User do
 
   describe 'passwordhash' do
     it 'should be stored encrypted' do
+
+      System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
       System::HASH_KEY=nil
 
       @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
@@ -194,11 +197,11 @@ describe User do
 
   describe 'filtered_groups_by_school' do
     it 'should return all authorized_groups for school if prompt is blank' do
-      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 2', 'group 1'])
+      @user.should_receive(:authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 2', 'group 1'])
       g1=Group.new
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
 
-      @user.filtered_groups_by_school('s1').should == [g1,'group 2', 'group 1']
+      @user.filtered_groups_by_school(@mock_school).should == [g1,'group 2', 'group 1']
     end
 
     it 'should return one authorized group with prompt depending on special user groups' do
@@ -206,10 +209,10 @@ describe User do
       Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
 
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
-      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 1'])
-      @user.filtered_groups_by_school('s1').should == ['group 1']
+      @user.should_receive(:authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 1'])
+      @user.filtered_groups_by_school(@mock_school).should == ['group 1']
       @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
-      @user.filtered_groups_by_school('s1').should == [g1,'group 1']
+      @user.filtered_groups_by_school(@mock_school).should == [g1,'group 1']
     end
 
     it 'should filter groups if prompt' do

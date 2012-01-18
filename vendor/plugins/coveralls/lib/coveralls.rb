@@ -16,7 +16,7 @@ class Coveralls
           end
         rescue NameError, LoadError
           #app/manifests are used with moonshine, but not needed during project execution
-          require obj unless ruby_file.include?('app/manifests')
+           require ruby_file unless ruby_file.include?('app/manifests')
         end
       end
     end

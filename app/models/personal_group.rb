@@ -13,12 +13,13 @@ class PersonalGroup < ActiveRecord::Base
 
 
   named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}, :order =>:name}}
-  named_scope :by_grade, lambda { |grade| {:conditions=>["exists(select id from enrollments inner join personal_groups_students on enrollments.student_id = personal_groups_students.student_id where enrollments.school_id = personal_groups.school_id 
+  named_scope :by_grade, lambda { |grade| {:conditions=>["exists(select id from enrollments inner join personal_groups_students on enrollments.student_id = personal_groups_students.student_id
+  where enrollments.school_id = personal_groups.school_id
   and enrollments.student_id = personal_groups_students.student_id and personal_groups_students.personal_group_id = personal_groups.id and grade = ? ) ",grade] }}
 
   def self.by_school_and_grade(school, grade=nil)
     #this needs to limit to grade
-    g=by_school(school.id)
+    g=by_school(school)
     g=g.by_grade(grade) if grade
     g.collect{|pg| FAKE_GROUP.new(:title =>"PG- #{pg.name}",:id =>"pg#{pg.id}")}
   end

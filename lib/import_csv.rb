@@ -1,5 +1,5 @@
 class ImportCSV
-  require 'lib/csv_importer/base_system_flags'
+  require File.expand_path 'lib/csv_importer/base_system_flags.rb'
 
   APPEND_FILE_MATCHER = /_append(s)?/
   DELETE_COUNT_THRESHOLD = 5

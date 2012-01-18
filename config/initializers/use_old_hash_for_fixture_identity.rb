@@ -1,1 +1,1 @@
-require 'use_old_fixtures_key'
+require Rails.root.join('lib','use_old_fixtures_key.rb')
