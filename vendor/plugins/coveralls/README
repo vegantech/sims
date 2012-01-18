@@ -1,7 +1,9 @@
 Coveralls
 =========
 
-  A rails plugin to make sure all files are required and show up in the code coverage report. (Untouched files are excluded and can thus inflate the overall code coverage.)   If you forget to test a new library or module, it may not show up on the report, and thus you won't see that the coverage for that file is low.
+A rails plugin to make sure all files are required and show up in the code coverage report. 
+(Untouched files are excluded and can thus inflate the overall code coverage.)   
+If you forget to test a new library or module, it may not show up on the report, and thus you won't see that the coverage for that file is low.
 
 
 Install

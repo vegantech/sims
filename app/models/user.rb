@@ -283,7 +283,6 @@ class User < ActiveRecord::Base
       @password_confirmation=@password=pass
     else
       @password = pass
-      puts "district is #{pp district}" if @password == 'motest'
       self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
       set_passwordhash pass
     end
