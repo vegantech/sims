@@ -51,7 +51,7 @@ class Enrollment < ActiveRecord::Base
     if search_hash[:user]
       u = search_hash[:user]
       search_hash.delete(:user_id) if search_hash[:user_id] == "*"
-      if u.special_user_groups.all_students_in_school?(sch_id)
+      if u.all_students_in_school?(sch_id)
         #User has access to everyone in school
       else
         grades = Array(search_hash[:grade])

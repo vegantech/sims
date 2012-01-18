@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
 
   
   include FullName
+  extend ActiveSupport::Memoizable
   after_update :save_user_school_assignments
 
   belongs_to :district
@@ -133,7 +134,7 @@ class User < ActiveRecord::Base
   acts_as_reportable # if defined? Ruport
 
   def authorized_groups_for_school(school,grade=nil)
-    if special_user_groups.all_students_in_school?(school)
+    if all_students_in_school?(school)
       if grade
         school.groups.by_grade(grade)
       else
@@ -168,7 +169,7 @@ class User < ActiveRecord::Base
 
     
     grps = personal_groups.by_school_and_grade(school,grade) |grps
-    if grps.length > 1 or special_user_groups.all_students_in_school?(school)
+    if grps.length > 1 or all_students_in_school?(school)
       grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text))
     end
 
@@ -196,7 +197,7 @@ class User < ActiveRecord::Base
     #    users=users.sort_by{|u| u.to_s}
     prompt_id,prompt_text=(opts["prompt"] || "*-All Staff").split("-",2)
     prompt_first,prompt_last=prompt_text.split(" ",2)
-    users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
+    users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or all_students_in_school?(school)
 
     users
   end
@@ -476,6 +477,11 @@ or (user_group_assignments.id is not null)
     #this fails if the middle name is excluded from the search
     find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
+
+  def all_students_in_school?(school)
+    special_user_groups.all_students_in_school?(school)
+  end
+  memoize :all_students_in_school?
 
 protected
 

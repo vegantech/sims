@@ -47,19 +47,17 @@ class School < ActiveRecord::Base
   end
 
   def grades_by_user(user)
-    school_grades = enrollments.grades
-    if user.special_user_groups.all_students_in_school?(self)
-      grades = school_grades
+    if user.all_students_in_school?(self)
+      grades = enrollments.grades
     else
       # all grades where user has 1 or more authorized enrollments
       grades = user.special_user_groups.grades_for_school(self)
-      student_ids = user.groups.find_all_by_school_id(self.id).collect(&:student_ids).flatten.uniq
-      grades |= enrollments.find_all_by_student_id(student_ids, :select => "distinct grade").collect(&:grade)
+      group_ids = (self.group_ids & user.group_ids) #This needs to be limited to the school
+      sql = enrollments.construct_finder_sql(:select => 'distinct grade', :joins => 'join groups_students on enrollments.student_id = groups_students.student_id',
+                                             :conditions => {'groups_students.group_id' => group_ids})
+      grades |= enrollments.connection.select_values(sql)
     end
-
     grades.sort!
-    grades.unshift("*") if grades.size > 1
-    grades
   end
 
   def to_s
@@ -102,8 +100,9 @@ class School < ActiveRecord::Base
     end
   end
 
-  def enrollment_years 
-    enrollments.all(:select=>'distinct end_year', :order =>'end_year').collect{|e| e.end_year.to_s}.unshift(["All","*"])
+  def enrollment_years
+    sql = enrollments.construct_finder_sql :select => 'distinct end_year', :order => 'end_year'
+    connection.select_values(sql).collect(&:to_s)
   end
 
   def assigned_users

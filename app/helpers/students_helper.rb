@@ -67,4 +67,21 @@ module StudentsHelper
   def inactive_interventions_count(student)
     "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
   end
+
+  def grade_select(grades)
+    grades.unshift("*") if grades.length > 1
+    select(:search_criteria,:grade,grades)
+  end
+
+  def year_select(years)
+    years.unshift(["All","*"]) 
+    select(:search_criteria,:year,years)
+  end
+
+  def group_select(groups)
+
+  end
+
+  def group_member_select(members)
+  end
 end

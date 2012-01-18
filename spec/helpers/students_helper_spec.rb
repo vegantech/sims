@@ -105,5 +105,9 @@ describe StudentsHelper do
 
   end
 
+  it 'should test prompt for select_year'
+  it 'should test grade_select'
+  
+
 end
 

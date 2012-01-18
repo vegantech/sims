@@ -1,1 +1,1 @@
-page.replace_html 'search_criteria_group_id',  options_from_collection_for_select(@groups, :id, :title)
+page.replace_html 'search_criteria_group_id',  options_from_collection_for_select(@groups, :id_with_prefix, :title)
