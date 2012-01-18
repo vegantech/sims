@@ -146,7 +146,7 @@ class Enrollment < ActiveRecord::Base
 
 
   def self.grades
-     find(:all,:select=>"distinct grade").collect(&:grade)
+    connection.select_values(construct_finder_sql(:select => 'distinct grade'))
   end
 
   private

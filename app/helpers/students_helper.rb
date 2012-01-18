@@ -78,10 +78,15 @@ module StudentsHelper
     select(:search_criteria,:year,years)
   end
 
-  def group_select(groups)
-
+  def group_select_options(groups)
+    if groups.length > 1 or current_user.all_students_in_school?(current_school)
+      groups.unshift(Group.new(:title=>'Filter by Group'))
+    end
+    groups
   end
 
-  def group_member_select(members)
+  def group_member_select_options(members)
+    members.unshift(User.new(:first_name=>'All', :last_name=>'Staff')) if members.size > 1 or current_user.all_students_in_school?(current_school)
+    members
   end
 end

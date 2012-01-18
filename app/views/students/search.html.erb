@@ -12,7 +12,7 @@
       </div>
       <div class="form_row">
         <label for="search_criteria_user_id" class="fake_label">Staff Member</label>
-        <%= collection_select(:search_criteria,:user_id,@users,:id,:fullname ) %> <%= spinner('member_search') %>
+        <%= collection_select(:search_criteria,:user_id,group_member_select_options(@users),:id,:fullname ) %> <%= spinner('member_search') %>
         <%= observe_field 'search_criteria_user_id', :url => member_search_students_path, 
           :with=>"'user=' +escape(value) + '&grade=' + escape($('search_criteria_grade').value)",
           :before => "$('spinnermember_search').show();", :complete => "$('spinnermember_search').hide();"
@@ -21,7 +21,7 @@
       </div>
       <div class="form_row">
         <label for="search_criteria_group_id" class="fake_label">Student Group</label>
-        <%= collection_select(:search_criteria,:group_id,@groups,:id_with_prefix,:title) %>
+        <%= collection_select(:search_criteria,:group_id,group_select_options(@groups),:id_with_prefix,:title) %>
         <%=help_popup("Search by group name.   Groups are commonly sections of classes, but could also be neighborhood, team, etc.") %>
       </div>
       <div class="form_row">

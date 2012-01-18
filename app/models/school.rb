@@ -83,7 +83,7 @@ class School < ActiveRecord::Base
 
   def virtual_groups
     virt_groups=[self.groups.build(:title=>"All Students In School")]
-    enrollments.find(:all,:select=>"distinct grade").collect(&:grade).each do |grade|
+    enrollments.grades.each do |grade|
       virt_groups <<  self.groups.build(:title=>"All Students In Grade: #{grade}")
     end
     virt_groups

@@ -41,11 +41,14 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def self.schools
-    find(:all).collect(&:school).compact.flatten.uniq
+    sql = construct_finder_sql(:select => 'distinct school_id')
+    school_ids = connection.select_values sql
+    School.find_all_by_id school_ids
   end
   
   def self.grades_for_school(school)
-    find_all_by_grouptype_and_school_id(ALL_STUDENTS_IN_SCHOOL,school,:select=>"distinct grade", :conditions=>"grade is not null").collect(&:grade).uniq
+    sql= construct_finder_sql(:conditions => ["grade is not null and grouptype = ? and school_id = ?", ALL_STUDENTS_IN_SCHOOL,school], :select => 'distinct grade')
+    connection.select_values(sql)
   end
 
   def to_i

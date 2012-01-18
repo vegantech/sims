@@ -105,8 +105,70 @@ describe StudentsHelper do
 
   end
 
-  it 'should test prompt for select_year'
-  it 'should test grade_select'
+  describe 'grade_select' do
+    it 'should return the grades when there is only 1' do
+      dog ='dog'
+      grade_select([dog]).should == select(:search_criteria,:grade,[dog])
+    end
+
+    it 'should prepend a prompt when there are more than 1' do
+      dog='dog'
+      cat = 'cat'
+      grade_select([dog,cat]).should == select(:search_criteria,:grade,['*',dog,cat])
+    end
+  end
+
+  describe 'year_select' do
+    it 'should return the years with a prompt when there is only 1' do
+      dog ='dog'
+      year_select([dog]).should == select(:search_criteria,:year,[['All','*'],dog])
+    end
+
+    it 'should prepend a prompt when there are more than 1' do
+      dog='dog'
+      cat = 'cat'
+      year_select([dog,cat]).should == select(:search_criteria,:year,[['All','*'],dog,cat])
+    end
+  end
+
+  describe 'group_select_options' do
+    describe 'with all students' do
+      it 'should return the groups with a prompt'
+    end
+    describe 'without all students' do
+      it 'should return the groups with a prompt if there are more than 1'
+      it 'should return the groups if there is 1'
+    end
+  end
+
+  describe 'group_member_select_options' do
+    before  do
+      self.stub!(:current_school => mock_school)
+      @mock_user = mock_user
+      self.stub!(:current_user => @mock_user)
+    end
+    describe 'with all students' do
+      it 'should return the group members with a prompt' do
+        @mock_user.stub!('all_students_in_school?' => true)
+        users = group_member_select_options([1])
+        users.first.fullname.should == 'All Staff'
+        users[1..-1].should == [1]
+      end
+
+    end
+    describe 'without all students' do
+      it 'should return the group members with a prompt if there are more than 1' do
+        @mock_user.stub!('all_students_in_school?' => false)
+        users=group_member_select_options([1,2])
+        users.first.fullname.should == 'All Staff'
+        users[1..-1].should == [1,2]
+      end
+      it 'should return the group members if there is 1' do
+        @mock_user.stub!('all_students_in_school?' => false)
+        group_member_select_options([1]).should == [1]
+      end
+    end
+  end
   
 
 end
