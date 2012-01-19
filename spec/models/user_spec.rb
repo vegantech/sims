@@ -197,12 +197,12 @@ describe User do
 
   describe 'filtered_groups_by_school' do
     it 'should return all authorized_groups for school if prompt is blank' do
-      @user.should_receive(:authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 2', 'group 1'])
+      @user.should_receive(:cached_authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 2', 'group 1'])
       @user.filtered_groups_by_school(@mock_school).should == ['group 2', 'group 1']
     end
 
     it 'should return one authorized group ' do
-      @user.should_receive(:authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 1'])
+      @user.should_receive(:cached_authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 1'])
       @user.filtered_groups_by_school(@mock_school).should == ['group 1']
     end
 
@@ -214,19 +214,16 @@ describe User do
 
   describe 'filtered_members_by_school' do
     it 'should return all authorized_members' do
-      @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra", "Elephant", "Tiger"])
-      @user.filtered_members_by_school('s1').should == ['Zebra','Elephant', 'Tiger']
-    end
-
-    it 'should return one authorized group' do
-      @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra"])
-      @user.filtered_members_by_school('s1').should == ['Zebra']
-    end
-
-    it 'should filter groups if prompt' do
       s=Factory(:school)
-      @user.filtered_members_by_school(s,:grade=>'E').should == []
+      g1 = Factory(:group, :school=>s)
+      g2 = Factory(:group, :school=>s)
+      user = Factory(:user, :groups => [g1,g2])
+      user2 = Factory(:user ,:groups => [g1])
+      user3 = Factory(:user, :groups => [g2])
+      user.filtered_members_by_school(s).should == [user,user2, user3]
     end
+
+
   end
 
   describe 'authorized_ for' do

@@ -146,6 +146,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def cached_authorized_groups_for_school(school, grade=nil)
+    @cached_groups_for_school ||= Hash.new
+    @cached_groups_for_school[[school.id,grade]] ||= authorized_groups_for_school(school,grade).only_title_and_id
+  end
+
   def filtered_groups_by_school(school,opts={})
     #opts can be grade and prompt and user?
     #default prompt is "*-Filter by Group"
@@ -153,7 +158,7 @@ class User < ActiveRecord::Base
     opts.stringify_keys!
     grade = opts['grade']
     grade = nil if grade == "*"
-    grps = authorized_groups_for_school(school,grade)
+    grps = cached_authorized_groups_for_school(school,grade)
 
     if opts["user"].present?
       u_grp_ids = connection.select_values "select group_id from user_group_assignments where user_id = #{opts['user'].to_i}"
@@ -170,7 +175,8 @@ class User < ActiveRecord::Base
     opts.reverse_merge!( "grade"=>"*")
     grade = opts['grade']
     grade = nil if grade == "*"
-    authorized_groups_for_school(school,grade).members
+    g_ids = cached_authorized_groups_for_school(school,grade).collect(&:id)
+    User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
   end
 
    
