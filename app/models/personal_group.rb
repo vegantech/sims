@@ -9,7 +9,9 @@ class PersonalGroup < ActiveRecord::Base
 
 
   named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}, :order =>:name}}
-  named_scope :by_grade, lambda { |grade| {:joins => {:students => :enrollments}, :conditions=>["enrollments.school_id = personal_groups.school_id and enrollments.grade = ?",grade]}}
+  named_scope :by_grade, lambda { |grade| {:conditions=>["exists(select 1 from enrollments inner join personal_groups_students pgs on enrollments.student_id = pgs.student_id
+  where enrollments.school_id = personal_groups.school_id
+  and enrollments.student_id = pgs.student_id and pgs.personal_group_id = personal_groups.id and grade = ? ) ",grade]}}
 
 
 
