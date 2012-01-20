@@ -6,3 +6,4 @@ page.change_link dom_id(@checklist_definition,"add_question_definition_link"), "
 page << "}else{"
 page.update_content dom_id(@checklist_definition,"new_question_definition"), :partial => "rjs_new_form", :locals => { :checklist_definition => @checklist_definition, :question_definition => @question_definition }
 page << "}"
+set_flash_notice page

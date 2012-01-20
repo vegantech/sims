@@ -58,7 +58,7 @@ describe LoginController do
       User.should_receive(:authenticate).and_return(false)
       post :login
       session[:user_id].should == nil
-      flash[:notice].should == "Authentication Failure"
+      response.flash[:notice].should == "Authentication Failure"
       response.should render_template("login")
     end
   

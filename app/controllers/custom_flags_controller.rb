@@ -23,14 +23,12 @@ class CustomFlagsController < ApplicationController
 
     respond_to do |format|
       if @custom_flag.save
-        flash[:notice] = 'CustomFlag was successfully created.'
+        flash[:notice] = 'Custom Flag was successfully created.'
         format.html { redirect_to(current_student) }
         format.js   {  }
-        format.xml  { render :xml => @custom_flag, :status => :created, :location => @custom_flag }
       else
         format.html { render :action => "new" }
         format.js { render :action=> "new" }
-        format.xml  { render :xml => @custom_flag.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -44,7 +42,6 @@ class CustomFlagsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(current_student) }
       format.js   {}
-      format.xml  { head :ok }
     end
   end
 

@@ -18,15 +18,14 @@ class LoginController < ApplicationController
         logger.info "Failed login of #{params[:username]} at #{current_district.name}"
         current_district.logs.create(:body => "Failed login of #{params[:username]}") unless current_district.new_record?
         if @user.token
-          flash[:notice] = 'An email has been sent, follow the link to change your password.'
+          flash.now[:notice] = 'An email has been sent, follow the link to change your password.'
         else
-          flash[:notice] = 'Authentication Failure'
+          flash.now[:notice] = 'Authentication Failure'
         end
       else
         @user.record_successful_login
         session[:district_id]=current_district.id
         current_user = @user
-        flash[:notice] = nil if flash[:notice] == 'Authentication Failure'
         redirect_to successful_login_destination and return
       end
     end

@@ -34,7 +34,7 @@ describe StudentsController do
         get :select,{}, {:search=>{}}
 
         session[:selected_students].should be_nil
-        flash[:notice].should == 'No students selected'
+        response.flash[:notice].should == 'No students selected'
         response.should render_template("index")
       end
     end
@@ -51,7 +51,7 @@ describe StudentsController do
 
       end
       it 'should put error in flash' do
-        flash[:notice].should == 'Unauthorized Student selected, try searching again'
+        response.flash[:notice].should == 'Unauthorized Student selected, try searching again'
       end
 
       it 'should clear the selected students from the session' do

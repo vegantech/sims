@@ -31,7 +31,6 @@ class PersonalGroupsController < ApplicationController
         flash[:notice] = "The #{@personal_group.name} group is now available in the student search screen."
         format.html { redirect_to(personal_groups_url) }
       else
-        flash[:notice] = ''
         @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
         format.html { render :action => "new" }
       end
@@ -49,7 +48,6 @@ class PersonalGroupsController < ApplicationController
         flash[:notice] = "The students in the #{@personal_group.name} group have been updated. If you've changed students and want to work with all students in this group you will need to go back to the student search screen and select the group and select the students on the next screen."
         format.html { redirect_to(personal_groups_url) }
       else
-        flash[:notice] = ''
         @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
         format.html { render :action => "edit" }
       end

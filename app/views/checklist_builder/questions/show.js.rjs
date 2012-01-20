@@ -8,3 +8,4 @@ page << "}else{"
 page.remove_content dom_id(@question_definition, "details")
 page.change_link dom_id(@question_definition, "show_link"), "Show Details"
 page << "}"
+set_flash_notice page

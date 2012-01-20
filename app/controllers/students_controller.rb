@@ -16,7 +16,6 @@ class StudentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @students }
     end
   end
 
@@ -27,7 +26,7 @@ class StudentsController < ApplicationController
     authorized_student_ids = @students.collect {|s| s.student_id.to_s}
 
     if params[:id].blank?
-      flash[:notice] = 'No students selected'
+      flash.now[:notice] = 'No students selected'
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
       params[:id].uniq!
@@ -35,7 +34,7 @@ class StudentsController < ApplicationController
       session[:selected_student] = selected_student_ids.first
       redirect_to student_url(session[:selected_student]) and return
     else
-      flash[:notice] = 'Unauthorized Student selected, try searching again'
+      flash.now[:notice] = 'Unauthorized Student selected, try searching again'
     end
     self.selected_student_ids = nil
     session[:selected_student]= nil
@@ -166,7 +165,7 @@ class StudentsController < ApplicationController
     s=current_user.authorized_schools
     if s.size == 1
       session[:school_id] = s.first.id
-      flash[:notice]=s.first.name + "has been automatically selected"
+      flash.now[:notice]=s.first.name + "has been automatically selected"
       return true
     else
       flash[:notice]="No school selected."

@@ -37,7 +37,7 @@ class ChecklistsController < ApplicationController
           redirect_to(current_student) and return
       end
     else
-      flash[:notice] = "There was a problem with updating the checklist"
+      flash.now[:notice] = "There was a problem with updating the checklist"
       render :action => 'edit' and return
     end
  end

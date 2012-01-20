@@ -7,3 +7,4 @@ page.change_link dom_id(@question_definition, "add_element_definition_link"), "R
 page << "}else{"
 page.update_content dom_id(@question_definition, "new_element_definition"), :partial => "rjs_new_form", :locals => { :element_definition => @element_definition, :question_definition => @question_definition }
 page << "}"
+set_flash_notice page
