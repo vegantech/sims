@@ -4,3 +4,4 @@ page.replace_html dom_id(@element_definition.question_definition, "element_defin
 :collection => @element_definition.sibling_definitions
 page.safe_highlight dom_id(@element_definition)
 page << "}"
+set_flash_notice page

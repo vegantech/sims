@@ -12,3 +12,4 @@ else
   page.update_content dom_id(@question_definition, "element_definitions"), :partial => "element_definition", :collection => @question_definition.element_definitions
   page << "}"
 end
+set_flash_notice page

@@ -10,7 +10,6 @@ class District::StudentsController < ApplicationController
     capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @district_students }
     end
   end
 
@@ -22,7 +21,6 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @student }
     end
   end
 
@@ -41,10 +39,8 @@ class District::StudentsController < ApplicationController
       if @student.save
         flash[:notice] = "#{edit_obj_link(@student)} was successfully created."
         format.html { redirect_to(index_url_with_page) }
-        format.xml  { render :xml => @student, :status => :created, :location => @student }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -59,10 +55,8 @@ class District::StudentsController < ApplicationController
       if @student.update_attributes(params[:student])
         flash[:notice] = "#{edit_obj_link(@student)} was successfully updated."
         format.html { redirect_to(index_url_with_page) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -75,7 +69,6 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(index_url_with_page) }
-      format.xml  { head :ok }
     end
   end
 

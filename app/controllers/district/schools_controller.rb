@@ -6,7 +6,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @schools }
     end
   end
 
@@ -22,7 +21,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @school }
     end
   end
 
@@ -71,7 +69,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(district_schools_url) }
-      format.xml  { head :ok }
     end
   end
 end
