@@ -326,6 +326,9 @@
 
   RewriteRule /_vti_.* - [R=405,L]
 
+  #redirect chrome references to en locale
+  RewriteRule /javascripts/lang/chrome.* /javascripts/lang/en.js [L]
+
 
   </VirtualHost>
 <% end %>
