@@ -2,6 +2,7 @@ class InterventionsController < ApplicationController
   additional_write_actions 'end', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :authorize, :only => [:add_benchmark]
+  skip_before_filter :verify_authenticity_token
 
   include PopulateInterventionDropdowns
 
