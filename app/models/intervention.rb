@@ -48,13 +48,12 @@ class Intervention < ActiveRecord::Base
   has_many :intervention_participants, :dependent => :delete_all
   has_many :participant_users, :through => :intervention_participants, :source => :user
 
-  has_many :intervention_probe_assignments, :dependent => :destroy 
+  has_many :intervention_probe_assignments, :dependent => :destroy
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
-  
 
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
@@ -165,7 +164,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def report_summary
-    "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
+    "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active?}"
   end
 
   def set_missing_values_from_intervention_definition
@@ -195,11 +194,11 @@ class Intervention < ActiveRecord::Base
   end
 
   def orphaned?
-    active? && 
+    active? &&
       (end_date < Date.today ||
        participant_users.blank? ||
        !participant_users.all?{|ipu| student.belongs_to_user? ipu}
-      ) 
+      )
 
   end
 
@@ -209,7 +208,6 @@ class Intervention < ActiveRecord::Base
     find(:all).select(&:orphaned?)
 
   end
-  
   protected
 
   def create_other_students
@@ -219,7 +217,7 @@ class Intervention < ActiveRecord::Base
     # make sure it creates interventions for each student
     if self.apply_to_all == "1"
       comment = {:comment => comments.present? ? comments.first.comment : nil}
-      student_ids = self.selected_ids
+      student_ids = Array(self.selected_ids)
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
@@ -259,14 +257,13 @@ class Intervention < ActiveRecord::Base
     return true unless defined?(@ipa)
     if @ipa.probe_definition.intervention_definitions.blank?
       pd=@ipa.probe_definition
-      pd.intervention_definitions << self.intervention_definition  
+      pd.intervention_definitions << self.intervention_definition
       pd.user_id = user_id
       pd.school_id = school_id
       pd.district_id = goal_definition.district_id
       pd.custom = true
 
     end
-    
     @ipa.save
 
   end
@@ -274,17 +271,17 @@ class Intervention < ActiveRecord::Base
   def send_creation_emails
     # PENDING
     @interventions = Array(self) | Array(@interventions)
-    unless self.called_internally 
+    unless self.called_internally
       Notifications.deliver_intervention_starting(@interventions)
     end
 
     true
   end
-  
+
   def validate_intervention_probe_assignment
     return true unless defined? @ipa
     return true if @ipa.valid?
-    errors.add_to_base("Progress Monitor Assignment is invalid") 
+    errors.add_to_base("Progress Monitor Assignment is invalid")
     false
   end
 
@@ -296,7 +293,7 @@ class Intervention < ActiveRecord::Base
 
   def default_end_date
    if time_length_number and time_length
-      (start_date + (time_length_number*time_length.days).days) 
+      (start_date + (time_length_number*time_length.days).days)
    else
       start_date
    end
@@ -305,7 +302,7 @@ class Intervention < ActiveRecord::Base
   def after_initialize
     return unless new_record?
     self.start_date ||= Date.today
-   
+
     if intervention_definition.blank? || intervention_definition.new_record?
       self.frequency ||= Frequency.find_by_title('Weekly')
       self.frequency_multiplier ||= 2
@@ -315,8 +312,8 @@ class Intervention < ActiveRecord::Base
     else
       set_missing_values_from_intervention_definition
     end
-    
-    self.end_date ||= default_end_date 
+
+    self.end_date ||= default_end_date
   end
 
   def assign_user_to_comment
