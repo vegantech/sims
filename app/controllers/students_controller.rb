@@ -29,8 +29,7 @@ class StudentsController < ApplicationController
       flash.now[:notice] = 'No students selected'
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
-      params[:id].uniq!
-      self.selected_student_ids = params[:id]
+      self.selected_student_ids = Array(params[:id]).uniq
       session[:selected_student] = selected_student_ids.first
       redirect_to student_url(session[:selected_student]) and return
     else
@@ -42,7 +41,7 @@ class StudentsController < ApplicationController
     setup_students_for_index
 
 
-    render :action=>"index" 
+    render :action=>"index"
   end
 
   def search
@@ -73,7 +72,6 @@ class StudentsController < ApplicationController
       flash[:notice] = 'Student not enrolled in district'
       redirect_to :action=>:index and return
     end
-        
 
     session[:selected_student] ||= @student.id.to_s  #537 hopefully this will fix it
     respond_to do |format|
