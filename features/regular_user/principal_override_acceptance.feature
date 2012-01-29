@@ -8,13 +8,17 @@ Feature: Principal Override Accept and Reject
     And I am the principal
     And there is a principal override request
     And I start at the the search page
-    And I follow "1 pending request"
+    And I follow "1 Pending Request"
 
-  Scenario: Reject
+  Scenario: Reject without reason
     And I follow "Reject"
     And I press "Reject"
     Then I should see "Reason must be provided"
-    When I fill in "Reason for Rejecting this Request" with "Now you are a pickle, rejected by cucumber"
+
+  Scenario: Reject with reason
+    When I follow "Reject"
+    And I press "Reject"
+    And I fill in "principal_override_principal_response" with "Now you are a pickle, rejected by cucumber"
     And I press "Reject"
     Then I should see "Rejected"
     And "sims_cucumber_principal@example.com" should receive an email
@@ -26,7 +30,11 @@ Feature: Principal Override Accept and Reject
     And I follow "Accept"
     And I press "Accept"
     Then I should see "Reason must be provided"
-    When I fill in "Reason for Accepting this Request" with "Approved in Brine"
+
+  Scenario: Accept with reason
+    And I follow "Accept"
+    And I press "Accept"
+    When I fill in "principal_override_principal_response" with "Approved in Brine"
     And I press "Accept"
     Then I should see "Approved"
     And "sims_cucumber_principal@example.com" should receive an email
@@ -42,7 +50,7 @@ Feature: Principal Override Accept and Reject
     Then I should see "predefined reason 2"
     And I press "Accept"
     Then I should not see "3- tier3"
-    
+
 
   Scenario: Accept via radio button with autopromote
     Given Principal Override Reason "predefined reason 1" ""

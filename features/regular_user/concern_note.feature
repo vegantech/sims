@@ -21,7 +21,7 @@ Feature: Concern Note
     And I should see "A discussion about this student will occur at an upcoming team meeting."
     And I should receive an email
     When I open the email
-    Then I should see "Team Consultation Form" in the subject
+    Then I should see "Team Consultation Form Created" in the email subject
     And I should see "A team consultation form has been generated for \(Common Last\) on" in the email
     And I should see "by \(default user\)" in the email
     And I should see "Please schedule an initial discussion at an upcoming team meeting" in the email

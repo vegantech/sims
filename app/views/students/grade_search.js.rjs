@@ -1,3 +1,2 @@
 page.replace_html 'search_criteria_user_id',  options_from_collection_for_select(group_member_select_options(@users), :id, :fullname)
 page.replace_html 'search_criteria_group_id',  options_from_collection_for_select(group_select_options(@groups), :id_with_prefix, :title)
-

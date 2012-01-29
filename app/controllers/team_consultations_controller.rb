@@ -7,8 +7,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
 
     respond_to do |format|
-      format.js
       format.html # show.html.erb
+      format.js
     end
   end
 
@@ -20,8 +20,8 @@ class TeamConsultationsController < ApplicationController
     @teams = current_school.school_teams
 
     respond_to do |format|
-      format.js
       format.html # new.html.erb
+      format.js
     end
   end
 
@@ -30,8 +30,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
-      format.js { render :action => 'new'}
       format.html # new.html.erb
+      format.js { render :action => 'new'}
     end
   end
 
@@ -50,7 +50,6 @@ class TeamConsultationsController < ApplicationController
         else
           msg = 'The Team Consultation Draft was saved.'
         end
-        
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
@@ -98,7 +97,7 @@ class TeamConsultationsController < ApplicationController
   def complete
     @team_consultation = TeamConsultation.find(params[:id])
     @team_consultation.complete! and flash.now[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
-    
+
     respond_to do |format|
       format.js
     end
@@ -111,7 +110,4 @@ def undo_complete
       format.js
     end
   end
-
-
-
 end

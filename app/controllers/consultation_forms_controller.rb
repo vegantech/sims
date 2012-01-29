@@ -7,8 +7,8 @@ class ConsultationFormsController < ApplicationController
     @consultation_form = nil unless @consultation_form.district == current_district
 
     respond_to do |format|
-      format.js
       format.html # show.html.erb
+      format.js
     end
   end
 
@@ -18,18 +18,18 @@ class ConsultationFormsController < ApplicationController
     @consultation_form = current_student.team_consultations.find(params[:team_consultation_id]).consultation_forms.build
 
     respond_to do |format|
-      format.js
       format.html # new.html.erb
+      format.js
     end
   end
 
   def edit
     @consultation_form = ConsultationForm.find_by_user_id_and_id(current_user,params[:id])
     respond_to do |format|
-      format.js
       format.html # show.html.erb
+      format.js
     end
- 
+
   end
 
   def update
@@ -45,10 +45,9 @@ class ConsultationFormsController < ApplicationController
         format.html { render :action => "edit" }
       end
 
-      format.js
       format.html # show.html.erb
+      format.js
     end
- 
   end
 
 

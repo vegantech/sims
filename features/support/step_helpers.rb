@@ -6,20 +6,20 @@ def go_to_page page_name
   else
     log_in
     # flunk response.body
-    click_link 'School Selection' if response.body.include?('School Selection')
+    click_link 'School Selection' if page.has_content?('School Selection')
 
     page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
     case page_name
     when 'search'
-      click_button 'Choose School' unless response.body.include?("Default School has been automatically selected.")
-      puts response.body unless response.body.include?('Search')
+      click_button 'Choose School' unless page.has_content?("Default School has been automatically selected.")
+      puts page.body unless page.has_button? 'Search'
     when 'school selection'
     when 'new role'
     when 'student profile'
       # search
-      unless response.body.include?("Default School has been automatically selected.")
-        select("Default School")
+      unless page.has_content?("Default School has been automatically selected.")
+        select("Default School", :from=> "school_id")
         click_button "Choose School"
       end
       click_button "Search for Students"
@@ -32,7 +32,7 @@ def go_to_page page_name
 end
 
 def click_all_name_id_brackets
-  doc=Hpricot(response.body)
+  doc=Hpricot(page.source)
   doc.search("//input[@name='id[]']").each do |elem|
     check(elem[:id])
   end
@@ -40,7 +40,7 @@ end
 
 def verify_select_box id, options
   options=Array(eval(options))
-  response.should have_dropdown(id, options)
+  page.should have_dropdown(id, options)
 end
 
 def log_in

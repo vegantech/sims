@@ -17,8 +17,8 @@ Then /^I should be at the student profile page$/ do
 end
 
 Then /^I should see a notice for "([^"]*)"$/ do |regexp|
-  within "#flash_notice" do |content|
-    content.should contain(regexp)
+  with_scope "#flash_notice" do
+    page.should have_content(regexp)
   end
 end
 
@@ -29,7 +29,9 @@ Given /^a completed checklist$/ do
 end
 
 When /^I view the checklist$/ do
-  click_link_within(".profile_page #checklists", "view")
+  with_scope(".profile_page #checklists") do
+    click "view"
+  end
 end
 
 Then /^I should see the completed checklist$/ do
@@ -38,7 +40,9 @@ Then /^I should see the completed checklist$/ do
 end
 
 When /^I edit the checklist$/ do
-  click_link_within(".profile_page #checklists", "edit")
+  with_scope(".profile_page #checklists") do
+    click "edit"
+  end
   #change a scale, leave one alone, pick a new one, edit a comment, clear out a comment, add a new comment
   click_button "Submit"
 end

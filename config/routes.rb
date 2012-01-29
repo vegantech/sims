@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   map.download_file '/file/:filename', :controller=>'file', :action => 'download', :requirements => { :filename => %r([^/;,?]+) }
 
   map.preview_graph '/preview_graph/:intervention_id', :controller => 'interventions/probe_assignments', :action => 'preview_graph'
-  
+
   map.resources :help
   map.resources :quicklist_items
 
@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
-    district.resources :students, :collection => {:check_id_state => :get}
+    district.resources :students, :collection => {:check_id_state => :get}, :member => {:claim => :get}
     district.resources :flag_categories, :name_prefix=>nil
   end
 
