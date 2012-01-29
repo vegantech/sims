@@ -29,10 +29,11 @@ group :cucumber do
   gem 'cucumber','=1.1.4', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
-  gem 'webrat','>=0.7.0', :require => false
+  gem 'capybara','=0.3.9', :require => false
   gem 'rspec-rails', '=1.3.4', :require => false
   gem 'hpricot','0.6.161', :require => false
   gem 'email_spec',"0.6.6", :require => false
+  gem 'launchy'
 end
 
 group :development do

@@ -2,7 +2,7 @@ Feature: Create Intervention
   In order to use interventions
   A SIMS USER
   Should be able to create and select an interventon
-  
+
   Background:
     Given no other users
     Given common data
@@ -34,7 +34,7 @@ Feature: Create Intervention
     Then I should not see "Enter/view scores"
 
   Scenario: Edit an existing intervention with a progress monitor selected
-    And I need to figure out why this isn't working it is more of a testing issue
+    Given PENDING I need to figure out why this isn't working it is more of a testing issue
     Given an intervention with one progress monitor chosen but no recommended monitors
     Given I start at the student profile page
     When I follow "Edit/Add Comment"
@@ -43,13 +43,13 @@ Feature: Create Intervention
     Then I should see "preview bar graph"
 
   Scenario: Edit an existing intervention with a progress monitor selected, but no recommended monitors
-    And I need to figure out why this isn't working it's ticket 283
+    Given PENDING And I need to figure out why this isn't working it's ticket 283
     Given an intervention with one progress monitor chosen and one recommended monitor
     Given I start at the student profile page
     When I follow "Edit/Add Comment"
     Then I should see "Assign Progress Monitor"
     Then I should see "Enter/view scores"
-    
+
     When I follow "Enter/view scores"
     Then I should see "preview bar graph"
 

@@ -11,7 +11,7 @@ Feature: Overall Student Report
 
   Scenario: Student with one consultation form owned directly by the student and one team consultation with a consultation form
     Given student "Common Last" directly owns consultation form with concern "1"
-    When I check "Consultation Forms"
+    When I check "Consultation forms"
     And I press "Generate Report"
     And I should see "Strengths 1"
     And I should see "Concerns 1"
@@ -32,6 +32,6 @@ Feature: Overall Student Report
    # | Extended profile                  | ?  What should we be seeing ?? |
 
   Scenario: Student Without Consultation Forms
-    When I check "Consultation Forms"
+    When I check "Consultation forms"
     And I press "Generate Report"
     Then I should see "Student has no consultation forms"
