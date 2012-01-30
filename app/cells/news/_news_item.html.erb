@@ -1,5 +1,6 @@
 <%=content_tag :b, news_item.created_at.to_date.to_s() %>-
 <%=h news_item.text %>
+<%= links_and_attachments news_item, :p%>
 <% if @can_edit %>
   <%= link_to 'Edit', edit_news_item_path(news_item) %>
   <%= link_to 'Delete', news_item, :confirm => 'Are you sure?', :method => :delete %>

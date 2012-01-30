@@ -15,7 +15,7 @@
 class NewsItem < ActiveRecord::Base
   belongs_to :district, :touch => true
   belongs_to :school, :touch => true
-
+  include LinkAndAttachmentAssets
   validates_presence_of :text
   named_scope :system, :conditions=>{:system=>true}
 
