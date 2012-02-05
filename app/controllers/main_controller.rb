@@ -54,7 +54,7 @@ class MainController < ApplicationController
         @stats[klass.name] = klass.statistics(:created_after=> @start_date, :created_before => @end_date)
       end
     end
-    flash[:notice]="Excluding district with id #{@without.to_i}" if @without
+    flash.now[:notice]="Excluding district with id #{@without.to_i}" if @without
   end
 
 end

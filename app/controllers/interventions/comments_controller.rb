@@ -40,10 +40,8 @@ class Interventions::CommentsController < ApplicationController
       if @intervention_comment.save
         flash[:notice] = 'InterventionComment was successfully created.'
         format.html { redirect_to(@intervention) }
-        format.xml  { render :xml => @intervention_comment, :status => :created, :location => @intervention_comment }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @intervention_comment.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -59,11 +57,9 @@ class Interventions::CommentsController < ApplicationController
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'
         format.html {}
-        format.xml  { head :ok }
       else
         format.js   { render :action => 'edit' }
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @intervention_comment.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -77,7 +73,6 @@ class Interventions::CommentsController < ApplicationController
     respond_to do |format|
       format.js
       format.html { redirect_to(current_student) }
-      format.xml  { head :ok }
     end
   end
 

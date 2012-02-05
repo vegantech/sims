@@ -114,7 +114,7 @@ class Notifications < MailerWithSubdomains
           errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
         end
       end
-    puts errors.inspect
+      puts errors.inspect unless errors.blank?
   end
 
   def self.interventions_ending_this_week

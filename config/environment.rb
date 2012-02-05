@@ -30,27 +30,8 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
-  config.gem 'ruport', :version => '1.6.1'
-  config.gem 'acts_as_reportable', :lib => 'ruport/acts_as_reportable', :version => '1.1.1'
-  config.gem 'bluecloth', :version => '> 2.0.0'
-  config.gem "fastercsv",  :version => '= 1.2.3'
-  config.gem "pdf-writer", :lib => "pdf/writer"
-  config.gem 'rack', :version => '>= 1.0.0'
-  config.gem 'system_timer'
-  config.gem 'googlecharts', :version => '=1.6.3'
-  config.gem 'airbrake', :version => "~> 3.0.5"
-  config.gem 'responds_to_parent'
-  config.gem 'newrelic_rpm'
-  config.gem 'mysql'
-  config.gem 'nokogiri', :version => '1.4.4', :lib => false
 
- # deployment
-unless ENV['TRAVIS']
-  config.gem "capistrano", :lib => false
-  config.gem "capistrano-ext", :lib => false
-end
- # need to upgrade rubygems
+  # need to upgrade rubygems
   # config.gem 'hpricot'
   # config.gem 'treetop'
   #  config.gem 'diff-lcs'
@@ -61,7 +42,7 @@ end
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
   #
 #config.plugins =  [ :validates_date_time, :all ]
-  SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells, :newrelic_rpm, :paperclip, 
+  SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list, :cells,  :paperclip,
      :spawn, :statistics, 'subdomain-fu', :unobtrusive_date_picker, :will_paginate, :airbrake, :mysql_sets]
 
 

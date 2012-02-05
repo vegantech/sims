@@ -21,8 +21,6 @@
 #
 
 class User < ActiveRecord::Base
-
-  
   include FullName
   after_update :save_user_school_assignments
 
@@ -57,6 +55,7 @@ class User < ActiveRecord::Base
 
 
   attr_accessor :password, :all_students_in_district, :old_password
+  attr_protected :district_id
 
   named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
@@ -132,7 +131,7 @@ class User < ActiveRecord::Base
   acts_as_reportable # if defined? Ruport
 
   def authorized_groups_for_school(school,grade=nil)
-    if special_user_groups.all_students_in_school?(school)
+    if all_students_in_school?(school)
       if grade
         school.groups.by_grade(grade)
       else
@@ -147,57 +146,37 @@ class User < ActiveRecord::Base
     end
   end
 
+  def cached_authorized_groups_for_school(school, grade=nil)
+    @cached_groups_for_school ||= Hash.new
+    @cached_groups_for_school[[school.id,grade]] ||= authorized_groups_for_school(school,grade).only_title_and_id
+  end
+
   def filtered_groups_by_school(school,opts={})
-    #opts can be grade and prompt
+    #opts can be grade and prompt and user?
     #default prompt is "*-Filter by Group"
     #the - separates id and prompt
-    
     opts.stringify_keys!
-    
-    grade = opts[:grade]
+    grade = opts['grade']
     grade = nil if grade == "*"
-    prompt_id,prompt_text=(opts["prompt"] || "*-Filter by Group").split("-",2)
-    grps = authorized_groups_for_school(school,grade)
+    grps = cached_authorized_groups_for_school(school,grade)
 
-    unless opts["user"].blank?
-      grps = grps.select do |u_group|
-        u_group.users.exists?(opts["user"].to_i)
-      end
+    if opts["user"].present?
+      u_grp_ids = connection.select_values "select group_id from user_group_assignments where user_id = #{opts['user'].to_i}"
+      grps = grps.select{ |u_group| u_grp_ids.include? u_group.id.to_s}
     end
-
-    
-    grps = personal_groups.by_school_and_grade(school,grade) |grps
-    if grps.length > 1 or special_user_groups.all_students_in_school?(school)
-      grps.unshift(Group.new(:id=>prompt_id,:title=>prompt_text))
-    end
-
-    @groups=grps
-
+    personal_groups.by_school_and_grade(school,grade) |grps
   end
 
   def filtered_members_by_school(school,opts={})
-  #opts can be grade, user_id and prompt
-  #default prompt is "*-Filter by Group Member"
-  #the - separates id and prompt
+  #opts can be grade, user_id
   #blank grade defaults to *
   #blank user defaults to *
-
     opts.stringify_keys!
     opts.reverse_merge!( "grade"=>"*")
-
-    grade = opts[:grade]
+    grade = opts['grade']
     grade = nil if grade == "*"
-    users=authorized_groups_for_school(school,grade).members
-    unless opts["grade"]  == "*"
-#      user_ids =users.collect(&:id)
- #     users=User.find(:all, :joins => {:groups=>{:students => :enrollments}}, :conditions => {:id=>user_ids, :groups=>{:school_id => school}, :enrollments =>{:grade => opts["grade"]}}, :order => 'last_name, first_name').uniq
-    end
-    #    users=users.sort_by{|u| u.to_s}
-    prompt_id,prompt_text=(opts["prompt"] || "*-All Staff").split("-",2)
-    prompt_first,prompt_last=prompt_text.split(" ",2)
-    users.unshift(User.new(:id=>prompt_id,:first_name=>prompt_first, :last_name=>prompt_last)) if users.size > 1 or special_user_groups.all_students_in_school?(school)
-
-    users
+    g_ids = cached_authorized_groups_for_school(school,grade).collect(&:id)
+    User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
   end
 
    
@@ -282,7 +261,6 @@ class User < ActiveRecord::Base
       @password_confirmation=@password=pass
     else
       @password = pass
-      puts "district is #{pp district}" if @password == 'motest'
       self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
       set_passwordhash pass
     end
@@ -427,7 +405,7 @@ class User < ActiveRecord::Base
 
   def self.find_all_by_role(role,options = {})
     with_scope :find => options do
-      find(:all,:conditions => ["roles_mask & ? ",2**Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+      find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
 =begin
@@ -475,6 +453,10 @@ or (user_group_assignments.id is not null)
   def self.find_by_fullname(fullname)
     #this fails if the middle name is excluded from the search
     find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
+  end
+
+  def all_students_in_school?(school)
+    special_user_groups.all_students_in_school?(school)
   end
 
 protected

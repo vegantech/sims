@@ -36,14 +36,11 @@ describe School do
 
    describe 'grades_by_user' do
      it 'should return all grades in school when user has access to 
-     all students in the school and add a * when there is more than one' do
+     all students in the school' do
        user=mock_user
-       special_group = mock_array
-       user.should_receive('special_user_groups').and_return(special_group)
-
        @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,:grade=>i,:school=>@school)}
-       special_group.should_receive('all_students_in_school?').with(@school).and_return(true)
-       @school.grades_by_user(user).should == ['*','1','2','3','4']
+       user.should_receive('all_students_in_school?').with(@school).and_return(true)
+       @school.grades_by_user(user).should == ['1','2','3','4']
 
                                   
     end
@@ -51,7 +48,7 @@ describe School do
     it 'should not prepend * if there is only one' do
       @school.enrollments.create!(:grade=>'only',:student_id=>-1)
       user=mock_user
-      user.stub_association!(:special_user_groups, :all_students_in_school? =>  true)
+      user.stub!( :all_students_in_school? =>  true)
       @school.grades_by_user(user).should == ['only']
 
     end
@@ -61,19 +58,11 @@ describe School do
 
       @school.enrollments=e
       user=mock_user
-      g1=mock_group(:student_ids=>[e[2].student_id])
+      g1 = Factory(:group, :students => [e[2].student], :school => @school)
 
-      user.stub_association!(:special_user_groups, 
-                             :all_students_in_school? =>  false, 
-                            :grades_for_school=> ['2'])
-      user.stub_association!(:groups,:find_all_by_school_id=>[g1])
-                          
-  
-
-
-      user.groups.find_all_by_school_id(@school.id).collect(&:student_ids).flatten.uniq
-
-      @school.grades_by_user(user).should == ['*','2','4']
+      user.stub!( :all_students_in_school? =>  false, :group_ids => [g1.id])
+      user.stub_association!(:special_user_groups, :grades_for_school=> ['2'])
+      @school.grades_by_user(user).should == ['2','4']
 
     end
 
@@ -87,7 +76,7 @@ describe School do
 
    describe 'enrollment_years' do
      it 'should return all when empty' do
-       School.new.enrollment_years.should == [['All','*']]
+       School.new.enrollment_years.should == []
      end
 
     it 'should return the years' do
@@ -99,11 +88,8 @@ describe School do
       sch.enrollments.create!(:grade=>2,:end_year => 2009)
       sch.enrollments.create!(:grade=>2,:end_year => 2010)
       sch.enrollments.create!(:grade=>2,:end_year => 2007)
-      sch.enrollment_years.should == [['All','*'],'','2007','2008','2009','2010']
-
-
+      sch.enrollment_years.should == ['','2007','2008','2009','2010']
     end
-     
    end
 
    describe 'setting user_school_assignments' do

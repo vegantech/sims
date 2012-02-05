@@ -25,13 +25,15 @@ class Group < ActiveRecord::Base
   validates_uniqueness_of :title, :scope=>:school_id
 
   named_scope :by_school, lambda { |school| {:conditions=>{:school_id=>school}}}
-  named_scope :by_grade, lambda { |grade| {:conditions=>["exists(select id from enrollments inner join groups_students on enrollments.student_id = groups_students.student_id where enrollments.school_id = groups.school_id 
+  #doing the joins for by_grade was 3x slower, so we're using exists in a subquery
+  named_scope :by_grade, lambda { |grade| {:conditions=>["exists(select 1 from enrollments inner join groups_students on enrollments.student_id = groups_students.student_id where enrollments.school_id = groups.school_id
   and enrollments.student_id = groups_students.student_id and groups_students.group_id = groups.id and grade = ? ) ",grade],
   }}
+  named_scope :only_title_and_id, :select => 'groups.id, groups.title'
   def self.members
     #TODO tested, but it is ugly and should be refactored
     group_ids=find(:all,:select=>"groups.id")
-    User.find(:all,:joins => :groups ,:conditions=> {:groups=>{:id=>group_ids}}, :order => 'last_name, first_name').uniq
+    User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>group_ids}}, :order => 'last_name, first_name')
   end
 
   def principals
@@ -39,12 +41,16 @@ class Group < ActiveRecord::Base
   end
 
   def self.paged_by_title(title="", page="1")
-    paginate :per_page => 25, :page => page, 
+    paginate :per_page => 25, :page => page,
       :conditions=> ['title like ?', "%#{title}%"],
       :order => 'title'
   end
 
   def to_s
     title
+  end
+
+  def id_with_prefix
+    id.to_s
   end
 end

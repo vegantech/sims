@@ -14,7 +14,6 @@ Given /^there is a principal override request$/ do
   stu= @default_user.user_group_assignments.first.group.students.first
   po=@default_user.principal_override_requests.build(:student=>stu, :teacher_request => 'Cucumber test reaquest', :skip_email=> true)
   po.save!
-  #  pending
 end
 
 Given /^Principal Override Reason "([^\"]*)" "([^\"]*)"$/ do |reason, autopromote|
@@ -28,6 +27,3 @@ Given /^tiers \["([^\"]*)", "([^\"]*)", "([^\"]*)"\]$/ do |arg1, arg2, arg3|
     @district.tiers.create!(:title => arg2)
     @district.tiers.create!(:title => arg3)
 end
-  
-  
-    

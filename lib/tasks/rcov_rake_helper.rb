@@ -9,16 +9,16 @@ end
 
 
   def index_base_path
-    (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') 
+    (ENV['CC_BUILD_ARTIFACTS'] || 'spec/coverage')
   end
-  def default_rcov_params_for_unit   
+  def default_rcov_params_for_unit
     '-i "app\/reports" -x "app\/controllers","app\/metal",'+global_exclude
-  end  
-  
-  def default_rcov_params_for_functional   
+  end
+
+  def default_rcov_params_for_functional
     ' -x  "app\/reports","app\/models","app\/helpers","lib/",'+global_exclude
   end
-  
+
   def default_rcov_params_for_integration
     ' -x "features\/",' + global_exclude
   end
@@ -26,16 +26,16 @@ end
   def specs_corresponding_to_unit
     %w( models helpers lib reports ).collect{|e| "spec/#{e}/**/*_spec.rb"}
   end
-  
+
   def specs_corresponding_to_functional
     #maybe add views later
     %w( controllers routing metal).collect{|e| "spec/#{e}/**/*_spec.rb"}
-    
+
   end
-  
+
   def specs_corresponding_to_integration
     "stories/all.rb"
-    
+
   end
 
   def global_exclude
@@ -46,6 +46,6 @@ end
   def remove_coverage_data
     rm_f "coverage.data"
   end
- 
+
 
 RCOV_OPTS=""

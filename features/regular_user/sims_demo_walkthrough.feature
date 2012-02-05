@@ -1,8 +1,8 @@
 Feature: Sims Demo Walkthrough
   In order to show a demo works
-  
+
   Scenario: Run Demo with oneschool
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "oneschool"
@@ -17,7 +17,7 @@ Feature: Sims Demo Walkthrough
     And I choose "List only students in an active intervention"
 
     #lighthouse #162
-    And I check "Math"  
+    And I check "Math"
     Then I press "Search for Students"
 
     Then I follow "Student Search"
@@ -37,9 +37,10 @@ Feature: Sims Demo Walkthrough
     And I fill in "custom_flag_reason" with "test reason from cucumber"
     And I select "Math" from "Category"
     Then I press "Save Custom Flag"
-    Then page should contain "Math- \ntest reason from cucumber"
+    Then I should see "Math" within "#customflag li"
+    And I should see "test reason from cucumber" within "#customflag li"
     Then I follow "Remove"
-    Then I should not see "Math- \ntest reason from cucumber"
+    Then I should not see "test reason from cucumber"
 
 
     #creating and editing score #195
@@ -55,10 +56,11 @@ Feature: Sims Demo Walkthrough
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
 
-    Then page should contain "<td>Reading one</td>"
+    Then I should see "Reading one" within "td"
     Then I press "Save"
 
     Then I follow "Edit/Add Comment"
+    Given PENDING as enter/view scores link does not degrade?
     Then I follow "Enter/view scores"
     Then I select "2007" from "intervention[intervention_probe_assignment][new_probes]_0_administered_at"
     Then I fill in "Score" with "15"
@@ -81,8 +83,7 @@ Feature: Sims Demo Walkthrough
     And I press "Save"
     Then I should not see "NoMethodError"
     And the "Add new comment about the intervention plan and progress" field should contain "A comment with a text score triggers bug 272."
-    #Fix redisplay of score    
-    
+    #Fix redisplay of score
 
     # Then I follow "Enter/view scores"
     # And the "Score" field should contain "fifteen"
@@ -95,7 +96,6 @@ Feature: Sims Demo Walkthrough
     Then I follow "Alpha_Third Grader"
     Then I follow "Edit/Add Comment"
     Then I follow "Delete"
-    
 
 
     # intervention ticket #185
@@ -108,18 +108,18 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Category"
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
-    
     # And I should see "value=\"777239083\" selected=\"selected\""
     # Fact interview A
     # And I select "" from "Assign Progress Monitor"
-    
     # change some options here?
     Then I press "Save"
     Then I should see "Please assign a progress monitor"
     Then I follow "Edit/Add Comment"
-    And page should contain "<option value=\"\"></option>\n<option value=\"777239083\">Fact Interview A</option>\n<option value=\"777239084">Fact Interview B</option></select>"
+    And page source should contain /<option value=\"\"></option>/
+    And page source should contain "Fact Interview A</option>\n"
+    And page source should contain "Fact Interview B</option></select>"
     And I follow "Delete"
- 
+
 
     Then I follow "Select New Intervention and Progress Monitor from Menu"
     Then I select "Learning" from "goal_definition_id"
@@ -130,10 +130,10 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Category"
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
-    
+
     #And I should see "value=\"777239083\" selected=\"selected\""
     #Fact interview A
-    
+
     #change some options here?
     Then I press "Save"
     Then I follow "Edit/Add Comment"
@@ -153,7 +153,6 @@ Feature: Sims Demo Walkthrough
     #empty checklist
     Then I follow "Complete a Checklist for this Student"
     Then I press "Submit and Make Recommendation"
-    
 
     #draft recommendation
     Then I press "Save Draft"
@@ -164,27 +163,24 @@ Feature: Sims Demo Walkthrough
     And I follow "Student Interventions"
     And I press "Generate Report"
 
-    
-    
 
-    And I am now pending
+    And PENDING I am now pending
     When I follow "Assign Monitors"
     And I check "Fact Interview A"
     And I select "2014" from "First Date"
     And I select "2013" from "End Date"
     Then I press "Create"
-    
+
     Then I follow "Assign Monitors"
     And page should contain "\"selected\" value=\"2014\""
     And page should contain "\"selected\" value=\"2013\""
     Then I follow "back"
-    
+
     Then I follow "Enter scores for previously administered assessment"
     Then I fill in "score" with "2"
     Then I press "Enter Score"
     Then I should see "Hide Graph"
     And I should see "Score: 2"
- 
 
     Then I follow "Add Participant"
     Then I select "2Second. twoschools" from "intervention_participant_user_id"
@@ -195,12 +191,10 @@ Feature: Sims Demo Walkthrough
     And I press "Submit Without Printing"
     And I should see "Score: 1"
     Then I follow "Back"
-    
-    
 
 
   Scenario: Alphaprin
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "alphaprin"
@@ -217,10 +211,9 @@ Feature: Sims Demo Walkthrough
     And I should see "Grader, Alpha_First"
     And I should see "Grader, Alpha_Third"
 
-    
 
   Scenario: alphagradethree
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "alphagradethree"
@@ -258,7 +251,7 @@ Feature: Sims Demo Walkthrough
     And I should see "Smith, Bravo_First"
 
   Scenario: nouser
-    Given load demo data 
+    Given load demo data
     When I go to the home page
     And I fill in "Login" with "invalid_user"
     And I press "Login"
@@ -267,10 +260,10 @@ Feature: Sims Demo Walkthrough
     And I fill in "Password" with "wrong"
     And I press "Login"
     Then I should see "Authentication Failure"
-     
-    
+
+
   Scenario: noschools
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "noschools"
@@ -281,12 +274,10 @@ Feature: Sims Demo Walkthrough
     And I should not see "Please Login"
     And I follow "Logout"
     And I should see "Please Login"
-    
 
- 
 
   Scenario: nogroups
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "nogroups"
@@ -296,12 +287,11 @@ Feature: Sims Demo Walkthrough
 #    And I should see "Alpha Elementary"
 #    Then I press "Choose School"
     And I should see "User doesn't have access to any students at Alpha Elementary"
-    And page should contain "Choose School"
-    
+    And page should have a "Choose School" button
 
 
   Scenario: allstudents
-    Given load demo data 
+    Given load demo data
     And I go to the home page
     And I select "WI Test District" from "District"
     And I fill in "Login" with "allstudents"

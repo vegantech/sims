@@ -3,31 +3,21 @@ class PersonalGroupsController < ApplicationController
   # GET /personal_groups.xml
   def index
     @personal_groups = current_user.personal_groups.by_school(current_school)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @personal_groups }
-    end
   end
 
   # GET /personal_groups/new
   # GET /personal_groups/new.xml
   def new
-    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_students_ids.blank?
+    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = PersonalGroup.new
-    @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i))
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @personal_group }
-    end
+    @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
   end
 
   # GET /personal_groups/1/edit
   def edit
-    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_students_ids.blank?
+    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = current_user.personal_groups.find(params[:id])
-    @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i) | @personal_group.student_ids)
+    @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
   end
 
   # POST /personal_groups
@@ -40,12 +30,9 @@ class PersonalGroupsController < ApplicationController
       if @personal_group.save
         flash[:notice] = "The #{@personal_group.name} group is now available in the student search screen."
         format.html { redirect_to(personal_groups_url) }
-        format.xml  { render :xml => @personal_group, :status => :created, :location => @personal_group }
       else
-        flash[:notice] = ''
-        @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i))
+        @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
         format.html { render :action => "new" }
-        format.xml  { render :xml => @personal_group.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -54,18 +41,15 @@ class PersonalGroupsController < ApplicationController
   # PUT /personal_groups/1.xml
   def update
     @personal_group = current_user.personal_groups.find(params[:id])
-    params[:personal_group][:student_ids] ||= []  
+    params[:personal_group][:student_ids] ||= []
 
     respond_to do |format|
       if @personal_group.update_attributes(params[:personal_group])
         flash[:notice] = "The students in the #{@personal_group.name} group have been updated. If you've changed students and want to work with all students in this group you will need to go back to the student search screen and select the group and select the students on the next screen."
         format.html { redirect_to(personal_groups_url) }
-        format.xml  { head :ok }
       else
-        flash[:notice] = ''
-        @students = Student.find_all_by_id(selected_students_ids.collect(&:to_i) | @personal_group.student_ids)
+        @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @personal_group.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -75,10 +59,6 @@ class PersonalGroupsController < ApplicationController
   def destroy
     @personal_group = current_user.personal_groups.find(params[:id])
     @personal_group.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(personal_groups_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(personal_groups_url)
   end
 end

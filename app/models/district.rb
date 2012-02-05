@@ -42,7 +42,6 @@ class District < ActiveRecord::Base
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
-  has_many :roles
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
@@ -60,14 +59,12 @@ class District < ActiveRecord::Base
 
 
 
-  
   validates_presence_of :abbrev,:name
   validates_uniqueness_of :abbrev,:name
   validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate_on_update :check_keys
-                                         
   before_destroy :make_sure_there_are_no_schools
   after_destroy {|d| ::CreateInterventionPdfs.destroy(d) }
   before_validation :clear_logo
@@ -94,7 +91,7 @@ class District < ActiveRecord::Base
     checklist_definitions.find_by_active(true)
   end
 
- 
+
 
 
   def find_intervention_definition_by_id(id)
@@ -103,7 +100,7 @@ class District < ActiveRecord::Base
 
   def search_intervention_by
     #FIXME some districts may not use goals or objectives
-    #so they should be able to choose which to search by on the 
+    #so they should be able to choose which to search by on the
     #student search screen
     objective_definitions
   end
@@ -141,10 +138,6 @@ class District < ActiveRecord::Base
     'district_admin recreated'
   end
 
-  def roles_with_system
-    roles + Role.system
-  end
-
   def delete_logo=(value)
     @delete_logo = !value.to_i.zero?
   end
@@ -153,19 +146,20 @@ class District < ActiveRecord::Base
     !!@delete_logo
   end
 
-  def available_roles
-    roles | System.roles
-  end
-
   def state_district
     @state2||=admin_district
   end
 
-  def intervention_clusters  #district only
-    @intervention_clusters ||= InterventionCluster.find(:all,:joins => {:objective_definition=>:goal_definition}, 
-      :conditions => {:goal_definitions =>{:district_id => self.id}})
-
+  def intervention_clusters
+    @intervention_clusters ||= InterventionCluster.scoped :joins => {:objective_definition=>:goal_definition},
+      :conditions => {:goal_definitions =>{:district_id => self.id}}
   end
+
+  def intervention_definitions
+    @intervention_definitions ||= InterventionDefinition.scoped :joins => {:intervention_cluster => {:objective_definition=>:goal_definition}},
+      :conditions => {:goal_definitions =>{:district_id => self.id}}
+  end
+
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
@@ -198,6 +192,10 @@ class District < ActiveRecord::Base
     rescue ActiveRecord::StatementInvalid
       logger.warn "Unable to get lock for touch in district!"
     end
+  end
+
+  def show_aim_line?
+    Rails.env.wip? || Rails.env.development?  || ['madison'].include?(self.abbrev)
   end
 
   def show_personal_groups?
@@ -246,8 +244,8 @@ private
       students.destroy_all
       special_user_groups.destroy_all
       news.destroy_all
-    else 
-      errors.add_to_base("Have the district admin remove the schools first.") 
+    else
+      errors.add_to_base("Have the district admin remove the schools first.")
       false
     end
   end
@@ -268,8 +266,8 @@ private
 
   def check_keys
     if key_changed? and key.present? and previous_key.present?
-      errors.add(:key, "Please contact the system administrator if you need to change your district key again.  
-      The district key is a part of the password hash generated for each user.  
+      errors.add(:key, "Please contact the system administrator if you need to change your district key again.
+      The district key is a part of the password hash generated for each user.
       Changing it (again) could prevent any user in your district from accessing SIMS, as the key used to generate the hash may not match what is in SIMS.")
 
       false

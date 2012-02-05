@@ -12,8 +12,8 @@ class CustomFlagsController < ApplicationController
 
 
     respond_to do |format|
-      format.js # new.js.rjs
       format.html # new.html.erb
+      format.js # new.js.rjs
       format.xml  { render :xml => @custom_flag }
     end
   end
@@ -23,14 +23,12 @@ class CustomFlagsController < ApplicationController
 
     respond_to do |format|
       if @custom_flag.save
-        flash[:notice] = 'CustomFlag was successfully created.'
+        flash[:notice] = 'Custom Flag was successfully created.'
         format.html { redirect_to(current_student) }
         format.js   {  }
-        format.xml  { render :xml => @custom_flag, :status => :created, :location => @custom_flag }
       else
         format.html { render :action => "new" }
         format.js { render :action=> "new" }
-        format.xml  { render :xml => @custom_flag.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -39,12 +37,11 @@ class CustomFlagsController < ApplicationController
   # DELETE /custom_flags/1.xml
   def destroy
     @custom_flag = current_student.custom_flags.find(params[:id])
-    @custom_flag.destroy 
+    @custom_flag.destroy
 
     respond_to do |format|
       format.html { redirect_to(current_student) }
       format.js   {}
-      format.xml  { head :ok }
     end
   end
 
@@ -54,20 +51,20 @@ class CustomFlagsController < ApplicationController
       @ignore_flag=current_student.ignore_flags.build(:category=>params[:category], :user_id => current_user_id)
       respond_to do |format|
         format.html {render :action=> "_ignore_flag"}
-        format.js 
+        format.js
       end
     else
-     @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(:user_id=>current_user_id))
+      @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(:user_id=>current_user_id))
       @ignore_flag.save
       respond_to do |format|
-        format.html do 
-                      unless @ignore_flag.new_record?
-                        redirect_to student_url(current_student)
-                      else
-                        render :action => "_ignore_flag"
-                      end
-                    end
-        format.js 
+        format.html do
+          unless @ignore_flag.new_record?
+            redirect_to student_url(current_student)
+          else
+            render :action => "_ignore_flag"
+          end
+        end
+        format.js
       end
     end
   end
@@ -75,15 +72,12 @@ class CustomFlagsController < ApplicationController
   def unignore_flag
     @ignore_flag=current_student.ignore_flags.find(params[:id])
     @ignore_flag.destroy
-    respond_to do |format| 
+    respond_to do |format|
       format.html {redirect_to student_url(current_student)}
       format.js
     end
   end
-    
-    
 
-  
   private
   def enforce_session_selections
     #doesn't work.

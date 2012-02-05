@@ -1,20 +1,20 @@
 module StudentsHelper
   def selected_navigation
     if multiple_selected_students?
-      index = selected_students_ids.index(current_student_id)
-      ret = "Student #{index+1} of #{selected_students_ids.size} &nbsp;&nbsp; "
+      index = selected_student_ids.index(current_student_id)
+      ret = "Student #{index+1} of #{selected_student_ids.size} &nbsp;&nbsp; "
 
       unless index == 0
-        ret += link_to('<<', student_url(selected_students_ids.first))
+        ret += link_to('<<', student_url(selected_student_ids.first))
         ret += "&nbsp;&nbsp;"
-        ret += link_to('Previous', student_url(selected_students_ids[index-1]))
+        ret += link_to('Previous', student_url(selected_student_ids[index-1]))
         ret += "&nbsp;&nbsp;"
       end
 
-      unless index == (selected_students_ids.size() -1)
-        ret += link_to('Next', student_url(selected_students_ids[index+1]))
+      unless index == (selected_student_ids.size() -1)
+        ret += link_to('Next', student_url(selected_student_ids[index+1]))
         ret += "&nbsp;&nbsp;"
-        ret += link_to('>>', student_url(selected_students_ids.last))
+        ret += link_to('>>', student_url(selected_student_ids.last))
       end
       content_tag :p, ret
     end
@@ -66,5 +66,27 @@ module StudentsHelper
 
   def inactive_interventions_count(student)
     "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
+  end
+
+  def grade_select(grades)
+    grades.unshift("*") if grades.length > 1
+    select(:search_criteria,:grade,grades)
+  end
+
+  def year_select(years)
+    years.unshift(["All","*"]) 
+    select(:search_criteria,:year,years)
+  end
+
+  def group_select_options(groups)
+    if groups.length > 1 or current_user.all_students_in_school?(current_school)
+      groups.unshift(Group.new(:title=>'Filter by Group'))
+    end
+    groups
+  end
+
+  def group_member_select_options(members)
+    members.unshift(User.new(:first_name=>'All', :last_name=>'Staff')) if members.size > 1 or current_user.all_students_in_school?(current_school)
+    members
   end
 end

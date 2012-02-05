@@ -4,3 +4,4 @@ page.replace_html dom_id(@question_definition.checklist_definition,"question_def
 :collection => @question_definition.sibling_definitions
 page.safe_highlight dom_id(@question_definition)
 page << "}"
+set_flash_notice page

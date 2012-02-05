@@ -185,4 +185,67 @@ describe Intervention do
       it 'should also have proper specs for build and initialize'
     end
   end
+
+  describe "adding a comment" do
+    it "should not depend on the order of the params hash #659" do
+      i =Factory(:intervention)
+      other_user = Factory(:user)
+      i.comment = {:comment => "dogs"}
+      i.comment_author = other_user.id
+      i.save!
+      i.comments.first.user.should == other_user
+
+      i.comments.delete_all
+      i.comment_author = other_user.id
+      i.comment = {:comment => "dogs"}
+      i.save!
+      i.comments.first.user.should == other_user
+    end
+
+    it "should set the author to the intervention creator when no comment-author is specified" do
+      i = Factory(:intervention)
+      i.update_attributes!(:comment => {:comment => "Woo"})
+      i.comments.first.user.should == i.user
+    end
+
+
+  end
+
+  describe 'creating for other students' do
+    before :all do
+      @student1 = Factory(:student)
+      @student2 = Factory(:student, :district => @student1.district)
+      @intervention = Factory.build(:intervention, :student => @student1)
+    end
+    describe 'with apply_to_all = 1' do
+      before :all do
+        @intervention.apply_to_all = '1'
+      end
+
+      it 'should not create additional interventions and the selected students is a string matching the intervention student' do
+        Intervention.should_not_receive :create!
+        @intervention.selected_ids = @student1.id.to_s
+        @intervention.send(:create_other_students)
+      end
+
+      it 'should not create additional interventions and the selected students is a array matching the intervention student' do
+        Intervention.should_not_receive :create!
+        @intervention.selected_ids = [@student1.id.to_s]
+        @intervention.send(:create_other_students)
+      end
+
+      it 'should create an additional intervention for the other selected student' do
+        Intervention.should_receive :create!
+        @intervention.selected_ids = [@student1.id.to_s, @student2.id.to_s]
+        @intervention.send(:create_other_students)
+      end
+    end
+
+    it 'should not create additional interventions when apply to all is false' do
+      Intervention.should_not_receive :create!
+      @intervention.selected_ids = [@student1.id.to_s, @student2.id.to_s]
+      @intervention.apply_to_all = '0'
+      @intervention.send(:create_other_students)
+    end
+  end
 end

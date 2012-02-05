@@ -138,7 +138,7 @@ class ReportsController < ApplicationController
       begin
         Date.new(date_hash[:year].to_i, date_hash[:month].to_i, date_hash[:day].to_i)
       rescue ArgumentError
-        flash[:notice] = 'Invalid date chosen.  Used today instead.'
+        flash.now[:notice] = 'Invalid date chosen.  Used today instead.'
         Date.today
       end
     else

@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   map.download_file '/file/:filename', :controller=>'file', :action => 'download', :requirements => { :filename => %r([^/;,?]+) }
 
   map.preview_graph '/preview_graph/:intervention_id', :controller => 'interventions/probe_assignments', :action => 'preview_graph'
-  
+
   map.resources :help
   map.resources :quicklist_items
 
@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :district do |district|
     district.resources :schools
     district.resources :users
-    district.resources :students, :collection => {:check_id_state => :get}
+    district.resources :students, :collection => {:check_id_state => :get}, :member => {:claim => :get}
     district.resources :flag_categories, :name_prefix=>nil
   end
 
@@ -79,7 +79,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :enrollments
 
   map.resources :students, :collection => {:search => :get, :select => :post, :member_search=>:post, :grade_search=>:post} do |student|
-    student.resources :student_comments
+    student.resources :student_comments, :except => :index
 
   end
 
@@ -116,6 +116,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.namespace :interventions do |intervention|
+    intervention.resources :quicklists, :only => [:index, :create]
     intervention.resources :goals, :collection=>{:select=>:post} do |goal|
       goal.resources :objectives, :collection => {:select=> :post},:name_prefix=>"interventions_" do |objective|
         objective.resources :categories, :collection => {:select=> :post},:name_prefix=>"interventions_" do |category|
@@ -125,7 +126,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-  map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:quicklist_options =>:get,:quicklist=>:post, :ajax_probe_assignment => :get} do |intervention|
+  map.resources :interventions, :member=>{:undo_end =>:put,:end=>:put}, :collection=>{:ajax_probe_assignment => :get} do |intervention|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put}, :member => {:preview_graph =>:get} do |probe_assignment|

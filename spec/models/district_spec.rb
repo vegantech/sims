@@ -72,19 +72,6 @@ describe District do
     district.search_intervention_by.should == []
   end
 
-  describe "available_roles" do
-    it 'should merge system and district roles' do
-      district_roles=[1,2,4]
-      system_roles = [2,3,5]
-      district=District.new
-
-      district.should_receive(:roles).and_return(district_roles)
-      System.should_receive(:roles).and_return(system_roles)
-      district.available_roles.should == [1,2,4,3,5]
-    end
-
-  end
-
  describe 'admin district' do
     it 'should return the state admin district for a leaf (normal) district' do
       @local_district.admin_district.should == @state_district
@@ -134,7 +121,7 @@ describe District do
     it 'should have specs'
 
     it 'should' do
-     puts %q{check hash
+      pending  %q{check hash
       2. if districtless check historical enrollments, if last district was current district allow reclaimaing
        3.check dpi location verification}
     end

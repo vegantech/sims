@@ -300,6 +300,10 @@
   RewriteRule ^(.*/)?\.git/ - [F,L]
   ErrorDocument 403 "Access Forbidden"
 
+  #prevent requests for php
+  RewriteRule .php [R=404,L]
+
+
   # Check for maintenance file and redirect all requests
   RewriteCond %{REQUEST_URI} !\.(css|jpg|png|gif)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
@@ -325,6 +329,9 @@
   RewriteRule .* - [R=405,L]
 
   RewriteRule /_vti_.* - [R=405,L]
+
+  #redirect chrome references to en locale
+  RewriteRule /javascripts/lang/chrome.* /javascripts/lang/en.js [L]
 
 
   </VirtualHost>

@@ -210,9 +210,9 @@ describe Checklist do
   end
   
   def test_new_from_params_and_teacher
-    @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>:sa)
-    @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>:comment)
-    @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>:scale)
+    @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>'sa')
+    @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>'comment')
+    @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
     Answer.delete_all
  
  
@@ -273,14 +273,12 @@ describe Checklist do
     assert_equal @answer2, @student.checklists.build.previous_answer_for(@element_definition), "Existing checklist (2) element has answer"
   end
   
-  def test_all_valid?
+  def test_valid?
     @checklist.user_id=2
     @checklist.student_id=nil
-    assert !@checklist.all_valid?
+    assert !@checklist.valid?
     @checklist.student_id=1
-    assert @checklist.all_valid?
-
-
+    assert @checklist.valid?
   end
 
   def test_definition_references
@@ -347,6 +345,24 @@ describe Checklist do
       pending
     end
   end
+
+  describe 'find_and_score_checklist' do
+    it 'should include the answes and score by default' do
+      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(c=Checklist.new)
+      c.should_receive(:show_score?).and_return(true)
+      c.should_receive(:score_checklist)
+      Checklist.find_and_score('55').should == c
+    end
+
+    it 'should return nil if it is not found' do
+      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(nil)
+      Checklist.find_and_score('55').should be_nil
+    end
+  end
+
+  describe 'can_build?' do
+  end
+
 
 
   describe 'max_tier' do

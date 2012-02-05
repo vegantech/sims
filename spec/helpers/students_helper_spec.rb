@@ -50,7 +50,7 @@ describe StudentsHelper do
     describe 'when multiple students selected' do
       it 'should show all of navigation when middle student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(2)
 
         o=selected_navigation
@@ -67,7 +67,7 @@ describe StudentsHelper do
 
       it 'should only show next and last when the first student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(1)
 
         o=selected_navigation
@@ -86,7 +86,7 @@ describe StudentsHelper do
 
       it 'should only show previous  and first when the last student is current' do
         self.should_receive("multiple_selected_students?").and_return(true)
-        self.should_receive(:selected_students_ids).any_number_of_times.and_return([1,2,3])
+        self.should_receive(:selected_student_ids).any_number_of_times.and_return([1,2,3])
         self.should_receive(:current_student_id).and_return(3)
 
         o=selected_navigation
@@ -104,6 +104,72 @@ describe StudentsHelper do
     end
 
   end
+
+  describe 'grade_select' do
+    it 'should return the grades when there is only 1' do
+      dog ='dog'
+      grade_select([dog]).should == select(:search_criteria,:grade,[dog])
+    end
+
+    it 'should prepend a prompt when there are more than 1' do
+      dog='dog'
+      cat = 'cat'
+      grade_select([dog,cat]).should == select(:search_criteria,:grade,['*',dog,cat])
+    end
+  end
+
+  describe 'year_select' do
+    it 'should return the years with a prompt when there is only 1' do
+      dog ='dog'
+      year_select([dog]).should == select(:search_criteria,:year,[['All','*'],dog])
+    end
+
+    it 'should prepend a prompt when there are more than 1' do
+      dog='dog'
+      cat = 'cat'
+      year_select([dog,cat]).should == select(:search_criteria,:year,[['All','*'],dog,cat])
+    end
+  end
+
+  describe 'group_select_options' do
+    describe 'with all students' do
+      it 'should return the groups with a prompt'
+    end
+    describe 'without all students' do
+      it 'should return the groups with a prompt if there are more than 1'
+      it 'should return the groups if there is 1'
+    end
+  end
+
+  describe 'group_member_select_options' do
+    before  do
+      self.stub!(:current_school => mock_school)
+      @mock_user = mock_user
+      self.stub!(:current_user => @mock_user)
+    end
+    describe 'with all students' do
+      it 'should return the group members with a prompt' do
+        @mock_user.stub!('all_students_in_school?' => true)
+        users = group_member_select_options([1])
+        users.first.fullname.should == 'All Staff'
+        users[1..-1].should == [1]
+      end
+
+    end
+    describe 'without all students' do
+      it 'should return the group members with a prompt if there are more than 1' do
+        @mock_user.stub!('all_students_in_school?' => false)
+        users=group_member_select_options([1,2])
+        users.first.fullname.should == 'All Staff'
+        users[1..-1].should == [1,2]
+      end
+      it 'should return the group members if there is 1' do
+        @mock_user.stub!('all_students_in_school?' => false)
+        group_member_select_options([1]).should == [1]
+      end
+    end
+  end
+  
 
 end
 

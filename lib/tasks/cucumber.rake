@@ -17,17 +17,22 @@ begin
   namespace :cucumber do
 
     Cucumber::Rake::Task.new(:rcov=>["test:coverage:clean","db:test:prepare" ]) do |t|
-      
       target = "integration"
       t.cucumber_opts = "--format progress"
       t.rcov = true
       t.rcov_opts << "-o #{index_base_path}/#{target}"
-      t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort coverage"
+      t.rcov_opts << "--rails --aggregate coverage.data --text-summary --sort coverage"
       t.rcov_opts << send("default_rcov_params_for_#{target}")
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'rcov'
 
+    end
+
+    Cucumber::Rake::Task.new({:rerun => 'db:test:prepare'}, 'Record failing features and run only them if any exist') do |t|
+      t.binary = vendored_cucumber_bin
+      t.fork = true # You may get faster startup if you set this to false
+      t.profile = 'rerun'
     end
 
     Cucumber::Rake::Task.new({:ok => 'db:test:prepare'}, 'Run features that should pass') do |t|
@@ -53,6 +58,8 @@ begin
   task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
   end
+
+
 rescue LoadError
   desc 'cucumber rake task not available (cucumber not installed)'
   task :cucumber do

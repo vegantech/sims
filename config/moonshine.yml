@@ -1,6 +1,6 @@
 # ruby to install at `cap deploy:setup` time. If you change this value, you need to run `cap ruby:upgrade`
 # Currently allowed values include: mri, src187, ree, ree187
-:ruby: ree
+:ruby: ree187
 
 # Name of your application. Should be something with only alphanumerics, hypens and underscores.
 :application: sims
@@ -65,6 +65,7 @@
   :pool_idle_time: 300
   :max_requests: 350
   :min_instances: 2
+  :rails_spawn_method: smart-lv2
 
 #PassengerMaxPoolSize 15
 #        PassengerPoolIdleTime 300

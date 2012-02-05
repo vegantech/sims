@@ -7,9 +7,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
 
     respond_to do |format|
-      format.js
       format.html # show.html.erb
-      format.xml  { render :xml => @team_consultation }
+      format.js
     end
   end
 
@@ -21,9 +20,8 @@ class TeamConsultationsController < ApplicationController
     @teams = current_school.school_teams
 
     respond_to do |format|
-      format.js
       format.html # new.html.erb
-      format.xml  { render :xml => @team_consultation }
+      format.js
     end
   end
 
@@ -32,9 +30,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
-      format.js { render :action => 'new'}
       format.html # new.html.erb
-      format.xml  { render :xml => @team_consultation }
+      format.js { render :action => 'new'}
     end
   end
 
@@ -53,15 +50,12 @@ class TeamConsultationsController < ApplicationController
         else
           msg = 'The Team Consultation Draft was saved.'
         end
-        
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
-        format.xml  { render :xml => @team_consultation, :status => :created, :location => @team_consultation }
       else
         @recipients = current_school.school_teams
         format.html { render :action => "new" }
         format.js {  responds_to_parent {render}  }
-        format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -81,11 +75,9 @@ class TeamConsultationsController < ApplicationController
         end
         format.html { redirect_to(@team_consultation.student) }
         format.js { flash.now[:notice] = msg; responds_to_parent{render :action => 'create'} }
-        format.xml  { head :ok }
       else
         format.html { render :action => "new" }
         format.js { responds_to_parent{render :action => 'new'} }
-        format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -99,14 +91,13 @@ class TeamConsultationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(@team_consultation.student) }
       format.js
-      format.xml  { head :ok }
     end
   end
 
   def complete
     @team_consultation = TeamConsultation.find(params[:id])
-    @team_consultation.complete! and flash[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
-    
+    @team_consultation.complete! and flash.now[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
+
     respond_to do |format|
       format.js
     end
@@ -114,12 +105,9 @@ class TeamConsultationsController < ApplicationController
 
 def undo_complete
     @team_consultation = TeamConsultation.find(params[:id])
-    @team_consultation.undo_complete! and flash[:notice] = "Consultation is no longer complete" if @team_consultation.recipients.include?(current_user)
+    @team_consultation.undo_complete! and flash.now[:notice] = "Consultation is no longer complete" if @team_consultation.recipients.include?(current_user)
     respond_to do |format|
       format.js
     end
   end
-
-
-
 end
