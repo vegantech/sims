@@ -20,3 +20,4 @@ public/system
 sims_open.tmproj
 rerun.txt
 .bundle
+vendor/cache
