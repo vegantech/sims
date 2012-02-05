@@ -1,12 +1,12 @@
 source :rubygems
-gem 'rails','2.3.4'
+gem 'rails','2.3.14'
 gem 'factory_girl', "1.3.3"
 gem 'ruport','1.6.1'
 gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'bluecloth','> 2.0.0'
 gem "fastercsv", '1.2.3'
 gem "pdf-writer", :require => "pdf/writer"
-gem 'rack','~> 1.0.0'
+#gem 'rack','~> 1.0.0'
 gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake',"~> 3.0.5"
