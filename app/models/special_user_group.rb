@@ -41,13 +41,13 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def self.schools
-    sql = construct_finder_sql(:select => 'distinct school_id')
+    sql = select('distinct school_id').to_sql
     school_ids = connection.select_values sql
     School.find_all_by_id school_ids
   end
-  
+
   def self.grades_for_school(school)
-    sql= construct_finder_sql(:conditions => ["grade is not null and grouptype = ? and school_id = ?", ALL_STUDENTS_IN_SCHOOL,school], :select => 'distinct grade')
+    sql= select('distinct grade').where(["grade is not null and grouptype = ? and school_id = ?", ALL_STUDENTS_IN_SCHOOL,school]).to_sql
     connection.select_values(sql)
   end
 

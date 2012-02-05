@@ -21,3 +21,5 @@ sims_open.tmproj
 rerun.txt
 .bundle
 vendor/cache
+db/*.sqlite3
+tmp/

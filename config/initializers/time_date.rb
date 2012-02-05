@@ -1,8 +1,8 @@
-ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(
+Date::DATE_FORMATS.merge!(
   :report => "%m/%d/%y"
 )
 
-ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(
+Time::DATE_FORMATS.merge!(
   :report => "%m/%d/%y"
 )
 
