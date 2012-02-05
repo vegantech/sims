@@ -13,16 +13,15 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => 'f94867ed424ccea84323251f7aa373db'
-  
-  # See ActionController::Base for details 
+
+  # See ActionController::Base for details
   # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password"). 
+  # from your application log (in this case, all fields with names like "password").
   filter_parameter_logging :password
 
   before_filter :fixie6iframe,:options_for_microsoft_office_protocol_discovery,:authenticate, :authorize#, :current_district
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
-  
   private
 
   def current_user_id
@@ -85,7 +84,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     subdomains
     redirect_to logout_url() if current_district_id and current_district.blank?
-    unless current_user_id 
+    unless current_user_id
       flash[:notice] = "You must be logged in to reach that page"
       session[:requested_url] = request.url
       redirect_to root_url(:username => params[:username])
@@ -99,7 +98,6 @@ class ApplicationController < ActionController::Base
     action_group = action_group_for_current_action
     unless current_user.authorized_for?(controller, action_group)
       logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."
-      
       flash[:notice] =  "You are not authorized to access that page"
       redirect_to root_url
       return false
@@ -111,11 +109,11 @@ class ApplicationController < ActionController::Base
     if current_school.blank?
       if request.xhr?
         render :update do  |page|
-          page[:flash_notice].insert  "<br />Please reselect the school." 
+          page[:flash_notice].insert  "<br />Please reselect the school."
         end
       else
         flash[:notice] = "Please reselect the school"
-        redirect_to schools_url 
+        redirect_to schools_url
       end
       return false
     end
@@ -151,7 +149,7 @@ class ApplicationController < ActionController::Base
       s=g.split("-").reverse
       params[:district_abbrev] = s.pop
     end
-        district = District.find_by_abbrev(params[:district_abbrev]) 
+        district = District.find_by_abbrev(params[:district_abbrev])
       if district
         redirect_to logout_url and return if current_district and current_district != district
         @districts =[]
@@ -226,5 +224,10 @@ def check_student
   def current_user=(user)
     session[:user_id] = user.id
     @curret_user = user
+  end
+
+  def  handle_unverified_request
+    raise ActionController::InvalidAuthenticityToken #for now
+    super
   end
 end
