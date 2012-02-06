@@ -67,8 +67,9 @@ class Intervention < ActiveRecord::Base
   delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
-  named_scope :active, :conditions => {:active => true}, :order => 'created_at desc'
-  named_scope :inactive, :conditions => {:active => false}, :order => 'created_at desc'
+  scope :desc, order("created_at desc")
+  scope :active, where(:active => true).desc
+  scope :inactive, where(:active => false).desc
 
 
 

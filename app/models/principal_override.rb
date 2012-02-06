@@ -37,8 +37,8 @@ class PrincipalOverride < ActiveRecord::Base
   validates_inclusion_of :action, :in =>['accept','reject'], :unless => Proc.new{|p| p.status == NEW_REQUEST} 
   validates_presence_of :teacher_request, :message => "reason must be provided"
   validates_presence_of :principal_response, :message => "Reason must be provided", :unless => Proc.new{|p| p.status == NEW_REQUEST}
-  named_scope :pending, :conditions=>{:status=>NEW_REQUEST}
-  named_scope :approved, :conditions=>{:status=>[APPROVED_SEEN,APPROVED_NOT_SEEN]}
+  scope :pending, :conditions=>{:status=>NEW_REQUEST}
+  scope :approved, :conditions=>{:status=>[APPROVED_SEEN,APPROVED_NOT_SEEN]}
 
 
   def self.pending_for_principal(user)
@@ -51,13 +51,11 @@ class PrincipalOverride < ActiveRecord::Base
     :conditions => {:user_group_assignments=>{:user_id => user}})
 
     school_wide | group_wide
-    
   end
 
   def self.max_tier
     approved.collect(&:end_tier).compact.max
   end
-  
   def setup_response_for_edit(action)
     #TODO Autoset to next or max tier
 

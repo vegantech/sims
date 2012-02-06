@@ -1,7 +1,7 @@
 <ul>
   <% if session[:user_id] %>
     <li><%= link_to "Home", root_path %> </li>
-    <%= li_link_to_if_authorized 'School Selection', schools_path %> 
+    <%= li_link_to_if_authorized 'School Selection', schools_path %>
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
       <%= render :partial => "layouts/core_practices" %>
       <%= render :partial => "layouts/intervention_pdf_html_list" %>

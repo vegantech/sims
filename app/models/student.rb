@@ -53,16 +53,15 @@ class Student < ActiveRecord::Base
 
 
 
-  
-  named_scope :by_state_id_and_id_state, lambda { |state_id, id_state| 
-    {:joins=>:district, :conditions => {:districts=>{:state_id => state_id}, :id_state => id_state}, :limit =>1}
-  }
-  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.student_id = students.id 
+  scope :by_state_id_and_id_state, lambda { |state_id, id_state|
+    joins(:district).where({:districts=>{:state_id => state_id}, :id_state => id_state}).limit(1)}
+
+  scope :with_sims_content, joins("left outer join interventions on interventions.student_id = students.id
   left outer join student_comments on students.id = student_comments.student_id
-  left outer join team_consultations on team_consultations.student_id = students.id 
-  left outer join consultation_form_requests on consultation_form_requests.student_id = students.id",
-  :conditions => "interventions.id is not null or student_comments.id is not null or 
-                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
+  left outer join team_consultations on team_consultations.student_id = students.id
+  left outer join consultation_form_requests on consultation_form_requests.student_id = students.id"
+   ).where("interventions.id is not null or student_comments.id is not null or
+                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
 
 #FIXDATES on first two

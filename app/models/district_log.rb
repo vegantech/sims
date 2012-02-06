@@ -14,10 +14,9 @@ class DistrictLog < ActiveRecord::Base
   belongs_to :district
   belongs_to :user
 
-  named_scope :successful_login, :conditions => ["body like ?","Successful login%"]
-  named_scope :failed_login, :conditions => ["body like ?","Failed login%"]
-  named_scope :successful_login_non_admin,  :conditions => ["body like ? and body not like ? and body not like ?","Successful login%", "%Tammy Biever%", "%Administrator%"]
-  
+  scope :successful_login, where( ["body like ?","Successful login%"])
+  scope :failed_login, where(["body like ?","Failed login%"])
+  scope :successful_login_non_admin,  where(["body like ? and body not like ? and body not like ?","Successful login%", "%Tammy Biever%", "%Administrator%"])
 
   define_statistic :successful_logins, :count => [:successful_login]
   define_statistic :failed_logins, :count => :failed_login

@@ -31,10 +31,10 @@ class SpecialUserGroup < ActiveRecord::Base
   validates_uniqueness_of :user_id, :scope=>[:grade,:district_id,:school_id,:grouptype] , :message => "-- Remove the user first." 
 
 
-  named_scope :principal,:conditions=>{:is_principal=>true}
-  named_scope :all_schools_in_district ,:conditions=>{:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT]}
-  named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first]}}
-  named_scope :all_students_in_district, :conditions =>{:grouptype=>ALL_STUDENTS_IN_DISTRICT}
+  scope :principal,where(:is_principal=>true)
+  scope :all_schools_in_district ,where(:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT])
+  scope :all_students_in_school ,lambda { |*args| where(["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first])}
+  scope :all_students_in_district, where(:grouptype=>ALL_STUDENTS_IN_DISTRICT)
 
   def self.all_students_in_school?(school)
     all_students_in_school(school).count > 0

@@ -4,6 +4,14 @@ GIT
   specs:
     prototype_legacy_helper (0.0.0)
 
+GIT
+  remote: https://github.com/zonecheung/railmail.git
+  revision: 71294653be3d260f80ddd3dab0785a9200ca67e3
+  specs:
+    railmail (3.0.0)
+      rails (~> 3.0.0)
+      will_paginate (~> 3.0.pre2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -60,6 +68,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.3)
+    cells (3.8.0)
+      actionpack (~> 3.0)
+      railties (~> 3.0)
     childprocess (0.3.0)
       ffi (~> 1.0.6)
     chronic (0.3.0)
@@ -85,8 +96,9 @@ GEM
     database_cleaner (0.7.1)
     diff-lcs (1.1.3)
     dynamic_form (1.1.4)
-    email_spec (0.6.6)
-      rspec
+    email_spec (1.2.1)
+      mail (~> 2.2)
+      rspec (~> 2.0)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
@@ -195,10 +207,19 @@ GEM
     ripper (1.0.5)
     roodi (2.1.0)
       ruby_parser
-    rspec (1.3.2)
-    rspec-rails (1.3.4)
-      rack (>= 1.0.0)
-      rspec (~> 1.3.1)
+    rspec (2.8.0)
+      rspec-core (~> 2.8.0)
+      rspec-expectations (~> 2.8.0)
+      rspec-mocks (~> 2.8.0)
+    rspec-core (2.8.0)
+    rspec-expectations (2.8.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.8.0)
+    rspec-rails (2.8.1)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec (~> 2.8.0)
     ruby2ruby (1.3.1)
       ruby_parser (~> 2.0)
       sexp_processor (~> 3.0)
@@ -228,6 +249,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.31)
+    will_paginate (3.0.3)
 
 PLATFORMS
   ruby
@@ -239,11 +261,12 @@ DEPENDENCIES
   capistrano (= 2.5.0)
   capistrano-ext
   capybara (= 0.3.9)
+  cells
   cucumber (= 1.1.4)
   cucumber-rails (= 0.3.2)
   database_cleaner (>= 0.5.0)
   dynamic_form
-  email_spec (= 0.6.6)
+  email_spec (= 1.2.1)
   factory_girl (= 1.3.3)
   fastercsv (= 1.2.3)
   googlecharts (= 1.6.3)
@@ -257,12 +280,13 @@ DEPENDENCIES
   pdf-writer
   prototype_legacy_helper (= 0.0.0)!
   rack-test
+  railmail!
   rails (= 3.0.11)
   rcov (>= 0.9.9)
   rdoc (> 2.4.2)
   responds_to_parent
   ripper
-  rspec-rails (= 1.3.4)
+  rspec-rails (~> 2.6)
   ruport (= 1.6.1)
   system_timer
   thin

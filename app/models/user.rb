@@ -57,12 +57,12 @@ class User < ActiveRecord::Base
   attr_accessor :password, :all_students_in_district, :old_password
   attr_protected :district_id
 
-  named_scope :with_sims_content, :joins => "left outer join interventions on interventions.user_id = users.id
+  scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
-  left outer join team_consultations on team_consultations.requestor_id = users.id 
-  left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id",
-  :conditions => "interventions.id is not null or student_comments.id is not null or 
-                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null"
+  left outer join team_consultations on team_consultations.requestor_id = users.id
+  left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id"
+  ).where("interventions.id is not null or student_comments.id is not null or
+                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
   accepts_nested_attributes_for :staff_assignments, :allow_destroy => true
 

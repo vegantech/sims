@@ -26,7 +26,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
-  
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   belongs_to :intervention_cluster
@@ -51,13 +50,10 @@ class InterventionDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
 
-  named_scope :restrict_tiers_and_disabled, lambda {|student_tier|
-    {:conditions => "intervention_definitions.disabled=false and
+  scope :restrict_tiers_and_disabled, lambda {|student_tier|
+    where("intervention_definitions.disabled=false and
       (!districts.lock_tier or goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
-      tiers.position <= #{student_tier.position})",
-    :joins => [:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}]
-
-  }
+      tiers.position <= #{student_tier.position})").joins([:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}])
   }
 
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster

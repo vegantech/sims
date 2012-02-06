@@ -66,9 +66,9 @@ class Flag < ActiveRecord::Base
   acts_as_reportable if defined? Ruport
 
 
-  named_scope :custom, :conditions=>{:type=>'CustomFlag'}
-  named_scope :ignore, :conditions=>{:type=>'IgnoreFlag'}
-  named_scope :system, :conditions=>{:type=>'SystemFlag'}
+  scope :custom, where(:type=>'CustomFlag')
+  scope :ignore, where(:type=>'IgnoreFlag')
+  scope :system, where(:type=>'SystemFlag')
 
   def summary
     "#{reason}- by #{user} on #{created_at}"

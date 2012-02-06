@@ -2,7 +2,7 @@
 module ApplicationHelper
   def spell_check_button
     button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();") +
-      help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " ) 
+      help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " )
   end
 
   def show_whats_new
@@ -15,7 +15,7 @@ module ApplicationHelper
   end
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
-     content_tag :li,(r + rest.join(" ")) if r.present?
+     content_tag :li,((r + rest.join(" ").html_safe).html_safe) if r.present?
   end
 
   def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
@@ -27,7 +27,7 @@ module ApplicationHelper
       hsh = ::ActionController::Routing::Routes.recognize_path url, :method => :get
     else
       if options[:controller].present?
-        #Without a leading / url_for will assume it is in the current namespace  
+        #Without a leading / url_for will assume it is in the current namespace
         options[:controller]="/#{options[:controller]}" unless options[:controller][0] =='/'
         options[:action] ||= 'index'
         hsh=options
@@ -37,15 +37,10 @@ module ApplicationHelper
         hsh = ::ActionController::Routing::Routes.recognize_path url
       end
     end
-    
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
     grp = 'write_access' if ctrl.write_actions.include?(hsh[:action])
     grp = 'read_access' if ctrl.read_actions.include?(hsh[:action])
-    
     link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path, grp)
-    
-
- 
   end
 
   def link_to_if_present(name, path)
@@ -60,7 +55,7 @@ module ApplicationHelper
     s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
     s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student] && !current_student.new_record?
-    s.compact.join(' -> ')
+    s.compact.join(' -> ').html_safe
   end
 
   def link_to_if_current_or_condition(title, path,conditions=nil)
@@ -95,7 +90,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();") unless msg.blank?
+    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();").html_safe unless msg.blank?
   end
 
   def spinner(suffix = nil)
@@ -119,12 +114,12 @@ module ApplicationHelper
 
   def plus_minus_li( title, &blk)
     id = title.gsub(/ /, '_')
-    concat(content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") +
-      content_tag(:ul, :id => "ul#{id}") do
-        capture(&blk)
-      end
-    end)
+    content = with_output_buffer(&blk)
+
+    content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
+      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ")  +
+      content_tag(:ul, content, :id => "ul#{id}")
+    end
   end
 
   def description(obj, name="Description")

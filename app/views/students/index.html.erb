@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @students.each do |enrolled_student|  %>  
+        <% @students.each do |enrolled_student|  %>
       <% if current_district.id == enrolled_student.district_id.to_i %>
         <tr class="<%= cycle('', 'list-line-even') %>">
           <td style="text-align:center;">
@@ -44,7 +44,6 @@
             <%= yes_or_no enrolled_student.special_ed %>
           </td>
 
-          
           <td>
             <% if controller.send(:cache_configured?) && @cached_status.keys.include?(enrolled_student.index_cache_key) %>
               <%= @cached_status[enrolled_student.index_cache_key] %>
@@ -60,7 +59,7 @@
       </tbody>
     </table>
   </div>
-  <%='&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
+  <%=raw '&nbsp;'*3%><%=pluralize @students.size,"student"%> selected
   <p class="center_submit">
     <%= submit_tag "select for problem solving", :name => 'process' %>
   </p>

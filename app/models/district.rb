@@ -22,7 +22,7 @@
 #
 
 class District < ActiveRecord::Base
-  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+#  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
@@ -51,9 +51,9 @@ class District < ActiveRecord::Base
   has_attached_file  :logo
 
 
-  named_scope :normal, :conditions=>{:admin=>false}, :order => 'name'
-  named_scope :admin, :conditions=>{:admin=>true}
-  named_scope :in_use,  :include => :users, :conditions => "users.username != 'district_admin' and users.id is not null"
+  scope :normal, where(:admin=>false).order('name')
+  scope :admin, where(:admin=>true)
+  scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 

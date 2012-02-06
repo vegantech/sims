@@ -15,11 +15,23 @@ module Sims
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
      config.autoload_paths += %W(#{config.root}/lib)
+     config.autoload_paths += %W(#{config.root}/app/reports)
+     config.active_record.observers = :principal_override_observer , :recommendation_observer
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
+=begin
+     SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list,  :paperclip,
+       :spawn, :statistics,  :unobtrusive_date_picker, :will_paginate, :airbrake, :mysql_sets]
+       if ENV['RAILS_ENV'] == "test" || ENV['RAILS_ENV'] == 'cucumber'
+         config.plugins =  [ :validates_date_time, :all ]
+       elsif ENV['RAILS_ENV'] == "production"
+         config.plugins =  SIMS_BASE_PLUGINS
+       else
+         config.plugins =  SIMS_BASE_PLUGINS# | [:railmail]
+       end
+=end
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
@@ -39,5 +51,14 @@ module Sims
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.middleware.use 'ExtendedLogger'
+    config.middleware.use 'SessionCheck'
+    config.middleware.use 'ChartProxy'
+
+    config.action_mailer.delivery_method = :railmail
+    config.time_zone = 'Central Time (US & Canada)'
+    config.cache_store = :mem_cache_store
+    config.paths.app.manifests 'app/manifests', :eager_load => false
   end
 end

@@ -31,15 +31,14 @@ class InterventionParticipant < ActiveRecord::Base
   PARTICIPANT = 1
 
   ROLES = %w{Implementer Participant Author}
-  named_scope :implementer, :conditions => {:role => IMPLEMENTER}
-  
+  scope :implementer, where(:role => IMPLEMENTER)
   define_statistic :participants , :count => :all, :joins => :user
   define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
 
   RoleStruct = Struct.new(:id, :name)
 
   def role_title
-    ROLES[role] 
+    ROLES[role]
   end
 
   def toggle_role!
@@ -60,7 +59,7 @@ class InterventionParticipant < ActiveRecord::Base
   protected
 
   def before_create
-    if intervention.created_at == intervention.updated_at     
+    if intervention.created_at == intervention.updated_at
       @skip_email = true if Time.now - intervention.created_at < 1.second
     end
       @skip_email ||= caller.to_s.include?("grouped_progress_entry")

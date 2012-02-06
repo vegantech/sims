@@ -19,18 +19,18 @@ module FlagsHelper
     str += team_notes(student)
     str += ignore_flags(student)
     str += custom_flags(student)
+    str.html_safe
   end
 
   def team_notes?(student)
     student.comments.present?
-
   end
 
   def team_notes(student)
     if team_notes?(student)
        image_with_popup('note.png',"#{pluralize student.comments.count, "team note"}")
     else
-      ''
+      ''.html_safe
     end
   end
 
@@ -45,7 +45,7 @@ module FlagsHelper
       ''
     end
   end
-  
+
 
   def custom_flags(student)
     unless student.custom_flags.blank?
@@ -67,11 +67,10 @@ module FlagsHelper
         popup = "#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
 
         form_remote_tag(:url => {:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
-          :html => {:class => "flag_button", :style => "display:inline"}) +
-          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
-          "</form>"
+          :html => {:class => "flag_button", :style => "display:inline"}) {
+          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
       end
-      s.join(" ")
+      s.join(" ").html_safe
     end
   end
 
@@ -82,9 +81,8 @@ module FlagsHelper
 
       if changeable
         form_remote_tag(:url => {:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
-          :html => {:style => "display:inline"}) +
-          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
-          "</form>"
+          :html => {:style => "display:inline"}) {
+          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
       end
@@ -92,7 +90,7 @@ module FlagsHelper
   end
 
   def flag_select
-   '<div>'+ Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>") + '</div>'
+   content_tag( :div,  Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>").html_safe)
   end
 
   def flag_checkbox(flagtype)

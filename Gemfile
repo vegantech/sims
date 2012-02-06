@@ -46,13 +46,19 @@ gem 'mysql'
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
+gem 'cells'
 gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
+gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'hpricot','0.6.161', :require => false
-  gem 'rspec-rails','1.3.4', :require => false
+end
+
+group :test, :development, :cucumber do
+  gem 'rspec-rails','~>2.6', :require => false
+
 end
 
 group :cucumber do
@@ -62,9 +68,8 @@ group :cucumber do
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
   gem 'capybara','=0.3.9', :require => false
-  gem 'rspec-rails', '=1.3.4', :require => false
   gem 'hpricot','0.6.161', :require => false
-  gem 'email_spec',"0.6.6", :require => false
+  gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
 end
 

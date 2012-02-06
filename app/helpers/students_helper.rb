@@ -16,23 +16,22 @@ module StudentsHelper
         ret += "&nbsp;&nbsp;"
         ret += link_to('>>', student_url(selected_student_ids.last))
       end
-      content_tag :p, ret
+      content_tag :p, ret.html_safe
     end
   end
 
   def intervention_group_checkbox(grp)
-    '<div class="small_bump_right">' +
-    check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") + 
-      label_tag(dom_id(grp), grp.title) +
-    "</div>"
+    content_tag :div, :class => "small_bump_right" do
+    check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") +
+      label_tag(dom_id(grp), grp.title)
+    end.html_safe
   end
 
   def active_intervention_size
     current_district.search_intervention_by.size
-
   end
   def active_intervention_select
-    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}
+    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}.html_safe
   end
 
   def id_district_desc(obj)
@@ -57,7 +56,7 @@ module StudentsHelper
   end
 
   def team_notes_count(student)
-    "<span id='team_notes_count'>(#{student.comments.size})</span>"
+    content_tag :span, "(#{student.comments.size})", :id => 'team_notes_count'
   end
 
   def active_interventions_count(student)

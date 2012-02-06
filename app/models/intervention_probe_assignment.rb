@@ -22,7 +22,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :probe_definition
   belongs_to :frequency
   has_many :probes, :dependent => :destroy
-  
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
@@ -36,7 +35,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
 #  validates_date :first_date, :end_date
 
-  named_scope :active, :conditions => {:enabled=>true}
+  scope :active, where(:enabled=>true)
 
 
   def self.disable(ipas)
