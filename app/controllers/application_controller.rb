@@ -20,9 +20,6 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
   before_filter :fixie6iframe,:options_for_microsoft_office_protocol_discovery,:authenticate, :authorize#, :current_district
-  def to_s
-    "wtf"
-  end
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
