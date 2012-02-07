@@ -1,8 +1,10 @@
 begin
-  require 'rcov/rcovtask'
-  require 'spec/rake/spectask'
+require 'rcov/rcovtask'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
 rescue LoadError
+  puts 'load error here'
   #allow rake to continue to function is rcov gem is not installed
   nil
 end
@@ -12,15 +14,15 @@ end
     (ENV['CC_BUILD_ARTIFACTS'] || 'spec/coverage')
   end
   def default_rcov_params_for_unit
-    '-i "app\/reports" -x "app\/controllers","app\/metal",'+global_exclude
+    '-o spec/coverage/unit -i "app\/reports" -x "app\/controllers","app\/metal",'+global_exclude
   end
 
   def default_rcov_params_for_functional
-    ' -x  "app\/reports","app\/models","app\/helpers","lib/",'+global_exclude
+    '-o spec/coverage/functional  -x  "app\/reports","app\/models","app\/helpers","lib/",'+global_exclude
   end
 
   def default_rcov_params_for_integration
-    ' -x "features\/",' + global_exclude
+    '-o spec/coverage/integration -x "features\/",' + global_exclude
   end
 
   def specs_corresponding_to_unit

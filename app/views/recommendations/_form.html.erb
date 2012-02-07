@@ -5,7 +5,7 @@
 
 <%  recommendation.answers.each do |answer| %>
 
-  <% fields_for "recommendation[answers][]",answer do |af| %>
+  <%= fields_for "recommendation[answers][]",answer do |af| %>
 
     <%=content_tag :b, af.label(:text, answer.recommendation_answer_definition.text, :for=> answer.recommendation_answer_definition) %>
 

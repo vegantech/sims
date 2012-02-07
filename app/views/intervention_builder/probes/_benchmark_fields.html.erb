@@ -1,19 +1,19 @@
 <div id="probe_definition_benchmark_<%=index %>">
-<% fields_for 'probe_definition[probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
+<%= fields_for 'probe_definition[probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
 <table width="98%">
   <tr>
     <td width="15%"><%= form.label :benchmark %></td>
     <td><%= form.text_field :benchmark, 'size'=>5  %></td>
     <%= form.hidden_field :id unless probe_definition_benchmark.new_record? %>
- 
+
     <td><%= form.label :grade_level %></td>
     <td><%= form.text_field :grade_level,:size=>ProbeDefinitionBenchmark::GRADE_LEVEL_SIZE %></td>
     <td>
     <% if probe_definition_benchmark.new_record? %>
       <%= link_to_function('remove') {|page| page["probe_definition_benchmark_#{index}"].remove} %>
     <% else %>
-      <%= link_to_function('remove') do |page|  
-        page.replace "probe_definition_benchmark_#{index}",:partial => 'intervention_builder/probes/remove_benchmark' , 
+      <%= link_to_function('remove') do |page|
+        page.replace "probe_definition_benchmark_#{index}",:partial => 'intervention_builder/probes/remove_benchmark' ,
           :locals =>{:probe_definition_benchmark => probe_definition_benchmark, :index => index}
         end
         %>

@@ -24,7 +24,7 @@ module ApplicationHelper
     if options.is_a?String
       url = options
       url = "/"+url.split("/")[3..-1].join("/").split('?').first unless url=~ /^\//
-      hsh = ::ActionController::Routing::Routes.recognize_path url, :method => :get
+      hsh = ::Rails.application.routes.recognize_path url, :method => :get
     else
       if options[:controller].present?
         #Without a leading / url_for will assume it is in the current namespace
@@ -34,7 +34,7 @@ module ApplicationHelper
         url=hsh
       else
         url = url_for(options)
-        hsh = ::ActionController::Routing::Routes.recognize_path url
+        hsh = ::Rails.application.routes.recognize_path url
       end
     end
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
@@ -50,7 +50,7 @@ module ApplicationHelper
 
   def breadcrumbs
     s = [link_to('Home', root_path)]
-    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id]) 
+    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
     s << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
     s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
@@ -109,7 +109,7 @@ module ApplicationHelper
     icon = "icon_htm.gif" unless  File.exist?(File.join(Rails.public_path,"images",icon))
     blank={}
     blank[:target]="_blank" unless url=="#"
-    link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}", url, blank
+    link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}".html_safe, url, blank
   end
 
   def plus_minus_li( title, &blk)
@@ -130,10 +130,10 @@ module ApplicationHelper
     @spell_check_fields ||= []
 
     options = args.extract_options!
-    concat("<div class ='new_form'>")
-    concat('<div id="global_spell_container" style="background-color: #ddd"></div>')
-    form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
-    concat("</div>")
+    content_tag(:div, :class => 'new_form') do
+      content_tag(:div, '',  :id => "global_spell_container", :style => "background-color: #ddd") +
+      form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
+    end
   end
 
 

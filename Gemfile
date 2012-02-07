@@ -46,6 +46,7 @@ gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
 gem 'cells'
+gem 'paperclip'
 gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
 gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"

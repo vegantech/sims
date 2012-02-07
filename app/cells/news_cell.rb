@@ -1,6 +1,5 @@
 class NewsCell < Cell::Base
-  include  LinksAndAttachmentsHelper, ApplicationHelper,  ActionView::Helpers::AssetTagHelper, ActionView::Helpers::TagHelper, ActionView::Helpers::UrlHelper
-  helper_method :links_and_attachments#, :link_to_with_icon, :image_tag
+  helper  LinksAndAttachmentsHelper, ApplicationHelper
   def index(opts)
     @parent=opts[:parent]
     @user = opts[:user]

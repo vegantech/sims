@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully created.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "new" }
@@ -57,7 +57,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "edit" }

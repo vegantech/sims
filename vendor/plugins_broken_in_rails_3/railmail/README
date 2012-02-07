@@ -1,4 +1,0 @@
-Railmail
-========
-
-Rail Mail is a plugin for ruby on rails that gives you a persisted view of any mail your application has sent.  It is both a development aid and an administrative helper.

@@ -9,7 +9,7 @@
     </p>
   <% end %>
 
-  <% f.fields_for :consultation_forms do |consultation_form| %> 
+  <%= f.fields_for :consultation_forms do |consultation_form| %> 
     <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
   <% end %>
 

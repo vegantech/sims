@@ -10,6 +10,10 @@ FactoryGirl.define do
   sequence :name do |a|
     "name#{a}#{Time.now.to_i}"
   end
+
+  sequence :title do |a|
+    "#{a}#{Time.now.to_i} Title"
+  end
   factory :team_consultation do |tc|
   end
 
@@ -81,7 +85,7 @@ FactoryGirl.define do
   end
 
   factory :intervention_definition do |id|
-    id.title {next(:abbrev) + "TITLE"}
+    id.title
     id.description {|i| i.title + "Description"}
     id.association :time_length
     id.association :frequency
@@ -92,19 +96,19 @@ FactoryGirl.define do
   end
 
   factory :intervention_cluster do |ic|
-    ic.title {next(:abbrev) + "TITLE"}
+    ic.title
     ic.description {|i| i.title + "Description"}
     ic.association :objective_definition
   end
 
   factory :objective_definition do |od|
-    od.title {next(:abbrev) + "TITLE"}
+    od.title
     od.description {|i| i.title + "Description"}
     od.association :goal_definition
   end
 
   factory :goal_definition do |gd|
-    gd.title {next(:abbrev) + "TITLE"}
+    gd.title
     gd.description {|i| i.title + "Description"}
     gd.association :district
   end

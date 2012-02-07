@@ -1,4 +1,5 @@
 class AdministrationCell < Cell::Base
+  helper ApplicationHelper
   def system opts
     @show=opts[:district].system_admin?
     render

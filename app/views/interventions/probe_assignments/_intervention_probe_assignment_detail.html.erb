@@ -1,7 +1,7 @@
 <% readonly = false if readonly.nil? %>
 <% if @intervention_probe_assignment %>
   <br class="brclear" />
-  <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
+  <%= fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
       <%= ipa.hidden_field :probe_definition_id %>
       <div class = "form_row">
         <div class="fake_label">&nbsp;</div>

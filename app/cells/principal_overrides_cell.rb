@@ -1,4 +1,5 @@
 class PrincipalOverridesCell < Cell::Base
+  helper ApplicationHelper
   def user_requests opts
     user=opts[:user]# || User.find_by_id(session[:user_id])
     @requests=user.principal_override_requests.count if user

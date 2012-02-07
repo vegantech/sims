@@ -36,7 +36,7 @@ Intervention-<%=@grouped_progress_entry %>
     <tbody>
       <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
         <tr>
-          <% fields_for "student_intervention[]" do |field| %>
+          <%= fields_for "student_intervention[]" do |field| %>
             <td><div style="color: red"><%=@student_intervention.errors%></div></td>
             <td><%= @student_intervention.student %></td>
             <td><%@student_intervention.score%><%= field.text_field :score, :size=>4, :maxlength=>4%> or 

@@ -102,7 +102,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
       @intervention_definitions.each(&:disable!)
     end
 
-    flash[:notice] = "#{@template.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
+    flash[:notice] = "#{view_context.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
     respond_to do |format|
       format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end

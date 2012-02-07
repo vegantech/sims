@@ -55,7 +55,7 @@ class InterventionBuilder::ProbesController < ApplicationController
     if params[:commit]
       pds=current_district.probe_definitions.find_all_by_id(params[:id])
       pds.each{|i| i.update_attribute(:active,false)}
-      flash[:notice] = "#{@template.pluralize(pds.size, 'Progress Monitor')} disabled."
+      flash[:notice] = "#{view_context.pluralize(pds.size, 'Progress Monitor')} disabled."
       redirect_to intervention_builder_probes_url and return
     end
 
