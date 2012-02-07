@@ -24,7 +24,7 @@ describe HtmlCsvText do
 
   end
 
-  describe CSV do
+  describe 'CSV' do
 
     describe 'build_body' do
       it 'should show the table in csv' do
@@ -40,7 +40,7 @@ describe HtmlCsvText do
 
   end
 
-  describe Text do
+  describe 'Text' do
     describe 'buid_header' do
       it 'should show the current time' do
         HtmlCsvText::Text.new.build_header.should == "Report Generated at June 04, 2009 03:33\n\n" 

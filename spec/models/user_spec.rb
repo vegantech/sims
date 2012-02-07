@@ -28,7 +28,7 @@ describe User do
     System::HASH_KEY=nil
     User.destroy_all
     @user = Factory(:user, :username => "oneschool")
-    @mock_school = mock_school(:id => 123)
+    @school = Factory(:school, :district => @user.district)
   end
 
   describe 'authenticate' do

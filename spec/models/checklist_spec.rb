@@ -16,8 +16,6 @@
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'test/unit'
-require 'spec'
 
 describe Checklist do
   fixtures :element_definitions, :checklists, :checklist_definitions, :answers, :answer_definitions, :students,:users, :districts
@@ -156,7 +154,7 @@ describe Checklist do
     assert obj.valid?, message
   end
 
-  def test_new_from_student_and_teacher
+  it 'test_new_from_student_and_teacher' do
     #Empty Checklists
     pending
     Checklist.destroy_all
@@ -209,7 +207,8 @@ describe Checklist do
     #creating passing checklist (with recommendation and test more)
   end
   
-  def test_new_from_params_and_teacher
+  it 'test_new_from_params_and_teacher' do
+    pending
     @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>'sa')
     @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>'comment')
     @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
@@ -231,7 +230,7 @@ describe Checklist do
     
   end
   
-  def test_previous_answer_for_no_checklists
+  it 'test_previous_answer_for_no_checklists' do
     Checklist.destroy_all
     Answer.destroy_all
     assert_nil @student.checklists.build.previous_answer_for(@element_definition), "No checklists"
@@ -246,7 +245,7 @@ describe Checklist do
   end
 
 
-  def test_previous_answer_for_existing_checklist_with_answers
+  it 'test_previous_answer_for_existing_checklist_with_answers' do
     pending
 
     Checklist.destroy_all
@@ -273,7 +272,8 @@ describe Checklist do
     assert_equal @answer2, @student.checklists.build.previous_answer_for(@element_definition), "Existing checklist (2) element has answer"
   end
   
-  def test_valid?
+  it 'test_valid?' do
+    pending
     @checklist.user_id=2
     @checklist.student_id=nil
     assert !@checklist.valid?
@@ -281,19 +281,21 @@ describe Checklist do
     assert @checklist.valid?
   end
 
-  def test_definition_references
+  it 'test_definition_references' do
+    pending
     [:text, :directions, :question_definitions].each do |r|
     assert_equal @checklist.send(r), @checklist_definition.send(r)
     end
   end
 
-  def test_element_definitions_for_answers
+  it 'test_element_definitions_for_answers' do
+    pending
     assert_equal @checklist.element_definitions_for_answers.size, @checklist.answers.size
     assert_equal @checklist.answers.first.answer_definition.element_definition, @checklist.element_definitions_for_answers.first
     assert_equal @checklist.element_definitions_for_answers.first.class, ElementDefinition
   end
 
-  def test_status
+  it 'test_status' do
    # assert_equal Checklist::STATUS[:unknown], Checklist.new(:is_draft=>false).status   This is actually unreachable
     pending
     Recommendation.delete_all

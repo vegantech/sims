@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ConsultationFormBuilder do
+describe 'ConsultationFormBuilder' do
 
   before do
+    helper = Object.new.extend ActionView::Helpers::FormHelper
     @object = mock_consultation_form
     @builder = ConsultationFormBuilder.new(:consultation_form, @object, self, {}, nil)
   end

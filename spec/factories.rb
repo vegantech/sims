@@ -1,140 +1,145 @@
-Factory.sequence :username do |n|
-  "user#{n}#{Time.now.to_i}"
-end
-
-Factory.sequence :abbrev do |a|
-  "test#{a}#{Time.now.to_i}"
-end
-
-Factory.define :team_consultation do |tc|
-end
-
-Factory.define :consultation_form do |cf|
-end
-
-Factory.define :consultation_form_concern do |cfc|
-end
-
-Factory.define :user do |u|
-  u.username {Factory.next(:username)}
-  u.password {|u| u.username}
-  u.password_confirmation {|u| u.password}
-  u.last_name "Last_Name"
-  u.district_user_id ''
-  u.first_name {|u| "First#{u.username}"}
-  u.association :district
-end
-
-Factory.define :enrollment do |e|
-  e.grade "01"
-  e.association :student
-  e.association :school
-end
-
-Factory.define :group do |g|
-  g.title {Factory.next :abbrev}
-  g.association :school
-  g.district_group_id ''
+FactoryGirl.define do
+  sequence :username do |n|
+    "user#{n}#{Time.now.to_i}"
   end
 
-Factory.define :tier do |t|
-  t.title "Some tier"
-end
+  sequence :abbrev do |a|
+    "test#{a}#{Time.now.to_i}"
+  end
 
-Factory.define :student do |s|
-  s.last_name "Last"
-  s.first_name "First"
-  s.association :district
-  s.district_student_id ''
-end
+  sequence :name do |a|
+    "name#{a}#{Time.now.to_i}"
+  end
+  factory :team_consultation do |tc|
+  end
 
-Factory.define :district do |d|
-  d.abbrev {Factory.next(:abbrev)}
-  d.name {|c| "#{c.abbrev} District"}
-end
+  factory :consultation_form do |cf|
+  end
 
-Factory.define :school do |s|
-  s.name {"#{Factory.next(:abbrev)} School"}
-  s.association :district
-end
+  factory :consultation_form_concern do |cfc|
+  end
 
-Factory.define :intervention_participant do |ip|
-  ip.association :user
-  ip.association :intervention
-  ip.role InterventionParticipant::PARTICIPANT
-end
+  factory :user do
+   username
+   password {username}
+   password_confirmation {password}
+   last_name "Last_Name"
+   district_user_id ''
+   first_name {"First#{username}"}
+   association :district
+  end
 
-Factory.define :intervention do |i|
-  i.association :user
-  i.association :student
-  i.frequency_multiplier 1
-  i.association :frequency
-  i.time_length_number 1
-  i.association :time_length
-  i.association :intervention_definition
-  i.start_date Date::civil(2008, 11, 1)
-  i.end_date Date::civil(2008, 12, 1)
-end
+  factory :enrollment do |e|
+    e.grade "01"
+    e.association :student
+    e.association :school
+  end
 
-Factory.define :intervention_definition do |id|
-  id.title {Factory.next(:abbrev) + "TITLE"}
-  id.description {|i| i.title + "Description"}
-  id.association :time_length
-  id.association :frequency
-  id.time_length_num 1
-  id.frequency_multiplier 1
-  id.association :intervention_cluster
-  id.association :tier
-end
+  factory :group do |g|
+    g.title {next :abbrev}
+    g.association :school
+    g.district_group_id ''
+  end
 
-Factory.define :intervention_cluster do |ic|
-  ic.title {Factory.next(:abbrev) + "TITLE"}
-  ic.description {|i| i.title + "Description"}
-  ic.association :objective_definition
-end
+  factory :tier do |t|
+    t.title "Some tier"
+  end
 
-Factory.define :objective_definition do |od|
-  od.title {Factory.next(:abbrev) + "TITLE"}
-  od.description {|i| i.title + "Description"}
-  od.association :goal_definition
-end
+  factory :student do |s|
+    s.last_name "Last"
+    s.first_name "First"
+    s.association :district
+    s.district_student_id ''
+  end
 
-Factory.define :goal_definition do |gd|
-  gd.title {Factory.next(:abbrev) + "TITLE"}
-  gd.description {|i| i.title + "Description"}
-  gd.association :district
-end
+  factory :district do
+    abbrev
+    name { "#{abbrev} District"}
+  end
 
-Factory.define :quicklist_item do |qi|
-  qi.association :intervention_definition
-  qi.association :school
-  #qi.association :district (it's one or the other)
-end
+  factory :school do |s|
+    sequence(:name) {|n| "#{n} School"}
+    s.association :district
+  end
 
-# TODO: validate time length
-Factory.define :time_length do |tl|
-  tl.days 2
-  tl.title "Default"
-end
+  factory :intervention_participant do |ip|
+    ip.association :user
+    ip.association :intervention
+    ip.role InterventionParticipant::PARTICIPANT
+  end
 
-Factory.define :frequency do |f|
-  f.title 'Freq Title'
-end
+  factory :intervention do |i|
+    i.association :user
+    i.association :student
+    i.frequency_multiplier 1
+    i.association :frequency
+    i.time_length_number 1
+    i.association :time_length
+    i.association :intervention_definition
+    i.start_date Date::civil(2008, 11, 1)
+    i.end_date Date::civil(2008, 12, 1)
+  end
 
-Factory.define :probe_definition do |f|
-  f.title {"#{Factory.next(:abbrev)} Title"}
-  f.description 'Probe Description'
-end
+  factory :intervention_definition do |id|
+    id.title {next(:abbrev) + "TITLE"}
+    id.description {|i| i.title + "Description"}
+    id.association :time_length
+    id.association :frequency
+    id.time_length_num 1
+    id.frequency_multiplier 1
+    id.association :intervention_cluster
+    id.association :tier
+  end
 
-Factory.define :intervention_probe_assignment do |f|
-  f.association :probe_definition
-  f.association :intervention
-  f.first_date "2005-01-01"
-  f.end_date "2006-01-01"
-end
+  factory :intervention_cluster do |ic|
+    ic.title {next(:abbrev) + "TITLE"}
+    ic.description {|i| i.title + "Description"}
+    ic.association :objective_definition
+  end
 
-Factory.define :student_comment do |f|
-  f.association :student
-  f.association :user
-  f.body  "This is the factory generated note"
+  factory :objective_definition do |od|
+    od.title {next(:abbrev) + "TITLE"}
+    od.description {|i| i.title + "Description"}
+    od.association :goal_definition
+  end
+
+  factory :goal_definition do |gd|
+    gd.title {next(:abbrev) + "TITLE"}
+    gd.description {|i| i.title + "Description"}
+    gd.association :district
+  end
+
+  factory :quicklist_item do |qi|
+    qi.association :intervention_definition
+    qi.association :school
+    #qi.association :district (it's one or the other)
+  end
+
+  # TODO: validate time length
+  factory :time_length do |tl|
+    tl.days 2
+    tl.title "Default"
+  end
+
+  factory :frequency do |f|
+    f.title 'Freq Title'
+  end
+
+  factory :probe_definition do |f|
+    f.title {"#{next(:abbrev)} Title"}
+    f.description 'Probe Description'
+  end
+
+  factory :intervention_probe_assignment do |f|
+    f.association :probe_definition
+    f.association :intervention
+    f.first_date "2005-01-01"
+    f.end_date "2006-01-01"
+  end
+
+  factory :student_comment do |f|
+    f.association :student
+    f.association :user
+    f.body  "This is the factory generated note"
+  end
 end

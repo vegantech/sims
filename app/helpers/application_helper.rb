@@ -77,7 +77,7 @@ module ApplicationHelper
     if options[:collection].size >0
       render options
     else
-      options[:empty]
+      options[:empty].html_safe
     end
   end
 
@@ -123,7 +123,7 @@ module ApplicationHelper
   end
 
   def description(obj, name="Description")
-    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
+    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>".html_safe if obj
   end
 
   def labelled_form_for(record_or_name_or_array, *args, &proc)
@@ -134,11 +134,14 @@ module ApplicationHelper
     concat('<div id="global_spell_container" style="background-color: #ddd"></div>')
     form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
     concat("</div>")
-    
   end
 
 
   def restrict_to_principals?(student)
     current_district.restrict_free_lunch? && !student.principals.include?(current_user)
+  end
+
+  def style_display_none_unless(cond)
+    'style="display:none;"'.html_safe unless cond
   end
 end

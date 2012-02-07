@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
 
-  describe "role importer", :shared =>true  do
+  shared_examples_for "role importer"  do
     it_should_behave_like "csv importer"
     before(:all) do
       District.delete_all
@@ -17,8 +17,6 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
       User.update_all("updated_at = '1999-01-01'")
 
 
-      
-      
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
       @role_no_district_user_id = Factory(:user,:district_id => @district.id, :roles=>[role])

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-  describe "csv importer", :shared =>true  do
+  shared_examples_for "csv importer"  do
     it 'should check headers' do
 
       @i=described_class.new "#{Rails.root}/spec/csv/invalid_headers.csv",@district

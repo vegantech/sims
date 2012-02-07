@@ -1,18 +1,18 @@
-describe "a schools_requiring controller", :shared => true do
+shared_examples_for "a schools_requiring controller" do
   before(:each) do
     controller.should_receive(:require_current_school).any_number_of_times.and_return(true)
     controller.class.before_filters.should include(:require_current_school)
   end
 end
 
-describe "an authenticated controller", :shared => true do
+shared_examples_for "an authenticated controller" do
   before(:each) do
     controller.should_receive(:authenticate).any_number_of_times.and_return(true)
     controller.class.before_filters.should include(:authenticate)
   end
 end
 
-describe "an authorized controller", :shared => true do
+shared_examples_for "an authorized controller" do
   before(:each) do
     controller.should_receive(:authorize).any_number_of_times.and_return(true)
     controller.class.before_filters.should include(:authorize)

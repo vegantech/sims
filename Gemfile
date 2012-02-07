@@ -31,7 +31,7 @@ gem 'rails', '3.0.11'
 # end
 
 
-gem 'factory_girl', "1.3.3"
+gem 'factory_girl_rails'
 gem 'ruport','1.6.1'
 gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'bluecloth','> 2.0.0'
@@ -40,8 +40,7 @@ gem "pdf-writer", :require => "pdf/writer"
 gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake',"~> 3.0.5"
-gem 'responds_to_parent'
-gem 'newrelic_rpm', "2.14.1"
+gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
 gem 'mysql'
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
@@ -54,23 +53,20 @@ gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'hpricot','0.6.161', :require => false
-end
-
-group :test, :development, :cucumber do
   gem 'rspec-rails','~>2.6', :require => false
-
 end
 
 group :cucumber do
   gem 'rcov', ">=0.9.9", :require => false
-  gem 'cucumber-rails','=0.3.2', :require => false
-  gem 'cucumber','=1.1.4', :require => false#covered by cucumber-rails above
+  gem 'cucumber-rails', :require => false
+  gem 'cucumber', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
   gem 'capybara','=0.3.9', :require => false
   gem 'hpricot','0.6.161', :require => false
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
+  gem 'rspec-rails','~>2.6', :require => false
 end
 
 group :development do
@@ -79,4 +75,9 @@ gem "capistrano-ext", :require => false
 gem "thin"
 gem "metrical", :platforms => :ruby_19
 gem "ripper", :platforms => :ruby_19
+gem 'rspec-rails','~>2.6', :require => false
 end
+
+
+gem 'rpm_contrib'
+gem 'newrelic_rpm'

@@ -52,12 +52,14 @@ describe DistrictsController do
   end
 
 
-  def test_should_get_edit
+  it 'test_should_get_edit' do
+    pending 'test:unuit needs updating'
     get :edit, :id => districts(:one).id
     assert_response :success
   end
 
-  def test_should_update_district
+  it  'test_should_update_district' do
+    pending 'test unit needs updating'
     @district.should_receive(:update_attributes).and_return(true)
     put :update, :id => districts(:one).id, :district => { }
     assert_redirected_to root_url
@@ -71,8 +73,8 @@ describe DistrictsController do
   end
 
 
-  def test_should_destroy_district
-    pending
+  it 'test_should_destroy_district' do
+    pending 'test unit needs updating'
     assert_difference('District.count', -1) do
       delete :destroy, :id => districts(:one).id
     end
