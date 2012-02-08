@@ -7,11 +7,11 @@ SIMS_PROTO="http"  #change to https when we're using that.
 
 # Your secret key for verifying cookie session data integrity.
 # If you change this key, all old sessions will become invalid!
-# Make sure the secret is at least 30 characters and all random, 
+# Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
 #
 #
-secret_file = File.join(RAILS_ROOT,"config","secret")
+secret_file = Rails.root.join("config","secret")
 if File.exist?(secret_file)
   secret=File.read(secret_file)
 else
@@ -23,7 +23,6 @@ sessionhash= {
     }
 
 sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}") if defined? SIMS_DOMAIN
-    
 
 ActionController::Base.session = sessionhash
 
@@ -38,4 +37,3 @@ ActionMailer::Base.default_url_options = {
   :protocol => SIMS_PROTO,
   :host => host ||"www.sims_test_host"
 }
-  

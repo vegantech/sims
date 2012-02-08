@@ -2,8 +2,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'test/unit'
 
 describe DistrictsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
   fixtures :districts
 
   before do
@@ -30,7 +32,7 @@ describe DistrictsController do
 
   it 'should get new' do
     get :new
-    assigns[:district].new_record?.should be_true
+    assigns(:district).new_record?.should be_true
     response.should be_success
   end
 
@@ -41,14 +43,14 @@ describe DistrictsController do
       flash[:notice].should ==  'District was successfully created.'
 
       response.should redirect_to(districts_url)
-   end
-  
+    end
+
     it 'should render new when  invalid district' do
       @n.should_receive(:build).with(nil).and_return(m=mock_district(:save=>false))
       post :create
-      assigns[:district].should == m
+      assigns(:district).should == m
       response.should render_template("new")
-  end
+    end
   end
 
 

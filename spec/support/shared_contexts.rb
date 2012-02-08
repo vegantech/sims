@@ -16,7 +16,7 @@ shared_context "authorized" do
   end
 
   it 'should have all actions in action_groups (read or write for now.)' do
-    controller.class.public_instance_methods(false).each do |public_action|
+    controller.action_methods.each do |public_action|
       controller.stub!(:action_name => public_action.to_s)
       flunk public_action.to_s if controller.send(:action_group_for_current_action).blank?
     end

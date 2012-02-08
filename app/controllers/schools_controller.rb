@@ -6,10 +6,8 @@ class SchoolsController < ApplicationController
     flash[:notice]="No schools available" and redirect_to root_url if @schools.blank?
     if @schools.size == 1 and flash[:notice].blank?
       session[:school_id] = @schools.first.id
-      flash[:notice] = @schools.first.name + ' has been automatically selected.'
-      
+      flash[:notice] = "#{@schools.first.name} has been automatically selected."
       redirect_to search_students_url and return
-      
     end
   end
 

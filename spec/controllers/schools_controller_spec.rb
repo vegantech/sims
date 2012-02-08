@@ -1,30 +1,33 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SchoolsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
 
   describe 'index' do
     describe 'with a single school' do
       before do
         controller.stub_association!(:current_user,:authorized_schools =>[mock_school(:id=>'MOCK SCHOOL', :name => 'Mock Elementary')])
       end
-  
+
       it 'should automatically redirect when the flash is not already set'  do
         get :index
         session[:school_id].should == 'MOCK SCHOOL'
         flash[:notice].should == 'Mock Elementary has been automatically selected.'
         response.should redirect_to(search_students_url)
-        
+
       end
       it 'should not redirect if the flash was previously set' do
-        flash[:notice]= 'Exists'
+        flash = {:notice =>"Exists"}
+        controller.should_receive(:flash).and_return(flash)
         get :index
         flash[:notice].should == 'Exists'
         response.should_not redirect_to(search_students_url)
-        
+        pending "Why did I do this?  Redirect loop or preserving the flash?"
+
       end
-        
+
 
     end
     it 'should set @schools instance variable' do
@@ -54,7 +57,7 @@ describe SchoolsController do
       session[:school_id].should == 99
       flash[:notice].should == "Greta Elementary Selected"
       response.should redirect_to(search_students_url)
-      
+
 
     end
 
