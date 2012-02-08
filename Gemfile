@@ -47,6 +47,7 @@ gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
 gem 'cells'
 gem 'paperclip'
+gem "spawn", :git => 'git://github.com/rfc2822/spawn'
 gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
 gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"

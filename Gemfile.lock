@@ -5,6 +5,12 @@ GIT
     prototype_legacy_helper (0.0.0)
 
 GIT
+  remote: git://github.com/rfc2822/spawn
+  revision: bc2c1aacd9f7f2427bf6ef96a5fe5936acf6bcdc
+  specs:
+    spawn (1.0.1)
+
+GIT
   remote: https://github.com/zonecheung/railmail.git
   revision: 71294653be3d260f80ddd3dab0785a9200ca67e3
   specs:
@@ -302,5 +308,6 @@ DEPENDENCIES
   rpm_contrib
   rspec-rails (~> 2.6)
   ruport (= 1.6.1)
+  spawn!
   system_timer
   thin

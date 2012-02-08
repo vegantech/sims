@@ -287,7 +287,7 @@ module UnobtrusiveDatePicker
         select_html << prompt_option_tag(type, @options[:prompt]) + "\n" if @options[:prompt]
         select_html << select_options_as_html.to_s
 
-        content_tag(:select, select_html, select_options) + "\n"
+        content_tag(:select, select_html.html_safe, select_options) + "\n"
       end
       
       def build_hidden(type, value)

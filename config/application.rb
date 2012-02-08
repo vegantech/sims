@@ -62,3 +62,4 @@ module Sims
     config.paths.app.manifests 'app/manifests', :eager_load => false
   end
 end
+

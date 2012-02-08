@@ -45,7 +45,7 @@ class ScriptedController < ApplicationController
     if request.post? 
       #curl --user foo:bar -Fupload_file=@x.c http://localhost:3333/scripted/district_upload?district_abbrev=mmsd
       #      render :text => "#{params.inspect} #{current_district.to_s}"
-      spawn do
+      spawn_block do
         importer = ImportCSV.new params[:upload_file], current_district
         importer.import
         Notifications.deliver_district_upload_results importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us'
@@ -58,7 +58,7 @@ class ScriptedController < ApplicationController
 
   def automated_intervention
     if request.post?
-      spawn(:method => :yield) do
+      spawn_block(:method => :yield) do
         importer=AutomatedIntervention.new params[:upload_file], @u
         @messages=importer.import
         Notifications.deliver_district_upload_results @messages, @u.email || 'sbalestracci@madison.k12.wi.us'
@@ -79,10 +79,9 @@ protected
 
 
   def bulk_import
-    Spawn::method :yield, 'test'
 
     if request.post?
-      spawn do
+      spawn_block do
         importer= ImportCSV.new params[:import_file], current_district
         x=Benchmark.measure{importer.import}
 

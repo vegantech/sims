@@ -89,11 +89,10 @@ class DistrictsController < ApplicationController
 
   def bulk_import
    # TODO REFACTOR THIS
-    Spawn::method :yield, 'test'
 
     if request.post?
       MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
-      spawn do
+      spawn_block do
         begin
           importer= ImportCSV.new params[:import_file], current_district
           x=Benchmark.measure{importer.import}
