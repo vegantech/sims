@@ -1,6 +1,5 @@
 class ScriptedController < ApplicationController
   skip_before_filter  :authorize, :verify_authenticity_token
-  
   def referral_report
     require 'fastercsv'
     response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
@@ -21,7 +20,6 @@ class ScriptedController < ApplicationController
              string.gsub! /\342\200\235/m, '"'
              string.gsub! /"/m, "''"
            end
-           
           answers = Hash[*answers]
           csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y"),nil] 
         else
@@ -33,16 +31,14 @@ class ScriptedController < ApplicationController
        :type => 'text/csv; charset=utf-8; header=present',
        :filename => "referrals.csv"
        )
-       
   end
-             
 
   def district_export
     send_file(DistrictExport.generate(current_district), :x_sendfile => true, :filename => 'sims_export.zip')
   end
 
   def district_upload
-    if request.post? 
+    if request.post?
       #curl --user foo:bar -Fupload_file=@x.c http://localhost:3333/scripted/district_upload?district_abbrev=mmsd
       #      render :text => "#{params.inspect} #{current_district.to_s}"
       spawn_block do

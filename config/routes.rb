@@ -1,4 +1,4 @@
-ActionController::Routing::Routes.draw do |map|
+Rails.application.routes.draw do |map|
   map.resources :personal_groups
 
 #TODO FIXME The path prefixes are missing, I might want to remove the deep nesting.

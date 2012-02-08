@@ -3,7 +3,6 @@ module RSpec
     module Mocks
       def method_missing(method,*args,&blk)
         method_name = method.to_s.split('_',2)
-          puts method.inspect
         if method_name.first == 'mock' and defined?(method_name.last.camelize)
           class_name = method_name.last
           mock_model(class_name.camelize.constantize,*args)
@@ -17,7 +16,7 @@ module RSpec
   module Mocks
     module Methods
       def stub_association!(association_name, methods_to_be_stubbed = {})
-        mock_association = Spec::Mocks::Mock.new(association_name.to_s)
+        mock_association = RSpec::Mocks::Mock.new(association_name.to_s)
         methods_to_be_stubbed.each do |method, return_value|
           mock_association.stub!(method).and_return(return_value)
         end

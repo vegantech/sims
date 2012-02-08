@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password").
   filter_parameter_logging :password
 
-  before_filter :fixie6iframe,:options_for_microsoft_office_protocol_discovery,:authenticate, :authorize#, :current_district
+  before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
@@ -171,12 +171,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-  def options_for_microsoft_office_protocol_discovery
-    render :nothing => true, :status => :ok if request.method == :options #:ok => 200
-  end
-
   def fixie6iframe
+    #TODO THIS SHOULD BE MIDDLEWARE
     response.headers['P3P']= 'CP = "CAO PSA OUR"'
   end
 
