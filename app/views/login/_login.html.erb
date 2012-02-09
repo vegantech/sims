@@ -7,7 +7,7 @@
 <%= render :partial => 'login/demo_pilot_login_note' %>
 <div class = "new_form">
 <%= render :partial => 'login/country_state_district' %>
-  <% form_tag({:controller => 'login', :action => 'login'}, :id=>'login') do %>
+  <%= form_tag({:controller => 'login', :action => 'login'}, :id=>'login') do %>
     <fieldset>
       <div class = "form_row">
         <% unless @districts.blank? %>

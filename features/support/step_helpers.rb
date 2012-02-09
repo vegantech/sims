@@ -40,7 +40,7 @@ end
 
 def verify_select_box id, options
   options=Array(eval(options))
-  page.should have_select(id, options)
+  page.should have_select(id, :options=>options)
 end
 
 def log_in

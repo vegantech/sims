@@ -80,45 +80,45 @@ class Student < ActiveRecord::Base
   define_statistic :districts_with_students, :count => :all, :select => 'distinct district_id'
 
   #TODO DRY THESE
-  define_calculated_statistic :students_in_use  do 
-    
+  define_calculated_statistic :students_in_use  do
+
     calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count(:id, :conditions => 
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+      count(:id, :conditions =>
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
              #{d_conditions}
             ")
 
   end
 
 
-  define_calculated_statistic :districts_with_students_in_use  do 
+  define_calculated_statistic :districts_with_students_in_use  do
     calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count('distinct district_id', :conditions => 
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+      count('distinct district_id', :conditions =>
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
              #{d_conditions}
             ")
 
   end
 
-  define_calculated_statistic :schools_with_students_in_use  do 
+  define_calculated_statistic :schools_with_students_in_use  do
     calc_start_date = @filters[:created_after] || "2000-01-01".to_date
     calc_end_date = @filters[:created_before] || "2100-01-01".to_date
 
     d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count('distinct school_id' ,:joins => :enrollments, :conditions => 
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or 
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))  
+      count('distinct school_id' ,:joins => :enrollments, :conditions =>
+            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
+             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
              #{d_conditions}
             ")
 
@@ -130,7 +130,7 @@ class Student < ActiveRecord::Base
 
 
 
-  
+
   validates_presence_of :first_name, :last_name, :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
   validate :unique_id_state
@@ -176,13 +176,13 @@ class Student < ActiveRecord::Base
     district_tier= district.present? ? district.tiers.first : nil
 
     [
-      district_tier, 
+      district_tier,
       checklists.max_tier,
-      recommendations.max_tier, 
+      recommendations.max_tier,
       principal_overrides.max_tier
     ].compact.max
   end
-  
+
   def self.find_flagged_students(flagtypes=[])
     flagtype = Array(flagtypes)
     stitypes = []
@@ -203,7 +203,7 @@ class Student < ActiveRecord::Base
   end
 
   def principals
-    #Find principals for student 
+    #Find principals for student
     #TODO combine groups and special groups and get their principals
     principals = groups.collect(&:principals)
 
@@ -212,7 +212,7 @@ class Student < ActiveRecord::Base
   end
 
   def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page, 
+    paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
   end
@@ -247,10 +247,10 @@ class Student < ActiveRecord::Base
       end
     end
   end
-  
+
   def save_enrollments
     enrollments.each do |enrollment|
-      enrollment.save(false)
+      enrollment.save(:validate => false)
     end
   end
 
@@ -270,17 +270,17 @@ class Student < ActiveRecord::Base
       end
     end
   end
-  
+
   def save_system_flags
     system_flags.each do |system_flag|
-      system_flag.save(false)
+      system_flag.save(:validate => false)
     end
   end
 
   def belongs_to_user?(user)
-    user.district_id == district_id && 
-   (user.groups.find_by_id(group_ids) || 
-      user.special_user_groups.find_by_school_id(school_ids) || 
+    user.district_id == district_id &&
+   (user.groups.find_by_id(group_ids) ||
+      user.special_user_groups.find_by_school_id(school_ids) ||
       user.special_user_groups.find_by_grouptype(SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT))
   end
 
@@ -296,7 +296,7 @@ class Student < ActiveRecord::Base
     #FIXME doesn't handle ignores
     # all.group_by(&:category)
     flags.reject do |f|
-      (f[:type] == 'IgnoreFlag') or 
+      (f[:type] == 'IgnoreFlag') or
       (f[:type] == 'SystemFlag' and ignore_flags.any?{|igf| igf.category == f.category})
     end.group_by(&:category)
   end
@@ -344,7 +344,7 @@ class Student < ActiveRecord::Base
    end
 
 
-    
+
     if @extended_profile.present?
       create_ext_arbitrary(:content =>@extended_profile)
      @extended_profile=nil

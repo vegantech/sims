@@ -259,7 +259,7 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
-  page.should have_options(Array(eval(options)))
+  page.should have_select("Student Group", :options =>(Array(eval(options))))
 end
 
 Given /^I enter URL "(.*)"$/ do |url|

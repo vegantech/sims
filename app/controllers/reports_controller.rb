@@ -70,8 +70,9 @@ class ReportsController < ApplicationController
 
   def student_overall
     # process params from student_overall_options
-    request.format = params[:report_params][:format].to_sym if params[:report_params]
-    request.format = :html unless defined? PDF::HTMLDoc
+    params[:format] = params[:report_params][:format] if params[:report_params]
+    params[:format] = :html unless defined? PDF::HTMLDoc
+    request.format = params[:format] if params[:format]
 
     @opts = params[:report_params] || {}
     @student = current_student
