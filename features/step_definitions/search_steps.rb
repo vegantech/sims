@@ -1,6 +1,5 @@
 When /^I select a blank year$/ do
-  b=locate(:css, 'option[value=""]')
-  b.node['selected']='selected'
+  b=find(:css, 'option[value=""]').select_option
 end
 
 Then /^page should have a "([^"]*)" button$/ do |button_name|

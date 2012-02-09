@@ -32,8 +32,7 @@ def go_to_page page_name
 end
 
 def click_all_name_id_brackets
-  doc=Hpricot(page.source)
-  doc.search("//input[@name='id[]']").each do |elem|
+  all('input[name="id[]"]').each do |elem|
     check(elem[:id])
   end
 end

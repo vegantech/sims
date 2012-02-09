@@ -39,7 +39,7 @@ gem "fastercsv", '1.2.3'
 gem "pdf-writer", :require => "pdf/writer"
 gem 'system_timer'
 gem 'googlecharts','1.6.3'
-gem 'airbrake',"~> 3.0.5"
+gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
 gem 'mysql'
 gem 'nokogiri','1.4.4', :require => false
@@ -54,7 +54,6 @@ gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
-  gem 'hpricot','0.6.161', :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
 end
@@ -66,7 +65,6 @@ group :cucumber do
   gem 'cucumber', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
-  gem 'hpricot','0.6.161', :require => false
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
   gem 'rspec-rails','~>2.6', :require => false

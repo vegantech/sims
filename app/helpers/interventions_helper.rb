@@ -10,11 +10,11 @@ module InterventionsHelper
     d=c.keys.sort
     opts << selected.to_s
     d.each do |group|
-      opts += content_tag(:optgroup, :label => group.to_s) do
+      opts << content_tag(:optgroup, :label => h(group.to_s)) do
         options_from_collection_for_select(  c[group], :id, :title, :selected => selected) if c[group]
       end
     end
-   select_tag("intervention_definition_id", opts, :class => "fixed_width",
+   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
               :onchange => "$('spinnerdefinitions').show();form.onsubmit()",
               :name => "intervention_definition[id]")
   end
@@ -28,14 +28,14 @@ module InterventionsHelper
       form_tag "/interventions/quicklists" do
         concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
         options = ""
-        options += content_tag :option,{},:value => ""
+        options << content_tag( :option,{},:value => "")
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|
-          options += content_tag(:optgroup, :label => group.to_s) do
+          options << content_tag(:optgroup, :label => h(group.to_s)) do
             options_from_collection_for_select(col, :id, :title)
           end
         end
-        concat(select_tag("intervention_definition_id",options, :onchange => "form.submit()"))
+        concat(select_tag("intervention_definition_id",options.html_safe, :onchange => "form.submit()"))
         concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
     end
