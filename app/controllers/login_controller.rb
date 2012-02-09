@@ -6,6 +6,7 @@ class LoginController < ApplicationController
   #same for login, but there really would be no reason to trick a user into logging in as someone else.   The tradeoff here is for usability
   #There are often errors from a logout form that get invalidated by a server restart showing an error to the user.   This should eliminate those errors
   layout 'main'
+
   def login
     dropdowns
     @user=User.new(:username=>params[:username])

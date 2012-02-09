@@ -15,8 +15,8 @@ describe SchoolTeamsController do
 
   describe "GET index" do
     it "assigns all school_teams as @school_teams" do
-      pending 'broke after rails 3  check to see if it is testing problem, or live problem'
-      SchoolTeam.should_receive(:find).with(:all).and_return([mock_school_team])
+      school_team = stub_model(SchoolTeam)
+      SchoolTeam.stub(:named) {[mock_school_team]}
       get :index
       assigns(:school_teams).should == [mock_school_team]
     end

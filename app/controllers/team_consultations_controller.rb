@@ -30,7 +30,7 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
-      format.html # new.html.erb
+      format.html {render :action => 'new'} # new.html.erb
       format.js { render :action => 'new'}
     end
   end

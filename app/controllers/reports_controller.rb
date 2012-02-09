@@ -70,15 +70,15 @@ class ReportsController < ApplicationController
 
   def student_overall
     # process params from student_overall_options
-    params[:format] = params[:report_params][:format] if params[:report_params]
-    params[:format] = 'html' unless defined? PDF::HTMLDoc
+    request.format = params[:report_params][:format].to_sym if params[:report_params]
+    request.format = :html unless defined? PDF::HTMLDoc
 
     @opts = params[:report_params] || {}
     @student = current_student
 
     respond_to do |format|
       format.html {}
-      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
+      format.pdf {send_data(render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" )}
     end
   end
 

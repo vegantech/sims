@@ -1,3 +1,11 @@
+
+
+# Use the database for sessions instead of the cookie-based default,
+# which shouldn't be used to store highly confidential information
+# (create the session table with "rails generate session_migration")
+# Sims::Application.config.session_store :active_record_store
+
+
 #SIMS_DOMAIN = #sims-open.vegantech.com
 SIMS_PROTO="http"  #change to https when we're using that.
 #DEFAULT_URL = #'http://www.simspilot2.org:3000'
@@ -24,12 +32,7 @@ sessionhash= {
 
 sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}") if defined? SIMS_DOMAIN
 
-ActionController::Base.session = sessionhash
-
-# Use the database for sessions instead of the cookie-based default,
-# which shouldn't be used to store highly confidential information
-# (create the session table with "rake db:sessions:create")
-# ActionController::Base.session_store = :active_record_store
+Sims::Application.config.session_store :cookie_store, sessionhash
 
 host="www.#{Object.const_get("SIMS_DOMAIN")}" if Object.const_defined?('SIMS_DOMAIN')
 ActionMailer::Base.default_url_options = {

@@ -1,11 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ReportsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
 
   describe 'student_flag_summary' do
-    integrate_views
+    render_views
 
     before do
       pending
@@ -54,13 +55,13 @@ describe ReportsController do
           it 'renders output of StudentFlagReport.render_html' do
             m = 'This is the HTML Student Flag Report Content'
             School.should_receive(:find).with(@school.id).and_return(@school)
-            StudentFlagReport.stub!(:render_html=>m) 
+            StudentFlagReport.stub!(:render_html=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
-              {:user_id => '1', :school_id => @school.id, :district_id => @district.id}
+            {:user_id => '1', :school_id => @school.id, :district_id => @district.id}
 
             response.should_not be_redirect
-            assigns[:report].should equal(m)
+            assigns(:report).should equal(m)
             response.should render_template('reports/student_flag_summary')
 
             response.should be_success
@@ -72,14 +73,14 @@ describe ReportsController do
           it 'returns output of StudentFlagReport.render_csv as report' do
             m = 'This is the CSV Student Flag Report Content'
             School.should_receive(:find).with(@school.id).and_return(@school)
-            StudentFlagReport.stub!(:render_csv=>m) 
+            StudentFlagReport.stub!(:render_csv=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
-              {:user_id => '1', :school_id => @school.id}
+            {:user_id => '1', :school_id => @school.id}
 
             response.should_not be_redirect
             response.should be_success
-            assigns[:report].should equal(m)
+            assigns(:report).should equal(m)
             assert_template nil # not sure how to do this with an Rspec matcher...
 
             response.should be_success
@@ -91,14 +92,14 @@ describe ReportsController do
           it 'returns output of StudentFlagReport.render_pdf as report' do
             m = 'This is the PDF Student Flag Report Content'
             School.should_receive(:find).with(@school.id).and_return(@school)
-            StudentFlagReport.stub!(:render_pdf=>m) 
+            StudentFlagReport.stub!(:render_pdf=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
-              {:user_id => '1', :school_id => @school.id}
+            {:user_id => '1', :school_id => @school.id}
 
             response.should_not be_redirect
             response.should be_success
-            assigns[:report].should equal(m)
+            assigns(:report).should equal(m)
             assert_template nil # not sure how to do this with an Rspec matcher...
 
             response.should be_success
@@ -111,7 +112,7 @@ describe ReportsController do
 
   describe 'student overall options' do
 
-    integrate_views
+    render_views
 
     before do
       @district = Factory(:district)
@@ -122,24 +123,23 @@ describe ReportsController do
 
     it 'should show up' do
       get :student_overall_options, {:student_id => @student.id.to_s}, {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
-
-      response.should have_text(/Student Intervention Monitoring System/)
+      response.body.should have_content("Student Intervention Monitoring System")
       response.should be_success
     end
-  
+
     it 'should show checkbox for each section' do
       get :student_overall_options, {:student_id => @student.id.to_s}, {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
-      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_top_summary]')
-      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_flags]')
-      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_team_notes]')
-      response.should have_tag('input[type=checkbox][checked=checked][id=report_params_intervention_summary]')
+      response.body.should have_selector('input[type=checkbox][checked=checked][id=report_params_top_summary]')
+      response.body.should have_selector('input[type=checkbox][checked=checked][id=report_params_flags]')
+      response.body.should have_selector('input[type=checkbox][checked=checked][id=report_params_team_notes]')
+      response.body.should have_selector('input[type=checkbox][checked=checked][id=report_params_intervention_summary]')
     end
   end
 
   describe 'student overall report' do
-    integrate_views
+    render_views
 
     before do
       @district = Factory(:district)
@@ -149,19 +149,20 @@ describe ReportsController do
     end
 
     it 'should show top summary when selected' do
-      controller.should_receive(:render).with(:partial => 'students/student', :locals => {:changeable => false})
 
       get :student_overall, {:report_params => {:format => "html", :top_summary => "1"},:student_id => @student.id.to_s},
-        {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should_not be_redirect
+      response.body.should have_selector("div#student_profile")
     end
 
     it 'should not show top summary when not selected' do
-      controller.should_receive(:render).with(:partial => 'students/student').never
       get :student_overall, {:report_params => {:format => "html"}, :student_id => @student.id.to_s}, {:user_id => '1', :district_id => @district.id}
       response.should be_success
+      response.should_not be_redirect
+      response.body.should_not have_selector("div#student_profile")
     end
 
     it 'should show team notes when selected' do
@@ -169,22 +170,21 @@ describe ReportsController do
       @student.save!
 
       get :student_overall, {:report_params => {:format => "html", :team_notes => "1"},:student_id => @student.id.to_s},
-        {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should_not be_redirect
-      response.should have_text(/Team Notes/)
-      response.should have_text(/Comment Body/)
+      response.body.should have_content("Team Notes")
+      response.body.should have_content("Comment Body")
     end
 
     it 'should not show team notes when not selected' do
-      controller.should_receive(:render).with(:partial => 'student_comment/comment').never
 
       get :student_overall, {:report_params => {:format => "html"},:student_id => @student.id.to_s}, {:user_id => '1', :district_id => @district.id}
 
       response.should be_success
-      response.should_not have_text(/Team Notes/)
-      response.should_not have_text(/Comment Body/)
+      response.should_not have_content("Team Notes")
+      response.should_not have_content("Comment Body")
     end
 
     it 'should show flags when selected' do
@@ -192,7 +192,7 @@ describe ReportsController do
       @student.flags << SystemFlag.create!(:category => 'attendance', :reason => 'Late every day')
 
       get :student_overall, {:report_params => {:format => "html", :flags => "1"},:student_id => @student.id.to_s},
-        {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
     end
@@ -209,7 +209,7 @@ describe ReportsController do
       @student.interventions.should_not be_empty
 
       get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"},:student_id => @student.id.to_s},
-        {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
     end
@@ -234,7 +234,7 @@ describe ReportsController do
 
     it 'should show up as html when pdf and htmldoc gem is not installed' do
       #controller.should_receive(:defined?).and_return(false)
-      if defined? PDF::HTMLDoc 
+      if defined? PDF::HTMLDoc
         OLD_HTMLDOC= PDF::HTMLDoc
         PDF.send(:remove_const, "HTMLDoc")
       end
@@ -246,7 +246,7 @@ describe ReportsController do
     end
 
     it 'should show up when pdf and htmldoc gem is installed' do
-      unless defined? PDF::HTMLDoc 
+      unless defined? PDF::HTMLDoc
         loaded = true
         module PDF; end
         PDF.const_set('HTMLDoc',2)
@@ -254,7 +254,7 @@ describe ReportsController do
 
       controller.should_receive(:render_to_pdf).and_return('PDF')
 
-      get :student_overall, {:report_params => {:format => "pdf"},:student_id => @student.id.to_s}, {:user_id => '1', :selected_student => @student.id.to_s}
+      get :student_overall, {:report_params => {:format => 'pdf'},:student_id => @student.id.to_s}, {:user_id => '1', :selected_student => @student.id.to_s}
       PDF.send(:remove_const, "HTMLDoc") if loaded
       response.should be_success
     end
@@ -272,12 +272,12 @@ describe ReportsController do
         get :team_notes
 
         [:today, :start_date, :end_date].each do |sym|
-          assigns[sym].should == Date.current
+          assigns(sym).should == Date.current
         end
 
-        assigns[:filetypes].should == ['html', 'pdf', 'csv']
-        assigns[:selected_filetype].should == 'html'
-        assigns[:report].should be_nil
+        assigns(:filetypes).should == ['html', 'pdf', 'csv']
+        assigns(:selected_filetype).should == 'html'
+        assigns(:report).should be_nil
       end
     end
 
@@ -288,17 +288,17 @@ describe ReportsController do
         TeamNotesReport.stub!(:render_html=>m)
 
         post :team_notes, :start_date => {:month => 10, :day => 15, :year => 2008}, :end_date => {:month => 10, :day => 19, :year => 2008},
-          "report_params"=>{"format"=>"html"}, "generate"=>"Generate Report"
+        "report_params"=>{"format"=>"html"}, "generate"=>"Generate Report"
 
-        assigns[:today].should == Date.current
-        assigns[:start_date].should == Date.new(2008, 10, 15)
-        assigns[:end_date].should == Date.new(2008, 10, 19)
+        assigns(:today).should == Date.current
+        assigns(:start_date).should == Date.new(2008, 10, 15)
+        assigns(:end_date).should == Date.new(2008, 10, 19)
 
-        assigns[:filetypes].should == ['html', 'pdf', 'csv']
-        assigns[:selected_filetype].should == 'html'
+        assigns(:filetypes).should == ['html', 'pdf', 'csv']
+        assigns(:selected_filetype).should == 'html'
 
-        assigns[:report].class.should == String
-        assigns[:report].should == m
+        assigns(:report).class.should == String
+        assigns(:report).should == m
       end
 
       describe 'and CSV format choice' do
@@ -307,11 +307,11 @@ describe ReportsController do
           TeamNotesReport.stub!(:render_csv=>m)
 
           post :team_notes, {:generate => "Do the report", :report_params => {:format => 'csv'}}, {:user_id => '1'}
-          assigns[:report].should equal(m)
+          assigns(:report).should equal(m)
           assert_template nil # not sure how to do this with an Rspec matcher...
 
           response.should be_success
-          response.body.should equal(m)
+          response.body.should ==(m)
         end
       end # CSV
 
@@ -321,11 +321,11 @@ describe ReportsController do
           TeamNotesReport.stub!(:render_pdf=>m)
 
           post :team_notes, {:generate => "Do the report", :report_params => {:format => 'pdf'}}, {:user_id => '1'}
-          assigns[:report].should equal(m)
+          assigns(:report).should equal(m)
           assert_template nil # not sure how to do this with an Rspec matcher...
 
           response.should be_success
-          response.body.should equal(m)
+          response.body.should ==(m)
         end
       end
     end
@@ -336,9 +336,9 @@ describe ReportsController do
       it 'should set instance variables' do
         get :user_interventions
 
-        assigns[:filetypes].should == ['html', 'pdf', 'csv']
-        assigns[:selected_filetype].should == 'html'
-        assigns[:report].should be_nil
+        assigns(:filetypes).should == ['html', 'pdf', 'csv']
+        assigns(:selected_filetype).should == 'html'
+        assigns(:report).should be_nil
       end
     end
 
@@ -350,11 +350,11 @@ describe ReportsController do
 
         post :user_interventions, "report_params" => {"format"=>"html"}, "generate" => "Generate Report"
 
-        assigns[:filetypes].should == ['html', 'pdf', 'csv']
-        assigns[:selected_filetype].should == 'html'
+        assigns(:filetypes).should == ['html', 'pdf', 'csv']
+        assigns(:selected_filetype).should == 'html'
 
-        assigns[:report].class.should == String
-        assigns[:report].should == m
+        assigns(:report).class.should == String
+        assigns(:report).should == m
       end
 
       describe 'and CSV format choice' do
@@ -363,11 +363,11 @@ describe ReportsController do
           UserInterventionsReport.stub!(:render_csv => m)
 
           post :user_interventions, {:generate => "Do the report", :report_params => {:format => 'csv'}}, {:user_id => '1'}
-          assigns[:report].should equal(m)
+          assigns(:report).should equal(m)
           assert_template nil # not sure how to do this with an Rspec matcher...
 
           response.should be_success
-          response.body.should equal(m)
+          response.body.should ==(m)
         end
       end # CSV
 
@@ -377,11 +377,11 @@ describe ReportsController do
           UserInterventionsReport.stub!(:render_pdf => m)
 
           post :user_interventions, {:generate => "Do the report", :report_params => {:format => 'pdf'}}, {:user_id => '1'}
-          assigns[:report].should equal(m)
+          assigns(:report).should equal(m)
           assert_template nil # not sure how to do this with an Rspec matcher...
 
           response.should be_success
-          response.body.should equal(m)
+          response.body.should ==(m)
         end
       end
     end

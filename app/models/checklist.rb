@@ -34,7 +34,7 @@ class Checklist < ActiveRecord::Base
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
   after_update :remove_deleted_answers
-  before_validation_on_create :assign_associated_from_student
+  before_validation :assign_associated_from_student, :on => :create
 
 
 

@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::FlagCategoriesController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_flag_category(stubs={})
     @mock_flag_category ||= mock_model(FlagCategory, stubs)
@@ -18,7 +20,7 @@ describe District::FlagCategoriesController do
       FlagCategory.should_receive(:find).with(:all).and_return([mock_flag_category])
       controller.stub_association!(:current_district,:flag_categories=>FlagCategory.find(:all))
       get :index
-      assigns[:flag_categories].should == [mock_flag_category]
+      assigns(:flag_categories).should == [mock_flag_category]
     end
   end
 
@@ -27,7 +29,7 @@ describe District::FlagCategoriesController do
       FlagCategory.should_receive(:build).and_return(mock_flag_category)
       mock_flag_category.stub_association!(:assets,:build=>{})
       get :new
-      assigns[:flag_category].should equal(mock_flag_category)
+      assigns(:flag_category).should equal(mock_flag_category)
     end
 
   end
@@ -36,7 +38,7 @@ describe District::FlagCategoriesController do
     it "should expose the requested flag_category as @flag_category" do
       FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
       get :edit, :id => "37"
-      assigns[:flag_category].should equal(mock_flag_category)
+      assigns(:flag_category).should equal(mock_flag_category)
     end
 
   end

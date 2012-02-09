@@ -55,16 +55,17 @@ gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'hpricot','0.6.161', :require => false
+  gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
 end
 
 group :cucumber do
   gem 'rcov', ">=0.9.9", :require => false
+  gem 'capybara', :require => false
   gem 'cucumber-rails', :require => false
   gem 'cucumber', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
-  gem 'capybara','=0.3.9', :require => false
   gem 'hpricot','0.6.161', :require => false
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'

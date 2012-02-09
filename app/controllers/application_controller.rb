@@ -17,7 +17,6 @@ class ApplicationController < ActionController::Base
   # See ActionController::Base for details
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
-  filter_parameter_logging :password
 
   before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
 
@@ -120,14 +119,13 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  class_inheritable_array :read_actions,:write_actions
-  self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
-  self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
+  @@read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
+  @@write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
 
   def action_group_for_current_action
-    if self.class.write_actions.include?(action_name)
+    if @@write_actions.include?(action_name)
       'write_access'
-    elsif self.class.read_actions.include?(action_name)
+    elsif @@read_actions.include?(action_name)
       #put in the defaults here,   override this and call super in individual controllers
       "read_access"
     else
@@ -136,11 +134,11 @@ class ApplicationController < ActionController::Base
   end
 
   def self.additional_read_actions(*args)
-     self.read_actions = Array(args).flatten.map(&:to_s)
+     @@read_actions |=  Array(args).flatten.map(&:to_s)
   end
 
   def self.additional_write_actions(*args)
-     self.write_actions= Array(args).flatten.map(&:to_s)
+     @@write_actions |= Array(args).flatten.map(&:to_s)
   end
 
   def subdomains

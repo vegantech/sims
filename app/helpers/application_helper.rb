@@ -38,8 +38,8 @@ module ApplicationHelper
       end
     end
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
-    grp = 'write_access' if ctrl.write_actions.include?(hsh[:action])
-    grp = 'read_access' if ctrl.read_actions.include?(hsh[:action])
+    grp = 'write_access' if ctrl.class_eval("@@write_actions").include?(hsh[:action])
+    grp = 'read_access' if ctrl.class_eval("@@read_actions").include?(hsh[:action])
     link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path, grp)
   end
 

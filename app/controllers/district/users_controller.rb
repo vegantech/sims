@@ -55,7 +55,7 @@ class District::UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         flash[:notice] = "#{edit_obj_link(@user)} was successfully updated.".html_safe
         if params[:user][:staff_assignments_attributes] && current_district.staff_assignments.empty?
-          flash[:notice] += "  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature."
+          flash[:notice] = "#{flash[:notice]}  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature.".html_safe
         end
         format.html { redirect_to(index_url_with_page)}
       else

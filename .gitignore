@@ -8,6 +8,7 @@ doc/app
 config/database.yml
 config/secret
 *~
+*.swp
 *.sqlite3
 db/*.sqlite3-journal
 coverage
