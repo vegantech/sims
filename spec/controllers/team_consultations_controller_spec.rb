@@ -160,7 +160,7 @@ describe TeamConsultationsController do
       it 'should undo complete' do
         @mock_team_consultation.should_receive(:undo_complete!).and_return(true)
         put :undo_complete, :id => "37"
-        response.flash[:notice].should == "Consultation is no longer complete"
+        request.flash[:notice].should == "Consultation is no longer complete"
       end
     end
 

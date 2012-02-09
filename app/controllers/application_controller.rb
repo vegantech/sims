@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
   end
 
   def subdomains
-    if current_subdomain
+    if current_subdomain.present?
       g=current_subdomain
       s=g.split("-").reverse
       params[:district_abbrev] = s.pop
@@ -226,6 +226,7 @@ def check_student
   end
 
   def current_subdomain
+    #base this on tld somehow
      request.subdomain
   end
 end

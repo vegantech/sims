@@ -4,15 +4,15 @@ class ScriptedController < ApplicationController
     require 'fastercsv'
     response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
     response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
-    
+
     @students= dates_of_sims_data
-   
+
     csv_string = FasterCSV.generate(:row_sep=>"\r\n") do |csv|
       csv << ["personID","referral_request","main_concerns","interventions_tried","family_involvement","external_factors","date","schoolyear"]
       @students.each do |student|
         if student["id"]
-           
-           answers = ActiveRecord::Base.connection.select_rows("select position, ra.text from recommendation_answers ra inner join recommendation_answer_definitions rad on ra.recommendation_answer_definition_id = rad.id  and ra.recommendation_id where ra.recommendation_id = #{student["id"]}").flatten 
+
+           answers = ActiveRecord::Base.connection.select_rows("select position, ra.text from recommendation_answers ra inner join recommendation_answer_definitions rad on ra.recommendation_answer_definition_id = rad.id  and ra.recommendation_id where ra.recommendation_id = #{student["id"]}").flatten
            answers.each do |string|
              string.gsub! /\342\200\230/m, "'"
              string.gsub! /\342\200\231/m, "'"
@@ -21,7 +21,7 @@ class ScriptedController < ApplicationController
              string.gsub! /"/m, "''"
            end
           answers = Hash[*answers]
-          csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y"),nil] 
+          csv <<[student["district_student_id"],"Y",answers["1"],answers["2"],answers["3"],answers["4"], student["created_at"].to_datetime.strftime("%m/%d/%Y"),nil]
         else
           csv << [student["district_student_id"],"N",nil,nil,nil,nil,nil,student["schoolyear"]] unless student["district_student_id"].blank?
         end
@@ -95,11 +95,11 @@ protected
 
 
     referrals= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at, (year(r.updated_at + INTERVAL 6 month))  as schoolyear
-    from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5 
+    from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5
     where s.district_id = #{current_district.id}")
 
     students =Student.connection.select_all(
- 
+
     "
     select s.district_student_id,  (year(sc.updated_at + INTERVAL 6 month))  as schoolyear from student_comments sc
     inner join students s on sc.student_id = s.id
@@ -114,7 +114,7 @@ protected
     group by district_student_id, (year(r.updated_at + INTERVAL 6 month))
 
     union
-    
+
     select s.district_student_id,  (year(r.updated_at + INTERVAL 6 month))  as schoolyear from interventions r
     inner join students s on r.student_id = s.id
     where s.district_id = #{current_district.id}
@@ -168,5 +168,5 @@ protected
   end
 
 
-  
+
 end
