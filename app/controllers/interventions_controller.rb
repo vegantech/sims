@@ -133,7 +133,7 @@ class InterventionsController < ApplicationController
       end
     end
     respond_to do |format|
-      format.html {render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'}
+      format.html {render :layout => false}
       format.js
     end
   end

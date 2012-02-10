@@ -29,6 +29,8 @@ class InterventionProbeAssignment < ActiveRecord::Base
   validate :last_date_must_be_after_first_date
   validate :goal_in_range
 
+  after_initialize :set_default_frequency_multiplier
+
   accepts_nested_attributes_for :probe_definition
 
   RECOMMENDED_FREQUENCY = 2
@@ -68,16 +70,16 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def to_param
     unless new_record?
-      id
+      id.to_s
     else
       "pd#{probe_definition_id}"
     end
   end
 
   def graph(graph_type=nil)
-    ProbeGraph.new(:graph_type => graph_type, 
-                   :probes => probes.to_a, 
-                   :probe_definition => probe_definition, 
+    ProbeGraph.new(:graph_type => graph_type,
+                   :probes => probes.to_a,
+                   :probe_definition => probe_definition,
                    :district => student.district,
                    :first_date => first_date,
                    :end_date => end_date,
@@ -90,7 +92,7 @@ protected
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end
 
-  def after_initialize
+  def set_default_frequency_multiplier
     self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
   end
 
@@ -105,7 +107,7 @@ protected
       end
 
     end
-        
+
   end
 
 end

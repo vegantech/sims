@@ -48,21 +48,21 @@
       page.show "spinner#{probe_assignment_counter}"
       page.delay(1.5) do
        page.hide "spinner#{probe_assignment_counter}"
-      end  
+      end
     end %><%= spinner("#{probe_assignment_counter}") %>
-          
- 
+
+
   </p>
 
   <div id='<%= "graph_#{probe_assignment_counter}" %>'>
-  
+
     <%=  probe_graph(probe_assignment,probe_assignment_counter) %>
 
     </div>
-  
+
   <% else %>
   <div id='<%= "graph_#{probe_assignment_counter}" %>'>
-  
+
 
   </div>
 

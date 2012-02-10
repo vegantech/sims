@@ -32,7 +32,7 @@ Rails.application.routes.draw do |map|
   map.resources :quicklist_items
 
 
-  map.resources :tiers, :member=>{:move => :put }
+  map.resources :tiers, :member=>{:move => :put, :destroy => [:get, :post, :delete]  }
 
   map.resources :user_school_assignments
 
@@ -130,7 +130,7 @@ Rails.application.routes.draw do |map|
     intervention.resources :comments, :controller=>"interventions/comments"
     intervention.resources :participants, :controller=>"interventions/participants"
     intervention.resources :probe_assignments, :controller=>"interventions/probe_assignments", :collection=>{:disable_all=>:put}, :member => {:preview_graph =>:get} do |probe_assignment|
-      probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>"", 
+      probe_assignment.resources :probes, :controller=>"interventions/probes", :name_prefix=>"",
         :collection=>{:new_assessment=>:get, :update_assessment=>:get,:save_assessment=>:post}
     end
   end

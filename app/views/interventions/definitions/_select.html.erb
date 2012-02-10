@@ -1,6 +1,6 @@
 <div id="definitions" class="form_row">
   <% if @intervention_definitions %>
-    <% remote_form_for :intervention_definition, :url => select_interventions_definitions_path(@goal_definition, @objective_definition, @intervention_cluster) do |f| %>
+    <%= remote_form_for :intervention_definition, :url => select_interventions_definitions_path(@goal_definition, @objective_definition, @intervention_cluster) do |f| %>
       <%= f.label :id, 'Assign Intervention' %>
       <%= tiered_intervention_definition_select(@intervention_definitions, true, @intervention_definition ) %>
       <%= spinner("definitions") %>

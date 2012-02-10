@@ -1,6 +1,6 @@
 <div id="intervention">
   <% if @intervention %>
-    <% form_for(@intervention, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
+    <%= form_for(@intervention, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
       <%= render :partial => 'interventions/custom', :locals => {:form => f} if flash[:custom_intervention] %>
       <%= render :partial => 'interventions/form', :locals => {:form => f} %>
       <br class="brclear" />

@@ -227,6 +227,6 @@ def check_student
 
   def current_subdomain
     #base this on tld somehow
-     request.subdomain
+    request.subdomain.gsub(/^www(.)?/,'')
   end
 end

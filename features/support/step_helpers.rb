@@ -33,7 +33,7 @@ end
 
 def click_all_name_id_brackets
   all('input[name="id[]"]').each do |elem|
-    check(elem[:id])
+    elem.set(true) #check
   end
 end
 

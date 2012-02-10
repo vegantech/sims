@@ -1,6 +1,6 @@
 <h1>New Flag Category</h1>
 
-<% form_for(@flag_category, :html => { :multipart => true }) do |f| %>
+<%= form_for(@flag_category, :html => { :multipart => true }) do |f| %>
   <%= render :partial => f %>
   <p>
     <%= f.submit "Create" %>

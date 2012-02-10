@@ -6,7 +6,7 @@
     %>
 
     <div class="fake_label">&nbsp;</div>
-      <%div_for(@intervention, 'comments') do %>
+      <%=div_for(@intervention, 'comments') do %>
         <%= render :partial => 'interventions/comments/comments' %>
         <script>
           var keep_polling = true;

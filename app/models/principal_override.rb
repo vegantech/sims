@@ -34,17 +34,19 @@ class PrincipalOverride < ActiveRecord::Base
   APPROVED_NOT_SEEN =4
 
 
-  validates_inclusion_of :action, :in =>['accept','reject'], :unless => Proc.new{|p| p.status == NEW_REQUEST} 
+  validates_inclusion_of :action, :in =>['accept','reject'], :unless => Proc.new{|p| p.status == NEW_REQUEST}
   validates_presence_of :teacher_request, :message => "reason must be provided"
   validates_presence_of :principal_response, :message => "Reason must be provided", :unless => Proc.new{|p| p.status == NEW_REQUEST}
   scope :pending, :conditions=>{:status=>NEW_REQUEST}
   scope :approved, :conditions=>{:status=>[APPROVED_SEEN,APPROVED_NOT_SEEN]}
+  after_initialize :set_start_tier
 
+  before_validation :set_status, :on => :update
 
   def self.pending_for_principal(user)
-    school_wide=pending.find(:all, :joins => "inner join enrollments on enrollments.student_id = principal_overrides.student_id 
-    inner join special_user_groups on is_principal and 
-    special_user_groups.school_id = enrollments.school_id and (special_user_groups.grade is null or special_user_groups.grade=enrollments.grade)", 
+    school_wide=pending.find(:all, :joins => "inner join enrollments on enrollments.student_id = principal_overrides.student_id
+    inner join special_user_groups on is_principal and
+    special_user_groups.school_id = enrollments.school_id and (special_user_groups.grade is null or special_user_groups.grade=enrollments.grade)",
     :conditions => {:special_user_groups=>{:user_id=>user}})
     group_wide = pending.find(:all, :joins => "inner join groups_students on  groups_students.student_id = principal_overrides.student_id inner join user_group_assignments on is_principal
     and user_group_assignments.group_id = groups_students.group_id",
@@ -89,19 +91,18 @@ class PrincipalOverride < ActiveRecord::Base
       @unavailable_reason += "There are no principals assigned to this student"
     end
 
-    
     @unavailable_reason.blank?
   end
 
   protected
 
-  def after_initialize
+  def set_start_tier
     self.start_tier = student.max_tier if start_tier.blank? and !student.blank?
   end
 
 
 
-  def before_validation_on_update
+  def set_status
     #TODO make sure the principal is actually a principal for this student
     #Refactor this
     @send_email=true unless @skip_email
@@ -122,7 +123,7 @@ class PrincipalOverride < ActiveRecord::Base
   end
 
   def check_autopromote
-    if student and student.district 
+    if student and student.district
       auto_texts = student.district.principal_override_reasons.find_all_by_autopromote(true).collect(&:reason)
       if auto_texts.present? and auto_texts.include? principal_response
         self.end_tier = student.district.tiers.last

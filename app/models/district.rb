@@ -245,7 +245,7 @@ private
       special_user_groups.destroy_all
       news.destroy_all
     else
-      errors.add_to_base("Have the district admin remove the schools first.")
+      errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
   end

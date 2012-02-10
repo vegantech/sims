@@ -20,6 +20,7 @@ class InterventionParticipant < ActiveRecord::Base
   delegate :email, :fullname, :to => '(user or return nil)'
   attr_writer :skip_email
 
+  before_create :set_skip_email
   after_create :send_new_participant_email
 
   validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
@@ -58,7 +59,7 @@ class InterventionParticipant < ActiveRecord::Base
 
   protected
 
-  def before_create
+  def set_skip_email
     if intervention.created_at == intervention.updated_at
       @skip_email = true if Time.now - intervention.created_at < 1.second
     end

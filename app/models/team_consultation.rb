@@ -22,7 +22,7 @@ class TeamConsultation < ActiveRecord::Base
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
-  after_validation_on_update :email_concern_recipient, :if=>'draft_changed?'
+  after_validation :email_concern_recipient, :if=>'draft_changed?', :on => :update
   after_destroy :email_concern_recipient_about_withdrawal
   scope :complete, where(:complete=>true)
   scope :pending, where(:complete=>false, :draft=>false)
@@ -50,7 +50,7 @@ class TeamConsultation < ActiveRecord::Base
 
   def recipients
     if school_team.present?
-    User.find_all_by_id(school_team.contact_ids) 
+    User.find_all_by_id(school_team.contact_ids)
     else
       []
     end

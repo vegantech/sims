@@ -26,9 +26,9 @@
           <%= @intervention_probe_assignment.frequency_summary %>
         <% else %>
           <%= ipa.select :frequency_multiplier, (1..20).to_a %>
-          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {}) %> 
+          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {}) %>
         <% end %>
-        (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
+        (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>)
       </div>
       <br class="brclear" />
 

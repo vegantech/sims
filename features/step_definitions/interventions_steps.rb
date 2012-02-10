@@ -29,15 +29,15 @@ end
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
 Given /^I should see onchange for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
   # field_labeled(observed_field).should match(/Ajax.Updater\('#{target_fields}'/)
-  field_labeled(observed_field).node.to_s.should match(/onchange/)
-  field_labeled(observed_field).node.to_s.should match(/Ajax.Updater/)
-  field_labeled(observed_field).node.to_s.should match(/#{target_fields}/)
+  field_labeled(observed_field).native.to_s.should match(/onchange/)
+  field_labeled(observed_field).native.to_s.should match(/Ajax.Updater/)
+  field_labeled(observed_field).native.to_s.should match(/#{target_fields}/)
 end
 
 
 When /^I should see onchange for "([^\"]*)" that calls "([^\"]*)"$/ do |observed_field, target|
-  field_labeled(observed_field).node.to_s.should match(/onchange/)
-  field_labeled(observed_field).node.to_s.should match(/#{target}/)
+  field_labeled(observed_field).native.to_s.should match(/onchange/)
+  field_labeled(observed_field).native.to_s.should match(/#{target}/)
 end
 
 
@@ -48,7 +48,7 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
     if field == "Assign Progress Monitor"
       field_element = find_field(field).value
       pd = ProbeDefinition.find_by_id(field_element) || ProbeDefinition.find_by_title(field_element) || ProbeDefinition.new
-      page.driver.get "/interventions/ajax_probe_assignment/", {:intervention_id => @student.interventions.first.id.to_s, :id=>pd[:id]}, {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
+      page.visit "/interventions/ajax_probe_assignment/?intervention_id=#{@student.interventions.first.id.to_s}&id=#{pd[:id]}"
     else
       fail
     end
@@ -56,7 +56,7 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
     if field == "enter_view_score_link"
       i_id =  @student.interventions.first.id.to_s
 
-     page.driver.get "/interventions/#{i_id}/probe_assignments", {:probe_definition_id => ProbeDefinition.first.id, :format => 'js'},  {:user_id => @user.id.to_s, :school_id => @school.id.to_s}
+     page.visit "/interventions/#{i_id}/probe_assignments?probe_definition_id=#{ ProbeDefinition.first.id}&format=js"
     else
       fail
     end

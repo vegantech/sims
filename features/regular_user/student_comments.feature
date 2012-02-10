@@ -38,7 +38,7 @@ Feature: Team Notes
   When I am at the student profile page
   Then I should not see "Delete"
   When I try to delete the comment anyway
-  Then it should not work
+  Then I should see "Show/Hide Team Notes (1)"
 
   Scenario: Deleting my comment
   Given there is a comment by me

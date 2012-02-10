@@ -55,6 +55,7 @@ class Intervention < ActiveRecord::Base
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
 
+  after_initialize :set_defaults_from_definition
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
@@ -282,7 +283,7 @@ class Intervention < ActiveRecord::Base
   def validate_intervention_probe_assignment
     return true unless defined? @ipa
     return true if @ipa.valid?
-    errors.add_to_base("Progress Monitor Assignment is invalid")
+    errors.add(:base,"Progress Monitor Assignment is invalid")
     false
   end
 
@@ -300,7 +301,7 @@ class Intervention < ActiveRecord::Base
    end
   end
 
-  def after_initialize
+  def set_defaults_from_definition
     return unless new_record?
     self.start_date ||= Date.today
 

@@ -27,17 +27,16 @@ end
 
 When /^I follow Delete(?: within "([^"]*)")?$/ do |selector|
   with_scope(selector) do
-    b=locate(:xpath, "//a[contains(.,'Delete')]")
+    b=find(:xpath, "//a[contains(.,'Delete')]")
     page.driver.delete  b[:href].to_s
   end
-  step 'I follow "redirected"' if page.has_content? 'redirected'
+  visit current_path.split("student_comments").first
+  #  step 'I follow "redirected"' if page.has_content? 'redirected'
 end
-
-
 
 When /^I try to delete the comment anyway$/ do
   page.driver.delete  student_student_comment_url(cucumber_student,@student_comment)
-  step 'I follow "redirected"'
+  step 'I follow "redirected"' if page.has_content? 'redirected'
 end
 
 Given /^there is a comment by me$/ do
@@ -58,4 +57,3 @@ When /^I fill in the note and save$/ do
   fill_in "Note", :with => "This is my team note"
   click_button "Save"
 end
-

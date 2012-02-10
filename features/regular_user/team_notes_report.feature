@@ -5,16 +5,16 @@ Feature: Team Notes
 
 	Background:
 		Given clear login dropdowns
-  
+
   Scenario: Show Team Notes
     Given common data
-		And team note "First Team Note" on "01/09/08"
-		And team note "Second Team Note" on "01/10/08"
-		And team note "Third Team Note" on "01/11/08"
-		And team note "Fourth Team Note" on "01/12/08"
-    And other district team note "Fifth Team Note" on "01/11/08"
-    And other school team note "Sixth Team Note" on "01/11/08"
-    And unauthorized student team note "Seventh Team Note" on "01/11/08"
+		And team note "First Team Note" on "01/09/2008"
+		And team note "Second Team Note" on "01/10/2008"
+		And team note "Third Team Note" on "01/11/2008"
+		And team note "Fourth Team Note" on "01/12/2008"
+    And other district team note "Fifth Team Note" on "01/11/2008"
+    And other school team note "Sixth Team Note" on "01/11/2008"
+    And unauthorized student team note "Seventh Team Note" on "01/11/2008"
     And I start at the school selection page
     And I select "Default School" from "school_id"
     And I press "Choose School"

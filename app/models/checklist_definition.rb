@@ -28,6 +28,7 @@ class ChecklistDefinition < ActiveRecord::Base
 
   before_validation :clear_document
   validates_presence_of :directions, :text
+  before_save :mark_other_checklist_definitions_inactive, :if => :active
   acts_as_reportable if defined? Ruport
 
   def save_all!
@@ -45,7 +46,6 @@ class ChecklistDefinition < ActiveRecord::Base
     find_by_active(true)
   end
 
-  
   def answer_definitions2
     @answer_definitions||=AnswerDefinition.find(:all,
     :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
@@ -77,7 +77,7 @@ class ChecklistDefinition < ActiveRecord::Base
 
   protected
 
-  def before_save
+  def mark_other_checklist_definitions_inactive
     if active?
       id_cond="id != #{id}" unless new_record?
       district.checklist_definitions.update_all('active=false', id_cond)

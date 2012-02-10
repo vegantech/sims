@@ -1,6 +1,6 @@
 <h1>Student Listing</h1>
 
-<% form_tag district_students_path, :method=>:get do %>
+<%= form_tag district_students_path, :method=>:get do %>
   <%=label_tag :last_name, "Last Name, Any part"%>
   <%=text_field_tag :last_name, params[:last_name] %>
   <%=submit_tag "Search by Last Name", :name=>nil %>

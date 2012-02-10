@@ -30,7 +30,7 @@ end
 
 When /^I view the checklist$/ do
   with_scope(".profile_page #checklists") do
-    click "view"
+    click_link "view"
   end
 end
 
@@ -41,7 +41,7 @@ end
 
 When /^I edit the checklist$/ do
   with_scope(".profile_page #checklists") do
-    click "edit"
+    click_link "edit"
   end
   #change a scale, leave one alone, pick a new one, edit a comment, clear out a comment, add a new comment
   click_button "Submit"

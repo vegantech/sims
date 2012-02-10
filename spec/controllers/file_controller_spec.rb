@@ -7,7 +7,7 @@ describe FileController do
 
   describe "GET 'download'" do
     it "should call sendfile with filename" do
-      controller.should_receive(:send_file).with(File.join(RAILS_ROOT,"file","shawn"), :x_sendfile=>true)
+      controller.should_receive(:send_file).with(Rails.root.join("file","shawn").to_s, :x_sendfile=>true)
       get 'download', :filename=>'shawn'
       response.should be_success
     end

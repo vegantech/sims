@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-#require RAILS_ROOT+'/app/controllers/application'
 describe ApplicationController do
   def flash
     @flash ||= {}

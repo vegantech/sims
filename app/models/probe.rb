@@ -27,6 +27,8 @@ class Probe < ActiveRecord::Base
   scope :for_graph,desc.limit(0)
   scope :for_table, desc
 
+  before_save :set_administered_at
+
   attr_accessor :assessment_type
 
   define_statistic :entered_scores , :count => :all,:joins =>{:intervention_probe_assignment=>{:intervention=>:student}}
@@ -78,7 +80,7 @@ def calculate_score(params)
 
 
   protected
-  def before_save
+  def set_administered_at
     self.administered_at = Time.now  if self.administered_at.blank?
   end
 
@@ -95,7 +97,7 @@ def calculate_score(params)
       end
 
     end
-        
+
   end
 end
 
