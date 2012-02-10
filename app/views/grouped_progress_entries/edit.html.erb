@@ -18,7 +18,7 @@ Intervention-<%=@grouped_progress_entry %>
 <%="Benchmarks:" if  @probe_definition.probe_definition_benchmarks.any? %> <br />
 <%= @probe_definition.probe_definition_benchmarks.join('<br />') %>
 
-<% form_for(@grouped_progress_entry) do |f| %>
+<%= form_for(@grouped_progress_entry) do |f| %>
   <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}, :onchange => 'grouped_change_date();'  %>
 
 

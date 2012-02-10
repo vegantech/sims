@@ -2,7 +2,7 @@
 <%= render :partial=>"intervention_builder/objectives/summary" %>
 <%= error_messages_for :intervention_cluster %>
 
-<% form_for(@intervention_cluster, :url => intervention_builder_categories_path) do |f| %>
+<%= form_for(@intervention_cluster, :url => intervention_builder_categories_path) do |f| %>
 <%= render :partial => f,:locals=>{:submit_name=>"Create"} %>
 <% end %>
 

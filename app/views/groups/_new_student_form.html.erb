@@ -2,7 +2,7 @@
 <%if  @students.blank? %>
   There are no more enrolled students to assign to this group.
 <% else %>
-  <% remote_form_for(@student, :url=>add_student_group_path(@group)) do |f| %>
+  <%= remote_form_for(@student, :url=>add_student_group_path(@group)) do |f| %>
     <%=  f.error_messages %>
     <%= f.collection_select(:id,@students, :id,:to_s) %>
     <p>

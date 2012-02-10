@@ -1,7 +1,7 @@
 <% readonly = true
 @intervention = detail %>
 <div class="new_form">
-  <% form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
+  <%= form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
     <div class="form_row">
       <div class="fake_label">Objective</div><%=@intervention.objective_definition %>
     </div>

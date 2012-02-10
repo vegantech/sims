@@ -2,7 +2,7 @@
   function select_others(obj) {
   // go through everything with same id and make checked = boxname.checked
      val=obj.value
-     chk=obj.checked        
+     chk=obj.checked
      selected_boxes = document.monitor_form.elements["probes[]"];
      for (x = 0; x < selected_boxes.length; x++){
        if (selected_boxes[x].value==val) {
@@ -10,12 +10,11 @@
        }
      }
 </script>
-                                  
 
 title: <%=@intervention_definition.title%> <br />
 If you want to remove a recommended monitor, be sure to uncheck it everywhere it appears on screen.
 
-<% form_tag({}, {:name=>"monitor_form"}) do %>
+<%= form_tag({}, {:name=>"monitor_form"}) do %>
   <div class="standardForm">
    <% @probe_definitions_in_groups.each do |k,g| %>
     <%= content_tag :h2, k.to_s.titleize %>
@@ -35,7 +34,6 @@ If you want to remove a recommended monitor, be sure to uncheck it everywhere it
 
     <% end %>
   <% end %>
-   
 <%= submit_tag%>
 <%end%>
 </div>

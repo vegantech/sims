@@ -1,7 +1,6 @@
 <h1>Editing Team Note</h1>
 
-<% form_for([@student,@student_comment], :html=>{:multipart => true}) do |f| %>
+<%= form_for([@student,@student_comment], :html=>{:multipart => true}) do |f| %>
  <%= render :partial=>f %>
 <% end %>
-  
   <%= link_to 'Back', @student %>

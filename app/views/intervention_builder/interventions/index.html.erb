@@ -1,7 +1,7 @@
 <h1>Listing Interventions</h1>
 <%= render :partial=>"intervention_builder/categories/summary" %>
 
-<% form_tag("",:method => "get") do %>
+<%= form_tag("",:method => "get") do %>
   <%= check_box_tag :system,1, (!params[:commit] || params[:system])%>
   <%= label_tag 'system', 'System'%>
   <%= check_box_tag :custom,1, (!params[:commit] || params[:custom])%>
@@ -15,7 +15,7 @@
   <%= submit_tag 'Filter'%>
 <% end %>
 
-<% form_tag(:controller => 'intervention_builder/interventions' ,:action => 'disable', :goal_id => @goal_definition,
+<%= form_tag(:controller => 'intervention_builder/interventions' ,:action => 'disable', :goal_id => @goal_definition,
             :objective_id=>@objective_definition, :category_id => @intervention_cluster, :method => 'put') do %>
   <table class="intervention_builder">
     <thead>

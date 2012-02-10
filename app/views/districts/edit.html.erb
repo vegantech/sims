@@ -1,7 +1,7 @@
 <h1>Editing district</h1>
 
 <div class = "new_form">
-  <% form_for(@district, :html=> {:multipart => true}) do |f| %>
+  <%= form_for(@district, :html=> {:multipart => true}) do |f| %>
     <fieldset>
       <%= render :partial => f %>
 

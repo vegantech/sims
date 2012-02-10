@@ -1,12 +1,10 @@
-<% form_remote_for(:principal_override,:url=>@principal_override, :html => { :method => :put, :id => dom_id(@principal_override,"edit") }) do |f| %>
+<%= form_remote_for(:principal_override,:url=>@principal_override, :html => { :method => :put, :id => dom_id(@principal_override,"edit") }) do |f| %>
   <%= f.error_messages %>
-  
     <%= f.label :start_tier, "Current Tier:" %>
     <%= @principal_override.start_tier.title %>
     <%= f.hidden_field :action %>
   </p>
   <p>
-    
     <%= f.label :principal_response, "Reason for <b>#{@principal_override.action.capitalize}ing</b> this  Request" %> <br />
     <% if @principal_override.action == "accept" && current_district.principal_override_reasons.present? %>
       <% current_district.principal_override_reasons.each do |por| %>
