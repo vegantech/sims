@@ -56,6 +56,7 @@ group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
+  gem 'sneaky-save'
 end
 
 group :cucumber do

@@ -6,14 +6,16 @@ describe Notifications do
 #  include ActionMailer::Quoting
 
   before do
+    #TODO REDO THE TESTS
+
         # You don't need these lines while you are using create_ instead of deliver_
     #     #ActionMailer::Base.delivery_method = :test
     #         #ActionMailer::Base.perform_deliveries = true
     #             #ActionMailer::Base.deliveries = []
     #
-      @expected = TMail::Mail.new
-      @expected.set_content_type 'text', 'plain', { 'charset' => CHARSET }
-      @expected.mime_version = '1.0'
+#      @expected = TMail::Mail.new
+#      @expected.set_content_type 'text', 'plain', { 'charset' => CHARSET }
+#      @expected.mime_version = '1.0'
     end
 
   it 'test_principal_override_request' do
@@ -75,7 +77,7 @@ describe Notifications do
 
   describe 'setup_ending_intervention_reninder' do
     it 'should deliver emails in interventions_ending_this week'  do
-      m=mock_intervention(:participants_with_author => [mock_object(:user=>mu=mock_user)],:student => mock_student(:belongs_to_user? => true))
+      m=mock_intervention(:participants_with_author => [mock(:user=>mu=mock_user)],:student => mock_student(:belongs_to_user? => true))
       Notifications.should_receive(:interventions_ending_this_week).and_return([m])
       Notifications.should_receive(:deliver_intervention_ending_reminder).with(mu,[m]).and_return(false)
       Notifications.setup_ending_reminders
@@ -106,9 +108,9 @@ describe Notifications do
 
   def create_without_callbacks(o, opts={:tier=>@tier})
    obj=o.new(opts)
-   obj.send(:create_without_callbacks)
-   obj 
-  end   
+   obj.sneaky_save
+   obj
+  end
 
 
 end

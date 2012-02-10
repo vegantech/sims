@@ -40,7 +40,7 @@ FactoryGirl.define do
   end
 
   factory :group do |g|
-    g.title {next :abbrev}
+    g.title
     g.association :school
     g.district_group_id ''
   end

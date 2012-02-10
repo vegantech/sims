@@ -251,6 +251,8 @@ GEM
       multi_json (~> 1.0.4)
       rubyzip
     sexp_processor (3.0.10)
+    sneaky-save (0.0.2)
+      activerecord (>= 2.3.2)
     syntax (1.0.0)
     system_timer (1.2.4)
     term-ansicolor (1.0.7)
@@ -307,6 +309,7 @@ DEPENDENCIES
   rpm_contrib
   rspec-rails (~> 2.6)
   ruport (= 1.6.1)
+  sneaky-save
   spawn!
   system_timer
   thin
