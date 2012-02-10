@@ -135,6 +135,8 @@ Rails.application.routes.draw do |map|
     end
   end
 
+
+  map.resources :railmail_index, :only => %w( index), :member => {:raw => :get, :part => :get}, :collection => {:resend => :post, :read => :post}, :controller => "railmail"
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

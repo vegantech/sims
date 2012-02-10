@@ -39,8 +39,8 @@
         <%= render "layouts/administration"%>
         <p><%= render "layouts/flag_legend"%></p>
 
-        <p><%= render_cell(:principal_overrides, :user_requests, :user=>@user)%></p>
-        <p><%= render_cell(:principal_overrides, :principal_responses,:user=>@user)%></p>
+        <p><%= render_cell(:principal_overrides, :user_requests, :user=>current_user)%></p>
+        <p><%= render_cell(:principal_overrides, :principal_responses,:user=>current_user)%></p>
         <%= render :partial => 'main/news' %>
       </div>
       <div id="main">

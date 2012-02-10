@@ -3,7 +3,6 @@ class PrincipalOverridesCell < Cell::Base
   def user_requests opts
     user=opts[:user]# || User.find_by_id(session[:user_id])
     @requests=user.principal_override_requests.count if user
-    nil
     render
   end
   def principal_responses opts
@@ -14,7 +13,6 @@ class PrincipalOverridesCell < Cell::Base
     overrides=user.grouped_principal_overrides if @show
     @new_requests=overrides[:pending_requests].size
     @responses=overrides[:principal_responses].size
-    nil
     render
   end
 

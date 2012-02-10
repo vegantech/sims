@@ -8,7 +8,6 @@ Feature: Principal Override Accept and Reject
     And I am the principal
     And there is a principal override request
     And I start at the the search page
-    And show me the page
     And I follow "1 Pending Request"
 
   Scenario: Reject without reason

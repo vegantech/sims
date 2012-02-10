@@ -56,7 +56,7 @@ module Sims
     config.middleware.use 'SessionCheck'
     config.middleware.use 'ChartProxy'
 
-    config.action_mailer.delivery_method = :railmail
+#    config.action_mailer.delivery_method = :railmail
     config.time_zone = 'Central Time (US & Canada)'
     config.cache_store = :mem_cache_store
     config.paths.app.manifests 'app/manifests', :eager_load => false

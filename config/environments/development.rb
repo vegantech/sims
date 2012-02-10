@@ -24,3 +24,5 @@ Sims::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 end
 
+require 'mail'
+Mail.register_observer(Railmail::Observer)

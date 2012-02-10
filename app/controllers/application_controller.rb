@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
 
+  def to_s
+    super
+    #this allows for exceptions to be handled properly in airbrake. it isn't consixdered an action_method
+  end
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
 
