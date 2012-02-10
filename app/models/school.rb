@@ -28,11 +28,12 @@ class School < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
+  attr_protected :district_id
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 
-  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id', 
+  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.district_id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
@@ -91,7 +92,7 @@ class School < ActiveRecord::Base
   end
 
   def quicklist
-    InterventionDefinition.find(:all,:joins=>:quicklist_items, 
+    InterventionDefinition.find(:all,:joins=>:quicklist_items,
     :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
   end
 

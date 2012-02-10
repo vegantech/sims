@@ -34,7 +34,7 @@ class ElementDefinition < ActiveRecord::Base
   validates_presence_of :question_definition_id,  :kind
   validates_presence_of :text, :unless =>:applicable_kind?
   validates_uniqueness_of :kind, :scope => [:question_definition_id], :if => :applicable_kind_uniqueness?
-  validates_inclusion_of :kind, :in=>KINDS_OF_ELEMENTS.keys.collect(&:to_s)
+  validates_inclusion_of :kind, :in => KINDS_OF_ELEMENTS.keys.collect(&:to_s), :message => "must have a one of the following kinds: #{KINDS_OF_ELEMENTS.keys.to_sentence}"
 
   after_create :move_to_top, :if => :applicable_kind?
 
@@ -59,12 +59,6 @@ class ElementDefinition < ActiveRecord::Base
 
 
   protected
-  def validate
-    unless errors.on :kind or ElementDefinition.kinds_of_elements.keys.include?(kind.to_sym)
-      errors.add(:kind, "must have a one of the following kinds: #{ElementDefinition.kinds_of_elements.keys.to_sentence}")
-    end
-  end
-
   def applicable_kind_uniqueness?
     applicable_kind? && (!question_definition || !question_definition.new_record?)
   end

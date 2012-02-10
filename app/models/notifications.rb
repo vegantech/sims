@@ -11,9 +11,9 @@ class Notifications < MailerWithSubdomains
     subject    '[SIMS] Email Registration'
     recipients user.email
     sent_on    Time.now
-    
+
     body       :user=>user
- 
+
   end
 
 
@@ -22,7 +22,7 @@ class Notifications < MailerWithSubdomains
     recipients override.student.principals.collect(&:email).join(',')
     sent_on    Time.now
     @district = override.student.district
-    
+
     body       :override=>override
   end
 
@@ -31,7 +31,7 @@ class Notifications < MailerWithSubdomains
     recipients override.teacher.email
     sent_on    Time.now
     @district = override.student.district
-    
+
     body       :override => override
   end
 
@@ -46,7 +46,7 @@ class Notifications < MailerWithSubdomains
     sent_on    Time.now
     cc         watcher
     @district = interventions.first.try(:student).try(:district)
-    
+
     body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
   end
 
@@ -55,7 +55,7 @@ class Notifications < MailerWithSubdomains
     recipients user.email
     sent_on    sent_at
     @district = user.district
-   
+
     body       :greeting => 'Hi,', :user => user, :interventions => interventions
   end
 
@@ -63,7 +63,7 @@ class Notifications < MailerWithSubdomains
     subject    'Notifications#intervention_reminder'
     recipients ''
     sent_on    sent_at
-    
+
     body       :greeting => 'Hi,'
   end
 
@@ -88,21 +88,21 @@ class Notifications < MailerWithSubdomains
     @body['user_name']= user_name
     @recipients = user_email
     @district = student.district
-    
+
   end
 
   def district_upload_results msg, admin_email
     @subject = 'SIMS Upload Results'
     @recipients = admin_email
     @body['msg'] = msg
-    
-    
+
+
   end
 
   def self.setup_ending_reminders(district = nil)
     errors = []
     users_with_interventions = Hash.new([])
-    interventions_ending_this_week.each do |intervention| 
+    interventions_ending_this_week.each do |intervention|
       if district.blank? || intervention.participants_with_author.collect(&:user).compact.collect(&:district_id).include?(district.id)
         intervention.participants_with_author.each{|p| users_with_interventions[p.user] |= [intervention] if p.user && intervention.student.belongs_to_user?(p.user)}
       end

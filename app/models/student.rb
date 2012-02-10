@@ -50,6 +50,7 @@ class Student < ActiveRecord::Base
   has_many :ext_test_scores, :order => "date", :dependent => :delete_all
   has_one :ext_summary, :dependent => :delete
   has_and_belongs_to_many :personal_groups
+  attr_protected :district_id
 
 
 

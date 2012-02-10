@@ -130,7 +130,7 @@ FactoryGirl.define do
   end
 
   factory :probe_definition do |f|
-    f.title {"#{next(:abbrev)} Title"}
+    f.title
     f.description 'Probe Description'
   end
 

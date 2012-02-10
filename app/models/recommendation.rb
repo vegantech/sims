@@ -28,6 +28,7 @@ class Recommendation < ActiveRecord::Base
   belongs_to :tier
   belongs_to :district
   has_many :recommendation_answers, :dependent => :destroy
+  attr_protected :district_id
 
 
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}

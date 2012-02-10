@@ -18,7 +18,7 @@
 #
 
 class ChecklistDefinition < ActiveRecord::Base
-  belongs_to :district, :touch => true
+  belongs_to :district, :touch => true, :inverse_of => :checklist_definitions
   belongs_to :recommendation_definition
   has_many :question_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :element_definitions, :through =>:question_definitions
@@ -30,6 +30,7 @@ class ChecklistDefinition < ActiveRecord::Base
   validates_presence_of :directions, :text
   before_save :mark_other_checklist_definitions_inactive, :if => :active
   acts_as_reportable if defined? Ruport
+  attr_protected :district_id
 
   def save_all!
     save! and
@@ -80,7 +81,7 @@ class ChecklistDefinition < ActiveRecord::Base
   def mark_other_checklist_definitions_inactive
     if active?
       id_cond="id != #{id}" unless new_record?
-      district.checklist_definitions.update_all('active=false', id_cond)
+      ChecklistDefinition.update_all('active=false', [id_cond, "district_id = #{district_id}"].compact.join(" and "))
     end
   end
 

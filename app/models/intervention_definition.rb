@@ -37,7 +37,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :recommended_monitors, :order => :position, :dependent => :delete_all
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
-  has_many :interventions 
+  has_many :interventions
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
   validates_numericality_of :frequency_multiplier, :time_length_num
@@ -138,7 +138,7 @@ class InterventionDefinition < ActiveRecord::Base
     end
 
   end
-  
+
   def set_values_from_intervention(int)
     #Used only for custom interventions
     if new_record?
@@ -152,5 +152,5 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-  
+
 end

@@ -136,7 +136,7 @@ class Intervention < ActiveRecord::Base
     intervention_probe_assignments.update_all(:enabled => false) #disable all others
     params.stringify_keys! unless params.blank? #fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
-  
+
     if params['probe_definition_id'] == 'custom'
       params['probe_definition_id'] = nil
     end

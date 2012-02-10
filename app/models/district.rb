@@ -26,7 +26,7 @@ class District < ActiveRecord::Base
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
-  has_many :checklist_definitions
+  has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
