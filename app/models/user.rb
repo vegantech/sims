@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   ).where("interventions.id is not null or student_comments.id is not null or
                   team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
-  accepts_nested_attributes_for :staff_assignments, :allow_destroy => true
+  accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
 
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -503,5 +503,11 @@ protected
     validate_uniqueness_of_in_memory(
       user_school_assignments, [:school_id, :admin], 'Duplicate User.')
   end
+
+  def duplicate_staff_assignment?(attributes)
+     staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
+  end
+
+
 
 end

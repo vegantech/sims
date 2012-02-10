@@ -53,7 +53,7 @@ describe Checklist do
           @s.should_receive(:checklist_definition).and_return(@cd)
           @s.should_receive(:max_tier).and_return(@tier)
           @s.should_receive(:district_id).and_return(15)
-          Student.should_receive(:find).with(@s.id, {:conditions => nil, :readonly => nil, :select => nil, :include => nil}).and_return(@s)
+          Student.should_receive(:find).with(@s.id,:conditions => nil).and_return(@s)
         end
 
         describe 'and the student checklist we are copying still exists' do
@@ -179,17 +179,17 @@ describe Checklist do
     @checklist=Checklist.new_from_student_and_teacher(@student,@teacher,true,true)
     assert !@checklist.answers.blank?
     assert !@checklist.show_score?
-    
-    
-    #should test this with existing checklists  
+
+
+    #should test this with existing checklists
     #1. most recent one is scorable  (has score and answers)
     #2. most recent one passed (no score, should import answers)
     #3. most one is not scorable (no score should import answers)
-    
+
     end
-    
+
     def new_from_student_and_teacher_permutation(&block)
-    
+
     [true,false].each do |import_previous_answers|
       [true,false].each do |score|
         message="score #{score} import_previous #{import_previous_answers}"
@@ -201,41 +201,41 @@ describe Checklist do
         assert !checklist.promoted ,message
         yield checklist,score,import_previous_answers if block
       end
-      
+
     end
-       
+
     #creating passing checklist (with recommendation and test more)
   end
-  
+
   it 'test_new_from_params_and_teacher' do
     pending
     @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>'sa')
     @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>'comment')
     @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
     Answer.delete_all
- 
- 
+
+
     params={:student_id=>@student.id, :element_definition=>{@saElement.id=>{:element_definition_id=>@saElement.id,:id=>2,:text=>"Short Answer content"},
     @commentElement.id=>{:id=>3,:text=>"Comment content",:element_definition_id=>@commentElement.id,},
     @scaleElement.id=>{:id=>4,:element_definition_id=>@scaleElement.id,}
-    } 
     }
-    
-    
+    }
+
+
     #@chk=Checklist.new_from_params_and_teacher(params,@teacher)
    # assert_equal 3,@chk.answers.count
-    
+
    # @chk.save!
    # assert_equal 3,Answer.count
-    
+
   end
-  
+
   it 'test_previous_answer_for_no_checklists' do
     Checklist.destroy_all
     Answer.destroy_all
-    assert_nil @student.checklists.build.previous_answer_for(@element_definition), "No checklists"
+    assert_nil Factory(:student).checklists.build.previous_answer_for(@element_definition), "No checklists"
   end
-  
+
   def test_previous_answer_for_empty_existing_checklist
     Checklist.destroy_all
     @student.checklists.create
@@ -257,7 +257,7 @@ describe Checklist do
     @answer.answer_definition=@element_definition.answer_definitions.first
     @answer.save
     assert_not_nil @answer.created_at
-    
+
     assert_equal @answer, @student.checklists.build.previous_answer_for(@element_definition), "previous checklist, element has answer"
     assert_nil @student.checklists.build.previous_answer_for(@element_definition_two), "previous checklist, element has no answer"
     @checklist2=@student.checklists.create(def_opts)
@@ -271,7 +271,7 @@ describe Checklist do
     assert Answer.find_all_by_element_definition(@element_definition).include?(@answer)
     assert_equal @answer2, @student.checklists.build.previous_answer_for(@element_definition), "Existing checklist (2) element has answer"
   end
-  
+
   it 'test_valid?' do
     pending
     @checklist.user_id=2
@@ -321,7 +321,7 @@ describe Checklist do
     assert_equal Checklist::STATUS[:cannot_refer], @checklist.status
     assert !@checklist.deletable
     assert !@checklist.needs_recommendation
-   
+
     @checklist.promoted=true
     assert_equal Checklist::STATUS[:can_refer], @checklist.status
     assert !@checklist.deletable
@@ -371,7 +371,7 @@ describe Checklist do
     it 'should return nil when there are no checklists' do
       Checklist.max_tier.should be_nil
     end
-    
+
     it 'should return the tier of the highest promoted checklist' do
       pending
     end

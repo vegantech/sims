@@ -259,6 +259,7 @@ describe User do
 
   describe 'grouped_principal_overrides' do
     it 'should group requests, responses and pending' do
+      @user = Factory(:user)
       @user.grouped_principal_overrides.should == {:user_requests => []}
       req='New Override Request'
       @user.stub!(:principal_override_requests=> [req])
