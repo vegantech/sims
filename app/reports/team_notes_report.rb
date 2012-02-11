@@ -2,7 +2,7 @@ class TeamNotesReport < DefaultReport
   stage :header, :body
   required_option :user, :school, :start_date, :end_date
   load_html_csv_text
-  
+
   def setup
     self.data = TeamNotes.new(options)
   end
@@ -24,7 +24,7 @@ class TeamNotesReport < DefaultReport
   # # I was considering going this route if I had to support links in HTML only...
   # class HTML < Ruport::Formatter::HTML
   #   renders :html, :for => TeamNotesReport
-  # 
+  #
   #   output << render_grouping(data.to_grouping, options.to_hash.merge(:formatter => html_writer))
   # end
 end

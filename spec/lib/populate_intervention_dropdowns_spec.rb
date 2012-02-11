@@ -47,14 +47,14 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'build_from_session_and_params' do
     it 'should build intervention from session and params' do
-      intervention=mock_object(:intervention_probe_assignment => true)
+      intervention=mock(:intervention_probe_assignment => true)
       mock_intervention.should_receive(:build_and_initialize).with(values_from_session.merge(:test => true)).and_return(intervention)
       build_from_session_and_params.should == intervention
     end
   end
 
 
-  describe 'populate_goals' do 
+  describe 'populate_goals' do
     it 'should populate @goal_definitions' do
       self.should_receive(:find_goal_definition).twice
       populate_goals
@@ -76,7 +76,7 @@ describe "Populate Intervention Dropdowns Module" do
       populate_objectives
     end
   end
- 
+
   describe 'populate_categories' do
     it 'should populate @intervention_clusters' do
       self.should_receive(:find_intervention_cluster).twice
@@ -88,7 +88,7 @@ describe "Populate Intervention Dropdowns Module" do
       populate_categories
     end
   end
- 
+
   describe 'populate_definitions' do
     it 'should populate @intervention_definitions if not custom' do
       self.should_receive(:find_intervention_definition)

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
 
-  shared_examples_for "role importer"  do
+  shared_context "role importer"  do
     it_should_behave_like "csv importer"
     before(:all) do
       District.delete_all

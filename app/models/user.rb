@@ -482,7 +482,7 @@ protected
   def district_special_groups
 
     if @all_students_in_district == "1"
-      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT)
+      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).update_attribute(:district_id, self.district_id)
     elsif @all_students_in_district == "0" or new_record?
       special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
     end

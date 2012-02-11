@@ -20,5 +20,4 @@ class FlagDescription < ActiveRecord::Base
   belongs_to :district, :touch => true
   validates_presence_of :district_id
   attr_protected :district_id
-
 end

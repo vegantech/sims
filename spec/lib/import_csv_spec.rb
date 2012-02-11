@@ -101,15 +101,15 @@ describe ImportCSV do
   describe "csv_importer" do
     it "should call the csv importer when the filename does not contain _appends"  do
       i = ImportCSV.new("users.csv", d=District.new)
-      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "users.csv"
     end
 
     it "should call the csv importer when the filename does contain _appends" do
       i = ImportCSV.new("ext_test_scores_appends.csv", d=District.new)
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "ext_test_scores_appends.csv"
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "ext_test_scores_append.csv"
 
     end

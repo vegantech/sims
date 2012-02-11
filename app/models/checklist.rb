@@ -106,7 +106,7 @@ class Checklist < ActiveRecord::Base
     c = checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id, :order => "created_at DESC")
 
     if c
-      c.answers.each {|e| checklist.answers.build e.attributes}
+      c.answers.each {|e| checklist.answers.build e.attributes.except("checklist_id")}
       c.score_checklist if c.show_score?(false)
       checklist.score_results = c.score_results
     end

@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe HtmlCsvText do
-  before :all do
-    now = "3:33 06/04/09".to_time
-    Time.stub!(:now).and_return(now)
+  before  do
+    now = "3:33 06/04/2009".to_time
+    Time.stub!(:now => now)
   end
   describe 'HTML' do
     describe 'buid_header' do
       it 'should show the current time' do
-        HtmlCsvText::HTML.new.build_header.should == "Report Generated at June 04, 2009 03:33" 
+        HtmlCsvText::HTML.new.build_header.should == "Report Generated at June 04, 2009 03:33"
       end
     end
 
@@ -29,7 +29,7 @@ describe HtmlCsvText do
     describe 'build_body' do
       it 'should show the table in csv' do
         e=HtmlCsvText::CSV.new
-        e.stub!(:data => mock_object(:to_table=>@mock_table=mock_object))
+        e.stub!(:data => mock(:to_table=>@mock_table=mock))
         @mock_table.should_receive(:to_csv).and_return('Table in CSV')
 
         e.build_body.should == 'Table in CSV'
@@ -43,7 +43,7 @@ describe HtmlCsvText do
   describe 'Text' do
     describe 'buid_header' do
       it 'should show the current time' do
-        HtmlCsvText::Text.new.build_header.should == "Report Generated at June 04, 2009 03:33\n\n" 
+        HtmlCsvText::Text.new.build_header.should == "Report Generated at June 04, 2009 03:33\n\n"
       end
     end
 

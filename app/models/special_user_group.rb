@@ -30,6 +30,7 @@ class SpecialUserGroup < ActiveRecord::Base
   validates_presence_of :school_id, :if => lambda {|s| s.district_id.blank?}
   validates_uniqueness_of :user_id, :scope=>[:grade,:district_id,:school_id,:grouptype] , :message => "-- Remove the user first."
   attr_protected :district_id
+  before_validation :assign_district_from_user
 
 
   scope :principal,where(:is_principal=>true)
@@ -70,6 +71,10 @@ class SpecialUserGroup < ActiveRecord::Base
       "special_user_groups.school_id, special_user_groups.user_id").where(:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil).to_sql
      query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
      SpecialUserGroup.connection.update query
+  end
+  private
+  def assign_district_from_user
+    self.district_id = user.district_id if district_id.blank? && user.present?
   end
 end
 

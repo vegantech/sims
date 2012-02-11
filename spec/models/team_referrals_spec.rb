@@ -13,7 +13,6 @@ describe TeamReferrals do
       @mail.subject.should ==  'Team Consultation Form Created'
       @mail.header["to"].to_s.should ==  user.email
       expected_body =  "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming team meeting.\r\n\r\n\r\n\r\n\r\nThis is an automated message sent by SIMS.  If you have questions about the content of this message, \r\n     please contact the participants directly.  Replies to this message are not regularly reviewed.\r\n"
-      puts expected_body
       @mail.body.raw_source.should == expected_body
 
     end

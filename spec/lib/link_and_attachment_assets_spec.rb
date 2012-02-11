@@ -21,7 +21,7 @@ describe LinkAndAttachmentAssets do
       t=set_date_back_2_days(u)
       u.existing_asset_attributes=({u.assets.first.id.to_s =>{:url => 'http://www.example.com', :name => 'Test Url'}})
       u.save
-      u.reload.updated_at.to_time.should be_close(t.to_time,1)
+      u.reload.updated_at.to_time.should be_within(1).of(t.to_time)
     end
 
     it 'should  change the timestamp when assets are changed' do

@@ -1,8 +1,8 @@
 class ChecklistBuilder::ChecklistsController < ApplicationController
   additional_read_actions :preview
   additional_write_actions :new_from_this
-  
-  
+
+
   def preview
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
     @checklist=@checklist_definition.checklists.build
@@ -78,7 +78,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 #        format.js
       else
         format.html { render :action => "edit" }
-#        format.js 
+#        format.js
       end
     end
   end
@@ -90,7 +90,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
     else
       flash[:notice]= "Checklist definition is in use, please disable it instead"
     end
-    
+
     @checklist_definitions = current_district.checklist_definitions
     respond_to do |format|
       format.html { redirect_to checklist_builder_checklists_url }
@@ -113,6 +113,6 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
       flash[:notice] = "Checklist Definition could not be copied"
     end
 
-    redirect_to checklist_builder_checklists_url 
+    redirect_to checklist_builder_checklists_url
   end
 end

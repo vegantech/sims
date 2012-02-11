@@ -13,7 +13,7 @@
 class DistrictLog < ActiveRecord::Base
   belongs_to :district
   belongs_to :user
-  attr_protected :district_id
+#  attr_protected :district_id
 
   scope :successful_login, where( ["body like ?","Successful login%"])
   scope :failed_login, where(["body like ?","Failed login%"])
