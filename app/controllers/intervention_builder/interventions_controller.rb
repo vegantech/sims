@@ -61,7 +61,8 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   # PUT /intervention_definitions/1
   def update
-    @intervention_definition.attributes=params[:intervention_definition]
+    params[:intervention_definition] ||= {}
+    @intervention_definition.attributes=params[:intervention_definition].reverse_merge(:sld_array => [])
     
     respond_to do |format|
       if @intervention_definition.save

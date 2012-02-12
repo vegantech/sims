@@ -4,7 +4,13 @@ class CreateTrainingDistrict
     generate_one
     2.upto(20){ |i| generate_one(i.to_s)}
     generate_named_districts
+    unless Rails.env.production?
+      InterventionDefinition.update_all("sld ='Mathematics problem solving', mins_per_week=30","title = 'Make the Verb Active '")
+      InterventionDefinition.find_all_by_title('Make the Verb Active ').each{|idd| idd.district.schools.first.quicklist_interventions << idd.intervention_cluster.intervention_definitions}
+    end
 
+    setup_sci_demo_content District.find_by_abbrev('training20')
+    setup_staff_assignment_demo_content District.find_by_abbrev('training20')
   end
 
   def self.generate_named_districts
@@ -605,5 +611,77 @@ class CreateTrainingDistrict
 
   end
 
+
+
+
+  def self.setup_sci_demo_content(district)   #cico
+    d=district
+    pd=d.probe_definitions.create!(:title => 'SCI', :description => 'Student Check-In', :cico => true, :minimum_score => 0, :maximum_score => 100)
+    ic= d.intervention_clusters.find_by_title('Behavior Management')
+    id=ic.intervention_definitions.build(:title => 'SCI', :description => 'Student Check-In', :tier => d.tiers[1], :frequency=>Frequency.first,:time_length =>TimeLength.first )
+    id.probe_definitions << pd
+    id.save!
+
+
+    d.schools.each do |sch|
+      cico_setting = sch.cico_settings.create!(:enabled => true, :probe_definition => pd)
+      cico_setting.cico_expectations.create!(:name => 'Respect')
+      cico_setting.cico_expectations.create!(:name => 'Attendance')
+      cico_setting.cico_expectations.create!(:name => 'Participation')
+      1.upto(5){|p| cico_setting.cico_periods.create!(:name => "Period #{p}")}
+    end
+
+    #setup interventions  with start dates in the past
+
+
+    user= d.users.find_by_username 'oneschool'
+    other_user = d.users.find_by_username 'alphaprin'
+    other_user_ids = other_user.id
+    school = d.schools.first
+    selected_students = school.students.sort_by{rand}[0..15]
+    selected_ids = selected_students.collect(&:id)[1..-1]
+    current_student = selected_students.first
+    values_from_session = {:school_id => school.id, :selected_ids => selected_ids, :user_id => user.id}
+
+=begin
+    {"commit"=>"Save", "action"=>"create", "authenticity_token"=>"Xno6TQCrmoHpkSNZ+lLRjUWKuTfjkqChgJ6YHlMPIxY=",
+      "intervention"=>{"end_date(3i)"=>"25", "start_date(1i)"=>"2011", "apply_to_all"=>"1", "start_date(2i)"=>"9", "auto_implementer"=>"1",
+        "intervention_probe_assignment"=>{"end_date(3i)"=>"25", "goal"=>"", "probe_definition_id"=>"98",
+          "frequency_multiplier"=>"2", "first_date(1i)"=>"2011", "first_date(2i)"=>"9", "frequency_id"=>"284292352",
+          "first_date(3i)"=>"25", "end_date(1i)"=>"2011", "end_date(2i)"=>"10"}, "start_date(3i)"=>"25",
+          "frequency_multiplier"=>"1", "participant_user_ids"=>["18"], "time_length_id"=>"785548667",
+          "frequency_id"=>"529071850", "intervention_definition_id"=>"184", "comment"=>{"comment"=>""},
+          "end_date(1i)"=>"2011", "time_length_number"=>"1", "end_date(2i)"=>"10"}, "controller"=>"interventions"}
+=end
+    start_date = Date.today - 2.weeks
+    end_date = Date.today + 2.weeks
+    params = {
+        :end_date => end_date, :start_date => start_date, :apply_to_all => "1", :auto_implementer => "1",
+        :frequency_multiplier => "1", :participant_user_ids => [other_user_ids], :time_length => id.time_length,
+        :frequency => id.frequency, :intervention_definition_id => id.id, :time_length_number => '1',
+        :intervention_probe_assignment => {
+          :end_date => end_date, :first_date => start_date, :probe_definition_id => pd.id, :frequency_multiplier => 2,
+          :frequency => id.frequency}
+    }
+
+
+    @intervention = current_student.interventions.build_and_initialize(params.merge(values_from_session))
+    @intervention.save
+    #assign content for previous week
+
+
+
+  end
+
+  def self.setup_staff_assignment_demo_content(district)
+    district.schools.each do |sch|
+      sch.user_school_assignments.each do |usa|
+        sch.staff_assignments.create(:user_id => usa.user_id)
+      end
+    end
+
+    district.schools.create!(:name => 'Beta Elementary')
+
+  end
 
 end

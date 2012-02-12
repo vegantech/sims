@@ -38,7 +38,7 @@ protected
 
   def populate_categories
     find_intervention_cluster
-    @intervention_clusters = @objective_definition.intervention_clusters if @objective_definition
+    @intervention_clusters = @objective_definition.intervention_clusters.include_sld_criteria_from_definitions if @objective_definition
     @intervention_clusters.reject!(&:disabled) if @intervention_clusters
     populate_definitions if @intervention_cluster
   end

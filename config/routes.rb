@@ -1,7 +1,11 @@
 Rails.application.routes.draw do |map|
+  map.resources :cico_settings, :has_many => :cico_school_days
   map.resources :personal_groups
 
 #TODO FIXME The path prefixes are missing, I might want to remove the deep nesting.
+
+
+  map.cico '/cico', :controller => 'cico'
 
   map.doc '/doc/', :controller => 'doc'
   map.resources :unattached_interventions, :member => {:update_end_date => :put }

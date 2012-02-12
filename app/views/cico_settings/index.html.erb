@@ -1,0 +1,5 @@
+<% @probe_definitions.each do |probe_definition| %>
+  <%=  link_to h(probe_definition.title), edit_cico_setting_path(probe_definition.id) %> 
+  <%= current_school.cico_enabled?(probe_definition) %>
+  <br />
+<% end %> 

@@ -65,7 +65,7 @@ class Intervention < ActiveRecord::Base
   attr_reader :autoassign_message
 
 
-  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
+  delegate :sld?,:title, :tier, :description,:description_with_sld, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
   scope :desc, order("created_at desc")
@@ -165,6 +165,10 @@ class Intervention < ActiveRecord::Base
     intervention_probe_assignments.active.collect(&:title).join(";")
   end
 
+  def bolded_report_summary
+    "#{intervention_definition.bolded_title}  #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
+  end
+
   def report_summary
     "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active?}"
   end
@@ -175,6 +179,7 @@ class Intervention < ActiveRecord::Base
       self.frequency_multiplier ||= intervention_definition.frequency_multiplier
       self.time_length ||= intervention_definition.time_length
       self.time_length_number ||= intervention_definition.time_length_num
+      self.mins_per_week = intervention_definition.mins_per_week if self.mins_per_week.zero?
     end
   end
 
@@ -210,6 +215,11 @@ class Intervention < ActiveRecord::Base
     find(:all).select(&:orphaned?)
 
   end
+
+  def verify_fidelity?
+    !sld? || (mins_per_week >= 0.8 * intervention_definition.mins_per_week)
+  end
+
   protected
 
   def create_other_students

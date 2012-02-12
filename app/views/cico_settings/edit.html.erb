@@ -1,0 +1,45 @@
+<h1>Settings for CICO for <%=@cico_setting.probe_definition.title %> at <%=current_school %> </h1>
+
+<% form_for(setup_cico_setting(@cico_setting)) do |f| %>
+  <%= f.error_messages %>
+
+    <%= f.hidden_field :probe_definition_id %>
+  <p>
+    <%= f.label :enabled %><br />
+    <%= f.check_box :enabled %>
+  </p>
+  <p>
+    <%= f.label :default_participant %><br />
+    <%#= f.text_field :default_participant %>
+  </p>
+  <p>
+    <%= f.label :points_per_expectation %><br />
+    <%= f.text_field :points_per_expectation %>
+  </p>
+  <p>
+    <%= f.label :default_goal %><br />
+    <%= f.text_field :default_goal %>
+  </p>
+  <p>
+    <%= f.label :days_to_collect %><br />
+    <%= f.text_field :days_to_collect %>
+    </p>
+
+    <h2>Expectations </h2>
+    
+    <div id="cico_expectations">
+      <%= render :partial => 'cico_expectation', :locals => {:f => f}, :collection => f.object.cico_expectations %>
+    </div>
+      <%= add_cico_expectation_link(f) %>
+
+    <h2>Periods</h2>
+    <div id = "cico_periods">
+      <%= render :partial => 'cico_period', :locals => {:f => f}, :collection => f.object.cico_periods %>
+    </div>
+      <%= add_cico_period_link(f) %>
+
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>

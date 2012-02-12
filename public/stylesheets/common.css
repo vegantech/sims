@@ -577,3 +577,17 @@ table.grouped_progress_entry thead {
   color:DodgerBlue;
 
 }
+
+.sld {
+  color:blue;
+}
+
+
+
+#student_interventions_table i b {
+  color: blue;
+}
+
+table.user_interventions_table i b {
+  color: blue;
+}

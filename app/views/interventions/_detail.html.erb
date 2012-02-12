@@ -13,12 +13,11 @@
     <br class="brclear" />
 
     <div class="form_row">
-      <div class="fake_label">Intervention</div><%=@intervention.title %> <br />
+      <div class="fake_label">Intervention</div><span <%=@intervention.sld? ? "class='sld'" : '' %>><%=@intervention.title %></span> <br />
       <br class="brclear" />
       <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
       <br class="brclear" />
-      <%= description(@intervention) %>
-
+      <%= description(@intervention,'Description', "description_with_sld") %>
     </div>
     <% unless @intervention.active? %>
       <div class ="form_row">

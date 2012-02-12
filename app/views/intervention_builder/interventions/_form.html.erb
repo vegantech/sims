@@ -27,13 +27,24 @@
 
   <p>
     <%= form.label :frequency_multipler, "Frequency" %>
-    <%=form.text_field :frequency_multiplier%> Time(s) 
-    <%=form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %>  
+    <%=form.text_field :frequency_multiplier%> Time(s)
+    <%=form.collection_select(:frequency_id,Frequency.all_cache,:id,:title) %>
   </p>
 
   <p>
+    <%= form.label :mins_per_week, "Weekly Minutes" %>
+    <%=form.text_field :mins_per_week %>
+    <%=help_popup("Recommended minutes per week.  This is required for SLD interventions and will
+                  be used when verifiying fidelity.  (SLD interventions with fewer than 80% of this will 
+                  not meet fidelity criteria.)") %>
+  </p>
+
+
+
+
+  <p>
     <%= form.label :notify_email %>
-    <%= form.text_field(:notify_email) %> 
+    <%= form.text_field(:notify_email) %>
     <%=help_popup('Whenever one of these interventions are started, the email will be cc\'d to the address(s) listed here, separate them with ,\'s if you would like to use more than one') %>
   </p>
   <% if form.object.school_id %>
@@ -45,6 +56,12 @@
     </p>
 
   <% end %>
+
+  <p><%=form.label :sld ,'Areas of potential specific learning disability'%>
+  <%= form.select :sld_array, InterventionDefinition::SLD_CRITERIA,{}, {:multiple => true} %>
+  <%= help_popup("Select one or more SLD criteria if this intervention is evidence and research based for that particular SLD.  (Hold down ctrl to select multiple criteria, or to remove them.)") %>
+
+  </p>
 
 
   <br class='brclear' />

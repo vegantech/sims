@@ -30,6 +30,23 @@
   <%=h pluralize(@intervention_definition.frequency_multiplier, "time") +" "+ @intervention_definition.frequency.title %>
 </p>
 
+<% if @intervention_definition.notify_email? %>
+  <p>
+  <b>Notify when created:</b>
+  <%=h @intervention_definition.notify_email %>
+</p>
+<% end %>
+
+<% if @intervention_definition.sld? %>
+  <p>
+  <b>Areas of potential specific learning disability:</b>
+  <%=h @intervention_definition.sld %>
+</p>
+<% end %>
+
+
+
+
 <p>
   <b>Created by:</b>
   <%=h @intervention_definition.user %>

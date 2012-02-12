@@ -2,7 +2,7 @@
 <% if @intervention_clusters %>
   <%= remote_form_for :intervention_cluster, :url => select_interventions_categories_path(@goal_definition, @objective_definition) do |f| %>
     <%= f.label :id, 'Assign Category' %>
-    <%= f.collection_select(:id, @intervention_clusters, :id, :title, {:prompt => ''}, {:onchange => "$('spinnercategories').show();form.onsubmit()", :class => "fixed_width"}) %> 
+    <%= collection_select_with_css_options(f, :id, @intervention_clusters, :id, :title,'sld','sld?', {:prompt => ''}, {:onchange => "$('spinnercategories').show();form.onsubmit()", :class => "fixed_width"}) %>
     <%= spinner("categories") %>
     <%= content_tag :noscript, submit_tag("Choose Category") %><br />
     <div id="category_description"><%=description(@intervention_cluster) %></div>

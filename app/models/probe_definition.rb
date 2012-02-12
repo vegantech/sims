@@ -29,6 +29,7 @@ class ProbeDefinition < ActiveRecord::Base
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
   has_many :probe_questions, :dependent => :delete_all
+  has_many :cico_settings
   accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description
@@ -37,8 +38,9 @@ class ProbeDefinition < ActiveRecord::Base
   validates_numericality_of :minimum_score, :allow_nil => true, :less_than_or_qual_to => Proc.new{|p|  p.maximum_score}, :if => :maximum_score
   #validates_associated(:probe_definition_benchmarks)
 
-  attr_protected :district_id
+  scope :cico, :conditions => {:cico => true}
   acts_as_list :scope => :district_id
+  attr_protected :district_id
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :select => 'distinct title'

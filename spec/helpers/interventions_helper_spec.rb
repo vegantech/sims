@@ -2,6 +2,20 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InterventionsHelper do
 
+  def mock_intervention_definition(opts = {})
+    mock_model(InterventionDefinition,opts.reverse_merge('sld?' => false))
+  end
+
+  describe 'collection_select_with_css_options' do
+    it 'should have tests'
+
+  end
+
+
+  describe 'options_from_collection_for_select_with_css_class' do
+    it 'should have tests'
+  end
+
   describe 'tiered_intervention_select' do
     it 'should have select tag with default blank' do
       tier=Tier.create!(:title=>'Tiered Intervention Select')

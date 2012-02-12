@@ -9,5 +9,9 @@
                                 <li><%=link_to 'Manage School Teams', school_teams_path %>
                                 <%=help_popup(SchoolTeam::DESCRIPTION) %>
                                 </li>
+
+    <li><%=link_to 'Setup CICO', cico_settings_path %>
+    <%=help_popup(CicoSetting::DESCRIPTION) %>
+    </li>
   </ul>
 <% end %>

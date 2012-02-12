@@ -10,6 +10,7 @@ class HtmlCsvText
     build :body do
       output << data.to_grouping.to_html
     end
+
   end
 
   class Text < Ruport::Formatter

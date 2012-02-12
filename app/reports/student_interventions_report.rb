@@ -16,7 +16,7 @@ class StudentInterventionsReport <  DefaultReport
     end
 
     build :body do
-      output << data.to_table.to_html.sub('<table>', '<table id="student_interventions_table">')
+      output << data.to_table(format=:html).to_html.sub('<table>', '<table id="student_interventions_table">')
     end
 
     def pluralize(count, singular, plural = nil)
@@ -49,9 +49,13 @@ class StudentInterventionsReport <  DefaultReport
     end
 
     build :body do
+      ::PDF::Writer::TagAlink.style={:factor=>0.05, :text_color=>Color::RGB::Blue, :draw_line=>false, :line_style=>{:dash=>{:phase=>0, :pattern=>[]}}, :color=>Color::RGB::Blue}
+      pdf_writer.font_size = 8
+      
       pdf_writer.start_page_numbering(350,10,8,:center,"Page: <PAGENUM>")
 
-      output << render_grouping(data.to_grouping, options.to_hash.merge(:formatter => pdf_writer))
+      output << render_grouping(data.to_grouping(:pdf), options.to_hash.merge(:formatter => pdf_writer))
+      ::PDF::Writer::TagAlink.style=nil
     end
   end
 end
@@ -62,7 +66,7 @@ class StudentInterventionsSummary
     @student = options[:student]
   end
 
-  def to_table
+  def to_table(format = nil)
     return unless defined? Ruport
 
     table = Ruport::Data::Table(["Goal Objective Category", "Intervention", "Description", 'Start Date End Date', 'Frequency Duration', 'Ended By', 'Ended On','Last Updated', 'Tier', 'Participants'])
@@ -78,14 +82,14 @@ class StudentInterventionsSummary
     # intervention comments -- intervention_comments
 
     @student.interventions.each do |i|
-      table << report_row(i)
+      table << report_row(i,format)
     end
 
     return table
   end
 
-   def to_grouping
-      tbl = to_table
+   def to_grouping(format = nil)
+      tbl = to_table(format = format)
       Ruport::Data::Grouping(tbl, :by => "Goal Objective Category")
    end
 
@@ -96,7 +100,12 @@ class StudentInterventionsSummary
 
 	private
 
-	def report_row(i)
+	def report_row(i,format=nil)
+    if [:pdf,:html].include?format
+      title_method = :bolded_title
+    else
+      title_method = :title
+    end
 	  goal = i.intervention_definition.intervention_cluster.objective_definition.goal_definition.title
 	  objective = i.intervention_definition.intervention_cluster.objective_definition.title
 	  category = i.intervention_definition.intervention_cluster.title
@@ -104,8 +113,8 @@ class StudentInterventionsSummary
     end_date = i.end_date.to_date.to_s(:report)
 
 	  ["#{goal} #{objective} #{category}",
-  	  i.intervention_definition.title,
-  	  i.intervention_definition.description,
+  	  i.intervention_definition.send(title_method),
+  	  i.intervention_definition.description_with_sld,
   	  "#{start_date} #{end_date}",
   	  "#{i.frequency_summary} #{i.time_length_summary}",
   	  (i.ended_by || User.new).fullname,
