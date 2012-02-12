@@ -36,7 +36,7 @@
           <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
               interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
           <% if current_student  %>
-            <%= li_link_to_if_authorized "<b>Student Report</b>", {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
+            <%= li_link_to_if_authorized "<b>Student Report</b>".html_safe, {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
             <%= li_link_to_if_authorized "Student Interventions", {:controller => 'reports', :action => 'student_interventions', :student_id => current_student.id } %>
           <% end %>
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
