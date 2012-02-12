@@ -108,10 +108,10 @@ class School < ActiveRecord::Base
   end
 
   def assigned_users
-    s= staff.find(:all,:order=>'last_name,first_name') 
+    s= staff.find(:all,:order=>'last_name,first_name', :select => "distinct users.*")
     if s.blank?
-      users.find(:all,:order=>'last_name,first_name')
-    else 
+      users.find(:all,:order=>'last_name,first_name', :select => "distinct users.*")
+    else
       s
     end
   end
