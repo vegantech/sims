@@ -6,8 +6,7 @@ module MoveUpDownButtonsHelper
   def move_button direction,obj
     (form_remote_tag(:url=>
       move_path(obj, direction),
-      :html=>{:style=>"display:inline"},:method=>:put) +
-      hidden_field_tag("_method", "put") +
+      :html=>{:style=>"display:inline",:method=>:put}) +
       image_submit_tag("arrow-#{direction}.gif") +
       "</form>".html_safe).html_safe
   end

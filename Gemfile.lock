@@ -163,7 +163,7 @@ GEM
       rake
     mime-types (1.17.2)
     multi_json (1.0.4)
-    mysql (2.8.1)
+    mysql2 (0.2.18)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -230,6 +230,9 @@ GEM
     rspec-core (2.8.0)
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
+    rspec-html-matchers (0.2.3)
+      nokogiri (>= 1.4.4)
+      rspec (>= 2.0.0)
     rspec-mocks (2.8.0)
     rspec-rails (2.8.1)
       actionpack (>= 3.0)
@@ -293,7 +296,7 @@ DEPENDENCIES
   launchy
   memcache-client
   metrical
-  mysql
+  mysql2 (~> 0.2.7)
   newrelic_rpm
   nokogiri (= 1.4.4)
   paperclip
@@ -307,6 +310,7 @@ DEPENDENCIES
   rdoc (> 2.4.2)
   ripper
   rpm_contrib
+  rspec-html-matchers
   rspec-rails (~> 2.6)
   ruport (= 1.6.1)
   sneaky-save

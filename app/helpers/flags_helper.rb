@@ -103,8 +103,8 @@ module FlagsHelper
     flag_legend_controllers = ["students","flag_descriptions", "flag_categories"]
     if flag_legend_controllers.include?(controller.controller_name)
       cache ["flag_legend2",current_district] do
-        @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id) 
-        yield 
+        @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id)
+        yield
       end
     end
   end

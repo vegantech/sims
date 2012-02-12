@@ -5,6 +5,10 @@ class PrimeCache
   extend ActionView::Helpers::TagHelper
   extend ActionView::Helpers::TextHelper
 
+  def self.config
+    ApplicationController.new.instance_variable_get("@_config")
+  end
+
   def self.flags
     ctrl = ApplicationController.new
     hit=0
@@ -23,7 +27,8 @@ class PrimeCache
        hit+=1
       else
         miss+=1
-        ctrl.write_fragment ["status_display",student], status_display(student)
+        puts key
+        ctrl.write_fragment ["status_display",student],'poop'# ctrl.view_context.status_display(student)
       end
     end
     ctrl.write_fragment(last_ran_key,this_run)

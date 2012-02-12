@@ -16,7 +16,7 @@ describe ApplicationHelper do
     helper.spinner.should match(/spinner.gif.*display:none/)
     helper.spinner("suffix").should match(/spinnersuffix/)
   end
- 
+
   it 'should provide link_to_remote with graceful degradition to html when javascript is off' do
 
      helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")}).should ==
@@ -28,7 +28,7 @@ describe ApplicationHelper do
      helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
   end
 
-  
+
   it 'should provide link_to_remote_if' do
     helper.link_to_remote_if(false,"blah").should == "blah"
     helper.link_to_remote_if(true,"links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"}).should ==
@@ -39,9 +39,9 @@ describe ApplicationHelper do
     file="testing_of_Stuff.doc"
     url="http://www.test.com"
     r=helper.link_to_with_icon( file, url, " Suffix")
-    r.should have_tag("a[href=?]>img[src*=?]",url, "icon_doc.gif")
+    r.should have_tag("a[href=\"#{url}\"]>img[src*=\"icon_doc.gif\"]")
     r.should match(/testing of Stuff Suffix/)
-    r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=?]>img[src*=?]",url, "icon_htm.gif")
+    r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=\"#{url}\"]>img[src*=\"icon_htm.gif\"]")
 
 
   end
@@ -61,7 +61,7 @@ describe ApplicationHelper do
       helper.li_link_to_if_authorized('Shawn').should be_nil
     end
     it 'should wrap the link in li tags if authorized' do
-      
+
       helper.should_receive(:link_to_if_authorized).and_return 'zzz'
       helper.li_link_to_if_authorized('Shawn').should == '<li>zzz</li>'
     end
@@ -81,8 +81,8 @@ describe ApplicationHelper do
 
     it 'should link to a hash based path' do
       helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
-      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail')
-      
+      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail_index')
+
     end
 
     it 'should prepend a / to the controller to fix 236' do
@@ -91,7 +91,7 @@ describe ApplicationHelper do
       helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  'eeeeeeee'
 
     end
-    
+
   end
 
   describe 'restrict_to_principals?' do
@@ -121,5 +121,5 @@ describe ApplicationHelper do
     end
   end
 
-  
+
 end

@@ -175,7 +175,7 @@ class StudentsController < ApplicationController
   def setup_students_for_index
     if cache_configured?
       cache_keys =@students.collect{|s| s.index_cache_key}
-      @cached_status = Rails.cache.read_multi(cache_keys)
+      @cached_status = Rails.cache.read_multi(*cache_keys)
       misses= (cache_keys - @cached_status.keys)
       missed_students =@students.select{|s| misses.include?s.index_cache_key}
     else
