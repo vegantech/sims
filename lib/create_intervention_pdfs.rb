@@ -5,8 +5,8 @@ class CreateInterventionPdfs
       dir = "#{Rails.root}/public/system/district_generated_docs/#{district.id}/"
     old_files = Dir.glob("#{dir}*")
     new_files = []
-    
-    district.objective_definitions.each do |o| 
+
+    district.objective_definitions.each do |o|
       FileUtils.mkdir_p dir unless File.exists? dir
       basefile = dir+"#{o.title.split(" ").join("_")}.".gsub("/","-").gsub("&","and")
       pdffile= "#{basefile}pdf"
@@ -24,7 +24,7 @@ class CreateInterventionPdfs
       new_files << pdffile
       new_files << htmlfile
 
-      
+
     end
      FileUtils.rm(old_files - new_files)
      district.touch

@@ -57,7 +57,6 @@ GEM
       builder
     arel (2.0.10)
     arrayfields (4.7.4)
-    bluecloth (2.2.0)
     builder (2.1.2)
     capistrano (2.5.0)
       highline
@@ -214,6 +213,7 @@ GEM
     rcov (1.0.0)
     rdoc (3.12)
       json (~> 1.4)
+    redcarpet (2.1.0)
     reek (1.2.8)
       ruby2ruby (~> 1.2)
       ruby_parser (~> 2.0)
@@ -280,7 +280,6 @@ PLATFORMS
 DEPENDENCIES
   acts_as_reportable (= 1.1.1)
   airbrake
-  bluecloth (> 2.0.0)
   capistrano (= 2.5.0)
   capistrano-ext
   capybara
@@ -308,6 +307,7 @@ DEPENDENCIES
   rails_responds_to_parent
   rcov (>= 0.9.9)
   rdoc (> 2.4.2)
+  redcarpet
   ripper
   rpm_contrib
   rspec-html-matchers
