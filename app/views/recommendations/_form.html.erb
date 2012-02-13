@@ -26,10 +26,10 @@
  <p>
     Please indicate conclusions and recommendations by selecting from the following statements: <br />
     <%= recommendation_buttons(form) %>
-   
+
 <div id = "elig_criteria" style="display:none">
   <%=mmsd_eligibility_criteria %>
-  <%=form.check_box :request_referral%> Based on early intervening services, the completion of the checklist, screening results (where appropriate) and a review of the eligibility criteria, the team feels there is reason to suspect an impairment.  Submit a referral to special education. 
+  <%=form.check_box :request_referral%> Based on early intervening services, the completion of the checklist, screening results (where appropriate) and a review of the eligibility criteria, the team feels there is reason to suspect an impairment.  Submit a referral to special education.
 </div>
 <%= form.hidden_field :recommendation_definition_id %>
 <%= form.hidden_field :checklist_id %>

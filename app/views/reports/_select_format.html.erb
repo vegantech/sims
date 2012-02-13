@@ -6,4 +6,4 @@
   Format: <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %>
   <%= submit_tag "Generate Report", :name => 'generate' %>
 <% end %>
-<%= @report %>
+<%= @report.to_s.html_safe %>

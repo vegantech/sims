@@ -5,7 +5,7 @@ module ChecklistsHelper
      "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
        "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
        f=elig_crit.collect do |elig_file|
-        "<li>" +(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria") +"</li>"
+        content_tag(:li+(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria"))
        end
 
      if menu
@@ -14,7 +14,7 @@ module ChecklistsHelper
          "<li class = 'plus_minus' id = 'li#{id}' >" +
          link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") + "<ul id ='ul#{id}'>" + f.join("") +"</ul></li>"
      else
-       "<ul>#{f.join}</ul>"
+       content_tag(:ul, f.join.html_safe)
      end
    else
      ""
@@ -110,7 +110,7 @@ module ChecklistsHelper
      form.radio_button(:recommendation, k,opts) +
        form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
-   a.compact.join("<br />\n")
+   a.compact.join("<br />\n").html_safe
 
    #
   end

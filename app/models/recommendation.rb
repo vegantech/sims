@@ -110,7 +110,7 @@ class Recommendation < ActiveRecord::Base
   def answers=(hsh={})
     hsh.each do |h|
       h=h.last if h.is_a?Array and h.size==2
-      h.symbolize_keys!
+      h=h.symbolize_keys
       if h[:recommendation_answer_definition_id]
         a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
           recommendation_answers.build(h)
