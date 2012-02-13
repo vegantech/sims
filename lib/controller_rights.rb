@@ -6,8 +6,8 @@ module ControllerRights
 
   module ClassMethods
   end
-  
-private    
+
+private
 
   def action_group_for_current_action
     if self.class.write_actions.include?(action_name)
@@ -18,10 +18,6 @@ private
     else
       nil
     end
-  end
-
-  def to_s
-    self.class.to_s.titleize.split(" Controller").first
   end
 
   def read_actions
