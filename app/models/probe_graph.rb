@@ -64,7 +64,7 @@ class ProbeGraph
 
   def google_line_chart
     #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
-   return ''if probes_for_graph.empty?
+   return '' if probes_for_graph.empty?
     group=0
     probes_for_graph.in_groups_of(10,false).collect{ |probes_for_this_graph|
       custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
@@ -88,9 +88,6 @@ class ProbeGraph
                  :custom => custom_string,
                  :size => '600x250'
                  })}.join("<br />")
-
-
-
  end
 
  def chxp
