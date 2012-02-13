@@ -49,6 +49,7 @@ GEM
       activemodel (= 3.0.11)
       activesupport (= 3.0.11)
     activesupport (3.0.11)
+    acts_as_list (0.1.4)
     acts_as_reportable (1.1.1)
       ruport (>= 1.6.0)
     addressable (2.2.6)
@@ -278,6 +279,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_list
   acts_as_reportable (= 1.1.1)
   airbrake
   capistrano (= 2.5.0)

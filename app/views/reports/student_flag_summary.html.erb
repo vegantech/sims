@@ -1,4 +1,4 @@
-<% @title1 = 'Student Reports:' 
+<% @title1 = 'Student Reports:'
 	 @title2 = 'Reports Selection' %>
 
    <h2>Choose Student Flag Report Format for Selected Students</h2>
@@ -8,4 +8,4 @@
 	Format: <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %>
   <%= submit_tag 'Generate Report', :name => 'generate' %>
 <% end %>
-<%= @report %>
+<%= @report.to_s.html_safe %>

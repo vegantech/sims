@@ -39,7 +39,7 @@ module InterventionsHelper
 
   def tiered_quicklist(quicklist_items)
     if quicklist_items.blank?
-      concat("Quicklist is empty.")
+      "Quicklist is empty."
     else
       form_tag "/interventions/quicklists" do
         concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
@@ -56,5 +56,9 @@ module InterventionsHelper
       end
     end
 
+  end
+
+  def custom_intervention?
+    params[:custom_intervention] == "true"
   end
 end

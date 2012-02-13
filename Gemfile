@@ -50,7 +50,9 @@ gem 'paperclip'
 gem "spawn", :git => 'git://github.com/rfc2822/spawn'
 gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
+gem 'acts_as_list'
 gem 'railmail', :git => "https://github.com/zonecheung/railmail.git"
+
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false

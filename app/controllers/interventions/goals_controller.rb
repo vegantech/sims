@@ -1,12 +1,12 @@
 class Interventions::GoalsController < ApplicationController
   include PopulateInterventionDropdowns
- 
+
+
   def select
-    flash.keep(:custom_intervention)
     respond_to do |format|
       format.html do
         if params[:goal_definition][:id].present?
-          redirect_to interventions_objectives_url(params[:goal_definition][:id])
+          redirect_to interventions_objectives_url(params[:goal_definition][:id], :custom_intervention => params[:custom_intervention])
         else
           redirect_to :back
         end

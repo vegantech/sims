@@ -1,8 +1,6 @@
 module ReportsHelper
-  def subreport_selected(opt)
-    if opt == "1"
-      yield
-    end
+  def subreport_selected(opt, &block)
+    capture(&block) if opt == "1"
   end
 
   def fix_names(name)
