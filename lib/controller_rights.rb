@@ -7,6 +7,10 @@ module ControllerRights
   module ClassMethods
   end
 
+  def to_s
+    self.class.to_s.titleize.split(" Controller").first
+  end
+
 private
 
   def action_group_for_current_action
