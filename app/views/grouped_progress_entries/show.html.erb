@@ -26,8 +26,8 @@ Intervention-<%=@grouped_progress_entry %>
     </thead>
     <tbody>
       <tr><td>
-          <%=@student_intervention.intervention.intervention_probe_assignment.graph params[:graph_type]%>
-          <% @student_intervention.intervention.comments.each do |comment| %> 
+          <%=@student_intervention.intervention.intervention_probe_assignment.graph(params[:graph_type]).graph%>
+          <% @student_intervention.intervention.comments.each do |comment| %>
             <p><%=h comment %></p>
           <% end %>
       </td></tr>
