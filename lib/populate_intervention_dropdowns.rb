@@ -26,7 +26,7 @@ protected
 
   def populate_definitions
     find_intervention_definition
-    if flash[:custom_intervention] 
+    if params[:custom_intervention] == "true"
       @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
       @tiers=current_district.tiers
     else

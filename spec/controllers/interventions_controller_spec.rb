@@ -106,10 +106,9 @@ describe InterventionsController do
       response.should be_success
     end
 
-    it "should assign a @custom_intervention instance variable if the custom intervention param is there" do
+    it "if the custom intervention param is there" do
       get :new, :custom_intervention => true
       response.should be_success
-      flash[:custom_intervention].should == true
     end
   end
 
@@ -159,8 +158,6 @@ describe InterventionsController do
       end
       it "should expose a newly created but unsaved intervention as @intervention" do
         @intervention.should_receive(:save).and_return(false)
-        controller.should_receive(:flash).and_return(mf={})
-        mf.should_receive(:keep).with(:custom_intervention)
         post :create, :intervention => {:these => 'params'}
         assigns(:intervention).should equal(@intervention)
       end

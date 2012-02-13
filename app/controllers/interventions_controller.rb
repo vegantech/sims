@@ -25,8 +25,6 @@ class InterventionsController < ApplicationController
       redirect_to students_url and return
     end
 
-    flash.keep(:custom_intervention)
-    flash[:custom_intervention] ||= params[:custom_intervention]
     @intervention_comment = InterventionComment.new
     @tiers=current_district.tiers
 
@@ -64,7 +62,6 @@ class InterventionsController < ApplicationController
       populate_goals
       @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
-      flash.keep(:custom_intervention)
       # end code to make validation work
       render :action => "new"
     end
@@ -118,7 +115,6 @@ class InterventionsController < ApplicationController
   end
 
   def ajax_probe_assignment
-    flash.keep(:custom_intervention)
     @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     if params[:id] == 'custom'
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.build if @intervention

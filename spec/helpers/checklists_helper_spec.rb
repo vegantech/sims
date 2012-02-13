@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-require 'bluecloth'
 describe ChecklistsHelper do
   include ChecklistsHelper
   #Delete this example and add some real ones or delete this file
