@@ -1,4 +1,7 @@
 class GroupedProgressEntry
+#  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
   attr_accessor :global_date, :intervention, :probe_definition
   NUMBER_OF_STUDENTS_ON_GRAPH=15
 
@@ -207,6 +210,10 @@ class GroupedProgressEntry
     def to_param
       @id
     end
+  end
+
+  def persisted?
+    true
   end
 
 private

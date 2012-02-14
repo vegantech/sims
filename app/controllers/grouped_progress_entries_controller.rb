@@ -1,7 +1,7 @@
 class GroupedProgressEntriesController < ApplicationController
   additional_read_actions :aggregate
   before_filter :confirm_search
-  
+
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index

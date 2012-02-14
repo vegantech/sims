@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
 
     if opts["user"].present?
       u_grp_ids = connection.select_values "select group_id from user_group_assignments where user_id = #{opts['user'].to_i}"
-      grps = grps.select{ |u_group| u_grp_ids.include? u_group.id.to_s}
+      grps = grps.select{ |u_group| u_grp_ids.include? u_group.id}
     end
     personal_groups.by_school_and_grade(school,grade) |grps
   end
