@@ -93,7 +93,7 @@ protected
   end
 
   def set_default_frequency_multiplier
-    self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
+    self.frequency_multiplier=RECOMMENDED_FREQUENCY if read_attribute(:frequency_multiplier).blank?
   end
 
   def goal_in_range
