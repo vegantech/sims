@@ -10,6 +10,12 @@ class PrimeCache
   end
 
   def self.flags
+    pids = `ps w |grep -v grep |grep 'runner PrimeCache'| cut -f 1 -d' '`
+    if pids.size > 1
+      puts "Script already running"
+      exit 0
+    end
+
     ctrl = ApplicationController.new
     hit=0
     miss=0
