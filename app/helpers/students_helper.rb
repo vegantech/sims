@@ -60,11 +60,11 @@ module StudentsHelper
   end
 
   def active_interventions_count(student)
-    "<span id='active_interventions_count'>(#{student.interventions.active.size})</span>"
+    content_tag :span, "(#{student.interventions.active.size})", :id =>'active_interventions_count'
   end
 
   def inactive_interventions_count(student)
-    "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
+    content_tag :span, "(#{student.interventions.inactive.size})", :id => 'inactive_interventions_count'
   end
 
   def grade_select(grades)
@@ -73,7 +73,7 @@ module StudentsHelper
   end
 
   def year_select(years)
-    years.unshift(["All","*"]) 
+    years.unshift(["All","*"])
     select(:search_criteria,:year,years)
   end
 
