@@ -59,7 +59,7 @@
 
   <p><%=form.label :sld ,'Areas of potential specific learning disability'%>
   <%= form.select :sld_array, InterventionDefinition::SLD_CRITERIA,{}, {:multiple => true} %>
-  <%= help_popup("Select one or more SLD criteria if this intervention is evidence and research based for that particular SLD.  (Hold down ctrl to select multiple criteria, or to remove them.)") %>
+  <%= help_popup("Select one or more potential area(s) of SLD if this intervention is evidence-based for that particular SLD.  (Hold down ctrl to select multiple criteria, or to remove them.)") %>
 
   </p>
 
