@@ -35,7 +35,7 @@
     <%= form.label :mins_per_week, "Weekly Minutes" %>
     <%=form.text_field :mins_per_week %>
     <%=help_popup("Recommended minutes per week.  This is required for SLD interventions and will
-                  be used when verifiying fidelity.  (SLD interventions with fewer than 80% of this will 
+                  be used when verifiying fidelity.  (SLD interventions with fewer than 80% of this will
                   not meet fidelity criteria.)") %>
   </p>
 
@@ -59,7 +59,7 @@
 
   <p><%=form.label :sld ,'Areas of potential specific learning disability'%>
   <%= form.select :sld_array, InterventionDefinition::SLD_CRITERIA,{}, {:multiple => true} %>
-  <%= help_popup("Select one or more potential area(s) of SLD if this intervention is evidence-based for that particular SLD.  (Hold down ctrl to select multiple criteria, or to remove them.)") %>
+  <%= help_popup("Select one or more potential area(s) of SLD if this intervention is evidence/research-based for that particular area of concern.  (Hold down ctrl to select multiple criteria, or to remove them.)") %>
 
   </p>
 
