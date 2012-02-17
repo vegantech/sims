@@ -2,7 +2,7 @@ class Interventions::GoalsController < ApplicationController
   include PopulateInterventionDropdowns
 
 
-  def select
+  def create
     respond_to do |format|
       format.html do
         if params[:goal_definition][:id].present?

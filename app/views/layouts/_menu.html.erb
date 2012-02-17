@@ -20,7 +20,7 @@
       <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
       <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
       <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
-      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) if defined?RailmailController %>
+      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) unless Rails.env.production? %>
       <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
         current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
       <%= mmsd_eligibility_criteria(menu=true) if current_district %>
