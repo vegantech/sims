@@ -1,7 +1,4 @@
 class GroupsController < ApplicationController
-  additional_read_actions :show_special
-  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special,
-      :add_special_form, :add_special
   # GET /groups
   def index
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])

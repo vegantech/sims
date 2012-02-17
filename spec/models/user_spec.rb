@@ -227,20 +227,20 @@ describe User do
   end
 
   describe 'authorized_ for' do
-    it 'should return false if unknown action_group_type' do
-      User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
+    it 'should return false if unknown controller' do
+      User.new().authorized_for?('this_does_not_exist_at_all').should == false
     end
 
-    it 'should call check for read rights when group is read' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read',[]).and_return(true)
+    it 'should call check true' do
+      Role.should_receive(:has_controller?).with('test_controller',[]).and_return(true)
       u=Factory(:user)
-      u.authorized_for?('test_controller','read').should == true
+      u.authorized_for?('test_controller').should == true
     end
 
-    it 'should call check for write rights when group is write' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write',[]).and_return(true)
+    it 'should call check false' do
+      Role.should_receive(:has_controller?).with('test_controller',[]).and_return(false)
       u=Factory(:user)
-      u.authorized_for?('test_controller','write').should == true
+      u.authorized_for?('test_controller').should == false
     end
   end
 

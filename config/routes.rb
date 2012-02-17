@@ -34,12 +34,10 @@ Rails.application.routes.draw do
   resources :help
   resources :quicklist_items
 
+  match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier
   resources :tiers do
     member do
       put :move
-      get :destroy
-      post :destroy
-      delete :destroy
     end
   end
 
@@ -171,15 +169,18 @@ Rails.application.routes.draw do
   end
 
 
-  #name_prefix intervention_builder
   namespace :intervention_builder do
     resources :probes do
       member do
         put :disable
       end
+      collection do
+        post :disable
+      end
     end
     resources :goals do
       member do
+        put :move
         put :disable
       end
       collection do
@@ -208,6 +209,7 @@ Rails.application.routes.draw do
               put :move
             end
             collection do
+              put :disable
               post :sort
             end
           end

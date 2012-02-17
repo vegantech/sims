@@ -241,8 +241,8 @@ class User < ActiveRecord::Base
   end
 
 
-  def authorized_for?(controller, action_group)
-    !new_record? && Role.has_controller_and_action_group?(controller.to_s, action_group.to_s,roles)
+  def authorized_for?(controller)
+    !new_record? && Role.has_controller?(controller.to_s,roles)
   end
 
   def grouped_principal_overrides

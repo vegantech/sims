@@ -38,19 +38,17 @@ describe ApplicationController do
     describe 'authorize' do
 
       it 'should return true if authorized' do
-        controller.should_receive(:action_group_for_current_action).and_return("read")
         user=mock_user
         controller.should_receive(:current_user).and_return(user)
-        user.should_receive(:authorized_for?).with('application','read').and_return(true)
+        user.should_receive(:authorized_for?).with('application').and_return(true)
         controller.send(:authorize).should == true
 
       end
 
       it 'should redirect and set a flash message if not authorized' do
-        controller.should_receive(:action_group_for_current_action).and_return("read")
         user=mock_user
         controller.should_receive(:current_user).and_return(user)
-        user.should_receive(:authorized_for?).with('application','read').and_return(false)
+        user.should_receive(:authorized_for?).with('application').and_return(false)
         controller.should_receive(:root_url).and_return 'root_url'
         controller.should_receive(:redirect_to).with('root_url')
         controller.should_receive(:flash).and_return(flash)
@@ -90,26 +88,6 @@ describe ApplicationController do
       it 'should return true if there is a school' do
         controller.should_receive(:current_school).and_return("CURRENT")
         controller.send(:require_current_school).should == true
-      end
-
-    end
-
-    describe 'action_group_for_current_action' do
-
-      it 'should return write for create' do
-        controller.stub!(:action_name=>"create")
-        controller.send(:action_group_for_current_action).should == "write_access"
-      end
-
-      it 'should return read for index' do
-        controller.stub!(:action_name=>"index")
-        controller.send(:action_group_for_current_action).should == "read_access"
-      end
-
-
-      it 'should return nil for search' do
-        controller.stub!(:action_name=>"kesds3search")
-        controller.send(:action_group_for_current_action).should be_nil
       end
 
     end

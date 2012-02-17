@@ -1,5 +1,4 @@
 class PrincipalOverridesController < ApplicationController
-  additional_write_actions :undo
 
   # GET /principal_overrides
   def index

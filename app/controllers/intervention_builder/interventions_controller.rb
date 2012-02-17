@@ -1,6 +1,5 @@
 class InterventionBuilder::InterventionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :disable
-  additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
   # GET /intervention_definitions
@@ -14,7 +13,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
         @intervention_definitions.reject!(&:disabled) unless params[:disabled]
         @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
       end
-      
       if params[:custom] || params[:system]
         @intervention_definitions.reject!(&:custom) unless params[:custom]
         @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
@@ -62,7 +60,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # PUT /intervention_definitions/1
   def update
     @intervention_definition.attributes=params[:intervention_definition]
-    
     respond_to do |format|
       if @intervention_definition.save
         flash[:notice] = 'Intervention was successfully updated.'
@@ -118,7 +115,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
     end
     respond_to do |format|
       format.html {redirect_to index_url}
-      format.js {@intervention_definitions=@intervention_cluster.intervention_definitions} 
+      format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}
     end
   end
 

@@ -2,7 +2,6 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  include ControllerRights
   #TODO replace this default district constant
 
   helper :all # include all helpers, all the time
@@ -20,10 +19,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
 
-  def to_s
-    super
-    #this allows for exceptions to be handled properly in airbrake. it isn't consixdered an action_method
-  end
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
 
@@ -98,9 +93,8 @@ class ApplicationController < ActionController::Base
 
   def authorize
     controller = self.class.controller_path  # may need to change this
-    action_group = action_group_for_current_action
-    unless current_user.authorized_for?(controller, action_group)
-      logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."
+    unless current_user.authorized_for?(controller)
+      logger.info "Authorization Failure: controller is #{controller}"
       flash[:notice] =  "You are not authorized to access that page"
       redirect_to root_url
       return false
@@ -121,28 +115,6 @@ class ApplicationController < ActionController::Base
       return false
     end
     return true
-  end
-
-  @@read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
-  @@write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
-
-  def action_group_for_current_action
-    if @@write_actions.include?(action_name)
-      'write_access'
-    elsif @@read_actions.include?(action_name)
-      #put in the defaults here,   override this and call super in individual controllers
-      "read_access"
-    else
-      nil
-    end
-  end
-
-  def self.additional_read_actions(*args)
-     @@read_actions |=  Array(args).flatten.map(&:to_s)
-  end
-
-  def self.additional_write_actions(*args)
-     @@write_actions |= Array(args).flatten.map(&:to_s)
   end
 
   def subdomains

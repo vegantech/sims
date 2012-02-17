@@ -1,6 +1,5 @@
 class TeamConsultationsController < ApplicationController
   before_filter :require_current_school
-  additional_write_actions :complete, :undo_complete
   # GET /team_consultations/1
   # GET /team_consultations/1.xml
   def show
