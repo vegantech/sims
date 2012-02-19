@@ -14,13 +14,6 @@ shared_context "authorized" do
   before(:each) do
     controller.should_receive(:authorize).any_number_of_times.and_return(true)
   end
-
-  it 'should have all actions in action_groups (read or write for now.)' do
-    controller.action_methods.each do |public_action|
-      controller.stub!(:action_name => public_action.to_s)
-      flunk public_action.to_s if controller.send(:action_group_for_current_action).blank?
-    end
-  end
 end
 
 shared_examples_for "an authenticated controller" do

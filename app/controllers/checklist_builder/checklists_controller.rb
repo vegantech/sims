@@ -1,8 +1,4 @@
 class ChecklistBuilder::ChecklistsController < ApplicationController
-  additional_read_actions :preview
-  additional_write_actions :new_from_this
-
-
   def preview
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
     @checklist=@checklist_definition.checklists.build

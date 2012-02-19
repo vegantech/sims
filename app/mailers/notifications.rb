@@ -1,102 +1,105 @@
 class Notifications < MailerWithSubdomains
   layout 'email'
-  #  alias_method_chain :url_for, :subdomain
+  default :from => DEFAULT_EMAIL
+  #  alias_method_chain @url_for, @subdomain
 #  def url_for_with_subdomain(opts ={})
 #    raise 'missing district' if @district.blank?
 #  end
 
 
   def change_password(user)
-    @district=user.district
-    subject    '[SIMS] Email Registration'
-    recipients user.email
-    sent_on    Time.now
+    @district = user.district
+    subject  =  '[SIMS] Email Registration'
+    recipients = user.email
 
-    body       :user=>user
+    @user=user
 
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
 
   def principal_override_request(override)
-    subject    '[SIMS] Principal Override Request'
-    recipients override.student.principals.collect(&:email).join(',')
-    sent_on    Time.now
+    subject =   '[SIMS] Principal Override Request'
+    recipients = override.student.principals.collect(&:email).join(',')
     @district = override.student.district
 
-    body       :override=>override
+    @override =override
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
   def principal_override_response(override)
-    subject    "[SIMS] Principal Override #{override.action.capitalize}ed"
+    subject =   "[SIMS] Principal Override #{override.action.capitalize}ed"
     recipients override.teacher.email
-    sent_on    Time.now
     @district = override.student.district
 
-    body       :override => override
+    @override = override
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
   def intervention_starting(interventions)
-    interventions=Array(interventions)
-    participants=interventions.first.participants_with_author
+    interventions= Array(interventions)
+    participants= interventions.first.participants_with_author
     watcher = interventions.first.try(:intervention_definition).try(:notify_email)
     watcher = nil unless watcher.to_s.include?("@")
 
-    recipients  participants.collect(&:email).uniq.join(',')
-    subject    '[SIMS]  Student Intervention Starting'
-    sent_on    Time.now
-    cc         watcher
+    recipients =  participants.collect(&:email).uniq.join(',')
+    subject  =  '[SIMS]  Student Intervention Starting'
     @district = interventions.first.try(:student).try(:district)
 
-    body       :greeting => 'Hi,', :participants=> participants, :interventions=> interventions
+    @participants = participants
+    @interventions = interventions
+    mail(:subject => subject, :to => recipients, :subject => subject, :cc => watcher)
   end
 
   def intervention_ending_reminder(user,interventions, sent_at = Time.now)
-    subject    '[SIMS] Student Intervention(s) Ending This Week'
-    recipients user.email
-    sent_on    sent_at
+    subject =   '[SIMS] Student Intervention(s) Ending This Week'
+    recipients = user.email
     @district = user.district
 
-    body       :greeting => 'Hi,', :user => user, :interventions => interventions
+    @user = user
+    @interventions = interventions
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
   def intervention_reminder(sent_at = Time.now)
-    subject    'Notifications#intervention_reminder'
-    recipients ''
-    sent_on    sent_at
+    subject  =  'Notifications#intervention_reminder'
+    recipients =  ''
+    mail(:subject => subject, :to => recipients, :subject => subject)
 
-    body       :greeting => 'Hi,'
   end
 
   def intervention_participant_added(intervention_person)
-    subject    '[SIMS]  Student Intervention New Participant'
-                intervention_person = Array(intervention_person)
-                @intervention_person = intervention_person.first
+    subject =    '[SIMS]  Student Intervention New Participant'
+    intervention_person = Array(intervention_person)
+    @intervention_person = intervention_person.first
     recipients @intervention_person.user.email
     sent_on    Time.now
     @district = @intervention_person.user.district
-    body       :greeting => 'Hi,', :participants => @intervention_person.intervention.participants_with_author,
-                :interventions=> intervention_person.collect(&:intervention),:participant => @intervention_person
+    @participants = @intervention_person.intervention.participants_with_author
+    @interventions = intervention_person.collect(&:intervention)
+    @participant = @intervention_person
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
 
   def special_ed_referral rec, user_name, user_email, student
     @subject = 'SIMS- Checklist Completed'
-    @body['recommendation'] = rec  unless rec.blank?
-    @body['student']=student
+    @recommendation = rec  unless rec.blank?
+    @student=student
     @headers = {}
 
-    @body['user_name']= user_name
+    @user_name= user_name
     @recipients = user_email
     @district = student.district
 
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
   def district_upload_results msg, admin_email
     @subject = 'SIMS Upload Results'
     @recipients = admin_email
-    @body['msg'] = msg
-
-
+    @msg = msg
+    mail(:subject => subject, :to => recipients, :subject => subject)
   end
 
   def self.setup_ending_reminders(district = nil)
@@ -109,7 +112,7 @@ class Notifications < MailerWithSubdomains
     end
       users_with_interventions.each do |user,interventions|
         begin
-        self.deliver_intervention_ending_reminder(user,interventions)
+        self.intervention_ending_reminder(user,interventions).deliver
         rescue Exception => e
           errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
         end

@@ -7,11 +7,11 @@ class AdministrationCell < Cell::Base
 
   def district opts
     @current_district = opts[:district]
-    @show_schools = opts[:user].authorized_for?('district/schools',:write_access)
-    @show_users = opts[:user].authorized_for?('district/users', :write_access)
-    @show_students =opts[:user].authorized_for?('district/students',:write_access)
-    @show_district= opts[:user].authorized_for?('districts',:write_access)
-    @show_flag_descriptions= opts[:user].authorized_for?('flag_descriptions',:write_access)
+    @show_schools = opts[:user].authorized_for?('district/schools')
+    @show_users = opts[:user].authorized_for?('district/users')
+    @show_students =opts[:user].authorized_for?('district/students')
+    @show_district= opts[:user].authorized_for?('districts')
+    @show_flag_descriptions= opts[:user].authorized_for?('flag_descriptions')
 
     @show = @show_schools || @show_users || @show_students || @show_district || @show_flag_descriptions
     render

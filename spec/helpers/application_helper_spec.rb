@@ -81,13 +81,13 @@ describe ApplicationHelper do
 
     it 'should link to a hash based path' do
       helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
-      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail_index')
+      helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail')
 
     end
 
     it 'should prepend a / to the controller to fix 236' do
       helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
-      helper.should_receive(:link_to).with("rauknauk", {:controller=>"/railmail", :action=>"index"}, {}).and_return('eeeeeeee')
+      helper.should_receive(:link_to).with("rauknauk", {:controller=>"/railmail"}, {}).and_return('eeeeeeee')
       helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  'eeeeeeee'
 
     end

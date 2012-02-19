@@ -29,7 +29,6 @@ module ApplicationHelper
       if options[:controller].present?
         #Without a leading / url_for will assume it is in the current namespace
         options[:controller]="/#{options[:controller]}" unless options[:controller][0] =='/'
-        options[:action] ||= 'index'
         hsh=options
         url=hsh
       else
@@ -38,9 +37,7 @@ module ApplicationHelper
       end
     end
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
-    grp = 'write_access' if ctrl.class_eval("@@write_actions").include?(hsh[:action])
-    grp = 'read_access' if ctrl.class_eval("@@read_actions").include?(hsh[:action])
-    link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path, grp)
+    link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path)
   end
 
   def link_to_if_present(name, path)

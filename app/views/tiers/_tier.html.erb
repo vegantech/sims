@@ -2,7 +2,7 @@
   <td align="left"><%= move_up_down_buttons tier %></td>
   <td align="center">
     <%= link_to 'Edit', edit_tier_path(tier) %> <br />
-    <%= link_to 'Delete', destroy_tier_path(tier) %>
+    <%= link_to 'Delete', destroy_tier_path(tier.id) %>
   </td>
   <td><%=h tier.title %></td>
 <% end %>

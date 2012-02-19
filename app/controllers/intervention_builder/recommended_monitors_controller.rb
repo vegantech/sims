@@ -1,7 +1,4 @@
 class InterventionBuilder::RecommendedMonitorsController < ApplicationController
-  additional_write_actions %w{move assign_probes_to_intervention assign_interventions_to_probe}
-  additional_read_actions 'move_path'
-
   helper_method :move_path
   def assign_probes_to_intervention
 

@@ -199,7 +199,7 @@ class User < ActiveRecord::Base
     if @user && @user.passwordhash.blank? && @user.salt.blank?
       if @user.district.key.present? && @user.district.key == password
         @user.update_attribute(:token, Digest::SHA1.hexdigest("#{@user.district.key}#{rand}#{@user.id}"))
-        Notifications.deliver_change_password(@user)
+        Notifications.change_password(@user).deliver
         #send the email
         @user = User.new(:token => @user.token)
 
@@ -241,8 +241,8 @@ class User < ActiveRecord::Base
   end
 
 
-  def authorized_for?(controller, action_group)
-    !new_record? && Role.has_controller_and_action_group?(controller.to_s, action_group.to_s,roles)
+  def authorized_for?(controller)
+    !new_record? && Role.has_controller?(controller.to_s,roles)
   end
 
   def grouped_principal_overrides

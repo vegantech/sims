@@ -6,10 +6,12 @@
     <div class="form_row">
       <%= form.label :id_state, "State ID"  %>
       <% if form.object.new_record? %>
-        <%= form.text_field :id_state, :onblur =>remote_function(:url => {:action=>'check_id_state'}, 
+        <%= form.text_field :id_state, :onblur =>remote_function(:url => {:action=>'check_id_state'},
                                     :with => 'Form.Element.serialize(this)',
                                     :before => "$('spinnerid_state').show()",
-                                    :complete => "$('spinnerid_state').hide()"
+                                    :complete => "$('spinnerid_state').hide()",
+                                    :method => :get
+
                                     )  %>
       <% else %>
         <%= form.text_field :id_state %>

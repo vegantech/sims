@@ -36,7 +36,7 @@ class ProbeGraph
   end
 
   def google_line_chart_mmsd
-    return ''if probes_for_graph.empty?
+    return 'no scores' if probes_for_graph.empty?
 
     if probes_for_graph.count >= 50
      custom_chm="chm=" + [max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
@@ -64,7 +64,7 @@ class ProbeGraph
 
   def google_line_chart
     #groups of 10, repeats the previous point on the next graph as a line graph needs at least 2 points
-   return '' if probes_for_graph.empty?
+    return 'no scores' if probes_for_graph.empty?
     group=0
     probes_for_graph.in_groups_of(10,false).collect{ |probes_for_this_graph|
       custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
@@ -96,7 +96,7 @@ class ProbeGraph
 
  def google_bar_chart
    #groups of 10
-   return ''if probes_for_graph.empty?
+    return 'no scores' if probes_for_graph.empty?
     custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].compact.join("|")
     custom_string = [custom_chm,chxp].compact.join("&")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|

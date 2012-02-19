@@ -319,3 +319,4 @@ DEPENDENCIES
   spawn!
   system_timer
   thin
+  will_paginate

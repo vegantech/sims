@@ -36,13 +36,13 @@ class TeamConsultation < ActiveRecord::Base
 
   def email_concern_recipient
     if student && requestor && !draft
-      TeamReferrals.deliver_concern_note_created(self)
+      TeamReferrals.concern_note_created(self).deliver
     end
   end
 
   def email_concern_recipient_about_withdrawal
     if student && requestor
-      TeamReferrals.deliver_concern_note_withdrawn(self)
+      TeamReferrals.concern_note_withdrawn(self).deliver
     end
   end
 

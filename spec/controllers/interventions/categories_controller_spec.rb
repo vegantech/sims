@@ -20,17 +20,17 @@ describe Interventions::CategoriesController do
   end
 
 
-  describe "GET 'select'" do
-    it "should redirect to definition selection" do
-      get 'select',:goal_id=>1,:objective_id=>1,:intervention_cluster=>{:id=>1}
+  describe "GET 'create'" do
+    it "should redirect to definition createion" do
+      post 'create',:goal_id=>1,:objective_id=>1,:intervention_cluster=>{:id=>1}
       response.should redirect_to(interventions_definitions_url(1,1,1))
     end
   end
 
-  describe "xhr GET 'select'" do
-    it "should display the definition selection dropdown" do
+  describe "xhr GET 'create'" do
+    it "should display the definition createion dropdown" do
       controller.should_receive(:populate_definitions)
-      xhr :get, 'select',:goal_id=>1,:objective_id=>1,:intervention_cluster=>{:id=>1}
+      xhr :post, 'create',:goal_id=>1,:objective_id=>1,:intervention_cluster=>{:id=>1}
       response.should be_success
     end
   end

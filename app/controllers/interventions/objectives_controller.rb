@@ -5,7 +5,7 @@ class Interventions::ObjectivesController < ApplicationController
     populate_goals
   end
 
-   def select
+   def create
     respond_to do |format|
       format.html do
         if params[:objective_definition][:id].present?

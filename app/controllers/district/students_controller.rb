@@ -1,7 +1,4 @@
 class District::StudentsController < ApplicationController
-  additional_read_actions :check_id_state
-  additional_write_actions :claim
-
   # GET /district_students
   # GET /district_students.xml
   def index

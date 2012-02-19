@@ -34,7 +34,7 @@
     </fieldset>
 
     <% if @districts.blank? && current_district %>
-      <%= link_to "Switch districts", root_url(:subdomain => false) if defined? ENABLE_SUBDOMAINS  %>
+      <%= link_to "Switch districts", root_url_without_subdomain if defined? ENABLE_SUBDOMAINS  %>
     <% end  %>
 
   <% end %>

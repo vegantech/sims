@@ -43,7 +43,7 @@ describe LoginController do
       User.should_receive(:authenticate).with('user','pass').and_return(user)
       post :login ,:username=>'user',:password=>'pass'
       session[:user_id].should == 999
-      response.should redirect_to("/")
+      response.should redirect_to("http://www.test.host/")
     end
 
   end

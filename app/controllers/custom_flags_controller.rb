@@ -3,7 +3,6 @@ class CustomFlagsController < ApplicationController
   # GET /custom_flags.xml
   before_filter :enforce_session_selections
   skip_before_filter :verify_authenticity_token
-  additional_write_actions :ignore_flag, :unignore_flag
 
   # GET /custom_flags/new
   # GET /custom_flags/new.xml

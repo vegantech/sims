@@ -5,7 +5,7 @@ class Interventions::CategoriesController < ApplicationController
     populate_goals
   end
 
-  def select
+  def create
     respond_to do |format|
       format.html do
         if params[:intervention_cluster][:id].present?

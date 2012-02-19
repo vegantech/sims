@@ -1,5 +1,4 @@
 class UnattachedInterventionsController < ApplicationController
-  additional_read_actions :update_end_date
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index

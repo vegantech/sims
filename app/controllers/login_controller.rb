@@ -11,7 +11,6 @@ class LoginController < ApplicationController
     dropdowns
     @user=User.new(:username=>params[:username])
     session[:user_id] = nil
-    
     if request.post? and current_district
       @user=current_district.users.authenticate(params[:username], params[:password]) || @user
       session[:user_id] = @user.id
@@ -50,7 +49,7 @@ class LoginController < ApplicationController
     reset_session_and_district if params['token'].present?
     @user = current_user
 
-    if @user.new_record? 
+    if @user.new_record?
       id=params[:id] || (params[:user] && params[:user][:id])
       token = params['token'] || (params[:user] && params['user'][:token])
       @user =  User.find(id, :conditions => ["(passwordhash ='' or passwordhash is null) and (salt ='' or salt is null) and token = ?",token]) #and email_token
@@ -65,28 +64,19 @@ class LoginController < ApplicationController
     end
  end
 
- 
+
 private
   def reset_session_and_district
     reset_session
     current_user = User.new
     session[:district_id]=nil
-    
   end
 
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
-    begin
-    if ENABLE_SUBDOMAINS 
-      subdomain = current_district.abbrev #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
-    end
-    return root_url(:subdomain=>subdomain)
-    rescue NameError
-    end
-      root_url()
+    return root_url_with_subdomain
   end
 
-  
 end
 
 

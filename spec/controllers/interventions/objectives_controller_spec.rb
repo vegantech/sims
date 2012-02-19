@@ -20,17 +20,17 @@ describe Interventions::ObjectivesController do
     end
   end
 
-  describe "GET 'select'" do
+  describe "post create'" do
     it "should redirect to category selection" do
-      get 'select',:goal_id=>1,:objective_definition=>{:id=>1}
+      post 'create',:goal_id=>1,:objective_definition=>{:id=>1}
       response.should redirect_to(interventions_categories_url(1,1))
     end
   end
 
-  describe "xhr GET 'select'" do
+  describe "xhr POST 'create'" do
     it "should display the category selection dropdown" do
       controller.should_receive(:populate_categories)
-      xhr :get, 'select',:goal_id=>1,:objective_definition=>{:id=>1}
+      xhr :post, 'create',:goal_id=>1,:objective_definition=>{:id=>1}
       response.should be_success
     end
   end
