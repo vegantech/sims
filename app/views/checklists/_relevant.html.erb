@@ -5,7 +5,7 @@
 <%= check_box_tag "element_definition[#{relevant.id}]", answer_definition.id, is_checked if answer_definition.value == "0" %>
 </td>
   <td>
-<label for="<%="element_definition[#{relevant.id}]" %>">
+<label for="<%="element_definition_#{relevant.id}" %>">
     <%= (answer_definition.text) %>
   </label>
 
