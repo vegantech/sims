@@ -44,7 +44,7 @@
 </table>
 
 <div id="benchmarks">
-  <% form.fields_for :probe_definition_benchmarks do |benchmark_fields| %>
+  <%= form.fields_for :probe_definition_benchmarks do |benchmark_fields| %>
     <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => benchmark_fields.object, :index =>"e_#{benchmark_fields.object.id}", :form=>form} %>
   <% end %>
 </div>

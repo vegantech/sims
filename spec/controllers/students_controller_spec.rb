@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   describe 'get index' do
     it 'should get index when there is a current school and search criteria' do
@@ -27,14 +29,14 @@ describe StudentsController do
   end
 
   describe 'select' do
-   describe 'without selected_students' do
+    describe 'without selected_students' do
       it 'should put error in flash, and rerender students index' do
         controller.should_receive(:student_search).and_return([])
         controller.should_receive(:setup_students_for_index)
         get :select,{}, {:search=>{}}
 
         session[:selected_students].should be_nil
-        response.flash[:notice].should == 'No students selected'
+        request.flash[:notice].should == 'No students selected'
         response.should render_template("index")
       end
     end
@@ -51,7 +53,7 @@ describe StudentsController do
 
       end
       it 'should put error in flash' do
-        response.flash[:notice].should == 'Unauthorized Student selected, try searching again'
+        request.flash[:notice].should == 'Unauthorized Student selected, try searching again'
       end
 
       it 'should clear the selected students from the session' do
@@ -66,21 +68,21 @@ describe StudentsController do
     end
 
     describe 'with selected_students' do
-       before do
+      before do
         e1 = mock_enrollment(:student_id=>'5')
         e2 = mock_enrollment(:student_id => '16')
         e1.stub_association!(:student,:id => "5")
         controller.should_receive(:student_search).and_return([e1,e2])
         get :select, {:id => ["5", "16"]},  {:search=>{}}
 
-       end
-      
-       it 'should set selected_students and selected_student' do
+      end
+
+      it 'should set selected_students and selected_student' do
         session[:selected_students].should == ["5", "16"]
         session[:selected_student].should == "5"
       end
-      
-       it 'should redirect to first student' do
+
+      it 'should redirect to first student' do
         response.should redirect_to(student_url("5"))
       end
     end
@@ -163,7 +165,7 @@ describe StudentsController do
         response.should redirect_to(schools_url)
 
       end
- 
+
 
 
       it 'should set @grades and render search template' do
@@ -178,9 +180,9 @@ describe StudentsController do
 
         get :search
 
-        assigns[:grades].should == ['*', '1', '2']
-        assigns[:users].should == ['m1', 'm2']
-        assigns[:groups].should == ['g1']
+        assigns(:grades).should == ['*', '1', '2']
+        assigns(:users).should == ['m1', 'm2']
+        assigns(:groups).should == ['g1']
         response.should render_template('search')
       end
     end
@@ -190,19 +192,19 @@ describe StudentsController do
         it 'should set error message and redraw search screen' do
           post :search
           flash[:notice].should == 'Missing search criteria'
-          response.should redirect_to("http://www.test.host/students/search")
+          response.should redirect_to("http://test.host/students/search")
         end
       end
 
       describe 'with search criteria' do
         it 'should capture search criteria in session and redirect to students_url' do
           post :search, 'search_criteria' => {'grade' => '1', 'last_name' => 'Buckley', 'search_type' => 'Search Type'},
-            'flagged_intervention_types' => ['attendance', 'math']
+          'flagged_intervention_types' => ['attendance', 'math']
 
           response.should redirect_to(students_url)
 
           session[:search].should == {'flagged_intervention_types'=>['attendance', 'math'],
-            'last_name'=>'Buckley', 'intervention_group_types'=>nil, 'grade'=>'1', 'search_type'=>'Search Type'}
+          'last_name'=>'Buckley', 'intervention_group_types'=>nil, 'grade'=>'1', 'search_type'=>'Search Type'}
         end
       end
     end
@@ -212,22 +214,22 @@ describe StudentsController do
 
     describe 'with selected student' do
       it 'should set @student, and render show template' do
-       
+
         current_district=mock_district(:id=>5)
         controller.stub!(:current_district => current_district)
         student = mock_student(:district_id => current_district.id)
         Student.should_receive(:find).with(student.id.to_s).and_return(student)
-        get :show, {:id => student.id}, :selected_students => ["#{student.id}"]
+        get :show, {:id => student.id.to_s}, :selected_students => ["#{student.id}"]
 
         response.should_not redirect_to(students_url)
         response.should render_template('show')
-        assigns[:student].should == student
+        assigns(:student).should == student
       end
 
-   end
+    end
 
     describe 'without selected student' do
-       it 'should set session if we have not set it yet, alternate entry with access' do
+      it 'should set session if we have not set it yet, alternate entry with access' do
         pending
       end
       it 'should flunk enforce_session_selections if user does not have access' do
@@ -235,7 +237,7 @@ describe StudentsController do
         student=mock_student
         student.should_receive("belongs_to_user?").and_return(false)
         Student.should_receive(:find).with("999").and_return(student)
-        get :show, {:id => 999}
+        get :show, {:id => '999'}
         flash[:notice].should == 'You do not have access to that student'
         response.should redirect_to(students_url)
       end
@@ -254,14 +256,14 @@ describe StudentsController do
       it 'should assign same value for @groups as student_groups and @users as group_users' do
         @user.should_receive(:filtered_members_by_school).with(@school,{"grade"=>"*", "action"=>"grade_search", "controller"=>"students"}).and_return([1,2,3,4])
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>"*",  "action"=>"grade_search", "controller"=>"students"}).and_return([5,6,7,8])
-        
+
         xhr :post, :grade_search, :grade=>"*"
         assigns(:groups).should == [5,6,7,8]
         assigns(:users).should == [1,2,3,4]
-        
+
       end
     end
-    
+
     describe 'passed 01' do
       it 'should call filter student groups by grade and assign @groups and @users accordingly' do
         @user.should_receive(:filtered_groups_by_school).with(@school,{"grade"=>'01',  "action"=>"grade_search", "controller"=>"students"}).and_return(['g1-1','g1-3'])
@@ -277,7 +279,7 @@ describe StudentsController do
   end
 
   describe 'member_search' do
-     before do
+    before do
       @user=mock_user
       @school=mock_school
       controller.stub!(:current_user=>@user)
@@ -309,19 +311,20 @@ describe StudentsController do
         xhr :post, :member_search, :grade=>"01", :user=>"5"
         assigns(:groups).should == [2]
       end
-      
+
     end
-    
+
   end
 
   it 'has student search should call Enrollment.search' do
     Enrollment.should_receive(:search).and_return([1,2,3])
-    controller.session ={:search => {}}
+    session = {:search => {}}
+    controller.stub!(:session => session)
     #    controller.should_receive(:session).and_return({:search=>{}})
     controller.send(:student_search).should == [1,2,3]
 
   end
-    
+
 
   #controller.should_receive(:group_users).and_return([])
   #     controller.should_receive(:student_groups).and_return([])

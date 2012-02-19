@@ -5,7 +5,7 @@
 
   <p><%= link_to 'New group', new_group_path %></p>
   <h2>Virtual Groups </h2>
-  <p>In a virtual group, the users are assigned by the School Administrator, 
+  <p>In a virtual group, the users are assigned by the School Administrator,
   but the sudents are assigned dynamically by SIMS.  The student assignments
   are based on enrollments. If a student is enrolled in a school, that student will
   belong to the "All Students In School" and their respective "All Students In Grade: X."
@@ -26,12 +26,11 @@
 <% end %>
 </table>
 
- 
 
 
 <h2> Assigned Groups </h2>
 <p> In an assigned group, the students and users are assigned by the School Admin. </p>
-<% form_tag groups_path, :method=>:get do %>
+<%= form_tag groups_path, :method=>:get do %>
   <%=label_tag :title, "title, Any part"%>
   <%=text_field_tag :title, params[:title] %>
   <%=submit_tag "Search by Title", :name=>nil %>

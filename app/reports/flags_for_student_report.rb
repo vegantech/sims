@@ -31,7 +31,7 @@ class FlagSummary
 
   def to_grouping
     @table ||= to_table
-    return @table if @student.flags.empty? 
+    return @table if @student.flags.empty?
     sort_lambda = lambda {|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g.name) || 999 }
     Ruport::Data::Grouping(@table, :by => 'sti_type').sort_grouping_by sort_lambda
   end

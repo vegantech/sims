@@ -27,7 +27,7 @@ Feature: Search By Student Groups
     And xhr "search_criteria_grade" updates ["search_criteria_group_id", "search_criteria_user_id"]
     #And rjs is triggered for "grade" and value "3"
 
-    Then I should verify rjs has options ["default user", "Red Team"]
+    Then I should verify the updated rjs has options ["default user", "Red Team"]
 
 
 
@@ -50,7 +50,7 @@ Feature: Search By Student Groups
     And xhr "search_criteria_grade" updates ["search_criteria_group_id", "search_criteria_user_id"]
     #And rjs is triggered for "grade" and value "3"
 
-    Then I should verify rjs has options ["All Staff", "Other Guy","default user", "Filter by Group","Green Team","Red Team",  "Yellow Team"]
+    Then I should verify the updated rjs has options ["All Staff", "Other Guy","default user", "Filter by Group","Green Team","Red Team",  "Yellow Team"]
 
 
 

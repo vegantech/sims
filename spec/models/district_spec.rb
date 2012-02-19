@@ -101,6 +101,7 @@ describe District do
   end
 
 
+  it 'should have spec for check keys'
 
   describe 'claim student' do
     it 'should not call external verification if it is not setup' do

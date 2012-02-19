@@ -1,7 +1,7 @@
 <h3 class="extended_profile", ondblclick="$('extended_profile').toggle();"><span>Extended Profile</span></h3>
 <% if @student.extended_profile? %>
   <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" unless defined?(in_report) %>
-  <div id="extended_profile" <%='style="display:none;"' unless defined?(in_report) %> >
+  <div id="extended_profile" <%=style_display_none_unless(defined?(in_report)) %> >
      <% ext_pro = @student.ext_summary || @student.build_ext_summary %>
     <%#=extended_profile(@student)%>
 
@@ -41,7 +41,6 @@
 	<tr><td>Suspensions In: <%=ext_pro.suspensions_in.to_s%>  Out: <%=ext_pro.suspensions_out.to_s%></td></tr>
 	<tr><td>Periods Tardy: <%=ext_pro.tardies.to_s%></td></tr>
 </table>
-	
 <table>
   <tr><td>Student Mobility: </td>
     <td> Years In District:</td><td><%=ext_pro.years_in_district%></td></tr>

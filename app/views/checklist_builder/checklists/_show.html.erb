@@ -54,8 +54,8 @@
       </td>
     </tr>
   </table>
-  <%div_for(checklist_definition,:preview ,:style=>"display:none"){} %>
-  <%div_for( checklist_definition, :edit, :style=>"display:none") {} %>
-  <%div_for(checklist_definition,:new_question_definition_notice ,:style=>"display:none"){} %>
-  <%div_for(checklist_definition,:new_question_definition ,:style=>"display:none"){} %>
-  <%content_tag_for(:ul, checklist_definition, :question_definitions, :style=>"display:none") {} %>
+  <%=div_for(checklist_definition,:preview ,:style=>"display:none"){} %>
+  <%=div_for( checklist_definition, :edit, :style=>"display:none") {} %>
+  <%=div_for(checklist_definition,:new_question_definition_notice ,:style=>"display:none"){} %>
+  <%=div_for(checklist_definition,:new_question_definition ,:style=>"display:none"){} %>
+  <%=content_tag_for(:ul, checklist_definition, :question_definitions, :style=>"display:none") {} %>

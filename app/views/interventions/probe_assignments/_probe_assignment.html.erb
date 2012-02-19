@@ -1,7 +1,7 @@
 <p>
 <% if @intervention.active? && probe_assignment.id == @intervention_probe_assignment.id %>
   <%#= display_assessment_links(probe_assignment) %>
-  <% fields_for 'intervention[intervention_probe_assignment][new_probes][]', probe_assignment.probes.build, :index => 0  do |paf| %>
+  <%= fields_for 'intervention[intervention_probe_assignment][new_probes][]', probe_assignment.probes.build, :index => 0  do |paf| %>
     <div id="new_probe_forms">
       <%= render :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment, :index=>0} %>
     </div>
@@ -48,21 +48,21 @@
       page.show "spinner#{probe_assignment_counter}"
       page.delay(1.5) do
        page.hide "spinner#{probe_assignment_counter}"
-      end  
+      end
     end %><%= spinner("#{probe_assignment_counter}") %>
-          
- 
+
+
   </p>
 
   <div id='<%= "graph_#{probe_assignment_counter}" %>'>
-  
+
     <%=  probe_graph(probe_assignment,probe_assignment_counter) %>
 
     </div>
-  
+
   <% else %>
   <div id='<%= "graph_#{probe_assignment_counter}" %>'>
-  
+
 
   </div>
 

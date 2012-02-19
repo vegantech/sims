@@ -2,12 +2,12 @@
 
 <p><%=PersonalGroup::DESCRIPTION%> </p>
 <p> The students here are based on your student
-selection.  If you'd like to add students to this group then 
+selection.  If you'd like to add students to this group then
  click "Student Search" or "Student Selection"
  in the breadcrumbs.  You don't need to reselect
- the students already in the group, just the ones that you 
+ the students already in the group, just the ones that you
  wish to add.  </p>
-<% form_for(@personal_group) do |f| %>
+<%= form_for(@personal_group) do |f| %>
   <%= f.error_messages %>
 
  <p>
@@ -18,7 +18,6 @@ selection.  If you'd like to add students to this group then
  <p> Students </p>
  <% @students.each do |student| %>
    <%= check_box_tag "personal_group[student_ids][]", student.id, @personal_group.student_ids.include?(student.id), :id => "personal_group_student_ids_#{student.id}" %>
-   
    <%= label_tag "personal_group_student_ids_#{student.id}", student %> <br />
  <% end %>
  </p>

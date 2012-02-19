@@ -34,12 +34,13 @@ class ProbeDefinition < ActiveRecord::Base
 
   validates_presence_of :title, :description
   validates_uniqueness_of :title, :scope => ['active', 'district_id']
-  validates_numericality_of :maximum_score, :allow_nil => true
-  validates_numericality_of :minimum_score, :allow_nil => true
+  validates_numericality_of :maximum_score, :allow_nil => true, :greater_than_or_equal_to => Proc.new{|p| p.minimum_score}, :if  => :minimum_score
+  validates_numericality_of :minimum_score, :allow_nil => true, :less_than_or_qual_to => Proc.new{|p|  p.maximum_score}, :if => :maximum_score
   #validates_associated(:probe_definition_benchmarks)
 
-  named_scope :cico, :conditions => {:cico => true}
+  scope :cico, :conditions => {:cico => true}
   acts_as_list :scope => :district_id
+  attr_protected :district_id
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :select => 'distinct title'
@@ -48,13 +49,6 @@ class ProbeDefinition < ActiveRecord::Base
   end
 
   acts_as_reportable if defined? Ruport
-  
-  def validate
-    #TODO this can be refactored out using rails 2.x changes
-    if minimum_score != nil && maximum_score != nil && minimum_score > maximum_score
-      errors.add(:minimum_score, "must be less than the maximum score.")
-    end
-  end
 
   def title
     if custom and self[:title].present?
@@ -82,7 +76,7 @@ class ProbeDefinition < ActiveRecord::Base
         probes.reject!(&:active) unless params[:enabled]
         probes = probes.select(&:active) unless params[:disabled]
       end
-      
+
       if params[:custom] || params[:system]
         probes.reject!(&:custom) unless params[:custom]
         probes = probes.select(&:custom) unless params[:system]

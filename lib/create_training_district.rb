@@ -612,6 +612,8 @@ class CreateTrainingDistrict
   end
 
 
+
+
   def self.setup_sci_demo_content(district)   #cico
     d=district
     pd=d.probe_definitions.create!(:title => 'SCI', :description => 'Student Check-In', :cico => true, :minimum_score => 0, :maximum_score => 100)

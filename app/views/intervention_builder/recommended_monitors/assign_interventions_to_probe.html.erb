@@ -2,7 +2,7 @@
 
 <% intervention_definition_ids = @probe_definition.intervention_definition_ids %>
 
-<% form_tag do %>
+<%= form_tag do %>
 <div class="standardForm">
 
 <% @goal_definitions.reject(&:disabled).each do |g| %>
@@ -14,7 +14,6 @@
 
 <% @int_defs.each do |int_def| %>
          <%=check_box_tag("int_defs[]", int_def.id,intervention_definition_ids.include?(int_def.id), :id=>int_def.id) %>
-		 
          <%= label_tag int_def.id, int_def.title %><br />
         <% end %>
 <% end %>

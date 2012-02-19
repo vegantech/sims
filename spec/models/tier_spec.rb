@@ -126,7 +126,6 @@ describe Tier do
     it 'should move child principal overrides to the appropriate tier' do
       t0 = Factory(:tier)
       t1 = Factory(:tier)
-      
       pos = create_without_callbacks(PrincipalOverride,:start_tier => t0)
       poe = create_without_callbacks(PrincipalOverride,:end_tier => t0)
       t0.send(:move_children_to_delete_successor)
@@ -135,14 +134,12 @@ describe Tier do
     end
 
     it 'should make sure the changes are scoped' do
-      pending 
+      pending
     end
   end
-  
   def create_without_callbacks(o, opts={:tier=>@tier})
     obj=o.new(opts)
-    obj.send(:create_without_callbacks)
+    obj.sneaky_save
     obj
   end
-    
 end

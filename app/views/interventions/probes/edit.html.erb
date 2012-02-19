@@ -1,5 +1,5 @@
 <h1>Edit Probe </h1>
-<% form_for @probe, :url=>probe_url(@intervention,@intervention_probe_assignment,@probe), :method=>:put do |f| %>
+<%= form_for @probe, :url=>probe_url(@intervention,@intervention_probe_assignment,@probe), :method=>:put do |f| %>
 <div class="new_form">
   <%=render :partial=>f, :locals=>{:probe_assignment => @intervention_probe_assignment} %>
  <div class="center_submit"p>

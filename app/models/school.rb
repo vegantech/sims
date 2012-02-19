@@ -29,11 +29,12 @@ class School < ActiveRecord::Base
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
   has_many :cico_settings
+  attr_protected :district_id
 
 
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
 
-  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id', 
+  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.district_id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
@@ -55,9 +56,10 @@ class School < ActiveRecord::Base
       # all grades where user has 1 or more authorized enrollments
       grades = user.special_user_groups.grades_for_school(self)
       group_ids = (self.group_ids & user.group_ids) #This needs to be limited to the school
-      sql = enrollments.construct_finder_sql(:select => 'distinct grade', :joins => 'join groups_students on enrollments.student_id = groups_students.student_id',
-                                             :conditions => {'groups_students.group_id' => group_ids})
-      grades |= enrollments.connection.select_values(sql)
+      sql = enrollments.select('distinct grade')
+      sql = sql.joins 'join groups_students on enrollments.student_id = groups_students.student_id'
+      sql = sql.where  'groups_students.group_id' => group_ids
+      grades |= enrollments.connection.select_values(sql.to_sql)
     end
     grades.sort!
   end
@@ -92,7 +94,7 @@ class School < ActiveRecord::Base
   end
 
   def quicklist
-    InterventionDefinition.find(:all,:joins=>:quicklist_items, 
+    InterventionDefinition.find(:all,:joins=>:quicklist_items,
     :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
   end
 
@@ -103,8 +105,8 @@ class School < ActiveRecord::Base
   end
 
   def enrollment_years
-    sql = enrollments.construct_finder_sql :select => 'distinct end_year', :order => 'end_year'
-    connection.select_values(sql).collect(&:to_s)
+    sql = enrollments.select('distinct end_year').order('end_year')
+    connection.select_values(sql.to_sql).collect(&:to_s)
   end
 
   def assigned_users

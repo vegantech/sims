@@ -46,7 +46,7 @@ describe InterventionCluster do
       ics=InterventionCluster.include_sld_criteria_from_definitions
       ics.should == [f.intervention_cluster]
       ics.first.should be_sld
-      ics.first.sld.should == "255"
+      ics.first.sld.should == 255
     end
 
   end

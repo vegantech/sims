@@ -1,7 +1,6 @@
 class StudentsController < ApplicationController
 	before_filter :enforce_session_selections, :except => [:index, :select, :search]
   skip_before_filter :verify_authenticity_token
-  additional_read_actions %w{grade_search member_search search}
 
   # GET /students
   # GET /students.xml
@@ -175,7 +174,7 @@ class StudentsController < ApplicationController
   def setup_students_for_index
     if cache_configured?
       cache_keys =@students.collect{|s| s.index_cache_key}
-      @cached_status = Rails.cache.read_multi(cache_keys)
+      @cached_status = Rails.cache.read_multi(*cache_keys)
       misses= (cache_keys - @cached_status.keys)
       missed_students =@students.select{|s| misses.include?s.index_cache_key}
     else

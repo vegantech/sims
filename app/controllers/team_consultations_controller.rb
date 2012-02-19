@@ -1,6 +1,5 @@
 class TeamConsultationsController < ApplicationController
   before_filter :require_current_school
-  additional_write_actions :complete, :undo_complete
   # GET /team_consultations/1
   # GET /team_consultations/1.xml
   def show
@@ -30,7 +29,7 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
-      format.html # new.html.erb
+      format.html {render :action => 'new'} # new.html.erb
       format.js { render :action => 'new'}
     end
   end

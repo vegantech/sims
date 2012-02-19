@@ -1,7 +1,7 @@
 <% consultation_form ||= @consultation_form || show %>
-<% content_tag_for :tr, consultation_form, "show" do %>
+<%= content_tag_for :tr, consultation_form, "show" do %>
 <td colspan="6">
-  <% form_for(consultation_form, :builder => ConsultationFormBuilder) do |f| %>
+  <%= form_for(consultation_form, :builder => ConsultationFormBuilder) do |f| %>
   <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
 <% end %>
 </td>

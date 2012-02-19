@@ -1,43 +1,44 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe NewsItemsController do
- it_should_behave_like "an authenticated controller"
- it_should_behave_like "an authorized controller"
- before do
+  it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+  before do
     district=mock_district
     district.stub_association!(:administers,:news=>NewsItem)
     controller.stub!(:current_district).and_return(district)
   end
 
-    
+
 
   def mock_news_item(stubs={})
     @mock_news_item ||= mock_model(NewsItem, stubs)
   end
-  
+
   describe "responding to GET new" do
-  
+
     it "should expose a new news_item as @news_item" do
       NewsItem.should_receive(:new).and_return(mock_news_item)
       get :new
-      assigns[:news_item].should equal(mock_news_item)
+      assigns(:news_item).should equal(mock_news_item)
     end
 
   end
 
   describe "responding to GET edit" do
-  
+
     it "should expose the requested news_item as @news_item" do
       NewsItem.should_receive(:find).with("37").and_return(mock_news_item)
       get :edit, :id => "37"
-      assigns[:news_item].should equal(mock_news_item)
+      assigns(:news_item).should equal(mock_news_item)
     end
 
   end
 
   describe "responding to POST create" do
     describe "with valid params" do
-      
+
       it "should expose a newly created news_item as @news_item" do
         NewsItem.should_receive(:build).with({'these' => 'params'}).and_return(mock_news_item(:save => true))
         post :create, :news_item => {:these => 'params'}
@@ -49,9 +50,9 @@ describe NewsItemsController do
         post :create, :news_item => {}
         response.should redirect_to(root_url)
       end
-      
+
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved news_item as @news_item" do
@@ -65,9 +66,9 @@ describe NewsItemsController do
         post :create, :news_item => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT udpate" do
@@ -93,7 +94,7 @@ describe NewsItemsController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       it "should update the requested news_item" do
@@ -125,7 +126,7 @@ describe NewsItemsController do
       mock_news_item.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
-  
+
     it "should redirect to the news_items list" do
       NewsItem.stub!(:find).and_return(mock_news_item(:destroy => true))
       delete :destroy, :id => "1"

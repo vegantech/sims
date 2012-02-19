@@ -1,6 +1,4 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, 
-    :student_flag_summary, :user_interventions, :grouped_progress_entry, :statewide_interventions, :statewide_progress_monitors
   skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
   skip_before_filter :verify_authenticity_token
 
@@ -71,14 +69,15 @@ class ReportsController < ApplicationController
   def student_overall
     # process params from student_overall_options
     params[:format] = params[:report_params][:format] if params[:report_params]
-    params[:format] = 'html' unless defined? PDF::HTMLDoc
+    params[:format] = :html unless defined? PDF::HTMLDoc
+    request.format = params[:format] if params[:format]
 
     @opts = params[:report_params] || {}
     @student = current_student
 
     respond_to do |format|
       format.html {}
-      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
+      format.pdf {send_data(render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" )}
     end
   end
 

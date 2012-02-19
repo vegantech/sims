@@ -20,11 +20,12 @@ class ConsultationForm < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :user
   belongs_to :team_consultation
-  
+
   has_many :consultation_form_concerns, :dependent => :destroy
   delegate :district,  :to => '(team_consultation or return nil)'
   delegate :school_team,  :to => '(team_consultation or return nil)'
   attr_writer :school, :student
+  attr_protected :district_id
 
 
   define_statistic :consultation_forms , :count => :all, :joins => {:team_consultation => :student}
@@ -58,5 +59,5 @@ class ConsultationForm < ActiveRecord::Base
       self.user_id = team_consultation.requestor_id
     end
   end
-  
+
 end

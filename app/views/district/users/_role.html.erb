@@ -1,5 +1,3 @@
-  <b>
-    <%=label_tag "role_#{role}", "<b>#{role.titleize}</b>" %>
+    <%= label_tag "role_#{role}", role.titleize %>
     <%= help_popup(Role::SYSTEM_ROLES[role]) %>
-  </b>
-<%=check_box_tag "user[roles][]", role,@user.roles.include?(role), {:id=>"role_#{role}"}%> 
+<%=check_box_tag "user[roles][]", role,@user.roles.include?(role), {:id=>"role_#{role}"}%>

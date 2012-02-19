@@ -68,14 +68,13 @@ class TiersController < ApplicationController
       redirect_to(tiers_url) and return
 
     end
-    
     if params[:delete_confirmation] or !@tier.used_at_all?
       flash[:notice] = "Records have been moved to the #{@tier.delete_successor} tier" if params[:delete_confirmation]
       @tier.destroy
 
       respond_to do |format|
         format.html { redirect_to(tiers_url) }
-      end 
+      end
     else
       flash[:notice]='Tier in use'
     end

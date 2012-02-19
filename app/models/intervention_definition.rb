@@ -41,7 +41,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :recommended_monitors, :order => :position, :dependent => :delete_all
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
-  has_many :interventions 
+  has_many :interventions
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
   validates_numericality_of :frequency_multiplier, :time_length_num
@@ -55,12 +55,10 @@ class InterventionDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
 
- named_scope :restrict_tiers_and_disabled, lambda {|student_tier|
-    {:conditions => "intervention_definitions.disabled=false and
+  scope :restrict_tiers_and_disabled, lambda {|student_tier|
+    where("intervention_definitions.disabled=false and
       (!districts.lock_tier or goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
-      tiers.position <= #{student_tier.position})",
-    :joins => [:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}]
-  }
+      tiers.position <= #{student_tier.position})").joins([:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}])
   }
 
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
@@ -164,7 +162,7 @@ class InterventionDefinition < ActiveRecord::Base
     description + d
 
   end
-  
+
   def set_values_from_intervention(int)
     #Used only for custom interventions
     if new_record?
@@ -179,5 +177,5 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-  
+
 end

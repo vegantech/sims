@@ -1,7 +1,4 @@
 class GroupsController < ApplicationController
-  additional_read_actions :show_special
-  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special,
-      :add_special_form, :add_special
   # GET /groups
   def index
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])
@@ -43,7 +40,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully created.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "new" }
@@ -57,7 +54,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "edit" }

@@ -32,15 +32,14 @@ def go_to_page page_name
 end
 
 def click_all_name_id_brackets
-  doc=Hpricot(page.source)
-  doc.search("//input[@name='id[]']").each do |elem|
-    check(elem[:id])
+  all('input[name="id[]"]').each do |elem|
+    elem.set(true) #check
   end
 end
 
 def verify_select_box id, options
   options=Array(eval(options))
-  page.should have_dropdown(id, options)
+  page.should have_select(id, :options=>options)
 end
 
 def log_in
@@ -50,7 +49,7 @@ def log_in
   fill_in 'Login', :with => @default_user.username
   fill_in 'Password', :with => @default_user.username
   click_button 'Login'
-  response.should_not have_text(/Authentication Failure/)
+  page.should_not have_content("Authentication Failure")
 end
 
 def find_or_create_user user_name

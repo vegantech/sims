@@ -3,7 +3,7 @@ Upload a file with the following headers: <br />
 <%=AutomatedIntervention::FORMAT%>
 </p>
 <%= render :partial => 'automated_intervention_fields' %>
-<%form_tag '',:multipart=>true do %>
+<%=form_tag '',:multipart=>true do %>
   <label for "upload_file">Upload File</label>
   <%=file_field_tag "upload_file" %>
   <%=hidden_field_tag :district_abbrev , @u.district.abbrev%>

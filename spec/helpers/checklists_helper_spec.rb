@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-require 'bluecloth'
 describe ChecklistsHelper do
   include ChecklistsHelper
   #Delete this example and add some real ones or delete this file
@@ -55,7 +54,7 @@ describe ChecklistsHelper do
     it 'should return markdown text wrapped in a span' do
       pending
       markdown_with_span('text to display').should == '<span class="markdown"><p>text to display</p></span>'
-      
+
     end
   end
 
@@ -67,7 +66,7 @@ describe ChecklistsHelper do
   end
 
 
-    
+
 
 
 
@@ -124,7 +123,7 @@ class ChecklistsHelperTest < HelperTestCase
   end
 
   def test_autoset_onclick_autoset
-    
+
     qd=QuestionDefinition.new(:question_definition_id=>55)
     p={:question_definition_id=>55,:kind=>"scale",:text=>"blah"}
     ed=qd.element_definitions.build(p.merge(:element_definition_id=>55))
@@ -146,10 +145,10 @@ class ChecklistsHelperTest < HelperTestCase
   def test_probe_definition_columns_to_list
     no_list_columns = %w{calendarID created_at active updated_at}
     list_columns = %w{ curly larry moe }
-    no_list_columns.each do |col| 
+    no_list_columns.each do |col|
       assert_equal nil, (probe_definition_columns_to_list(@cols.new(col)) {"blah"})
     end
-    list_columns.each do |col| 
+    list_columns.each do |col|
       assert_equal "blah", (probe_definition_columns_to_list(@cols.new(col)) {"blah"})
     end
 
@@ -159,13 +158,13 @@ class ChecklistsHelperTest < HelperTestCase
   def test_probe_definition_columns_to_show
     no_list_columns = %w{calendarID active}
     list_columns = %w{ curly larry moe }
-    
-    no_list_columns.each do |col| 
+
+    no_list_columns.each do |col|
       assert_equal nil, (probe_definition_columns_to_list(@cols.new(col)) {"blah"})
     end
-    list_columns.each do |col| 
+    list_columns.each do |col|
       assert_equal "blah", (probe_definition_columns_to_list(@cols.new(col)) {"blah"})
-  
+
     end
   end
 

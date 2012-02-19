@@ -34,7 +34,7 @@
 
 </script>
 
-<% form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true} do %>
+<%= form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true} do %>
   <%= label_tag 'import_file', 'File to Import' %>
   <%= file_field_tag 'import_file'%>
   <%= hidden_field_tag 'X-Progress-ID', @uuid %>

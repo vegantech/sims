@@ -1,8 +1,8 @@
 <% readonly ||= false %>
 
-<% content_tag_for :tr, comment do %>
-  <td> 
-    <% content_tag_for :span, comment, "span" do %>
+<%= content_tag_for :tr, comment do %>
+  <td>
+    <%= content_tag_for :span, comment, "span" do %>
       <%= h comment %>
     <% end %>
   </td>
@@ -13,7 +13,7 @@
       <td>
         <%= link_to_remote_degrades 'Delete', :url => intervention_comment_path(@intervention, comment),
         :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
-        
+
       </td>
     <% end %>
 <% end %>

@@ -1,7 +1,4 @@
 class District::StudentsController < ApplicationController
-  additional_read_actions :check_id_state
-  additional_write_actions :claim
-
   # GET /district_students
   # GET /district_students.xml
   def index
@@ -37,7 +34,7 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        flash[:notice] = "#{edit_obj_link(@student)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully created.".html_safe
         format.html { redirect_to(index_url_with_page) }
       else
         format.html { render :action => "new" }
@@ -53,7 +50,7 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] = "#{edit_obj_link(@student)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully updated.".html_safe
         format.html { redirect_to(index_url_with_page) }
       else
         format.html { render :action => "edit" }
@@ -90,7 +87,7 @@ class District::StudentsController < ApplicationController
   def claim
     @student = Student.find(params[:id])
      res,msg= current_district.claim(@student)
-       flash[:notice] = msg
+       flash[:notice] = msg.html_safe
      if res
        redirect_to edit_district_student_url(@student)
      else

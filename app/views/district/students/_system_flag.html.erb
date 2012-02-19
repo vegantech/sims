@@ -3,7 +3,7 @@
   <% prefix = "student[#{new_or_existing}_system_flag_attributes][]" %>
 
 
-  <% fields_for prefix, system_flag  do |system_flag_form| %>
+  <%= fields_for prefix, system_flag  do |system_flag_form| %>
   <%= error_messages_for :system_flag, :object => system_flag %>
   <p>
     <%=system_flag_form.label :category%>

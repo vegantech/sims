@@ -1,6 +1,6 @@
 <h1>Preview of Checklist Definition <%= @checklist_definition.checklist_definition_id %></h1>
 <div id="checklist">
-<%- form_tag({},{:name=>"checklist_form"}) do  -%>
+<%= form_tag({},{:name=>"checklist_form"}) do  -%>
 <%= render :partial => 'checklists/form', :locals => { :checklist => @checklist } %>
 <%- end -%>
 </div>

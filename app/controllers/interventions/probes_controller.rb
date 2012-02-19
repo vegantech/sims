@@ -1,8 +1,6 @@
 class Interventions::ProbesController < ApplicationController
   before_filter :load_intervention,:load_intervention_probe_assignment, :except=>:index
 
-  additional_write_actions [:new_assessment, :update_assessment, :save_assessment]
-  
   def index
     @intervention=current_student.interventions.find(params[:intervention_id],:include=>{:intervention_probe_assignments=>[:probe_definition,:probes]})
     respond_to do |format|
@@ -51,7 +49,7 @@ class Interventions::ProbesController < ApplicationController
 
   def destroy
     @probe = @intervention_probe_assignment.probes.find(params[:id])
-    @probe.destroy 
+    @probe.destroy
 
     respond_to do |format|
       format.js {}
@@ -97,7 +95,7 @@ class Interventions::ProbesController < ApplicationController
   def load_intervention_probe_assignment
     pdi = params[:probe_assignment_id].to_s
     if pdi.include?("pd")
-      @intervention_probe_assignment = @intervention.intervention_probe_assignments.build(:probe_definition_id =>pdi.sub(/^pd/,'')) 
+      @intervention_probe_assignment = @intervention.intervention_probe_assignments.build(:probe_definition_id =>pdi.sub(/^pd/,''))
     else
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(pdi)
     end
@@ -107,7 +105,6 @@ class Interventions::ProbesController < ApplicationController
     @questions=@probe.probe_questions
     @allquestions=@probe.probe_definition.probe_questions
     setup_report(@questions,@allquestions)
-    
 
   end
 

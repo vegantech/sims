@@ -1,1 +1,2 @@
-require Rails.root.join('lib','use_old_fixtures_key.rb')
+require 'active_record/fixtures'
+Fixtures.send :include,UseOldFixturesKey

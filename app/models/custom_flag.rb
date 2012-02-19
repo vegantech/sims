@@ -16,7 +16,6 @@
 class CustomFlag < Flag
   validate :either_custom_or_ignore
 
-
   define_statistic :flags , :count => :all,:joins =>:student
   define_statistic :students_with_flags , :count => :all,  :select => 'distinct student_id',:joins => :student
   define_statistic :districts_with_flags, :count => :all, :select => 'distinct students.district_id', :joins => :student

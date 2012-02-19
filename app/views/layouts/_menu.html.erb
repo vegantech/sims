@@ -1,7 +1,7 @@
 <ul>
   <% if session[:user_id] %>
     <li><%= link_to "Home", root_path %> </li>
-    <%= li_link_to_if_authorized 'School Selection', schools_path %> 
+    <%= li_link_to_if_authorized 'School Selection', schools_path %>
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
       <%= render :partial => "layouts/core_practices" %>
       <%= render :partial => "layouts/intervention_pdf_html_list" %>
@@ -22,13 +22,13 @@
       <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
       <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
       <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
-      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) if defined?Railmail %>
+      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) if defined? RailmailController or Rails.env.development? %>
       <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
         current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
       <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
       <% end %>
-      <% plus_minus_li "Reports" do %>
+      <%= plus_minus_li "Reports" do %>
           <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
           <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
               regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
@@ -36,7 +36,7 @@
           <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
               interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
           <% if current_student  %>
-            <%= li_link_to_if_authorized "<b>Student Report</b>", {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
+            <%= li_link_to_if_authorized "<b>Student Report</b>".html_safe, {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
             <%= li_link_to_if_authorized "Student Interventions", {:controller => 'reports', :action => 'student_interventions', :student_id => current_student.id } %>
           <% end %>
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
@@ -60,10 +60,10 @@
 
 
   <% cache ["help",current_user.roles_mask,Role.cache_key] do %>
-  <% plus_minus_li "Help" do %>
+  <%= plus_minus_li "Help" do %>
     <% if session[:user_id] %>
       <% current_user.roles.each do |role| %>
-        <% plus_minus_li role.humanize do %>
+        <%= plus_minus_li role.humanize do %>
           <%Role::HELP[role].each do |role_help| %>
             <%=content_tag(:li, link_to(role_help[:name],role_help[:url])) %>
           <% end %>

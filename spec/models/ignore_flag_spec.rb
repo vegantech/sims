@@ -14,7 +14,6 @@
 #
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'test/unit'
 
 describe IgnoreFlag do
   before(:each) do
@@ -29,13 +28,13 @@ describe IgnoreFlag do
     IgnoreFlag.create!(@valid_attributes)
   end
 
-  def test_invalid_with_empty_attributes
+  it 'should be invalid with empty attributes' do
     flag = IgnoreFlag.new
     flag.should_not be_valid
     flag.errors_on(:category).should_not be_nil
   end
 
-  def test_only_allow_one_ignore_flag
+  it 'should only allow one ingore flag for a given category(/student)' do
     IgnoreFlag.create!(@valid_attributes)
     a=IgnoreFlag.create(@valid_attributes)
     a.errors_on(:category).should_not be_nil
@@ -43,7 +42,7 @@ describe IgnoreFlag do
     a.should be_valid
   end
 
-  def test_do_not_allow_ignore_flag_when_custom_exists
+  it 'should not allow ignore flag when custom exists' do
     a=CustomFlag.new(@valid_attributes)
     a.category="suspension"
     a.user_id=55
@@ -52,8 +51,4 @@ describe IgnoreFlag do
     a.should be_valid
     b.should_not be_valid
   end
-
-
-
-  
 end

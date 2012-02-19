@@ -1,13 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::ProbesController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
-  
+  include_context "authorized"
+  include_context "authenticated"
+
+
   def mock_probe(stubs={})
     @mock_probe ||= mock_model(Probe, stubs)
   end
-  
+
   describe "responding to GET index" do
 
     it "should expose all probes as @probes" do
@@ -23,12 +25,12 @@ describe Interventions::ProbesController do
   end
 
   describe "Has before filter" do
-    before do 
+    before do
       student=mock_student
       @intervention=mock_intervention
       @intervention_probe_assignment = mock_model(InterventionProbeAssignment)
       @intervention.stub_association!(:intervention_probe_assignments,
-                                     :find=>@intervention_probe_assignment)
+      :find=>@intervention_probe_assignment)
       student.stub_association!(:interventions,:find=>@intervention)
 
       controller.stub!(:current_student).and_return(student)
@@ -36,23 +38,23 @@ describe Interventions::ProbesController do
     end
 
     describe "responding to GET new and set other instance vars" do
-    
+
       it "should expose a new probe as @probe" do
         @intervention_probe_assignment.stub_association!(:probes,:build=>mock_probe)
         get :new
-       assigns(:intervention).should == @intervention
-       assigns(:intervention_probe_assignment).should == @intervention_probe_assignment
-       assigns[:probe].should equal(mock_probe)
+        assigns(:intervention).should == @intervention
+        assigns(:intervention_probe_assignment).should == @intervention_probe_assignment
+        assigns(:probe).should equal(mock_probe)
       end
 
     end
 
     describe "responding to GET edit" do
-    
+
       it "should expose the requested probe as @probe" do
         @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe)
         get :edit, :id => "37"
-        assigns[:probe].should equal(mock_probe)
+        assigns(:probe).should equal(mock_probe)
       end
 
     end
@@ -60,7 +62,7 @@ describe Interventions::ProbesController do
     describe "responding to POST create" do
 
       describe "with valid params" do
-        
+
         it "should expose a newly created probe as @probe" do
           @intervention_probe_assignment.stub_association!(:probes,:new=>mock_probe(:save => true))
           post :create, :probe => {:these => 'params'}
@@ -72,9 +74,9 @@ describe Interventions::ProbesController do
           post :create, :probe => {}
           response.should redirect_to(intervention_url(@intervention))
         end
-        
+
       end
-      
+
       describe "with invalid params" do
 
         it "should expose a newly created but unsaved probe as @probe" do
@@ -88,9 +90,9 @@ describe Interventions::ProbesController do
           post :create, :probe => {}
           response.should render_template('new')
         end
-        
+
       end
-      
+
     end
 
     describe "responding to PUT udpate" do
@@ -105,7 +107,7 @@ describe Interventions::ProbesController do
 
         it "should expose the requested probe as @probe" do
           @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe(:update_attributes=>true))
-          
+
           put :update, :id => "1"
           assigns(:probe).should equal(mock_probe)
         end
@@ -117,7 +119,7 @@ describe Interventions::ProbesController do
         end
 
       end
-      
+
       describe "with invalid params" do
 
         it "should update the requested probe" do
@@ -149,7 +151,7 @@ describe Interventions::ProbesController do
         mock_probe.should_receive(:destroy)
         delete :destroy, :id => "37"
       end
-    
+
       it "should redirect to the probes list" do
         pending("remove if we never end up with html,  otherwise add a format to the delete")
         @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe(:destroy => true))

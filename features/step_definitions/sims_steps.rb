@@ -34,7 +34,7 @@ end
 
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
-  s.enrollments.create!(@student.enrollments.first.attributes)
+  s.enrollments.create!(@student.enrollments.first.attributes.merge(:student_id => s.id))
   @additional_student=true
   s.save!
 end
@@ -217,7 +217,7 @@ end
 
 
 Given /^load demo data$/ do
-  fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
+  fixtures_dir = Rails.root.join("test","fixtures")
 
   Fixtures.reset_cache
   Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
@@ -259,19 +259,28 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
-  page.should have_options(Array(eval(options)))
+  page.should have_select("Student Group", :options =>(Array(eval(options))))
 end
+
+Then /^I should verify the updated rjs has options (.*)$/ do |options|
+  Array(eval(options)).each do |o|
+    page.source.should match(/<option value=\\\".*\\\">#{o}<\/option>/)
+  end
+end
+
 
 Given /^I enter URL "(.*)"$/ do |url|
   visit url
 end
 
 Given /^there are "(\d+)" emails$/ do |num_emails|
-  assert_emails num_emails.to_i
+  ActionMailer::Base.deliveries.size.should == num_emails.to_i
+# assert_emails num_emails.to_i
 end
 
 Given /^there is not an email containing "(.*)"$/ do |target_text|
-  assert_no_emails
+  ActionMailer::Base.deliveries.size.should == 0
+#  assert_no_emails
 end
 
 Given /^there is an email containing "(.*)"$/ do |target_text|

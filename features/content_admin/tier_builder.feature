@@ -45,12 +45,12 @@ Feature: Tier Builder
 
     And I follow "Tier Builder"
 
-    Then I follow Delete within "tr.tier:first-of-type"
+    Then I follow "Delete" within "tr.tier:first-of-type"
     And I should see "This tier is in use. Are you sure you want to move everything to 2 - Targeted?"
     And I follow "Cancel"
     And I should see "Broad"
 
-    Then I follow Delete within "tr.tier:first-of-type"
+    Then I follow "Delete" within "tr.tier:first-of-type"
     And I should see "This tier is in use. Are you sure you want to move everything to 2 - Targeted?"
     And I press "Delete"
     And I should not see "Broad"

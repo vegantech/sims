@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::SchoolsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_schools(stubs={})
     @mock_schools ||= mock_model(School, stubs)
@@ -13,13 +15,13 @@ describe District::SchoolsController do
     @district.stub_association!(:users, :count => 10)
     controller.stub!(:current_district => @district)
     @district.stub!(:schools => School)
-   end
+  end
 
   describe "responding to GET index" do
     it "should expose all district_schools as @schools" do
       @district.should_receive(:schools).and_return([mock_schools])
       get :index
-      assigns[:schools].should == [mock_schools]
+      assigns(:schools).should == [mock_schools]
     end
   end
 
@@ -27,7 +29,7 @@ describe District::SchoolsController do
     it "should expose a new schools as @school" do
       School.should_receive(:build).and_return(mock_schools)
       get :new
-      assigns[:school].should equal(mock_schools)
+      assigns(:school).should equal(mock_schools)
     end
   end
 
@@ -35,7 +37,7 @@ describe District::SchoolsController do
     it "should expose the requested schools as @schools" do
       School.should_receive(:find).with("37").and_return(mock_schools)
       get :edit, :id => "37"
-      assigns[:school].should equal(mock_schools)
+      assigns(:school).should equal(mock_schools)
     end
   end
 

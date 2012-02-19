@@ -22,11 +22,11 @@
 #
 
 class District < ActiveRecord::Base
-  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+#  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
-  has_many :checklist_definitions
+  has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
@@ -51,9 +51,9 @@ class District < ActiveRecord::Base
   has_attached_file  :logo
 
 
-  named_scope :normal, :conditions=>{:admin=>false}, :order => 'name'
-  named_scope :admin, :conditions=>{:admin=>true}
-  named_scope :in_use,  :include => :users, :conditions => "users.username != 'district_admin' and users.id is not null"
+  scope :normal, where(:admin=>false).order('name')
+  scope :admin, where(:admin=>true)
+  scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
@@ -64,7 +64,7 @@ class District < ActiveRecord::Base
   validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
-  validate_on_update :check_keys
+  validate  :check_keys, :on => :update
   before_destroy :make_sure_there_are_no_schools
   after_destroy {|d| ::CreateInterventionPdfs.destroy(d) }
   before_validation :clear_logo
@@ -245,7 +245,7 @@ private
       special_user_groups.destroy_all
       news.destroy_all
     else
-      errors.add_to_base("Have the district admin remove the schools first.")
+      errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
   end

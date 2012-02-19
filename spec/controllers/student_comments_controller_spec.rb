@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentCommentsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
 
   def mock_student_comment(stubs={})
     @mock_student_comment ||= mock_model(StudentComment, stubs)
@@ -27,7 +28,7 @@ describe StudentCommentsController do
 
         StudentComment.should_receive(:build).and_return(mock_student_comment)
         get :new,:student_id => "2"
-        assigns[:student_comment].should equal(mock_student_comment)
+        assigns(:student_comment).should equal(mock_student_comment)
       end
 
     end
@@ -39,7 +40,7 @@ describe StudentCommentsController do
 
         StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
         get :edit, :id => "37",:student_id => "2"
-        assigns[:student_comment].should equal(mock_student_comment)
+        assigns(:student_comment).should equal(mock_student_comment)
       end
 
     end

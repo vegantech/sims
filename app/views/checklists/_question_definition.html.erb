@@ -1,6 +1,6 @@
 <% checklist ||= @checklist %>
 <%= render :partial => '/checklists/question_link' , :locals => {:question_definition => question_definition }%>
-<div class="questionDiv" <%='style="display:none"' unless view %>>
+<div class="questionDiv" <%=style_display_none_unless(view) %>>
   <% #pop off the first element if it is a relevance element  
   element_definitions = question_definition.element_definitions
   element_definitions, relevant =element_definitions.partition{|e| e.kind.to_sym != :applicable}

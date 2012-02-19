@@ -7,9 +7,9 @@ describe LoginController do
 
 
 
- def mock_user(stubs={})
-   @mock_user ||= mock_model(User, stubs)
- end
+  def mock_user(stubs={})
+    @mock_user ||= mock_model(User, stubs)
+  end
 
   describe "responding to GET index" do
 
@@ -29,7 +29,7 @@ describe LoginController do
       response.should be_success
     end
 
-    
+
   end
 
   describe "responding to POST login with valid credentials" do
@@ -43,13 +43,13 @@ describe LoginController do
       User.should_receive(:authenticate).with('user','pass').and_return(user)
       post :login ,:username=>'user',:password=>'pass'
       session[:user_id].should == 999
-      response.should redirect_to("/")
+      response.should redirect_to("http://www.test.host/")
     end
-  
+
   end
 
   describe "responding to POST login with invalid credentials" do
-     it "should render the login" do
+    it "should render the login" do
       controller.should_receive(:dropdowns)
       district=mock_district(:name => 'mock district')
       controller.stub!(:current_district).and_return(district)
@@ -58,18 +58,18 @@ describe LoginController do
       User.should_receive(:authenticate).and_return(false)
       post :login
       session[:user_id].should == nil
-      response.flash[:notice].should == "Authentication Failure"
+      request.flash[:notice].should == "Authentication Failure"
       response.should render_template("login")
     end
-  
+
   end
 
   describe "responding to GET logout" do
-     it "should reset the session and redirect to root" do
-       controller.should_receive(:reset_session)
-       controller.should_receive(:dropdowns)
-       get :logout
-       response.should render_template('login')
+    it "should reset the session and redirect to root" do
+      controller.should_receive(:reset_session)
+      controller.should_receive(:dropdowns)
+      get :logout
+      response.should render_template('login')
     end
   end
 end

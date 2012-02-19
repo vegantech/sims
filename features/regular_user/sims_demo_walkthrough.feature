@@ -56,7 +56,7 @@ Feature: Sims Demo Walkthrough
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
 
-    Then I should see "Reading one" within "td"
+    Then I should see select box with id of "Assign Intervention" and contains "Reading one"
     Then I press "Save"
 
     Then I follow "Edit/Add Comment"

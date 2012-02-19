@@ -20,7 +20,7 @@
 <% end %>
 
 
-<% div_for consultation_form.object,'form', :style => hide_or_show_consultation_form(consultation_form) do %>
+<%= div_for consultation_form.object,'form', :style => hide_or_show_consultation_form(consultation_form) do %>
 <%= render :partial => 'consultation_forms/concerns_form', :object => consultation_form %>
 
 <p>

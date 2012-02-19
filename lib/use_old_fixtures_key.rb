@@ -1,6 +1,6 @@
 require 'active_record/fixtures'
 
-class Fixtures < (RUBY_VERSION < '1.9' ? YAML::Omap : Hash)
+module UseOldFixturesKey
   STATIC_IDENTIFY_VALUES = {
     :alpha_first_attendance => 184330814,
     :day => 85852977,
@@ -26,7 +26,18 @@ class Fixtures < (RUBY_VERSION < '1.9' ? YAML::Omap : Hash)
   # Returns a consistent, platform-independent identifier for +label+.
   # Identifiers are positive integers less than 2^32.
 
-  def self.identify(label)
-    STATIC_IDENTIFY_VALUES[label.to_sym] ||  (Zlib.crc32(label.to_s) % MAX_ID)
+  def self.included(base)
+    base.class_eval do
+      extend ClassMethods
+      class << self
+        alias_method_chain :identify, :static
+      end
+    end
+  end
+
+  module ClassMethods
+    def identify_with_static(label)
+      STATIC_IDENTIFY_VALUES[label.to_sym] || identify_without_static(label)
+    end
   end
 end

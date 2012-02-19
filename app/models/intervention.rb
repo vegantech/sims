@@ -55,6 +55,7 @@ class Intervention < ActiveRecord::Base
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
 
+  after_initialize :set_defaults_from_definition
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
@@ -67,8 +68,9 @@ class Intervention < ActiveRecord::Base
   delegate :sld?,:title, :tier, :description,:description_with_sld, :intervention_cluster, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
-  named_scope :active, :conditions => {:active => true}, :order => 'created_at desc'
-  named_scope :inactive, :conditions => {:active => false}, :order => 'created_at desc'
+  scope :desc, order("created_at desc")
+  scope :active, where(:active => true).desc
+  scope :inactive, where(:active => false).desc
 
 
 
@@ -134,7 +136,7 @@ class Intervention < ActiveRecord::Base
     intervention_probe_assignments.update_all(:enabled => false) #disable all others
     params.stringify_keys! unless params.blank? #fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
-  
+
     if params['probe_definition_id'] == 'custom'
       params['probe_definition_id'] = nil
     end
@@ -282,7 +284,7 @@ class Intervention < ActiveRecord::Base
     # PENDING
     @interventions = Array(self) | Array(@interventions)
     unless self.called_internally
-      Notifications.deliver_intervention_starting(@interventions)
+      Notifications.intervention_starting(@interventions).deliver
     end
 
     true
@@ -291,7 +293,7 @@ class Intervention < ActiveRecord::Base
   def validate_intervention_probe_assignment
     return true unless defined? @ipa
     return true if @ipa.valid?
-    errors.add_to_base("Progress Monitor Assignment is invalid")
+    errors.add(:base,"Progress Monitor Assignment is invalid")
     false
   end
 
@@ -309,7 +311,7 @@ class Intervention < ActiveRecord::Base
    end
   end
 
-  def after_initialize
+  def set_defaults_from_definition
     return unless new_record?
     self.start_date ||= Date.today
 

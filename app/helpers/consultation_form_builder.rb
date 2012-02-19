@@ -1,21 +1,14 @@
 class ConsultationFormBuilder < ActionView::Helpers::FormBuilder
-  include LinksAndAttachmentsHelper
-  include ApplicationHelper
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::AssetTagHelper
-  include ActionView::Helpers::UrlHelper
-
-
   def text_area(field,*args)
-    '<p>'+object.send(field).to_s() +'</p>'
+    @template.content_tag(:p, @template.send(:h,object.send(field).to_s()))
   end
 
   def label(field,text,*args)
-    '<b>' + text.to_s + '</b>'
+    @template.content_tag(:b, @template.send(:h,text.to_s))
   end
 
   def assets
-    "<ul>" + links_and_attachments(object,'li') + "</ul>"
+    @template.content_tag(:ul,  @template.links_and_attachments(object,'li') )
   end
 
 end

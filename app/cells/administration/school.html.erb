@@ -1,24 +1,17 @@
 <% if @show %>
   <h2><%=@school%> Administration</h2>
   <ul>
-    <li><%=link_to 'Manage Groups', groups_url %> 
-    <%=help_popup(Group::DESCRIPTION) %> </li> 
-    <li>
-    <%=link_to 'Manage Quicklist', quicklist_items_url %>
-    <%=help_popup("Used to identify the most frequent interventions used within the school. 
-                  This allows staff to assign a new intervention more efficiently from the quicklist.") %> 
-    </li>
+    <li><%=link_to 'Manage Groups', groups_path %>
+    <%=help_popup(Group::DESCRIPTION) %> </li>
+    <li><%=link_to 'Manage Quicklist', quicklist_items_path %>
+                  <%=help_popup("Used to identify the most frequent interventions used within the school.
+                                This allows staff to assign a new intervention more efficiently from the quicklist.")%> </li>
+                                <li><%=link_to 'Manage School Teams', school_teams_path %>
+                                <%=help_popup(SchoolTeam::DESCRIPTION) %>
+                                </li>
 
-    <li><%=link_to 'Manage School Teams', school_teams_url %>
-    <%=help_popup(SchoolTeam::DESCRIPTION) %>
-    </li>
-
-    <li><%=link_to 'Setup CICO', cico_settings_url %>
+    <li><%=link_to 'Setup CICO', cico_settings_path %>
     <%=help_popup(CicoSetting::DESCRIPTION) %>
     </li>
-
-
-
-
   </ul>
 <% end %>

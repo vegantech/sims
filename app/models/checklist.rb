@@ -34,7 +34,8 @@ class Checklist < ActiveRecord::Base
   define_statistic :count , :count => :all
   define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
   after_update :remove_deleted_answers
-  before_validation_on_create :assign_associated_from_student
+  before_validation :assign_associated_from_student, :on => :create
+  attr_protected :district_id
 
 
 
@@ -105,7 +106,7 @@ class Checklist < ActiveRecord::Base
     c = checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id, :order => "created_at DESC")
 
     if c
-      c.answers.each {|e| checklist.answers.build e.attributes}
+      c.answers.each {|e| checklist.answers.build e.attributes.except("checklist_id")}
       c.score_checklist if c.show_score?(false)
       checklist.score_results = c.score_results
     end
