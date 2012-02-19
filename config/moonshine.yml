@@ -94,4 +94,4 @@
     :client:  1.8.1
     :enable_on_boot:  true
 
-:rubygems_version: 1.4.2
+:rubygems_version: 1.8.17
