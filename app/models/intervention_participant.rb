@@ -69,7 +69,7 @@ class InterventionParticipant < ActiveRecord::Base
 
   def send_new_participant_email
     unless @skip_email
-      Notifications.deliver_intervention_participant_added(self)
+      Notifications.intervention_participant_added(self).deliver
     end
   end
 end

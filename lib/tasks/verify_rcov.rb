@@ -15,9 +15,9 @@ module RCov
     # Whether or not to output details. Defaults to true.
     attr_accessor :verbose
 
-    # The threshold value (in percent) for coverage. If the 
-    # actual coverage is not equal to this value, the task will raise an 
-    # exception. 
+    # The threshold value (in percent) for coverage. If the
+    # actual coverage is not equal to this value, the task will raise an
+    # exception.
     attr_accessor :threshold
 
     # Require the threshold value be met exactly.  This is the default.

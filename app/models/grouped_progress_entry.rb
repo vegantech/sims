@@ -65,7 +65,7 @@ class GroupedProgressEntry
         new_intervention_participant = student_interventions.collect(&:id)- user.interventions_as_participant_ids
         user.interventions_as_participant_ids |= new_intervention_participant
         user.save
-        Notifications.deliver_intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id)) unless new_intervention_participant.blank?
+        Notifications.intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id)).deliver unless new_intervention_participant.blank?
       end
       true
     else

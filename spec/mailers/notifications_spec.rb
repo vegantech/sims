@@ -79,7 +79,7 @@ describe Notifications do
     it 'should deliver emails in interventions_ending_this week'  do
       m=mock_intervention(:participants_with_author => [mock(:user=>mu=mock_user)],:student => mock_student(:belongs_to_user? => true))
       Notifications.should_receive(:interventions_ending_this_week).and_return([m])
-      Notifications.should_receive(:deliver_intervention_ending_reminder).with(mu,[m]).and_return(false)
+      Notifications.should_receive(:intervention_ending_reminder).with(mu,[m]).and_return(mock(:deliver =>false))
       Notifications.setup_ending_reminders
     end
   end

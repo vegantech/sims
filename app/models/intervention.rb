@@ -274,7 +274,7 @@ class Intervention < ActiveRecord::Base
     # PENDING
     @interventions = Array(self) | Array(@interventions)
     unless self.called_internally
-      Notifications.deliver_intervention_starting(@interventions)
+      Notifications.intervention_starting(@interventions).deliver
     end
 
     true

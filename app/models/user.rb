@@ -199,7 +199,7 @@ class User < ActiveRecord::Base
     if @user && @user.passwordhash.blank? && @user.salt.blank?
       if @user.district.key.present? && @user.district.key == password
         @user.update_attribute(:token, Digest::SHA1.hexdigest("#{@user.district.key}#{rand}#{@user.id}"))
-        Notifications.deliver_change_password(@user)
+        Notifications.change_password(@user).deliver
         #send the email
         @user = User.new(:token => @user.token)
 
