@@ -432,8 +432,8 @@ ActiveRecord::Schema.define(:version => 20120119221044) do
     t.datetime "updated_at"
     t.string   "notify_email"
     t.boolean  "exempt_tier",                                                                                                                                                                                                                   :default => false, :null => false
-    t.integer  "mins_per_week",                                                                                                                                                                                                                 :default => 0,     :null => false
     t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'", :default => ""
+    t.integer  "mins_per_week",                                                                                                                                                                                                                 :default => 0,     :null => false
   end
 
   add_index "intervention_definitions", ["frequency_id"], :name => "index_intervention_definitions_on_frequency_id"

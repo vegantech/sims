@@ -1,4 +1,4 @@
-Rails.application.routes.draw do |map|
+Rails.application.routes.draw do
   resources :cico_settings do
     resources :cico_school_days
   end

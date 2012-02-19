@@ -33,8 +33,8 @@ class InterventionCluster < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:objective_definition=>:goal_definition}).length
   end
 
-  named_scope :include_sld_criteria_from_definitions, :joins => :intervention_definitions, :group => 'intervention_clusters.id',
-      :select => 'intervention_clusters.id, intervention_clusters.title, intervention_clusters.description, intervention_clusters.disabled, bit_or(intervention_definitions.sld) as sld'
+  scope :include_sld_criteria_from_definitions, joins(:intervention_definitions).group('intervention_clusters.id').select(
+      'intervention_clusters.id, intervention_clusters.title, intervention_clusters.description, intervention_clusters.disabled, bit_or(intervention_definitions.sld) as sld')
 
   def disable!
     intervention_definitions.each(&:disable!)
