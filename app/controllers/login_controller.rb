@@ -74,14 +74,7 @@ private
 
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
-    begin
-    if ENABLE_SUBDOMAINS
-      subdomain = current_district.abbrev #and Object.const_defined?('SIMS_DOMAIN') and request.host.include?(Object.const_get('SIMS_DOMAIN'))
-    end
-    return root_url(:subdomain=>subdomain)
-    rescue NameError
-    end
-      root_url()
+    return root_url_with_subdomain
   end
 
 end

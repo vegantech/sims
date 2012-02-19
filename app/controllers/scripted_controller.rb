@@ -44,7 +44,7 @@ class ScriptedController < ApplicationController
       spawn_block do
         importer = ImportCSV.new params[:upload_file], current_district
         importer.import
-        Notifications.deliver_district_upload_results importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us'
+        Notifications.district_upload_results(importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us').deliver
       end
       render :text=> ''
     else
@@ -57,7 +57,7 @@ class ScriptedController < ApplicationController
       spawn_block(:method => :yield) do
         importer=AutomatedIntervention.new params[:upload_file], @u
         @messages=importer.import
-        Notifications.deliver_district_upload_results @messages, @u.email || 'sbalestracci@madison.k12.wi.us'
+        Notifications.district_upload_results( @messages, @u.email || 'sbalestracci@madison.k12.wi.us').deliver
       end
         render :text=>"response will be emailed to #{@u.email}" and return
     end

@@ -3,11 +3,10 @@
 
 class ApplicationController < ActionController::Base
   #TODO replace this default district constant
-
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :current_user_id, :index_url_with_page
+    :current_user_id, :index_url_with_page, :root_url_without_subdomain
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -203,6 +202,30 @@ def check_student
 
   def current_subdomain
     #base this on tld somehow
-    request.subdomain.gsub(/^www(.)?/,'')
+    request.subdomain(SIMS_DOMAIN_LENGTH).gsub(/^www(.)?/,'')
+  end
+
+  def root_url_with_subdomain
+    opts = {}
+    opts[:port] = request.port unless [80,443].include? request.port.to_i
+
+    if request.domain && ENABLE_SUBDOMAINS
+      opts[:host] =  "#{current_district.try(:abbrev) || 'www' }.#{request.domain(SIMS_DOMAIN_LENGTH)}"
+    else
+      opts[:host] = request.host
+    end
+    root_url(opts)
+  end
+
+  def root_url_without_subdomain
+    opts = {}
+    opts[:port] = request.port unless [80,443].include? request.port.to_i
+
+    if request.domain
+      opts[:host] =  "www.#{request.domain(SIMS_DOMAIN_LENGTH)}"
+    else
+      opts[:host] = request.host
+    end
+    root_url(opts)
   end
 end
