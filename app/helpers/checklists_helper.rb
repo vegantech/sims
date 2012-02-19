@@ -1,6 +1,6 @@
 module ChecklistsHelper
   def mmsd_eligibility_criteria menu=false
-    if current_district and current_district.state_dpi_num == 3269
+    if current_district && current_district.state_dpi_num == 3269
     elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
      "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
        "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
@@ -27,9 +27,9 @@ module ChecklistsHelper
     return if checklist.student.blank?
     if block_given?
       if (answers = checklist.previous_answers_for(answer_definition)).any?
-        concat "<div style=\"color:gray\">Previous Answers:</div>", block.binding
+        concat "<div style=\"color:gray\">Previous Answers:</div>".html_safe
         answers.each do |answer|
-          concat(capture(answer, &block),block.binding)
+          concat(capture(answer, &block))
         end
       end
     end

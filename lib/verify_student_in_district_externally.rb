@@ -75,7 +75,7 @@ class VerifyStudentInDistrictExternally
        raise StudentVerificationError, 'Connection Timeout'
        puts 'Connection timeout'
      end
-   rescue Exception => err 
+   rescue Exception => err
      raise StudentVerificationError, 'Connection Timeout'
    end
 
