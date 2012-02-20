@@ -3,7 +3,7 @@ class StudentFlagReport < DefaultReport
   stage :header, :body
   required_option :search
   load_html_csv_text
-  
+
   def setup
     self.data = StudentFlags.new(options)
   end
@@ -33,7 +33,7 @@ class StudentFlags
 
   def to_table
     return unless defined? Ruport
-    
+
     srt = Ruport::Data::Table(["Name", "Student Num", "Grade", "Flag Reason", "FlagType"])
     students = Enrollment.search(@search).collect(&:student).compact.uniq
     students.each do |student|
@@ -67,7 +67,7 @@ class StudentFlags
     students = @school.students.find_flagged_students.select{|e| e.person_id if grade.blank? || e.grade == grade }
 
 
-    
+
     students = @school.students.find_flagged_students("ignored").select{|e| e.person_id if grade.blank? || e.grade == grade }
     students.each {|student| srt << [student.fullname, student.studentNum,student.grade, student.ignore_flags_summarize_reasons, "Ignored Flags"]}
     students = @school.students.find_flagged_students("custom").select{|e| e.person_id if grade.blank? || e.grade == grade }

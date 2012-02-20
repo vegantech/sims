@@ -23,7 +23,7 @@ describe Flag do
       s2=SystemFlag.create!(:category => 'attendance', :reason => "doesn't show up")
       i1=IgnoreFlag.create!(:category => 'languagearts', :reason => 'Speaks 50 languages, just not English')
       i2=IgnoreFlag.create!(:category => 'math', :reason => 'Delete me later')
-     
+
       Flag.current['attendance'].should include(s2)
       Flag.current['math'].should be_nil
       Flag.current['language_arts'].should be_nil

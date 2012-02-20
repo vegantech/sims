@@ -14,6 +14,7 @@ config.action_controller.perform_caching             = true
 
 
 config.log_level = :debug
+config.active_support.deprecation = :log
 
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store
