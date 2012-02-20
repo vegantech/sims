@@ -11,8 +11,9 @@ GIT
     spawn (1.0.1)
 
 GIT
-  remote: https://github.com/zonecheung/railmail.git
+  remote: git://github.com/zonecheung/railmail.git
   revision: 71294653be3d260f80ddd3dab0785a9200ca67e3
+  ref: 71294653be3d260f80ddd3dab0785a9200ca67e3
   specs:
     railmail (3.0.0)
       rails (~> 3.0.0)
