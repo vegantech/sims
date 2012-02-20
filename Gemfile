@@ -54,7 +54,7 @@ gem 'acts_as_list'
 gem 'will_paginate'
 
 
-gem 'railmail', :git => "https://github.com/zonecheung/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test]
+gem 'railmail', :git => "git://github.com/zonecheung/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test], :ref => "71294653be3d260f80ddd3dab0785a9200ca67e3"
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
