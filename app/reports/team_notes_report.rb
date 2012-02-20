@@ -4,7 +4,7 @@ class TeamNotesReport < DefaultReport
   load_html_csv_text
 
   def setup
-    self.data = TeamNotes.new(options)
+    self.data = TeamNotes.new(formatter.format,options)
   end
 
   class PDF < Ruport::Formatter::PDF
@@ -32,13 +32,14 @@ end
 
 class TeamNotes
 
-  def initialize(options={})
+  def initialize(format,options={})
     @user = options[:user]
     @school = options[:school]
     @start_date = options[:start_date]
     @end_date = options[:end_date]
     @sort_field = options[:sort_field] || 'Student'
     @content = options[:content].to_s
+    @format = format.to_s
   end
 
   def to_table
@@ -63,7 +64,13 @@ class TeamNotes
       end
 
       rt.replace_column('student.fullname', 'Student') do |r|
-        "<a href=\"/students/#{r['student.id']}\">#{r['student.fullname']}</a>"
+        if @format == "html"
+          "<a href=\"/students/#{r['student.id']}\">#{r['student.fullname']}</a>"
+        elsif @format == "pdf"
+          "<c:alink uri=\"https://www.simspilot.org/students/#{r['student.id']}\">#{r['student.fullname']}</c:alink>"
+        else
+          r['student.fullname']
+        end
       end
     end
 

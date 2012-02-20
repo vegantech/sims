@@ -22,32 +22,32 @@ class Flag < ActiveRecord::Base
                       },
       "suspension" => {:icon=> "B.gif", :humanize => "Behavior",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "math" => {:icon => "M.gif", :humanize => "Math",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "science" => {:icon=> "Beaker.png", :humanize => "Science",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "socialstudies" => {:icon=> "world_edit.png", :humanize => "Social Studies",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "gifted" => {:icon=> "lightbulb.png", :humanize => "Gifted/Talented",
         :how_often_to_upload =>
-                      "As soon as possible after availability. 
+                      "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "ignored" => {:icon => "I.gif", :humanize => "Ignored"},
@@ -71,7 +71,7 @@ class Flag < ActiveRecord::Base
   scope :system, where(:type=>'SystemFlag')
 
   def summary
-    "#{reason}- by #{user} on #{created_at}"
+    "#{reason}- by #{user} on #{created_at.to_s(:report)}"
   end
 
   def icon

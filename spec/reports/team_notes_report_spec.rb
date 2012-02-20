@@ -22,14 +22,14 @@ describe TeamNotesReport do
       report_body.should == <<EOS
 Report Generated at December 12, 2008 00:00
 
-<a href=\"/students/#{student.id}\">This Student</a>:
+This Student:
 
-+---------------------------------------+
-|   Date   | User Name |   Team Note    |
-+---------------------------------------+
-| 12/11/08 | Some User | First Comment  |
-| 12/13/08 | Some User | Second Comment |
-+---------------------------------------+
++-----------------------------------------+
+|    Date    | User Name |   Team Note    |
++-----------------------------------------+
+| 12/11/2008 | Some User | First Comment  |
+| 12/13/2008 | Some User | Second Comment |
++-----------------------------------------+
 
 EOS
     end

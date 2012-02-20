@@ -1,8 +1,8 @@
 Date::DATE_FORMATS.merge!(
-  :report => "%m/%d/%y"
+  :report => "%m/%d/%Y"
 )
 
 Time::DATE_FORMATS.merge!(
-  :report => "%m/%d/%y"
+  :report => "%m/%d/%Y"
 )
 
