@@ -17,8 +17,8 @@ describe PersonalGroup do
       @pg.id = 665
     end
 
-    it 'should alias title' do
-      @pg.title.should == 'pg1'
+    it 'should alias title with pg-' do
+      @pg.title.should == 'pg- pg1'
     end
 
     it 'should have id_with_prefix' do

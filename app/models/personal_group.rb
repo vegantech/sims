@@ -15,7 +15,7 @@ class PersonalGroup < ActiveRecord::Base
 
 
   def title
-    name
+   "pg- #{name}"
   end
 
   def id_with_prefix
