@@ -204,7 +204,7 @@ class District < ActiveRecord::Base
 
   def show_team_consultation_attachments?
     #Remove all references to this when put into production
-    Rails.env.wip? || Rails.env.development?  ||  ['grafton'].include?(self.abbrev)
+    Rails.env.wip? || Rails.env.development?  ||  ['grafton','madison','mmsd', 'rhinelander','ripon'].include?(self.abbrev)
   end
 
 
