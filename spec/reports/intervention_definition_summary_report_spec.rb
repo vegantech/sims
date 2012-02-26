@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe InterventionDefinitionSummaryReport do
+describe "InterventionDefinitionSummaryReport" do
   describe 'render_text' do
     it 'should generate correct text output' do
+      pending 'move this to cucumber feature'
       ic = Factory(:intervention_cluster, :title => 'IC-TITLE')
       id = Factory(:intervention_definition, :title => 'ID-TITLE', :description => "ID-DESCRIPTION", :intervention_cluster => ic)
       od = ic.objective_definition
@@ -27,6 +28,7 @@ EOS
     end
 
     it 'should render just the date when there are no interventions ' do
+      pending 'move this to cucumber feature'
       ic = Factory(:intervention_cluster, :title => 'IC-TITLE')
       od = ic.objective_definition
       

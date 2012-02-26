@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :personal_groups
 
   match '/doc/' => 'doc#index', :as => :doc
+  match '/system/district_generated_docs/:district_id/:filename(.:format)' => "reports#intervention_definition_summary_report"
   resources :unattached_interventions do
     member do
       put :update_end_date

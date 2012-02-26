@@ -31,7 +31,7 @@ class District < ActiveRecord::Base
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
-  has_many :objective_definitions, :through => :goal_definitions
+  has_many :objective_definitions, :through => :goal_definitions, :order => 'title'
   has_many :probe_definitions
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
@@ -66,7 +66,7 @@ class District < ActiveRecord::Base
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate  :check_keys, :on => :update
   before_destroy :make_sure_there_are_no_schools
-  after_destroy {|d| ::CreateInterventionPdfs.destroy(d) }
+  after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
   after_create :create_admin_user
   before_update :backup_key
@@ -276,6 +276,11 @@ private
 
   def backup_key
     self.previous_key = key_was if key_changed? and key.present?
+  end
+
+  def destroy_intervention_menu_reports
+    dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
+    FileUtils.rm_rf(dir) if File.exists?dir
   end
 end
 

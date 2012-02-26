@@ -2,6 +2,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :disable
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
+  cache_sweeper :intervention_builder_sweeper
   # GET /intervention_definitions
   def index
     params[:enabled]=true and params[:commit]=true unless params[:commit]

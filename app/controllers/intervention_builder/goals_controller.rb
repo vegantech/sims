@@ -1,9 +1,11 @@
 class InterventionBuilder::GoalsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :regenerate_intervention_pdfs
   helper_method :move_path
+  cache_sweeper :intervention_builder_sweeper
 
   def regenerate_intervention_pdfs
-    CreateInterventionPdfs.generate(current_district)
+    #these are now generated upon request
+    #CreateInterventionPdfs.generate(current_district)
     redirect_to :back
   end
 
