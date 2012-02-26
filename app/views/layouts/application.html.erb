@@ -1,28 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title><%= @page_title || "SIMS- #{controller.controller_name.humanize}: #{controller.action_name.humanize}" %></title>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
-    <meta name="robots" content="index,follow" />
+    <%#= stylesheet_link_tag :all %>
     <%= stylesheet_link_tag 'common', :media => :all %>
     <%= stylesheet_link_tag 'datepicker', :media => :all %>
     <%= stylesheet_link_tag 'print', :media => :print %>
     <%= stylesheet_link_tag 'screen', :media => :screen %>
-
+    <%#= javascript_include_tag :defaults %>
+    <%= javascript_include_tag 'popup','prototype','overlib', 'effects','dragdrop','rails','application','spellerpages/spellChecker', :cache => true%>
+    <%= javascript_include_tag 'datepicker', :cache => false%>
+    <%= csrf_meta_tag %>
+    <title><%= "SIMS- #{controller.controller_name.humanize}: #{controller.action_name.humanize}" %></title>
+    <meta name="robots" content="index,nofollow" />
     <noscript><style type ="text/css"> .plus_minus ul {display:block} </style></noscript>
-
-      <%= javascript_include_tag 'popup','prototype','overlib', 'effects','dragdrop','application','spellerpages/spellChecker', :cache => true%>
-      <%= javascript_include_tag 'datepicker', :cache => false%>
   </head>
-
   <body>
 
     <div id="wrap">
       <div id="header">
         <div id ="left_header">
           <% if current_district && current_district.logo.url != "/logos/original/missing.png" %>
-          <%=image_tag current_district.logo.url, :size=>District::LOGO_SIZE, :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
+            <%=image_tag current_district.logo.url, :size=>District::LOGO_SIZE, :title => "#{current_district} logo", :alt => "#{current_district} logo"%>
           <% else %>
             <%=current_district%>
           <% end %>
@@ -35,14 +33,14 @@
       </div>
       <div id="left_column">
         <p>
-          <h2>Menu</h2>
-          <%=render :partial=>"layouts/menu"%>
+        <h2>Menu</h2>
+        <%=render "layouts/menu"%>
         </p>
-        <%= render :partial =>"layouts/administration"%>
-        <p><%= render :partial=>"layouts/flag_legend"%></p>
+        <%= render "layouts/administration"%>
+        <p><%= render "layouts/flag_legend"%></p>
 
-        <p><%= render_cell(:principal_overrides, :user_requests, :user=>@user)%></p>
-        <p><%= render_cell(:principal_overrides, :principal_responses,:user=>@user)%></p>
+        <p><%= render_cell(:principal_overrides, :user_requests, :user=>current_user)%></p>
+        <p><%= render_cell(:principal_overrides, :principal_responses,:user=>current_user)%></p>
         <%= render :partial => 'main/news' %>
       </div>
       <div id="main">
@@ -50,64 +48,59 @@
           <%=breadcrumbs%>
         </div>
         <p id="flash_notice"><%= flash[:notice] %>
-          <span id="session_notice"></span>
+        <span id="session_notice"></span>
         </p>
         <%=periodically_call_remote(:url => "/session_check?current_student_id=#{current_student_id}&user_id=#{current_user_id}",
-        :update => 'session_notice', :failure => "session_notice", :frequency => 30)  if current_user_id.present? %>
-          <%= yield %>
-          <%= render :partial =>'login/whats_new' if show_whats_new%>
+                                    :update => 'session_notice', :failure => "session_notice", :frequency => 30)  if current_user_id.present? %>
+                                    <%= yield %>
+                                    <%= render :partial =>'login/whats_new' if show_whats_new%>
 
-          <div class="breadcrumbs_and_banners_bottom">
-            <hr />
-          <%=breadcrumbs%>
-        </div>
-      </div>
-      <div id="footer">
-         <br style="clear:right;"/>
-         <% if current_student and current_student.max_tier %>
-            Current Tier is <%=current_student.max_tier%>
-         <% end %>
-         <br />
-         <%="Logged in as #{current_user} (#{current_school})" if current_user  && !current_user.new_record? %>
-        <br /><br />
+                                    <div class="breadcrumbs_and_banners_bottom">
+                                      <hr />
+                                      <%=breadcrumbs%>
+                                    </div>
+                                  </div>
+                                  <div id="footer">
+                                    <br style="clear:right;"/>
+                                    <% if current_student and current_student.max_tier %>
+                                      Current Tier is <%=current_student.max_tier%>
+                                    <% end %>
+                                    <br />
+                                    <%="Logged in as #{current_user} (#{current_school})" if current_user  && !current_user.new_record? %>
+                                    <br /><br />
 
-        <%= render :partial =>'districts/google_lsa'  if current_user.roles.include?("local_system_administrator") %>
-        <% if Rails.env.development? %>
-          <div id="debug">
-            <a href="#" onclick="Element.toggle('params_debug_info');return false">
-              params</a> |
-            <a href="#" onclick="Element.toggle('session_debug_info');return false">
-              session</a> |
-             <a href="#" onclick="Element.toggle('env_debug_info');return false">
-              environment</a> |
-            <a href="#" onclick="Element.toggle('request_debug_info');return false">
-              request</a> 
-            <fieldset id="params_debug_info" class="debug_info" style="display:none">
-              <%=debug(params) %>
-            </fieldset>
-            <fieldset id="session_debug_info" class="debug_info" style="display:none">
-              <%=debug(session) %>
-            </fieldset>
-            <fieldset id="env_debug_info" class="debug_info" style="display:none">
-              <%=debug(request.env) %>
-            </fieldset>
-            <fieldset id="request_debug_info" class="debug_info" style="display:none">
-              <%=debug(request) %>
-            </fieldset>
- 
-          </div>
-                    
-        <% end %> 
-      </div>
-    </div>
-    <% if false %>
-          <script type='text/javascript' 
-            src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
-        <% end %> 
+                                    <%= render :partial =>'districts/google_lsa'  if current_user.roles.include?("local_system_administrator") %>
+                                    <% if Rails.env.development?%>
+                                      <div id="debug">
+                                        <a href="#" onclick="Element.toggle('params_debug_info');return false"> params</a> |
+                                        <a href="#" onclick="Element.toggle('session_debug_info');return false"> session</a> |
+                                        <a href="#" onclick="Element.toggle('env_debug_info');return false"> environment</a> |
+                                        <a href="#" onclick="Element.toggle('request_debug_info');return false"> request</a>
+                                        <fieldset id="params_debug_info" class="debug_info" style="display:none">
+                                          <%=debug(params) %>
+                                        </fieldset>
+                                        <fieldset id="session_debug_info" class="debug_info" style="display:none">
+                                          <%=debug(session) %>
+                                        </fieldset>
+                                        <fieldset id="env_debug_info" class="debug_info" style="display:none">
+                                          <%=debug(request.env) %>
+                                        </fieldset>
+                                        <fieldset id="request_debug_info" class="debug_info" style="display:none">
+                                          <%=debug(request) %>
+                                        </fieldset>
+                                      </div>
 
-        <iframe id="upload_frame" name="upload_frame" src= "/blank.html" style="display: none;height:0;width:0;border:0;"></iframe>
+                                    <% end %>
+                                  </div>
+                                </div>
+                                <% if false %>
+                                  <script type='text/javascript'
+                                    src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+                                <% end %>
+
+                                <iframe id="upload_frame" name="upload_frame" src= "/blank.html" style="display: none;height:0;width:0;border:0;"></iframe>
+
+                              </body>
+                            </html>
 
 
-
-  </body>
-</html>

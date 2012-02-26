@@ -101,6 +101,7 @@ describe District do
   end
 
 
+  it 'should have spec for check keys'
 
   describe 'claim student' do
     it 'should not call external verification if it is not setup' do
@@ -121,7 +122,7 @@ describe District do
     it 'should have specs'
 
     it 'should' do
-     puts %q{check hash
+      pending  %q{check hash
       2. if districtless check historical enrollments, if last district was current district allow reclaimaing
        3.check dpi location verification}
     end

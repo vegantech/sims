@@ -1,4 +1,4 @@
-<% ipa.fields_for :probe_definition do |pdef| %>
+<%= ipa.fields_for :probe_definition do |pdef| %>
 <% pdef.object.valid? if request.post?%>
 
 <%=pdef.error_messages  :object_name => 'Progress Monitor' %>

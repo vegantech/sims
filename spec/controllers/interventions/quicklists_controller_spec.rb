@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::QuicklistsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   before do
     @district = mock_district(:intervention_definitions => InterventionDefinition)
@@ -31,9 +33,9 @@ describe Interventions::QuicklistsController do
   describe 'create' do
     it "should redirect to the new_intervention_url with that intervention_definition" do
       InterventionDefinition.should_receive(:find).with('1').and_return(
-        mock_intervention_definition(:goal_definition_id => 1,
-                                     :objective_definition_id => 2,
-                                     :intervention_cluster_id => 3, :id =>1))
+      mock_intervention_definition(:goal_definition_id => 1,
+      :objective_definition_id => 2,
+      :intervention_cluster_id => 3, :id =>1))
       post :create, :intervention_definition_id=> '1'
       response.should redirect_to(new_intervention_url(:goal_id => 1, :objective_id => 2, :category_id => 3, :definition_id =>1))
     end

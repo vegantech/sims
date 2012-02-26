@@ -5,6 +5,8 @@ describe ImportCSV do
   describe 'doc' do
     before :all do
         @files=ImportCSV.importers.collect(&:file_name)
+        @append_files = ImportCSV.importers.select(&:supports_append?).collect(&:file_name_with_append)
+        @all_files = @files + @append_files
     end
 
       it 'each should have a file_name assigned' do
@@ -13,23 +15,23 @@ describe ImportCSV do
 
       it 'each should have a csv file in empty' do
         files_present = Dir.glob("public/district_upload/empty/*.csv").collect{|e| e.split("/").last }
-        (@files - files_present).should == []
+        (@all_files - files_present).should == []
       end
 
       it 'each should have a csv file in sample' do
         files_present = Dir.glob("public/district_upload/sample/*.csv").collect{|e| e.split("/").last }
 #        pending(" missing #{(@files - files_present).join(', ')}")
-        (@files - files_present).should == []
+        (@all_files - files_present).should == []
       end
 
       it 'should have zip file containing all the empty csvs' do
         zip_files =`unzip -Z1 public/district_upload/empty/empty.zip`.split("\n")
-        (@files - zip_files).should == []
+        (@all_files - zip_files).should == []
       end
       it 'should have zip file containing all the sample csvs' do
         zip_files =`unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
-#        pending
-        (@files - zip_files).should == []
+        (zip_files & ['ext_test_scores_append.csv', 'ext_test_scores_appends.csv']).should_not be_empty
+        (@all_files - zip_files).should == []
       end
   end
   describe 'invalid file' do
@@ -99,15 +101,15 @@ describe ImportCSV do
   describe "csv_importer" do
     it "should call the csv importer when the filename does not contain _appends"  do
       i = ImportCSV.new("users.csv", d=District.new)
-      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "users.csv"
     end
 
     it "should call the csv importer when the filename does contain _appends" do
       i = ImportCSV.new("ext_test_scores_appends.csv", d=District.new)
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "ext_test_scores_appends.csv"
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock_object(:import => nil))
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock(:import => nil))
       i.send :csv_importer, "ext_test_scores_append.csv"
 
     end

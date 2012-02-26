@@ -1,7 +1,6 @@
-<% form_for([@student,@student_comment], :format=>:js, :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
+<%= form_for([@student,@student_comment], :format=>format, :html=>{:multipart => true, :target=>target}) do |f| %>
   <%= render :partial=>f %>
 <% end %>
-  
 
   <%= link_to_function 'cancel',{:href=> url_for(@student)} do |page|
     page['new_team_note'].replace_html(:partial=>'students/add_note_link')

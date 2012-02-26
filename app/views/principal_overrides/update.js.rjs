@@ -14,4 +14,5 @@ page.select('#'+dom_id(@principal_override,"acceptreject")).each do |value|
   value.remove
 end
 
+set_flash_notice page
 

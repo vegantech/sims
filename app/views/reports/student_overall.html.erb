@@ -1,20 +1,20 @@
 <div id="student_overall">
-  <% subreport_selected(@opts[:top_summary]) do %>
-    <%= render :partial => "students/student", :locals => {:changeable => false} %> 
+  <%= subreport_selected(@opts[:top_summary]) do %>
+    <%= render :partial => "students/student", :locals => {:changeable => false} %>
   <% end %>
 
-  <% subreport_selected(@opts[:extended_profile]) do %>
+  <%= subreport_selected(@opts[:extended_profile]) do %>
     <%= render :partial => "students/extended_profile", :locals => {:in_report => true} %>
   <% end %>
 
-  <% subreport_selected(@opts[:flags]) do %>
+  <%= subreport_selected(@opts[:flags]) do %>
     <% unless @student.flags.empty? %>
       <h2>Flags</h2>
-      <%= FlagsForStudentReport.render_html(:student => @student) %>
+      <%= FlagsForStudentReport.render_html(:student => @student).html_safe %>
     <% end %>
   <% end %>
 
-  <% subreport_selected @opts[:consultation_forms] do %>
+  <%= subreport_selected @opts[:consultation_forms] do %>
     <% if @student.team_consultations.empty? %>
       Student has no consultation forms
     <% else %>
@@ -25,14 +25,14 @@
     <% end %>
   <% end %>
 
-  <% subreport_selected(@opts[:team_notes]) do %>
+  <%= subreport_selected(@opts[:team_notes]) do %>
     <% unless @student.comments.empty? %>
       <h2>Team Notes</h2>
       <%= render :partial => "student_comments/comment", :collection => @student.comments, :locals =>{:no_actions=> true} %>
     <% end %>
   <% end %>
 
-  <% subreport_selected @opts[:intervention_summary] do %>
+  <%= subreport_selected @opts[:intervention_summary] do %>
     <% if @student.interventions.empty? %>
       Student has no interventions<br/>
     <% else %>
@@ -46,7 +46,7 @@
     <% end %>
   <% end %>
 
-  <% subreport_selected @opts[:intervention_detail] do %>
+  <%= subreport_selected @opts[:intervention_detail] do %>
     <% if @student.interventions.empty? %>
       Student has no interventions<br/>
     <% else %>
@@ -62,7 +62,7 @@
 
 
 
-  <% subreport_selected @opts[:checklists_and_or_recommendations] do %>
+  <%= subreport_selected @opts[:checklists_and_or_recommendations] do %>
     <% unless @student.checklists.empty? and @student.recommendations.without_checklist.empty? %>
       <h2><%="Checklists and" if show_checklist_section? %> Recommendations</h2>
       <% if show_checklist_section? %>

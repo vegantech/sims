@@ -3,7 +3,7 @@
   <% prefix = "student[#{new_or_existing}_enrollment_attributes][]" %>
 
 
-  <% fields_for prefix, enrollment  do |enrollment_form| %>
+  <%= fields_for prefix, enrollment  do |enrollment_form| %>
   <%= error_messages_for :enrollment, :object => enrollment %>
   <p>
     <%=enrollment_form.label :school_id, 'School'%>

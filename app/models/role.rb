@@ -47,9 +47,8 @@ class Role
     (Array(roles) & ROLES).map { |r| 1 << ROLES.index(r) }.sum
   end
 
-  def self.has_controller_and_action_group?(controller,action_group,roles)
-    return false unless %w{ read_access write_access }.include?(action_group)
-    roles.any?{|r| Right::RIGHTS[r.to_s].detect{|right| right[:controller] == controller && right[action_group.to_sym]}}
+  def self.has_controller?(controller, roles)
+    Right::RIGHTS.values_at(*roles).flatten.include?(controller)
   end
 
   def self.add_users(name, users)

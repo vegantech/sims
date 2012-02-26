@@ -33,7 +33,7 @@ describe Recommendation do
   end
 
   it "should create a new instance given valid attributes" do
-    checklist=Checklist.new
+    checklist=Factory(:checklist)
 #    checklist.should_receive(:score_checklist).and_return(true)
     Recommendation.create!(@valid_attributes.merge(:checklist=>checklist))
   end

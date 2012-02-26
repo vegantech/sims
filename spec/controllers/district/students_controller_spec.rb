@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::StudentsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_student(stubs={})
     @mock_student ||= mock_model(Student, stubs)
@@ -12,7 +14,7 @@ describe District::StudentsController do
     @district = mock_district(:students => Student)
     controller.stub!(:current_district => @district)
   end
-  
+
   describe "responding to GET index" do
     before do
       @district.stub_association!(:students,:paged_by_last_name=>@mock_students=[mock_student])
@@ -21,26 +23,26 @@ describe District::StudentsController do
     it "should expose all district_students as @district_students" do
       @mock_students.stub!(:out_of_bounds? => false )
       get :index
-      assigns[:students].should == [mock_student]
+      assigns(:students).should == [mock_student]
     end
   end
 
   describe "responding to GET new" do
-  
+
     it "should expose a new student as @student" do
       Student.should_receive(:new).and_return(mock_student(:enrollments => mock_enrollment(:build=>[])))
       get :new
-      assigns[:student].should equal(mock_student)
+      assigns(:student).should equal(mock_student)
     end
 
   end
 
   describe "responding to GET edit" do
-  
+
     it "should expose the requested student as @student" do
       Student.should_receive(:find).with("37").and_return(mock_student(:enrollments => mock_enrollment(:build=>[],'empty?'=>true)))
       get :edit, :id => "37"
-      assigns[:student].should equal(mock_student)
+      assigns(:student).should equal(mock_student)
     end
 
   end
@@ -48,7 +50,7 @@ describe District::StudentsController do
   describe "responding to POST create" do
 
     describe "with valid params" do
-      
+
       it "should expose a newly created student as @student" do
         Student.should_receive(:build).with({'these' => 'params'}).and_return(mock_student(:save => true))
         post :create, :student => {:these => 'params'}
@@ -67,7 +69,7 @@ describe District::StudentsController do
         flash[:notice].should match(/#{edit_district_student_path(mock_student)}/)
       end
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved student as @student" do
@@ -81,9 +83,9 @@ describe District::StudentsController do
         post :create, :student => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT udpate" do
@@ -115,7 +117,7 @@ describe District::StudentsController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       it "should update the requested student" do
@@ -147,7 +149,7 @@ describe District::StudentsController do
       mock_student.should_receive(:remove_from_district)
       delete :destroy, :id => "37"
     end
-  
+
     it "should redirect to the district_students list" do
       Student.stub!(:find).and_return(mock_student(:remove_from_district => true))
       delete :destroy, :id => "1"

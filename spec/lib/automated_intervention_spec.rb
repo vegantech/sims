@@ -1,11 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AutomatedIntervention do
-  it 'should report an invalid file' do
-    importer=AutomatedIntervention.new File.new('test'),User.new
-    importer.import.to_s.should =~ /Invalid headers: They must be #{AutomatedIntervention::FORMAT}/
-  end
-
   it 'should report a file with incorrect headers' do
     importer=AutomatedIntervention.new File.new('README'),User.new
     importer.import.to_s.should =~ /Invalid headers: They must be #{AutomatedIntervention::FORMAT}/

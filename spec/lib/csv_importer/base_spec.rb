@@ -20,6 +20,9 @@ describe CSVImporter::Base do
       end
       c.send(:append_failure?).should be_false
       c.messages.should_not include("Append is not supported for bases.csv")
+      def klass.supports_append?
+        false
+      end
     end
     it 'should return false when append is supported but not requested' do
       c=CSVImporter::Base.new("test",District.new)

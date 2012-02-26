@@ -6,7 +6,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @schools }
     end
   end
 
@@ -22,7 +21,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @school }
     end
   end
 
@@ -38,7 +36,7 @@ class District::SchoolsController < ApplicationController
     @school = current_district.schools.build(params[:school])
 
     if @school.save
-      flash[:notice] = "Successfully created #{edit_obj_link(@school)}."
+      flash[:notice] = "Successfully created #{edit_obj_link(@school)}.".html_safe
       redirect_to district_schools_path
     else
       @users = current_district.users unless current_district.users.count > 100
@@ -54,11 +52,10 @@ class District::SchoolsController < ApplicationController
     @school = current_district.schools.find(params[:id])
 
     if @school.update_attributes(params[:school])
-      flash[:notice] = "Successfully updated school and user assignments for #{edit_obj_link(@school)}"
+      flash[:notice] = "Successfully updated school and user assignments for #{edit_obj_link(@school)}".html_safe
       redirect_to district_schools_path
     else
        @users = current_district.users unless current_district.users.count > 100
-       
       render :action => 'edit'
     end
   end
@@ -71,7 +68,6 @@ class District::SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(district_schools_url) }
-      format.xml  { head :ok }
     end
   end
 end

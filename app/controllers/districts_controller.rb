@@ -1,6 +1,4 @@
 class DistrictsController < ApplicationController
-  additional_write_actions :reset_password, :recreate_admin, :bulk_import, :export
-  additional_read_actions :bulk_import_form, :logs
   before_filter :state_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
 
   # GET /districts
@@ -89,11 +87,10 @@ class DistrictsController < ApplicationController
 
   def bulk_import
    # TODO REFACTOR THIS
-    Spawn::method :yield, 'test'
 
     if request.post?
       MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
-      spawn do
+      spawn_block do
         begin
           importer= ImportCSV.new params[:import_file], current_district
           x=Benchmark.measure{importer.import}

@@ -5,7 +5,7 @@ class DocController < ActionController::Base
   end
 
 #  caches_page :index, :district_upload
-  require 'lib/csv_importer/base_system_flags'
+  require File.expand_path 'lib/csv_importer/base_system_flags'
 
   def index
   end

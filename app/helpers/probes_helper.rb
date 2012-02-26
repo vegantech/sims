@@ -4,7 +4,6 @@ module ProbesHelper
 
     html = <<-"HTML"
         <p style="text-align:center;">
-        
           Current scores for "#{graph.title}"<br />
     HTML
 
@@ -17,8 +16,8 @@ module ProbesHelper
     end
     html += "Goal: #{graph.goal} <br />"  if graph.goal
 
-    html + "</p>" +
-      graph.graph
+   ( html + "</p>" +
+      graph.graph).html_safe
   end
     
 

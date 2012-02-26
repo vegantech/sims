@@ -1,7 +1,7 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :authorize, :only => [:add_benchmark]
+  skip_before_filter :verify_authenticity_token
 
   include PopulateInterventionDropdowns
 
@@ -24,8 +24,6 @@ class InterventionsController < ApplicationController
       redirect_to students_url and return
     end
 
-    flash.keep(:custom_intervention)
-    flash[:custom_intervention] ||= params[:custom_intervention]
     @intervention_comment = InterventionComment.new
     @tiers=current_district.tiers
 
@@ -63,7 +61,6 @@ class InterventionsController < ApplicationController
       populate_goals
       @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
-      flash.keep(:custom_intervention)
       # end code to make validation work
       render :action => "new"
     end
@@ -117,7 +114,6 @@ class InterventionsController < ApplicationController
   end
 
   def ajax_probe_assignment
-    flash.keep(:custom_intervention)
     @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     if params[:id] == 'custom'
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.build if @intervention
@@ -132,8 +128,8 @@ class InterventionsController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html {render :layout => false}
       format.js
-      format.html {render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'}
     end
   end
 

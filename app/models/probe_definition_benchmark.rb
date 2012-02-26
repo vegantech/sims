@@ -34,12 +34,12 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
 
   protected
   def validate_within_probe_definition_range
-    
+
     if probe_definition && benchmark.present?
       if self.probe_definition.minimum_score && benchmark < self.probe_definition.minimum_score
         errors.add(:benchmark, "must be greater than the minimum score. for the progress monitor definition")
       end
-      
+
       if self.probe_definition.maximum_score && benchmark > self.probe_definition.maximum_score
         errors.add(:benchmark, "must be less than the maximum score. for the progress monitor definition")
       end

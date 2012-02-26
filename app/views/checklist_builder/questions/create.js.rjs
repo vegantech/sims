@@ -12,3 +12,4 @@ else
   page.update_content dom_id(@checklist_definition,"question_definitions"), :partial => "question_definition", :collection => @checklist_definition.question_definitions
   page << "}"
 end
+set_flash_notice page

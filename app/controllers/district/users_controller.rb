@@ -22,7 +22,7 @@ class District::UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/edit  
+  # GET /users/1/edit
   def edit
     @user = current_district.users.find(params[:id])
     @schools = current_district.schools
@@ -35,7 +35,7 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:notice] = "#{edit_obj_link(@user)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@user)} was successfully created.".html_safe
         format.html { redirect_to(index_url_with_page)}
       else
         @schools = current_district.schools
@@ -53,9 +53,9 @@ class District::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = "#{edit_obj_link(@user)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@user)} was successfully updated.".html_safe
         if params[:user][:staff_assignments_attributes] && current_district.staff_assignments.empty?
-          flash[:notice] += "  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature."
+          flash[:notice] = "#{flash[:notice]}  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature.".html_safe
         end
         format.html { redirect_to(index_url_with_page)}
       else

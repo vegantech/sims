@@ -1,4 +1,4 @@
-module Spec
+module RSpec
   module Rails
     module Mocks
       def method_missing(method,*args,&blk)
@@ -16,7 +16,7 @@ module Spec
   module Mocks
     module Methods
       def stub_association!(association_name, methods_to_be_stubbed = {})
-        mock_association = Spec::Mocks::Mock.new(association_name.to_s)
+        mock_association = RSpec::Mocks::Mock.new(association_name.to_s)
         methods_to_be_stubbed.each do |method, return_value|
           mock_association.stub!(method).and_return(return_value)
         end

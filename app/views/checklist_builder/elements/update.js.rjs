@@ -6,3 +6,4 @@ else
 end
 
 
+set_flash_notice page

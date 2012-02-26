@@ -8,7 +8,6 @@ class TiersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @tiers }
     end
   end
 
@@ -19,7 +18,6 @@ class TiersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @tier }
     end
   end
 
@@ -37,10 +35,8 @@ class TiersController < ApplicationController
       if @tier.save
         flash[:notice] = 'Tier was successfully created.'
         format.html { redirect_to tiers_url }
-        format.xml  { render :xml => @tier, :status => :created, :location => @tier }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @tier.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -55,10 +51,8 @@ class TiersController < ApplicationController
       if @tier.save
         flash[:notice] = 'Tier was successfully updated.'
         format.html { redirect_to tiers_url }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @tier.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -74,15 +68,13 @@ class TiersController < ApplicationController
       redirect_to(tiers_url) and return
 
     end
-    
     if params[:delete_confirmation] or !@tier.used_at_all?
       flash[:notice] = "Records have been moved to the #{@tier.delete_successor} tier" if params[:delete_confirmation]
       @tier.destroy
 
       respond_to do |format|
         format.html { redirect_to(tiers_url) }
-        format.xml  { head :ok }
-      end 
+      end
     else
       flash[:notice]='Tier in use'
     end

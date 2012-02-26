@@ -17,31 +17,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SpecialUserGroup do
-  before(:each) do
-    @valid_attributes = {
-      :grade => "value for grade",
-      :type => "value for type",
-      :is_principal => false,
-      :grouptype=>1,
-      :user_id=>1,
-      :school_id=>2,
-      :district_id => 2
-    }
-  end
-
-  it "should create a new instance given valid attributes" do
-    SpecialUserGroup.create!(@valid_attributes)
-  end
-
-
   describe 'autoassign user assignments' do
     it 'should autoassign a user assignment when a user was previously assigned to another school' do #657
       UserSchoolAssignment.delete_all
       SpecialUserGroup.delete_all
       user = Factory(:user, :district_id => 1)
       user.user_school_assignments.create!(:school_id => 2)
-      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1)
-      sug= user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :district_id=>1, :grade=>'02')
+      user.special_user_groups.create!(:school_id => 1,  :grouptype=>3)
+      user.special_user_groups.create!(:school_id => 1,  :grouptype=>3, :grade=>'02')
       UserSchoolAssignment.count.should == 1
       SpecialUserGroup.autoassign_user_school_assignments
       UserSchoolAssignment.count.should == 2

@@ -1,1 +1,1 @@
-page.replace_html('new_team_note', :partial=>'new')
+page.replace_html('new_team_note', :partial=>'new', :locals=>{:format => :js, :target => "upload_frame"})

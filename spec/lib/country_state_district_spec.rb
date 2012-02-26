@@ -4,9 +4,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 include CountryStateDistrict
 describe "Populate Country State and District dropdowns" do
   describe 'dropdowns method' do
-    before do 
+    def params
+      {}
+    end
+    before do
      self.should_receive(:subdomains)
-     self.stub!(:params =>{})
     end
     it 'should return if logged in' do
       self.should_receive(:current_user_id).and_return(true)
@@ -26,6 +28,6 @@ describe "Populate Country State and District dropdowns" do
 
 
 
-  end 
+  end
 end
 

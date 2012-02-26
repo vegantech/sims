@@ -10,7 +10,7 @@ class MailerWithSubdomains < ActionMailer::Base
   end
 
   def url_with_text text,url
-    url_for(url) + " (#{text})"
+    (url_for(url) + " (#{text})").html_safe
   end
 
 

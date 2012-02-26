@@ -1,6 +1,6 @@
 <div id="choose_country">
   <% unless @countries.blank? %>
-    <% form_for @country , :url => {:controller=>"login", :action=>"choose_country"} do |f| %>
+    <%= form_for @country , :url => {:controller=>"login", :action=>"choose_country"} do |f| %>
       <fieldset>
         <div class="form_row">
           <label for="country">Country</label>
@@ -14,7 +14,7 @@
 
 <div id="choose_state">
   <% unless @states.blank? %>
-    <% form_for @state , :url => {:controller=>"login", :action=>"choose_state"} do |f| %>
+    <%= form_for @state , :url => {:controller=>"login", :action=>"choose_state"} do |f| %>
       <fieldset>
         <div class ="form_row">
           <label for="state">State</label>

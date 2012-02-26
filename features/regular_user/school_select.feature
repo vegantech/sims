@@ -49,7 +49,7 @@ Feature: School Selection
 		And I press "Choose School"
 
     Then I should see "User doesn't have access to any students at East High"
-    And page should contain "Choose School"
+    And page should have a "Choose School" button
 
   Scenario: Auto Select School
 		Given clear login dropdowns

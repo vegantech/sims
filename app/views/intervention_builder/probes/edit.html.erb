@@ -1,8 +1,7 @@
 <h1>Edit Progress Monitor:</h1>
 
-<% form_for(@probe_definition, :url=>intervention_builder_probe_path(@probe_definition), :html=>{:method=>:put, :multipart => true}) do |f| %>
+<%= form_for(@probe_definition, :url=>intervention_builder_probe_path(@probe_definition), :html=>{:method=>:put, :multipart => true}) do |f| %>
   <%= render :partial => f%>
-  
   <%= submit_tag 'Save Changes' %>
   <%= spell_check_button %>
 <% end %>

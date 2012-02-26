@@ -20,7 +20,7 @@ class Enrollment < ActiveRecord::Base
 
   validates_presence_of :grade,:school_id
 
-  named_scope :by_student_ids_or_grades, lambda {|student_ids,grades| {:conditions => ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)]}}
+  scope :by_student_ids_or_grades, lambda {|student_ids,grades| where( ["enrollments.student_id in (?) or enrollments.grade in (?)", Array(student_ids),Array(grades)])}
 
   def esl
     Student.columns_hash["esl"].type_cast(attributes['esl'])
@@ -32,26 +32,26 @@ class Enrollment < ActiveRecord::Base
   end
 
   def self.search(search_hash)
-    search_hash.symbolize_keys!
+    search_hash = search_hash.symbolize_keys
     #    raise "This is broken, it destroys the scoping via the association proxy"
 
 
     sch_id = search_hash[:school_id]
     conditions = search_hash.slice(:school_id)
-    
+
     scope = self.scoped(:conditions => conditions)
 
 
     scope = year_search(search_hash[:year], scope)
 
-   
-    
+
+
     search_hash.delete(:grade) if search_hash[:grade] == "*"
 
     if search_hash[:user]
       u = search_hash[:user]
       search_hash.delete(:user_id) if search_hash[:user_id] == "*"
-      if u.special_user_groups.all_students_in_school?(sch_id)
+      if u.all_students_in_school?(sch_id)
         #User has access to everyone in school
       else
         grades = Array(search_hash[:grade])
@@ -146,7 +146,7 @@ class Enrollment < ActiveRecord::Base
 
 
   def self.grades
-     find(:all,:select=>"distinct grade").collect(&:grade)
+    connection.select_values(select( 'distinct grade').to_sql)
   end
 
   private

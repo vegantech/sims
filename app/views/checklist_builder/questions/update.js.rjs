@@ -5,3 +5,4 @@ else
   page.redirect_to "##{dom_id(@checklist_definition,'edit_errors_anchor')}"
   
 end
+set_flash_notice page

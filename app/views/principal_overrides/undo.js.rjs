@@ -14,3 +14,4 @@ end
 page.insert_html(:bottom, 'tbody_acceptreject', :partial=>"override",:locals=>{:actions=>[:accept,:reject]},:object=>@principal_override)
 
 
+set_flash_notice page

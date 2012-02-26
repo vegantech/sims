@@ -16,11 +16,13 @@
 class ObjectiveDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :goal_definition
-  has_many :intervention_clusters, :order =>'intervention_clusters.position', :dependent=> :destroy
-  
+  has_many :intervention_clusters, :order =>:position, :dependent=> :destroy
+  has_many :intervention_definitions, :through => :intervention_clusters
+
   validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
   acts_as_list :scope => :goal_definition_id
+  delegate :district, :to => :goal_definition, :allow_nil => true
   acts_as_reportable if defined? Ruport
 
   define_statistic :count , :count => :all, :joins => :goal_definition
@@ -29,6 +31,9 @@ class ObjectiveDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => :goal_definition).length
   end
 
+  def filename
+    @filename ||= "#{title.split(" ").join("_")}".gsub("/","-").gsub("&","and")
+  end
 
 
   def disable!
@@ -40,5 +45,7 @@ class ObjectiveDefinition < ActiveRecord::Base
     title
   end
 
-
+  def self.find_by_filename(filename)
+    all.detect{|o| filename == o.filename}
+  end
 end

@@ -6,7 +6,7 @@ Feature: Search By Student Last Name
   Background:
 		Given clear login dropdowns
     Given no other schools
-  
+
   Scenario: Search by year
     Given school "Glenn Stephens"
 		And student "Sally" "Carpenter" in grade 1 at "Glenn Stephens"
@@ -18,17 +18,11 @@ Feature: Search By Student Last Name
 #		And I select "Glenn Stephens" from "school_id"
 #		And I press "Choose School"
 		# And I start at the search page
-    
+
     Then I should see select box with id of "search_criteria_year" and contains ['All', '', '2008', '2009']
     When I select "All" from "Year"
 		When I press "Search for Students"
 		Then I should see "3 students selected"
-
-    When I follow "Student Search"
-    And I select "" from "Year"
-    And I press "Search for Students"
-		Then I should see "1 student selected"
-    And I should see "Carpenter, Sally"
 
     When I follow "Student Search"
     And I select "2008" from "Year"
@@ -42,6 +36,12 @@ Feature: Search By Student Last Name
 		Then I should see "1 student selected"
 		And I should see "Baumeister, Mike"
 
+    When I follow "Student Search"
+    And I select a blank year
+    And I press "Search for Students"
+		Then I should see "1 student selected"
+    And I should see "Carpenter, Sally"
+
 
   Scenario: Other Enrollments
     Given school "Glenn Stephens"
@@ -52,6 +52,4 @@ Feature: Search By Student Last Name
 #		And I select "Glenn Stephens" from "school_id"
 #		When I press "Choose School"
 		# And I start at the search page
-    
     Then I should see select box with id of "search_criteria_year" and contains ['All', '2028']
-

@@ -1,7 +1,7 @@
 <h1> Progress Monitors </h1>
-<p><b>Groups are determined by the recommended monitors page via the intervention builder.  </b></p>  
+<p><b>Groups are determined by the recommended monitors page via the intervention builder.  </b></p>
 
-<% form_tag("",:method => "get") do %>
+<%= form_tag("",:method => "get") do %>
   <%= check_box_tag :system,1, (!params[:commit] || params[:system])%>
   <%= label_tag 'system', 'System'%>
   <%= check_box_tag :custom,1, (!params[:commit] || params[:custom])%>
@@ -15,7 +15,7 @@
   <%= submit_tag 'Filter'%>
 <% end %>
 
-<% form_tag(:controller => 'intervention_builder/probes' ,:action => 'disable', :method => 'put') do %>
+<%=form_tag(:controller => 'intervention_builder/probes' ,:action => 'disable', :method => 'put') do %>
 
   <ul id="probe_definition_list">
     <% @probe_definitions_in_groups.each do |k,g| %>
@@ -53,7 +53,6 @@
 
 <p>
   <%= link_to "Create New Progress Monitor", new_intervention_builder_probe_path %>
-  
 </p>
 
 

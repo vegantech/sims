@@ -1,9 +1,9 @@
 <% report_target ||= 'selected students' %>
 <h2 align="center">Choose <%= kind_of_report if defined?(kind_of_report) %> Report Format for <%= report_target %></h2>
 
-<% form_tag do %><br/ >
+<%= form_tag do %><br/ >
   <%= hidden_field_tag :student_id, @student.id if @student %>
   Format: <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %>
   <%= submit_tag "Generate Report", :name => 'generate' %>
 <% end %>
-<%= @report %>
+<%= @report.to_s.html_safe %>

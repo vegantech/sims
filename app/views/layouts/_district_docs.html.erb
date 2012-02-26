@@ -1,4 +1,4 @@
-<% plus_minus_li "District Documents" do   %>
+<%= plus_minus_li "District Documents" do   %>
   <% current_district.assets.each do |asset| %>
     <%= content_tag(:li, link_to_with_icon(asset.name, asset.url)) unless asset.url.blank? %>
     <%= content_tag(:li, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document? %>

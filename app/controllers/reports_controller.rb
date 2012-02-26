@@ -1,10 +1,9 @@
 class ReportsController < ApplicationController
-  additional_read_actions :team_notes, :student_overall, :student_overall_options, :student_interventions, 
-    :student_flag_summary, :user_interventions, :grouped_progress_entry, :statewide_interventions, :statewide_progress_monitors
-  skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors]
+  skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors, :intervention_definition_summary_report]
   skip_before_filter :verify_authenticity_token
 
   before_filter :check_student, :only => [:student_interventions, :student_overall_options, :student_overall]
+  caches_page :intervention_definition_summary_report
 
   # TODO: Add an actual link to this in the GUI!
   # Ported from Madison SIMS on 2/12/09, SDA
@@ -71,14 +70,15 @@ class ReportsController < ApplicationController
   def student_overall
     # process params from student_overall_options
     params[:format] = params[:report_params][:format] if params[:report_params]
-    params[:format] = 'html' unless defined? PDF::HTMLDoc
+    params[:format] = :html unless defined? PDF::HTMLDoc
+    request.format = params[:format] if params[:format]
 
     @opts = params[:report_params] || {}
     @student = current_student
 
     respond_to do |format|
       format.html {}
-      format.pdf {send_data render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" }
+      format.pdf {send_data(render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" )}
     end
   end
 
@@ -97,7 +97,30 @@ class ReportsController < ApplicationController
     handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date, :sort_field=>@sort_field, :content => @content
   end
 
+  def intervention_definition_summary_report
+    @district = District.find(params[:district_id])
+    @objective_definition = @district.objective_definitions.find_by_filename(params[:filename])
+    #read cached html
+    #pdf
+    #html
+    respond_to do |format|
+     format.html { render :layout => false }
+     format.pdf { render :text => PDFKit.new(intervention_definition_summary_report_html).to_pdf }
+    end
+  end
+
   private
+  def intervention_definition_summary_report_html
+    filename = File.join("system","district_generated_docs",@district.id.to_s,"#{params[:filename].gsub(/\./,'')}.html").to_s
+    abs_filename = Rails.root.join("public", filename).to_s
+    if File.exist?(abs_filename)
+      File.read(abs_filename)
+    else
+      html = render_to_string("intervention_definition_summary_report.html.erb",:layout => false)
+      cache_page(html,"/#{filename}")
+      html
+    end
+  end
 
   def handle_report_postback report_class, base_filename, report_options = {}
     flash[:notice] = "Sorry, reports are not available" and redirect_to :back and return unless defined? Ruport
@@ -138,7 +161,7 @@ class ReportsController < ApplicationController
       begin
         Date.new(date_hash[:year].to_i, date_hash[:month].to_i, date_hash[:day].to_i)
       rescue ArgumentError
-        flash[:notice] = 'Invalid date chosen.  Used today instead.'
+        flash.now[:notice] = 'Invalid date chosen.  Used today instead.'
         Date.today
       end
     else

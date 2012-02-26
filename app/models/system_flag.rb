@@ -17,7 +17,7 @@ class SystemFlag < Flag
   CSV_HEADERS = [:district_student_id, :category, :reason]
 
   def summary
-    "#{reason} on #{created_at}"
+    "#{reason} on #{created_at.to_s(:report)}"
   end
 
 

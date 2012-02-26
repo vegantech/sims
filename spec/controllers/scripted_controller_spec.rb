@@ -19,7 +19,7 @@ describe ScriptedController do
     describe "GET" do
       it 'should be successful' do
         get 'automated_intervention',:district_abbrev => @auto_user.district.abbrev
-        response.layout.should == nil
+        response.should_not render_template("layouts/application")
         response.should be_success
       end
     end
@@ -27,8 +27,8 @@ describe ScriptedController do
     describe "POST" do
       it 'should render check to check email' do
         AutomatedIntervention.should_receive(:new).with('test',@auto_user).and_return(
-          mock_automated_intervention(:import => 'These are the messages'))
-        Notifications.should_receive(:deliver_district_upload_results).with('These are the messages', @auto_user.email)
+        mock(:import => 'These are the messages'))
+        Notifications.should_receive(:district_upload_results).with('These are the messages', @auto_user.email).and_return(mock(:deliver => true))
         post 'automated_intervention', :district_abbrev => @auto_user.district.abbrev, :upload_file => 'test'
 
 

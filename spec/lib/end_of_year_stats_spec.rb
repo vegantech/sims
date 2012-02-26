@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'stringio'
 describe EndOfYearStats do
-  def setup
+  before do
     @district = Factory(:district)
     @school1= Factory(:school, :district => @district)
     @school2= Factory(:school, :district => @district)
@@ -9,16 +9,16 @@ describe EndOfYearStats do
     @objective_def = @int_def.objective_definition
     @goal_def = @int_def.goal_definition
     @goal_def.update_attribute(:district_id, @district.id)
-    @stdout_orig = $stdout 
-    $stdout = StringIO.new 
+    @stdout_orig = $stdout
+    $stdout = StringIO.new
 
   end
 
-  def teardown
-    $stdout = @stdout_orig 
+  after do
+    $stdout = @stdout_orig
   end
   describe 'mmsd_schools_with_data' do
-   it 'should have other specs' 
+   it 'should have other specs'
     it 'should be empty' do
       e=EndOfYearStats.new(:district=>@district)
       e.mmsd_schools_with_data
@@ -29,7 +29,7 @@ describe EndOfYearStats do
   end
 
   describe 'mmsd_students_with_data' do
-   it 'should have other specs' 
+   it 'should have other specs'
     it 'should be empty when there is no matching data' do
       e=EndOfYearStats.new(:district=>@district)
       e.mmsd_students_with_data

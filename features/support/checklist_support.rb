@@ -24,3 +24,4 @@ def minimum_for_profile
   cucumber_enrollment
   cucumber_user
 end
+

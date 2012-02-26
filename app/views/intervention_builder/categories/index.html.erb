@@ -11,7 +11,6 @@
     <th>Updated On</th>
   </tr>
 </thead>
-  
 <tbody id="intervention_cluster_list">
 <%= render :partial => 'intervention_cluster', :collection => @intervention_clusters %>
 </tbody>
@@ -19,5 +18,5 @@
 
 <br />
 
-<%= link_to 'New category', new_intervention_builder_category_path(@goal_definition,@objective_definition) %>
+<%= link_to 'New Category', new_intervention_builder_category_path(@goal_definition,@objective_definition) %>
 <%= link_to 'Back to Objectives', intervention_builder_objectives_path(@goal_definition)%>

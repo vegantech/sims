@@ -5,7 +5,7 @@ class MainController < ApplicationController
   include  CountryStateDistrict
   def index
     redirect_to logout_url if current_district.blank? and current_user_id.present?
-    if current_user and current_user.authorized_schools.present? and current_user.authorized_for?('schools','read_access')
+    if current_user and current_user.authorized_schools.present? and current_user.authorized_for?('schools')
       redirect_to schools_url and return
     end
     dropdowns
@@ -14,7 +14,7 @@ class MainController < ApplicationController
   def stats
     #TODO test and refactor
     flash[:notice]=nil
-    
+
     @without=params[:without]
 
     begin
@@ -54,7 +54,7 @@ class MainController < ApplicationController
         @stats[klass.name] = klass.statistics(:created_after=> @start_date, :created_before => @end_date)
       end
     end
-    flash[:notice]="Excluding district with id #{@without.to_i}" if @without
+    flash.now[:notice]="Excluding district with id #{@without.to_i}" if @without
   end
 
 end

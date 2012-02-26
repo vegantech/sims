@@ -2,9 +2,9 @@ class TeamNotesReport < DefaultReport
   stage :header, :body
   required_option :user, :school, :start_date, :end_date
   load_html_csv_text
-  
+
   def setup
-    self.data = TeamNotes.new(options)
+    self.data = TeamNotes.new(formatter.format,options)
   end
 
   class PDF < Ruport::Formatter::PDF
@@ -24,7 +24,7 @@ class TeamNotesReport < DefaultReport
   # # I was considering going this route if I had to support links in HTML only...
   # class HTML < Ruport::Formatter::HTML
   #   renders :html, :for => TeamNotesReport
-  # 
+  #
   #   output << render_grouping(data.to_grouping, options.to_hash.merge(:formatter => html_writer))
   # end
 end
@@ -32,13 +32,14 @@ end
 
 class TeamNotes
 
-  def initialize(options={})
+  def initialize(format,options={})
     @user = options[:user]
     @school = options[:school]
     @start_date = options[:start_date]
     @end_date = options[:end_date]
     @sort_field = options[:sort_field] || 'Student'
     @content = options[:content].to_s
+    @format = format.to_s
   end
 
   def to_table
@@ -63,7 +64,13 @@ class TeamNotes
       end
 
       rt.replace_column('student.fullname', 'Student') do |r|
-        "<a href=\"/students/#{r['student.id']}\">#{r['student.fullname']}</a>"
+        if @format == "html"
+          "<a href=\"/students/#{r['student.id']}\">#{r['student.fullname']}</a>"
+        elsif @format == "pdf"
+          "<c:alink uri=\"https://www.simspilot.org/students/#{r['student.id']}\">#{r['student.fullname']}</c:alink>"
+        else
+          r['student.fullname']
+        end
       end
     end
 

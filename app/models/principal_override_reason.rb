@@ -13,4 +13,5 @@
 
 class PrincipalOverrideReason < ActiveRecord::Base
   belongs_to :district
+  attr_protected :district_id
 end

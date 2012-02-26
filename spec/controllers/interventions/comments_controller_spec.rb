@@ -1,14 +1,16 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Interventions::CommentsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_intervention_comment(stubs={})
     @mock_intervention_comment ||= mock_model(InterventionComment, stubs)
   end
 
-  before :each do 
+  before :each do
     @student = mock_student
     @intervention = mock_intervention
     @student.stub_association!(:interventions,:find=>@intervention)
@@ -17,22 +19,22 @@ describe Interventions::CommentsController do
     @user = mock_user
     controller.stub!(:current_user).and_return(@user)
   end
-  
+
   describe "responding to GET new" do
     it "should expose a new intervention_comment as @intervention_comment" do
       InterventionComment.should_receive(:build).and_return(mock_intervention_comment)
       get :new
-      assigns[:intervention_comment].should equal(mock_intervention_comment)
+      assigns(:intervention_comment).should equal(mock_intervention_comment)
     end
 
   end
 
   describe "responding to GET edit" do
-  
+
     it "should expose the requested intervention_comment as @intervention_comment" do
       InterventionComment.should_receive(:find).with("37").and_return(mock_intervention_comment)
       get :edit, :id => "37"
-      assigns[:intervention_comment].should equal(mock_intervention_comment)
+      assigns(:intervention_comment).should equal(mock_intervention_comment)
     end
 
   end
@@ -40,7 +42,7 @@ describe Interventions::CommentsController do
   describe "responding to POST create" do
 
     describe "with valid params" do
-      
+
       it "should expose a newly created intervention_comment as @intervention_comment" do
         InterventionComment.should_receive(:build).with({'these' => 'params', 'user'=>@user}).and_return(mock_intervention_comment(:save => true))
         post :create, :intervention_comment => {:these => 'params'}
@@ -52,9 +54,9 @@ describe Interventions::CommentsController do
         post :create, :intervention_comment => {}
         response.should redirect_to(intervention_url(@intervention))
       end
-      
+
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved intervention_comment as @intervention_comment" do
@@ -68,9 +70,9 @@ describe Interventions::CommentsController do
         post :create, :intervention_comment => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT update" do
@@ -100,7 +102,7 @@ describe Interventions::CommentsController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       it "should update the requested intervention_comment" do
@@ -135,7 +137,7 @@ describe Interventions::CommentsController do
       mock_intervention_comment.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
-  
+
     it "should redirect to the intervention_comments list" do
       InterventionComment.stub!(:find).and_return(mock_intervention_comment(:destroy => true))
       delete :destroy, :id => "1", :format => 'html'

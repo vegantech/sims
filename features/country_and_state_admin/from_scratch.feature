@@ -13,7 +13,7 @@ Feature: From Scratch
     Then I follow "Manage Districts"
     Then I follow "New District"
     And I fill in "Name" with "Cucumber Pickle"
-    And I fill in "abbrev" with "cp"
+    And I fill in "Abbrev" with "cp"
     And I press "Create"
 
     Then I follow "Logout"

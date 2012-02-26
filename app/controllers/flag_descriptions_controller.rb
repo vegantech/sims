@@ -7,7 +7,6 @@ class FlagDescriptionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @flag_descriptions }
     end
   end
 
@@ -24,10 +23,8 @@ class FlagDescriptionsController < ApplicationController
       if @flag_description.update_attributes(params[:flag_description])
         flash[:notice] = 'FlagDescription was successfully updated.'
         format.html { redirect_to(root_url) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @flag_description.errors, :status => :unprocessable_entity }
       end
     end
   end

@@ -1,11 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::UsersController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_user(stubs={})
-    @mock_user ||= mock_model(User, stubs)
+    @mock_user ||= mock_model(User,stubs.merge(:first_name => 'Mock', :last_name => 'User', :to_s => 'Mock User'))
   end
 
   before do
@@ -22,7 +24,7 @@ describe District::UsersController do
 
     it "should expose all users as @users" do
       get :index
-      assigns[:users].should == [mock_user]
+      assigns(:users).should == [mock_user]
     end
 
   end
@@ -33,7 +35,7 @@ describe District::UsersController do
       mock_user.should_receive(:roles=).with('regular_user')
 
       get :new
-      assigns[:user].should equal(mock_user)
+      assigns(:user).should equal(mock_user)
     end
   end
 
@@ -41,7 +43,7 @@ describe District::UsersController do
     it "should expose the requested user as @user" do
       User.should_receive(:find).with("37").and_return(mock_user)
       get :edit, :id => "37"
-      assigns[:user].should equal(mock_user)
+      assigns(:user).should equal(mock_user)
     end
   end
 
@@ -64,7 +66,7 @@ describe District::UsersController do
         post :create, :user => {}
         flash[:notice].should match(/#{edit_district_user_path(mock_user)}/)
       end
-     end
+    end
 
     describe "with invalid params" do
       it "should expose a newly created but unsaved user as @user" do
@@ -131,7 +133,7 @@ describe District::UsersController do
 
         end
       end
-   end
+    end
 
     describe "with invalid params" do
       it "should update the requested user" do

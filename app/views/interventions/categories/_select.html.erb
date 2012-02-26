@@ -1,6 +1,8 @@
 <div id="categories" class ="form_row">
 <% if @intervention_clusters %>
-  <% remote_form_for :intervention_cluster, :url => select_interventions_categories_path(@goal_definition, @objective_definition) do |f| %>
+  <%= remote_form_for :intervention_cluster,
+    :url => interventions_categories_path(@goal_definition, @objective_definition,
+                                                 :custom_intervention => custom_intervention?) do |f| %>
     <%= f.label :id, 'Assign Category' %>
     <%= collection_select_with_css_options(f, :id, @intervention_clusters, :id, :title,'sld','sld?', {:prompt => ''}, {:onchange => "$('spinnercategories').show();form.onsubmit()", :class => "fixed_width"}) %>
     <%= spinner("categories") %>

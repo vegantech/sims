@@ -1,15 +1,14 @@
 <div class="asset">
   <% new_or_existing = asset.new_record? ? 'new' : 'existing' %>
   <% prefix = "#{parent}[#{new_or_existing}_asset_attributes][]" %>
-  
-  <% fields_for prefix, asset do |asset_form| -%>
+  <%= fields_for prefix, asset do |asset_form| -%>
     <p>
       <%= asset.document.original_filename if asset.document %> <br />
 
       <%= asset_form.label :document, 'File:' %>
       <%= asset_form.file_field :document %> <br />
 
-      <%= asset_form.label :name, "Name for url" %>  
+      <%= asset_form.label :name, "Name for url" %>
       <%= asset_form.text_field :name %> <br />
 
       <%= asset_form.label :url %>

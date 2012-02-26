@@ -1,5 +1,5 @@
 <h1>Managing Checklists</h1>
 <p><%= link_to "Manage Checklists", checklist_builder_checklists_path %> -> Next, view and/or edit the checklist</p>
-<% div_for @checklist_definition  do %>
+<%= div_for @checklist_definition  do %>
   <%= render :partial => 'show', :locals => { :checklist_definition => @checklist_definition } %>
 <% end %>

@@ -9,15 +9,24 @@ class ApiController
 end
 =end
 
+require 'rack/test'
 describe SessionCheck do
+  include Rack::Test::Methods
+
   describe 'call' do
-    it 'should return 404 if not session check' do
-      SessionCheck.call({}).should == [404, {"Content-Type" => "text/html"}, ["Not Found"]]
+    before do
+      @dummy_return = [200, {}, "Call to dummy app"]
+      @dummy_app = lambda { |env| [200, {}, "Call to dummy app"] }
+    end
+
+    it 'should return 404 (and thus call dummy app) if not session check' do
+      SessionCheck.new(@dummy_app).call({}).should == @dummy_return
     end
 
     it 'should return 200 if session check' do
-      SessionCheck.should_receive(:check).and_return("Yes it worked")
-      SessionCheck.call({"PATH_INFO" => "/session_check"}).should == [200, {"Content-Type" => "text/html"}, ["Yes it worked"]]
+      sc=SessionCheck.new(@dummy_app)
+      SessionCheck.any_instance.should_receive(:check).and_return("Yes it worked")
+      sc.call({"PATH_INFO" => "/session_check"}).should == [200, {"Content-Type" => "text/html"}, ["Yes it worked"]]
     end
   end
 

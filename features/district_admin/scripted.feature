@@ -17,7 +17,7 @@ Feature: Scrited Interaction with SIMS
     And I should see "Have the content admin navigate to the intervention in the content builder. It is the number at the end of the url"
     When I attach the file "test/csv/automated_intervention/sample.csv" to "upload_file"
     And I press "Submit"
-    Then I should receive an email
-    When I open the email
-    Then I should see "4 interventions added" in the email
+    Then "automated_intervention@example.com" should receive an email
+    When they open the email
+    Then they should see "4 interventions added" in the email body
 

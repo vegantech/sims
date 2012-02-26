@@ -1,7 +1,6 @@
 class StudentsController < ApplicationController
 	before_filter :enforce_session_selections, :except => [:index, :select, :search]
   skip_before_filter :verify_authenticity_token
-  additional_read_actions %w{grade_search member_search search}
 
   # GET /students
   # GET /students.xml
@@ -16,7 +15,6 @@ class StudentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @students }
     end
   end
 
@@ -27,15 +25,14 @@ class StudentsController < ApplicationController
     authorized_student_ids = @students.collect {|s| s.student_id.to_s}
 
     if params[:id].blank?
-      flash[:notice] = 'No students selected'
+      flash.now[:notice] = 'No students selected'
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
-      params[:id].uniq!
-      self.selected_student_ids = params[:id]
+      self.selected_student_ids = Array(params[:id]).uniq
       session[:selected_student] = selected_student_ids.first
       redirect_to student_url(session[:selected_student]) and return
     else
-      flash[:notice] = 'Unauthorized Student selected, try searching again'
+      flash.now[:notice] = 'Unauthorized Student selected, try searching again'
     end
     self.selected_student_ids = nil
     session[:selected_student]= nil
@@ -43,7 +40,7 @@ class StudentsController < ApplicationController
     setup_students_for_index
 
 
-    render :action=>"index" 
+    render :action=>"index"
   end
 
   def search
@@ -74,7 +71,6 @@ class StudentsController < ApplicationController
       flash[:notice] = 'Student not enrolled in district'
       redirect_to :action=>:index and return
     end
-        
 
     session[:selected_student] ||= @student.id.to_s  #537 hopefully this will fix it
     respond_to do |format|
@@ -166,7 +162,7 @@ class StudentsController < ApplicationController
     s=current_user.authorized_schools
     if s.size == 1
       session[:school_id] = s.first.id
-      flash[:notice]=s.first.name + "has been automatically selected"
+      flash.now[:notice]=s.first.name + "has been automatically selected"
       return true
     else
       flash[:notice]="No school selected."
@@ -178,7 +174,7 @@ class StudentsController < ApplicationController
   def setup_students_for_index
     if cache_configured?
       cache_keys =@students.collect{|s| s.index_cache_key}
-      @cached_status = Rails.cache.read_multi(cache_keys)
+      @cached_status = Rails.cache.read_multi(*cache_keys)
       misses= (cache_keys - @cached_status.keys)
       missed_students =@students.select{|s| misses.include?s.index_cache_key}
     else
