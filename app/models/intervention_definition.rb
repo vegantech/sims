@@ -61,6 +61,13 @@ class InterventionDefinition < ActiveRecord::Base
       tiers.position <= #{student_tier.position})").joins([:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}])
   }
 
+  scope :general, where(["intervention_definitions.custom is null or intervention_definitions.custom = ?",false])
+  scope :enabled, where(:disabled => false)
+  scope :for_report, general.enabled.includes(
+  [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
+  ).order("tiers.position,intervention_clusters.title,intervention_definitions.position")
+
+
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
 
   def title
@@ -160,7 +167,6 @@ class InterventionDefinition < ActiveRecord::Base
     d=""
     d= " This meets the SLD criteria: " + sld_array.join(", ") +"." unless self.sld.blank?
     description + d
-
   end
 
   def set_values_from_intervention(int)

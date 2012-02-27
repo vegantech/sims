@@ -1,5 +1,6 @@
 class InterventionBuilder::RecommendedMonitorsController < ApplicationController
   helper_method :move_path
+  cache_sweeper :intervention_builder_sweeper
   def assign_probes_to_intervention
 
     @intervention_definition=current_district.find_intervention_definition_by_id(params[:id])

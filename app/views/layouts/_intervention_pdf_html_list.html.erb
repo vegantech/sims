@@ -1,6 +1,8 @@
 <%= plus_minus_li  "Intervention and Progress Monitors" do   %>
-  <% Dir.glob("#{Rails.root}/public/system/district_generated_docs/#{current_district.id}/*.{pdf,html}").each do |file| %>
-    <%= content_tag :li, link_to_with_icon(file.split("/").last, file.split("public",2).last) %>
+  <% %w{ html pdf }.each do |format| %>
+    <% current_district.objective_definitions.each do |obj| %>
+      <%= content_tag :li, link_to_with_icon("#{obj.filename}.#{format}", "/system/district_generated_docs/#{current_district.id}/#{obj.filename}.#{format}") %>
+    <% end %>
   <% end %>
 <% end %>
 

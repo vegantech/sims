@@ -46,6 +46,7 @@ RIGHTS={
       "checklist_builder/answers",
       "intervention_builder/interventions",
       "district/flag_categories",
+      "reports",
       "tiers",
       "railmail"],
  "local_system_administrator"=>["district/users",
