@@ -99,7 +99,7 @@ module ChecklistsHelper
   end
 
   def autoset_message(answer_definition)
-    '&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />' if answer_definition.autoset_others?
+    ('&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />').html_safe if answer_definition.autoset_others?
   end
 
   def recommendation_buttons(form)
