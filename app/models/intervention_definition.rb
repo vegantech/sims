@@ -129,10 +129,6 @@ class InterventionDefinition < ActiveRecord::Base
     tier.to_s
   end
 
-  def links_and_attachments
-    assets.collect(&:to_s).join(" ")
-  end
-
   def recommended_monitors_with_custom
     if custom
       all_rec=RecommendedMonitor.all(:joins => :intervention_definition, :conditions => {:intervention_definitions => {:intervention_cluster_id=>self.intervention_cluster_id}})
