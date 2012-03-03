@@ -68,3 +68,14 @@ a:visited {
   text-decoration:none;
 }
 
+.intervention_definition_summary ul {
+  margin: 0px;
+  padding-left: 20px;
+  padding-top: 15px;
+}
+
+.intervention_definition_summary li {
+  text-indent: -6px;
+  margin: 0px;
+  padding: 0px;
+}

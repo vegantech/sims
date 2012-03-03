@@ -7,14 +7,14 @@
   </head>
   <body>
     <%@objective_definition.intervention_definitions.for_report.group_by(&:tier).each do |tier,intervention_definitions| %>
-      <table>
+      <table class="intervention_definition_summary">
         <caption><%= tier.to_s %> </caption>
         <thead>
           <tr>
             <th>Bus. Key</th>
             <th>Category</th>
             <th>Title</th>
-            <th width="300px">Description</th>
+            <th>Description</th>
             <th>Duration / Frequency</th>
             <th>Progress Monitors</th>
             <th width="10%">Links and Attachments</th>
@@ -31,10 +31,20 @@
               <td> <b> <%= intervention_definition.title%> </b> </td>
             <% end %>
 
-            <td width="300px"><div class="pbi_avoid"> <%= intervention_definition.description_with_sld %> </div></td>
+            <td width="350px"><div class="pbi_avoid"> <%= intervention_definition.description_with_sld %> </div></td>
             <td> <%= intervention_definition.frequency_duration_summary %> </td>
-            <td> <%= intervention_definition.monitor_summary %> </td>
-            <td> <%= intervention_definition.links_and_attachments %> </td>
+            <td>
+              <ul> <% intervention_definition.probe_definitions.each do |pd| %>
+                  <%=content_tag :li,pd.title %>
+                <% end %>
+              </ul>
+            </td>
+            <td>
+              <ul><% intervention_definition.assets.each do |asset| %>
+                  <%= content_tag :li, asset.to_s.gsub(/\_/," ") %>
+                <% end %>
+              </ul>
+          </td>
           </tr>
         <% end %>
         <% reset_cycle %>
