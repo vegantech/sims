@@ -66,7 +66,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     daily_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
     cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 6
 
-    weekly_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rals runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
+    weekly_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
     cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 7, :weekday => 0
 
     prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 bundle exec rails runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags >> #{configuration[:deploy_to]}/current/log/prime_cache.log"
