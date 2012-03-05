@@ -10,8 +10,8 @@ class PrimeCache
   end
 
   def self.flags
-    pids = `ps w |grep -v grep |grep 'runner PrimeCache'| cut -f 1 -d' '`
-    if pids.size > 1
+    pids = `ps wx |grep -v grep |grep 'runner' |grep 'PrimeCache'| grep -v 'nice' |cut -f 1 -d' '`
+    if pids.split("\n").size > 1
       puts "Script already running"
       exit 0
     end
