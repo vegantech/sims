@@ -65,7 +65,7 @@ class InterventionDefinition < ActiveRecord::Base
   scope :enabled, where(:disabled => false)
   scope :for_report, general.enabled.includes(
   [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
-  ).order("tiers.position,intervention_clusters.title,intervention_definitions.position")
+  ).order("tiers.position,intervention_clusters.position,intervention_definitions.position")
 
 
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
