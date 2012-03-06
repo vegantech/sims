@@ -263,7 +263,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id" do
+  scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id", :module => "interventions" do
     resources :probes do
       collection do
         get :new_assessment
