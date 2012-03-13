@@ -45,7 +45,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
-  has_many :intervention_participants, :dependent => :delete_all
+  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant
   has_many :participant_users, :through => :intervention_participants, :source => :user
 
   has_many :intervention_probe_assignments, :dependent => :destroy
@@ -63,6 +63,7 @@ class Intervention < ActiveRecord::Base
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
+
 
 
   delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
@@ -232,7 +233,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def assign_implementer
-    @creation_email = true
+    @creation_email = true if new_record?  #used for distingushing between new particioant and creation email
     if self.auto_implementer == "1"
       self.participant_user_ids |= [self.user_id]
       # intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
@@ -273,7 +274,7 @@ class Intervention < ActiveRecord::Base
   def send_creation_emails
     # PENDING
     @interventions = Array(self) | Array(@interventions)
-    unless self.called_internally
+     unless self.called_internally
       Notifications.intervention_starting(@interventions).deliver
     end
 
@@ -324,4 +325,7 @@ class Intervention < ActiveRecord::Base
     end
   end
 
+  def notify_new_participant(participant)
+    participant.send_email = true unless new_record? or @creation_email or called_internally
+  end
 end
