@@ -72,7 +72,7 @@ class Notifications < MailerWithSubdomains
     subject =    '[SIMS]  Student Intervention New Participant'
     intervention_person = Array(intervention_person)
     @intervention_person = intervention_person.first
-    @intervention = intervention || @intervention_person.intervention
+    @intervention = Array(intervention || @intervention_person.intervention).first
     recipients @intervention_person.email
     sent_on    Time.now
     @district = @intervention_person.user.district
