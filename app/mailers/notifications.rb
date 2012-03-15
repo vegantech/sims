@@ -68,15 +68,17 @@ class Notifications < MailerWithSubdomains
 
   end
 
-  def intervention_participant_added(intervention_person)
+  def intervention_participant_added(intervention_person,intervention=nil)
     subject =    '[SIMS]  Student Intervention New Participant'
     intervention_person = Array(intervention_person)
     @intervention_person = intervention_person.first
-    recipients @intervention_person.user.email
+    @intervention = Array(intervention || @intervention_person.intervention).first
+    recipients @intervention_person.email
     sent_on    Time.now
     @district = @intervention_person.user.district
-    @participants = @intervention_person.intervention.participants_with_author
-    @interventions = intervention_person.collect(&:intervention)
+    @participants = @intervention.participants_with_author
+    @interventions = Array(intervention)
+   # intervention_person.collect(&:intervention)
     @participant = @intervention_person
     mail(:subject => subject, :to => recipients, :subject => subject)
   end

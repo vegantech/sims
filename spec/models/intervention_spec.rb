@@ -24,7 +24,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Intervention do
-  describe 'something' do 
+  describe 'something' do
     it 'should' do
       pending 'Remove this, after refactoring'
       e= {"end_date(3i)"=>"25", "start_date(1i)"=>"2009", "apply_to_all"=>"0", "start_date(2i)"=>"4", "auto_implementer"=>"0", "intervention_probe_assignment"=>{"end_date(3i)"=>"25", "probe_definition_id"=>"", "probe_definition"=>{"title"=>"", "minimum_score"=>"", "description"=>"jhj", "maximum_score"=>""}, "frequency_multiplier"=>"2", "first_date(1i)"=>"2009", "first_date(2i)"=>"4", "frequency_id"=>"284292352", "first_date(3i)"=>"26", "end_date(1i)"=>"2009", "end_date(2i)"=>"7"}, "start_date(3i)"=>"26", "frequency_multiplier"=>"1", "time_length_id"=>"503752779", "frequency_id"=>"284292352", "intervention_definition_id"=>"", "comment"=>{"comment"=>""}, "end_date(1i)"=>"2009", "time_length_number"=>"1", "intervention_definition"=>{"title"=>"Custom Intervention Title", "description"=>"Custom Intervention Desc", "tier_id"=>"284451385", "intervention_cluster_id"=>"34708545"}, "end_date(2i)"=>"7"}
@@ -33,7 +33,6 @@ describe Intervention do
       id=i.intervention_definition
       id.valid?
       puts id.errors.inspect
-      
       i.save #should fail but won't yet
       ProbeDefinition.count.should == c
 
@@ -78,7 +77,7 @@ describe Intervention do
         i.save!
         i.should be_valid
 
-        i.reload 
+        i.reload
         i.update_attributes(:intervention_probe_assignment => {'first_date(1i)' => '2009', 'first_date(2i)' => '1', 'first_date(3i)' => '1',
           'end_date(1i)' => '2004', 'end_date(2i)' => '1', 'end_date(3i)' => '1', 'probe_definition_id' => 2}).should be_false
       end
@@ -105,7 +104,7 @@ describe Intervention do
 
   it "should end an intervention" do
     i = Factory(:intervention, :start_date => 2.days.ago, :end_date => Date.today)
-    
+
     i.end(1)
     i.active.should ==(false)
     i.ended_by_id.should ==(1)
@@ -138,7 +137,7 @@ describe Intervention do
         Intervention.new.frequency_multiplier.should == InterventionDefinition::DEFAULT_FREQUENCY_MULTIPLIER
         Intervention.new.frequency.should == Frequency.find_by_title('Weekly')
       end
-    
+
       it 'should have the time length set to 4 weeks' do
         TimeLength.create!(:days=>1, :title => 'Day')
         TimeLength.create!(:days=>7, :title => 'Week')
@@ -247,5 +246,39 @@ describe Intervention do
       @intervention.apply_to_all = '0'
       @intervention.send(:create_other_students)
     end
+  end
+
+  describe 'email' do
+    describe 'new intervention' do
+     it 'should send intervention starting email' do
+      Intervention.delete_all
+      @student1 = Factory(:student)
+      @student2 = Factory(:student, :district => @student1.district)
+      @user1 = Factory(:user, :district => @student1.district)
+      @user2 = Factory(:user, :district => @student1.district)
+      @intervention = Factory.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
+                                    :selected_ids => [@student1.id.to_s, @student2.id.to_s],
+                                   :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
+      Intervention.should_receive(:create!).and_return(2)
+      Notifications.should_receive(:intervention_starting).with([@intervention,2]).and_return(mock(:deliver=>true))
+      Notifications.should_not_receive(:intervention_participant_added)
+      @intervention.save
+     end
+    end
+
+    describe 'updating intervention' do
+      it 'should send new participant email if a new participant is added' do
+        @intervention= Factory(:intervention)
+        @user2 = Factory(:user, :district => @intervention.user.district)
+        @user3 = Factory(:user, :district => @intervention.user.district)
+        @intervention = Intervention.find(@intervention.id)
+        Notifications.should_not_receive(:intervention_starting)
+        Notifications.should_receive(:intervention_participant_added).twice.and_return(mock(:deliver => true))
+        @intervention.frequency_multiplier = 10
+        @intervention.participant_user_ids=[@user2.id.to_s, @user3.id.to_s]
+        @intervention.save
+      end
+    end
+
   end
 end

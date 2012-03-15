@@ -18,14 +18,12 @@ class InterventionParticipant < ActiveRecord::Base
   belongs_to :intervention
 
   delegate :email, :fullname, :to => '(user or return nil)'
-  attr_writer :skip_email
 
-  before_create :set_skip_email
-  after_create :send_new_participant_email
 
   validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
-  validates_presence_of :user_id, :role, :intervention_id
+  validates_presence_of :user_id, :intervention_id
   acts_as_reportable # if defined? Ruport
+  after_create :notify_new_participant, :if => :send_email
 
   AUTHOR = -1
   IMPLEMENTER = 0
@@ -35,6 +33,7 @@ class InterventionParticipant < ActiveRecord::Base
   scope :implementer, where(:role => IMPLEMENTER)
   define_statistic :participants , :count => :all, :joins => :user
   define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
+  attr_accessor :send_email
 
   RoleStruct = Struct.new(:id, :name)
 
@@ -57,19 +56,8 @@ class InterventionParticipant < ActiveRecord::Base
 
   end
 
-  protected
-
-  def set_skip_email
-    if intervention.created_at == intervention.updated_at
-      @skip_email = true if Time.now - intervention.created_at < 1.second
-    end
-      @skip_email ||= caller.to_s.include?("grouped_progress_entry")
-      true
-  end
-
-  def send_new_participant_email
-    unless @skip_email
-      Notifications.intervention_participant_added(self).deliver
-    end
+  private
+  def notify_new_participant
+    Notifications.intervention_participant_added(self,intervention).deliver
   end
 end
