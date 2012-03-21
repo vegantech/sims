@@ -24,7 +24,6 @@ class SchoolTeamsController < ApplicationController
   def new
     @school_team = SchoolTeam.new
     set_users_in_groups
-    
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -43,7 +42,7 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.save
-        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully created.".html_safe
         format.html { redirect_to(school_teams_url) }
       else
         set_users_in_groups
@@ -60,7 +59,7 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.update_attributes(params[:school_team])
-        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully updated.".html_safe
         format.html { redirect_to(school_teams_url) }
       else
         set_users_in_groups

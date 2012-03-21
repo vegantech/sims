@@ -5,7 +5,7 @@
 
   <h2> Users </h2>
   <div id="group_users">
-    <%= render :partial => 'special_user_group', :collection=>@special_user_groups %>
+    <%= render :partial => 'special_user_group_assignment', :collection=>@special_user_groups %>
   </div>
 
   <div id="new_user_assignment_form">
@@ -15,5 +15,5 @@
 
 
   <p>
-<%= link_to 'Back', index_url_with_page %>
+<%= link_to 'Back', groups_path %>
 </p>

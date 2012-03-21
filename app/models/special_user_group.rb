@@ -72,6 +72,28 @@ class SpecialUserGroup < ActiveRecord::Base
      query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
      SpecialUserGroup.connection.update query
   end
+
+  def title
+    if grouptype == ALL_STUDENTS_IN_SCHOOL
+      "All Students in #{grade ? 'Grade: '+grade.to_s : 'School'}"
+    else
+      "Other group"
+    end
+
+  end
+
+  def to_param
+    if new_record?
+      title.parameterize
+    else
+      super
+    end
+  end
+
+  def self.virtual_groups(grades)
+    ([nil] | Array(grades)).collect{|g| new(:grouptype => ALL_STUDENTS_IN_SCHOOL, :grade => g)}
+  end
+
   private
   def assign_district_from_user
     self.district_id = user.district_id if district_id.blank? && user.present?
