@@ -1,0 +1,8 @@
+<h1>Students </h1>
+<div id="group_students">
+  <%= render :partial => 'groups/students/student', :collection => @group.students %>
+</div>
+<div id="new_student_form">
+  <%= render :partial => 'groups/students/add_student_link' %>
+</div>
+

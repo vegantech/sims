@@ -92,6 +92,15 @@ Given /^I am a school admin$/ do
   @default_user.save!
 end
 
+Given /^I am not a school admin$/ do
+  clear_login_dropdowns
+  log_in
+  @default_user.roles = ["regular_user"]
+  @default_user.user_school_assignments.clear
+  @default_user.user_school_assignments.create(:school_id => @school.id, :admin=>false)
+  @default_user.save!
+end
+
 Given /^there is a student in my group$/ do
   s=create_student "A", "Student", "05", @school
   g=@school.groups.create!(:title => "My Group")

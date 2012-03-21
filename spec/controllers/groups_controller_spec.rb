@@ -16,9 +16,6 @@ describe GroupsController do
   end
 
   describe "responding to GET index" do
-    before do
-      @mock_school.should_receive(:virtual_groups).and_return([])
-    end
 
     it "should expose all groups as @groups" do
       Group.should_receive(:paged_by_title).and_return(g=[mock_group])
