@@ -15,17 +15,19 @@ describe AllControllers do
         cico cico_school_days cico_settings
         consultation_form_requests consultation_forms
         custom_flags district/flag_categories district/schools district/students district/users districts doc
-        file flag_descriptions grouped_progress_entries groups help
+        file flag_descriptions grouped_progress_entries
+        groups/assignments groups/students groups/users groups
+        help
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
-        interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants 
+        interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants
         interventions/probe_assignments interventions/probes interventions/quicklists
         interventions login main news_items
         personal_groups
-        principal_overrides quicklist_items recommendations reports 
+        principal_overrides quicklist_items recommendations reports
         school_teams
-        schools scripted spell_check
-        student_comments students team_consultations tiers 
+        schools scripted special_user_groups spell_check
+        student_comments students team_consultations tiers
         unattached_interventions
       }
       AllControllers.names.should ==  static_list

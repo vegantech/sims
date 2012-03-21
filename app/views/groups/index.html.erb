@@ -16,14 +16,7 @@
   <tr>
     <th>Title</th>
   </tr>
-
-
-<% for group in @virtual_groups %>
-   <tr>
-    <td><%=h group.title %></td>
-    <td><%= link_to 'User Assignment', show_special_group_path(group.title.gsub(/(:)* /,"_")) %></td>
-  </tr>
-<% end %>
+  <%= render current_school.virtual_groups %>
 </table>
 
 

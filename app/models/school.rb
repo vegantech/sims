@@ -86,12 +86,8 @@ class School < ActiveRecord::Base
   end
 
   def virtual_groups
-    virt_groups=[self.groups.build(:title=>"All Students In School")]
-    enrollments.grades.each do |grade|
-      virt_groups <<  self.groups.build(:title=>"All Students In Grade: #{grade}")
-    end
-    virt_groups
-  end
+    special_user_groups.virtual_groups(enrollments.grades)
+ end
 
   def quicklist
     InterventionDefinition.find(:all,:joins=>:quicklist_items,

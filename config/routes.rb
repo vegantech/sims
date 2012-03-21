@@ -84,20 +84,12 @@ Rails.application.routes.draw do
   match '/logout' => 'login#logout', :as => :logout
 
   resources :groups do
-    member do
-      get :add_student_form
-      post :add_student
-      delete :remove_student
-      get :add_user_form
-      post :add_user
-      delete :remove_user
-      get :remove_user
-      get :show_special
-      delete :remove_special
-      get :add_special_form
-      post :add_special
+    scope :module => :groups, :only => [:new, :create, :destroy] do
+      resources :students
+      resources :users
     end
   end
+  resources :special_user_groups, :only => [:show, :edit, :create, :destroy]
 
 
   resources :checklists
