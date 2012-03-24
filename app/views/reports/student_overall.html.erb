@@ -10,7 +10,7 @@
   <%= subreport_selected(@opts[:flags]) do %>
     <% unless @student.flags.empty? %>
       <h2>Flags</h2>
-      <%= FlagsForStudentReport.render_html(:student => @student).html_safe %>
+      <%= render "reports/flags_for_student" %>
     <% end %>
   <% end %>
 

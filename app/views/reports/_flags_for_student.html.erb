@@ -1,0 +1,26 @@
+<%@student.flags.grouped_for_report.each do |sti,flags| %>
+  <table class="student_flags_table">
+    <caption><%= sti.titleize %> </caption>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Reason</th>
+        <th>User</th>
+        <th>Updated At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%flags.each do |flag| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <td> <%= flag.humanized_category %> </td>
+          <td> <%= flag.reason %> </td>
+          <td> <%= flag.user.try(:fullname) %> </td>
+          <td> <%= flag.updated_at.to_s(:long)%> </td>
+        </tr>
+      <% end %>
+      <% reset_cycle %>
+
+    </tbody>
+
+  </table>
+<% end %>
