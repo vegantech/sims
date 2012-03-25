@@ -41,7 +41,7 @@ class ReportsController < ApplicationController
   def student_interventions
     @student = current_student
     flash[:notice] = "Select a student first" and redirect_to :back and return if @student.nil?
-    #handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
+    handle_report_postback "student_interventions", @student.fullname, :student => @student
   end
 
   def user_interventions
@@ -104,7 +104,7 @@ class ReportsController < ApplicationController
     #pdf
     #html
     respond_to do |format|
-     format.html { render :layout => false }
+     format.html { render :layout => "pdf" }
      format.pdf { render :text => PDFKit.new(intervention_definition_summary_report_html).to_pdf }
     end
   end
@@ -116,7 +116,7 @@ class ReportsController < ApplicationController
     if File.exist?(abs_filename)
       File.read(abs_filename)
     else
-      html = render_to_string("intervention_definition_summary_report.html.erb",:layout => false)
+      html = render_to_string("intervention_definition_summary_report.html.erb",:layout => "pdf")
       cache_page(html,"/#{filename}")
       html
     end
@@ -135,7 +135,13 @@ class ReportsController < ApplicationController
 
   def generate_report report_class, base_filename, report_options
     fmt = params[:report_params][:format]
-    @report = report_class.send("render_#{fmt}".to_sym, report_options)
+    if report_class.class == Class
+      @report = report_class.send("render_#{fmt}".to_sym, report_options)
+    else
+      @report = render_to_string("#{report_class}.csv.erb", :layout => nil) if fmt == "csv"
+      @report = render_to_string("_#{report_class}.html.erb", :layout => nil) if fmt == "html"
+      @report = PDFKit.new(render_to_string("_#{report_class}.html.erb", :layout => "pdf")).to_pdf if fmt == "pdf"
+    end
 
     if ['csv','pdf'].include? fmt
       pdf_headers if fmt == 'pdf'
