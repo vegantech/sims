@@ -63,8 +63,6 @@ class Flag < ActiveRecord::Base
   validates_presence_of :category, :reason, :type
   validates_inclusion_of :category, :in => FLAGTYPES.keys
 
-  acts_as_reportable if defined? Ruport
-
 
   scope :custom, where(:type=>'CustomFlag')
   scope :ignore, where(:type=>'IgnoreFlag')
@@ -89,4 +87,17 @@ class Flag < ActiveRecord::Base
       (f[:type] == 'IgnoreFlag') or (f[:type] == 'SystemFlag' and IgnoreFlag.find_by_category_and_student_id(f.category, f.student_id))
     end.group_by(&:category)
   end
+
+  def self.ordered_for_report
+    all.sort_by{|g| Flag::ORDERED_HUMANIZED_ALL.index(g.category) || 999 }
+  end
+
+  def self.grouped_for_report
+    ordered_for_report.group_by(&:type).sort_by{|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g.type) || 999 }
+  end
+
+  def humanized_category
+    Flag::TYPES[category][:humanize]
+  end
+
 end
