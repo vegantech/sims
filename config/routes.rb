@@ -269,6 +269,7 @@ Rails.application.routes.draw do
   end
   root :to =>'main#index'
 
+  match 'reports/:action(.:format)', :controller => "Reports"
   match ':controller(/:action(/:id(.:format)))'
 end
 

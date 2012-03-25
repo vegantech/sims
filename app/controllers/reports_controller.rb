@@ -18,7 +18,7 @@ class ReportsController < ApplicationController
 
   def statewide_interventions
     request.env['HTTP_REFERER'] ||= '/'
-    handle_report_postback StatewideInterventionDefinitionSummaryReport, 
+    handle_report_postback StatewideInterventionDefinitionSummaryReport,
       'statewide_interventions', :search=>{}
   end
 
@@ -41,7 +41,7 @@ class ReportsController < ApplicationController
   def student_interventions
     @student = current_student
     flash[:notice] = "Select a student first" and redirect_to :back and return if @student.nil?
-    handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
+    #handle_report_postback StudentInterventionsReport, @student.fullname, :student => @student
   end
 
   def user_interventions

@@ -66,12 +66,13 @@ class Intervention < ActiveRecord::Base
 
 
 
-  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
+  delegate :title, :tier, :description, :intervention_cluster,:tier_summary, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
   scope :desc, order("created_at desc")
   scope :active, where(:active => true).desc
   scope :inactive, where(:active => false).desc
+  scope :for_report
 
 
 
@@ -207,9 +208,11 @@ class Intervention < ActiveRecord::Base
 
   def self.orphaned
     #an orphaned intervention is one that is unended past the expected end date or one where no participants can access the student  (be sure to check district_id of student as well)
-
     find(:all).select(&:orphaned?)
+  end
 
+  def goal_objective_category
+    [goal_definition.title, objective_definition.title, intervention_cluster.title].join(" ")
   end
   protected
 
