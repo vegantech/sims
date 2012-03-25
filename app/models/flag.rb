@@ -93,7 +93,7 @@ class Flag < ActiveRecord::Base
   end
 
   def self.grouped_for_report
-    ordered_for_report.group_by(&:type).sort_by{|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g.type) || 999 }
+    ordered_for_report.group_by{|f| f[:type]}.sort_by{|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g.type) || 999 }
   end
 
   def humanized_category
