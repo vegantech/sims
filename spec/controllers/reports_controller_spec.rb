@@ -188,19 +188,19 @@ describe ReportsController do
     end
 
     it 'should show flags when selected' do
-      FlagsForStudentReport.should_receive(:render_html).and_return("")
       @student.flags << SystemFlag.create!(:category => 'attendance', :reason => 'Late every day')
 
       get :student_overall, {:report_params => {:format => "html", :flags => "1"},:student_id => @student.id.to_s},
       {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
+      response.should render_template('reports/_flags_for_student')
     end
 
     it 'should not show flags when not selected' do
-      FlagsForStudentReport.should_not_receive(:render_html)
       get :student_overall, {:report_params => {:format => "html"}, :student_id => @student.id.to_s}, {:user_id => '1', :district_id => @district.id}
       response.should be_success
+      response.should_not render_template('reports/_flags_for_student')
     end
 
     it 'should show student interventions when selected' do
