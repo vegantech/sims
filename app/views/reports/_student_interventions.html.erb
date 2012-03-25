@@ -1,4 +1,8 @@
-<% content_for :title do%>Student Name:<%=@student.fullname %><% end %>
+<% content_for :title do%>
+  <%=@student.fullname %> <%=@student.number%> has <%=pluralize(@student.interventions.size,"intervention").sub(/^0 /, 'no ') %>
+<% end %>
+
+
    <%@student.interventions.for_report.group_by(&:goal_objective_category).each do |category,interventions| %>
       <table class="student_interventions_table">
         <caption><%= category %> </caption>
@@ -33,3 +37,5 @@
         </tbody>
       </table>
     <% end %>
+
+    <%= yield :title %>

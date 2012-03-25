@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe StudentInterventionsReport do
+describe "StudentInterventionsReport" do
+  before :all do
+    pending "this should be moved to cucumber"
+  end
 
   describe 'for student with no interventions' do
     it 'should say has no interventions' do
