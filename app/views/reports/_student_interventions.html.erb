@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="pdfkit-orientation" content="Landscape">
-    <meta name="pdfkit-header-center" content="<%=Time.current.to_s(:long)%>  -- Student Name:<%=@student.fullname %>">
-    <%=stylesheet_link_tag "#{request.protocol}#{request.host_with_port}/stylesheets/pdf.css" %>
-  </head>
-  <body>
-    <%@student.interventions.for_report.group_by(&:goal_objective_category).each do |category,interventions| %>
+<% content_for :title do%>Student Name:<%=@student.fullname %><% end %>
+   <%@student.interventions.for_report.group_by(&:goal_objective_category).each do |category,interventions| %>
       <table class="student_interventions_table">
         <caption><%= category %> </caption>
         <thead>
@@ -37,10 +30,6 @@
          </tr>
         <% end %>
         <% reset_cycle %>
-
         </tbody>
-
       </table>
     <% end %>
-  </body>
-</html>

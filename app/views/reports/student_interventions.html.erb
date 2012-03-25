@@ -1,1 +1,3 @@
-<%= render "student_interventions" %>
+<% @title1 = 'Student Reports'
+   @title2 = 'Reports Selection' %>
+<%= render :partial => 'select_format', :locals => {:report_target => @student.fullname, :kind_of_report => 'Student Interventions'} %>

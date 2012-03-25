@@ -1,52 +1,44 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="pdfkit-orientation" content="Landscape">
-    <meta name="pdfkit-header-center" content="<%=Time.current.to_s(:long)%>  -- <%=@objective_definition.title %>">
-    <%=stylesheet_link_tag "#{request.protocol}#{request.host_with_port}/stylesheets/pdf.css" %>
-  </head>
-  <body>
-    <%@objective_definition.intervention_definitions.for_report.group_by(&:tier).each do |tier,intervention_definitions| %>
-      <table class="intervention_definition_summary">
-        <caption><%= tier.to_s %> </caption>
-        <thead>
-          <tr>
-            <th>Bus. Key</th>
-            <th>Category</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Duration / Frequency</th>
-            <th>Progress Monitors</th>
-            <th width="10%">Links and Attachments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%intervention_definitions.each do |intervention_definition| %>
-            <tr class="pbi_avoid <%=cycle("even","odd") %>" >
-            <td> <%= intervention_definition.business_key %> </td>
-            <td> <%= intervention_definition.intervention_cluster %> </td>
-            <td> <b> <%= intervention_definition.title%> </b> </td>
-            <td width="350px"><div class="pbi_avoid"> <%= intervention_definition.description %> </div></td>
-            <td> <%= intervention_definition.frequency_duration_summary %> </td>
-            <td>
-              <ul> <% intervention_definition.probe_definitions.each do |pd| %>
-                  <%=content_tag :li,pd.title %>
-                <% end %>
-              </ul>
-            </td>
-            <td>
-              <ul><% intervention_definition.assets.each do |asset| %>
-                  <%= content_tag :li, asset.to_s.gsub(/\_/," ") %>
-                <% end %>
-              </ul>
+<%content_for :title do %> <%=@objective_definition.title %> <% end %>
+
+<%@objective_definition.intervention_definitions.for_report.group_by(&:tier).each do |tier,intervention_definitions| %>
+  <table class="intervention_definition_summary">
+    <caption><%= tier.to_s %> </caption>
+    <thead>
+      <tr>
+        <th>Bus. Key</th>
+        <th>Category</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Duration / Frequency</th>
+        <th>Progress Monitors</th>
+        <th width="10%">Links and Attachments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%intervention_definitions.each do |intervention_definition| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <td> <%= intervention_definition.business_key %> </td>
+          <td> <%= intervention_definition.intervention_cluster %> </td>
+          <td> <b> <%= intervention_definition.title%> </b> </td>
+          <td width="350px"><div class="pbi_avoid"> <%= intervention_definition.description %> </div></td>
+          <td> <%= intervention_definition.frequency_duration_summary %> </td>
+          <td>
+            <ul> <% intervention_definition.probe_definitions.each do |pd| %>
+                <%=content_tag :li,pd.title %>
+              <% end %>
+            </ul>
           </td>
-          </tr>
-        <% end %>
-        <% reset_cycle %>
+          <td>
+            <ul><% intervention_definition.assets.each do |asset| %>
+                <%= content_tag :li, asset.to_s.gsub(/\_/," ") %>
+              <% end %>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+      <% reset_cycle %>
 
-        </tbody>
+    </tbody>
 
-      </table>
-    <% end %>
-  </body>
-</html>
+  </table>
+<% end %>
