@@ -171,10 +171,6 @@ class Intervention < ActiveRecord::Base
     intervention_probe_assignments.active.collect(&:title).join(";")
   end
 
-  def bolded_report_summary
-    "#{intervention_definition.bolded_title}  #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
-  end
-
   def report_summary
     "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active?}"
   end
