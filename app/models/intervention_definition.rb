@@ -105,10 +105,6 @@ class InterventionDefinition < ActiveRecord::Base
     [objective_definition.goal_definition_id, objective_definition.id, intervention_cluster_id, id]
   end
 
-  def bolded_title
-    "<b>#{title}</b>"
-  end
-
   def frequency_duration_summary
     "#{time_length_summary} / #{frequency_summary}"
   end
