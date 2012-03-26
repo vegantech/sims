@@ -110,14 +110,6 @@ class InterventionDefinition < ActiveRecord::Base
     [objective_definition.goal_definition_id, objective_definition.id, intervention_cluster_id, id]
   end
 
-  def bolded_title
-    if sld?
-      "<i><c:alink uri='http://dpi.wi.gov/SPED/pi11_0701.html#ld'>" + "<b>#{title}</b>" + "</c:alink></i>"
-    else
-      "<b>#{title}</b>"
-    end
-  end
-
   def frequency_duration_summary
     "#{time_length_summary} / #{frequency_summary}"
   end
