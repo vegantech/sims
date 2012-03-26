@@ -73,6 +73,11 @@ class Intervention < ActiveRecord::Base
   scope :inactive, where(:active => false).desc
   scope :for_report
 
+  scope :author_or_participant, lambda { |user_id|
+    includes([:intervention_participants, :user,:frequency, :time_length, :intervention_definition]).where(
+      ["interventions.user_id = :user_id or intervention_participants.user_id = :user_id", {:user_id => user_id}])
+  }
+
 
 
   define_statistic :interventions , :count => :all, :joins => :student

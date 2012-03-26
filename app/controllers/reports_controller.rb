@@ -46,7 +46,7 @@ class ReportsController < ApplicationController
 
   def user_interventions
     user = current_user
-    handle_report_postback UserInterventionsReport, user.fullname, :user => current_user
+    handle_report_postback "user_interventions", user.fullname, :user => current_user
   end
 
   STUDENT_OVERALL_OPTIONS_HELP={
