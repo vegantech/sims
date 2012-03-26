@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe UserInterventionsReport do
+describe "UserInterventionsReport" do
   describe 'render_text' do
     it 'should generate correct text output' do
+      pending "move this to cucumber"
       now = Date.new(2008, 12, 12).to_time(:utc)
       Time.stub!(:now => now)
 

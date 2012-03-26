@@ -1,0 +1,37 @@
+<% content_for :title do%>
+  Interventions for <%=current_user.fullname %>
+<% end %>
+
+
+<%Intervention.author_or_participant(current_user).group_by(&:student).each do |student,interventions| %>
+  <table class="user_interventions_table">
+    <caption><%= student.fullname %> </caption>
+    <thead>
+      <tr>
+        <th>Title / Status</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Frequency</th>
+        <th>Time Length</th>
+        <th>Author*</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%interventions.each do |intervention| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <td> <%= intervention.report_summary %> </td>
+          <td> <%= intervention.start_date %> </td>
+          <td> <%= intervention.end_date %> </td>
+          <td> <%= intervention.frequency_summary%></td>
+          <td> <%= intervention.time_length_summary %> </td>
+          <td> <%="*" if intervention.participant_user_ids.include?(current_user.id) %><%= intervention.user.try(:fullname)%> </td>
+          <td> <%= intervention.active %> </td>
+        </tr>
+      <% end %>
+      <% reset_cycle %>
+    </tbody>
+  </table>
+<% end %>
+
+*If you are both the participant and author, your name will be starred.
