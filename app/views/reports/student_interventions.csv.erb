@@ -1,7 +1,9 @@
 "Goal Objective Category","Intervention","Description","Start Date End Date","Frequency Duration","Ended By","Ended On","Last Updated","Tier","Participants"
 <%= raw(FasterCSV.generate do |csv|
     @student.interventions.for_report.each do |intervention|
-      csv <<[intervention.title,
+      csv <<[
+        intervention.goal_objective_category,
+        intervention.title,
       intervention.description,
       intervention.start_date.to_s + " " + intervention.end_date.to_s,
       intervention.frequency_summary + " " + intervention.time_length_summary,
