@@ -67,7 +67,9 @@ class Flag < ActiveRecord::Base
   scope :custom, where(:type=>'CustomFlag')
   scope :ignore, where(:type=>'IgnoreFlag')
   scope :system, where(:type=>'SystemFlag')
-
+  scope :exclude_ignored, joins( "left outer join flags ig_flags on ig_flags.type = 'IgnoreFlag'
+    and ig_flags.student_id = flags.student_id and ig_flags.category = flags.category").where(
+    "ig_flags.id is null")
   def summary
     "#{reason}- by #{user} on #{created_at.to_s(:report)}"
   end
@@ -81,11 +83,7 @@ class Flag < ActiveRecord::Base
   end
 
   def self.current
-    #FIXME doesn't handle ignores
-    # all.group_by(&:category)
-    all.reject do |f|
-      (f[:type] == 'IgnoreFlag') or (f[:type] == 'SystemFlag' and IgnoreFlag.find_by_category_and_student_id(f.category, f.student_id))
-    end.group_by(&:category)
+    exclude_ignored.group_by(&:category)
   end
 
   def self.ordered_for_report
@@ -98,6 +96,10 @@ class Flag < ActiveRecord::Base
 
   def humanized_category
     Flag::TYPES[category][:humanize]
+  end
+
+  def self.humanized_categories
+    all.collect(&:humanized_category).join(", ")
   end
 
 end

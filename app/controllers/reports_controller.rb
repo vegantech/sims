@@ -13,7 +13,8 @@ class ReportsController < ApplicationController
       :school_id => current_school_id,
       :user => current_user)
     request.env['HTTP_REFERER'] ||= '/'
-    handle_report_postback StudentFlagReport, 'student_flag_summary', :search=>search_criteria
+    @reporter = StudentFlagReport.new(search_criteria)
+    handle_report_postback "student_flag_summary", 'student_flag_summary'
   end
 
   def statewide_interventions
