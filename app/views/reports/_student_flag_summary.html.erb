@@ -1,0 +1,79 @@
+<% content_for :title do%>
+<% end %>
+
+<%@reporter.current_flags.sort_by{|e,k| Flag::ORDERED_TYPE_KEYS.index(e) || 999}.each do |flagtype,flags| %>
+  <table class="student_interventions_table">
+    <caption><%= Flag::TYPES[flagtype][:humanize] %> </caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Student Num</th>
+        <th>Grade</th>
+        <th>Flag Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%flags.each do |flag| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <td> <%= flag.student.fullname %> </td>
+          <td> <%= flag.student.number %> </td>
+          <td> <%= flag.student.enrollments.first.grade %> </td>
+          <td> <%= flag.reason %> </td>
+        </tr>
+      <% end %>
+      <% reset_cycle %>
+    </tbody>
+  </table>
+<% end %>
+
+
+
+<table class="flagged_students_table">
+  <caption>Ignored Flags</caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Student Num</th>
+      <th>Grade</th>
+      <th>Flag Reason</th>
+      <th>Categories</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%@reporter.custom_flags.each do |flagged_student| %>
+      <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+        <td> <%= flagged_student.fullname %> </td>
+        <td> <%= flagged_student.number %> </td>
+        <td> <%= flagged_student.enrollments.first.grade %> </td>
+        <td> <%= flagged_student.ignore_flags.summary.join(", ") %> </td>
+        <td> <%= flagged_student.ignore_flags.humanized_categories %> </td>
+      </tr>
+    <% end %>
+    <% reset_cycle %>
+</tbody>
+  </table>
+
+
+  <table class="flagged_students_table">
+    <caption>Custom Flags</caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Student Num</th>
+        <th>Grade</th>
+        <th>Flag Reason</th>
+        <th>Categories</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%@reporter.custom_flags.each do |flagged_student| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <td> <%= flagged_student.fullname %> </td>
+          <td> <%= flagged_student.number %> </td>
+          <td> <%= flagged_student.enrollments.first.grade %> </td>
+          <td> <%= flagged_student.custom_flags.summary.join(", ") %> </td>
+          <td> <%= flagged_student.custom_flags.humanized_categories %> </td>
+        </tr>
+      <% end %>
+  </tbody>
+</table>
