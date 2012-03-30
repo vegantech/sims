@@ -23,7 +23,6 @@ class ObjectiveDefinition < ActiveRecord::Base
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
   acts_as_list :scope => :goal_definition_id
   delegate :district, :to => :goal_definition, :allow_nil => true
-  acts_as_reportable if defined? Ruport
 
   define_statistic :count , :count => :all, :joins => :goal_definition
   define_statistic :distinct_titles , :count => :all,  :select => 'distinct objective_definitions.title', :joins=>:goal_definition

@@ -128,7 +128,6 @@ class User < ActiveRecord::Base
 
   after_save :district_special_groups
 
-  acts_as_reportable # if defined? Ruport
 
   def authorized_groups_for_school(school,grade=nil)
     if all_students_in_school?(school)

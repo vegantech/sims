@@ -86,8 +86,6 @@ class Intervention < ActiveRecord::Base
   define_statistic :districts_with_interventions, :count => :all, :select => 'distinct district_id', :joins => {:intervention_definition => {:intervention_cluster => {:objective_definition => :goal_definition}}}
   define_statistic :users_with_interventions, :count => :all, :select => 'distinct user_id', :joins => :user
 
-  acts_as_reportable # if defined? Ruport
-
   def self.build_and_initialize(args)
     # TODO Refactor
 

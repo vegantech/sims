@@ -125,8 +125,6 @@ class ReportsController < ApplicationController
   end
 
   def handle_report_postback report_class, base_filename, report_options = {}
-    flash[:notice] = "Sorry, reports are not available" and redirect_to :back and return unless defined? Ruport
-
     @filetypes = ['html', 'pdf', 'csv']
     @selected_filetype = 'html'
 

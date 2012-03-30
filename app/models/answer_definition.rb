@@ -22,8 +22,6 @@ class AnswerDefinition < ActiveRecord::Base
   delegate :question_definition, :to => :element_definition
   delegate :checklist_definition, :to => :question_definition
 
-  acts_as_reportable if defined? Ruport
-
   validates_presence_of  :value
 
   def sibling_definitions

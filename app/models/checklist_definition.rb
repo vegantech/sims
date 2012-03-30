@@ -29,7 +29,6 @@ class ChecklistDefinition < ActiveRecord::Base
   before_validation :clear_document
   validates_presence_of :directions, :text
   before_save :mark_other_checklist_definitions_inactive, :if => :active
-  acts_as_reportable if defined? Ruport
   attr_protected :district_id
 
   def save_all!

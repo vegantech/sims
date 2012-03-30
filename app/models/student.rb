@@ -137,7 +137,6 @@ class Student < ActiveRecord::Base
   validate :unique_id_state
 
   delegate :recommendation_definition, :to => '(checklist_definition or return nil)'
-  acts_as_reportable if defined? Ruport
 
   after_update :save_system_flags, :save_enrollments
   after_save :save_extended_profile
