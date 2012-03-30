@@ -22,7 +22,6 @@ class Tier < ActiveRecord::Base
 
   before_destroy :move_children_to_delete_successor, :if => :used_at_all?
   acts_as_list :scope => :district_id
-  acts_as_reportable
   validates_presence_of :title
   attr_protected :district_id
 

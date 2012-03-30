@@ -5,6 +5,12 @@ describe ReportsController do
   include_context "authorized"
   include_context "authenticated"
 
+  describe 'statewide' do
+    it 'should have specs for the intervention definitions and progress monitors, along with unit specs and features'
+
+
+  end
+
   describe 'student_flag_summary' do
     render_views
 
@@ -283,6 +289,9 @@ describe ReportsController do
     end
 
     describe 'POST' do
+      before :all do
+        pending "This needs to be redone"
+      end
       describe 'with HTML format choice'
       it 'should return output of TeamNotesReport.render_html as report' do
         m = 'This is the HTML Team Notes Report Content'
