@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TeamNotesReport do
   describe 'render_text' do
     it 'should generate correct text output' do
+      pending 'this needs different tests and cucumber features for the results'
       student = Factory(:student, :first_name => 'This', :last_name => 'Student')
       school = Factory(:school, :district_id =>student.district_id)
       student.enrollments.create!(:school=>school, :grade => "05")

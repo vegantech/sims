@@ -46,8 +46,6 @@ class ProbeDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
   end
 
-  acts_as_reportable if defined? Ruport
-
   def title
     if custom and self[:title].present?
       "(c) #{self[:title]}"

@@ -47,7 +47,6 @@ class InterventionDefinition < ActiveRecord::Base
   validates_numericality_of :frequency_multiplier, :time_length_num
   validates_numericality_of :mins_per_week, :greater_than => 0, :less_than =>3000, :if => "sld?"
 
-  acts_as_reportable if defined? Ruport
   acts_as_list :scope => :intervention_cluster_id
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
   define_statistic :distinct_titles , :count => :all,  :select => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}

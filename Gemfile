@@ -32,11 +32,8 @@ gem 'rails', '3.0.12'
 
 
 gem 'factory_girl_rails'
-gem 'ruport','1.6.1'
-gem 'acts_as_reportable','1.1.1', :require => 'ruport/acts_as_reportable'
 gem 'redcarpet'
 gem "fastercsv", '1.2.3'
-gem "pdf-writer", :require => "pdf/writer"
 gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'

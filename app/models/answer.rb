@@ -19,7 +19,6 @@ class Answer < ActiveRecord::Base
 
   validates_presence_of :answer_definition_id
   delegate :value, :to => :answer_definition
-  acts_as_reportable if defined? Ruport
 
   def self.find_all_by_element_definition(element_definition)
     find(:all, :conditions=>["answer_definition_id in ( ? ) ",element_definition.answer_definitions ])

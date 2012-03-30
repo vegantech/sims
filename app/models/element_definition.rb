@@ -27,7 +27,6 @@ class ElementDefinition < ActiveRecord::Base
 
   delegate :checklist_definition, :to => :question_definition
 
-  acts_as_reportable if defined? Ruport
   acts_as_list :scope => :question_definition
 
 

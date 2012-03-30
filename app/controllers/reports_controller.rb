@@ -91,11 +91,12 @@ class ReportsController < ApplicationController
       @end_date   = build_date(params[:end_date])
       @sort_field = params[:report_params][:sort_field]
       @content = params[:report_params][:content]
+      @reporter = TeamNotesReport.new(:user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date, :sort_field=>@sort_field, :content => @content)
     else
       @start_date = @end_date = @today
     end
 
-    handle_report_postback TeamNotesReport, 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date, :sort_field=>@sort_field, :content => @content
+    handle_report_postback "team_notes", 'team_notes', :user => current_user, :school => current_school, :start_date => @start_date, :end_date => @end_date, :sort_field=>@sort_field, :content => @content
   end
 
   def intervention_definition_summary_report
@@ -124,8 +125,6 @@ class ReportsController < ApplicationController
   end
 
   def handle_report_postback report_class, base_filename, report_options = {}
-    flash[:notice] = "Sorry, reports are not available" and redirect_to :back and return unless defined? Ruport
-
     @filetypes = ['html', 'pdf', 'csv']
     @selected_filetype = 'html'
 

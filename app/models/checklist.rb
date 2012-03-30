@@ -28,7 +28,6 @@ class Checklist < ActiveRecord::Base
 
   delegate :recommendation_definition, :to => :checklist_definition
   delegate :recommendation_definition_id, :to => :checklist_definition
-  acts_as_reportable if defined? Ruport
   attr_accessor :skip_cache
   attr_reader :build_errors
   define_statistic :count , :count => :all
