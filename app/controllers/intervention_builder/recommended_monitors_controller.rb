@@ -7,7 +7,7 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
     @back_path =  intervention_builder_intervention_url(*@intervention_definition.ancestor_ids)
 
     if request.post? and params[:commit]
-      flash[:notice=] = "Changes saved for #{@intervention_definition.title}" if @intervention_definition.probe_definition_ids=params[:probes]
+      flash[:notice=] = "Changes saved for #{@intervention_definition.title}" if @intervention_definition.probe_definition_ids=params[:probes].uniq
       redirect_to @back_path and return
     end
     @recommended_monitors = @intervention_definition.recommended_monitors.collect(&:probe_definition_id)

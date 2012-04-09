@@ -167,7 +167,7 @@ class Student < ActiveRecord::Base
 
 
   def has_content?
-    CUSTOM_CONTENT.any?{|c| s.send(c).any?}
+    CUSTOM_CONTENT.any?{|c| self.send(c).any?}
   end
 
   def max_tier
