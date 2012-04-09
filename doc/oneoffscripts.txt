@@ -71,3 +71,8 @@ File.open('admin_emails', 'w') {|f| f.puts emails.join(", ")}
 mysqldump sims_open_production -u root team_consultations --where "id = 21981" --no-create-info --compact >restore.sql
 mysqldump sims_open_production -u root consultation_forms --where "team_consultation_id = 21981" --no-create-info --compact >> restore.sql
 mysqldump sims_open_production -u root consultation_form_concerns --where "consultation_form_id = 24491" --no-create-info --compact >> restore.sql
+
+
+#remove duplicate recommended monitors
+rs= RecommendedMonitor.group([:probe_definition_id, :intervention_definition_id]).having("count(id) > 1 and min(position) and min(id)") ;nil
+rs.each {|rm| RecommendedMonitor.where(["id != ? and probe_definition_id = ? and intervention_definition_id = ?",rm.id,rm.probe_definition_id, rm.intervention_definition_id]).each(&:destroy)}
