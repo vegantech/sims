@@ -1,4 +1,4 @@
-class NewsCell < Cell::Base
+class NewsCell < Cell::Rails
   helper  LinksAndAttachmentsHelper, ApplicationHelper
   def index(opts)
     @parent=opts[:parent]
