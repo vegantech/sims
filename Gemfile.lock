@@ -169,7 +169,7 @@ GEM
       net-ssh (>= 1.99.1)
     newrelic_rpm (2.14.1)
     nokogiri (1.4.4)
-    paperclip (2.5.2)
+    paperclip (2.7.0)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
@@ -288,7 +288,7 @@ DEPENDENCIES
   mysql2 (~> 0.2.7)
   newrelic_rpm
   nokogiri (= 1.4.4)
-  paperclip
+  paperclip (~> 2.7.0)
   pdfkit
   prototype_legacy_helper (= 0.0.0)!
   rack-test
