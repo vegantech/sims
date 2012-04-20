@@ -3,7 +3,7 @@
 <% end %>
 
 
-<%Intervention.author_or_participant(current_user).group_by(&:student).each do |student,interventions| %>
+<%@interventions.group_by(&:student).each do |student,interventions| %>
   <table class="user_interventions_table">
     <caption><%= student.fullname %> </caption>
     <thead>

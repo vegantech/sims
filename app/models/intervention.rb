@@ -101,6 +101,16 @@ class Intervention < ActiveRecord::Base
     int
   end
 
+  def self.for_user_interventions_report(user_id, filter,start_date = 5.years.ago,end_date = Date.today)
+    ints = author_or_participant(user_id).where(:updated_at => start_date..(end_date+2))
+    if filter == "Current"
+      ints = ints.where(["active = ?",true])
+    elsif filter == "Ended"
+      ints = ints.where(["active = ?",false])
+    end
+    ints
+  end
+
 
   def end(ended_by,reason='', fidelity = nil)
     self.ended_by_id = ended_by

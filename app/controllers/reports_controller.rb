@@ -47,6 +47,18 @@ class ReportsController < ApplicationController
 
   def user_interventions
     user = current_user
+    @today = Date.current
+
+    if request.post?
+      @start_date = build_date(params[:start_date])
+      @end_date   = build_date(params[:end_date])
+      @filter = params[:report_params][:filter]
+      @interventions = Intervention.for_user_interventions_report(current_user,@filter,@start_date,@end_date) if request.post?
+    else
+      @start_date = 3.years.ago
+        @end_date = @today
+    end
+
     handle_report_postback "user_interventions", user.fullname, :user => current_user
   end
 
