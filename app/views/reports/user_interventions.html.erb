@@ -1,3 +1,24 @@
 <% @title1 = 'User Reports'
    @title2 = 'User Interventions' %>
-   <%= render :partial => 'select_format', :locals => {:kind_of_report => 'User Interventions', :report_target => current_user.fullname} %>
+
+
+   <h2>User Interventions for <%=current_user.fullname %></h2>
+<%= form_tag do %><br/ >
+
+  <%= label_tag 'start_date-mm', 'Start Date:' %><br/>
+  <%= unobtrusive_date_picker_tags @start_date,{:order => [:month,:day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date'  } %> <br / >
+
+
+  <%= label_tag 'end_date-mm', 'End Date:' %><br/>
+  <%= unobtrusive_date_picker_tags @end_date, {:order => [:month, :day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'end_date'} %><br/><br/>
+
+  <%= label_tag :Filter %><br/>
+  <%= select :report_params,:filter, ['All','Current', 'Ended'], {:selected=> @filter} %><br/><br/>
+
+
+  <%= label_tag :report_params_format, 'Format:' %><br/>
+  <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %><br/><br/>
+
+  <%= submit_tag "Generate Report", :name => 'generate' %>
+<% end %>
+<%= raw @report %>
