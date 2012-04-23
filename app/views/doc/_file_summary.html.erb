@@ -2,7 +2,9 @@
 field_extra ||= '' 
 %>
 <div id="<%=file_summary.file_name%>">
-  <h3><%=link_to file_summary.file_name, "/doc/district_upload/#{file_summary.file_name.split(".").first}"%> <%=head_extra%></h3>
+  <h3><%=link_to file_summary.file_name, "/doc/district_upload/#{file_summary.file_name.split(".").first}"%> <%=head_extra%>
+    <span class ="append_file_name"><%=link_to file_summary.file_name_with_append, "/doc/district_upload/#{file_summary.file_name.split(".").first}"%>
+      </span> <h3>
   <p><%=file_summary.description %></p>
   <p><%=file_summary.fields %> <%=field_extra %></p>
   <dl>

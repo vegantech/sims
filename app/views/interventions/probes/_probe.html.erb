@@ -1,11 +1,11 @@
 <% unless probe.new_record? %>
-  <% content_tag_for :tr, probe do %>
+  <%= content_tag_for :tr, probe do %>
     <td><%= probe.administered_at.to_date.to_s(:long) %></td>
     <td><%=probe.score %></td>
     <td>
         <% if @intervention.active? %>
           <%= link_to 'Edit Score', edit_probe_url(@intervention,probe.intervention_probe_assignment,probe), :target=>"_blank" %>
-          <%#= link_to 'Delete Score', probe_url(@intervention,probe.intervention_probe_assignment,probe), 
+          <%#= link_to 'Delete Score', probe_url(@intervention,probe.intervention_probe_assignment,probe),
                 :confirm => 'Are you sure?', :method => :delete %>
            <%= link_to_remote_degrades 'Delete Score', :url=> probe_url(@intervention,probe.intervention_probe_assignment,probe),
             :confirm => 'Are you sure you want to remove this score?', :method => :delete %>

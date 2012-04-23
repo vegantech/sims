@@ -1,6 +1,6 @@
 <div id="probe_definition_benchmark_<%=index %>">
-<% fields_for 'probe_definition[probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
+<%= fields_for 'probe_definition[probe_definition_benchmarks_attributes][]', probe_definition_benchmark , :index=>index do |form | %>
     <%= form.hidden_field :id unless probe_definition_benchmark.new_record? %>
-    <%= hidden_field_tag "probe_definition[probe_definition_benchmarks_attributes[#{index}][_delete]", true %>
+    <%= hidden_field_tag "probe_definition[probe_definition_benchmarks_attributes[#{index}][_destroy]", true %>
 <% end %>
 </div>

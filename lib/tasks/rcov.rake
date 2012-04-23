@@ -1,9 +1,6 @@
 begin
   require File.dirname(__FILE__)+ '/rcov_rake_helper'
-   
-  
-if defined? Rcov and defined? Spec
-  
+if defined? Rcov and defined? RSpec
   namespace :test do
     namespace :coverage do
       desc "Delete aggregate coverage data: requires rcov gem"
@@ -15,7 +12,6 @@ if defined? Rcov and defined? Spec
     end
     desc 'Aggregate code coverage for unit, functional and integration tests  and corresponding specs :requires rcov gem'
     task :coverage => ["test:coverage:clean","db:test:prepare","coverage_all"]
-    
  end
   namespace :spec do
     #run the unit tests before the specs and show coverage
@@ -23,15 +19,13 @@ if defined? Rcov and defined? Spec
       %w[unit functional integration].each do |target|
 
         desc  "coverage for test:#{target} and corresponding specs/stories-"+ send('specs_corresponding_to_'+target).to_s
-        Spec::Rake::SpecTask.new(target => "test:coverage:#{target}") do |t|
-          
-          t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
-          t.spec_files = FileList[send("specs_corresponding_to_#{target}")]
+        RSpec::Rake::SpecTask.new(target => "test:coverage:#{target}") do |t|
           # t.spec_files = FileList['spec/**/*_spec.rb']
+          t.fail_on_error = false
           t.rcov = true
-          t.rcov_dir= (ENV['CC_BUILD_ARTIFACTS'] || 'test/coverage') +"/#{target}"
-          t.rcov_opts << "--rails --aggregate coverage.data --text-report --sort coverage"
-          t.rcov_opts << send("default_rcov_params_for_#{target}")
+          t.pattern = FileList[send("specs_corresponding_to_#{target}")]
+#          t.rcov_dir= (ENV['CC_BUILD_ARTIFACTS'] || 'spec/coverage') +"/#{target}"
+          t.rcov_opts = "--rails --aggregate coverage.data --text-summary --sort coverage #{send("default_rcov_params_for_#{target}")} "
         end
 
       end
@@ -46,8 +40,8 @@ if defined? Rcov and defined? Spec
     Rake::Task["cucumber:rcov"].invoke
     #using cucumber instead of rspec stories
   end
-                            
 end
-rescue LoadError
+#rescue LoadError
+
   #allow rake to continue to function is rcov gem is not installed
 end

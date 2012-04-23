@@ -34,7 +34,7 @@ end
 
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
-  s.enrollments.create!(@student.enrollments.first.attributes)
+  s.enrollments.create!(@student.enrollments.first.attributes.merge(:student_id => s.id))
   @additional_student=true
   s.save!
 end
@@ -44,7 +44,7 @@ Given /^quicklist choices (.*)$/i do |choices_array|
   goal = Factory(:goal_definition, :title => "Cucumber Goal", :district => @district)
   objective = Factory(:objective_definition, :title=> "Cucumber Objective", :goal_definition => goal)
   cluster = Factory(:intervention_cluster, :title => "Cucumber Category", :objective_definition => objective)
-  
+
   choices.each do |choice|
     idef = Factory(:intervention_definition, :title => choice, :intervention_cluster => cluster)
     Factory(:quicklist_item, :school => @school, :intervention_definition => idef)
@@ -92,6 +92,15 @@ Given /^I am a school admin$/ do
   @default_user.save!
 end
 
+Given /^I am not a school admin$/ do
+  clear_login_dropdowns
+  log_in
+  @default_user.roles = ["regular_user"]
+  @default_user.user_school_assignments.clear
+  @default_user.user_school_assignments.create(:school_id => @school.id, :admin=>false)
+  @default_user.save!
+end
+
 Given /^there is a student in my group$/ do
   s=create_student "A", "Student", "05", @school
   g=@school.groups.create!(:title => "My Group")
@@ -103,9 +112,7 @@ end
 
 
 Given /^I am a state admin$/ do
-  Given "I am a district admin"
-  @default_user.roles = (Role.mask_to_roles(@default_user.reload.roles_mask) | ['state_admin'])
-  @default_user.save!
+  step "I am a district admin"
   @default_user.district.update_attribute(:admin , true)
 end
 
@@ -119,11 +126,6 @@ end
 
 When /^I start at (.*)$/ do |page_name|
   go_to_page page_name
-end
-
-
-When /^I am on (.*)$/ do |page_name|
-  pending 'change me to start_at'
 end
 
 Given /^"(.*)" has access to (.*)$/ do |user_name, group_array|
@@ -224,7 +226,7 @@ end
 
 
 Given /^load demo data$/ do
-  fixtures_dir = File.expand_path(RAILS_ROOT)+ '/test/fixtures'
+  fixtures_dir = Rails.root.join("test","fixtures")
 
   Fixtures.reset_cache
   Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
@@ -233,16 +235,16 @@ Given /^load demo data$/ do
 end
 
 Then /^I Display Body$/i do
-  puts response.body
+  puts page.source
 end
 
-When /^I should click js "all"$/ do 
+When /^I should click js "all"$/ do
   click_all_name_id_brackets
 end
 
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
 Given /^I should see javascript code that will do xhr for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
-  response.body.should match(/Form.Element.EventObserver\('#{observed_field}'/)
+  page.source.should match(/Form.Element.EventObserver\('#{observed_field}'/)
 end
 
 # When /^xhr "search_criteria_user_id" updates ["search_criteria_group_id"]
@@ -252,33 +254,42 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    xml_http_request  :post, "/students/grade_search/", {:grade=>3}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.post  "/students/grade_search/", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   elsif observed_field == "search_criteria_user_id"
-    xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.post "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   else
-    flunk response.body
+    flunk page.source
   end
 
   Array(eval(target_fields)).each do |target_field|
-    response.body.should match(/Element.update\("#{target_field}"/)
+    page.source.should match(/Element.update\("#{target_field}"/)
   end
   #  response.should hav_text /"<option value=\"996332878\">default user</option>");"/
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
-  response.should have_options(Array(eval(options)))
+  page.should have_select("Student Group", :options =>(Array(eval(options))))
 end
+
+Then /^I should verify the updated rjs has options (.*)$/ do |options|
+  Array(eval(options)).each do |o|
+    page.source.should match(/<option value=\\\".*\\\">#{o}<\/option>/)
+  end
+end
+
 
 Given /^I enter URL "(.*)"$/ do |url|
   visit url
 end
 
 Given /^there are "(\d+)" emails$/ do |num_emails|
-  assert_emails num_emails.to_i
+  ActionMailer::Base.deliveries.size.should == num_emails.to_i
+# assert_emails num_emails.to_i
 end
 
 Given /^there is not an email containing "(.*)"$/ do |target_text|
-  assert_no_emails
+  ActionMailer::Base.deliveries.size.should == 0
+#  assert_no_emails
 end
 
 Given /^there is an email containing "(.*)"$/ do |target_text|
@@ -297,18 +308,18 @@ end
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
-  StudentComment.create!(:student => nondistrict_student, :body => content, :created_at => date)
+  nondistrict_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  StudentComment.create!(:student => @student, :body => content, :created_at => date)
+  @student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   non_selected_school_student = Factory(:student, :district => @student.district) #will create student in an unselected school
-  StudentComment.create!(:student => non_selected_school_student, :body => content, :created_at => date)
+  non_selected_school_student.comments.create!(:body => content, :created_at => date)
 end
 
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
@@ -321,11 +332,11 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
   @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
                                            :district => @default_user.district)
 
-  StudentComment.create!(:student => unauthorized_student, :body => content, :created_at => date)
+  unauthorized_student.comments.create!(:body => content, :created_at => date)
 end
 
 When /^page should contain "(.*)"$/ do |arg1|
-  response.body.should =~ /#{arg1}/
+  page.should have_content(arg1)
 end
 
 Given /^student "([^\"]*)" directly owns consultation form with team consultation concern "([^\"]*)"$/ do |student_name, concern_label|
@@ -365,6 +376,9 @@ Given /^district "([^"]*)"$/ do |district|
 end
 
 Then /^"([^"]*)" should have "([^"]*)" district selected$/ do |field, district|
-    i=District.find_by_name(district).id
-    steps %Q{Then the "#{field}" field should contain "#{i}"}
+  page.has_select?(field, :selected => district)
+end
+
+Given /^PENDING/ do
+  pending
 end

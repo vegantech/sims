@@ -2,7 +2,7 @@ module PopulateInterventionDropdowns
 protected
   def values_from_session
     { :user_id => session[:user_id],
-      :selected_ids => selected_students_ids,
+      :selected_ids => selected_student_ids,
       :school_id => session[:school_id]
     }
   end
@@ -26,7 +26,7 @@ protected
 
   def populate_definitions
     find_intervention_definition
-    if flash[:custom_intervention] 
+    if params[:custom_intervention] == "true"
       @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
       @tiers=current_district.tiers
     else

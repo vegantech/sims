@@ -3,25 +3,10 @@
   <%=h @group.title %>
 </p>
 
-<h1>Students </h1>
-<div id="group_students">
-  <%= render :partial => 'student', :collection => @group.students %>
-</div>
-<div id="new_student_form">
-  <%= render :partial => 'add_student_link' %>
-</div>
-
-<h1> Users </h1>
-<div id="group_users">
-  <%= render :partial => 'user_assignment', :collection=>@group.user_group_assignments %>
-</div>
-
-<div id="new_user_assignment_form">
-  <%= render :partial => 'add_user_assignment_link' %>
-
-</div>
+<%= render "groups/students/index" %>
+<%= render "groups/users/index" %>
 
 <p>
   <%= link_to 'Rename', edit_group_path(@group) %> |
-  <%= link_to 'Back', groups_path %>
+  <%= link_to 'Back', index_url_with_page %>
 </p>

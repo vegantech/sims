@@ -1,3 +1,26 @@
+<% if current_district.show_team_consultation_attachments? %>
+  <% unless consultation_form.respond_to?(:assets) %>
+    <% teams = Array(consultation_form.object.school_team || current_school.school_teams) %>
+    <% teams.each do |team| %>
+      <% if team.assets.present? %>
+        <p>Templates and instructions from the <%=team %> team:</p>
+
+        <ul><%=links_and_attachments team,'li' %> </ul>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if consultation_form.respond_to?(:assets) %>
+    <%=consultation_form.assets %>
+  <%  else %>
+    <p>You can upload documentation here or a completed template here:</p>
+    <%= render :partial => '/assets/asset_form', :locals => {:form=>consultation_form, :parent =>consultation_form.object_name}  %>
+  <% end %>
+  <%= link_to_function 'Show/Hide Form', "$('#{dom_id(consultation_form.object,"form")}').toggle()"  %>
+<% end %>
+
+
+<%= div_for consultation_form.object,'form', :style => hide_or_show_consultation_form(consultation_form) do %>
 <%= render :partial => 'consultation_forms/concerns_form', :object => consultation_form %>
 
 <p>
@@ -24,3 +47,5 @@
   <%= consultation_form.label :desired_outcome, 'What is the desired outcome from the team consultation?' %> <br />
   <%= consultation_form.text_area :desired_outcome, :size => ConsultationForm::FIELD_SIZE , :class => 'spell_check'%>
 </p>
+
+<% end %>

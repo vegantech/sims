@@ -34,7 +34,7 @@
 
 </script>
 
-<% form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true} do %>
+<%= form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true} do %>
   <%= label_tag 'import_file', 'File to Import' %>
   <%= file_field_tag 'import_file'%>
   <%= hidden_field_tag 'X-Progress-ID', @uuid %>
@@ -53,5 +53,5 @@
 </div>
 
 <div id='file_formats'>
-  See the <%=link_to 'SIMS IMPORT API', '/district_upload_api.html', {:target => :blank}%> for file formats.  You can upload them individually, or you can include them all in a .zip file (this is preferred)
+  See the <%=link_to 'SIMS IMPORT API', '/doc/district_upload/', {:target => :blank}%> for file formats.  You can upload them individually, or you can include them all in a .zip file (this is preferred)
 </div>

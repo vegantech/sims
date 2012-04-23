@@ -1,4 +1,4 @@
-<% remote_form_for(@consultation_form_request) do |f| %>
+<%= remote_form_for(@consultation_form_request) do |f| %>
   <%= f.error_messages %>
   <p>
     Who do you want to gather information from?
@@ -7,10 +7,10 @@
   <p>
   <%=check_box_tag 'consultation_form_request[whom][]','all_staff_for_student',@consultation_form_request.whom.include?('all_staff_for_district'), {:id=>'consultation_form_request_whom_all_staff_for_student'}%>
     <%= f.label :whom_all_staff_for_student, "staff and administrator listed on student's schedule" %>   <br />
-  
+
     <%=check_box_tag 'consultation_form_request[whom][]','predetermined_teams', false, {:id=>'consultation_form_request_whom_predetermined_teams'}%>
     <%= f.label :whom_predetermined_teams, 'predetermined team' %>   <%= f.collection_select :team_id, @teams, :id, :name %><br />
-  
+
     <%=check_box_tag 'consultation_form_request[whom][]','other',false,{:id=>'consultation_Form_request_whom_other'}%>
     <%= f.label :whom_other, 'other' %>  (You can hold down ctrl to select multiple users) <br />
     &nbsp;&nbsp;&nbsp;&nbsp;<%= f.collection_select(:user_ids, @users, :id, :to_s, {}, {:multiple => true, :size=>5}) %>

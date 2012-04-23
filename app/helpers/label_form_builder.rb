@@ -10,16 +10,18 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
   helpers.each do |name|
     define_method(name) do |field, *args|
       options = args.extract_options!
-      label = label(field, options[:label], :class => options[:label_class])
+      l=options[:label].html_safe if options[:label].present?
+      label =  label(field, l, :class => options[:label_class])
       if to_spell_check.include?(name)
         options[:class] = "#{options[:class]} spell_check"
         sp = @template.instance_variable_get('@spell_check_fields') || []
-        sp <<  label.split("for=",2)[1].split('"')[1] 
+        sp <<  label.split("for=",2)[1].split('"')[1]
         @template.instance_variable_set('@spell_check_fields', sp)
       end
 
       help = options[:help]? ' '+@template.help_popup(options[:help]) : ''
-      @template.content_tag(:div, label  + super + help, :class => 'form_row')  #wrap with a div form_Row
+      remove_link = ' ' + (options[:remove_link] || '')
+      @template.content_tag(:div, (label.html_safe  + super + help.html_safe + remove_link.html_safe).html_safe, :class => 'form_row')  #wrap with a div form_Row
     end
   end
 
@@ -27,7 +29,7 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
     options = args.extract_options!
     label = @template.content_tag(:b,label(field, options[:label], :class => options[:label_class]))
     help = options[:help]? ' ' +@template.help_popup(options[:help]) : ''
-    @template.content_tag(:div, '' +  label + help + super, :class => 'form_row')  #wrap with a div form_Row
+    @template.content_tag(:div, ('' +  label + help + super).html_safe, :class => 'form_row')  #wrap with a div form_Row
   end
 
 

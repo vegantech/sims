@@ -1,0 +1,309 @@
+GIT
+  remote: git://github.com/rails/prototype_legacy_helper.git
+  revision: a2cd95c3e3c1a4f7a9566efdab5ce59c886cb05f
+  specs:
+    prototype_legacy_helper (0.0.0)
+
+GIT
+  remote: git://github.com/rfc2822/spawn
+  revision: bc2c1aacd9f7f2427bf6ef96a5fe5936acf6bcdc
+  specs:
+    spawn (1.0.1)
+
+GIT
+  remote: git://github.com/zonecheung/railmail.git
+  revision: 71294653be3d260f80ddd3dab0785a9200ca67e3
+  ref: 71294653be3d260f80ddd3dab0785a9200ca67e3
+  specs:
+    railmail (3.0.0)
+      rails (~> 3.0.0)
+      will_paginate (~> 3.0.pre2)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    Saikuro (1.1.0)
+    abstract (1.0.0)
+    actionmailer (3.0.12)
+      actionpack (= 3.0.12)
+      mail (~> 2.2.19)
+    actionpack (3.0.12)
+      activemodel (= 3.0.12)
+      activesupport (= 3.0.12)
+      builder (~> 2.1.2)
+      erubis (~> 2.6.6)
+      i18n (~> 0.5.0)
+      rack (~> 1.2.5)
+      rack-mount (~> 0.6.14)
+      rack-test (~> 0.5.7)
+      tzinfo (~> 0.3.23)
+    activemodel (3.0.12)
+      activesupport (= 3.0.12)
+      builder (~> 2.1.2)
+      i18n (~> 0.5.0)
+    activerecord (3.0.12)
+      activemodel (= 3.0.12)
+      activesupport (= 3.0.12)
+      arel (~> 2.0.10)
+      tzinfo (~> 0.3.23)
+    activeresource (3.0.12)
+      activemodel (= 3.0.12)
+      activesupport (= 3.0.12)
+    activesupport (3.0.12)
+    acts_as_list (0.1.4)
+    addressable (2.2.6)
+    airbrake (3.0.9)
+      activesupport
+      builder
+    arel (2.0.10)
+    arrayfields (4.7.4)
+    builder (2.1.2)
+    capistrano (2.5.0)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.0)
+      net-ssh-gateway (>= 1.0.0)
+    capistrano-ext (1.2.1)
+      capistrano (>= 1.0.0)
+    capybara (1.1.2)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (~> 2.0)
+      xpath (~> 0.1.4)
+    cells (3.8.0)
+      actionpack (~> 3.0)
+      railties (~> 3.0)
+    childprocess (0.3.1)
+      ffi (~> 1.0.6)
+    chronic (0.3.0)
+    churn (0.0.13)
+      chronic (>= 0.2.3)
+      hirb
+      json_pure
+      main
+      ruby_parser (~> 2.0.4)
+      sexp_processor (~> 3.0.3)
+    cocaine (0.2.1)
+    colored (1.2)
+    cucumber (1.1.4)
+      builder (>= 2.1.2)
+      diff-lcs (>= 1.1.2)
+      gherkin (~> 2.7.1)
+      json (>= 1.4.6)
+      term-ansicolor (>= 1.0.6)
+    cucumber-rails (0.3.2)
+      cucumber (>= 0.8.0)
+    daemons (1.1.6)
+    database_cleaner (0.7.1)
+    diff-lcs (1.1.3)
+    dynamic_form (1.1.4)
+    email_spec (1.2.1)
+      mail (~> 2.2)
+      rspec (~> 2.0)
+    erubis (2.6.6)
+      abstract (>= 1.0.0)
+    eventmachine (0.12.10)
+    factory_girl (2.6.0)
+      activesupport (>= 2.3.9)
+    factory_girl_rails (1.7.0)
+      factory_girl (~> 2.6.0)
+      railties (>= 3.0.0)
+    fastercsv (1.2.3)
+    fattr (2.2.1)
+    ffi (1.0.11)
+    flay (1.4.3)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    flog (2.5.3)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    gherkin (2.7.6)
+      json (>= 1.4.6)
+    googlecharts (1.6.3)
+    highline (1.6.11)
+    hirb (0.6.0)
+    i18n (0.5.0)
+    json (1.6.5)
+    json_pure (1.6.5)
+    launchy (2.0.5)
+      addressable (~> 2.2.6)
+    mail (2.2.19)
+      activesupport (>= 2.3.6)
+      i18n (>= 0.4.0)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
+    main (4.6.0)
+      arrayfields (>= 4.7.4)
+      fattr (>= 2.1.0)
+      map (>= 2.0.0)
+    map (5.2.0)
+    memcache-client (1.8.5)
+    metric_fu (2.1.1)
+      Saikuro (>= 1.1.0)
+      activesupport (>= 2.0.0)
+      chronic (~> 0.3.0)
+      churn (>= 0.0.7)
+      flay (>= 1.2.1)
+      flog (>= 2.3.0)
+      rails_best_practices (>= 0.6.4)
+      rcov (>= 0.8.3.3)
+      reek (>= 1.2.6)
+      roodi (>= 2.1.0)
+      syntax
+    metrical (0.0.7)
+      main (~> 4.6.0)
+      metric_fu (~> 2.1.1)
+      rake
+    mime-types (1.17.2)
+    multi_json (1.0.4)
+    mysql2 (0.2.18)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.3.0)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
+    newrelic_rpm (2.14.1)
+    nokogiri (1.4.4)
+    paperclip (2.7.0)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
+      cocaine (>= 0.0.2)
+      mime-types
+    pdfkit (0.5.2)
+    polyglot (0.3.3)
+    progressbar (0.10.0)
+    rack (1.2.5)
+    rack-mount (0.6.14)
+      rack (>= 1.0.0)
+    rack-test (0.5.7)
+      rack (>= 1.0)
+    rails (3.0.12)
+      actionmailer (= 3.0.12)
+      actionpack (= 3.0.12)
+      activerecord (= 3.0.12)
+      activeresource (= 3.0.12)
+      activesupport (= 3.0.12)
+      bundler (~> 1.0)
+      railties (= 3.0.12)
+    rails_best_practices (1.7.2)
+      activesupport
+      colored
+      erubis
+      i18n
+      progressbar
+      sexp_processor
+    rails_responds_to_parent (1.0.0)
+    railties (3.0.12)
+      actionpack (= 3.0.12)
+      activesupport (= 3.0.12)
+      rake (>= 0.8.7)
+      rdoc (~> 3.4)
+      thor (~> 0.14.4)
+    rake (0.9.2.2)
+    rcov (1.0.0)
+    rdoc (3.12)
+      json (~> 1.4)
+    redcarpet (2.1.0)
+    reek (1.2.8)
+      ruby2ruby (~> 1.2)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    ripper (1.0.5)
+    roodi (2.1.0)
+      ruby_parser
+    rpm_contrib (1.0.13)
+      newrelic_rpm (>= 2.13.1)
+    rspec (2.8.0)
+      rspec-core (~> 2.8.0)
+      rspec-expectations (~> 2.8.0)
+      rspec-mocks (~> 2.8.0)
+    rspec-core (2.8.0)
+    rspec-expectations (2.8.0)
+      diff-lcs (~> 1.1.2)
+    rspec-html-matchers (0.2.3)
+      nokogiri (>= 1.4.4)
+      rspec (>= 2.0.0)
+    rspec-mocks (2.8.0)
+    rspec-rails (2.8.1)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec (~> 2.8.0)
+    ruby2ruby (1.3.1)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    ruby_parser (2.0.6)
+      sexp_processor (~> 3.0)
+    rubyzip (0.9.6.1)
+    selenium-webdriver (2.19.0)
+      childprocess (>= 0.2.5)
+      ffi (~> 1.0.9)
+      multi_json (~> 1.0.4)
+      rubyzip
+    sexp_processor (3.0.10)
+    sneaky-save (0.0.2)
+      activerecord (>= 2.3.2)
+    syntax (1.0.0)
+    system_timer (1.2.4)
+    term-ansicolor (1.0.7)
+    thin (1.3.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    thor (0.14.6)
+    treetop (1.4.10)
+      polyglot
+      polyglot (>= 0.3.1)
+    tzinfo (0.3.31)
+    will_paginate (3.0.3)
+    xpath (0.1.4)
+      nokogiri (~> 1.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  acts_as_list
+  airbrake
+  capistrano (= 2.5.0)
+  capistrano-ext
+  capybara
+  cells
+  cucumber
+  cucumber-rails
+  database_cleaner (>= 0.5.0)
+  dynamic_form
+  email_spec (= 1.2.1)
+  factory_girl_rails
+  fastercsv (= 1.2.3)
+  googlecharts (= 1.6.3)
+  launchy
+  memcache-client
+  metrical
+  mysql2 (~> 0.2.7)
+  newrelic_rpm
+  nokogiri (= 1.4.4)
+  paperclip (~> 2.7.0)
+  pdfkit
+  prototype_legacy_helper (= 0.0.0)!
+  rack-test
+  railmail!
+  rails (= 3.0.12)
+  rails_responds_to_parent
+  rcov (>= 0.9.9)
+  rdoc (> 2.4.2)
+  redcarpet
+  ripper
+  rpm_contrib
+  rspec-html-matchers
+  rspec-rails (~> 2.6)
+  sneaky-save
+  spawn!
+  system_timer
+  thin
+  will_paginate

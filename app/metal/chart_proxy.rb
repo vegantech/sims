@@ -1,15 +1,25 @@
-# Allow the metal piece to run in isolation
-require(File.dirname(__FILE__) + "/../../config/environment") unless defined?(Rails)
-
 class ChartProxy
   require 'net/http'
   require 'uri'
-  def self.call(env)
+
+  def initialize(app)
+    @app = app
+  end
+
+  def each(&block)
+    @response.each(&block)
+  end
+
+  def call(env)
+    dup._call(env)
+  end
+
+  def _call(env)
     if env["PATH_INFO"] =~ /^\/chart/
       k= Net::HTTP.get("chart.apis.google.com", "/chart?#{env["QUERY_STRING"]}")
       [200, {"Content-Type" => "image/png","Content-Disposition" => "inline" }, [k]]
     else
-      [404, {"Content-Type" => "text/html"}, ["Not Found"]]
+      @app.call(env)
     end
   end
 end

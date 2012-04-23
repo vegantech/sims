@@ -12,6 +12,8 @@
 #
 
 class SchoolTeam < ActiveRecord::Base
+  include LinkAndAttachmentAssets
+
   belongs_to :school
   has_many :school_team_memberships
   has_many :users, :through => :school_team_memberships
@@ -21,7 +23,7 @@ class SchoolTeam < ActiveRecord::Base
 
   DESCRIPTION="Used to set up teams to be used to identify the potential team recipients of the Team Consultation Form."
 
-  named_scope :named, {:conditions => {:anonymous => false }, :order => 'name'}
+  scope :named, where(:anonymous => false).order('name')
   validates_presence_of :name, :unless => :anonymous?
   validates_presence_of :contact_ids, :unless => :anonymous?, :message =>'There must be at least one contact'
   after_save :update_contacts
@@ -45,7 +47,6 @@ class SchoolTeam < ActiveRecord::Base
       SchoolTeamMembership.delete_all("contact=true and user_id not in (#{@contact_ids.join(",")}) and school_team_id = #{self.id}")
       school_team_memberships.update_all('contact=true', "user_id in (#{@contact_ids.join(",")})")
     end
-    
   end
 
 

@@ -1,4 +1,4 @@
-<% fields_for 'intervention[intervention_probe_assignment][new_probes][]', @probe, :index => i=Time.now.usec do |paf|  %>
+<%= fields_for 'intervention[intervention_probe_assignment][new_probes][]', @probe, :index => i=Time.now.usec do |paf|  %>
   <%= render :partial => "interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>@intervention_probe_assignment, :index=> i} %>
 <% end %>
 

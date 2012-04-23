@@ -28,13 +28,8 @@ class RecommendationObserver < ActiveRecord::Observer
         user_name = 'Unknown School'
         user_email = 'veganbuddy@gmail.com'
       end
-      Notifications.deliver_special_ed_referral recommendation, user_name, user_email, recommendation.student
+      Notifications.special_ed_referral(recommendation, user_name, user_email, recommendation.student).deliver
     end
 
   end
-                                                
-
-
-                                                                                           
-  
 end

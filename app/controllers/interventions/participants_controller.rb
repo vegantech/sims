@@ -8,7 +8,6 @@ class Interventions::ParticipantsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @intervention_participant }
     end
   end
 
@@ -24,11 +23,9 @@ class Interventions::ParticipantsController < ApplicationController
         #send email here
         flash[:notice] = "#{@intervention_participant.role_title} added."
         format.html { redirect_to(@intervention) }
-        format.xml  { render :xml => @intervention_participant, :status => :created, :location => @intervention_participant }
       else
         @users = [nil] | current_school.assigned_users
         format.html { render :action => "new" }
-        format.xml  { render :xml => @intervention_participant.errors, :status => :unprocessable_entity }
       end
     end
   end

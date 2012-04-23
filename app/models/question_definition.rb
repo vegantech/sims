@@ -16,7 +16,6 @@ class QuestionDefinition < ActiveRecord::Base
 
   has_many :element_definitions, :dependent => :destroy, :order => "position ASC"
   has_many :answer_definitions, :through=> :element_definitions
-  acts_as_reportable if defined? Ruport
   acts_as_list :scope => :checklist_definition
 
   validates_presence_of :text

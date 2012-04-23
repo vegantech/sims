@@ -1,1 +1,2 @@
-require 'use_old_fixtures_key'
+require 'active_record/fixtures'
+Fixtures.send :include,UseOldFixturesKey

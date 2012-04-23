@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe ChecklistBuilder::ElementsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   before do
     district=mock_district
@@ -26,7 +28,7 @@ describe ChecklistBuilder::ElementsController do
   describe "GET 'show'" do
     it "should be successful" do
       ElementDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'show', :id=>37
+      get 'show', :id=>'37'
       assigns(:element_definition).should == 'yes'
     end
   end
@@ -42,14 +44,14 @@ describe ChecklistBuilder::ElementsController do
   describe "GET 'edit'" do
     it "should be successful" do
       ElementDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'edit', :id=>37
+      get 'edit', :id=>'37'
       assigns(:element_definition).should == 'yes'
     end
   end
 
   describe "GET 'create'" do
     it "should be successful" do
-    pending
+      pending
       get 'create'
       response.should be_success
     end
@@ -57,7 +59,7 @@ describe ChecklistBuilder::ElementsController do
 
   describe "GET 'update'" do
     it "should be successful" do
-    pending
+      pending
       get 'update'
       response.should be_success
     end
@@ -65,7 +67,7 @@ describe ChecklistBuilder::ElementsController do
 
   describe "GET 'destroy'" do
     it "should be successful" do
-    pending
+      pending
       get 'destroy'
       response.should be_success
     end
@@ -73,7 +75,7 @@ describe ChecklistBuilder::ElementsController do
 
   describe "GET 'move'" do
     it "should be successful" do
-    pending
+      pending
       get 'move'
       response.should be_success
     end

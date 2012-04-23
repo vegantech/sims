@@ -2,7 +2,7 @@
 module ApplicationHelper
   def spell_check_button
     button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();") +
-      help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " ) 
+      help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " )
   end
 
   def show_whats_new
@@ -15,7 +15,7 @@ module ApplicationHelper
   end
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
-     content_tag :li,(r + rest.join(" ")) if r.present?
+     content_tag :li,((r + rest.join(" ").html_safe).html_safe) if r.present?
   end
 
   def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
@@ -24,43 +24,35 @@ module ApplicationHelper
     if options.is_a?String
       url = options
       url = "/"+url.split("/")[3..-1].join("/").split('?').first unless url=~ /^\//
-      hsh = ::ActionController::Routing::Routes.recognize_path url, :method => :get
+      hsh = ::Rails.application.routes.recognize_path url, :method => :get
     else
       if options[:controller].present?
-        #Without a leading / url_for will assume it is in the current namespace  
+        #Without a leading / url_for will assume it is in the current namespace
         options[:controller]="/#{options[:controller]}" unless options[:controller][0] =='/'
-        options[:action] ||= 'index'
         hsh=options
         url=hsh
       else
         url = url_for(options)
-        hsh = ::ActionController::Routing::Routes.recognize_path url
+        hsh = ::Rails.application.routes.recognize_path url
       end
     end
-    
     ctrl = "#{hsh[:controller]}Controller".camelize.constantize
-    grp = 'write_access' if ctrl.write_actions.include?(hsh[:action])
-    grp = 'read_access' if ctrl.read_actions.include?(hsh[:action])
-    
-    link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path, grp)
-    
-
- 
+    link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path)
   end
 
   def link_to_if_present(name, path)
-    link_to(name,path) if File.exist?("#{RAILS_ROOT}/public/#{path}")
+    link_to(name,path) if File.exist?("#{Rails.root}/public/#{path}")
   end
 
 
   def breadcrumbs
     s = [link_to('Home', root_path)]
-    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id]) 
+    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
     s << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
     s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
     s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student] && !current_student.new_record?
-    s.compact.join(' -> ')
+    s.compact.join(' -> ').html_safe
   end
 
   def link_to_if_current_or_condition(title, path,conditions=nil)
@@ -82,7 +74,7 @@ module ApplicationHelper
     if options[:collection].size >0
       render options
     else
-      options[:empty]
+      options[:empty].html_safe
     end
   end
 
@@ -95,7 +87,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();") unless msg.blank?
+    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();").html_safe unless msg.blank?
   end
 
   def spinner(suffix = nil)
@@ -114,36 +106,39 @@ module ApplicationHelper
     icon = "icon_htm.gif" unless  File.exist?(File.join(Rails.public_path,"images",icon))
     blank={}
     blank[:target]="_blank" unless url=="#"
-    link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}", url, blank
+    link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}".html_safe, url, blank
   end
 
   def plus_minus_li( title, &blk)
     id = title.gsub(/ /, '_')
-    concat(content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ") +
-      content_tag(:ul, :id => "ul#{id}") do
-        capture(&blk)
-      end
-    end)
+    content = with_output_buffer(&blk)
+
+    content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
+      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ")  +
+      content_tag(:ul, content, :id => "ul#{id}")
+    end
   end
 
   def description(obj, name="Description")
-    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>" if obj
+    "<div class='fake_label'>#{name}</div><table class='description'><tr><td>#{obj.description}</td></tr></table>".html_safe if obj
   end
 
   def labelled_form_for(record_or_name_or_array, *args, &proc)
     @spell_check_fields ||= []
 
     options = args.extract_options!
-    concat("<div class ='new_form'>")
-    concat('<div id="global_spell_container" style="background-color: #ddd"></div>')
-    form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
-    concat("</div>")
-    
+    content_tag(:div, :class => 'new_form') do
+      content_tag(:div, '',  :id => "global_spell_container", :style => "background-color: #ddd") +
+      form_for(record_or_name_or_array, *(args << options.merge(:builder => LabelFormBuilder)), &proc)
+    end
   end
 
 
   def restrict_to_principals?(student)
     current_district.restrict_free_lunch? && !student.principals.include?(current_user)
+  end
+
+  def style_display_none_unless(cond)
+    'style="display:none;"'.html_safe unless cond
   end
 end

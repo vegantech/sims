@@ -1,0 +1,12 @@
+"Student", "Date", "User Name", "Team Note"
+<%= raw(FasterCSV.generate do |csv|
+  @reporter.team_notes.each do |note|
+      csv << [
+        note.student.fullname,
+        note.created_at.to_date.to_s(:report),
+        note.user.fullname,
+        note.body
+      ]
+    end
+  end)
+) %>

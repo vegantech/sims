@@ -28,6 +28,7 @@ describe User do
     System::HASH_KEY=nil
     User.destroy_all
     @user = Factory(:user, :username => "oneschool")
+    @school = Factory(:school, :district => @user.district)
   end
 
   describe 'authenticate' do
@@ -142,6 +143,8 @@ describe User do
 
   describe 'passwordhash' do
     it 'should be stored encrypted' do
+
+      System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
       System::HASH_KEY=nil
 
       @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
@@ -194,22 +197,13 @@ describe User do
 
   describe 'filtered_groups_by_school' do
     it 'should return all authorized_groups for school if prompt is blank' do
-      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 2', 'group 1'])
-      g1=Group.new
-      Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
-
-      @user.filtered_groups_by_school('s1').should == [g1,'group 2', 'group 1']
+      @user.should_receive(:cached_authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 2', 'group 1'])
+      @user.filtered_groups_by_school(@mock_school).should == ['group 2', 'group 1']
     end
 
-    it 'should return one authorized group with prompt depending on special user groups' do
-      g1=Group.new
-      Group.should_receive(:new).with(:id=>"*", :title =>"Filter by Group").any_number_of_times.and_return(g1)
-
-      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
-      @user.should_receive(:authorized_groups_for_school).with('s1',nil).any_number_of_times.and_return(['group 1'])
-      @user.filtered_groups_by_school('s1').should == ['group 1']
-      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
-      @user.filtered_groups_by_school('s1').should == [g1,'group 1']
+    it 'should return one authorized group ' do
+      @user.should_receive(:cached_authorized_groups_for_school).with(@mock_school,nil).any_number_of_times.and_return(['group 1'])
+      @user.filtered_groups_by_school(@mock_school).should == ['group 1']
     end
 
     it 'should filter groups if prompt' do
@@ -219,48 +213,34 @@ describe User do
   end
 
   describe 'filtered_members_by_school' do
-    before do
-      @g1=User.new
-
-    end
-
-     it 'should return all authorized_members if prompt is blank' do
-        User.should_receive(:new).with(:id=>"*", :first_name =>"All", :last_name => "Staff").any_number_of_times.and_return(@g1)
-        @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra", "Elephant", "Tiger"])
-        @user.filtered_members_by_school('s1').should == [@g1,'Zebra','Elephant', 'Tiger']
-      end
-
-    it 'should return one authorized group with prompt depending on special user groups' do
-      User.should_receive(:new).with(:id=>"*", :first_name =>"All", :last_name => "Staff").any_number_of_times.and_return(@g1)
-      @user.stub_association!(:authorized_groups_for_school, :members => ["Zebra"])
-      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>false)
-      @user.filtered_members_by_school('s1').should == ['Zebra']
-      @user.stub_association!(:special_user_groups,'all_students_in_school?'=>true)
-      @user.filtered_members_by_school('s1').should == [@g1,'Zebra']
-
-    end
-
-    it 'should filter groups if prompt' do
+    it 'should return all authorized_members' do
       s=Factory(:school)
-      @user.filtered_members_by_school(s,:grade=>'E').should == []
+      g1 = Factory(:group, :school=>s)
+      g2 = Factory(:group, :school=>s)
+      user = Factory(:user, :groups => [g1,g2])
+      user2 = Factory(:user ,:groups => [g1])
+      user3 = Factory(:user, :groups => [g2])
+      user.filtered_members_by_school(s).should == [user,user2, user3]
     end
+
+
   end
 
   describe 'authorized_ for' do
-    it 'should return false if unknown action_group_type' do
-      User.new().authorized_for?('','unknown_group_not_write_or_read').should == false
+    it 'should return false if unknown controller' do
+      User.new().authorized_for?('this_does_not_exist_at_all').should == false
     end
 
-    it 'should call check for read rights when group is read' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','read',[]).and_return(true)
+    it 'should call check true' do
+      Role.should_receive(:has_controller?).with('test_controller',[]).and_return(true)
       u=Factory(:user)
-      u.authorized_for?('test_controller','read').should == true
+      u.authorized_for?('test_controller').should == true
     end
 
-    it 'should call check for write rights when group is write' do
-      Role.should_receive(:has_controller_and_action_group?).with('test_controller','write',[]).and_return(true)
+    it 'should call check false' do
+      Role.should_receive(:has_controller?).with('test_controller',[]).and_return(false)
       u=Factory(:user)
-      u.authorized_for?('test_controller','write').should == true
+      u.authorized_for?('test_controller').should == false
     end
   end
 
@@ -279,6 +259,7 @@ describe User do
 
   describe 'grouped_principal_overrides' do
     it 'should group requests, responses and pending' do
+      @user = Factory(:user)
       @user.grouped_principal_overrides.should == {:user_requests => []}
       req='New Override Request'
       @user.stub!(:principal_override_requests=> [req])
@@ -495,6 +476,50 @@ describe User do
       log.body.should == "Successful login of #{u.fullname}"
       u.last_login.should == log.updated_at
     end
+   end
+
+   describe 'staff_assignment' do
+     before do
+       @u=Factory(:user)
+       @s1=Factory(:school, :district_id => @u.district_id)
+       @s2=Factory(:school, :district_id => @u.district_id)
+       @s3=Factory(:school, :district_id => @u.district_id)
+     end
+     it 'should add a staff assignment' do
+       @u.staff_assignments_attributes = [{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+
+     end
+     it 'should remove a staff assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}]
+       @u.save
+       @u.staff_assignments.reload.should be_empty
+     end
+     it 'should add and delete the same staff_assignment' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}, {:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+     it 'should remove new assignments when they already exist' do
+       sa=@u.staff_assignments.create!(:school_id => @s1.id)
+       @u.staff_assignments_attributes =[{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
+     it 'should add only 1 new staff assignment when new ones are duplicated' do
+       @u.staff_assignments_attributes =[{:school_id => @s1.id},{:school_id => @s1.id}]
+       @u.save
+       @u.staff_assignments.count.should == 1
+       @u.staff_assignments.first.school_id.should == @s1.id
+     end
+
    end
 
 end

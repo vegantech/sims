@@ -1,15 +1,12 @@
 class District::StudentsController < ApplicationController
-  additional_read_actions :check_id_state
-  additional_write_actions :claim
-
   # GET /district_students
   # GET /district_students.xml
   def index
     @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
-
+    redirect_to(district_students_url(:last_name => params[:last_name], :page => @students.total_pages)) and return if wp_out_of_bounds?(@students)
+    capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @district_students }
     end
   end
 
@@ -21,7 +18,6 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @student }
     end
   end
 
@@ -38,12 +34,10 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        flash[:notice] = "#{@student} was successfully created."
-        format.html { redirect_to(district_students_url) }
-        format.xml  { render :xml => @student, :status => :created, :location => @student }
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully created.".html_safe
+        format.html { redirect_to(index_url_with_page) }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -56,12 +50,10 @@ class District::StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] = "#{@student} was successfully updated."
-        format.html { redirect_to(district_students_url) }
-        format.xml  { head :ok }
+        flash[:notice] = "#{edit_obj_link(@student)} was successfully updated.".html_safe
+        format.html { redirect_to(index_url_with_page) }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -73,8 +65,7 @@ class District::StudentsController < ApplicationController
     @student.remove_from_district
 
     respond_to do |format|
-      format.html { redirect_to(district_students_url) }
-      format.xml  { head :ok }
+      format.html { redirect_to(index_url_with_page) }
     end
   end
 
@@ -96,11 +87,11 @@ class District::StudentsController < ApplicationController
   def claim
     @student = Student.find(params[:id])
      res,msg= current_district.claim(@student)
-       flash[:notice] = msg
+       flash[:notice] = msg.html_safe
      if res
        redirect_to edit_district_student_url(@student)
      else
-       redirect_to :back 
+       redirect_to :back
      end
   end
 

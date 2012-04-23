@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MainController do
-  
+
   describe "responding to GET index" do
 
     it "should redorect to login if the district no longer exists" do
@@ -20,6 +20,6 @@ describe MainController do
       get :index
       response.should be_success
     end
- 
+
   end
 end

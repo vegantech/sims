@@ -15,6 +15,7 @@
 
 class GoalDefinition < ActiveRecord::Base
   belongs_to :district
+  attr_protected :district_id
   has_many :objective_definitions, :order =>:position, :dependent => :destroy do
     def build_with_new_asset
       x=build
@@ -27,7 +28,6 @@ class GoalDefinition < ActiveRecord::Base
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
 
-  acts_as_reportable if defined? Ruport
 
 
   define_statistic :count , :count => :all

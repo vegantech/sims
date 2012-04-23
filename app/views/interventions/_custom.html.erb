@@ -1,18 +1,18 @@
-<%  form.fields_for :intervention_definition do |int_def|  %>
+<%=  form.fields_for :intervention_definition do |int_def|  %>
   <%= int_def.error_messages %>
   <p>
-    <%= int_def.label :title %> 
-    <%= int_def.text_field :title, :class => 'spell_check' %> 
+    <%= int_def.label :title %>
+    <%= int_def.text_field :title, :class => 'spell_check' %>
   </p>
   <br class="brclear"/ >
   <p>
-    <%= int_def.label :description %> 
-    <%= int_def.text_area :description ,:class => 'spell_check'%> 
+    <%= int_def.label :description %>
+    <%= int_def.text_area :description ,:class => 'spell_check'%>
   </p>
   <br class="brclear"/ >
   <p>
     <%= int_def.hidden_field :intervention_cluster_id %>
-    <%= int_def.label :tier_id, "Tier" %> 
+    <%= int_def.label :tier_id, "Tier" %>
     <%= int_def.collection_select(:tier_id, @tiers, :id, :title) %>
     </p>
     <p>

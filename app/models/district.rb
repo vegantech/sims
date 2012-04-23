@@ -22,16 +22,16 @@
 #
 
 class District < ActiveRecord::Base
-  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+#  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
-
+  include LinkAndAttachmentAssets
   has_many :users, :order => :username
-  has_many :checklist_definitions
+  has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
   has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
-  has_many :objective_definitions, :through => :goal_definitions
+  has_many :objective_definitions, :through => :goal_definitions, :order => 'title'
   has_many :probe_definitions
   has_many :quicklist_items, :dependent=>:destroy
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
@@ -42,33 +42,31 @@ class District < ActiveRecord::Base
   has_many :students
   has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
-  has_many :roles
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
+  has_many :staff_assignments,:through => :schools
 
 
   has_attached_file  :logo
 
 
-  named_scope :normal, :conditions=>{:admin=>false}, :order => 'name'
-  named_scope :admin, :conditions=>{:admin=>true}
-  named_scope :in_use,  :include => :users, :conditions => "users.username != 'district_admin' and users.id is not null"
+  scope :normal, where(:admin=>false).order('name')
+  scope :admin, where(:admin=>true)
+  scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
 
 
-  
   validates_presence_of :abbrev,:name
   validates_uniqueness_of :abbrev,:name
   validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
-  validate_on_update :check_keys
-                                         
+  validate  :check_keys, :on => :update
   before_destroy :make_sure_there_are_no_schools
-  after_destroy {|d| ::CreateInterventionPdfs.destroy(d) }
+  after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
   after_create :create_admin_user
   before_update :backup_key
@@ -93,7 +91,7 @@ class District < ActiveRecord::Base
     checklist_definitions.find_by_active(true)
   end
 
- 
+
 
 
   def find_intervention_definition_by_id(id)
@@ -102,7 +100,7 @@ class District < ActiveRecord::Base
 
   def search_intervention_by
     #FIXME some districts may not use goals or objectives
-    #so they should be able to choose which to search by on the 
+    #so they should be able to choose which to search by on the
     #student search screen
     objective_definitions
   end
@@ -140,10 +138,6 @@ class District < ActiveRecord::Base
     'district_admin recreated'
   end
 
-  def roles_with_system
-    roles + Role.system
-  end
-
   def delete_logo=(value)
     @delete_logo = !value.to_i.zero?
   end
@@ -152,19 +146,20 @@ class District < ActiveRecord::Base
     !!@delete_logo
   end
 
-  def available_roles
-    roles | System.roles
-  end
-
   def state_district
     @state2||=admin_district
   end
 
-  def intervention_clusters  #district only
-    @intervention_clusters ||= InterventionCluster.find(:all,:joins => {:objective_definition=>:goal_definition}, 
-      :conditions => {:goal_definitions =>{:district_id => self.id}})
-
+  def intervention_clusters
+    @intervention_clusters ||= InterventionCluster.scoped :joins => {:objective_definition=>:goal_definition},
+      :conditions => {:goal_definitions =>{:district_id => self.id}}
   end
+
+  def intervention_definitions
+    @intervention_definitions ||= InterventionDefinition.scoped :joins => {:intervention_cluster => {:objective_definition=>:goal_definition}},
+      :conditions => {:goal_definitions =>{:district_id => self.id}}
+  end
+
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
@@ -199,8 +194,17 @@ class District < ActiveRecord::Base
     end
   end
 
+  def show_aim_line?
+    Rails.env.wip? || Rails.env.development?  || ['madison'].include?(self.abbrev)
+  end
+
   def show_personal_groups?
-    Rails.env.wip? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+    Rails.env.wip? || Rails.env.development? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+  end
+
+  def show_team_consultation_attachments?
+    #Remove all references to this when put into production
+    Rails.env.wip? || Rails.env.development?  ||  ['grafton','madison','mmsd', 'rhinelander','ripon'].include?(self.abbrev)
   end
 
 
@@ -240,8 +244,8 @@ private
       students.destroy_all
       special_user_groups.destroy_all
       news.destroy_all
-    else 
-      errors.add_to_base("Have the district admin remove the schools first.") 
+    else
+      errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
   end
@@ -262,8 +266,8 @@ private
 
   def check_keys
     if key_changed? and key.present? and previous_key.present?
-      errors.add(:key, "Please contact the system administrator if you need to change your district key again.  
-      The district key is a part of the password hash generated for each user.  
+      errors.add(:key, "Please contact the system administrator if you need to change your district key again.
+      The district key is a part of the password hash generated for each user.
       Changing it (again) could prevent any user in your district from accessing SIMS, as the key used to generate the hash may not match what is in SIMS.")
 
       false
@@ -272,6 +276,11 @@ private
 
   def backup_key
     self.previous_key = key_was if key_changed? and key.present?
+  end
+
+  def destroy_intervention_menu_reports
+    dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
+    FileUtils.rm_rf(dir) if File.exists?dir
   end
 end
 

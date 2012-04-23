@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::SchoolsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_schools(stubs={})
     @mock_schools ||= mock_model(School, stubs)
@@ -13,23 +15,13 @@ describe District::SchoolsController do
     @district.stub_association!(:users, :count => 10)
     controller.stub!(:current_district => @district)
     @district.stub!(:schools => School)
-   end
+  end
 
   describe "responding to GET index" do
     it "should expose all district_schools as @schools" do
       @district.should_receive(:schools).and_return([mock_schools])
       get :index
-      assigns[:schools].should == [mock_schools]
-    end
-
-    describe "with mime type of xml" do
-      it "should render all district_schools as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        @district.should_receive(:schools).and_return(schools = mock("Array of School"))
-        schools.should_receive(:to_xml).and_return("generated XML")
-        get :index
-        response.body.should == "generated XML"
-      end
+      assigns(:schools).should == [mock_schools]
     end
   end
 
@@ -37,7 +29,7 @@ describe District::SchoolsController do
     it "should expose a new schools as @school" do
       School.should_receive(:build).and_return(mock_schools)
       get :new
-      assigns[:school].should equal(mock_schools)
+      assigns(:school).should equal(mock_schools)
     end
   end
 
@@ -45,7 +37,7 @@ describe District::SchoolsController do
     it "should expose the requested schools as @schools" do
       School.should_receive(:find).with("37").and_return(mock_schools)
       get :edit, :id => "37"
-      assigns[:school].should equal(mock_schools)
+      assigns(:school).should equal(mock_schools)
     end
   end
 
@@ -62,8 +54,15 @@ describe District::SchoolsController do
         post :create, :school => {}
         response.should redirect_to(district_schools_url)
       end
+
+      it "should set the flash with a link back to the newschool" do
+        School.stub!(:build).and_return(mock_schools(:save => true))
+        post :create, :school => {}
+        flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
+      end
+
+
     end
-    
     describe "with invalid params" do
       it "should expose a newly created but unsaved schools as @schools" do
         School.stub!(:build).with({'these' => 'params'}).and_return(mock_schools(:save => false))
@@ -98,8 +97,15 @@ describe District::SchoolsController do
         put :update, :id => "1"
         response.should redirect_to(district_schools_url)
       end
+
+      it "should set the flash with a link back to the school" do
+        School.stub!(:find).and_return(mock_schools(:update_attributes => true))
+        put :update, :id => "1"
+        flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
+      end
+
+
     end
-    
     describe "with invalid params" do
       it "should update the requested schools" do
         School.should_receive(:find).with("37").and_return(mock_schools)

@@ -13,7 +13,8 @@ module CSVImporter
     end
 
     def import
-      if clean_file
+     return if append_failure?
+     if clean_file
         if confirm_count?
           create_temporary_table
           populate_temporary_table
@@ -30,15 +31,17 @@ module CSVImporter
 
       @messages << status_count.compact.join("; ") unless status_count.compact.blank?
       @messages << @other_messages unless @other_messages.blank?
-
-
-       
       @messages.compact.join(", ")
     end
+
 
     class << self
       def file_name
         name.tableize.split("/").last+".csv"
+      end
+
+      def file_name_with_append
+        supports_append? ? name.tableize.split("/").last+"_append.csv" : ''
       end
 
       def description
@@ -78,16 +81,21 @@ module CSVImporter
 
       def how_many_rows
       end
-    end
 
-    
+      def supports_append?
+        false
+      end
+      def append_info
+        "Unsupported for this file"
+      end
+    end
 
   protected
 
   def temporary_table_name
     "#{self.class.name.demodulize.tableize}_#{@district.id}_importer"
   end
-  
+
   def confirm_count?
     if @line_count > 0
       true
@@ -100,7 +108,7 @@ module CSVImporter
     def clean_file
 
       @line_count = 0
-      
+
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
       #convert bare carriage returns to newlines
       system "sed -i -e 's/\r[^\\n]/\\n/g' #{@file_name}"
@@ -108,12 +116,12 @@ module CSVImporter
       #pop off header
       head= `head -n 1 #{@file_name}`
       return false unless confirm_header head
-      
+
       system "tail -n +2 #{@file_name} > #{@clean_file}"
       remove_count = '/\([0-9] rows affected\)/d'
       hexify = 's/0[xX]\([a-fA-F0-9]\{40\}\)/\1/'
 
-      
+
       a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exists?(@file_name)
@@ -122,7 +130,7 @@ module CSVImporter
 
     end
 
-       
+
     def confirm_header row
       h= row.split(",").collect(&:strip)
       h=h.delete_if(&:blank?).collect(&:to_sym)
@@ -149,7 +157,7 @@ module CSVImporter
 
     def load_data_infile
       <<-EOF
-          LOAD DATA LOCAL INFILE "#{@clean_file}" 
+          LOAD DATA LOCAL INFILE "#{@clean_file}"
             INTO TABLE #{temporary_table_name}
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
@@ -157,7 +165,7 @@ module CSVImporter
             ;
         EOF
     end
-    
+
     def insert_update_delete
       before_import
       #override this for a different order
@@ -175,10 +183,10 @@ module CSVImporter
 
     def delete
     end
-    
+
     def update
     end
-    
+
     def insert
     end
 
@@ -198,8 +206,8 @@ module CSVImporter
       end
     end
 
-    def create_temporary_table 
-      ActiveRecord::Migration.suppress_messages do 
+    def create_temporary_table
+      ActiveRecord::Migration.suppress_messages do
         ActiveRecord::Migration.create_table temporary_table_name, :id => false, :temporary => temporary_table? do |t|
           migration t
         end
@@ -208,7 +216,7 @@ module CSVImporter
     end
 
     def drop_temporary_table
-      ActiveRecord::Migration.suppress_messages do 
+      ActiveRecord::Migration.suppress_messages do
         ActiveRecord::Migration.drop_table temporary_table_name if temporary_table?
       end
     end
@@ -221,6 +229,17 @@ module CSVImporter
       self.class.csv_headers
     end
 
-
+    def append_failure?
+      if @file_name.match /_append[s]?/
+        if self.class.supports_append?
+          @append = true
+          return false
+        else
+          @messages << "Append is not supported for #{self.class.file_name}"
+          return true
+        end
+      end
+      return false
+    end
   end
 end

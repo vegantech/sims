@@ -3,15 +3,27 @@ require(File.dirname(__FILE__) + "/../../config/environment") unless defined?(Ra
 require 'logger'
 
 class SessionCheck
-  def self.call(env)
+
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    dup._call(env)
+  end
+  def _call(env)
     if env["PATH_INFO"] =~ /^\/session_check/
       [200, {"Content-Type" => "text/html"}, [check(env)]]
     else
-      [404, {"Content-Type" => "text/html"}, ["Not Found"]]
+      @app.call(env)
     end
   end
 
-  def self.check(env)
+  def each(&block)
+    @response.each(&block)
+  end
+
+  def check(env)
     session=env["rack.session"]
     params=Rack::Request.new(env).params
 

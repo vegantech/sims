@@ -13,7 +13,7 @@ Feature: Sims Demo Walkthrough
     Then I should see "Listing districts in"
     And I follow "Delete" within "tbody"
     Then I should see "Have the district admin remove the schools first."
-    When I follow "New district"
+    When I follow "New District"
     And I fill in "Name" with "Cucumber"
     And I fill in "Abbrev" with "cuke"
     And I press "Create"
@@ -21,4 +21,3 @@ Feature: Sims Demo Walkthrough
     When I follow "Delete" within "#cuke_tr"
     Then I should not see "Have the district admin remove the schools first."
     And I should not see "cuke"
-    

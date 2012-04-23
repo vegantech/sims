@@ -1,11 +1,11 @@
 <% readonly = true
 @intervention = detail %>
 <div class="new_form">
-  <% form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
+  <%= form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
     <div class="form_row">
       <div class="fake_label">Objective</div><%=@intervention.objective_definition %>
     </div>
-  
+
     <p>
       <div class="fake_label">Category</div><%=@intervention.intervention_cluster %>
       <%= description(@intervention.intervention_cluster) %>
@@ -18,7 +18,7 @@
       <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
       <br class="brclear" />
       <%= description(@intervention) %>
-      
+
     </div>
     <% unless @intervention.active? %>
       <div class ="form_row">
@@ -28,7 +28,6 @@
     <div class ="form_row">
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
-    
   <br class="brclear" />
   <p>
 

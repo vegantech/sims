@@ -1,9 +1,9 @@
 <h1>New group</h1>
-<% form_for(@group) do |f| %>
+<%= form_for(@group) do |f| %>
   <%= render :partial => f %>
   <p>
     <%= f.submit "Create" %>
   </p>
 <% end %>
 
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back', index_url_with_page %>

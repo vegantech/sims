@@ -1,6 +1,8 @@
 <%=render :partial => 'team_consultations/draft' %>
 <%=link_to_remote_degrades "Create Team Consultation Form",:url=>new_team_consultation_url %> <br />
-<%= link_to_remote_degrades "Respond to Request for Information", :url => new_consultation_form_url if team_concerns? %>
+<% current_student.team_consultations.pending.each do |pending_concern| %>
+  <%= link_to_remote_degrades "Respond to Request for Information - #{pending_concern.school_team}", :url => new_consultation_form_url(:team_consultation_id => pending_concern)  %> <br />
+<% end %>
 
     <div id ="consultation_form"></div>
 

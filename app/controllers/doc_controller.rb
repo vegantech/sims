@@ -1,11 +1,11 @@
 class DocController < ActionController::Base
   helper :application
   def self.page_cache_directory
-  "#{RAILS_ROOT}/public/doc"
+  "#{Rails.root}/public/doc"
   end
 
 #  caches_page :index, :district_upload
-  require 'lib/csv_importer/base_system_flags'
+  require File.expand_path 'lib/csv_importer/base_system_flags'
 
   def index
   end

@@ -1,0 +1,9 @@
+<h1>Assign User</h1>
+<%= remote_form_for(@user_assignment, :url=>group_users_path(@group)) do |f| %>
+  <%=  f.error_messages %>
+  <%= f.collection_select(:user_id,@users, :id,:to_s) %>
+  <%=f.check_box :is_principal %><%= f.label :is_principal%>
+  <p>
+    <%= f.submit "Assign User" %>
+  </p>
+<% end %>

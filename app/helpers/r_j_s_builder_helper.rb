@@ -91,4 +91,9 @@ module RJSBuilderHelper
     page << "}"
   end
 
+  def set_flash_notice(page)
+    page.replace_html "flash_notice", flash[:notice].to_s
+    flash.discard
+  end
+
 end

@@ -28,24 +28,29 @@ class SpecialUserGroup < ActiveRecord::Base
   validates_presence_of :grouptype, :user_id
   validates_presence_of :district_id #, :if => lambda {|s| s.school_id.blank?}
   validates_presence_of :school_id, :if => lambda {|s| s.district_id.blank?}
-  validates_uniqueness_of :user_id, :scope=>[:grade,:district_id,:school_id,:grouptype] , :message => "-- Remove the user first." 
+  validates_uniqueness_of :user_id, :scope=>[:grade,:district_id,:school_id,:grouptype] , :message => "-- Remove the user first."
+  attr_protected :district_id
+  before_validation :assign_district_from_user
 
 
-  named_scope :principal,:conditions=>{:is_principal=>true}
-  named_scope :all_schools_in_district ,:conditions=>{:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT]}
-  named_scope :all_students_in_school ,lambda { |*args| {:conditions=>["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first]}}
-  named_scope :all_students_in_district, :conditions =>{:grouptype=>ALL_STUDENTS_IN_DISTRICT}
+  scope :principal,where(:is_principal=>true)
+  scope :all_schools_in_district ,where(:grouptype=>[ALL_SCHOOLS_IN_DISTRICT,ALL_STUDENTS_IN_DISTRICT])
+  scope :all_students_in_school ,lambda { |*args| where(["grouptype=? or (grouptype = ? and grade is null and school_id = ?) ",ALL_STUDENTS_IN_DISTRICT, ALL_STUDENTS_IN_SCHOOL,  args.first])}
+  scope :all_students_in_district, where(:grouptype=>ALL_STUDENTS_IN_DISTRICT)
 
   def self.all_students_in_school?(school)
     all_students_in_school(school).count > 0
   end
 
   def self.schools
-    find(:all).collect(&:school).compact.flatten.uniq
+    sql = select('distinct school_id').to_sql
+    school_ids = connection.select_values sql
+    School.find_all_by_id school_ids
   end
-  
+
   def self.grades_for_school(school)
-    find_all_by_grouptype_and_school_id(ALL_STUDENTS_IN_SCHOOL,school,:select=>"distinct grade", :conditions=>"grade is not null").collect(&:grade).uniq
+    sql= select('distinct grade').where(["grade is not null and grouptype = ? and school_id = ?", ALL_STUDENTS_IN_SCHOOL,school]).to_sql
+    connection.select_values(sql)
   end
 
   def to_i
@@ -54,22 +59,44 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def self.trying_something
-    finder_sql = construct_finder_sql(:select => "school_id, user_id",
-      :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = uga.school_id
-      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id",
-      :group => "special_user_groups.school_id, special_user_groups.user_id",
-      :conditions => {:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil}
-                                     )
+    finder_sql = select("school_id, user_id").joins(
+      "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = uga.school_id
+      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id").group(
+      "special_user_groups.school_id, special_user_groups.user_id").where(:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil).to_sql
   end
   def self.autoassign_user_school_assignments
-    finder_sql = construct_finder_sql(:select => 'special_user_groups.school_id, special_user_groups.user_id',
-      :joins => "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = uga.school_id
-      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id",
-      :group => "special_user_groups.school_id, special_user_groups.user_id",
-      :conditions => {:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil}
-                                     )
+    finder_sql = select( 'special_user_groups.school_id, special_user_groups.user_id').joins(
+      "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = special_user_groups.school_id
+      inner join users on special_user_groups.user_id = users.id and users.district_id = special_user_groups.district_id").group(
+      "special_user_groups.school_id, special_user_groups.user_id").where(:grouptype => ALL_STUDENTS_IN_SCHOOL, 'uga.id' => nil).to_sql
      query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
      SpecialUserGroup.connection.update query
+  end
+
+  def title
+    if grouptype == ALL_STUDENTS_IN_SCHOOL
+      "All Students in #{grade ? 'Grade: '+grade.to_s : 'School'}"
+    else
+      "Other group"
+    end
+
+  end
+
+  def to_param
+    if new_record?
+      title.parameterize
+    else
+      super
+    end
+  end
+
+  def self.virtual_groups(grades)
+    ([nil] | Array(grades)).collect{|g| new(:grouptype => ALL_STUDENTS_IN_SCHOOL, :grade => g)}
+  end
+
+  private
+  def assign_district_from_user
+    self.district_id = user.district_id if district_id.blank? && user.present?
   end
 end
 

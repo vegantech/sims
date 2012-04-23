@@ -1,21 +1,25 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe InterventionBuilder::ProbesController do
+  it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
   it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
 
-  before do 
+  before do
     @district=mock_district
     controller.stub!(:current_district=>@district)
     @district.stub!(:probe_definitions=>ProbeDefinition)
     @mock_probe_definition=mock_probe_definition
   end
-  
+
   describe "responding to GET index" do
     it "should expose all probe_definitions as @probe_definitions_in_groups" do
       ProbeDefinition.should_receive(:group_by_cluster_and_objective).and_return([1,2,3])
       get :index
-      assigns[:probe_definitions_in_groups].should == [1,2,3]
+      assigns(:probe_definitions_in_groups).should == [1,2,3]
     end
 
   end
@@ -25,42 +29,38 @@ describe InterventionBuilder::ProbesController do
     it "should expose the requested probe_definition as @probe_definition" do
       ProbeDefinition.should_receive(:find).with("37").and_return(@mock_probe_definition)
       get :show, :id => "37"
-      assigns[:probe_definition].should equal(@mock_probe_definition)
+      assigns(:probe_definition).should equal(@mock_probe_definition)
     end
-    
-   
+
+
   end
 
   describe "responding to GET new" do
-  
+
     it "should expose a new probe_definition as @probe_definition" do
       ProbeDefinition.should_receive(:build).and_return(@mock_probe_definition)
       @mock_probe_definition.stub_association!(:assets, :build=>true)
 
       get :new
-      assigns[:probe_definition].should equal(@mock_probe_definition)
+      assigns(:probe_definition).should equal(@mock_probe_definition)
     end
 
   end
 
   describe "responding to GET edit" do
-  
+
     it "should expose the requested probe_definition as @probe_definition" do
       ProbeDefinition.should_receive(:find).with("37").and_return(@mock_probe_definition)
       get :edit, :id => "37"
-      assigns[:probe_definition].should equal(@mock_probe_definition)
+      assigns(:probe_definition).should equal(@mock_probe_definition)
     end
 
   end
 
   describe "responding to POST create" do
-    before do
-      @district.should_receive(:probe_definitions).and_return(ProbeDefinition)
-
-    end
 
     describe "with valid params" do
-      
+
       it "should expose a newly created probe_definition as @probe_definition" do
         pending
         ProbeDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mpd=mock_probe_definition(:save => true))
@@ -74,9 +74,9 @@ describe InterventionBuilder::ProbesController do
         post :create, :probe_definition => {}
         response.should redirect_to(intervention_builder_probes_url(mpd))
       end
-      
+
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved probe_definition as @probe_definition" do
@@ -92,9 +92,9 @@ describe InterventionBuilder::ProbesController do
         post :create, :probe_definition => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT udpate" do
@@ -123,7 +123,7 @@ describe InterventionBuilder::ProbesController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       it "should update the requested probe_definition" do
@@ -169,7 +169,7 @@ describe InterventionBuilder::ProbesController do
     end
 
   end
-  
+
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested probe_definition when there are no probes and redirect" do
@@ -192,10 +192,10 @@ describe InterventionBuilder::ProbesController do
       delete :destroy, :id=>"37"
       flash[:notice].should =='Progress Monitor Definition could not be deleted, it is in use.'
       response.should redirect_to(intervention_builder_probes_url)
-      
+
     end
-    
-  
+
+
 
   end
 

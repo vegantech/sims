@@ -1,6 +1,6 @@
 <h2>Team Notes</h2>
 
-<% form_tag do %><br/ >
+<%= form_tag do %><br/ >
 
   <%= label_tag 'start_date-mm', 'Start Date:' %><br/>
   <%= unobtrusive_date_picker_tags @start_date,{:order => [:month,:day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date'  } %> <br / >
@@ -11,7 +11,7 @@
 
   <%= label_tag :sort_field %><br/>
   <%= select :report_params,:sort_field, ['Student','Date', 'Team Note'], {:selected=> @sort_field} %><br/><br/>
-  
+
   <%= label_tag :content %><br/>
   <%= text_field_tag 'report_params[content]', @content %><br/><br/>
 
@@ -20,4 +20,4 @@
 
   <%= submit_tag "Generate Report", :name => 'generate' %>
 <% end %>
-<%= @report %>
+<%= raw @report %>

@@ -8,3 +8,4 @@ page << "}else{"
 page.remove_content dom_id(@element_definition, "edit")
 page.change_link dom_id(@element_definition, "edit_link"), "Edit"
 page << "}"
+set_flash_notice page

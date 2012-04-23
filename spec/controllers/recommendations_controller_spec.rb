@@ -1,8 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe RecommendationsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   #Delete these examples and add some real ones
   it "should use RecommendationsController" do
@@ -43,7 +45,7 @@ describe RecommendationsController do
       response.should redirect_to(student_url(mock_student))
     end
 
-     it "should be render new it doesn't save" do
+    it "should be render new it doesn't save" do
       controller.should_receive(:current_user).and_return(1)
       controller.should_receive(:current_student).and_return(mock_student)
       mock_checklist.should_receive(:find).and_return(mock_checklist)

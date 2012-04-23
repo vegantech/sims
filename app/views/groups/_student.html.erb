@@ -1,3 +1,0 @@
-<%div_for student do %>
-  <%= student %> <%=link_to_remote_degrades "Remove Student", :url=>remove_student_group_path(@group,:student_id=>student), :method=>:delete %>
-<% end %>

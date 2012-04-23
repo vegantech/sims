@@ -1,3 +1,4 @@
+Sims::Application.configure do
 # Settings specified here will take precedence over those in config/environment.rb
 
 # The production environment is meant for finished, "live" apps.
@@ -13,6 +14,7 @@ config.action_controller.perform_caching             = true
 
 
 config.log_level = :debug
+config.active_support.deprecation = :log
 
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store
@@ -22,6 +24,14 @@ config.log_level = :debug
 
 # Disable delivery errors, bad email addresses will be ignored
  config.action_mailer.raise_delivery_errors = false
+ config.action_mailer.delivery_method = :test
 
 #ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.sims-open.vegantech.com')
 
+# Settings specified here will take precedence over those in config/environment.rb
+
+# The production environment is meant for finished, "live" apps.
+# Code is not reloaded between requests
+end
+require 'mail'
+Mail.register_observer(Railmail::Observer)

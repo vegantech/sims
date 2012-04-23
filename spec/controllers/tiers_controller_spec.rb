@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe TiersController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
-  
+  include_context "authorized"
+  include_context "authenticated"
 
 
   def mock_tier(stubs={})
@@ -14,20 +14,12 @@ describe TiersController do
     controller.stub!(:current_district=>mock_district(:tiers=>Tier))
   end
 
-  
+
   describe "GET index" do
     it "assigns all tiers as @tiers" do
       Tier.should_receive(:find).with(:all).and_return([mock_tier])
       get :index
-      assigns[:tiers].should == [mock_tier]
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested tier as @tier" do
-      Tier.should_receive(:find).with("37").and_return(mock_tier)
-      get :show, :id => "37"
-      assigns[:tier].should equal(mock_tier)
+      assigns(:tiers).should == [mock_tier]
     end
   end
 
@@ -35,7 +27,7 @@ describe TiersController do
     it "assigns a new tier as @tier" do
       Tier.should_receive(:build).and_return(mock_tier)
       get :new
-      assigns[:tier].should equal(mock_tier)
+      assigns(:tier).should equal(mock_tier)
     end
   end
 
@@ -43,17 +35,17 @@ describe TiersController do
     it "assigns the requested tier as @tier" do
       Tier.should_receive(:find).with("37").and_return(mock_tier)
       get :edit, :id => "37"
-      assigns[:tier].should equal(mock_tier)
+      assigns(:tier).should equal(mock_tier)
     end
   end
 
   describe "POST create" do
-    
+
     describe "with valid params" do
       it "assigns a newly created tier as @tier" do
         Tier.should_receive(:build).with({'these' => 'params'}).and_return(mock_tier(:save => true))
         post :create, :tier => {:these => 'params'}
-        assigns[:tier].should equal(mock_tier)
+        assigns(:tier).should equal(mock_tier)
       end
 
       it "redirects to the created tier" do
@@ -62,12 +54,12 @@ describe TiersController do
         response.should redirect_to(tiers_url)
       end
     end
-    
+
     describe "with invalid params" do
       it "assigns a newly created but unsaved tier as @tier" do
         Tier.stub!(:build).with({'these' => 'params'}).and_return(mock_tier(:save => false))
         post :create, :tier => {:these => 'params'}
-        assigns[:tier].should equal(mock_tier)
+        assigns(:tier).should equal(mock_tier)
       end
 
       it "re-renders the 'new' template" do
@@ -76,11 +68,11 @@ describe TiersController do
         response.should render_template('new')
       end
     end
-    
+
   end
 
   describe "PUT update" do
-    
+
     describe "with valid params" do
       it "updates the requested tier" do
         Tier.should_receive(:find).with("37").and_return(mock_tier(:save => true))
@@ -91,7 +83,7 @@ describe TiersController do
       it "assigns the requested tier as @tier" do
         Tier.stub!(:find).and_return(mock_tier(:attributes= => true, :save => true))
         put :update, :id => "1"
-        assigns[:tier].should equal(mock_tier)
+        assigns(:tier).should equal(mock_tier)
       end
 
       it "redirects to the tiers" do
@@ -100,7 +92,7 @@ describe TiersController do
         response.should redirect_to(tiers_url)
       end
     end
-    
+
     describe "with invalid params" do
       it "updates the requested tier" do
         Tier.should_receive(:find).with("37").and_return(mock_tier(:save => false))
@@ -111,7 +103,7 @@ describe TiersController do
       it "assigns the tier as @tier" do
         Tier.stub!(:find).and_return(mock_tier(:attributes= => false, :save => false))
         put :update, :id => "1"
-        assigns[:tier].should equal(mock_tier)
+        assigns(:tier).should equal(mock_tier)
       end
 
       it "re-renders the 'edit' template" do
@@ -120,27 +112,27 @@ describe TiersController do
         response.should render_template('edit')
       end
     end
-    
+
   end
 
   describe "DELETE destroy" do
 
     describe 'without delete_confirmation or used_at_all?' do
-      
+
       it "destroys the requested tier" do
         Tier.should_receive(:count).and_return(2)
         Tier.should_receive(:find).with("37").and_return(m=mock_tier(:used_at_all? => false))
         m.should_receive(:destroy)
         delete :destroy, :id => "37"
       end
-    
+
       it "redirects to the tiers list" do
         Tier.stub!(:find).and_return(mock_tier(:destroy => true, :used_at_all? =>false))
         delete :destroy, :id => "1"
         response.should redirect_to(tiers_url)
       end
 
-      it 'does not destroy the last tier' do 
+      it 'does not destroy the last tier' do
         Tier.should_receive(:count).and_return(1)
         Tier.should_receive(:find).with("37").and_return(m=mock_tier(:used_at_all? => false))
         m.should_not_receive(:destroy)
@@ -151,14 +143,14 @@ describe TiersController do
     end
 
     describe 'with delete_confirmation' do
- 
+
       it "destroys the requested tier" do
         Tier.should_receive(:count).and_return(2)
         Tier.should_receive(:find).with("37").and_return(mock_tier(:used_at_all? => true, :delete_successor => 'e'))
         mock_tier.should_receive(:destroy)
         delete :destroy, :id => "37", :delete_confirmation=>true
       end
-    
+
       it "redirects to the tiers list" do
         Tier.should_receive(:count).and_return(2)
         Tier.stub!(:find).and_return(mock_tier(:destroy => true, :used_at_all? =>true, :delete_successor=>'e'))
@@ -170,14 +162,14 @@ describe TiersController do
     end
 
     describe 'with used_at_all?' do
-  
+
       it "does not destroys the requested tier" do
         Tier.should_receive(:count).and_return(2)
         Tier.should_receive(:find).with("37").and_return(mock_tier(:used_at_all? => true, :delete_successor => 'e'))
         mock_tier.should_not_receive(:destroy)
         delete :destroy, :id => "37"
       end
-    
+
       it "redirects to the tiers list" do
         Tier.should_receive(:count).and_return(2)
         Tier.stub!(:find).and_return(mock_tier(:destroy => true, :used_at_all? =>true, :delete_successor=>'e'))
@@ -190,6 +182,6 @@ describe TiersController do
     end
   end
 
-  
+
 
 end

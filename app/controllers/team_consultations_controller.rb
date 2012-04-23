@@ -1,15 +1,13 @@
 class TeamConsultationsController < ApplicationController
   before_filter :require_current_school
-  additional_write_actions :complete
   # GET /team_consultations/1
   # GET /team_consultations/1.xml
   def show
     @team_consultation = TeamConsultation.find(params[:id])
 
     respond_to do |format|
-      format.js
       format.html # show.html.erb
-      format.xml  { render :xml => @team_consultation }
+      format.js
     end
   end
 
@@ -21,9 +19,8 @@ class TeamConsultationsController < ApplicationController
     @teams = current_school.school_teams
 
     respond_to do |format|
-      format.js
       format.html # new.html.erb
-      format.xml  { render :xml => @team_consultation }
+      format.js
     end
   end
 
@@ -32,9 +29,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
+      format.html {render :action => 'new'} # new.html.erb
       format.js { render :action => 'new'}
-      format.html # new.html.erb
-      format.xml  { render :xml => @team_consultation }
     end
   end
 
@@ -43,6 +39,7 @@ class TeamConsultationsController < ApplicationController
   def create
     params[:team_consultation] ||= {}
     params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user_id)
+    params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 
     respond_to do |format|
@@ -52,15 +49,12 @@ class TeamConsultationsController < ApplicationController
         else
           msg = 'The Team Consultation Draft was saved.'
         end
-        
-        format.js { flash.now[:notice] = msg}
         format.html { flash[:notice]=msg; redirect_to(current_student) }
-        format.xml  { render :xml => @team_consultation, :status => :created, :location => @team_consultation }
+        format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
         @recipients = current_school.school_teams
-        format.js { render :action => "new" }
         format.html { render :action => "new" }
-        format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
+        format.js {  responds_to_parent {render}  }
       end
     end
   end
@@ -69,6 +63,7 @@ class TeamConsultationsController < ApplicationController
   # PUT /team_consultations/1.xml
   def update
     @team_consultation = TeamConsultation.find(params[:id])
+    params[:team_consultation][:draft] = false if params[:commit] == "Save"   #the js in the view does not work in ff
 
     respond_to do |format|
       if @team_consultation.update_attributes(params[:team_consultation])
@@ -77,13 +72,11 @@ class TeamConsultationsController < ApplicationController
         else
           msg = 'TeamConsultation was successfully updated.'
         end
-        format.js { flash.now[:notice] = msg; render :action => 'create'}
         format.html { redirect_to(@team_consultation.student) }
-        format.xml  { head :ok }
+        format.js { flash.now[:notice] = msg; responds_to_parent{render :action => 'create'} }
       else
-        format.js { render :action => 'new'}
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @team_consultation.errors, :status => :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.js { responds_to_parent{render :action => 'new'} }
       end
     end
   end
@@ -95,20 +88,25 @@ class TeamConsultationsController < ApplicationController
     @team_consultation.destroy
 
     respond_to do |format|
-      format.js
       format.html { redirect_to(@team_consultation.student) }
-      format.xml  { head :ok }
+      format.js
     end
   end
 
   def complete
     @team_consultation = TeamConsultation.find(params[:id])
-    @team_consultation.complete! and flash[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
-    
+    @team_consultation.complete! and flash.now[:notice] = "Marked complete" if @team_consultation.recipients.include?(current_user)
+
     respond_to do |format|
       format.js
     end
-    
+  end
 
+def undo_complete
+    @team_consultation = TeamConsultation.find(params[:id])
+    @team_consultation.undo_complete! and flash.now[:notice] = "Consultation is no longer complete" if @team_consultation.recipients.include?(current_user)
+    respond_to do |format|
+      format.js
+    end
   end
 end
