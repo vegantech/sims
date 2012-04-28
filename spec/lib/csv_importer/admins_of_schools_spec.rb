@@ -27,7 +27,6 @@ describe CSVImporter::AdminsOfSchools do
       @i.import
 
       @school.user_school_assignments.reload.should == @usa
- 
     end
 
     it 'should not touch matching keys in another district'
@@ -52,13 +51,13 @@ describe CSVImporter::AdminsOfSchools do
       @school_no_link = Factory(:school, :district_id => @district.id)
       @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
       @school_with_link_admin = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin')
-      @school_with_link_admin.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true) 
+      @school_with_link_admin.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true)
       @school_with_link_admin2 = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin2')
-      @school_with_link_admin2.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true) 
-      
+      @school_with_link_admin2.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true)
+
       @no_role_or_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
-      
-      
+
+
       @role_no_district_user_id = Factory(:user,:district_id => @district.id)
       @should_lose_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_lose_role')
       @should_keep_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_keep_role')
@@ -91,7 +90,7 @@ describe CSVImporter::AdminsOfSchools do
 
       @dup_person_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
       @dup_person_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-      
+
       @role_no_district_user_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
       @role_no_district_user_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
     end
