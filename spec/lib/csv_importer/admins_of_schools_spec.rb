@@ -35,6 +35,9 @@ describe CSVImporter::AdminsOfSchools do
     it 'should just add the assignment if the role is already in the system'
     it 'should add just the role if the assignment is already in the system and in the file'
     it 'should remove the assignment if it is in the system but not the file'
+    it 'should add the assignment  with admin if a nonadmin assignment already exists' do
+      pending 'this should fail if the usa.admin = true is removed from the insert join'
+    end
 
 
 

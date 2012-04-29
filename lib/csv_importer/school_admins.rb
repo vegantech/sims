@@ -1,6 +1,6 @@
 module CSVImporter
   class SchoolAdmins < CSVImporter::BaseRoles
-    FIELD_DESCRIPTIONS = { 
+    FIELD_DESCRIPTIONS = {
       :district_user_id =>"Key for user"
     }
     class << self
@@ -8,7 +8,7 @@ module CSVImporter
         [:district_user_id]
       end
       def description
-        "School admins, role.  You also need to assign them as an admin to a specific school (edit their user within SIMS)"
+        "School admins, role.  You also need to assign them as an admin to a specific school (edit their user within SIMS)  It is recommended that you use the admins_of_schools.csv instead."
       end
 
       def overwritten
