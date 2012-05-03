@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'lib/best_standards_support.rb'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -55,6 +56,7 @@ module Sims
     config.middleware.use 'ExtendedLogger'
     config.middleware.use 'SessionCheck'
     config.middleware.use 'ChartProxy'
+    config.middleware.swap ActionDispatch::BestStandardsSupport, Sims::BestStandardsSupport
 
 #    config.action_mailer.delivery_method = :railmail
     config.time_zone = 'Central Time (US & Canada)'
