@@ -31,7 +31,7 @@ gem 'rails', '3.0.12'
 # end
 
 
-gem 'factory_girl_rails'
+gem 'factory_girl_rails', '~> 1.7.0'
 gem 'redcarpet'
 gem "fastercsv", '1.2.3'
 gem 'system_timer'
