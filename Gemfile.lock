@@ -278,7 +278,7 @@ DEPENDENCIES
   database_cleaner (>= 0.5.0)
   dynamic_form
   email_spec (= 1.2.1)
-  factory_girl_rails
+  factory_girl_rails (~> 1.7.0)
   fastercsv (= 1.2.3)
   googlecharts (= 1.6.3)
   launchy
