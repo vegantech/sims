@@ -34,7 +34,6 @@ gem 'rails', '3.0.12'
 gem 'factory_girl_rails'
 gem 'redcarpet'
 gem "fastercsv", '1.2.3'
-gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
@@ -54,7 +53,7 @@ gem 'pdfkit'
 gem 'railmail', :git => "git://github.com/zonecheung/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :ref => "71294653be3d260f80ddd3dab0785a9200ca67e3"
 
 group :test do
-  gem 'rcov', ">=0.9.9", :require => false
+  gem 'simplecov', :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
   gem 'sneaky-save'
@@ -62,7 +61,7 @@ group :test do
 end
 
 group :cucumber do
-  gem 'rcov', ">=0.9.9", :require => false
+  gem 'simplecov',  :require => false
   gem 'capybara', :require => false
   gem 'cucumber-rails', :require => false
   gem 'cucumber', :require => false#covered by cucumber-rails above
@@ -78,7 +77,7 @@ gem "capistrano",'2.5.0', :require => false
 gem "capistrano-ext", :require => false
 gem "thin"
 gem "metrical", :platforms => :ruby_19
-gem "ripper", :platforms => :ruby_19
+#gem "ripper", :platforms => :ruby_19
 gem 'rspec-rails','~>2.6', :require => false
 end
 
