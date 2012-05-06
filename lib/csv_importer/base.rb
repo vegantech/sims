@@ -1,5 +1,5 @@
 module CSVImporter
-  require 'fastercsv'
+  require 'csv'
   class Base
     attr_reader :messages
     FIELD_DESCRIPTIONS = {}

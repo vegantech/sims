@@ -1,4 +1,4 @@
-require 'fastercsv'
+require 'csv'
 class ReferralReport
   def initialize(district)
     @district = district

@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'fastercsv'
+require 'csv'
 class DistrictExport
   def self.generate(district)
     self.new.generate(district)
