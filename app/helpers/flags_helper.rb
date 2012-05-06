@@ -66,8 +66,8 @@ module FlagsHelper
       s = student.ignore_flags.collect do |igflag|
         popup = "#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
 
-        form_remote_tag(:url => {:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
-          :html => {:class => "flag_button", :style => "display:inline"}) {
+        form_tag({:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
+          {:class => "flag_button", :style => "display:inline", :remote => true}) {
           image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
       end
       s.join(" ").html_safe
@@ -80,8 +80,8 @@ module FlagsHelper
       popup = "#{Flag::FLAGTYPES[flagtype][:humanize]} : #{flag_summary(flags)}"
 
       if changeable
-        form_remote_tag(:url => {:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
-          :html => {:style => "display:inline"}) {
+        form_tag({:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
+          {:style => "display:inline", :remote => true}) {
           image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)

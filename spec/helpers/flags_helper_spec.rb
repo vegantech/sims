@@ -90,7 +90,7 @@ describe FlagsHelper do
           cf = mock_flag(:category => 'languagearts', :summary => 'Current Flag Summary', :icon => 'CF.png')
           student = mock_student(:current_flags => {'math' => [cf]})
 
-          helper.current_flags(student, true).should ==  "<form accept-charset=\"UTF-8\" action=\"/custom_flags/ignore_flag?category=languagearts\" method=\"post\" onsubmit=\"new Ajax.Request('/custom_flags/ignore_flag?category=languagearts', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\" style=\"display:inline\"><div style=\"margin:0;padding:0;display:inline\"><input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" /></div><input onmouseout=\"return nd();\" onmouseover=\"return overlib('Math : Current Flag Summary');\" src=\"/images/CF.png\" type=\"image\" /></form>"
+          helper.current_flags(student, true).should ==  "<form accept-charset=\"UTF-8\" action=\"/custom_flags/ignore_flag?category=languagearts\" data-remote=\"true\" method=\"post\" style=\"display:inline\"><div style=\"margin:0;padding:0;display:inline\"><input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" /></div><input onmouseout=\"return nd();\" onmouseover=\"return overlib('Math : Current Flag Summary');\" src=\"/images/CF.png\" type=\"image\" /></form>"
        end
       end
     end

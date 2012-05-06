@@ -65,9 +65,13 @@ module ApplicationHelper
     end
   end
 
-  def link_to_remote_degrades(name, options = {}, html_options = {})
-    html_options[:href] = url_for(options[:url]) unless html_options.has_key?(:href)
-    link_to_remote(name, options, html_options)
+  def link_to_remote(name, options ={}, html_options = {})
+    if options.respond_to?(:keys) && options[:url]
+      o2 = options.delete(:url)
+      html_options.merge!(options)
+      options = o2
+    end
+    link_to name, options, html_options.merge(:remote => true)
   end
 
   def render_with_empty(options ={})
@@ -92,10 +96,6 @@ module ApplicationHelper
 
   def spinner(suffix = nil)
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
-  end
-
-  def link_to_remote_if(condition, name, options = {}, html_options = {},  &block)
-    condition ? link_to_remote_degrades(name, options, html_options ) : name
   end
 
   def link_to_with_icon(name, url, suffix="")
