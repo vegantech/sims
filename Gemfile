@@ -31,7 +31,7 @@ gem 'rails', '3.0.12'
 # end
 
 
-gem 'factory_girl_rails'
+gem 'factory_girl_rails', '~> 1.7.0'
 gem 'redcarpet'
 gem "fastercsv", '1.2.3'
 gem 'system_timer'
@@ -50,8 +50,8 @@ gem 'dynamic_form'
 gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
-
-gem 'railmail', :git => "git://github.com/zonecheung/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :ref => "71294653be3d260f80ddd3dab0785a9200ca67e3"
+gem 'statistics'
+gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache]
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
