@@ -1,1 +1,0 @@
-Version 0.1, 27.05.09 - initial release
