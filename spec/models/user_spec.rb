@@ -522,4 +522,18 @@ describe User do
 
    end
 
+   describe 'admin_of_school?' do
+     let(:school) {Factory(:school)}
+     let(:user) {Factory(:user)}
+
+     it 'should return true if the user is an admin of the school' do
+       user.user_school_assignments.create!(:school => school, :admin => true)
+       user.admin_of_school?(school).should be_true
+     end
+
+     it 'should return false if the user is not an admin of the school' do
+       user.user_school_assignments.create!(:school => school, :admin => false)
+       user.admin_of_school?(school).should be_false
+     end
+   end
 end

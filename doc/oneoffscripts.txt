@@ -59,12 +59,8 @@ end
 
 #collect emails from slas and school admins from districts that have logged in since a given date
 active_district_ids = (DistrictLog.connection.select_values "select distinct district_id from district_logs where created_at > '2011-07-01' and body like 'Successful login%'")
-
-emails = User.find_all_by_district_id(active_district_ids,:select => 'distinct email',
-    :conditions => "roles_mask & #{Role.roles_to_mask(Role::ADMIN_ROLES)} > 0 and email is not null and email != ''").collect(&:email).uniq; nil
+emails = User.find_by_sql("SELECT `users`.* FROM `users` left JOIN `user_school_assignments` ON `user_school_assignments`.`user_id` = `users`.`id` WHERE ((roles_mask & #{Role.roles_to_mask(Role::ADMIN_ROLES)} > 0) or (`user_school_assignments`.`admin` = 1)) and district_id IN (#{active_district_ids.join(",")} ) and email is not null and email <> ''").collect(&:email).uniq; nil
 File.open('admin_emails', 'w') {|f| f.puts emails.join(", ")}
-
-
 
 
 #restore a deleted team consultation

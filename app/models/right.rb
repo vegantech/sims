@@ -1,14 +1,6 @@
 class Right
 
 RIGHTS={
-  "school_admin"=>[ "school_teams",
-    "team_schedulers",
-    "quicklist_items",
-    "schools",
-    "special_user_groups",
-    "groups",
-    "groups/students",
-    "groups/users"],
   "news_admin"=>["news_items"],
   "regular_user"=>["custom_flags",
     "recommendations",

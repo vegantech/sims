@@ -4,13 +4,13 @@ class Role
                   "local_system_administrator" => 'Add a logo, set the district key, add users, add schools,
                   assign roles, add students, enroll students, import files, set district abbreviation (formerly district admin)',
                   "content_admin" => 'Setup Goals, Objectives, Categories, Interventions, Tiers, Checklists, and Progress Monitors',
-                  "school_admin" => 'Create groups, assign students and groups, maintain quicklist',
+                  "school_admin" => 'This is no longer used, assign the user as an admin to the school',
                   "regular_user" => 'Regular user of SIMS',
                   "news_admin"  => 'Create and edit news items that appear on the left' ,
                 }
 
 
-  ADMIN_ROLES = ["local_system_administrator", "school_admin"]
+  ADMIN_ROLES = ["local_system_administrator"]
 
   ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin}
   CSV_HEADERS = [:district_user_id]
