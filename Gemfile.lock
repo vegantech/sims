@@ -11,12 +11,11 @@ GIT
     spawn (1.0.1)
 
 GIT
-  remote: git://github.com/zonecheung/railmail.git
-  revision: 71294653be3d260f80ddd3dab0785a9200ca67e3
-  ref: 71294653be3d260f80ddd3dab0785a9200ca67e3
+  remote: git://github.com/vegantech/railmail.git
+  revision: b6c0006b857df6bb9cf8457c020d15122672cefc
   specs:
     railmail (3.0.0)
-      rails (~> 3.0.0)
+      rails (~> 3.0)
       will_paginate (~> 3.0.pre2)
 
 GEM
@@ -248,6 +247,7 @@ GEM
     sexp_processor (3.0.10)
     sneaky-save (0.0.2)
       activerecord (>= 2.3.2)
+    statistics (1.0.0)
     syntax (1.0.0)
     system_timer (1.2.4)
     term-ansicolor (1.0.7)
@@ -279,7 +279,7 @@ DEPENDENCIES
   database_cleaner (>= 0.5.0)
   dynamic_form
   email_spec (= 1.2.1)
-  factory_girl_rails
+  factory_girl_rails (~> 1.7.0)
   fastercsv (= 1.2.3)
   googlecharts (= 1.6.3)
   launchy
@@ -304,6 +304,7 @@ DEPENDENCIES
   rspec-rails (~> 2.6)
   sneaky-save
   spawn!
+  statistics
   system_timer
   thin
   will_paginate
