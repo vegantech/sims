@@ -95,7 +95,7 @@ class ApplicationController < ActionController::Base
     unless current_user.authorized_for?(controller)
       logger.info "Authorization Failure: controller is #{controller}"
       flash[:notice] =  "You are not authorized to access that page"
-      redirect_to root_url
+      redirect_to not_authorized_url
       return false
     end
     true

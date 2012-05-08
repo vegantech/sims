@@ -1,4 +1,4 @@
-class SpecialUserGroupsController < ApplicationController
+class SpecialUserGroupsController < SchoolAdminController
   def show
     #TODO push group search to model
     @group=params[:id]
