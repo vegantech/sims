@@ -3,109 +3,42 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
 describe CSVImporter::AdminsOfSchools do
   it_should_behave_like "csv importer"
-  describe "importer"  do
-    it 'should not touch anything missing a district_user_id' do
-      @user = Factory(:user, :district_user_id => 2)
-      @school = Factory(:school, :district => @user.district)
-      @user.user_school_assignments.create!(:admin => true, :school_id => @school.id)
-      @usa = @user.user_school_assignments
-      @district = @user.district
-      #school2
-      @i=CSVImporter::AdminsOfSchools.new "#{Rails.root}/spec/csv/user_school_assignments.csv",@district
-      @i.import
 
-      @user.user_school_assignments.reload.should == @usa
+  describe 'import' do
+    subject {CSVImporter::AdminsOfSchools.new(Rails.root.join("spec","csv","admins_of_schools.csv").to_s, upload_district)}
+    let!(:upload_district) {Factory(:district)}
+    let!(:other_district) {Factory(:district)}
+    let!(:user_to_add) {Factory(:user, :district => upload_district, :district_user_id => 'user_to_add')}
+    let!(:user_to_remove) {  Factory(:user, :district => upload_district, :district_user_id => 'user_to_remove',
+                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
+    let!(:school) {Factory(:school, :district => upload_district, :district_school_id => 222)}
+    let!(:other_school) {Factory(:school, :district => other_district, :district_school_id => 222)}
+    let!(:other_district_user_to_add) {Factory(:user, :district => other_district, :district_user_id => 'user_to_add')}
+    let!(:other_district_user_to_remove) {  Factory(:user, :district => other_district, :district_user_id => 'user_to_remove',
+                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => other_school)])}
+    let!(:school_without_key) {Factory(:school, :district => other_district)}
+    let!(:user_without_key_to_remove) {  Factory(:user, :district => upload_district,
+                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
+    let!(:user_to_non_admin) {  Factory(:user, :district => upload_district, :district_user_id => 'user_with_non_admin',
+                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => false, :school => school)])}
+    let!(:user_with_key_but_assignment_to_school_without_key) { Factory(:user, :district => upload_district, :district_user_id => 'user_with_other_key',
+                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school_without_key)])}
+    let(:import_messages) { subject.import }
+
+
+
+    it 'should import_properly' do
+      #I would have liked to split this up into multiple it blocks, but the lets would run each time
+      #I should rewrite it with before(:all) and instance variables
+      import_messages
+      user_to_add.user_school_assignments.admin.collect(&:school_id).should == [school.id]
+      user_to_remove.user_school_assignments.admin.should be_blank
+      other_district_user_to_add.user_school_assignments.admin.should be_blank
+      other_district_user_to_remove.user_school_assignments.admin.should_not be_blank
+      user_without_key_to_remove.user_school_assignments.admin.should_not be_blank
+      user_to_non_admin.user_school_assignments.should_not be_blank
+      user_with_key_but_assignment_to_school_without_key.user_school_assignments.should_not be_blank
     end
-    it 'should not touch anything missing a district_school_id' do
-      @user = Factory(:user)
-      @school = Factory(:school, :district_school_id => 2 , :district => @user.district)
-      @user.user_school_assignments.create!(:admin => true, :school_id => @school.id)
-      @usa = @user.user_school_assignments
-      @district = @user.district
-      #school2
-      @i=CSVImporter::AdminsOfSchools.new "#{Rails.root}/spec/csv/user_school_assignments.csv",@district
-      @i.import
-
-      @school.user_school_assignments.reload.should == @usa
-    end
-
-    it 'should not touch matching keys in another district'
-    it 'should not remove anything from another district'
-    it 'should add a role and userschool assignment if in the file but not in system'
-    it 'should just add the assignment if the role is already in the system'
-    it 'should add just the role if the assignment is already in the system and in the file'
-    it 'should remove the assignment if it is in the system but not the file'
-    it 'should add the assignment  with admin if a nonadmin assignment already exists' do
-      pending 'this should fail if the usa.admin = true is removed from the insert join'
-    end
-
-
-
-    it 'should work properly' do
-      #be sure to test with existing admin
-      School.delete_all
-      UserSchoolAssignment.delete_all
-      District.delete_all
-      User.delete_all
-
-
-      @no_role_or_district_user_id = Factory(:user)
-      @district = @no_role_or_district_user_id.district
-      @school_no_link = Factory(:school, :district_id => @district.id)
-      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
-      @school_with_link_admin = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin')
-      @school_with_link_admin.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true)
-      @school_with_link_admin2 = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin2')
-      @school_with_link_admin2.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true)
-
-      @no_role_or_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
-
-
-      @role_no_district_user_id = Factory(:user,:district_id => @district.id)
-      @should_lose_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_lose_role')
-      @should_keep_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_keep_role')
-      @should_keep_no_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_keep_no_role')
-      @should_gain_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_gain_role')
-      @dup_person_id = Factory(:user,:district_id => @district.id, :district_user_id => @should_gain_role.district_user_id)
-      @dup_person_id.user_school_assignments.create!(:school_id => @school_no_link.id)
-      [@role_no_district_user_id, @should_lose_role, @should_keep_role].each do |u|
-        u.user_school_assignments.create!(:school_id => @school_with_link.id)
-      end
-
-
-      @role_no_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
-      @district.users.update_all("updated_at = '2000-01-01'")
-      @i=CSVImporter::UserSchoolAssignments.new "#{Rails.root}/spec/csv/user_school_assignments.csv",@district
-      @i.import
-
-      @school_with_link_admin.reload.user_school_assignments.collect(&:admin).should == [true]
-      @school_with_link_admin2.reload.user_school_assignments.collect(&:admin).should == [true]
-
-
-      @no_role_or_district_user_id.reload.user_school_assignments.size.should == 1
-      @no_role_or_district_user_id.user_school_assignments.find_all_by_school_id(@school_no_link.id).size.should == 1
-
-      @should_lose_role.reload.user_school_assignments == []
-      @should_keep_no_role.user_school_assignments.should == []
-
-      [@should_keep_role,@should_gain_role].each{|u| check_user_school_assignments u}
-      @dup_person_id.reload.user_school_assignments.count.should == 2
-
-      @dup_person_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-      @dup_person_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-
-      @role_no_district_user_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-      @role_no_district_user_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-    end
-
-    def check_user_school_assignments u
-      u.reload.user_school_assignments.size.should == 1
-      u.user_school_assignments.find_all_by_school_id(@school_with_link).size.should == 1
-    end
-
   end
 end
-
-
-
 
