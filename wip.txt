@@ -15,6 +15,8 @@ make intervention definitions blue if they are sld qualifing
 put sld criteria in description
 quicklist coloring
 recommended minutes per week in builder
+620,675 admins_of_schools.csv, disable school_admin role
+
 
 TODO
 test everything
