@@ -458,6 +458,10 @@ or (user_group_assignments.id is not null)
     special_user_groups.all_students_in_school?(school)
   end
 
+  def admin_of_school?(school)
+    user_school_assignments.admin.exists?(:school_id => school.id)
+  end
+
 protected
 
   def student_ids_where_principal(school_id)

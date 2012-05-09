@@ -8,7 +8,7 @@ module CSVImporter
         [:district_user_id]
       end
       def description
-        "School admins, role.  You also need to assign them as an admin to a specific school (edit their user within SIMS)  It is recommended that you use the admins_of_schools.csv instead."
+        "This is no longer used.  See the admins_of_schools.csv instead."
       end
 
       def overwritten
@@ -24,11 +24,12 @@ module CSVImporter
 #      end
 
       def how_often
-        "Start of school year, or handle manually."
+        ""
       end
 
-#      def alternate
-#      end
+      def alternate
+
+      end
 
       def upload_responses
         super
@@ -39,7 +40,9 @@ module CSVImporter
       end
     end
 
-
+    def import
+      "school_admins.csv is no longer used.  Use admins_of_schools.csv instead"
+    end
   end
 end
 

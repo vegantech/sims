@@ -6,7 +6,7 @@ module CSVImporter
     }
     class << self
       def description
-        "Assigns administrators to schools. Also gives them the school_admin role if they do not already have it. "
+        "Assigns administrators to schools."
       end
 
       def csv_headers
@@ -73,25 +73,6 @@ module CSVImporter
         and (usa.admin = true) and tusa.district_school_id is null
         "
       ActiveRecord::Base.connection.update query
-    end
-
-    def after_import
-      assign_school_admin_role
-    end
-
-    def role_mask
-      2**Role::ROLES.index("school_admin")
-    end
-
-    def assign_school_admin_role
-      query = "update users u
-      inner join #{temporary_table_name} t_r on t_r.district_user_id = u.district_user_id
-      set u.roles_mask = u.roles_mask ^ #{role_mask},
-      u.updated_at = CURDATE()
-      where u.district_user_id != '' and (~u.roles_mask & #{role_mask})
-      and u.district_id = #{@district.id}
-      "
-      User.connection.update query
     end
 
     def insert

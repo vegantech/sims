@@ -1,15 +1,6 @@
 class Right
 
 RIGHTS={
-  "school_admin"=>[ "school_teams",
-    "cico_settings",
-    "team_schedulers",
-    "quicklist_items",
-    "schools",
-    "special_user_groups",
-    "groups",
-    "groups/students",
-    "groups/users"],
   "news_admin"=>["news_items"],
   "regular_user"=>["custom_flags",
     "recommendations",
@@ -36,8 +27,7 @@ RIGHTS={
     "student_comments",
     "grouped_progress_entries",
     "unattached_interventions",
-    "personal_groups",
-    "cico_school_days"],
+    "personal_groups"],
   "content_admin"=>["intervention_builder/recommended_monitors",
       "intervention_builder/goals",
       "checklist_builder/elements",

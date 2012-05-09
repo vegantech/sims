@@ -12,8 +12,8 @@
     <thead>
       <tr><th>User</th>
       <th>School Admin
-      <%= help_popup("A school admin can administer the quicklist, create groups, and assign students and users to groups for this school.   The user must also have the school_admin role assigned") %> </th>
-      
+      <%= help_popup("A school admin can administer the quicklist, create groups, and assign students and users to groups for this school.") %> </th>
+
     </thead>
     <tbody id = "user_school_assignments">
         <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>

@@ -25,6 +25,7 @@ describe AllControllers do
         interventions login main news_items
         personal_groups
         principal_overrides quicklist_items recommendations reports
+        school_admin
         school_teams
         schools scripted special_user_groups spell_check
         student_comments students team_consultations tiers

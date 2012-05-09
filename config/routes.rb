@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     end
   end
 
+  match '/main' => 'main#not_authorized', :as => :not_authorized
   match '/stats' => 'main#stats', :as => :stats
   match '/spell_check/' => 'spell_check#index', :as => :spell_check
   match '/change_password' => 'login#change_password', :as => :change_password
