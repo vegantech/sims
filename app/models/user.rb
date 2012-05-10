@@ -197,12 +197,7 @@ class User < ActiveRecord::Base
 
     if @user && @user.passwordhash.blank? && @user.salt.blank?
       if @user.district.key.present? && @user.district.key == password
-        @user.update_attribute(:token, Digest::SHA1.hexdigest("#{@user.district.key}#{rand}#{@user.id}"))
-        Notifications.change_password(@user).deliver
-        #send the email
-        @user = User.new(:token => @user.token)
-
-        return @user
+        return User.new(:token => @user.create_token)
       else
         @user = nil
       end
@@ -357,8 +352,10 @@ class User < ActiveRecord::Base
   end
 
   def change_password(params)
-    if self.passwordhash.blank? && self.salt.blank?
-      errors.add(:old_password, "is incorrect") and return false  if (!self.district.key.present? || self.district.key != params[:old_password])
+    if self.token == params[:token]
+      if self.passwordhash.blank?
+        errors.add(:old_password, "is incorrect") and return false  if (!self.district.key.present? || self.district.key != params[:old_password])
+      end
 
       errors.add(:password, 'cannot be blank') and return false if params['password'].blank?
       errors.add(:password_confirmation, 'must match password') and return false if params['password'] != params['password_confirmation']
@@ -458,6 +455,13 @@ or (user_group_assignments.id is not null)
     special_user_groups.all_students_in_school?(school)
   end
 
+  def create_token()
+    self.update_attribute(:token, Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"))
+    Notifications.change_password(self).deliver
+  end
+
+
+
 protected
 
   def student_ids_where_principal(school_id)
@@ -506,7 +510,6 @@ protected
   def duplicate_staff_assignment?(attributes)
      staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
   end
-
 
 
 end

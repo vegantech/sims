@@ -12,6 +12,7 @@ class LoginController < ApplicationController
     @user=User.new(:username=>params[:username])
     session[:user_id] = nil
     if request.post? and current_district
+      forgot_password and return if params[:forgot_password]
       @user=current_district.users.authenticate(params[:username], params[:password]) || @user
       session[:user_id] = @user.id
       if @user.new_record?
@@ -52,7 +53,7 @@ class LoginController < ApplicationController
     if @user.new_record?
       id=params[:id] || (params[:user] && params[:user][:id])
       token = params['token'] || (params[:user] && params['user'][:token])
-      @user =  User.find(id, :conditions => ["(passwordhash ='' or passwordhash is null) and (salt ='' or salt is null) and token = ?",token]) #and email_token
+      @user =  User.where(:token => token).find(id)
       redirect_to logout if @user.blank?
     end
 
@@ -64,7 +65,6 @@ class LoginController < ApplicationController
     end
  end
 
-
 private
   def reset_session_and_district
     reset_session
@@ -75,6 +75,12 @@ private
   def successful_login_destination
     return session[:requested_url] if session[:requested_url]
     return root_url_with_subdomain
+  end
+
+  def forgot_password
+    @user=current_district.users.find_by_username(params[:username]) || @user
+    @user.create_token unless @user.new_record?
+    flash.now[:notice] = 'An email has been sent, follow the link to change your password.'
   end
 
 end
