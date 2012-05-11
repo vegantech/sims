@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
 
-  before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
+  before_filter :fixie6iframe,:authenticate, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
