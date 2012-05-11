@@ -34,7 +34,7 @@ class CreateTrainingDistrict
   end
 
   def self.create_with_schools_and_users(abbrev,name)
-    td=District.create!(:abbrev=>abbrev, :name =>name)
+    td=District.create!(:abbrev=>abbrev, :name =>name, :forgot_password => true)
     td.send :create_admin_user
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementary')
