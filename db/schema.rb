@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120119221044) do
+ActiveRecord::Schema.define(:version => 20120510140653) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -434,7 +434,6 @@ ActiveRecord::Schema.define(:version => 20120119221044) do
     t.string   "notify_email"
     t.boolean  "exempt_tier",                                                                                                                                                                                                                   :default => false, :null => false
     t.set      "sld",                     :limit => "'oral expression','listening comprehension','written expression','basic reading skill','reading fluency','reading comprehension','mathematics calculation','mathematics problem solving'", :default => ""
-    t.integer  "mins_per_week",                                                                                                                                                                                                                 :default => 0,     :null => false
   end
 
   add_index "intervention_definitions", ["frequency_id"], :name => "index_intervention_definitions_on_frequency_id"
@@ -490,7 +489,6 @@ ActiveRecord::Schema.define(:version => 20120119221044) do
     t.datetime "updated_at"
     t.string   "end_reason"
     t.boolean  "fidelity"
-    t.integer  "mins_per_week",              :default => 0,    :null => false
   end
 
   add_index "interventions", ["ended_by_id"], :name => "index_interventions_on_ended_by_id"
