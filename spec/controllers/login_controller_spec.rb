@@ -46,6 +46,40 @@ describe LoginController do
       response.should redirect_to("http://www.test.host/")
     end
 
+    it 'should set a flash message if a login token is created' do
+      controller.stub(:dropdowns)
+      controller.stub(:current_district => District.new)
+      User.should_receive(:new).and_return(mock_user( :token => 'token', :new_record? => true))
+      post :login, :username => 'user'
+      request.flash[:notice].should == "An email has been sent, follow the link to change your password."
+    end
+
+    describe 'forgot password' do
+      before do
+        controller.stub(:dropdowns)
+      end
+      it 'should set the flash if the district has forgot_password disabled' do
+        controller.stub(:current_district => District.new(:forgot_password => false))
+        post :login, :username => 'user', :forgot_password => true
+        request.flash[:notice].should == "This district does not support password recovery.  Contact your LSA for assistance"
+      end
+
+      it 'should  set the flash if the user has no email' do
+        controller.stub(:current_district => District.new(:forgot_password => true))
+        User.should_receive(:new).and_return(mock_user( :email? => nil))
+        post :login, :username => 'user', :forgot_password => 'true'
+        request.flash[:notice].should == "User does not have email assigned in SIMS.  Contact your LSA for assistance"
+      end
+
+      it 'should create the token if the user has email and the district has forgot password enabled' do
+        controller.stub(:current_district => District.new(:forgot_password => true))
+        User.should_receive(:new).and_return(m=mock_user( :email? => true, :create_token => true))
+        post :login, :username => 'user', :forgot_password => 'true'
+        request.flash[:notice].should == 'An email has been sent, follow the link to change your password.'
+      end
+
+
+    end
   end
 
   describe "responding to POST login with invalid credentials" do
@@ -70,6 +104,16 @@ describe LoginController do
       controller.should_receive(:dropdowns)
       get :logout
       response.should render_template('login')
+    end
+  end
+
+  describe "change_password" do
+    describe "get" do
+      it 'should have specs'
+    end
+
+    describe "put" do
+      it 'should have specs'
     end
   end
 end

@@ -16,7 +16,7 @@ put sld criteria in description
 quicklist coloring
 recommended minutes per week in builder
 620,675 admins_of_schools.csv, disable school_admin role
-
+674 forgot password
 
 TODO
 test everything
