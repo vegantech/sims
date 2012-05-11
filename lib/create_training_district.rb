@@ -34,7 +34,7 @@ class CreateTrainingDistrict
       d.schools.destroy_all
       d.tiers.delete_all
       d.flag_categories.destroy_all
-      FileUtils.rm(Dir.glob(Rails.root("public","system","district_generated_docs",d.id.to_s,"*")))
+      FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",d.id.to_s,"*")))
       d.destroy
     end
   end
