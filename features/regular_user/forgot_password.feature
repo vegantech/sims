@@ -4,9 +4,9 @@ Feature: Forgot Password
     Should be able to recover their password by email
 
     Scenario: District with forgot password disabled
-        Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
+        And user "cuke_oneschool" with password "fr0d0L1v3s" exists
         When I go to the home page
-        Then I should not see "Forgot Password"
+        Then I should not see "Forgot Password" within "#login"
 
     Scenario: Expired Token
         When I enter url "/change_password?token=expired-12"
