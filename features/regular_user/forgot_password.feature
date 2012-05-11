@@ -12,12 +12,21 @@ Feature: Forgot Password
         When I enter url "/change_password?token=expired-12"
         Then I should see "authentication token has expired"
 
-     Scenario: No district support, multiple districts
+    Scenario: No district support, multiple districts
         Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
         And a district "other district"
         When I go to the home page
         And I press "Forgot Password"
         Then I should see "This district does not support password recovery"
+
+    Scenario: Invalid user
+        Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
+        And user has an email address
+        And district has forgot_password
+        When I go to the home page
+        And I fill in "Login" with "not_cuke_oneschool"
+        And I press "Forgot Password"
+        Then I should see "User does not have email assigned in SIMS."
 
     Scenario: No email
         Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
