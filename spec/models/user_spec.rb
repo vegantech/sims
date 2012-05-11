@@ -121,6 +121,10 @@ describe User do
         u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
       end
 
+      describe "with token" do
+        it 'should have specs'
+      end
+
     end
   end
 
@@ -522,4 +526,7 @@ describe User do
 
    end
 
+   describe 'create_token' do
+     it 'should have specs'
+   end
 end

@@ -456,13 +456,17 @@ or (user_group_assignments.id is not null)
   end
 
   def create_token()
-    self.update_attribute(:token, Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"))
+    self.update_attribute(:token, generate_token)
     Notifications.change_password(self).deliver
   end
 
 
 
 protected
+
+  def generate_token
+    [Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"),"-",(Time.now.utc + 4.seconds).to_i].join
+  end
 
   def student_ids_where_principal(school_id)
     #TODO TEST THIS

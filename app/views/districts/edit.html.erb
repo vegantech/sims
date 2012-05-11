@@ -8,7 +8,7 @@
       <div class = "form_row">
         <%= f.label :key, 'District Key' %>
         <%= f.text_field :key %>
-        <%= help_popup "This key is part of the filter that converts plaintext passwords to hashes stored in the database.   It should match the key used when you generate the users.csv.  When users login, the same conversion occurs and the hashes are compared.   If you've changed this key twice already, the system will prevent you from doing so again, as it could potentially lock out your users.  This also serves as a default password for users.  They can enter this and then they will receive a confirmation email and be able to change their password." 
+        <%= help_popup "This key is part of the filter that converts plaintext passwords to hashes stored in the database.   It should match the key used when you generate the users.csv.  When users login, the same conversion occurs and the hashes are compared.   If you've changed this key twice already, the system will prevent you from doing so again, as it could potentially lock out your users.  This also serves as a default password for users.  They can enter this and then they will receive a confirmation email and be able to change their password."
         %>
       </div>
       <div class ="form_row">
@@ -22,9 +22,15 @@
         <%= help_popup "If checked, the lunch status will be hidden from the extended profile unless the user is a principal of the student." %>
       </div>
       <div class ="form_row">
+       <%= f.label :forgot_password, 'Allow Password Recovry?' %>
+        <%= f.check_box :forgot_password %>
+        <%= help_popup "If checked, users will be able to reset their password by email if they forget it.  They must also have their email address assigned
+        in SIMS." %>
+      </div>
+      <div class ="form_row">
         <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} ".html_safe %>
         <%= f.file_field :logo %>
-        <%= help_popup "Attach a png, gif, or jpg of your district's logo.  It will be scaled to #{District::LOGO_SIZE}, 
+        <%= help_popup "Attach a png, gif, or jpg of your district's logo.  It will be scaled to #{District::LOGO_SIZE},
               so you may want to adjust the image size to that to avoid distortion."  %>
             </div>
 
@@ -40,7 +46,7 @@
             page.insert_html :bottom, 'existing_logo', "Your logo will be removed when you hit update."
             end %>
 
-        <%= help_popup "You don't need to delete the logo if you want to replace it.   Use this if you want to remove the logo and return to the district name in the upper left corner of the page instead of an image." %> 
+        <%= help_popup "You don't need to delete the logo if you want to replace it.   Use this if you want to remove the logo and return to the district name in the upper left corner of the page instead of an image." %>
         </div>
       <% end %>
 

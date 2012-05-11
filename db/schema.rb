@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20120119221044) do
     t.string   "previous_key",          :default => ""
     t.boolean  "lock_tier",             :default => false, :null => false
     t.boolean  "restrict_free_lunch",   :default => true
+    t.boolean  "forgot_password",       :default => false, :null => false
   end
 
   add_index "districts", ["abbrev"], :name => "index_districts_on_abbrev"
