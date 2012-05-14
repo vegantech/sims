@@ -467,7 +467,7 @@ or (user_group_assignments.id is not null)
 protected
 
   def generate_token
-    [Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"),"-",(Time.now.utc + 4.seconds).to_i].join
+    [Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"),"-",(Time.now.utc + 4.hours).to_i].join
   end
 
   def student_ids_where_principal(school_id)
