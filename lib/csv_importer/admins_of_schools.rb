@@ -6,7 +6,7 @@ module CSVImporter
     }
     class << self
       def description
-        "Assigns administrators to schools."
+        "Assigns administrators to schools.  The file looks just like user_school_assignments.csv, but will assign the users here as the admin of the school."
       end
 
       def csv_headers
@@ -22,8 +22,9 @@ module CSVImporter
       def removed
       end
 
-#      def related
-#      end
+      def related
+        {:user_school_assignments => "Non-admin user school assignments."}
+      end
 
       def how_often
         "Start of each semester (depending on frequency of new staff may need to be
