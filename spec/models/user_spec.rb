@@ -121,6 +121,10 @@ describe User do
         u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
       end
 
+      describe "with token" do
+        it 'should have specs'
+      end
+
     end
   end
 
@@ -535,5 +539,9 @@ describe User do
        user.user_school_assignments.create!(:school => school, :admin => false)
        user.admin_of_school?(school).should be_false
      end
+   end
+
+   describe 'create_token' do
+     it 'should have specs'
    end
 end

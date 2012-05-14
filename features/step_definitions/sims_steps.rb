@@ -382,3 +382,18 @@ end
 Given /^PENDING/ do
   pending
 end
+
+Given /^user has no email address$/ do
+  @user.update_attribute(:email, nil)
+end
+
+Given /^user has an email address$/ do
+  @user.update_attribute(:email, "b723176@madison.k12.wi.us")
+end
+
+
+
+Given /^district has forgot_password$/ do
+  @user.district.update_attribute(:forgot_password, true)
+end
+
