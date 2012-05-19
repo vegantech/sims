@@ -5,6 +5,10 @@
 # files.
 
 ENV["RAILS_ENV"] = "cucumber"
+require 'simplecov'
+SimpleCov.start 'rails' do
+  coverage_dir 'spec/coverage/cucumber'
+end
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
