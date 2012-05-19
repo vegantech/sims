@@ -49,7 +49,7 @@ gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
 gem 'statistics'
-gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache]
+gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
 
 group :test do
   gem 'simplecov', :require => false

@@ -1,12 +1,12 @@
 module CSVImporter
-  class UserSchoolAssignments < CSVImporter::Base
+  class AdminsOfSchools < CSVImporter::Base
      FIELD_DESCRIPTIONS = {
       :district_user_id => 'Key for user',
       :district_school_id => 'Key for school'
     }
     class << self
       def description
-        "Assigns users to schools. This provides access in the school selection screen."
+        "Assigns administrators to schools.  The file looks just like user_school_assignments.csv, but will assign the users here as the admin of the school."
       end
 
       def csv_headers
@@ -16,15 +16,14 @@ module CSVImporter
       end
 
       def load_order
-        "This should be done before all_students_in_schools.csv and after users and schools.  "
+        "This should be done after users and schools.  "
       end
 
       def removed
-        "User school assignments where the district_school_id and district_user_id are provided will be removed if not in this file.   Note admin assignments will not be removed"
       end
 
       def related
-        {:admins_of_schools => "School Administrators are assigned here."}
+        {:user_school_assignments => "Non-admin user school assignments."}
       end
 
       def how_often
@@ -33,6 +32,7 @@ module CSVImporter
       end
 
 #      def alternate
+#        "school_admins.csv"
 #      end
 
       def upload_responses
@@ -40,7 +40,7 @@ module CSVImporter
       end
 
       def how_many_rows
-        "One row per user per school.  A school will have multiple users and a user can belong to multiple schools."
+        "One row per user admin per school.  A school could have multiple admins and a user can be an admin to multiple schools."
       end
 
     end
@@ -65,29 +65,29 @@ module CSVImporter
       query ="
        delete from usa using  user_school_assignments usa
        inner join schools sch on usa.school_id = sch.id and sch.district_id= #{@district.id}
-       inner join users u on usa.user_id = u.id
+       inner join users u on usa.user_id = u.id and u.district_id = #{@district.id}
        left outer join #{temporary_table_name} tusa
        on tusa.district_school_id = sch.district_school_id and
        tusa.district_user_id = u.district_user_id
        where sch.district_school_id is not null  and u.district_user_id != ''
-        and (usa.admin = false or usa.admin is null) and tusa.district_school_id is null
+       and sch.district_school_id != ''
+        and (usa.admin = true) and tusa.district_school_id is null
         "
       ActiveRecord::Base.connection.update query
     end
 
     def insert
       query=("insert into user_school_assignments
-      (school_id, user_id , created_at, updated_at)
-      select sch.id, u.id,  curdate(), curdate() from #{temporary_table_name} tusa
+      (school_id, user_id , created_at, updated_at,admin)
+      select sch.id, u.id,  curdate(), curdate(), true from #{temporary_table_name} tusa
       inner join schools sch on sch.district_school_id = tusa.district_school_id
       inner join users u on u.district_user_id = tusa.district_user_id
-      left outer join user_school_assignments usa on usa.school_id = sch.id and usa.user_id = u.id
+      left outer join user_school_assignments usa on usa.school_id = sch.id and usa.user_id = u.id and usa.admin = true
       where sch.district_id= #{@district.id} and u.district_id = #{@district.id} and usa.id is null
       "
       )
       ActiveRecord::Base.connection.update query
     end
-
   end
 end
 

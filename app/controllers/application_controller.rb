@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
 
-  before_filter :fixie6iframe,:authenticate, :authorize#, :current_district
+  before_filter :fixie6iframe,:authenticate, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
@@ -95,7 +95,7 @@ class ApplicationController < ActionController::Base
     unless current_user.authorized_for?(controller)
       logger.info "Authorization Failure: controller is #{controller}"
       flash[:notice] =  "You are not authorized to access that page"
-      redirect_to root_url
+      redirect_to not_authorized_url
       return false
     end
     true

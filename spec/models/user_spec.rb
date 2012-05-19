@@ -121,6 +121,10 @@ describe User do
         u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
       end
 
+      describe "with token" do
+        it 'should have specs'
+      end
+
     end
   end
 
@@ -522,4 +526,22 @@ describe User do
 
    end
 
+   describe 'admin_of_school?' do
+     let(:school) {Factory(:school)}
+     let(:user) {Factory(:user)}
+
+     it 'should return true if the user is an admin of the school' do
+       user.user_school_assignments.create!(:school => school, :admin => true)
+       user.admin_of_school?(school).should be_true
+     end
+
+     it 'should return false if the user is not an admin of the school' do
+       user.user_school_assignments.create!(:school => school, :admin => false)
+       user.admin_of_school?(school).should be_false
+     end
+   end
+
+   describe 'create_token' do
+     it 'should have specs'
+   end
 end

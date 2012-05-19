@@ -9,7 +9,7 @@ class Notifications < MailerWithSubdomains
 
   def change_password(user)
     @district = user.district
-    subject  =  '[SIMS] Email Registration'
+    subject  =  '[SIMS] Email Registration/ Change Password'
     recipients = user.email
 
     @user=user

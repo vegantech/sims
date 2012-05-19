@@ -12,7 +12,8 @@ GIT
 
 GIT
   remote: git://github.com/vegantech/railmail.git
-  revision: b6c0006b857df6bb9cf8457c020d15122672cefc
+  revision: 72ab6cf693b4e3be2f4a1e37b2ed2a4f460d7285
+  branch: skip_authorize_and_authenticate
   specs:
     railmail (3.0.0)
       rails (~> 3.0)

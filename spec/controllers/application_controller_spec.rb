@@ -49,7 +49,7 @@ describe ApplicationController do
         user=mock_user
         controller.should_receive(:current_user).and_return(user)
         user.should_receive(:authorized_for?).with('application').and_return(false)
-        controller.should_receive(:root_url).and_return 'root_url'
+        controller.should_receive(:not_authorized_url).and_return 'root_url'
         controller.should_receive(:redirect_to).with('root_url')
         controller.should_receive(:flash).and_return(flash)
         controller.send(:authorize).should == false

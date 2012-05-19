@@ -1,14 +1,6 @@
 class Right
 
 RIGHTS={
-  "school_admin"=>[ "school_teams",
-    "team_schedulers",
-    "quicklist_items",
-    "schools",
-    "special_user_groups",
-    "groups",
-    "groups/students",
-    "groups/users"],
   "news_admin"=>["news_items"],
   "regular_user"=>["custom_flags",
     "recommendations",
@@ -28,7 +20,6 @@ RIGHTS={
     "interventions/definitions",
     "interventions/probe_assignments",
     "schools",
-    "railmail",
     "consultation_form_requests",
     "checklists",
     "students",
@@ -48,8 +39,7 @@ RIGHTS={
       "intervention_builder/interventions",
       "district/flag_categories",
       "reports",
-      "tiers",
-      "railmail"],
+      "tiers",],
  "local_system_administrator"=>["district/users",
    "district/schools",
    "flag_descriptions",

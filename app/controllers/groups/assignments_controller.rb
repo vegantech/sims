@@ -1,4 +1,4 @@
-class Groups::AssignmentsController < ApplicationController
+class Groups::AssignmentsController < SchoolAdminController
   before_filter :find_group
 
   private
