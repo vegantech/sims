@@ -91,8 +91,8 @@ class DistrictExport
 
   def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
     @files[table]=headers
-    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
-    FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
+    CSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
+    CSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       tsv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")

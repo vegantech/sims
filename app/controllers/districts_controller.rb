@@ -82,7 +82,7 @@ class DistrictsController < ApplicationController
 
   
   def bulk_import_form
-     @uuid = (0..29).to_a.map {|x| rand(10)}
+     @uuid = CGI.escape((0..29).to_a.map {|x| rand(10)}.to_s )
   end
 
   def bulk_import

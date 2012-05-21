@@ -3,12 +3,12 @@
   <td><%=content_tag :div, intervention.title, :class=>"trunc" %></td>
   <td><%=content_tag :div, intervention.start_date , :class=>"trunc"%></td>
   <td><%=content_tag :div, intervention.assigned_probes, :class=>"trunc" %></td>
-<% unless defined?(no_action ) && no_action %>
+<% unless readonly? %>
   <td>
     <% if intervention.active? %>
-      <%=content_tag :div, link_to("Edit/Add Comment",edit_intervention_path(intervention)), :class=>"trunc" %> 
+      <%=content_tag :div, link_to("Edit/Add Comment",edit_intervention_path(intervention)), :class=>"trunc" %>
     <% else %>
-      <%=content_tag :div, link_to("View",intervention), :class=>"trunc" %>  
+      <%=content_tag :div, link_to("View",intervention), :class=>"trunc" %>
     <% end %>
   </td>
 <% end %>
@@ -21,5 +21,5 @@
   <% if intervention.active? %>
     <%= link_to 'End', end_intervention_path(intervention), :method=>:put,:confirm=>"Are you sure you want to end this intervention?" %> |
   <% end %>
-  <%=intervention.intervention_definition.title %> 
+  <%=intervention.intervention_definition.title %>
 <% end %>

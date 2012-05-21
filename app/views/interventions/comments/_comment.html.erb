@@ -1,12 +1,10 @@
-<% readonly ||= false %>
-
 <%= content_tag_for :tr, comment do %>
   <td>
     <%= content_tag_for :span, comment, "span" do %>
       <%= h comment %>
     <% end %>
   </td>
-    <% if current_user == comment.user and !readonly %>
+    <% if current_user == comment.user and !readonly? %>
       <td>
         <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank"} %>
       </td>

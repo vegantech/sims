@@ -435,6 +435,23 @@ module Moonshine
             ].join(' && ')
           end
 
+          task :src193 do
+            remove_ruby_from_apt
+            pv = "1.9.3-p194"
+            p = "ruby-#{pv}"
+            run [
+              'cd /tmp',
+              "sudo rm -rf #{p}* || true",
+              'sudo mkdir -p /usr/lib/ruby/gems/1.9/gems || true',
+              "wget -q http://ftp.ruby-lang.org/pub/ruby/1.9/#{p}.tar.gz",
+              "tar xzf #{p}.tar.gz",
+                "cd /tmp/#{p}",
+              './configure --prefix=/usr',
+                'make',
+                'sudo make install'
+            ].join(' && ')
+          end
+
           task :install_rubygems do
             default_rubygems_version = '1.8.11'
             version = fetch(:rubygems_version, default_rubygems_version)

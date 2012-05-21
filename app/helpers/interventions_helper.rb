@@ -3,7 +3,7 @@ module InterventionsHelper
   def tiered_intervention_definition_select(intervention_definitions, include_blank=true, selected = nil)
 
    opts = ""
-   opts += content_tag :option,{},:value => "" if include_blank
+   opts += content_tag :option,"",:value => "" if include_blank
 
     c=intervention_definitions.group_by{|e| e.tier.to_s}
     selected = selected.id if selected.present?
@@ -28,7 +28,7 @@ module InterventionsHelper
       form_tag "/interventions/quicklists" do
         concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
         options = ""
-        options << content_tag( :option,{},:value => "")
+        options << content_tag( :option,"",:value => "")
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|
           options << content_tag(:optgroup, :label => h(group.to_s)) do

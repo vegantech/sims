@@ -186,4 +186,8 @@ class ReportsController < ApplicationController
       nil
     end
   end
+
+  def readonly?
+    true
+  end
 end

@@ -113,7 +113,7 @@ class CreateTrainingDistrict
       tiers=[]
       tier_csv.each do |ck|
         ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-        tiers <<  district.tiers.create!(ckhash)
+        tiers <<  district.tiers.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       end
 
     else
@@ -128,7 +128,7 @@ class CreateTrainingDistrict
     CSV.table("#{path}/goal_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       next if ck.to_hash[:deleted_at].to_i !=0
-      newcd= district.goal_definitions.create!(ckhash)
+      newcd= district.goal_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       goalhash[ck[:id]]=newcd.id
     end
 
@@ -136,7 +136,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
-      newcd= ObjectiveDefinition.create!(ckhash)
+      newcd= ObjectiveDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       objectivehash[ck[:id]]=newcd.id
     end
 
@@ -144,7 +144,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
-      newcd= InterventionCluster.create!(ckhash)
+      newcd= InterventionCluster.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       clusterhash[ck[:id]]=newcd.id
     end
 
@@ -155,7 +155,7 @@ class CreateTrainingDistrict
       mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
       unless ckhash[:disabled] or ckhash[:custom]
         ckhash[:notify_email] = nil
-        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier))
+        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier).except(:deleted_at,:copied_at,:copied_from))
         definitionhash[ck[:id]]=newcd.id
       end
     end
@@ -172,7 +172,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       if ckhash[:active] and !ckhash[:custom]
-        newcd= district.probe_definitions.create!(ckhash)
+        newcd= district.probe_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
         probe_hash[ck[:id]]=newcd.id
       end
     end
@@ -182,7 +182,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-      newcd= RecommendedMonitor.new(ckhash)
+      newcd= RecommendedMonitor.new(ckhash.except(:deleted_at,:copied_at,:copied_from))
       newcd.save! if newcd.probe_definition && newcd.intervention_definition
     end
 
@@ -191,7 +191,8 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
 
-      newcd= ProbeDefinitionBenchmark.new(ckhash)
+      newcd= ProbeDefinitionBenchmark.new(ckhash.except(:deleted_at,:copied_at,:copied_from))
+
       newcd.save! if newcd.valid?
     end
 
@@ -246,7 +247,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:active]=!!district.abbrev.match(/^training/) || district.abbrev =='madison'
 
-      newcd= district.checklist_definitions.create!(ckhash)
+      newcd= district.checklist_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       checklisthash[ck[:id]]=newcd.id
     end
 
@@ -254,7 +255,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:checklist_definition_id]= checklisthash[ck[:checklist_definition_id]]
-      newcd= QuestionDefinition.create!(ckhash)
+      newcd= QuestionDefinition.create!(ckhash.except(:deleted_at, :copied_at,:copied_from))
       questionhash[ck[:id]]=newcd.id
     end
 
@@ -262,7 +263,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:question_definition_id]= questionhash[ck[:question_definition_id]]
-      newcd= ElementDefinition.create!(ckhash)
+      newcd= ElementDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       elementhash[ck[:id]]=newcd.id
     end
 
@@ -271,7 +272,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:value] ||=0
       ckhash[:element_definition_id]= elementhash[ck[:element_definition_id]]
-      newcd= AnswerDefinition.create!(ckhash)
+      newcd= AnswerDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
     end
 
 

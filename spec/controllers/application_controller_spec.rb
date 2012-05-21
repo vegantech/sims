@@ -171,11 +171,13 @@ describe ApplicationController do
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
       controller.send(:selected_student_ids).should == values
+      controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "bush"
-      controller.send(:selected_student_ids).should != values  #if session_id changes or user_id changes
+      controller.send(:selected_student_ids).should_not == values  #if session_id changes or user_id changes
+      controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "tree"
       @session[:user_id] = 123
-      controller.send(:selected_student_ids).should != values  #if session_id changes or user_id changes
+      controller.send(:selected_student_ids).should_not == values  #if session_id changes or user_id changes
     end
 
   end

@@ -1,4 +1,3 @@
-<% readonly = false if readonly.nil? %>
 <% if @intervention_probe_assignment %>
   <br class="brclear" />
   <%= fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
@@ -22,7 +21,7 @@
 
       <div class="form_row_wrap_label">
         <%= ipa.label :frequency_multiplier, 'Frequency:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.frequency_summary %>
         <% else %>
           <%= ipa.select :frequency_multiplier, (1..20).to_a %>
@@ -34,7 +33,7 @@
 
       <div class="form_row">
         <%= ipa.label :first_date , 'First Date:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.first_date %>
         <% else %>
           <%= ipa.unobtrusive_date_picker :first_date ,{:order=>[:month,:day,:year]}, {} %>
@@ -44,7 +43,7 @@
 
       <div class="form_row">
         <%= ipa.label :end_date, 'Last Date:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.end_date %>
         <% else %>
           <%= ipa.unobtrusive_date_picker :end_date, {:order=>[:month,:day,:year]}, {} %>
@@ -52,7 +51,7 @@
       </div>
       <div class="form_row">
         <%= ipa.label :goal, 'Goal' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.goal %>
         <% else %>
           <%= ipa.text_field :goal, :size=>4 %> (<%=@intervention_probe_assignment.valid_score_range%>)
@@ -65,7 +64,7 @@
       <div class="form_row">
         <div class="fake_label">Scores:</div>
         <div id="enter_view_score_link">
-          <%=link_to_remote "#{readonly ? 'View' : 'Enter/view scores'}", {:url => intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :loading => "$('spinnerscore_link').show();"}, {:href => "?enter_score=true", :id => 'enter_view_scores_link'} unless params[:enter_score] %>
+          <%=link_to_remote "#{readonly? ? 'View' : 'Enter/view scores'}", {:url => intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :loading => "$('spinnerscore_link').show();"}, {:href => "?enter_score=true", :id => 'enter_view_scores_link'} unless params[:enter_score] %>
           <%= spinner 'score_link' %>
         </div>
       </div>

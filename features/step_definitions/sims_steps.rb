@@ -312,7 +312,7 @@ Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
-  date = date_string.to_date
+  date = Date.strptime date_string, '%m/%d/%Y'
   @student.comments.create!(:body => content, :created_at => date)
 end
 

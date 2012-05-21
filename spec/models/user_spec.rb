@@ -377,9 +377,9 @@ describe User do
     it 'should assign the role when appended with <<' do
       u=Factory(:user)
       u.roles_mask.should == 0
-      $stdout.should_receive(:write).with("You probably want to use += instead").once
-      $stdout.should_receive(:write).with("\n").once
+      expect {
       u.roles << Role::ROLES.first
+      }.to raise_error(NoMethodError)
 #      u.roles_mask.should == 1   warning for now
 
 

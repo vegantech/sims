@@ -1,7 +1,7 @@
 class RecommendationsController < ApplicationController
   def new
     if params[:checklist_id]
-      @checklist = current_student.checklists.find(params[:checklist_id]) 
+      @checklist = current_student.checklists.find(params[:checklist_id])
       @recommendation = @checklist.build_recommendation
     else
       @recommendation = current_student.recommendations.build
@@ -14,8 +14,9 @@ class RecommendationsController < ApplicationController
   end
 
   def create
-    params[:recommendation][:draft]=!!params[:draft]
-    params[:recommendation][:user_id]=current_user[:id]
+    params.deep_merge(:recommendation => {:draft => !!params[:draft],
+                      :user_id => current_user.id})
+
     if params[:checklist_id]
       @checklist = current_student.checklists.find(params[:checklist_id])
       @recommendation = @checklist.build_recommendation(params[:recommendation].merge(:school => current_school))
@@ -48,7 +49,7 @@ class RecommendationsController < ApplicationController
 
 
   end
- 
+
   def destroy
     @recommendation=current_student.recommendations.find(params[:id])
     @recommendation.destroy

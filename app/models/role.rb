@@ -35,12 +35,7 @@ class Role
 
   def self.mask_to_roles(mask)
     roles=ROLES.reject{ |r| (mask || 0)[ROLES.index(r)].zero?}
-    roles.singleton_class.send(:define_method, "<<") do
-      puts 'You probably want to use += instead'
-     #Switching to rails 3 would allow me to redefine array as an association
-      super
-    end
-  roles
+    roles.tap {|r| r.singleton_class.send(:undef_method, "<<")}
   end
 
   def self.roles_to_mask(roles=[])

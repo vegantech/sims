@@ -96,8 +96,8 @@ district_admin:
   last_name: District_Admin
   passwordhash: <%= User.encrypted_password("district_admin") %>
   district: wi_test
-  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin local_system_administrator}%>
   <<: *DEFAULTS
+  roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin local_system_administrator}%>
 
 
 content_builder:

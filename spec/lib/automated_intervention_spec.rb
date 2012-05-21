@@ -25,18 +25,18 @@ describe AutomatedIntervention do
 
     end
     it 'should return the proper messages' do
-      expected_messages = 
+      expected_messages =
       [
           "Processing file", "4 interventions added",
           "Unknown student with district_student_id invalid123",
           "Invalid Intervention Definition ID -1",
           "Duplicate entry for cuke123,99876,2008-01-02,\"\",\"\",\"\",\"\",This is a duplicate intervention that should not be added.\n",
-          "End date Must be after start date cuke123,99876,2008-01-02,2008-01-01,\"\",\"\",This is another intervention on a different date and an invalid end date\n",
+          "[\"End date Must be after start date\"] cuke123,99876,2008-01-02,2008-01-01,\"\",\"\",This is another intervention on a different date and an invalid end date\n",
           "Score is not between 0 and Infinity cuke123,99876,2008-01-03,2008-01-04,99876,-1000,This is an intervention with an valid probe assignment but invalid score\n",
           "Invalid Probe Definition ID cuke123,99876,2008-01-03,2008-01-04,-1,10,This is an intervention with an invalid probe assignment\n"
 
-      ].to_set
-      @importer.messages.to_set.should == expected_messages
+      ]
+      @importer.messages.should =~ expected_messages
 
 
     end
