@@ -22,6 +22,12 @@ class SpecialUserGroup < ActiveRecord::Base
 
   scope :principal,where(:is_principal=>true)
   scope :all_students_in_school ,lambda { |*args| where(["grade is null and school_id = ?", args.first])}
+  scope :school_id, select("school_id")
+  scope :student_id, select("student_id")
+  scope :for_school, lambda{ |school|
+                             where(:school_id => school
+                              ).where(
+                              "grade is null or grade = enrollments.grade")}
 
   def self.all_students_in_school?(school)
     all_students_in_school(school).count > 0

@@ -376,25 +376,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def authorized_students(num=:all)
-    stu = district.students.scoped
-    if all_students?
-      stu.find(num)
-    else
-      stu.find(num,
-        :joins => "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
-        left outer join enrollments on enrollments.student_id = students.id
-        left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
-          and user_group_assignments.user_id = #{self.id}
-          )
-         on groups_students.student_id = students.id",
-        :conditions => " (special_user_groups.school_id = enrollments.school_id
-          and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
-          ) or user_group_assignments.id is not null
-    ")
-    end
-  end
-
   def last_login
     @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
   end
@@ -424,18 +405,29 @@ class User < ActiveRecord::Base
   end
 
   def schools
-    return [] if district_id.blank?
+    s=School.where(:district_id => district_id).order("schools.name")
     if all_schools_in_district?
-      district.schools.scoped
+      s
     else
-      district.schools.scoped.where("schools.id in (select school_id from user_school_assignments where user_id = #{id})
-                                    or
-                                    schools.id in (select school_id from special_user_groups where user_id = #{id}) ")
+      s.where("schools.id in (#{user_school_assignments.school_id.to_sql})
+        or
+        schools.id in (#{special_user_groups.school_id.to_sql})")
     end
   end
 
   def all_schools_in_district?
     all_students? || all_schools?
+  end
+
+  def students_for_school(school)
+    s=Student.includes(:enrollments).where(:enrollments=>{:school_id => school}, :district_id=> district_id)
+    if all_students?
+      s
+    else
+      s.where("students.id in (#{special_user_groups.for_school(school).student_id.to_sql}) or
+              students.id in (#{user_group_assignments.student_id_for_school(school).to_sql})
+              ")
+    end
   end
 
 
