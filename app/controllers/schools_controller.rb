@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  #School Selection Controller
   skip_before_filter :verify_authenticity_token, :authorize
   layout 'main'
   def index
@@ -15,7 +16,7 @@ class SchoolsController < ApplicationController
     redirect_to :action => 'index' and return
   end
 
-  def select
+  def create
     @school = current_user.schools.find(params["school"]["id"])
     # add school to session
     session[:school_id] = @school.id if @school
