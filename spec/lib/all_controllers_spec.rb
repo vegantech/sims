@@ -27,7 +27,7 @@ describe AllControllers do
         principal_overrides quicklist_items recommendations reports
         school_admin
         school_teams
-        schools scripted special_user_groups spell_check
+        schools scripted special_user_groups spell_check stats
         student_comments students team_consultations tiers
         unattached_interventions
       }

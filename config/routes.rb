@@ -32,7 +32,6 @@ Rails.application.routes.draw do
   end
 
   match '/main' => 'main#not_authorized', :as => :not_authorized
-  match '/stats' => 'main#stats', :as => :stats
   match '/spell_check/' => 'spell_check#index', :as => :spell_check
   match '/change_password' => 'login#change_password', :as => :change_password
   match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
@@ -41,6 +40,7 @@ Rails.application.routes.draw do
 
   resources :help
   resources :quicklist_items
+  resources :stats, :only => :index
 
   match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier
   resources :tiers do
@@ -113,10 +113,7 @@ Rails.application.routes.draw do
   end
 
 
-  resources :schools do
-    collection do
-      post :select
-    end
+  resources :schools , :only => [:index, :show, :create] do
   end
 
 
