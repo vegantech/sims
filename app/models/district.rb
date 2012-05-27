@@ -40,12 +40,12 @@ class District < ActiveRecord::Base
   has_many :schools, :order => :name
   has_many :enrollments, :through => :schools
   has_many :students
-  has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
   has_many :staff_assignments,:through => :schools
+  has_many :special_user_groups, :through => :schools
 
 
   has_attached_file  :logo
@@ -241,7 +241,6 @@ private
       probe_definitions.destroy_all
       tiers.destroy_all
       students.destroy_all
-      special_user_groups.destroy_all
       news.destroy_all
     else
       errors.add(:base, "Have the district admin remove the schools first.")

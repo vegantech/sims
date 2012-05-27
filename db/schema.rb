@@ -768,16 +768,13 @@ ActiveRecord::Schema.define(:version => 20120510140653) do
 
   create_table "special_user_groups", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "district_id"
     t.integer  "school_id"
-    t.integer  "grouptype"
     t.string   "grade"
     t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "special_user_groups", ["district_id"], :name => "index_special_user_groups_on_district_id"
   add_index "special_user_groups", ["school_id"], :name => "index_special_user_groups_on_school_id"
   add_index "special_user_groups", ["user_id"], :name => "index_special_user_groups_on_user_id"
 
@@ -884,9 +881,11 @@ ActiveRecord::Schema.define(:version => 20120510140653) do
     t.string   "middle_name"
     t.string   "suffix"
     t.string   "salt",                            :default => ""
-    t.string   "district_user_id", :limit => 40,  :default => "", :null => false
+    t.string   "district_user_id", :limit => 40,  :default => "",    :null => false
     t.string   "token"
-    t.integer  "roles_mask",                      :default => 0,  :null => false
+    t.integer  "roles_mask",                      :default => 0,     :null => false
+    t.boolean  "all_students",                    :default => false, :null => false
+    t.boolean  "all_schools",                     :default => false, :null => false
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"

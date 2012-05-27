@@ -222,10 +222,8 @@ class Student < ActiveRecord::Base
     schools = enrollments.collect(&:school).compact
     principals = []
 
-    principals << district.special_user_groups.principal.all_students_in_district.collect(&:user)
     schools.each do |school|
-      principals << district.special_user_groups.principal.all_students_in_school(school.id).collect(&:user)
-      principals << school.special_user_groups.principal.find_all_by_grouptype_and_grade(SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, grades).collect(&:user)
+      principals << school.special_user_groups.principal.where(["grade in (?) or grade is null",grades]).collect(&:user)
     end
 
     principals
@@ -279,9 +277,8 @@ class Student < ActiveRecord::Base
 
   def belongs_to_user?(user)
     user.district_id == district_id &&
-   (user.groups.find_by_id(group_ids) ||
-      user.special_user_groups.find_by_school_id(school_ids) ||
-      user.special_user_groups.find_by_grouptype(SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT))
+   (user.all_students? || user.groups.find_by_id(group_ids) ||
+      user.special_user_groups.find_by_school_id(school_ids) )
   end
 
   def active_interventions
