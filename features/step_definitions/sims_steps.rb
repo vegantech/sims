@@ -4,9 +4,9 @@ Given /^common data$/i do
   @district = default_district
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
-  @default_user.schools << @school
+  @default_user.user_school_assignments.create!(:school => @school)
   @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
-  @another_user.schools << @school
+  @another_user.user_school_assignments.create!(:school => @school)
   @default_user.save!
   create_default_student
   @student.district = @district
@@ -329,8 +329,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
-                                           :district => @default_user.district)
+  @default_user.special_user_groups.create!(:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
 
   unauthorized_student.comments.create!(:body => content, :created_at => date)
 end

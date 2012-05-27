@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
-  has_many :schools, :through => :user_school_assignments, :order => "name"
   has_many :special_user_groups, :dependent => :destroy
   has_many :special_schools, :through => :special_user_groups, :source=>:school
   has_many :user_group_assignments, :dependent => :destroy
@@ -54,7 +53,7 @@ class User < ActiveRecord::Base
   has_many :logs, :class_name => 'DistrictLog'
 
 
-  attr_accessor :password, :all_students_in_district, :old_password
+  attr_accessor :password, :old_password
   attr_protected :district_id
 
   scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
@@ -124,11 +123,6 @@ class User < ActiveRecord::Base
   validate :validate_unique_user_school_assignments
 
 
-
-
-  after_save :district_special_groups
-
-
   def authorized_groups_for_school(school,grade=nil)
     if all_students_in_school?(school)
       if grade
@@ -176,20 +170,6 @@ class User < ActiveRecord::Base
     grade = nil if grade == "*"
     g_ids = cached_authorized_groups_for_school(school,grade).collect(&:id)
     User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
-  end
-
-
-  def authorized_schools(school_id=nil)
-    c_hash = {}
-    c_hash[:conditions] = {:id=>school_id} unless school_id.blank?
-    #TODO make all students in school implicit
-    if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
-      district.schools.find(:all,c_hash)
-    else
-      sc_hash = {}
-      sc_hash[:conditions] = {:school_id => school_id} unless school_id.blank?
-      schools.find(:all,c_hash) | special_user_groups.find(:all,sc_hash).collect(&:school).compact.flatten
-    end
   end
 
   def self.authenticate(username, password)
@@ -278,7 +258,7 @@ class User < ActiveRecord::Base
     return [] if school.blank?
     Intervention.find_all_by_active(true,:select => "distinct interventions.*",
                                     :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
-        left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true   and special_user_groups.district_id = #{self.district_id}
+        left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true
         left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
           and user_group_assignments.user_id = #{self.id} and user_group_assignments.is_principal=true
@@ -289,27 +269,18 @@ class User < ActiveRecord::Base
 
         ",
            :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
-           or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  (( sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  )
-           or (sug.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and sug.school_id = enrollments.school_id
-           and ( sug.grade is null or sug.grade = enrollments.grade ) )
-           )
+           or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  ((iu.all_students = 1 )
+           or ( sug.school_id = enrollments.school_id
+           and ( sug.grade is null or sug.grade = enrollments.grade ) ))
            union select 2 from groups_students gs inner join user_group_assignments uga on gs.group_id =uga.group_id where gs.student_id = students.id and uga.user_id = iu.id
-
-
            )
 
-           ) and ((special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
-          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
+           ) and ((iu.all_students = 1 ) or
+          (special_user_groups.school_id = enrollments.school_id
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
           ) or user_group_assignments.id is not null)
     ")#.select(&:orphaned?)
 
-
-  end
-
-  def all_students_in_district
-    #called in district/users/_district_groups.html.erb
-    special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
 
   end
 
@@ -404,36 +375,24 @@ class User < ActiveRecord::Base
       find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
-=begin
-
-                    left outer join  user_group_assignments on user_group_assignments.user_id = #{self.id}
-                    inner join groups_students on groups_students.group_id = user_group_assignments.group_id
-                    and groups_students.student_id = students.id
-
-
-
-
- and
-special_user_groups.user_id = #{self.id} and special_user_groups.district_id = #{self.district_id})
-or (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
-and (special_user_groups.grade is null or special_user_groups.grade = enrollments.grade))
-or (user_group_assignments.id is not null)
-
-=end
 
   def authorized_students(num=:all)
-    district.students.find(num,
-        :joins => "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
+    stu = district.students.scoped
+    if all_students?
+      stu.find(num)
+    else
+      stu.find(num,
+        :joins => "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
         left outer join enrollments on enrollments.student_id = students.id
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
           and user_group_assignments.user_id = #{self.id}
           )
          on groups_students.student_id = students.id",
-        :conditions => "(special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
-          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
+        :conditions => " (special_user_groups.school_id = enrollments.school_id
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
           ) or user_group_assignments.id is not null
     ")
+    end
   end
 
   def last_login
@@ -452,7 +411,7 @@ or (user_group_assignments.id is not null)
   end
 
   def all_students_in_school?(school)
-    special_user_groups.all_students_in_school?(school)
+    all_students? || special_user_groups.all_students_in_school?(school)
   end
 
   def admin_of_school?(school)
@@ -463,6 +422,22 @@ or (user_group_assignments.id is not null)
     self.update_attribute(:token, generate_token)
     Notifications.change_password(self).deliver
   end
+
+  def schools
+    return [] if district_id.blank?
+    if all_schools_in_district?
+      district.schools.scoped
+    else
+      district.schools.scoped.where("schools.id in (select school_id from user_school_assignments where user_id = #{id})
+                                    or
+                                    schools.id in (select school_id from special_user_groups where user_id = #{id}) ")
+    end
+  end
+
+  def all_schools_in_district?
+    all_students? || all_schools?
+  end
+
 
 protected
 
@@ -475,7 +450,7 @@ protected
     ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
  Student.send(:construct_finder_sql, :select => "students.id",
                   :joins =>
-"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
+"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
          left outer join enrollments on enrollments.student_id = students.id
          left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
            and user_group_assignments.user_id = #{self.id})
@@ -483,18 +458,6 @@ protected
                   :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
 
 
-
-  end
-
-
-
-  def district_special_groups
-
-    if @all_students_in_district == "1"
-      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).update_attribute(:district_id, self.district_id)
-    elsif @all_students_in_district == "0" or new_record?
-      special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
-    end
 
   end
 

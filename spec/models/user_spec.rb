@@ -256,8 +256,6 @@ describe User do
       u.principal?.should == true
       u.user_group_assignments.clear
       u.principal?.should == false
-      u.special_user_groups.create!(:is_principal => true ,:grouptype=>2, :district_id => 11)
-      u.principal?.should == true
     end
   end
 
@@ -277,10 +275,12 @@ describe User do
     end
   end
 
-  describe 'authorized_schools' do
+  describe 'schools' do
     it 'should return blank for user with no schools' do
-      @user.authorized_schools.should be_blank
-      @user.authorized_schools('zzz').should be_blank
+      @user.update_attribute(:all_students, false)
+      @user.update_attribute(:all_schools, false)
+      puts @user.schools
+      @user.schools.should be_blank
     end
 
     it 'should return all schools for user with access to all schools' do
@@ -289,22 +289,19 @@ describe User do
       s2=Factory(:school, :district => @user.district)
       s3=Factory(:school, :district => @user.district)
       s4=Factory(:school)
-      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district => @user.district)
-      @user.authorized_schools.should == [s1,s2,s3]
-      @user.authorized_schools(s1.id).should == [s1]
-      @user.authorized_schools('qqq').should == []
+      @user.update_attribute(:all_students, true)
+      @user.schools.should == [s1,s2,s3]
     end
 
     it 'should return s1 and s3 for user with access to s1 and special access tp s3' do
-      s1=Factory(:school, :district => @user.district)
-      s2=Factory(:school, :district => @user.district)
-      s3=Factory(:school, :district => @user.district)
+      @user.update_attribute(:all_students, false)
+      s1=Factory(:school, :district => @user.district, :name => "A")
+      s2=Factory(:school, :district => @user.district, :name => "B")
+      s3=Factory(:school, :district => @user.district, :name => "C")
 
-      @user.schools << s1
-      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3, :district => @user.district)
-      @user.authorized_schools.should == [s1,s3]
-      @user.authorized_schools(s1.id).should == [s1]
-      @user.authorized_schools(s2.id).should == []
+      @user.user_school_assignments.create!(:school => s1)
+      @user.special_user_groups.create!( :school => s3)
+      @user.schools.should == [s1,s3]
     end
   end
 
@@ -334,20 +331,20 @@ describe User do
 
     it 'should return all students in district when user has access to all students in district' do
       @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district => @authorized_students_user.district)
+      @authorized_students_user.update_attribute(:all_students, true)
       @authorized_students_user.authorized_students.should == @authorized_students_user.district.students
     end
 
     it 'should return all students in a school when user has access to all students in school' do
       @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => @authorized_students_user.district, :school => @oneschool_elementary)
+      @authorized_students_user.update_attribute(:all_students, false)
+      @authorized_students_user.special_user_groups.create!(:school => @oneschool_elementary)
       @authorized_students_user.authorized_students.should == @oneschool_elementary.students
     end
 
     it 'should return all students in a school of a certain grade when user has access to all students in school for that grade' do
       @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,
-          :district => @authorized_students_user.district, :school => @oneschool_elementary, :grade => 6)
+      @authorized_students_user.special_user_groups.create!(:school => @oneschool_elementary, :grade => 6)
       @authorized_students_user.authorized_students.should == @oneschool_elementary.enrollments.find_all_by_grade(6).collect(&:student).flatten
     end
 

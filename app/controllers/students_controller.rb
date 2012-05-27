@@ -110,7 +110,7 @@ class StudentsController < ApplicationController
      return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
-        session[:school_id] = (student.schools & current_user.authorized_schools).first
+        session[:school_id] = (student.schools & current_user.schools).first
         session[:selected_student]=params[:id]
         self.selected_student_ids=[params[:id]]
         return true
@@ -151,7 +151,7 @@ class StudentsController < ApplicationController
       if current_school.students.empty?
         flash[:notice] = "#{current_school} has no students enrolled."
       else
-        flash[:notice] = "User doesn't have access to any students at #{current_school}." 
+        flash[:notice] = "User doesn't have access to any students at #{current_school}."
       end
       redirect_to schools_url and return
     end
@@ -159,7 +159,7 @@ class StudentsController < ApplicationController
   end
 
   def try_to_auto_select_school
-    s=current_user.authorized_schools
+    s=current_user.schools
     if s.size == 1
       session[:school_id] = s.first.id
       flash.now[:notice]=s.first.name + "has been automatically selected"
