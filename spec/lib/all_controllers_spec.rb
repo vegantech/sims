@@ -26,7 +26,8 @@ describe AllControllers do
         school_admin
         school_teams
         schools scripted special_user_groups spell_check stats
-        student_comments students team_consultations tiers
+        student_comments student_searches students
+        team_consultations tiers
         unattached_interventions
       }
       AllControllers.names.should ==  static_list

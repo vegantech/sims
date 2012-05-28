@@ -22,7 +22,6 @@ describe CSVImporter::AllSchools do
     it 'should import_properly' do
       #I would have liked to split this up into multiple it blocks, but the lets would run each time
       #I should rewrite it with before(:all) and instance variables
-      puts import_messages
       user_to_add.reload.all_schools.should be
       user_to_remove.reload.all_schools.should_not be
       other_district_user_to_add.reload.all_schools.should_not be

@@ -331,7 +331,7 @@ describe User do
 
 
     it 'should return an empty array when user has access to no students' do
-      @authorized_students_user.authorized_students.should == []
+      @authorized_students_user.students_for_school(@oneschool_elementary).should == []
     end
 
     it 'should return all students in school when user has access to all students in district' do
