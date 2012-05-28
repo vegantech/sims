@@ -26,7 +26,7 @@ class SchoolsController < ApplicationController
 
   private
   def next_step_url
-   (current_user.authorized_for?('students') ? search_students_url : not_authorized_url)
+   (current_user.authorized_for?('students') ? [current_school, "student_search"] : not_authorized_url)
   end
 
 
