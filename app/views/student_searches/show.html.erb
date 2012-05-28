@@ -7,12 +7,12 @@
       <div class="form_row">
         <label for="search_criteria_grade" class="fake_label">Grade</label>
         <%= grade_select(@grades) %> <%= spinner('grade_search') %>
-        <%= observe_field 'search_criteria_grade', :url => grade_search_students_path ,:with=>'grade', :before => "$('spinnergrade_search').show();", :complete => "$('spinnergrade_search').hide();"%>
+        <%= observe_field 'search_criteria_grade', :url => [:grade,current_school,:student_search] ,:with=>'grade', :before => "$('spinnergrade_search').show();", :complete => "$('spinnergrade_search').hide();"%>
       </div>
       <div class="form_row">
         <label for="search_criteria_user_id" class="fake_label">Staff Member</label>
         <%= collection_select(:search_criteria,:user_id,group_member_select_options(@users),:id,:fullname ) %> <%= spinner('member_search') %>
-        <%= observe_field 'search_criteria_user_id', :url => member_search_students_path,
+        <%= observe_field 'search_criteria_user_id', :url => [:member,current_school,:student_search],
           :with=>"'user=' +escape(value) + '&grade=' + escape($('search_criteria_grade').value)",
           :before => "$('spinnermember_search').show();", :complete => "$('spinnermember_search').hide();"
         %>

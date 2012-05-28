@@ -67,10 +67,6 @@ Rails.application.routes.draw do
     resources :flag_categories, :as => "flag_categories", :module => "district"
   end
 
-  namespace :school do
-    resources :students
-  end
-
   resources :custom_probes
 
   resources :news_items
@@ -102,18 +98,20 @@ Rails.application.routes.draw do
 
   resources :enrollments
 
-  resources :students do
-    collection do
-      get :search
-      post :select
-      post :member_search
-      post :grade_search
-    end
+
+
+  resources :students, :only => [:index, :create, :show] do
     resources :student_comments, :except => :index
   end
 
 
   resources :schools , :only => [:index, :show, :create] do
+    resource :student_search, :only => [:show, :create] do
+      collection do
+        post :member
+        post :grade
+      end
+    end
   end
 
 
