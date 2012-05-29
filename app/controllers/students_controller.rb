@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
   # GET /students
   def index
     try_to_auto_select_school or return false unless current_school_id
-    flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
+    flash[:notice]= "Please choose some search criteria" and redirect_to [current_school,StudentSearch] and return unless session[:search]
 
 
     @students = student_search(index_includes=true)
