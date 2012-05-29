@@ -70,27 +70,7 @@
                                     <br /><br />
 
                                     <%= render :partial =>'districts/google_lsa'  if current_user.roles.include?("local_system_administrator") %>
-                                    <% if Rails.env.development?%>
-                                      <div id="debug">
-                                        <a href="#" onclick="Element.toggle('params_debug_info');return false"> params</a> |
-                                        <a href="#" onclick="Element.toggle('session_debug_info');return false"> session</a> |
-                                        <a href="#" onclick="Element.toggle('env_debug_info');return false"> environment</a> |
-                                        <a href="#" onclick="Element.toggle('request_debug_info');return false"> request</a>
-                                        <fieldset id="params_debug_info" class="debug_info" style="display:none">
-                                          <%=debug(params) %>
-                                        </fieldset>
-                                        <fieldset id="session_debug_info" class="debug_info" style="display:none">
-                                          <%=debug(session) %>
-                                        </fieldset>
-                                        <fieldset id="env_debug_info" class="debug_info" style="display:none">
-                                          <%=debug(request.env) %>
-                                        </fieldset>
-                                        <fieldset id="request_debug_info" class="debug_info" style="display:none">
-                                          <%=debug(request) %>
-                                        </fieldset>
-                                      </div>
-
-                                    <% end %>
+                                    <%= render "layouts/dev_debug" if Rails.env.development?%>
                                   </div>
                                 </div>
                                 <% if false %>
