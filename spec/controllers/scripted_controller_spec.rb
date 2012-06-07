@@ -30,8 +30,6 @@ describe ScriptedController do
         mock(:import => 'These are the messages'))
         Notifications.should_receive(:district_upload_results).with('These are the messages', @auto_user.email).and_return(mock(:deliver => true))
         post 'automated_intervention', :district_abbrev => @auto_user.district.abbrev, :upload_file => 'test'
-
-
         response.should be_success
         response.body.should == "response will be emailed to #{@auto_user.email}"
       end

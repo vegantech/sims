@@ -23,7 +23,6 @@ describe LoginController do
 
   describe "responding to GET login" do
     it "should be successful" do
-      controller.should_receive(:dropdowns)
       get :login
       assert session[:user_id] == nil
       response.should be_success
@@ -34,7 +33,6 @@ describe LoginController do
 
   describe "responding to POST login with valid credentials" do
     it "should be successful" do
-      controller.should_receive(:dropdowns)
       district=mock_district(:name => 'mock_district')
       controller.stub!(:current_district).and_return(district)
       district.stub!(:users).and_return(User)
@@ -47,7 +45,6 @@ describe LoginController do
     end
 
     it 'should set a flash message if a login token is created' do
-      controller.stub(:dropdowns)
       controller.stub(:current_district => District.new)
       User.should_receive(:new).and_return(mock_user( :token => 'token', :new_record? => true))
       post :login, :username => 'user'
@@ -55,9 +52,6 @@ describe LoginController do
     end
 
     describe 'forgot password' do
-      before do
-        controller.stub(:dropdowns)
-      end
       it 'should set the flash if the district has forgot_password disabled' do
         controller.stub(:current_district => District.new(:forgot_password => false))
         post :login, :username => 'user', :forgot_password => true
@@ -84,7 +78,6 @@ describe LoginController do
 
   describe "responding to POST login with invalid credentials" do
     it "should render the login" do
-      controller.should_receive(:dropdowns)
       district=mock_district(:name => 'mock district')
       controller.stub!(:current_district).and_return(district)
       district.stub!(:users).and_return(User)
@@ -101,7 +94,6 @@ describe LoginController do
   describe "responding to GET logout" do
     it "should reset the session and redirect to root" do
       controller.should_receive(:reset_session)
-      controller.should_receive(:dropdowns)
       get :logout
       response.should render_template('login')
     end

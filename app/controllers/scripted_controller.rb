@@ -44,7 +44,6 @@ class ScriptedController < ApplicationController
 
 protected
   def authenticate
-    subdomains
     authenticate_or_request_with_http_basic do |username, password|
       username == params[:action] && @u=current_district.users.authenticate(username,password)
     end
