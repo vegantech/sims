@@ -6,15 +6,14 @@
 <h1>Please Login:</h1>
 <%= render :partial => 'login/demo_pilot_login_note' %>
 <div class = "new_form">
-<%= render :partial => 'login/country_state_district' %>
   <%= form_tag({:controller => 'login', :action => 'login'}, :id=>'login') do %>
     <fieldset>
       <div class = "form_row">
-        <% unless @districts.blank? %>
-          <label for="district_id">District</label>
-          <%=collection_select(:district,:id, @districts, :id, :name) %>
+        <% if current_district.new_record? %>
+          <label for="district_abbrev">District</label>
+          <%=select_tag :district_abbrev, options_from_collection_for_select(District.normal, :abbrev, :name) %>
         <% else  %>
-          <%=hidden_field_tag("district[id]",@current_district.id) if @current_district%>
+          <%=hidden_field_tag("district_abbrev",current_district.abbrev) if current_district%>
         <% end %>
       </div>
 
@@ -36,7 +35,7 @@
       </div>
     </fieldset>
 
-    <% if @districts.blank? && current_district %>
+    <% if current_district.persisted? %>
       <%= link_to "Switch districts", root_url_without_subdomain if defined? ENABLE_SUBDOMAINS  %>
     <% end  %>
 

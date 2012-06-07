@@ -230,7 +230,26 @@ class District < ActiveRecord::Base
     return res,msg
   end
 
+  def self.find_by_subdomain(subdomain)
+    where(:abbrev => parse_subdomain(subdomain)).first || only_district ||
+       new(:name => 'Please Select a District')
+  end
+
 private
+
+  def self.only_district
+    only_normal || only_admin
+  end
+  def self.only_admin
+    count == 1 && admin.first
+  end
+  def self.only_normal
+    normal.count == 1 && normal.first
+  end
+
+  def self.parse_subdomain(subdomain)
+    subdomain.to_s.split("-").reverse.pop
+  end
 
   def make_sure_there_are_no_schools
     if schools.blank?

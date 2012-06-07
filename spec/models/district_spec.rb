@@ -126,10 +126,41 @@ describe District do
       2. if districtless check historical enrollments, if last district was current district allow reclaimaing
        3.check dpi location verification}
     end
+  end
+
+  describe 'find_by_subdomain' do
+    let!(:district) {District.delete_all;Factory(:district, :abbrev => 'rspec123')}
+    describe 'with matching subdomain' do
+      specify{ District.find_by_subdomain('rspec123').should == district }
+      specify{ District.find_by_subdomain('rspec123-wi-us').should == district }
+    end
+
+    it 'should return the  first normal district when there is only 1' do
+      District.normal.count.should == 1
+      District.find_by_subdomain('nothere').should == district
+    end
+
+    it 'should return the first admin district when there is only 1 district' do
+      district.toggle!(:admin)
+      District.count.should == 1
+      District.find_by_subdomain('nothere').should == district
+    end
+
+    it 'should not return the first admin district when there are multiple normal' do
+      other_district2 = Factory(:district)
+      other_district1 = Factory(:district)
+      new_district = District.find_by_subdomain('nothere')
+      new_district.should be_new_record
+      new_district.name.should == "Please Select a District"
+    end
 
 
-
-
+    it 'should create a new district when not found' do
+      other_district = Factory(:district)
+      new_district= District.find_by_subdomain('nothere')
+      new_district.should be_new_record
+      new_district.name.should == "Please Select a District"
+    end
   end
 
 end

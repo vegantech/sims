@@ -1,5 +1,4 @@
 class LoginController < ApplicationController
-  include CountryStateDistrict
   skip_before_filter :authenticate, :authorize, :verify_authenticity_token
 
   #There is a potential for csrf attacks for logout which would be annoying for the user, but not really harmful
@@ -8,7 +7,6 @@ class LoginController < ApplicationController
   layout 'main'
 
   def login
-    dropdowns
     @user=User.new(:username=>params[:username])
     session[:user_id] = nil
     if request.post? and current_district
@@ -25,7 +23,6 @@ class LoginController < ApplicationController
         end
       else
         @user.record_successful_login
-        session[:district_id]=current_district.id
         current_user = @user
         redirect_to successful_login_destination and return
       end
@@ -37,7 +34,6 @@ class LoginController < ApplicationController
   def logout
     oldflash = flash[:notice]
     reset_session_and_district
-    dropdowns
     flash[:notice] = oldflash
     render :action=>:login #the redirect wasn't properly clearing the cookie via the reset_session
   end
@@ -75,7 +71,6 @@ private
   def reset_session_and_district
     reset_session
     current_user = User.new
-    session[:district_id]=nil
   end
 
   def successful_login_destination

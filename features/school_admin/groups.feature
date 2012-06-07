@@ -40,6 +40,5 @@ Feature: School Groups
         When I follow "Add User"
         And I check "Is principal"
         And I press "Assign User"
-        And show me the page
 
 
