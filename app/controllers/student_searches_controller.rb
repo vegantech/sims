@@ -46,6 +46,7 @@ class StudentSearchesController < ApplicationController
       else
         flash[:notice] = "User doesn't have access to any students at #{current_school}."
       end
+      flash[:tag_back] = "student_search"
       redirect_to schools_url and return
     end
     return true

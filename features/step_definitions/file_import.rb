@@ -59,13 +59,15 @@ end
 
 Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |username, district_name, password|
   district = District.find_by_name(district_name)
-  user = district.users.authenticate(username, password)
+  user = district.users.find_by_username(username)
+  user = nil unless user.try(:valid_password?, password)
   dui=username == 'no_password'? 3 : rand(50000)
   user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => dui)
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
-   District.find_by_name(district_name).users.authenticate(username, password).should be_true
+   u=District.find_by_name(district_name).users.find_by_username(username)
+   u.valid_password?(password).should be_true
 end
 
 Then /^there should be (\d+) users in the district$/ do |num_users|
@@ -83,7 +85,7 @@ Given /^a student "([^\"]*)"$/ do |fullname|
 end
 
 Given /^a school "([^\"]*)"$/ do |name|
-  @school = School.find_by_name(name) 
+  @school = School.find_by_name(name)
   @school ||=  Factory(:school,:district=> @district, :district_school_id => 42, :name => name)
 end
 
@@ -118,11 +120,11 @@ When /^I import_csv with "([^\"]*)"$/ do |filename|
   @command_return_val = i.messages.join(", ")
 end
 
- 
+
 Then /^there should be "([^\"]*)" students*$/ do |count|
-  @district.students(reload=true).count.should == count.to_i 
+  @district.students(reload=true).count.should == count.to_i
 end
-  
+
 Then /^the system should have "([^\"]*)" students not assigned to districts$/ do |count|
   Student.scoped_by_district_id(nil).count.should == count.to_i
 

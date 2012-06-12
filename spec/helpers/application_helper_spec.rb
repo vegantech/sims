@@ -19,13 +19,13 @@ describe ApplicationHelper do
 
   it 'should provide link_to_remote with graceful degradition to html when javascript is off' do
 
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")}).should ==
-      helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
+     helper.link_to_remote_degrades("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")}).should ==
+      helper.link_to_remote("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")})
 
 
 
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}}).should ==
-     helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
+     helper.link_to_remote_degrades("test",{:url=>{:controller=>"main",:action=>"index"}}).should ==
+     helper.link_to_remote("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")})
   end
 
 

@@ -124,7 +124,7 @@ class District < ActiveRecord::Base
   def reset_admin_password!
     u=users.find_by_username("district_admin")
     if u
-      u.reset_password!
+      u.reset_password!('district_admin', 'district_admin')
     else
       "Could not find user, try recreating the admin user"
     end
@@ -235,6 +235,18 @@ class District < ActiveRecord::Base
        new(:name => 'Please Select a District')
   end
 
+  def google_apps_domain?
+    google_apps_domain.present?
+  end
+
+  def google_apps_domain
+    if abbrev =="training"
+      "madison.k12.wi.us"
+    else
+      ""
+    end
+  end
+
 private
 
   def self.only_district
@@ -272,7 +284,7 @@ private
     if users.blank?
       u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
       u.roles='local_system_administrator'
-      u.reset_password!
+      u.reset_password!('district_admin','district_admin')
       u.save!
     end
   end
