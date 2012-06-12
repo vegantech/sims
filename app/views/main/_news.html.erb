@@ -1,9 +1,9 @@
 <% unless current_district.blank? %>
-  <% cache ["news",current_district,current_user.roles_mask] do %>
+  <% cache ["news",current_district,current_user.try(:roles_mask)] do %>
     <%= render_cell(:news,:index, :parent=>current_district, :district=>current_district, :user=>current_user) %>
   <% end%>
 
-  <% cache ["news",current_district,current_user.roles_mask,System] do %>
+  <% cache ["news",current_district,current_user.try(:roles_mask),System] do %>
     <%= render_cell(:news,:index, :parent=>System, :district=>current_district, :user=>current_user) %>
   <% end %>
 <% end %>

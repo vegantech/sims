@@ -5,9 +5,9 @@ class SchoolsController < ApplicationController
   def index
     @schools = current_user.schools
     flash[:notice]="No schools available" and redirect_to not_authorized_url if @schools.blank?
-    if @schools.size == 1 and flash[:notice].blank?
+    if @schools.size == 1
       session[:school_id] = @schools.first.id
-      flash[:notice] = "#{@schools.first.name} has been automatically selected."
+      flash[:notice] = "#{flash[:notice]} #{@schools.first.name} has been automatically selected."
       redirect_to next_step_url and return
     end
   end
@@ -26,7 +26,11 @@ class SchoolsController < ApplicationController
 
   private
   def next_step_url
-   (current_user.authorized_for?('students') ? school_student_search_url(current_school) : not_authorized_url)
+    if flash[:tag_back] || !current_user.authorized_for?('students')
+      not_authorized_url
+    else
+      school_student_search_url(current_school)
+    end
   end
 
 

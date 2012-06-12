@@ -22,7 +22,7 @@ describe AllControllers do
         intervention_builder/probes intervention_builder/recommended_monitors
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants
         interventions/probe_assignments interventions/probes interventions/quicklists
-        interventions login main news_items
+        interventions main news_items
         personal_groups
         principal_overrides quicklist_items recommendations reports
         school_admin
@@ -31,6 +31,9 @@ describe AllControllers do
         student_comments student_searches students
         team_consultations tiers
         unattached_interventions
+        users/omniauth_callbacks
+        users/passwords
+        users/sessions
       }
       AllControllers.names.should ==  static_list
     end

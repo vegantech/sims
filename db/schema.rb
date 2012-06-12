@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120524225140) do
+ActiveRecord::Schema.define(:version => 20120529233808) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -181,9 +181,11 @@ ActiveRecord::Schema.define(:version => 20120524225140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "status"
   end
 
   add_index "district_logs", ["district_id", "created_at"], :name => "index_district_logs_on_district_id_and_created_at"
+  add_index "district_logs", ["district_id", "status"], :name => "index_district_logs_on_district_id_and_status"
   add_index "district_logs", ["district_id", "user_id"], :name => "index_district_logs_on_district_id_and_user_id"
 
   create_table "districts", :force => true do |t|
@@ -870,7 +872,7 @@ ActiveRecord::Schema.define(:version => 20120524225140) do
   add_index "user_school_assignments", ["user_id"], :name => "index_user_school_assignments_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "username",         :limit => 100
+    t.string   "username",               :limit => 100
     t.binary   "passwordhash"
     t.string   "first_name"
     t.string   "last_name"
@@ -880,12 +882,14 @@ ActiveRecord::Schema.define(:version => 20120524225140) do
     t.string   "email"
     t.string   "middle_name"
     t.string   "suffix"
-    t.string   "salt",                            :default => ""
-    t.string   "district_user_id", :limit => 40,  :default => "",    :null => false
-    t.string   "token"
-    t.integer  "roles_mask",                      :default => 0,     :null => false
-    t.boolean  "all_students",                    :default => false, :null => false
-    t.boolean  "all_schools",                     :default => false, :null => false
+    t.string   "salt",                                  :default => ""
+    t.string   "district_user_id",       :limit => 40,  :default => "",    :null => false
+    t.string   "reset_password_token"
+    t.integer  "roles_mask",                            :default => 0,     :null => false
+    t.boolean  "all_students",                          :default => false, :null => false
+    t.boolean  "all_schools",                           :default => false, :null => false
+    t.string   "encrypted_password",                                       :null => false
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"

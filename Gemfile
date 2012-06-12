@@ -51,13 +51,15 @@ gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
 gem 'statistics'
+gem 'devise', '~> 1.5.0'
+gem 'omniauth-google-apps'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
+gem 'sneaky-save'
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
-  gem 'sneaky-save'
   gem 'rspec-html-matchers'
 end
 

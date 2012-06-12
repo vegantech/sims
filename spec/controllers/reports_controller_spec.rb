@@ -5,11 +5,12 @@ describe ReportsController do
   include_context "authorized"
   include_context "authenticated"
 
+  let(:user) {Factory(:user, :roles => "regular_user")}
   describe 'statewide' do
     it 'should have specs for the intervention definitions and progress monitors, along with unit specs and features'
-
-
   end
+
+
 
   describe 'student_flag_summary' do
     render_views
@@ -123,6 +124,7 @@ describe ReportsController do
     before do
       @district = Factory(:district)
       @student = Factory(:student)
+      controller.stub!(:current_user => user)
       @student.should_receive(:belongs_to_user?).and_return(true)
       Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
     end
@@ -150,6 +152,7 @@ describe ReportsController do
     before do
       @district = Factory(:district)
       @student = Factory(:student)
+      controller.stub!(:current_user => user)
       @student.should_receive(:belongs_to_user?).and_return(true)
       Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
     end
@@ -344,6 +347,7 @@ describe ReportsController do
   describe 'user_interventions' do
     describe 'GET' do
       it 'should set instance variables' do
+        controller.stub!(:current_user => user)
         get :user_interventions
 
         assigns(:filetypes).should == ['html', 'pdf', 'csv']

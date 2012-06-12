@@ -38,7 +38,7 @@ class TeamConsultationsController < ApplicationController
   # POST /team_consultations.xml
   def create
     params[:team_consultation] ||= {}
-    params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user_id)
+    params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user.id)
     params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 

@@ -2,12 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 include PopulateInterventionDropdowns
 describe "Populate Intervention Dropdowns Module" do
+  def session
+    {}
+  end
   def selected_student_ids
     [1, 2]
-  end
-
-  def session
-    {:user_id => 1}
   end
 
   def params
@@ -20,6 +19,10 @@ describe "Populate Intervention Dropdowns Module" do
 
   def current_school
    @current_school ||= mock_school(:quicklist => [])
+  end
+
+  def current_user
+    @current_user ||= mock_user()
   end
 
   def max_tier
@@ -41,7 +44,7 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'values_from_session' do
     it 'should produce a subset of the session' do
-      values_from_session.should == ({:user_id => 1, :selected_ids => [1, 2], :school_id => nil})
+      values_from_session.should == ({:user_id => current_user.id, :selected_ids => [1, 2], :school_id => nil})
     end
   end
 

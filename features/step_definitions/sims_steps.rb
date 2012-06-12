@@ -20,6 +20,7 @@ Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |u
 
   @user.update_attribute(:passwordhash,'')
   @user.update_attribute(:salt,'')
+  @user.update_attribute(:encrypted_password,'')
   @user.update_attribute(:email,'b723176@madison.k12.wi.us')
   @user.district.update_attribute(:key, key)
 
