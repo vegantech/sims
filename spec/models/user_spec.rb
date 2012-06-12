@@ -386,4 +386,24 @@ describe User do
      end
    end
 
+   describe 'devise additions' do
+     describe 'find_first_by_auth_conditions' do
+       it 'should add the district key when not using the reset token'
+       it 'should not add the district key when using the reset token'
+     end
+
+     describe 'send_reset_password_isnstructions' do
+       it 'should add an error when the email is blank'
+       it 'should add an error when the district does not support password recovery'
+       it 'should test use_key?'
+       it 'should work normally'
+     end
+
+     describe 'new_with_session' do
+       it 'it should get info from googleapps'
+     end
+
+
+   end
+
 end
