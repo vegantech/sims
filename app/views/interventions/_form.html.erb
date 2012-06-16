@@ -79,12 +79,12 @@
   <%= render :partial => 'interventions/probe_assignments/assign_progress_monitor', :locals => {:form => form, :readonly => readonly, :custom => custom_intervention?} unless !readonly and @recommended_monitors.blank? and !custom_intervention? %>
   <br class="brclear" />
 
-  <%= render :partial => "interventions/comments/index" %>
+  <%= render  "interventions/comments/index" %>
 
   <br class="brclear" />
   <% unless readonly %>
   <br class="brclear" />
-    <%= form.fields_for :comment, @intervention_comment do |comment_fields| %>
+    <%= form.fields_for :comments, (@intervention_comment || InterventionComment.new) do |comment_fields| %>
       <%= comment_fields.label :comment, 'Add new comment about the intervention plan and progress' %>
       <%= comment_fields.text_area :comment, :rows => 5, :class => "fixed_width spell_check" %>
       <% @spell_check_fields = [1] %>
