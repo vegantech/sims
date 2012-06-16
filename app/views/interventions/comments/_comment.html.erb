@@ -1,19 +1,25 @@
 <% readonly ||= false %>
-
+<% noform ||= false %>
+<% if comment %>
 <%= content_tag_for :tr, comment do %>
-  <td>
-    <%= content_tag_for :span, comment, "span" do %>
-      <%= h comment %>
-    <% end %>
-  </td>
+  <% if !noform && comment.changed? %>
+    <%= render "interventions/comments/edit_js", :comment => comment %>
+  <% else %>
+    <td>
+      <%= content_tag_for :span, comment, "span" do %>
+        <%= h comment %>
+      <% end %>
+    </td>
     <% if current_user == comment.user and !readonly %>
       <td>
-        <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank"} %>
+        <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank", :remote => true} %>
       </td>
       <td>
         <%= link_to_remote_degrades 'Delete', :url => intervention_comment_path(@intervention, comment),
-        :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
+          :confirm => 'Are you sure you want to remove this comment?', :method => :delete %>
 
-      </td>
+        </td>
+      <% end %>
     <% end %>
+  <% end %>
 <% end %>
