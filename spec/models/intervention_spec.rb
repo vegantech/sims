@@ -198,6 +198,13 @@ describe Intervention do
         @intervention.apply_to_all = '1'
       end
 
+      it 'should add the comment to all interventions' do
+        @intervention.comments.build(:comment => "woo")
+        @intervention.comment_author = @intervention.user_id
+        @intervention.send(:create_other_students)
+        Intervention.last.comments.first.comment.should == "woo"
+      end
+
       it 'should not create additional interventions and the selected students is a string matching the intervention student' do
         Intervention.should_not_receive :create!
         @intervention.selected_ids = @student1.id.to_s
