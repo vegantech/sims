@@ -173,7 +173,7 @@ describe InterventionsController do
   describe "responding to PUT udpate" do
     describe "with valid params" do
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params', "participant_user_ids"=>[], "intervention_probe_assignment"=>{}}).and_return(true)
+        @intervention.should_receive(:update_attributes).with({'these' => 'params', "participant_user_ids"=>[], "comment_author" => nil, "intervention_probe_assignment"=>{}}).and_return(true)
         put :update, :id => @intervention.id.to_s, :intervention => {:these => 'params'}
       end
 
@@ -195,7 +195,7 @@ describe InterventionsController do
         controller.should_receive(:edit).and_return(true)
       end
       it "should update the requested intervention" do
-        @intervention.should_receive(:update_attributes).with({'these' => 'params',  "participant_user_ids"=>[], "intervention_probe_assignment"=>{}})
+        @intervention.should_receive(:update_attributes).with({"comment_author" => nil,'these' => 'params',  "participant_user_ids"=>[], "intervention_probe_assignment"=>{}})
         put :update, :id => @intervention.id.to_s, :intervention => {:these => 'params'}
       end
 
