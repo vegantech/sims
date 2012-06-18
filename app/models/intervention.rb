@@ -233,9 +233,9 @@ class Intervention < ActiveRecord::Base
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
+        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false, :comment_author => self.comment_author,
           :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
-                                                  :comment => comment ,:intervention_probe_assignment => ipa))
+                                                  :comments_attributes => {"0" => comment} ,:intervention_probe_assignment => ipa))
       end
     end
     true
