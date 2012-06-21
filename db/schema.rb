@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120524225140) do
+ActiveRecord::Schema.define(:version => 20120529233808) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -124,9 +124,11 @@ ActiveRecord::Schema.define(:version => 20120524225140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "status"
   end
 
   add_index "district_logs", ["district_id", "created_at"], :name => "index_district_logs_on_district_id_and_created_at"
+  add_index "district_logs", ["district_id", "status"], :name => "index_district_logs_on_district_id_and_status"
   add_index "district_logs", ["district_id", "user_id"], :name => "index_district_logs_on_district_id_and_user_id"
 
   create_table "districts", :force => true do |t|

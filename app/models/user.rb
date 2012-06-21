@@ -56,6 +56,8 @@ class User < ActiveRecord::Base
   attr_accessor :password, :old_password
   attr_protected :district_id
 
+  scope :non_admin, where("username not in ('tbiever', 'district_admin')")
+
   scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
   left outer join team_consultations on team_consultations.requestor_id = users.id
@@ -377,11 +379,11 @@ class User < ActiveRecord::Base
   end
 
   def last_login
-    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
   end
 
   def record_successful_login
-    logs.create(:body => "Successful login of #{fullname}",:district_id => district_id)
+    logs.success.create(:district_id => district_id)
     logger.info "Successful login of #{fullname} at #{district.name}"
   end
 
