@@ -63,6 +63,8 @@ class User < ActiveRecord::Base
 
   attr_protected :district_id
 
+  scope :non_admin, where("username not in ('tbiever', 'district_admin')")
+
   scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
   left outer join team_consultations on team_consultations.requestor_id = users.id
@@ -287,7 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def last_login
-    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
   end
 
   def self.find_by_fullname(fullname)
