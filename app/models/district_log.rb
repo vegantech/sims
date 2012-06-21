@@ -18,8 +18,6 @@ class DistrictLog < ActiveRecord::Base
 
 #  attr_protected :district_id
 
-  scope :successful_login, where( ["body like ?","Successful login%"])
-  scope :failed_login, where(["body like ?","Failed login%"])
   scope :success, where(:status => SUCCESS)
   scope :successful_login_non_admin,  success.joins(:user).merge(User.non_admin)
   scope :failure, where(:status => FAILURE)

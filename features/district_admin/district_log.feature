@@ -2,7 +2,7 @@ Feature: District Logs
   In order to troubleshoot login failures and see logins
   A SIMS district admin
   Should be able to see a log of successful and unsuccessful authentication attempts
-  
+
   Scenario: Log
     Given I am a district admin
     And I go to the home page
