@@ -67,6 +67,8 @@ module ApplicationHelper
 
   def link_to_remote_degrades(name, options = {}, html_options = {})
     html_options[:href] = url_for(options[:url]) unless html_options.has_key?(:href)
+    options.reverse_merge!(:method => :get)
+    html_options.reverse_merge!(:method => :get)
     link_to_remote(name, options, html_options)
   end
 
