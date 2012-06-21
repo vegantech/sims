@@ -62,7 +62,7 @@ class DistrictsController < ApplicationController
       format.html { redirect_to(districts_url) }
     end
   end
-  
+
   def reset_password
     @district=District.find(params[:id])
     flash[:notice]= @district.reset_admin_password!
@@ -80,7 +80,7 @@ class DistrictsController < ApplicationController
 
   end
 
-  
+
   def bulk_import_form
      @uuid = (0..29).to_a.map {|x| rand(10)}
   end
@@ -117,7 +117,7 @@ class DistrictsController < ApplicationController
         if request.xhr?
           render :text => @results and return
         end
-          
+
       else
         redirect_to root_url and return
       end
@@ -126,7 +126,7 @@ class DistrictsController < ApplicationController
   end
 
   def logs
-    @logs = current_district.logs
+    @logs = current_district.logs.includes(:user)
   end
 
 private
