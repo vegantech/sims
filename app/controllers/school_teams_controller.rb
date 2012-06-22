@@ -1,4 +1,4 @@
-class SchoolTeamsController < ApplicationController
+class SchoolTeamsController < SchoolAdminController
   # GET /school_teams
   # GET /school_teams.xml
   def index

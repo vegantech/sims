@@ -28,13 +28,14 @@ class CreateTrainingDistrict
       d.schools.destroy_all
       d.tiers.delete_all
       d.flag_categories.destroy_all
-      FileUtils.rm(Dir.glob(Rails.root("public","system","district_generated_docs",d.id.to_s,"*")))
+      FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",d.id.to_s,"*")))
       d.destroy
     end
   end
 
   def self.create_with_schools_and_users(abbrev,name)
-    td=District.create!(:abbrev=>abbrev, :name =>name)
+    td=District.create!(:abbrev=>abbrev, :name =>name, :forgot_password => true)
+    td.send :create_admin_user
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementary')
 
@@ -48,8 +49,8 @@ class CreateTrainingDistrict
     oneschool.groups << other_homeroom
 
     melody.groups << other_homeroom
-    melody.schools << alpha_elem
-    oneschool.schools << alpha_elem
+    melody.user_school_assignments.create!(:school => alpha_elem)
+    oneschool.user_school_assignments.create!(:school => alpha_elem)
 
 
 
@@ -63,7 +64,7 @@ class CreateTrainingDistrict
 
     alphaprin = td.users.create!(:username => 'alphaprin', :password => 'alphaprin', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Principal')
     alphaprin.user_school_assignments.create!(:admin => true, :school => alpha_elem)
-    alphaprin.special_user_groups.create!(:school=>alpha_elem, :grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :is_principal => true, :district => td)
+    alphaprin.special_user_groups.create!(:school=>alpha_elem, :is_principal => true)
 
     training_team.school_team_memberships.create!(:user => alphaprin, :contact => false)
 

@@ -67,7 +67,7 @@ end
 def create_school school_name
   found = School.find_by_name(school_name)
   s = found || Factory(:school,:name => school_name, :district_id => default_district.id)
-  default_user.schools << s unless default_user.schools.include?(s)
+  default_user.user_school_assignments.create!(:school => s) unless default_user.schools.include?(s)
   @school||=s
   s
 end
@@ -115,7 +115,7 @@ def create_default_student
   @default_user.groups << g
   @default_user.save!
 
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :district => @student.district)
+  @default_user.special_user_groups.create!(:school_id=>@school.id)
 
   @student
 end

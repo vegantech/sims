@@ -40,12 +40,12 @@ class District < ActiveRecord::Base
   has_many :schools, :order => :name
   has_many :enrollments, :through => :schools
   has_many :students
-  has_many :special_user_groups
   has_many :news,:class_name=>"NewsItem"
   has_many :principal_override_reasons
   has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
   has_many :flag_descriptions
   has_many :staff_assignments,:through => :schools
+  has_many :special_user_groups, :through => :schools
 
 
   has_attached_file  :logo
@@ -68,7 +68,6 @@ class District < ActiveRecord::Base
   before_destroy :make_sure_there_are_no_schools
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
-  after_create :create_admin_user
   before_update :backup_key
 
 
@@ -231,7 +230,26 @@ class District < ActiveRecord::Base
     return res,msg
   end
 
+  def self.find_by_subdomain(subdomain)
+    where(:abbrev => parse_subdomain(subdomain)).first || only_district ||
+       new(:name => 'Please Select a District')
+  end
+
 private
+
+  def self.only_district
+    only_normal || only_admin
+  end
+  def self.only_admin
+    count == 1 && admin.first
+  end
+  def self.only_normal
+    normal.count == 1 && normal.first
+  end
+
+  def self.parse_subdomain(subdomain)
+    subdomain.to_s.split("-").reverse.pop
+  end
 
   def make_sure_there_are_no_schools
     if schools.blank?
@@ -242,7 +260,6 @@ private
       probe_definitions.destroy_all
       tiers.destroy_all
       students.destroy_all
-      special_user_groups.destroy_all
       news.destroy_all
     else
       errors.add(:base, "Have the district admin remove the schools first.")

@@ -185,30 +185,7 @@ describe Intervention do
     end
   end
 
-  describe "adding a comment" do
-    it "should not depend on the order of the params hash #659" do
-      i =Factory(:intervention)
-      other_user = Factory(:user)
-      i.comment = {:comment => "dogs"}
-      i.comment_author = other_user.id
-      i.save!
-      i.comments.first.user.should == other_user
-
-      i.comments.delete_all
-      i.comment_author = other_user.id
-      i.comment = {:comment => "dogs"}
-      i.save!
-      i.comments.first.user.should == other_user
-    end
-
-    it "should set the author to the intervention creator when no comment-author is specified" do
-      i = Factory(:intervention)
-      i.update_attributes!(:comment => {:comment => "Woo"})
-      i.comments.first.user.should == i.user
-    end
-
-
-  end
+    it 'should test adding and editing a comment'
 
   describe 'creating for other students' do
     before :all do
@@ -219,6 +196,13 @@ describe Intervention do
     describe 'with apply_to_all = 1' do
       before :all do
         @intervention.apply_to_all = '1'
+      end
+
+      it 'should add the comment to all interventions' do
+        @intervention.comments.build(:comment => "woo")
+        @intervention.comment_author = @intervention.user_id
+        @intervention.send(:create_other_students)
+        Intervention.last.comments.first.comment.should == "woo"
       end
 
       it 'should not create additional interventions and the selected students is a string matching the intervention student' do

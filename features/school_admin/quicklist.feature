@@ -20,8 +20,8 @@ Feature: Quicklist
         And PENDING I check some boes and press submit
         Then I should see "quicklist updated"
         When I follow "Manage Quicklist"
-        Then some boxes should be checked
-        When I uncheck some boxes and press submit
+        Then PENDING some boxes should be checked
+        When PENDING I uncheck some boxes and press submit
         Then I should see "quicklist updated"
         When I follow "Manage Quicklist"
-        Then no boxes should be checked
+        Then PENDING no boxes should be checked

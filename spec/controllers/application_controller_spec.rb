@@ -49,7 +49,7 @@ describe ApplicationController do
         user=mock_user
         controller.should_receive(:current_user).and_return(user)
         user.should_receive(:authorized_for?).with('application').and_return(false)
-        controller.should_receive(:root_url).and_return 'root_url'
+        controller.should_receive(:not_authorized_url).and_return 'root_url'
         controller.should_receive(:redirect_to).with('root_url')
         controller.should_receive(:flash).and_return(flash)
         controller.send(:authorize).should == false
@@ -99,55 +99,6 @@ describe ApplicationController do
 
       controller.stub!(:session=>{:selected_students=>[1]})
       controller.send('multiple_selected_students?').should == false
-    end
-
-    describe 'subdomains' do
-      it 'example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      it 'simspilot.example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-
-      end
-
-
-      it 'sims.example.com' do
-        controller.stub!(:request => mock(:subdomain => 'test'))
-        controller.stub!(:params).and_return(flash)
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      describe '' do
-        before do
-          controller.stub!(:request => mock(:subdomain => 'test'))
-          controller.stub!(:params).and_return(flash)
-          District.should_receive(:find_by_abbrev).with('test').and_return(@d=mock_district)
-        end
-
-        it 'example.com with explicit params in the url' do
-          flash[:district_abbrev]='test'
-          controller.send('subdomains')
-
-
-        end
-        it 'test.sims.example.com same district' do
-          controller.send('subdomains')
-          controller.instance_variable_get('@current_district').should == @d
-        end
-
-        it 'test.sims.example.com different district' do
-          controller.instance_variable_set('@current_district','fake')
-          controller.should_receive(:redirect_to)
-          controller.should_receive(:logout_url)
-          controller.send('subdomains')
-        end
-
-      end
-
     end
 
   end

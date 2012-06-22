@@ -4,9 +4,9 @@ Given /^common data$/i do
   @district = default_district
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
-  @default_user.schools << @school
+  @default_user.user_school_assignments.create!(:school => @school)
   @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
-  @another_user.schools << @school
+  @another_user.user_school_assignments.create!(:school => @school)
   @default_user.save!
   create_default_student
   @student.district = @district
@@ -254,9 +254,9 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    page.driver.post  "/students/grade_search/", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.post  "/schools/#{school.id}/student_search/grade", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   elsif observed_field == "search_criteria_user_id"
-    page.driver.post "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.post "/schools/#{school.id}/student_search/member", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   else
     flunk page.source
   end
@@ -329,8 +329,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
-                                           :district => @default_user.district)
+  @default_user.special_user_groups.create!(:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
 
   unauthorized_student.comments.create!(:body => content, :created_at => date)
 end
@@ -382,3 +381,18 @@ end
 Given /^PENDING/ do
   pending
 end
+
+Given /^user has no email address$/ do
+  @user.update_attribute(:email, nil)
+end
+
+Given /^user has an email address$/ do
+  @user.update_attribute(:email, "b723176@madison.k12.wi.us")
+end
+
+
+
+Given /^district has forgot_password$/ do
+  @user.district.update_attribute(:forgot_password, true)
+end
+
