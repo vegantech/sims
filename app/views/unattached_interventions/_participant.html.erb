@@ -2,6 +2,6 @@
   <%  if participant.user %>
   <span <%="style='color:red'" unless participant.intervention.student.belongs_to_user? participant.user  %> >
     <%="#{participant.fullname}" %></span>
-  <%= link_to_remote_degrades("X",  :url=>unattached_intervention_path(participant),:method=>:delete) %> 
+  <%= link_to_remote("X",  unattached_intervention_path(participant),:method=>:delete) %>
 <% end %>
 <% end %>
