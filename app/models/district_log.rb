@@ -24,7 +24,7 @@ class DistrictLog < ActiveRecord::Base
 
   define_statistic :successful_logins, :count => [:success]
   define_statistic :failed_logins, :count => :failure
-  define_statistic :first_recorded_login, :minimum => :all, :column_name => ['created_at']
+  define_statistic :first_recorded_login, :minimum => :all, :column_name => 'created_at'
   define_statistic :districts_with_successful_login, :count => :success, :select => 'distinct district_id'
   define_statistic :users_that_have_logged_in, :count => :success, :select => 'distinct district_id,body'
   define_statistic :non_admin_users_that_have_logged_in, :count => :successful_login_non_admin, :select => 'distinct district_id,body'
