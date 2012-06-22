@@ -17,25 +17,6 @@ describe ApplicationHelper do
     helper.spinner("suffix").should match(/spinnersuffix/)
   end
 
-  it 'should provide link_to_remote with graceful degradition to html when javascript is off' do
-    pending 'fix this when I remove link_to_remote'
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")}).should ==
-      helper.link_to_remote("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")})
-
-
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"main",:action=>"index"}}).should ==
-     helper.link_to_remote("test",{:url=>{:controller=>"main",:action=>"index"}},{:href=>url_for(:action=>"index", :controller=>"main")})
-  end
-
-
-  it 'should provide link_to_remote_if' do
-    helper.link_to_remote_if(false,"blah").should == "blah"
-    helper.link_to_remote_if(true,"links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"}).should ==
-      helper.link_to_remote_degrades("links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"})
-  end
-
   it 'should provide link_to_with_icon' do
     file="testing_of_Stuff.doc"
     url="http://www.test.com"

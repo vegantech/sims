@@ -6,13 +6,12 @@
   <td>
     <% if consultation_form_summary.user == current_user %>
       <%= content_tag_for :span, consultation_form_summary, 'edit' do %>
-       <%= link_to_remote_degrades( "edit", {:url => edit_consultation_form_path(consultation_form_summary), :method => :get})  %>
+       <%= link_to_remote( "edit", edit_consultation_form_path(consultation_form_summary), :method => :get)  %>
      <% end %>
-      <%= link_to_remote_degrades( "delete", {:url => consultation_form_summary, :method => :delete, :confirm=> "Are you sure?"})  %>
+      <%= link_to_remote( "delete", consultation_form_summary, :method => :delete, :confirm=> "Are you sure?")  %>
     <% end %>
     <%=content_tag_for :span, consultation_form_summary, "show_hide_view" do %>
-  <%= link_to_remote_degrades "view",
-    {:url => consultation_form_summary, :method => :get} %>
+  <%= link_to_remote "view", consultation_form_summary, :method => :get %>
   <% end %>
 </td>
 <% end %>

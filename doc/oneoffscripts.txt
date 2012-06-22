@@ -72,3 +72,8 @@ mysqldump sims_open_production -u root consultation_form_concerns --where "consu
 #remove duplicate recommended monitors
 rs= RecommendedMonitor.group([:probe_definition_id, :intervention_definition_id]).having("count(id) > 1 and min(position) and min(id)") ;nil
 rs.each {|rm| RecommendedMonitor.where(["id != ? and probe_definition_id = ? and intervention_definition_id = ?",rm.id,rm.probe_definition_id, rm.intervention_definition_id]).each(&:destroy)}
+
+#convert district logs
+DistrictLog.where("body like 'Failed%'").update_all("body = trim(LEADING 'Failed login of ' from body), status=1")
+DistrictLog.where("body like 'Success%' and user_id is not null").update_all("body = NULL, status=0")
+DistrictLog.where("body like 'Success%' and user_id is null").update_all("status=0")
