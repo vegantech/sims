@@ -36,7 +36,7 @@ class Group < ActiveRecord::Base
   end
 
   def principals
-   users.find(:all, :include=>:user_group_assignments, :conditions => ["user_group_assignments.is_principal = ?",true])
+   users.where(:user_group_assignments=>{:is_principal =>true})
   end
 
   def self.paged_by_title(title="", page="1")

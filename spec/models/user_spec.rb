@@ -256,8 +256,6 @@ describe User do
       u.principal?.should == true
       u.user_group_assignments.clear
       u.principal?.should == false
-      u.special_user_groups.create!(:is_principal => true ,:grouptype=>2, :district_id => 11)
-      u.principal?.should == true
     end
   end
 
@@ -277,10 +275,12 @@ describe User do
     end
   end
 
-  describe 'authorized_schools' do
+  describe 'schools' do
     it 'should return blank for user with no schools' do
-      @user.authorized_schools.should be_blank
-      @user.authorized_schools('zzz').should be_blank
+      @user.update_attribute(:all_students, false)
+      @user.update_attribute(:all_schools, false)
+      puts @user.schools
+      @user.schools.should be_blank
     end
 
     it 'should return all schools for user with access to all schools' do
@@ -289,27 +289,25 @@ describe User do
       s2=Factory(:school, :district => @user.district)
       s3=Factory(:school, :district => @user.district)
       s4=Factory(:school)
-      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district => @user.district)
-      @user.authorized_schools.should == [s1,s2,s3]
-      @user.authorized_schools(s1.id).should == [s1]
-      @user.authorized_schools('qqq').should == []
+      @user.update_attribute(:all_students, true)
+      @user.schools.should == [s1,s2,s3]
     end
 
     it 'should return s1 and s3 for user with access to s1 and special access tp s3' do
-      s1=Factory(:school, :district => @user.district)
-      s2=Factory(:school, :district => @user.district)
-      s3=Factory(:school, :district => @user.district)
+      @user.update_attribute(:all_students, false)
+      s1=Factory(:school, :district => @user.district, :name => "A")
+      s2=Factory(:school, :district => @user.district, :name => "B")
+      s3=Factory(:school, :district => @user.district, :name => "C")
 
-      @user.schools << s1
-      @user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :school => s3, :district => @user.district)
-      @user.authorized_schools.should == [s1,s3]
-      @user.authorized_schools(s1.id).should == [s1]
-      @user.authorized_schools(s2.id).should == []
+      @user.user_school_assignments.create!(:school => s1)
+      @user.special_user_groups.create!( :school => s3)
+      @user.schools.should == [s1,s3]
     end
   end
 
 
-  describe 'authorized students' do
+
+  describe 'students for school' do
     before :all do
       @authorized_students_user = Factory(:user, :username => "oneschool")
       @other_district = Factory(:student)
@@ -323,44 +321,36 @@ describe User do
       @other_elementary_6.enrollments.create!(:grade=>6, :school => @other_elementary)
       @red_team=@oneschool_elementary.groups.create(:title => 'red')
       @red_team.students << [@oneschool_red_6,@oneschool_red_5]
+      @all_students_in_district = Factory(:user, :district => @authorized_students_user.district, :all_students => true)
+      @all_students_in_school = Factory(:user,  :district => @authorized_students_user.district)
+      @all_students_in_school.special_user_groups.create!(:school => @oneschool_elementary)
+      @all_students_in_grade_6 =  Factory(:user,  :district => @authorized_students_user.district)
+      @all_students_in_grade_6.special_user_groups.create!(:school => @oneschool_elementary, :grade => 6)
 
     end
 
 
     it 'should return an empty array when user has access to no students' do
-      @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.authorized_students.should == []
+      @authorized_students_user.students_for_school(@oneschool_elementary).should == []
     end
 
-    it 'should return all students in district when user has access to all students in district' do
-      @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district => @authorized_students_user.district)
-      @authorized_students_user.authorized_students.should == @authorized_students_user.district.students
+    it 'should return all students in school when user has access to all students in district' do
+      @all_students_in_district.students_for_school(@oneschool_elementary).should =~ @oneschool_elementary.students
     end
 
     it 'should return all students in a school when user has access to all students in school' do
-      @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => @authorized_students_user.district, :school => @oneschool_elementary)
-      @authorized_students_user.authorized_students.should == @oneschool_elementary.students
+      @all_students_in_school.students_for_school(@oneschool_elementary).should =~ @oneschool_elementary.students
     end
 
     it 'should return all students in a school of a certain grade when user has access to all students in school for that grade' do
-      @authorized_students_user.special_user_groups.clear
-      @authorized_students_user.special_user_groups.create!(:grouptype => SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,
-          :district => @authorized_students_user.district, :school => @oneschool_elementary, :grade => 6)
-      @authorized_students_user.authorized_students.should == @oneschool_elementary.enrollments.find_all_by_grade(6).collect(&:student).flatten
+      @all_students_in_grade_6.students_for_school(@oneschool_elementary).should =~ @oneschool_elementary.students.where("enrollments.grade = 6")
     end
 
     it 'should return all students in a group that a user belongs to' do
-      @authorized_students_user.special_user_groups.clear
       @authorized_students_user.groups.clear
       @authorized_students_user.groups << @red_team
-      @authorized_students_user.authorized_students.should == @red_team.students
+      @authorized_students_user.students_for_school(@oneschool_elementary).should =~ @red_team.students
     end
-
-
-
-
   end
 
   describe 'roles' do
@@ -475,9 +465,9 @@ describe User do
     it 'should create a district log entry' do
       u=Factory(:user)
       u.record_successful_login
-      u.logs.last.body.should == "Successful login of #{u.fullname}"
+      u.logs.last.to_s.should =~ /Successful login of #{u.fullname}/
       log=u.district.logs.last
-      log.body.should == "Successful login of #{u.fullname}"
+      log.to_s.should =~ /Successful login of #{u.fullname}/
       u.last_login.should == log.updated_at
     end
    end

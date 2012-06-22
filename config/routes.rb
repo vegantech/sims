@@ -26,7 +26,6 @@ Rails.application.routes.draw do
   end
 
   match '/main' => 'main#not_authorized', :as => :not_authorized
-  match '/stats' => 'main#stats', :as => :stats
   match '/spell_check/' => 'spell_check#index', :as => :spell_check
   match '/change_password' => 'login#change_password', :as => :change_password
   match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
@@ -35,6 +34,7 @@ Rails.application.routes.draw do
 
   resources :help
   resources :quicklist_items
+  resources :stats, :only => :index
 
   match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier
   resources :tiers do
@@ -59,10 +59,6 @@ Rails.application.routes.draw do
   end
   scope "district" do
     resources :flag_categories, :as => "flag_categories", :module => "district"
-  end
-
-  namespace :school do
-    resources :students
   end
 
   resources :custom_probes
@@ -96,20 +92,19 @@ Rails.application.routes.draw do
 
   resources :enrollments
 
-  resources :students do
-    collection do
-      get :search
-      post :select
-      post :member_search
-      post :grade_search
-    end
+
+
+  resources :students, :only => [:index, :create, :show] do
     resources :student_comments, :except => :index
   end
 
 
-  resources :schools do
-    collection do
-      post :select
+  resources :schools , :only => [:index, :show, :create] do
+    resource :student_search, :only => [:show, :create] do
+      collection do
+        post :member
+        post :grade
+      end
     end
   end
 

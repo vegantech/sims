@@ -24,6 +24,7 @@ RIGHTS={
     "checklists",
     "students",
     "student_comments",
+    "student_searches",
     "grouped_progress_entries",
     "unattached_interventions",
     "personal_groups"],

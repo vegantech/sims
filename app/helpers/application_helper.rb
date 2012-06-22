@@ -48,7 +48,7 @@ module ApplicationHelper
   def breadcrumbs
     s = [link_to('Home', root_path)]
     s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
-    s << link_to_if_current_or_condition('Student Search', search_students_path, session[:search])
+    s << link_to_if_current_or_condition('Student Search', [current_school,:student_search], session[:search])
     s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
     s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student] && !current_student.new_record?
@@ -65,9 +65,13 @@ module ApplicationHelper
     end
   end
 
-  def link_to_remote_degrades(name, options = {}, html_options = {})
-    html_options[:href] = url_for(options[:url]) unless html_options.has_key?(:href)
-    link_to_remote(name, options, html_options)
+  def link_to_remote(name, options ={}, html_options = {})
+    if options.respond_to?(:keys) && options[:url]
+      o2 = options.delete(:url)
+      html_options.merge!(options)
+      options = o2
+    end
+    link_to name, options, html_options.merge(:remote => true)
   end
 
   def render_with_empty(options ={})
@@ -92,10 +96,6 @@ module ApplicationHelper
 
   def spinner(suffix = nil)
     image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
-  end
-
-  def link_to_remote_if(condition, name, options = {}, html_options = {},  &block)
-    condition ? link_to_remote_degrades(name, options, html_options ) : name
   end
 
   def link_to_with_icon(name, url, suffix="")

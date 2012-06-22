@@ -1,12 +1,11 @@
 class StudentsController < ApplicationController
-	before_filter :enforce_session_selections, :except => [:index, :select, :search]
+	before_filter :enforce_session_selections, :except => [:index, :create, :search]
   skip_before_filter :verify_authenticity_token
 
   # GET /students
-  # GET /students.xml
   def index
     try_to_auto_select_school or return false unless current_school_id
-    flash[:notice]= "Please choose some search criteria" and redirect_to search_students_url and return unless session[:search]
+    flash[:notice]= "Please choose some search criteria" and redirect_to [current_school,StudentSearch] and return unless session[:search]
 
 
     @students = student_search(index_includes=true)
@@ -18,7 +17,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  def select
+  def create
     # add selected students to session, then redirect to show
 
     @students = student_search( index_includes=true)
@@ -43,28 +42,7 @@ class StudentsController < ApplicationController
     render :action=>"index"
   end
 
-  def search
-    if request.get?
-      check_school_and_set_grades or return false
-      @groups=current_user.filtered_groups_by_school(current_school)
-      @users=current_user.filtered_members_by_school(current_school)
-      @years = current_school.enrollment_years
-   else
-      if params['search_criteria']
-        session[:search] = params['search_criteria'] ||{}
-        session[:search]['flagged_intervention_types'] = params['flagged_intervention_types']
-        session[:search]['intervention_group_types'] = params['intervention_group_types']
-        session[:search][:intervention_group] = current_district.search_intervention_by.first.class.name if session[:search][:intervention_group_types]
-        redirect_to students_url
-      else
-        flash[:notice] = 'Missing search criteria'
-        redirect_to :action => :search
-      end
-    end
-  end
-
   # GET /students/1
-  # GET /students/1.xml
   def show
     @student = Student.find(params[:id])
     if @student.district_id != current_district.id
@@ -75,25 +53,15 @@ class StudentsController < ApplicationController
     session[:selected_student] ||= @student.id.to_s  #537 hopefully this will fix it
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @student }
     end
   end
 
   # RJS methods for search page
 
-  def grade_search
-    @users=current_user.filtered_members_by_school(current_school,params)
-    @groups=current_user.filtered_groups_by_school(current_school,params)
-  end
-
-  def member_search
-    @groups=current_user.filtered_groups_by_school(current_school,params)
-  end
-
   private
 
   def flags_above_threshold
-      if  session[:search][:search_type] == 'flagged_intervention' 
+      if  session[:search][:search_type] == 'flagged_intervention'
         []
       else
         current_district.flag_categories.above_threshold(@students.collect(&:student_id))
@@ -110,7 +78,7 @@ class StudentsController < ApplicationController
      return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
-        session[:school_id] = (student.schools & current_user.authorized_schools).first
+        session[:school_id] = (student.schools & current_user.schools).first
         session[:selected_student]=params[:id]
         self.selected_student_ids=[params[:id]]
         return true
@@ -141,25 +109,8 @@ class StudentsController < ApplicationController
       redirect_to session[:requested_url] and return false
   end
 
-  def check_school_and_set_grades
-    if current_school.blank?
-      try_to_auto_select_school or return false
-    end
-
-    @grades = current_school.grades_by_user(current_user)
-    if @grades.blank?
-      if current_school.students.empty?
-        flash[:notice] = "#{current_school} has no students enrolled."
-      else
-        flash[:notice] = "User doesn't have access to any students at #{current_school}." 
-      end
-      redirect_to schools_url and return
-    end
-    return true
-  end
-
   def try_to_auto_select_school
-    s=current_user.authorized_schools
+    s=current_user.schools
     if s.size == 1
       session[:school_id] = s.first.id
       flash.now[:notice]=s.first.name + "has been automatically selected"

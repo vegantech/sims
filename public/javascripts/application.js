@@ -3,9 +3,18 @@
 //
 //
 
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
 
+
+
+document.observe("dom:loaded", function() {
+  document.observe('click', function(e,el) {
+    if (el = e.findElement('.toggler')) {
+      $(el.readAttribute("data-toggle-id")).toggle();
+      e.stop();
+    }
+
+    });
+});
 
 function check_same_boxes(obj) {
   $$('.'+obj.className).each(function(s){

@@ -58,6 +58,7 @@ allstudents:
   last_name: "Students"
   passwordhash: <%= User.encrypted_password("allstudents") %>
   district: wi_test
+  all_students: true
   <<: *DEFAULTS
 
 

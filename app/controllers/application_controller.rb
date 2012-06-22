@@ -70,17 +70,12 @@ class ApplicationController < ActionController::Base
     @school ||= School.find_by_id(current_school_id)
   end
 
-  def current_district_id
-    session[:district_id]
-  end
-
   def current_district
-    @current_district ||= District.find_by_id(current_district_id)
+    @current_district ||=  current_user.try(:district) || District.find_by_subdomain(params[:district_abbrev].presence || current_subdomain.presence)
   end
 
   def authenticate
-    subdomains
-    redirect_to logout_url() if current_district_id and current_district.blank?
+    #redirect_to logout_url() and return if current_district.new_record?
     unless current_user_id
       flash[:notice] = "You must be logged in to reach that page"
       session[:requested_url] = request.url
@@ -114,20 +109,6 @@ class ApplicationController < ActionController::Base
       return false
     end
     return true
-  end
-
-  def subdomains
-    if current_subdomain.present?
-      g=current_subdomain
-      s=g.split("-").reverse
-      params[:district_abbrev] = s.pop
-    end
-        district = District.find_by_abbrev(params[:district_abbrev])
-      if district
-        redirect_to logout_url and return if current_district and current_district != district
-        @districts =[]
-        @current_district = district
-      end
   end
 
   rescue_from(ActiveRecord::RecordNotFound) do

@@ -101,55 +101,6 @@ describe ApplicationController do
       controller.send('multiple_selected_students?').should == false
     end
 
-    describe 'subdomains' do
-      it 'example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      it 'simspilot.example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-
-      end
-
-
-      it 'sims.example.com' do
-        controller.stub!(:request => mock(:subdomain => 'test'))
-        controller.stub!(:params).and_return(flash)
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      describe '' do
-        before do
-          controller.stub!(:request => mock(:subdomain => 'test'))
-          controller.stub!(:params).and_return(flash)
-          District.should_receive(:find_by_abbrev).with('test').and_return(@d=mock_district)
-        end
-
-        it 'example.com with explicit params in the url' do
-          flash[:district_abbrev]='test'
-          controller.send('subdomains')
-
-
-        end
-        it 'test.sims.example.com same district' do
-          controller.send('subdomains')
-          controller.instance_variable_get('@current_district').should == @d
-        end
-
-        it 'test.sims.example.com different district' do
-          controller.instance_variable_set('@current_district','fake')
-          controller.should_receive(:redirect_to)
-          controller.should_receive(:logout_url)
-          controller.send('subdomains')
-        end
-
-      end
-
-    end
-
   end
 
   describe 'check_student' do
