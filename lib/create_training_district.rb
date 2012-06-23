@@ -107,7 +107,6 @@ class CreateTrainingDistrict
     probe_hash = {}
 
     if File.exist?(File.join(path,"tiers.csv"))
-      oldtiers =
       tier_csv=FasterCSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
       oldtiers=tier_csv.collect{|t| t[:id]}
       tiers=[]
