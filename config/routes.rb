@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     match '/login' => "users/sessions#new"
     match 'login/login' => "users/sessions#new"
     match 'login/logout' => 'users/sessions#destroy'
+    match '/change_password' => "users/passwords#edit", :constraints => {:query_string => /token=/}
   end
   match '/change_password' => 'main#change_password', :as => :change_password
 

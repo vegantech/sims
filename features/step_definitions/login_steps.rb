@@ -12,3 +12,6 @@ When /^I am at the recovery_url$/ do
 end
 
 
+When /^I am at the old recovery_url$/ do
+  visit "/change_password?district_abbrev=#{@user.district.abbrev}&token=#{@user.reset_password_token}"
+end
