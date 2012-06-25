@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe RJSBuilderHelper do
-  include RJSBuilderHelper
   #Delete this example and add some real ones or delete this file
   it "should be included in the object returned by #helper" do
     included_modules = (class << helper; self; end).send :included_modules
@@ -11,7 +10,7 @@ describe RJSBuilderHelper do
 
 
   def fake_update_page(method,*args)
-    update_page do |page|
+    helper.update_page do |page|
       self.stub!(:page=>page)
       send(method, *args)
     end
@@ -38,7 +37,7 @@ describe RJSBuilderHelper do
     it 'change_link' do
       pending "Smoke test failed,   figure out why and add it back to the above block"
     end
-    
+
 
     %w{if_visible if_not_visible}.each do |method|
       it method do
@@ -46,15 +45,13 @@ describe RJSBuilderHelper do
         pending "This is just a smoke test, we need to really test these."
       end
     end
-  
+
     %w{remove_content_and_change_link_if_visible}.each do |method|
       it method do
         fake_update_page(method,"old_dom_id","new_dom_id","text").should match(/old_dom_id/)
         pending "This is just a smoke test, we need to really test these."
       end
     end
-    
-
   end
 
 end
