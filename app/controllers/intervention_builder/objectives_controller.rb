@@ -93,7 +93,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
       @objective_definition.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
+      format.html {redirect_to :action => :index}
       format.js {@objective_definitions=@goal_definition.objective_definitions}
     end
   end
