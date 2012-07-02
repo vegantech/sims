@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529233808) do
+ActiveRecord::Schema.define(:version => 20120626021737) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -137,17 +137,12 @@ ActiveRecord::Schema.define(:version => 20120529233808) do
     t.integer  "state_dpi_num"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",                 :default => false
+    t.boolean  "admin",             :default => false
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.string   "marked_state_goal_ids"
-    t.string   "key",                   :default => ""
-    t.string   "previous_key",          :default => ""
-    t.boolean  "lock_tier",             :default => false, :null => false
-    t.boolean  "restrict_free_lunch",   :default => true
-    t.boolean  "forgot_password",       :default => false, :null => false
+    t.text     "settings"
   end
 
   add_index "districts", ["abbrev"], :name => "index_districts_on_abbrev"
