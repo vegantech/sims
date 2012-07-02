@@ -93,7 +93,7 @@ describe "Populate Intervention Dropdowns Module" do
     it 'should populate @intervention_definitions if not custom' do
       self.should_receive(:find_intervention_definition)
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
-      InterventionDefinition.should_receive(:restrict_tiers_and_disabled).with(max_tier).and_return([])
+      InterventionDefinition.should_receive(:restrict_tiers_and_disabled).with(max_tier, current_district).and_return([])
       populate_definitions
       @intervention_definitions.should == []
     end

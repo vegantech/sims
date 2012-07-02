@@ -88,8 +88,8 @@ describe InterventionDefinition do
 
     it 'should show all when there are no restrictions' do
       @district.update_attribute(:lock_tier, false)
-      InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
-      @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+      InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
+      @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
     end
 
     describe 'with district locking tiers do' do
@@ -97,39 +97,39 @@ describe InterventionDefinition do
         @district.update_attribute(:lock_tier, true)
       end
       it 'should restrict when the district lock tiers' do
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1]
-        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
+        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
       end
 
       it 'should  allow the intervention definitions when the goal definition is exempted' do
         @id1.goal_definition.update_attribute(:exempt_tier,true)
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
-        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
+        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
       end
 
       it 'should allow the intervention definitions when the objective definition is exempted' do
         @id1.objective_definition.update_attribute(:exempt_tier,true)
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
-        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
+        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
       end
 
       it 'should allow the intervention definitions when the category is exempted' do
         @ic1.update_attribute(:exempt_tier,true)
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
-        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
+        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
       end
 
 
 
       it 'should allow when the district lock tiers but individual exemptions are in place' do
         @id1.update_attribute(:exempt_tier,true)
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1]
-        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
+        @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
         @id1.update_attribute(:exempt_tier,false)
         #second intervention
         @id2.update_attribute(:exempt_tier,true)
-        InterventionDefinition.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
-        @ic1.reload.intervention_definitions.restrict_tiers_and_disabled(@tier1).should == [@id1,@id2]
+        InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
+        @ic1.reload.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
       end
     end
   end

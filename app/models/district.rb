@@ -22,7 +22,9 @@
 #
 
 class District < ActiveRecord::Base
+
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
+  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier]
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
@@ -235,6 +237,32 @@ class District < ActiveRecord::Base
        new(:name => 'Please Select a District')
   end
 
+  begin
+    after_initialize :default_settings_to_hash
+    raise "Remove this block" if Rails.version > "3.2"
+    serialize :settings, Hash
+    SETTINGS.each do |s|
+      define_method("#{s}=") do |value|
+        self.settings ||= {}
+        @old_key = settings[:key] if s==:key
+
+        self.settings[s] = value
+        self.settings_will_change!
+      end
+
+      define_method(s) {(settings || Hash.new)[s]}
+      define_method("#{s}?") {!!send(s)}
+    end
+
+
+    private
+    def default_settings_to_hash
+      self.settings ||= {}
+      self.settings[:restrict_free_lunch] = true if self.settings[:restrict_free_lunch].nil?
+    end
+  end
+
+
 private
 
   def self.only_district
@@ -292,12 +320,20 @@ private
   end
 
   def backup_key
-    self.previous_key = key_was if key_changed? and key.present?
+    self.previous_key = @old_key if key_changed? and key.present?
+  end
+
+  def key_changed?
+    @old_key.present? && @old_key != settings[:key]
   end
 
   def destroy_intervention_menu_reports
     dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
     FileUtils.rm_rf(dir) if File.exists?dir
   end
+
+
+
+
 end
 
