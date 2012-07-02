@@ -89,7 +89,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
       @intervention_cluster.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
+      format.html {redirect_to :action => :index}
       format.js {@intervention_clusters=@objective_definition.intervention_clusters}
     end
   end
