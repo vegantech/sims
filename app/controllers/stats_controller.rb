@@ -36,6 +36,8 @@ class StatsController < ApplicationController
            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
           when /Flag$/
            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
+          when /DistrictLog$/
+           klass.filter_all_stats_on(:exclude_district_id, "district_logs.district_id != ?")
           else
            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end
