@@ -15,4 +15,8 @@ describe ProbesHelper do
     end
 
   end
+
+  describe 'preview_graph_link' do
+    it 'should have specs'
+  end
 end
