@@ -76,12 +76,19 @@ group :cucumber do
 end
 
 group :development do
-gem "capistrano",'2.5.0', :require => false
-gem "capistrano-ext", :require => false
-gem "thin"
-gem "metrical", :platforms => :ruby_19
-gem "ripper", :platforms => :ruby_19
-gem 'rspec-rails','~>2.6', :require => false
+  gem "capistrano",'2.5.0', :require => false
+  gem "capistrano-ext", :require => false
+  gem "thin"
+  gem "metrical", :platforms => :ruby_19
+  gem "ripper", :platforms => :ruby_19
+  gem 'rspec-rails','~>2.6', :require => false
+  gem 'spork'
+  gem 'guard'
+  gem 'guard-spork'
+  gem 'guard-rspec'
+  gem 'guard-cucumber'
+  gem 'rb-inotify'
+  gem 'libnotify'
 end
 
 

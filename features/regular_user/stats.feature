@@ -9,6 +9,6 @@ Feature: Stat Generation/View
         And PENDING there should be more
 
     Scenario: View list exclude district
-        When I enter url "/stats?without=2
+        When I enter url "/stats?without=2"
         Then I should see "Districts With Changes"
         And PENDING there should be more
