@@ -22,10 +22,15 @@
         <%= help_popup "If checked, the lunch status will be hidden from the extended profile unless the user is a principal of the student." %>
       </div>
       <div class ="form_row">
-       <%= f.label :forgot_password, 'Allow Password Recovry?' %>
+       <%= f.label :forgot_password, 'Allow Password Recovery?' %>
         <%= f.check_box :forgot_password %>
         <%= help_popup "If checked, users will be able to reset their password by email if they forget it.  They must also have their email address assigned
         in SIMS." %>
+      </div>
+      <div class ="form_row">
+       <%= f.label :custom_interventions %>
+        <%= f.select :custom_interventions, [['Enabled',''],['Content Admins','content_admins'],['Disabled','disabled'] ] %>
+        <%= help_popup "You can restrict custom interventions to content administrators, or disable them." %>
       </div>
       <div class ="form_row">
         <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} ".html_safe %>

@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def show_whats_new
-    ["schools","login", "main"].include? params[:controller] or
+    ["schools","users/sessions", "users/passwords", "main"].include? params[:controller] or
       params[:controller]=="students" && params[:action] == "search"
   end
 

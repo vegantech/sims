@@ -24,7 +24,7 @@
 class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier]
+  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions]
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
@@ -239,14 +239,6 @@ class District < ActiveRecord::Base
 
   def google_apps_domain?
     google_apps_domain.present?
-  end
-
-  def google_apps_domain
-    if abbrev =="training"
-      "madison.k12.wi.us"
-    else
-      ""
-    end
   end
 
   begin
