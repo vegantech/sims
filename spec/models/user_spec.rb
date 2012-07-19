@@ -402,8 +402,44 @@ describe User do
      describe 'new_with_session' do
        it 'it should get info from googleapps'
      end
-
-
    end
 
+   describe 'custom_interventions_enabled?' do
+     subject do
+       User.new(:district => district, :roles=>[role])
+     end
+     let(:district){ District.new(:custom_interventions => custom_intervention)}
+     let(:role) {}
+     let(:custom_intervention) {}
+
+     describe 'disabled' do
+       let(:custom_intervention){'disabled'}
+       its(:custom_interventions_enabled?) {should == false}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == false}
+       end
+     end
+
+     describe 'content_admins' do
+       let(:custom_intervention){'content_admins'}
+       its(:custom_interventions_enabled?) {should == false}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
+
+     describe 'enabled' do
+       let(:custom_intervention){''}
+       its(:custom_interventions_enabled?) {should == true}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
+   end
 end

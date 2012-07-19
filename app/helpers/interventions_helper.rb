@@ -43,6 +43,10 @@ module InterventionsHelper
   end
 
   def custom_intervention?
-    params[:custom_intervention] == "true"
+    (params[:custom_intervention] == "true") &&  custom_intervention_enabled?
+  end
+
+  def custom_intervention_enabled?
+    current_user.custom_interventions_enabled?
   end
 end
