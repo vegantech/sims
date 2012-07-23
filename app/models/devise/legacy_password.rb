@@ -26,6 +26,15 @@ module Devise
       super
     end
 
+    def password=(new_password)
+      super
+      if new_password.present?
+        self.passwordhash = nil
+        self.salt = nil
+      end
+    end
+
+
     private
     def self.legacy_encrypted_password(password, salt=nil, district_key = nil)
       Digest::SHA1.hexdigest("#{password.downcase}#{district_key}#{salt}")
