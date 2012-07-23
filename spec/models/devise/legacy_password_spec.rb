@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Devise::LegacyPassword do
   describe 'legacy password is present' do
-    let(:user) { FactoryGirl.build(:user, :password => 'rspec123', :salt => 'salt', :passwordhash => Devise::LegacyPassword.legacy_encrypted_password('other123', 'salt'))}
+    let(:user) { fg=FactoryGirl.build(:user, :password => 'rspec123');fg.salt = 'salt';fg.passwordhash = Devise::LegacyPassword.legacy_encrypted_password('other123', 'salt');fg}
 
     specify {user.valid_password?('rspec123').should_not be}
     describe 'matches' do
@@ -13,7 +13,16 @@ describe Devise::LegacyPassword do
         user.salt.should be_nil
       end
 
-      describe 'districy keys' do
+      it 'should reset the salt and hash then the password attribute is changed' do
+        user.password="dog"
+        user.password_confirmation = "dog"
+
+        user.valid_password?('dog').should be
+        user.passwordhash.should be_nil
+        user.salt.should be_nil
+      end
+
+      describe 'district keys' do
         let(:district) { FactoryGirl.build(:district, :key => 'key', :previous_key => 'old_key')}
         let(:user) { FactoryGirl.build(:user, :district => district,  :salt => 'salt')}
 
