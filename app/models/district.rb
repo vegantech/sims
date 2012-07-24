@@ -24,7 +24,7 @@
 class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions]
+  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions, :google_apps, :windows_live]
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
