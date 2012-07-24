@@ -200,6 +200,12 @@ Devise.setup do |config|
   require 'openid/store/filesystem'
 
   config.omniauth :google_apps, :store => OpenID::Store::Filesystem.new('/tmp')
+  begin
+    WINDOWS_LIVE_CONFIG =  YAML.load_file(Rails.root.join("config","windows_live.yml"))
+    config.omniauth :windowslive, WINDOWS_LIVE_CONFIG['app_id'], WINDOWS_LIVE_CONFIG['secret'], :scope => 'wl.emails'
+  rescue
+    nil
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -225,3 +231,4 @@ end
 module Devise
   class Devise::ChangingPasswordInsteadOfFailedLogin< StandardError; end
 end
+

@@ -35,8 +35,11 @@
       <br />
     <% end  %>
 
-    <% if current_district.google_apps_domain? %>
+    <% if current_district.google_apps? %>
       <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %><br />
+    <% end %>
+    <% if current_district.windows_live? %>
+      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %><br />
     <% end %>
   <% end %>
 </div>
