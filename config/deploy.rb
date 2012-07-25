@@ -118,7 +118,7 @@ end
 
 desc 'Link windows_live.yml'
 task :link_windows_live_yml do
-  run "cd #{deploy_to}; if [ -e 'facebook.yml' ]; then ln -s #{deploy_to}/windows_live.yml #{release_path}/config; fi"
+  run "cd #{deploy_to}; if [ -e 'windows_live.yml' ]; then ln -s #{deploy_to}/windows_live.yml #{release_path}/config; fi"
 end
 
 Dir[File.join(File.dirname(__FILE__), '..', 'vendor', 'gems', 'airbrake-*')].each do |vendored_notifier|

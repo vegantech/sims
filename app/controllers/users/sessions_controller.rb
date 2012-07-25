@@ -12,8 +12,9 @@ class Users::SessionsController < Devise::SessionsController
 
   def new
     if session["user_return_to"]
-      p=session["user_return_to"].split("?",2)[1]
-      params["district_abbrev"] = Hash[*p.split("=")]["district_abbrev"] if p.present?
+      p=Rack::Utils.parse_nested_query(session["user_return_to"])
+      params["district_abbrev"] ||= p["district_abbrev"]
+      params.deep_merge!("user" => {"username" => p["username"]}) if p["username"]
     end
     super
   end
