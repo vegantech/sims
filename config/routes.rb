@@ -274,7 +274,7 @@ Rails.application.routes.draw do
   root :to =>'main#index'
 
   match 'reports/:action(.:format)', :controller => "reports"
-  match 'doc/:action(.:format)', :controller => "doc"
+  match 'doc/:action(/:id)(.:format)', :controller => "doc"
   match 'scripted/:action(.:format)', :controller => "scripted"
   match 'intervention_builder/:controller/:action(.:format)'# for controller specs
   match 'spell_check/check_spelling' => "spell_check#check_spelling"
