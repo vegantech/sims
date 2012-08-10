@@ -170,6 +170,31 @@ describe Student do
 
   end
 
+  describe 'birthdate' do
+    let(:student) {Factory.build(:student)}
+    
+    it 'should allow a blank birthdate' do
+      student.birthdate = ''
+      student.should be_valid
+    end
+
+    it 'should allow a birthdate set to 0' do
+      student.birthdate = '0'
+      student.should be_valid
+    end
+
+    it 'should allow a birthdate set to nil' do
+      student.birthdate = nil
+      student.should be_valid
+    end
+
+
+    it 'should not allow an invalid birthdate' do
+      student.birthdate = "2000"
+      student.birthdate.should be_nil
+    end
+  end
+
 
 
 
