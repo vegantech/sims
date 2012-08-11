@@ -17,7 +17,7 @@ Then /^I should be at the student profile page$/ do
 end
 
 Then /^I should see a notice for "([^"]*)"$/ do |regexp|
-  with_scope "#flash_notice" do
+  with_scope("flash_notice") do
     page.should have_content(regexp)
   end
 end
