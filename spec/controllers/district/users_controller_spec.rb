@@ -106,6 +106,22 @@ describe District::UsersController do
         response.should redirect_to(district_users_url)
       end
 
+      describe "when editing self" do
+        it 'should keep the user logged in' do
+          User.stub!(:find).and_return user
+          controller.stub!(:current_user => user)
+          controller.should_receive(:sign_in)
+          put :update, :id => "1"
+        end
+
+        it 'should not sign the lsa in as someone else' do
+          User.stub!(:find).and_return user
+          controller.stub!(:current_user => User.new)
+          controller.should_not_receive(:sign_in)
+          put :update, :id => "1"
+        end
+      end
+
       describe 'with staff assignments' do
         before(:each) do
           User.stub!(:find).and_return(user)
