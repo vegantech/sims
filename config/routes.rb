@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks", :sessions => "users/sessions", :passwords => "users/passwords"} do
+    match '/logout' => 'users/sessions#destroy', :as => :logout
+    match '/login' => "users/sessions#new"
+    match 'login/login' => "users/sessions#new"
+    match 'login/logout' => 'users/sessions#destroy'
+    match '/change_password' => "users/passwords#edit", :constraints => {:query_string => /token=/}
+  end
+  match '/change_password' => 'main#change_password', :as => :change_password
+
   resources :personal_groups
 
   match '/doc/' => 'doc#index', :as => :doc
@@ -27,7 +36,6 @@ Rails.application.routes.draw do
 
   match '/main' => 'main#not_authorized', :as => :not_authorized
   match '/spell_check/' => 'spell_check#index', :as => :spell_check
-  match '/change_password' => 'login#change_password', :as => :change_password
   match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
   match '/preview_graph/:intervention_id' => 'interventions/probe_assignments#preview_graph', :as => :preview_graph
 
@@ -72,7 +80,6 @@ Rails.application.routes.draw do
   end
 
 
-  match '/logout' => 'login#logout', :as => :logout
 
   resources :groups do
     scope :module => :groups, :only => [:new, :create, :destroy] do
@@ -87,6 +94,8 @@ Rails.application.routes.draw do
   resources :recommendations
 
 
+  match '/custom_flags/ignore_flag/' => 'custom_flags#ignore_flag'
+  match '/custom_flags/ubignore_flag/' => 'custom_flags#unignore_flag'
   match '/custom_flags/delete/:id' => 'custom_flags#destroy', :as => :delete_custom_flag
   resources :custom_flags
 
@@ -108,10 +117,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-  resources :users
-
-
   resources :districts do
     member do
       put :reset_password
@@ -128,7 +133,7 @@ Rails.application.routes.draw do
 
   #name prefix was _checklist_builder before
   namespace :checklist_builder do
-    resources :checklists,  :member => { :preview => :get, :new_from_this => :post } do
+    resources :checklists do
       member do
         get :preview
         post :new_from_this
@@ -159,12 +164,14 @@ Rails.application.routes.draw do
 
 
   namespace :intervention_builder do
+    match "recommended_montors/:action", :controller => :recommended_monitors
     resources :probes do
       member do
         put :disable
       end
       collection do
         post :disable
+        get :add_benchmark
       end
     end
     resources :goals do
@@ -209,7 +216,7 @@ Rails.application.routes.draw do
 
   namespace :interventions, :only => [:index, :create] do
     resources :quicklists
-    resources :goals
+     resources :goals
     scope "/goals/:goal_id" do
       resources :objectives
       scope "/objectives/:objective_id" do
@@ -231,6 +238,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :ajax_probe_assignment
+      get :add_benchmark
     end
     scope :module => "interventions" do
       resources :comments
@@ -265,8 +273,13 @@ Rails.application.routes.draw do
   end
   root :to =>'main#index'
 
-  match 'reports/:action(.:format)', :controller => "Reports"
-  match ':controller(/:action(/:id(.:format)))'
+  match 'reports/:action(.:format)', :controller => "reports"
+  match 'doc/:action(/:id)(.:format)', :controller => "doc"
+  match 'scripted/:action(.:format)', :controller => "scripted"
+  match 'intervention_builder/:controller/:action(.:format)'# for controller specs
+  match 'spell_check/check_spelling' => "spell_check#check_spelling"
+#  match 'checklist_builder/:controller/:action(.:format)'# for controller specs
+#  match ':controller(/:action(/:id(.:format)))'
 end
 
 # The priority is based upon order of creation:

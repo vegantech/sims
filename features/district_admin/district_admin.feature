@@ -48,3 +48,10 @@ Feature: District Admin
     Then I should see "Editing user"
     Then I press "Update"
 
+  Scenario: Edit your district District
+    Given I am a district admin
+    And I go to the home page
+    And I follow "Edit your district"
+    Then I should see "Custom interventions"
+
+

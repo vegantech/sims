@@ -1,0 +1,46 @@
+<h1>Please Login:</h1>
+<%= render :partial => 'login/demo_pilot_login_note' %>
+<div class = "new_form">
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+    <fieldset>
+      <div class = "form_row">
+        <% if current_district.blank? || current_district.new_record? %>
+          <%= f.label :district_id_for_login, "District" %>
+          <%= f.collection_select :district_id_for_login, District.normal, :id, :name %>
+        <% else  %>
+          <%= hidden_field_tag "user[district_id_for_login]"  , current_district.to_param %>
+        <% end %>
+      </div>
+
+      <div class = "form_row">
+        <%= f.label :username, "Login" %>
+        <%= f.text_field(:username) %>
+      </div>
+
+      <div class = "form_row">
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+      </div>
+
+      <div class="form_row center_submit">
+        <%= f.submit "Login" %>
+      <% if current_district.new_record? or  current_district.forgot_password? %>
+        <%= f.submit "Forgot Password?", :name => "forgot_password" %>
+      <% end %>
+      </div>
+    </fieldset>
+
+    <% if current_district.persisted? %>
+      <%= link_to "Switch districts", root_url_without_subdomain if defined? ENABLE_SUBDOMAINS  %>
+      <br />
+    <% end  %>
+
+    <% if current_district.google_apps? %>
+      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %><br />
+    <% end %>
+    <% if current_district.windows_live? %>
+      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %><br />
+    <% end %>
+  <% end %>
+</div>
+

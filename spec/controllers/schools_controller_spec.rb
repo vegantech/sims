@@ -17,7 +17,7 @@ describe SchoolsController do
         controller.stub!(:current_school => school)
         get :index
         session[:school_id].should == 'MOCK SCHOOL'
-        flash[:notice].should == 'Mock Elementary has been automatically selected.'
+        flash[:notice].should == ' Mock Elementary has been automatically selected.'
         response.should redirect_to([school,StudentSearch])
       end
 
@@ -25,19 +25,17 @@ describe SchoolsController do
         user.should_receive(:authorized_for?).with('students').and_return(false)
         get :index
         session[:school_id].should == 'MOCK SCHOOL'
-        flash[:notice].should == 'Mock Elementary has been automatically selected.'
+        flash[:notice].should == ' Mock Elementary has been automatically selected.'
         response.should redirect_to(not_authorized_url)
 
       end
-      it 'should not redirect if the flash was previously set' do
-        flash = {:notice =>"Exists"}
-        controller.should_receive(:flash).and_return(flash)
+      it 'should not redirect if the flash has tag backs to prevent redirect loop' do
+        flash = {:tag_back =>"Exists"}
+        controller.stub!(:flash =>flash)
         controller.stub!(:current_school => school)
         get :index
-        flash[:notice].should == 'Exists'
+        flash[:notice].should == ' Mock Elementary has been automatically selected.'
         response.should_not redirect_to(school_student_search_url(school))
-        pending "Why did I do this?  Redirect loop or preserving the flash?"
-
       end
 
 

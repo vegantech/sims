@@ -81,7 +81,7 @@ describe District do
   describe 'key validation' do
     it 'should fail validation if there is a previous key and the key is changed' do
       @local_district.previous_key = 'different'
-      @local_district.key = nil
+      @local_district.key = 'notdog'
       @local_district.save!
 
       @local_district.key = 'dog'
@@ -94,7 +94,7 @@ describe District do
       @local_district.key= 'cat'
       @local_district.save
 
-      @local_district.previous_key.should == 'dog'
+      @local_district.previous_key.should == 'notdog'
 
     end
 

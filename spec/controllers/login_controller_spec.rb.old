@@ -99,13 +99,4 @@ describe LoginController do
     end
   end
 
-  describe "change_password" do
-    describe "get" do
-      it 'should have specs'
-    end
-
-    describe "put" do
-      it 'should have specs'
-    end
-  end
 end

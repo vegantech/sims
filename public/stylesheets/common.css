@@ -577,3 +577,9 @@ table.grouped_progress_entry thead {
   color:DodgerBlue;
 
 }
+
+.custom_interventions_warning {
+  color:darkGray;
+  font-style: italic;
+
+}

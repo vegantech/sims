@@ -44,10 +44,12 @@ class DistrictLog < ActiveRecord::Base
   end
 
   def self.record_failure(params)
+    logger.info "Failed login of #{params["username"]} at #{ params["district_id_for_login"]}"
     failure.create!(:district_id => params["district_id_for_login"], :body =>  params["username"])
   end
 
   def self.record_success(user)
+    logger.info "Successful login of #{user.fullname} at #{user.district.name}"
     success.create!(:district_id => user.district_id, :user => user)
   end
 

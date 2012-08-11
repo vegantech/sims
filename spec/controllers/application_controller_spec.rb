@@ -18,23 +18,6 @@ describe ApplicationController do
       controller.stub!(:params).and_return(flash)
     end
 
-    it 'should authenticate' do
-      controller.should_receive(:current_user_id).and_return(true)
-      controller.send(:authenticate).should == true
-    end
-
-    it 'should redirect if false' do
-      controller.should_receive(:current_user_id).and_return false
-      controller.should_receive(:root_url).and_return 'root_url'
-      controller.should_receive(:redirect_to).with('root_url')
-      controller.should_receive(:flash).and_return(flash)
-      controller.should_receive(:session).at_least(:once).and_return(flash)
-      controller.send(:authenticate).should == false
-      flash[:notice].should_not == nil
-      flash[:requested_url].should == "gopher://www.example.com/"
-    end
-
-
     describe 'authorize' do
 
       it 'should return true if authorized' do
@@ -109,8 +92,8 @@ describe ApplicationController do
 
   describe "selected_student_ids" do
     before do
-      @session = {:session_id => 'tree', :user_id => 222}
-      controller.stub!(:session => @session)
+      @session = {:session_id => 'tree'}
+      controller.stub!(:session => @session, :current_user => mock_user)
     end
     it 'should work normally with under <50 ids' do
       controller.send :selected_student_ids=, [1,2,3]
@@ -127,8 +110,7 @@ describe ApplicationController do
       controller.send(:selected_student_ids).should_not == values  #if session_id changes or user_id changes
       controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "tree"
-      @session[:user_id] = 123
-      controller.send(:selected_student_ids).should_not == values  #if session_id changes or user_id changes
+      controller.send(:selected_student_ids).should != values  #if session_id changes or user_id changes
     end
 
   end

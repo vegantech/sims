@@ -1,5 +1,5 @@
 class StatsController < ApplicationController
-  skip_before_filter :authenticate, :authorize
+  skip_before_filter :authenticate_user!, :authorize
 
   def index
     #TODO test and refactor
@@ -36,6 +36,8 @@ class StatsController < ApplicationController
            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
           when /Flag$/
            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
+          when /DistrictLog$/
+           klass.filter_all_stats_on(:exclude_district_id, "district_logs.district_id != ?")
           else
            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end

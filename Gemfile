@@ -49,13 +49,16 @@ gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
 gem 'statistics'
+gem 'devise', '~> 1.5.0'
+gem 'omniauth-google-apps'
+gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
+gem 'sneaky-save'
 
 group :test do
   gem 'simplecov', :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
-  gem 'sneaky-save'
   gem 'rspec-html-matchers'
 end
 
@@ -72,12 +75,19 @@ group :cucumber do
 end
 
 group :development do
-gem "capistrano",'2.5.0', :require => false
-gem "capistrano-ext", :require => false
-gem "thin"
-gem "metrical", :platforms => :ruby_19
-#gem "ripper", :platforms => :ruby_19
-gem 'rspec-rails','~>2.6', :require => false
+  gem "capistrano",'2.5.0', :require => false
+  gem "capistrano-ext", :require => false
+  gem "thin"
+  gem "metrical", :platforms => :ruby_19
+  #gem "ripper", :platforms => :ruby_19
+  gem 'rspec-rails','~>2.6', :require => false
+  gem 'spork'
+  gem 'guard'
+  gem 'guard-spork'
+  gem 'guard-rspec'
+  gem 'guard-cucumber'
+  gem 'rb-inotify'
+  gem 'libnotify'
 end
 
 

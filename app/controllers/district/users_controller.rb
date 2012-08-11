@@ -57,6 +57,10 @@ class District::UsersController < ApplicationController
         if params[:user][:staff_assignments_attributes] && current_district.staff_assignments.empty?
           flash[:notice] = "#{flash[:notice]}  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature.".html_safe
         end
+        if @user == current_user
+          #Keep the user logged in in case s/he changed their own password here
+          sign_in(@user, :bypass => true)
+        end
         format.html { redirect_to(index_url_with_page)}
       else
         @schools = current_district.schools

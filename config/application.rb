@@ -62,6 +62,10 @@ module Sims
     config.time_zone = 'Central Time (US & Canada)'
     config.cache_store = :mem_cache_store
     config.paths.app.manifests 'app/manifests', :eager_load => false
+
+    config.to_prepare do
+      Devise::Mailer.layout "email"
+    end
   end
 end
 

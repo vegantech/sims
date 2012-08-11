@@ -67,5 +67,18 @@ describe InterventionsHelper do
       end
     end
   end
+
+  describe 'custom_intervention_enabled?' do
+    it 'should return false when it is false for the current user' do
+      helper.should_receive(:current_user).and_return(mock_user(:custom_interventions_enabled? => false))
+      helper.custom_intervention_enabled?.should == false
+
+    end
+
+    it 'should return true when it is true for the current user' do
+      helper.should_receive(:current_user).and_return(mock_user(:custom_interventions_enabled? => true))
+      helper.custom_intervention_enabled?.should == true
+    end
+  end
 end
 

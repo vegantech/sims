@@ -21,7 +21,15 @@
 #
 
 class User < ActiveRecord::Base
-  include FullName
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :omniauthable, :recoverable#, :registerable
+#        :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :district_id_for_login
+  attr_accessor :district_id_for_login
+  include FullName, Devise::LegacyPassword
   after_update :save_user_school_assignments
 
   belongs_to :district
@@ -53,7 +61,6 @@ class User < ActiveRecord::Base
   has_many :logs, :class_name => 'DistrictLog'
 
 
-  attr_accessor :password, :old_password
   attr_protected :district_id
 
   scope :non_admin, where("username not in ('tbiever', 'district_admin')")
@@ -118,7 +125,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :username, :last_name, :first_name
   validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
-  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
+#  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
 
@@ -174,49 +181,6 @@ class User < ActiveRecord::Base
     User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
   end
 
-  def self.authenticate(username, password)
-    @user = self.find_by_username(username)
-
-    if @user && @user.passwordhash.blank? && @user.salt.blank?
-      if @user.district.key.present? && @user.district.key == password
-        return User.new(:token => @user.create_token)
-      else
-        @user = nil
-      end
-
-
-    end
-
-    if @user
-      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast.downcase[0..39]))
-         @user = nil unless Rails.env.development? || ENV["SKIP_PASSWORD"]=="skip-password"
-      end
-      @user
-    end
-  end
-
-  def allowed_password_hashes(password)
-    district_key = district.key if district
-    next_key = self.district.previous_key if self.district
-
-    bare = User.encrypted_password(password,salt, nil, nil)
-    with_sys_key_and_no_district_key = User.encrypted_password(password,salt, nil)
-
-    with_district_key_and_no_system_key = User.encrypted_password(password, salt, district_key, nil)
-    with_district_key_and_system_key = User.encrypted_password(password, salt, district_key)
-
-    with_next_district_key_and_no_system_key = User.encrypted_password(password, salt,  next_key, nil)
-    with_next_district_key_and_system_key = User.encrypted_password(password, salt, next_key, System::HASH_KEY)
-
-    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key,
-      with_next_district_key_and_no_system_key,  with_next_district_key_and_system_key ]
-  end
-
-  def self.encrypted_password(password, salt=nil, district_key = nil, system_hash = System::HASH_KEY)
-    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}#{salt}")
-  end
-
-
   def authorized_for?(controller)
     !new_record? && Role.has_controller?(controller.to_s,roles)
   end
@@ -230,26 +194,6 @@ class User < ActiveRecord::Base
     end
 
     overrides
-  end
-
-  def password=(pass)
-    if pass.blank?
-      @password_confirmation=@password=pass
-    else
-      @password = pass
-      self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
-      set_passwordhash pass
-    end
-  end
-
-  def set_passwordhash(pass)
-    district_key = self.district.key if self.district
-    self.passwordhash = User.encrypted_password(pass, self.salt, district_key)
-  end
-
-  def reset_password!
-    update_attribute(:passwordhash,User.encrypted_password("district_admin"))
-    "Password reset to district_admin"
   end
 
   def principal?
@@ -324,40 +268,6 @@ class User < ActiveRecord::Base
     User.remove_from_district(self[:id])
   end
 
-  def change_password(params)
-    if self.token == params[:token]
-      if self.passwordhash.blank?
-        errors.add(:old_password, "is incorrect") and return false  if (!self.district.key.present? || self.district.key != params[:old_password])
-      end
-
-      errors.add(:password, 'cannot be blank') and return false if params['password'].blank?
-      errors.add(:password_confirmation, 'must match password') and return false if params['password'] != params['password_confirmation']
-
-      self.password = params['password']
-      self.password_confirmation = params['password_confirmation']
-      return false if self.token != params['token']
-      self.token = nil
-      self.save
-      return true
-    end
-
-    if !self.district.users.authenticate(self.username, params['old_password'])
-      errors.add(:old_password, "is incorrect")
-    elsif params['password'].blank?
-      errors.add(:password, 'cannot be blank')
-    elsif params['password'] != params['password_confirmation']
-      errors.add(:password_confirmation, 'must match password')
-    else
-      self.password = params['password']
-      self.password_confirmation = params['password_confirmation']
-      self.save
-      return true
-    end
-
-    false
-
-  end
-
   def roles=(roles)
     @roles = nil
     self.roles_mask = Role.roles_to_mask(roles)
@@ -382,12 +292,6 @@ class User < ActiveRecord::Base
     @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
   end
 
-  def record_successful_login
-    logs.success.create(:district_id => district_id)
-    logger.info "Successful login of #{fullname} at #{district.name}"
-  end
-
-
   def self.find_by_fullname(fullname)
     #this fails if the middle name is excluded from the search
     find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
@@ -401,12 +305,7 @@ class User < ActiveRecord::Base
     user_school_assignments.admin.exists?(:school_id => school.id)
   end
 
-  def create_token()
-    self.update_attribute(:token, generate_token)
-    Notifications.change_password(self).deliver
-  end
-
-  def schools
+   def schools
     s=School.where(:district_id => district_id).order("schools.name")
     if all_schools_in_district?
       s
@@ -432,12 +331,42 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.find_first_by_auth_conditions(conditions)
+    conditions[:district_id] = conditions.delete(:district_id_for_login) unless conditions.keys == [:reset_password_token]
+    super conditions
+  end
+
+  def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
+    data = access_token['info']
+
+    if user = User.where(:email => data['email']).first
+      return user
+    end
+  end
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session['devise.googleapps_data'] && session['devise.googleapps_data']['user_info']
+        user.email = data['email']
+      end
+    end
+  end
+
+  def send_reset_password_instructions(use_key = false)
+    if email.blank?
+      errors.add(:base, 'User does not have email assigned in SIMS.  Contact your LSA for assistance')
+    elsif !use_key && !district.try(:forgot_password)
+      errors.add(:base, "This district does not support password recovery.  Contact your LSA for assistance")
+    else
+      super()
+    end
+  end
+
+  def custom_interventions_enabled?
+    district.custom_interventions.blank? || (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
+  end
 
 protected
-
-  def generate_token
-    [Digest::SHA1.hexdigest("#{district.key}#{rand}#{id}"),"-",(Time.now.utc + 4.hours).to_i].join
-  end
 
   def student_ids_where_principal(school_id)
     #TODO TEST THIS

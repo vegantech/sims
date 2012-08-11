@@ -1,5 +1,5 @@
 class SpellCheckController < ApplicationController
-  skip_before_filter :authenticate, :authorize, :verify_authenticity_token
+  skip_before_filter :authenticate_user!, :authorize, :verify_authenticity_token
 
 
   include ActionView::Helpers::SanitizeHelper

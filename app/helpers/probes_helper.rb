@@ -19,7 +19,7 @@ module ProbesHelper
    ( html + "</p>" +
       graph.graph).html_safe
   end
-    
+
 
   def display_assessment_links(probe_assignment)
     s=''
@@ -32,8 +32,12 @@ module ProbesHelper
     s
   end
 
-
-
+  def preview_graph_link(graph_type, intervention, probe_assignment, probe_assignment_counter)
+    link_to_function "Preview #{graph_type.humanize} Graph", remote_function({
+      :url => preview_graph_url(:intervention_id => intervention.id, :id => probe_assignment.id, :probe_definition_id => probe_assignment.probe_definition_id, :graph=>graph_type.to_s),
+      :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
+      :with => "new_probe_scores()"})
+  end
 end
 
- 
+

@@ -1,0 +1,19 @@
+<h1>Change your password</h1>
+
+<div class ="new_form">
+  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name, :district_abbrev => current_district.abbrev), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :reset_password_token %>
+  <%= hidden_field_tag "user[district_id_for_login]"  , current_district.to_param %>
+
+  <div class ="form_row"><%= f.label :password, "New password" %>
+  <%= f.password_field :password %></div>
+
+  <div class ="form_row"><%= f.label :password_confirmation, "Confirm new password" %>
+  <%= f.password_field :password_confirmation %></div>
+
+  <div class "form_row"> <%= f.submit "Change my password" %></div>
+<% end %>
+
+</div>
+

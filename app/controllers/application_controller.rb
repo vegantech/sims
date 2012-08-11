@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :current_user_id, :index_url_with_page, :root_url_without_subdomain, :readonly?
+    :index_url_with_page, :root_url_without_subdomain, :readonly?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -16,22 +16,15 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
 
-  before_filter :fixie6iframe,:authenticate, :authorize
+  before_filter :fixie6iframe,:authenticate_user!, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
 
-  def current_user_id
-    session[:user_id]
-  end
-
-  def current_user
-    @current_user ||= (User.find_by_id(current_user_id) || User.new )
-  end
-
   def student_id_cache_key
-    "student_ids_#{current_user_id}_#{session[:session_id][0..40]}"
+    "student_ids_#{current_user.id}_#{session[:session_id][0..40]}"
   end
+
   def selected_student_ids
     if session[:selected_students] == "memcache"
       @memcache_student_ids ||= Rails.cache.read(student_id_cache_key)
@@ -74,18 +67,8 @@ class ApplicationController < ActionController::Base
     @current_district ||=  current_user.try(:district) || District.find_by_subdomain(params[:district_abbrev].presence || current_subdomain.presence)
   end
 
-  def authenticate
-    #redirect_to logout_url() and return if current_district.new_record?
-    unless current_user_id
-      flash[:notice] = "You must be logged in to reach that page"
-      session[:requested_url] = request.url
-      redirect_to root_url(:username => params[:username])
-      return false
-    end
-    true
-  end
-
   def authorize
+    return true if devise_controller?
     controller = self.class.controller_path  # may need to change this
     unless current_user.authorized_for?(controller)
       logger.info "Authorization Failure: controller is #{controller}"
@@ -133,7 +116,6 @@ class ApplicationController < ActionController::Base
 def check_student
     #TODO generalize this
     student=Student.find_by_id(params[:student_id]) || Student.new
-
     if student.belongs_to_user?(current_user)
       @student=student
     else
@@ -169,11 +151,6 @@ def check_student
 
   def wp_out_of_bounds?(wp_collection)
     wp_collection.out_of_bounds? && wp_collection.total_entries > 0
-  end
-
-  def current_user=(user)
-    session[:user_id] = user.id
-    @curret_user = user
   end
 
   def  handle_unverified_request

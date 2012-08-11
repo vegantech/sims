@@ -31,140 +31,6 @@ describe User do
     @school = Factory(:school, :district => @user.district)
   end
 
-  describe 'authenticate' do
-    it 'should find user with valid login and password' do
-      u = User.authenticate('oneschool', 'oneschool')
-      u.username.should == 'oneschool'
-    end
-
-    it 'should not allow bad password' do
-      User.authenticate('oneschool', 'badpass').should be_nil
-    end
-
-    it 'should not allow bad login' do
-      User.authenticate('doesnotexist', 'ignored').should be_nil
-    end
-
-    describe 'additional hash keys and salts' do
-      before :all do
-        System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
-        System::HASH_KEY='mms'
-      end
-
-      describe 'allowed_password_hashes' do
-        it 'should cover all possibilities'  do
-          district = Factory(:district, :key => dk='ddd_kk', :previous_key => next_dk = 'eee_ll')
-          salt = 'Salt'
-          u = Factory(:user, :district => district, :salt => salt)
-          password='zow#3vVc'.downcase
-
-          pnn = Digest::SHA1.hexdigest("#{password}#{salt}")
-          pns = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{salt}")
-          ppn = Digest::SHA1.hexdigest("#{password}#{next_dk}#{salt}")
-          pps = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{next_dk}#{salt}")
-          pdn = Digest::SHA1.hexdigest("#{password}#{dk}#{salt}")
-          pds = Digest::SHA1.hexdigest("#{System::HASH_KEY}#{password}#{dk}#{salt}")
-
-          u.allowed_password_hashes(password).should == [pnn, pns, pdn, pds, ppn, pps]
-        end
-      end
-
-      it 'should call allowed passwordhashes' do
-        @user.should_receive(:allowed_password_hashes).with('fail').and_return([])
-        User.should_receive(:find_by_username).with('oneschool').and_return(@user)
-        # User.any_instance.should_receive(:allowed_password_hashes).with('fail')
-        User.authenticate('oneschool','fail')
-
-      end
-
-
-      it 'should store new users passwords including system hash_key when present' do
-        u = Factory(:user, :password => 'test')
-        u.passwordhash.should == User.encrypted_password("#{System::HASH_KEY}test", u.salt, nil, nil)
-      end
-
-      it 'should generate a salt when a user sets a password' do
-        d = Factory(:district, :key => 'DisKye')
-        u = Factory(:user, :password => 'motest', :district => d)
-        u.salt.should_not be_blank
-      end
-
-      it 'should generate different salts for 2 different users' do
-        u1 = Factory(:user)
-        u2 = Factory(:user)
-        u1.salt.should_not == u2.salt
-      end
-
-      it 'should change the salt when a password is changed on an existing record if a different salt has not been passed in' do
-        u1 = Factory(:user)
-        oldsalt = u1.salt
-
-        u1.password='SOEMWEWEE'
-        u1.salt.should_not == oldsalt
-      end
-
-      it 'should not change the salt when a password is changed at the same time a salt is explicitly passed in' do
-        u1 = Factory(:user)
-        oldsalt = u1.salt
-
-        u1.update_attributes(:password => 'SOEMWEWEE', :salt => 'my_new_Salty_Salt_2')
-        u1.salt.should == 'my_new_Salty_Salt_2'
-      end
-
-      it 'should use the generated salt, system key, and district key' do
-        d = Factory(:district, :key => 'DisKye')
-
-        u = Factory(:user, :district => d)
-        u.password = 'motest'
-        u.password_confirmation = 'motest'
-        u.save!
-        u.passwordhash.should == Digest::SHA1.hexdigest("#{System::HASH_KEY}motestDisKye#{u.salt}")
-      end
-
-      describe "with token" do
-        it 'should have specs'
-      end
-
-    end
-  end
-
-  describe 'encrypted_password' do
-    it 'should create a hash with a nil system key and district key and salt' do
-      pending
-      # User.encrypted_password('e')
-
-      # set up user1 with password the old way
-      # verify user1 password works
-
-      # set new user2 up with new way
-      # verify new password for user2 works
-
-      # verify user1 password still works
-    end
-
-  end
-
-
-  describe 'passwordhash' do
-    it 'should be stored encrypted' do
-
-      System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
-      System::HASH_KEY=nil
-
-      @user.passwordhash.should == User.encrypted_password('oneschool', @user.salt, nil, nil)
-    end
-  end
-
-  describe 'password=' do
-    it 'should change the password hash when not blank' do
-      u=User.new(:password=>"DOG")
-      u.passwordhash.should_not be_blank
-      p=u.passwordhash
-      u.password=""
-      u.passwordhash.should == p
-    end
-  end
-
   it 'should include FullName' do
     User.included_modules.should include(FullName)
   end
@@ -461,17 +327,6 @@ describe User do
 
    end
 
-   describe 'record_successful_login' do
-    it 'should create a district log entry' do
-      u=Factory(:user)
-      u.record_successful_login
-      u.logs.last.to_s.should =~ /Successful login of #{u.fullname}/
-      log=u.district.logs.last
-      log.to_s.should =~ /Successful login of #{u.fullname}/
-      u.last_login.should == log.updated_at
-    end
-   end
-
    describe 'staff_assignment' do
      before do
        @u=Factory(:user)
@@ -531,7 +386,60 @@ describe User do
      end
    end
 
-   describe 'create_token' do
-     it 'should have specs'
+   describe 'devise additions' do
+     describe 'find_first_by_auth_conditions' do
+       it 'should add the district key when not using the reset token'
+       it 'should not add the district key when using the reset token'
+     end
+
+     describe 'send_reset_password_isnstructions' do
+       it 'should add an error when the email is blank'
+       it 'should add an error when the district does not support password recovery'
+       it 'should test use_key?'
+       it 'should work normally'
+     end
+
+     describe 'new_with_session' do
+       it 'it should get info from googleapps'
+     end
+   end
+
+   describe 'custom_interventions_enabled?' do
+     subject do
+       User.new(:district => district, :roles=>[role])
+     end
+     let(:district){ District.new(:custom_interventions => custom_intervention)}
+     let(:role) {}
+     let(:custom_intervention) {}
+
+     describe 'disabled' do
+       let(:custom_intervention){'disabled'}
+       its(:custom_interventions_enabled?) {should == false}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == false}
+       end
+     end
+
+     describe 'content_admins' do
+       let(:custom_intervention){'content_admins'}
+       its(:custom_interventions_enabled?) {should == false}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
+
+     describe 'enabled' do
+       let(:custom_intervention){''}
+       its(:custom_interventions_enabled?) {should == true}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
    end
 end

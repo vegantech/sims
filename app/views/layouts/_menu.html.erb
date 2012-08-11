@@ -1,5 +1,5 @@
 <ul>
-  <% if session[:user_id] %>
+  <% if user_signed_in? %>
     <li><%= link_to "Home", root_path %> </li>
     <%= li_link_to_if_authorized 'School Selection', schools_path %>
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
@@ -9,7 +9,7 @@
 
     <% end %>
 
-    <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,session[:search].blank?] do %>
+    <% cache ["menu",current_district,current_user.try(:roles_mask),Right.cache_key,session[:search].blank?] do %>
 
       <% if session[:search] %>
         <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
@@ -42,10 +42,10 @@
         <%  end %>
 
       <li><%= link_to "Change Password", change_password_path %></li>
-      <li><%= render :partial => 'login/logout' %></li>
+      <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
     <% elsif !defined?DEFAULT_URL %>
       <li>Please login.</li>
-      <% if @districts.blank? or @districts.size < 100 %>
+      <% unless Rails.env.production? %>
         <li>For this demo, use oneschool as the username and password for a basic user</li>
         <li>alphaprin for a principal and school admin</li>
         <li>content_builder to access the builders</li>
@@ -56,9 +56,9 @@
   <% end %>
 
 
-  <% cache ["help",current_user.roles_mask,Role.cache_key] do %>
+  <% cache ["help",current_user.try(:roles_mask),Role.cache_key] do %>
   <%= plus_minus_li "Help" do %>
-    <% if session[:user_id] %>
+    <% if user_signed_in? %>
       <% current_user.roles.each do |role| %>
         <%= plus_minus_li role.humanize do %>
           <%Role::HELP[role].each do |role_help| %>
@@ -69,6 +69,6 @@
     <% end %>
   <% end %>
 <% end %>
-    <%= li_link_to('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) if defined? RailmailController or Rails.env.development? %>
+    <%= li_link_to('SIMS Virtual Outbox', railmail_index_url, {:target=>:blank}) if defined? RailmailController or Rails.env.development? %>
 
 </ul>

@@ -1,7 +1,15 @@
 <% if @intervention_probe_assignment %>
   <br class="brclear" />
   <%= fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
-      <%= ipa.hidden_field :probe_definition_id %>
+    <%= ipa.hidden_field :probe_definition_id %>
+    <% unless  custom_intervention? && @intervention_probe_assignment.probe_definition.new_record? %>
+      <div class = "form_row">
+        <div class="fake_label">Description</div>
+        <div> <%=@intervention_probe_assignment.probe_definition.description %> </div>
+      </div>
+      <br class="brclear" />
+    <% end %>
+
       <div class = "form_row">
         <div class="fake_label">&nbsp;</div>
         <div>
