@@ -25,3 +25,4 @@ rerun.txt
 vendor/cache
 db/*.sqlite3
 tmp/
+deploy_all.sh
