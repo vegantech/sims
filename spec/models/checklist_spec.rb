@@ -18,7 +18,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Checklist do
-  fixtures :element_definitions, :checklists, :checklist_definitions, :answers, :answer_definitions, :students,:users, :districts
+  fixtures :districts, :element_definitions, :checklists, :checklist_definitions, :answers, :answer_definitions, :students,:users
   self.use_instantiated_fixtures = true
 
   before do
