@@ -8,7 +8,7 @@ module FlagsHelper
 
 
   def image_with_popup(image, popup)
-    image_tag(image,"onmouseover" => "return overlib('#{popup}');",
+    image_tag(image,"onmouseover" => "return overlib('#{popup}');".html_safe,
       "onmouseout" => "return nd();") + " "
   end
 
@@ -68,7 +68,7 @@ module FlagsHelper
 
         form_tag({:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
           {:class => "flag_button", :style => "display:inline", :remote => true}) {
-          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
+          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');".html_safe, "onmouseout" => "return nd();") }
       end
       s.join(" ").html_safe
     end
@@ -82,7 +82,7 @@ module FlagsHelper
       if changeable
         form_tag({:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
           {:style => "display:inline", :remote => true}) {
-          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") }
+          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');".html_safe, "onmouseout" => "return nd();") }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
       end
