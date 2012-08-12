@@ -8,3 +8,5 @@ branches:
   only:
   - master
   - wip
+  - ruby_1.9.3
+  - wip_ruby_1.9.3
