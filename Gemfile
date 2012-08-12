@@ -56,6 +56,7 @@ gem 'omniauth-google-apps'
 gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
 gem 'sneaky-save'
+gem 'jquery-rails'
 
 group :test do
   gem 'rcov', ">=0.9.9", :require => false
