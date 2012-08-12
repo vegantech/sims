@@ -31,7 +31,7 @@
     </div>
 
   <div class="form_row_wrap_label">
-    <% if readonly %>
+    <% if readonly? %>
         <div class ="fake_label">Weekly Minutes</div><%= @intervention.mins_per_week %>
         <%= "(Rec: #{@intervention.intervention_definition.mins_per_week})" unless @intervention.intervention_definition.blank? %>
       <% else %>
