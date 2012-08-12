@@ -16,7 +16,7 @@
 class ObjectiveDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :goal_definition
-  has_many :intervention_clusters, :order =>:position, :dependent=> :destroy
+  has_many :intervention_clusters, :order =>'intervention_clusters.position', :dependent=> :destroy
   has_many :intervention_definitions, :through => :intervention_clusters
 
   validates_presence_of :title, :description

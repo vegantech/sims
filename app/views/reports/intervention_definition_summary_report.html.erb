@@ -19,8 +19,9 @@
         <tr class="pbi_avoid <%=cycle("even","odd") %>" >
           <td> <%= intervention_definition.business_key %> </td>
           <td> <%= intervention_definition.intervention_cluster %> </td>
+          <td <%= "class='sld'" if intervention_definition.sld?%> > <b><%= intervention_definition.title%> </b></td>
           <td> <b> <%= intervention_definition.title%> </b> </td>
-          <td width="350px"><div class="pbi_avoid"> <%= intervention_definition.description %> </div></td>
+          <td width="350px"><div class="pbi_avoid"> <%= intervention_definition.description_with_sld %> </div></td>
           <td> <%= intervention_definition.frequency_duration_summary %> </td>
           <td>
             <ul> <% intervention_definition.probe_definitions.each do |pd| %>

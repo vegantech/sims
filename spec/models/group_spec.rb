@@ -21,6 +21,7 @@ describe Group do
 
   it "shoulld return an array of users when members is called" do
     User.destroy_all
+
     Group.destroy_all
     Group.members.should == []
     
@@ -36,7 +37,7 @@ describe Group do
     g2.users << [u2]
 #    g3.users << User.all
 
-    Group.members.should == [u1,u2]
+    Group.members.to_set.should == [u1,u2].to_set
   
 
   end

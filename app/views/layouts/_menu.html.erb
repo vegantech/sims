@@ -9,6 +9,8 @@
 
     <% end %>
 
+    <%=render :partial => "/layouts/cico_links" %>
+
     <% cache ["menu",current_district,current_user.try(:roles_mask),Right.cache_key,session[:search].blank?] do %>
 
       <% if session[:search] %>

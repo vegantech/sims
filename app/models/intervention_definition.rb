@@ -26,6 +26,10 @@ class InterventionDefinition < ActiveRecord::Base
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
+  SLD_CRITERIA = columns_hash['sld'].limit.gsub(/'/,'').split(",").collect(&:titleize) if table_exists?
+  INTENSIVE_INTERVENTIONS_DEFINITION='"Intensive interventions" means interventions used with individual or small groups of pupils, focusing on single or small numbers of discrete skills, with substantial numbers of instructional minutes in addition to those provided to all pupils.'
+  ADEQUATE_FIDELITY_DEFINITION='"Adequate fidelity" means the intervention has been applied in a manner highly consistent with its design, and was provided to the pupil at least 80 percent of the recommended number of weeks, sessions, and minutes per session.'
+
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   belongs_to :intervention_cluster
@@ -41,6 +45,7 @@ class InterventionDefinition < ActiveRecord::Base
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
   validates_numericality_of :frequency_multiplier, :time_length_num
+  validates_numericality_of :mins_per_week, :greater_than => 0, :less_than =>3000, :if => "sld?"
 
   acts_as_list :scope => :intervention_cluster_id
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
@@ -144,6 +149,20 @@ class InterventionDefinition < ActiveRecord::Base
 
   end
 
+  def sld_array
+    sld.split(",").collect(&:titleize)
+  end
+
+  def sld_array=(arr)
+    self.sld = arr.join(",")
+  end
+
+  def description_with_sld
+    d=""
+    d= " This meets the SLD criteria: " + sld_array.join(", ") +"." unless self.sld.blank?
+    description + d
+  end
+
   def set_values_from_intervention(int)
     #Used only for custom interventions
     if new_record?
@@ -154,6 +173,7 @@ class InterventionDefinition < ActiveRecord::Base
       self.time_length_num = int.time_length_number
       self.frequency = int.frequency
       self.frequency_multiplier = int.frequency_multiplier
+      self.mins_per_week = int.mins_per_week
     end
   end
 

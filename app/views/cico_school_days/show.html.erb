@@ -1,0 +1,18 @@
+<p>
+  <b>Cico setting:</b>
+  <%=h @cico_school_day.cico_setting %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @cico_school_day.status %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%=h @cico_school_day.date %>
+</p>
+
+
+<%= link_to 'Edit', edit_cico_school_day_path(@cico_school_day) %> |
+<%= link_to 'Back', cico_school_days_path %>

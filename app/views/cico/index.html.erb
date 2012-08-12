@@ -1,0 +1,70 @@
+this is just a demo of check-in check-out <br />
+
+<% form_tag do %>
+Previous
+<%= unobtrusive_date_picker_tags Date.today %>
+Next
+<br />
+School Status <%=select_tag(:schoolday_status, options_for_select(CicoTest::DAYSTATUS.collect{|e| [e,e]})) %>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @students.each do |student| %>
+  <tr>
+    <th>
+      <%=student %>
+    </th>
+    <th>
+      <%=select_tag(:studentday_status, options_for_select(CicoTest::STUDENTSTATUS.collect{|e| [e,e]})) %>
+    </th>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <th>Period</th>
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <th>
+              <%=expectation%> 
+            </th>
+          <% end %>
+          <th>Total</th>
+        </tr>
+
+        <%CicoTest::PERIODS.each do |period| %>
+          <tr>
+            <th><%=period%> </th>
+
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <td>
+              <%=select_tag(:expectation_status, options_for_select(@expectation_values))%>
+            </th>
+          <% end %>
+          <td>total <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+        </tr>
+        <% end %>
+
+        <tr>
+          <th>
+            Total
+          </th>
+          <%CicoTest::EXPECTATIONS.each do |expectation| %>
+            <td>exptotal <%=help_popup("This will be changed on the screen automatically when the values are changed") %> </td>
+          <% end %>
+          <td> total% <%=help_popup("This will be changed on the screen automatically when the values are changed") %></td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
+<% end %>
+
+</table>
+
+[Submit button] [Cancel Button]
+<% end %>

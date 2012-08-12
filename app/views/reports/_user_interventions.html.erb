@@ -20,7 +20,7 @@
     <tbody>
       <%interventions.each do |intervention| %>
         <tr class="pbi_avoid <%=cycle("even","odd") %>" >
-          <td> <%= intervention.report_summary %> </td>
+          <td <%="class = 'sld'" if intervention.sld? %>> <%= intervention.report_summary %> </td>
           <td> <%= intervention.start_date %> </td>
           <td> <%= intervention.end_date %> </td>
           <td> <%= intervention.frequency_summary%></td>

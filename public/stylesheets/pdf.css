@@ -58,6 +58,15 @@ thead {
   display: table-header-group;
 }
 
+a:link {
+  color: blue;
+  text-decoration:none;
+}
+
+a:visited {
+  color: blue;
+  text-decoration:none;
+}
 
 .intervention_definition_summary ul {
   margin: 0px;

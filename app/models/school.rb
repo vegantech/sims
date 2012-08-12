@@ -28,6 +28,7 @@ class School < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
+  has_many :cico_settings
   attr_protected :district_id
 
 
@@ -46,6 +47,7 @@ class School < ActiveRecord::Base
     validate_uniqueness_of_in_memory(
       user_school_assignments, [:user_id, :admin], 'Duplicate User.')
   end
+
 
   def grades_by_user(user)
     if user.all_students_in_school?(self)
@@ -111,4 +113,10 @@ class School < ActiveRecord::Base
       s
     end
   end
+
+  def cico_enabled?(probe_definition)
+    r=cico_settings.find_by_probe_definition_id(probe_definition.id)
+    r && r.enabled?
+  end
+
 end

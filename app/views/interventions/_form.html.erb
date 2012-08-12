@@ -28,7 +28,23 @@
         <%= "(Rec: #{@intervention_definition.time_length_summary})" unless custom_intervention? or @intervention_definition.blank? %>
       <% end %>
 
-  </div>
+    </div>
+
+  <div class="form_row_wrap_label">
+    <% if readonly %>
+        <div class ="fake_label">Weekly Minutes</div><%= @intervention.mins_per_week %>
+        <%= "(Rec: #{@intervention.intervention_definition.mins_per_week})" unless @intervention.intervention_definition.blank? %>
+      <% else %>
+        <%= form.label :mins_per_week, 'Weekly Minutes:' %>
+        <%= form.text_field :mins_per_week, {:onchange => "verify_fidelity(#{@intervention.sld?})"} %>
+        <%= "(Rec: <span id='rec_mins_per_week'>#{@intervention.intervention_definition.mins_per_week}</span>)" unless @intervention.intervention_definition.blank? %>
+      <% end %>
+
+    </div>
+    <div id="sld_fidelity_notice" style="display:none;color:red;">This intervention does not satisfy the fidelity requirements of the SLD criteria.</div>
+ 
+
+
   <br class="brclear" />
   <div class="form_row_wrap_label">
     <% if readonly? %>

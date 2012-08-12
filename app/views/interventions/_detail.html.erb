@@ -12,12 +12,11 @@
     <br class="brclear" />
 
     <div class="form_row">
-      <div class="fake_label">Intervention</div><%=@intervention.title %> <br />
+      <div class="fake_label">Intervention</div><span <%=@intervention.sld? ? "class='sld'" : '' %>><%=@intervention.title %></span> <br />
       <br class="brclear" />
       <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
       <br class="brclear" />
-      <%= description(@intervention) %>
-
+      <%= description(@intervention,'Description', "description_with_sld") %>
     </div>
     <% unless @intervention.active? %>
       <div class ="form_row">
@@ -80,10 +79,10 @@
 
 
   <%@intervention.intervention_probe_assignments.each do |ipa|
-    @intervention_probe_assignment = ipa 
+    @intervention_probe_assignment = ipa
     params[:enter_score] = true
     params[:probe_definition_id] = ipa.probe_definition_id
-  
+
   %>
     <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail' } %>
   <% end %>

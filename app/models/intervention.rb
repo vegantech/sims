@@ -65,8 +65,7 @@ class Intervention < ActiveRecord::Base
   attr_reader :autoassign_message
 
 
-
-  delegate :title, :tier, :description, :intervention_cluster,:tier_summary, :to => :intervention_definition
+  delegate :sld?,:title, :tier, :description,:description_with_sld, :intervention_cluster, :tier_summary, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
   scope :desc, order("created_at desc")
@@ -183,6 +182,7 @@ class Intervention < ActiveRecord::Base
       self.frequency_multiplier ||= intervention_definition.frequency_multiplier
       self.time_length ||= intervention_definition.time_length
       self.time_length_number ||= intervention_definition.time_length_num
+      self.mins_per_week = intervention_definition.mins_per_week if self.mins_per_week.zero?
     end
   end
 
@@ -220,6 +220,11 @@ class Intervention < ActiveRecord::Base
   def goal_objective_category
     [goal_definition.title, objective_definition.title, intervention_cluster.title].join(" ")
   end
+
+  def verify_fidelity?
+    !sld? || (mins_per_week >= 0.8 * intervention_definition.mins_per_week)
+  end
+
   protected
 
   def create_other_students

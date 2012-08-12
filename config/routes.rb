@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   end
   match '/change_password' => 'main#change_password', :as => :change_password
 
+  resources :cico_settings do
+    resources :cico_school_days
+  end
+  match "/cico/" => "cico#index", :as => :cico
+
+
   resources :personal_groups
 
   match '/doc/' => 'doc#index', :as => :doc
