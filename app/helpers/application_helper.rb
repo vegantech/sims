@@ -91,7 +91,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();").html_safe unless msg.blank?
+     content_tag :span,'?', :class => "help-question", :'data-help' => escape_javascript(msg)
   end
 
   def spinner(suffix = nil)
@@ -114,7 +114,7 @@ module ApplicationHelper
     content = with_output_buffer(&blk)
 
     content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ")  +
+      link_to(title, "#", :class => "plus_minus") +
       content_tag(:ul, content, :id => "ul#{id}")
     end
   end

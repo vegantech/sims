@@ -334,6 +334,14 @@ li.plus_minus {
   list-style-image: none;
 }
 
+li.plus_minus.minus {
+  list-style-image: url(/images/minus-8.png);
+}
+
+li.plus_minus.minus ul {
+  display: inline;
+}
+
 table.top_summary {
   margin-top: 10px;
   width: 100%;

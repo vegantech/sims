@@ -7,6 +7,9 @@ $(function() {
   $('.toggler').click(function() {
     return $("#" + $(this).data().toggleId).toggle();
   });
+  $('a.plus_minus').click(function() {
+    return $(this).parent('li').toggleClass('minus');
+  });
   $('.help-question').mouseover(function() {
     return overlib($(this).data().help);
   });

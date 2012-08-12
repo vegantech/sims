@@ -12,8 +12,25 @@ document.observe("dom:loaded", function() {
       $(el.readAttribute("data-toggle-id")).toggle();
       e.stop();
     }
+    if (el = e.findElement('.plus-minus')) {
+	el.toggleClass('minus');
+        e.stop();
+    }
 
     });
+
+  document.observe('mouseover', function(e,el) {
+   if (el = e.findElement('.help-question')) {
+      return overlib(el.readAttribute("data-help"));
+   }
+  });
+
+  document.observe('mouseout', function(e,el) {
+   if (el = e.findElement('.help-question')) {
+     nd();
+   }
+  });
+
 });
 
 function check_same_boxes(obj) {
