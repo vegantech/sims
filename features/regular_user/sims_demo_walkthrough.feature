@@ -51,9 +51,9 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Goal"
     Then I select "Language Arts" from "objective_definition_id"
     Then I press "Choose Objective"
+    Given PENDING intervention categories is empty
     Then I select "Reading problems" from "intervention_cluster_id"
     Then I press "Choose Category"
-    Given PENDING intervention definitions is empty
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
 
