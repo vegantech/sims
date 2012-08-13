@@ -12,8 +12,8 @@ document.observe("dom:loaded", function() {
       $(el.readAttribute("data-toggle-id")).toggle();
       e.stop();
     }
-    if (el = e.findElement('.plus-minus')) {
-	el.toggleClass('minus');
+    if (el = e.findElement('.plus_minus')) {
+	el.up('li').toggleClassName('minus');
         e.stop();
     }
 

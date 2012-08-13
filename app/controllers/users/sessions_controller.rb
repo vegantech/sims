@@ -39,6 +39,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def jquery?
     true
+    false
   end
 
 end
