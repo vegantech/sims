@@ -28,13 +28,13 @@ class StudentsController < ApplicationController
     # elsif authorized_student_ids.to_set.subset?(params[:id].to_set)
     elsif params[:id].to_set.subset?(authorized_student_ids.to_set)
       self.selected_student_ids = Array(params[:id]).uniq
-      session[:selected_student] = selected_student_ids.first
-      redirect_to student_url(session[:selected_student]) and return
+      self.current_student_id = selected_student_ids.first
+      redirect_to student_url(current_student_id) and return
     else
       flash.now[:notice] = 'Unauthorized Student selected, try searching again'
     end
     self.selected_student_ids = nil
-    session[:selected_student]= nil
+    self.current_student_id = nil
 
     setup_students_for_index
 
@@ -50,7 +50,7 @@ class StudentsController < ApplicationController
       redirect_to :action=>:index and return
     end
 
-    session[:selected_student] ||= @student.id.to_s  #537 hopefully this will fix it
+    current_student_id || self.current_student_id = @student.id.to_s  #537 hopefully this will fix it
     respond_to do |format|
       format.html # show.html.erb
     end
@@ -72,14 +72,14 @@ class StudentsController < ApplicationController
     return true unless params[:id]
 		# raise "I'm here" if selected_students_ids.nil?
     if selected_student_ids and selected_student_ids.include?(params[:id])
-      session[:selected_student]=params[:id]
+      self.current_student_id=params[:id]
       return true
     else
      return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
         session[:school_id] = (student.schools & current_user.schools).first
-        session[:selected_student]=params[:id]
+        self.current_student_id=params[:id]
         self.selected_student_ids=[params[:id]]
         return true
       end

@@ -49,9 +49,9 @@ module ApplicationHelper
     s = [link_to('Home', root_path)]
     s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
     s << link_to_if_current_or_condition('Student Search', [current_school,:student_search], session[:search])
-    s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
+    s << link_to_if_current_or_condition('Student Selection', students_path, current_student_id)
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
-    s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student] && !current_student.new_record?
+    s << link_to_if_current_or_condition(current_student, student_path(current_student), current_student_id) if current_student_id && !current_student.new_record?
     s.compact.join(' -> ').html_safe
   end
 
@@ -140,5 +140,13 @@ module ApplicationHelper
 
   def style_display_none_unless(cond)
     'style="display:none;"'.html_safe unless cond
+  end
+
+  def body
+    uid = current_user ? current_user.id : nil
+    sid = current_student_id
+    content_tag :body, "data-user" => uid, "data-student" => sid do
+      yield
+    end
   end
 end

@@ -50,6 +50,11 @@ class ApplicationController < ActionController::Base
     session[:selected_student]
   end
 
+  def current_student_id=(sid)
+    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    session[:selected_student]=sid
+  end
+
 
   def current_student
     @student ||= Student.find_by_id(current_student_id)
@@ -185,6 +190,10 @@ def check_student
       opts[:host] = request.host
     end
     root_url(opts)
+  end
+
+  def session_domain
+    Sims::Application.config.session_options[:domain]
   end
 
   def jquery?

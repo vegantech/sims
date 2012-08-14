@@ -33,5 +33,9 @@ class SchoolsController < ApplicationController
     end
   end
 
+  def jquery?
+    true
+  end
+
 
 end
