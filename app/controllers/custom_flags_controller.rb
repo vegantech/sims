@@ -8,12 +8,9 @@ class CustomFlagsController < ApplicationController
   # GET /custom_flags/new.xml
   def new
     @custom_flag = CustomFlag.new(:student_id=>current_student_id, :user_id=>current_user.id)
-
-
     respond_to do |format|
       format.html # new.html.erb
       format.js # new.js.rjs
-      format.xml  { render :xml => @custom_flag }
     end
   end
 
