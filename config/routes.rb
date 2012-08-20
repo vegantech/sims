@@ -99,11 +99,9 @@ Rails.application.routes.draw do
   resources :checklists
   resources :recommendations
 
-
-  match '/custom_flags/ignore_flag/' => 'custom_flags#ignore_flag'
-  match '/custom_flags/ubignore_flag/' => 'custom_flags#unignore_flag'
   match '/custom_flags/delete/:id' => 'custom_flags#destroy', :as => :delete_custom_flag
   resources :custom_flags
+  resources :ignore_flags
 
   resources :enrollments
 

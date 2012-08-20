@@ -1,0 +1,6 @@
+page.replace_html("customflag",:partial=>"custom_flags/list", :locals=>{:student=>current_student})
+page.replace_html("studentflags", "#{status_display current_student, true}")
+page.replace_html("ignoredflags", "#{ignore_flags current_student,true }")
+page.visual_effect :pulsate, 'studentflags'
+page.visual_effect :pulsate, 'ignoredflags'
+set_flash_notice page
