@@ -17,7 +17,7 @@ describe AllControllers do
         custom_flags district/flag_categories district/schools district/students district/users districts doc
         file flag_descriptions grouped_progress_entries
         groups/assignments groups/students groups/users groups
-        help
+        help ignore_flags
         intervention_builder/categories intervention_builder/goals intervention_builder/interventions intervention_builder/objectives
         intervention_builder/probes intervention_builder/recommended_monitors
         interventions/categories interventions/comments interventions/definitions interventions/goals interventions/objectives interventions/participants
