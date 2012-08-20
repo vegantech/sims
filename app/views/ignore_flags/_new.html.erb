@@ -1,5 +1,5 @@
  <%= error_messages_for 'ignore_flag' %>
-<%= form_remote_for :ignore_flag , :url=> { :action => "ignore_flag" } do |form| %>
+ <%= form_for @ignore_flag, :remote => true   do |form| %>
 Please enter your reason to ignore the <%=Flag::TYPES[@ignore_flag.category][:humanize]%> flag:
 <%= form.text_field :reason%>
 <%=form.hidden_field :category%>

@@ -1,0 +1,2 @@
+page.replace_html("customflag", :partial=>"new")
+set_flash_notice page
