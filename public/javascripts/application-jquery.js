@@ -19,6 +19,23 @@ $(function() {
   $('.dbl_toggler').dblclick(function() {
     return $("#" + $(this).data().toggleId).toggle();
   });
+  $('#student_search_form #search_criteria_grade').change(function() {searchCriteriaAjax("grade",$(this));});
+  $('#student_search_form #search_criteria_user_id').change(function() {searchCriteriaAjax("member",$(this));}); 
+  $('#student_search_form .flag_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
+  });
+  $('#student_search_form .active_intervention_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_active_intervention').checked = true;
+  });
+  $('#check_all').click(function() {
+    var checked;
+    checked = $('#check_all')[0].checked;
+    return $('form input:checkbox').each(function() {
+      this.checked = checked;
+      return true;
+    });
+  });
+
   setInterval(checkSession,3000);
 });
 
@@ -67,3 +84,20 @@ function checkSession() {
 	  $('#session_notice').html(str);
 
   }
+
+function searchCriteriaAjax(crit,field) {
+	var school_id = $('#student_search_form').data().school;
+	var spinnerfield = field.next('img.spinner');
+	$.ajax({
+		url: "/schools/" + school_id + "/student_search/"+ crit,
+		beforeSend: function(){ spinnerfield.show();},
+		success: function(){ spinnerfield.hide();},
+		data: {
+			grade: escape($('#search_criteria_grade').val()),
+		user: escape($('#search_criteria_user_id').val())
+		},
+		dataType: "script"
+	}
+	);
+};
+

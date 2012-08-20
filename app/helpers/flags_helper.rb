@@ -95,7 +95,7 @@ module FlagsHelper
 
   def flag_checkbox(flagtype)
     f = Flag::TYPES[flagtype.to_s]
-    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :onclick => "searchByFlag()") +
+    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :class=>"flag_checkbox") +
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 

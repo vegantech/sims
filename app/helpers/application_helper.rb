@@ -90,12 +90,12 @@ module ApplicationHelper
     end
   end
 
-  def help_popup(msg)
-     content_tag :span,'?', :class => "help-question", :'data-help' => escape_javascript(msg)
+  def help_popup(msg,tag=:span)
+     content_tag tag,'?', :class => "help-question", :'data-help' => escape_javascript(msg)
   end
 
   def spinner(suffix = nil)
-    image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
+    image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none", :class => 'spinner'
   end
 
   def link_to_with_icon(name, url, suffix="")

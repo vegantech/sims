@@ -138,4 +138,8 @@ class StudentsController < ApplicationController
     @flags_above_threshold= flags_above_threshold
   end
 
+  def jquery?
+    true unless action_name == "show"
+  end
+
 end

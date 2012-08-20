@@ -52,4 +52,8 @@ class StudentSearchesController < ApplicationController
     return true
   end
 
+  def jquery?
+    true
+  end
+
 end
