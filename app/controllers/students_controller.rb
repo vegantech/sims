@@ -56,7 +56,6 @@ class StudentsController < ApplicationController
     end
   end
 
-  # RJS methods for search page
 
   private
 
@@ -139,7 +138,7 @@ class StudentsController < ApplicationController
   end
 
   def jquery?
-    true unless action_name == "show"
+    true
   end
 
 end

@@ -8,8 +8,7 @@ module FlagsHelper
 
 
   def image_with_popup(image, popup)
-    image_tag(image,"onmouseover" => "return overlib('#{popup}');".html_safe,
-      "onmouseout" => "return nd();") + " "
+    image_tag(image, :class => "popup", "data-help" => popup.html_safe) + " "
   end
 
   def status_display(student, changeable = false)
@@ -68,7 +67,7 @@ module FlagsHelper
 
         form_tag(igflag,
           {:class => "flag_button", :style => "display:inline", :remote => true, :method => "delete"}) {
-          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');".html_safe, "onmouseout" => "return nd();") }
+          image_submit_tag(igflag.icon, :class => "popup", "data-help" => popup.html_safe) }
       end
       s.join(" ").html_safe
     end
@@ -82,7 +81,7 @@ module FlagsHelper
       if changeable
         form_tag(new_ignore_flag_path(:category => flags.first.category),
           {:style => "display:inline", :remote => true, :method => :get}) {
-          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');".html_safe, "onmouseout" => "return nd();") }
+          image_submit_tag(flags.first.icon, :class => "popup", "data-help" => popup.html_safe) }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
       end

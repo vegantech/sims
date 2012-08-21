@@ -1,5 +1,5 @@
-<h2 class="team_notes_header", ondblclick="$('team_notes').toggle();"> Team Notes </h2>
-<%= link_to_function "Show/Hide Team Notes" , "$('team_notes').toggle()" %> <%=team_notes_count(@student) %>
+<h2 class="team_notes_header dbl_toggler" data-toggle-id="team_notes"> Team Notes </h2>
+<%= link_to "Show/Hide Team Notes" ,"", :class => "toggler", "data-toggle-id" => "team_notes" %> <%=team_notes_count(@student) %>
 
 <div id="team_notes" style="display:none;">
   <div id="new_team_note">

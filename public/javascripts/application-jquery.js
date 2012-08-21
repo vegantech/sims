@@ -10,10 +10,10 @@ $(function() {
   $('a.plus_minus').click(function() {
     return $(this).parent('li').toggleClass('minus');
   });
-  $('.help-question').mouseover(function() {
+  $('.help-question,.popup').mouseover(function() {
     return overlib($(this).data().help);
   });
-  $('.help-question').mouseout(function() {
+  $('.help-question,.popup').mouseout(function() {
     return nd();
   });
   $('.dbl_toggler').dblclick(function() {
