@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def spell_check_button
-    button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();") +
+    submit_tag("Check Spelling", :class =>"spell_check_button", :name => nil) +
       help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " )
   end
 

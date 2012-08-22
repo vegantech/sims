@@ -4,8 +4,9 @@
 //
 
 $(function() {
-  $('.toggler').click(function() {
-    return $("#" + $(this).data().toggleId).toggle();
+  $('body').on("click",".toggler",function(event) {
+    event.preventDefault();
+    $("#" + $(this).data().toggleId).toggle();
   });
   $('a.plus_minus').click(function() {
     return $(this).parent('li').toggleClass('minus');
@@ -34,6 +35,13 @@ $(function() {
       this.checked = checked;
       return true;
     });
+  });
+  $('body').on("click",".spell_check_button",function(event){
+	event.preventDefault();
+	var f=this.form;
+	var speller = new spellChecker();
+	speller.textInputs=$('#'+f.id + ' .spell_check');
+	speller.openChecker();
   });
 
   setInterval(checkSession,3000);

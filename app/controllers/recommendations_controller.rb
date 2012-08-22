@@ -54,5 +54,10 @@ class RecommendationsController < ApplicationController
     @recommendation.destroy
     redirect_to current_student
   end
+
+  private
+  def jquery?
+    true
+  end
 end
 

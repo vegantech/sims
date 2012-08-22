@@ -17,8 +17,14 @@ document.observe("dom:loaded", function() {
 	el.up('li').toggleClassName('minus');
         e.stop();
     }
-
-    });
+    if (el = e.findElement('.spell_check_button')) {
+	var f=el.form;
+	var speller = new spellChecker();
+	speller.textInputs=$$('#'+f.id + ' .spell_check');
+	speller.openChecker();
+	e.stop();
+    }
+  });
 
   document.observe('mouseover', function(e,el) {
    if (el = e.findElement('.help-question')) {
