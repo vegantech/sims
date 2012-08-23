@@ -1,0 +1,2 @@
+$('#new_team_note_link').hide();
+$('#new_team_note_link').after("<%=escape_javascript(render(:partial=>'new', :locals=>{:format => :js, :target => "upload_frame"}))%>");

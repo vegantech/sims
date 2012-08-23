@@ -2,11 +2,11 @@
 <%= link_to "Show/Hide Team Notes" ,"", :class => "toggler", "data-toggle-id" => "team_notes" %> <%=team_notes_count(@student) %>
 
 <div id="team_notes" style="display:none;">
-  <div id="new_team_note">
+  <div id="new_team_note_link">
     <%= render :partial => 'add_note_link' %>
   </div>
 
 
-  <%= render_with_empty :partial=>"student_comments/comment", :collection => @student.comments, :empty => '', :id => "no_team_notes"
-%>
+  <%= render @student.comments %>
+  <div id="no_team_notes"> </div>
 </div>
