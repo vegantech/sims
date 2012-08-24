@@ -7,6 +7,6 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 set :domain, "sims-open.vegantech.com"
 after  :setup_domain_constant, :enable_subdomains
 
-set :branch, 'ruby-1.9.3'
+set :branch, 'ruby_1.9.3'
 
 
