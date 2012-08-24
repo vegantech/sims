@@ -65,5 +65,11 @@ class StudentCommentsController < ApplicationController
     end
   end
 
+  private
+  def jquery?
+    true
+  end
+
+
 
 end

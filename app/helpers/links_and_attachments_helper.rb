@@ -1,8 +1,15 @@
 module LinksAndAttachmentsHelper
 
   def add_asset_link(name, parent, suffix="")
-    link_to_function name do |page|
-      page.append_asset_link(parent,suffix)
+    if jquery?
+      content_tag :div do
+        render Asset.new, :locals => {:parent => parent}
+      end
+      link_to name
+    else
+      link_to_function name do |page|
+        page.append_asset_link(parent,suffix)
+      end
     end
   end
 

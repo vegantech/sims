@@ -5,5 +5,10 @@
 </div>
 
 <p>
+<% if jquery? %>
+
+<% else %>
   <%= add_asset_link "Add a file or link", "#{parent}",suffix %>
+<% end %>
+  
 </p>
