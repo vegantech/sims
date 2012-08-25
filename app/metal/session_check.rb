@@ -28,7 +28,7 @@ class SessionCheck
     params=Rack::Request.new(env).params
 
     #move this to metal
-    result="#{params}.inspect -- #{session.inspect}"
+    result=""
     if params['user_id'].present?
       if params['current_student_id'].present? && (session[:selected_student].to_s != params['current_student_id'].to_s)
         result += "Currently, you cannot select two different students in different windows or tabs.    "
