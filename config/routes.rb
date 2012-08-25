@@ -283,6 +283,8 @@ Rails.application.routes.draw do
   match 'scripted/:action(.:format)', :controller => "scripted"
   match 'intervention_builder/:controller/:action(.:format)'# for controller specs
   match 'spell_check/check_spelling' => "spell_check#check_spelling"
+  match '/session_check' => SessionCheckApp.action(:index)
+  match '/chart' => ChartProxyApp.action(:index)
 #  match 'checklist_builder/:controller/:action(.:format)'# for controller specs
 #  match ':controller(/:action(/:id(.:format)))'
 end
