@@ -28,12 +28,12 @@ class SessionCheck
     params=Rack::Request.new(env).params
 
     #move this to metal
-    result=""
+    result="#{params}.inspect -- #{session.inspect}"
     if params['user_id'].present?
       if params['current_student_id'].present? && (session[:selected_student].to_s != params['current_student_id'].to_s)
         result += "Currently, you cannot select two different students in different windows or tabs.    "
       end
-      if session["warden.user.user.key"].blank? || session["warden.user.user.key"][1].to_s != params['user_id'].to_s
+      if session["warden.user.user.key"].blank? || Array(session["warden.user.user.key"][1]).join != params['user_id'].to_s
         result += "You've been logged out or another user is using SIMS in another window or tab."
       end
     end

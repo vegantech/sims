@@ -63,7 +63,7 @@ class AutomatedIntervention
 
 
     unless intervention.send(:end_date_after_start_date?)
-      @messages << "#{intervention.errors.full_messages.to_s} #{line.to_s}" and return false
+      @messages << "#{intervention.errors.full_messages.join} #{line.to_s}" and return false
     end
     if line[:end_date].present?
       intervention.active=false
