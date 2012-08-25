@@ -1,3 +1,4 @@
+require 'bundler/capistrano'
 load "#{File.dirname(__FILE__)}/prohibition.rb"
 set :application, "sims-open"
 set :default_url, 'http://sims-open.vegantech.com'
@@ -7,6 +8,7 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 set :domain, "sims-open.vegantech.com"
 after  :setup_domain_constant, :enable_subdomains
 
-set :branch, 'ruby-1.9.3'
+set :branch, 'ruby_1.9.3'
+  set :bundle_without, [:development, :test, :cucumber]
 
 
