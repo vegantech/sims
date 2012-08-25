@@ -29,7 +29,7 @@ class Role
 
 
   def self.cache_key
-    Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.to_s)
+    Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.inspect)
   end
 
 
