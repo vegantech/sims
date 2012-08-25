@@ -1,3 +1,4 @@
+require 'bundler/capistrano'
 load "#{File.dirname(__FILE__)}/prohibition.rb"
 set :application, "sims-open"
 set :default_url, 'http://sims-open.vegantech.com'
@@ -8,5 +9,6 @@ set :domain, "sims-open.vegantech.com"
 after  :setup_domain_constant, :enable_subdomains
 
 set :branch, 'ruby_1.9.3'
+  set :bundle_without, [:development, :test, :cucumber]
 
 
