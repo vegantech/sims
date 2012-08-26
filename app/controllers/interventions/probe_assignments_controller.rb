@@ -8,7 +8,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
 
     respond_to do |format|
       format.js
-      format.html # index.html.erb
+      format.html {redirect_to edit_intervention_url(@intervention, :enter_score => true)} # index.html.erb
     end
   end
 
