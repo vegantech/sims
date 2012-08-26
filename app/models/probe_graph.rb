@@ -44,6 +44,8 @@ class ProbeGraph
      custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
     end
     custom_string = [custom_chm,chxp].compact.join("&")
+    puts chds
+    puts line_graph_date_denom
 
     Gchart.line_xy({:data => line_graph_data(probes_for_graph),
                    :axis_with_labels => 'x,x,y,r',
@@ -237,9 +239,12 @@ class ProbeGraph
   end
 
   def line_graph_date_denom
+    puts line_graph_left_date
+    puts line_graph_right_date
     scale_denom=line_graph_right_date - line_graph_left_date
+    puts scale_denom
     scale_denom = 0.0001 if scale_denom.zero?
-    scale_denom
+    scale_denom.to_i
   end
   def scaled_dates pp
     pp.collect{|e| (e.administered_at - line_graph_left_date).to_i}
