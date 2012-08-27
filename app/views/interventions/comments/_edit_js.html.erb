@@ -5,7 +5,7 @@
 <% end %>
 
 <% if comment.changed? %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :comment => comment, :noform => true)} %>
+  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => {:comment => comment}, :noform => true)} %>
 <% else %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :comment => comment)} %>
+  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => { :comment => comment})} %>
 <% end %>
