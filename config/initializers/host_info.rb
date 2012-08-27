@@ -30,6 +30,10 @@ sessionhash= {
     :secret      => secret
     }
 
+if ENV['SIMS_DOMAIN']
+  SIMS_DOMAIN = ENV['SIMS_DOMAIN']
+end
+
 if defined?(SIMS_DOMAIN)
   sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}")
 else
