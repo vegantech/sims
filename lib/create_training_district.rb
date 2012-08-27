@@ -41,6 +41,7 @@ class CreateTrainingDistrict
 
   def self.create_with_schools_and_users(abbrev,name)
     td=District.create!(:abbrev=>abbrev, :name =>name, :forgot_password => true)
+    ActiveRecord::Base.transaction do
     td.send :create_admin_user
     #alpha elementary
     alpha_elem=td.schools.create!(:name => 'Alpha Elementary')
@@ -85,6 +86,7 @@ class CreateTrainingDistrict
 
     self.generate_students(td, alpha_elem, training_homeroom)
     self.generate_other_students(td,alpha_elem, other_homeroom)
+    end
 
     td
   end
@@ -96,9 +98,11 @@ class CreateTrainingDistrict
     destroy_district abbrev
     td=create_with_schools_and_users(abbrev,name)
 
+    ActiveRecord::Base.transaction do
 
-    self.generate_interventions(td)
-    self.generate_checklist_definition(td)
+      self.generate_interventions(td)
+      self.generate_checklist_definition(td)
+    end
     td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
 
    td
