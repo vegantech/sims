@@ -33,11 +33,23 @@ describe Interventions::ProbeAssignmentsController do
       ipa=mock_intervention_probe_assignment
       @intervention.should_receive(:intervention_probe_assignment).and_return(ipa)
 
-      get :index, :intervention_id => 1
+      xhr :get, :index, :intervention_id => 1
       assigns(:intervention_probe_assignments).should == [ipa]
       assigns(:intervention).should == @intervention
       response.should be_success
     end
+
+    it "should redirect to the edit intervention page if not ajax" do
+      @intervention.should_receive(:intervention_probe_assignments).and_return([])
+      ipa=mock_intervention_probe_assignment
+      @intervention.should_receive(:intervention_probe_assignment).and_return(ipa)
+
+      get :index, :intervention_id => 1
+      assigns(:intervention_probe_assignments).should == [ipa]
+      assigns(:intervention).should == @intervention
+      response.should redirect_to(edit_intervention_url(@intervention, :enter_score => true))
+    end
+
   end
 
   describe 'probe_graph_preview' do

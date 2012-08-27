@@ -9,6 +9,13 @@ Spork.prefork do
   # need to restart spork for it take effect.
   require 'simplecov'
 
+  unless ENV['DRB']
+    SimpleCov.start 'rails' do
+      coverage_dir 'spec/coverage/unit_functional'
+      merge_timeout 1200
+    end
+  end
+
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
@@ -47,6 +54,7 @@ end
 Spork.each_run do
   SimpleCov.start 'rails' do
     coverage_dir 'spec/coverage/unit_functional'
+    merge_timeout 1200
   end
   # This code will be run each time you run your specs.
   Dir[Rails.root.join("app/controllers/district/*.rb")].each {|f| require f}
