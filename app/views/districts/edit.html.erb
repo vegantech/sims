@@ -36,7 +36,7 @@
         <%= help_popup "If you use gmail or google apps, users can login using their email and password.   You must  also enter your domain by entering it here Checking this will provide a google mail link/image on the login page." %>
       </div>
 
-    <% if defined? OmniAuth::Windowslive %>
+    <% if defined? ::WINDOWS_LIVE_CONFIG %>
         <div class ="form_row">
           <%= f.label :windows_live %>
           <%= f.check_box :windows_live %>
