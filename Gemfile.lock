@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/vegantech/railmail.git
-  revision: 456fa63d0a264f37ff82f04f1df5d2d0bd7b84e4
+  revision: 12e19f9a4bc21142f0691f5b2fe7091008e244cb
   branch: skip_authorize_and_authenticate
   specs:
     railmail (3.0.0)
@@ -148,7 +148,7 @@ GEM
     hirb (0.7.0)
     httpauth (0.1)
     i18n (0.5.0)
-    json (1.7.4)
+    json (1.7.5)
     json_pure (1.7.4)
     jwt (0.1.5)
       multi_json (>= 1.0)
