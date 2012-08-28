@@ -46,10 +46,12 @@
     <% end  %>
 
     <% if current_district.google_apps? %>
-      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %><br />
+      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %>
+      <%= help_popup "You can login with your district email and password.  You will be prompted to authorize SIMS.   This just lets you use that to login." %><br />
     <% end %>
     <% if current_district.windows_live? %>
-      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %><br />
+      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %>
+      <%= help_popup "You can login with your district email and password.  You will be prompted to authorize SIMS.  This just lets you use that to login." %><br />
     <% end %>
   <% end %>
 </div>
