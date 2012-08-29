@@ -21,7 +21,7 @@ module CSVImporter
       end
 
       def related
-        []
+        {}
       end
 
       def how_often
@@ -29,7 +29,7 @@ module CSVImporter
       end
 
       def alternate
-        "admins_of_schools"
+        {"admins_of_schools" => "Use this file instead"}
       end
 
       def upload_responses
