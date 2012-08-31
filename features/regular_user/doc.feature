@@ -15,3 +15,6 @@ Feature: Documentation Generation/View
   Scenario: Example CSV
     When I enter url "/doc/district_upload/examples"
     Then I should see "Alternate Files"
+
+  Scenario: All Individual CSV Docs
+	When I enter all csv urls
