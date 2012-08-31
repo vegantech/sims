@@ -169,3 +169,9 @@ Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, b
 end
 
 
+When /^I enter all csv urls$/ do
+  ImportCSV::VALID_FILES.each do |file|
+    visit "/doc/district_upload/#{file.split('.csv').first}"
+  end
+end
+
