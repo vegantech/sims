@@ -8,6 +8,7 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 set :user, 'shawn'
+set :shared_children, ["system", "log", "pids"]
 #set :rails_env, 'production'
 after "deploy:update_code", :copy_database_yml
 
@@ -34,6 +35,13 @@ namespace :moonshine do
 
 end
 
+namespace :local_config do
+  task :symlink do
+    puts "#{fetch(:shared_children).inspect}"
+    puts "In local config symlink?"
+  end
+
+end
 namespace :shared_config do
   task :symlink do
     puts 'I prefer to copy the database.yml, not symlink.  I have mistakenly edited it or copied another file to it before which caused me some headaches'
