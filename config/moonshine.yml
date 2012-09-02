@@ -46,7 +46,6 @@
 - system
 - log
 - pids
-- config
 
 # Specify native dependencies of gems. Moonshine comes with some default values of this, but this allows you to add to thim.
 # Please file an issue at http://github.com/railsmachine/moonshine/issues if there are additional gem dependencies moonshine should know about.
