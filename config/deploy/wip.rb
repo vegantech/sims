@@ -1,4 +1,3 @@
-require 'bundler/capistrano'
 load "#{File.dirname(__FILE__)}/prohibition.rb"
 server "vegantech.com", :app, :web, :db, :primary => true
 
@@ -8,7 +7,6 @@ server "vegantech.com", :app, :web, :db, :primary => true
   set :domain, 'sims-wip.vegantech.com'
   set :branch, 'wip'
   set :default_url, 'http://sims-wip.vegantech.com'
-  set :bundle_without, [:development, :test, :cucumber]
 
 #  set :branch, 'aug-11-formatting-changes'
   #
