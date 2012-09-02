@@ -77,7 +77,7 @@ group :cucumber do
 end
 
 group :development do
-  gem "capistrano",'2.5.0', :require => false
+  gem "capistrano", :require => false
   gem "capistrano-ext", :require => false
   gem "thin"
   gem "metrical", :platforms => :ruby_19
