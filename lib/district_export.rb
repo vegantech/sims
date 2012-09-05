@@ -7,7 +7,7 @@ class DistrictExport
 
   def no_double_quotes field
     return if field.blank?
-        string=field.to_s
+        string=field.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
         string.gsub! /\342\200\230/m, "'"
         string.gsub! /\342\200\231/m, "'"
         string.gsub! /\342\200\234/m, '"'
