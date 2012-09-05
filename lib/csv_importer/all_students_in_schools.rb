@@ -137,7 +137,7 @@ module CSVImporter
     def autoassign_user_school_assignments
       finder_sql = SpecialUserGroup.joins(:school).where("schools.district_id =#{@district.id}").joins(
         "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id
-        and uga.school_id = special_user_groups.school_id = uga.school_id ").select(
+        and uga.school_id = special_user_groups.school_id").select(
         "special_user_groups.school_id, special_user_groups.user_id").group(
         "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
         query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"

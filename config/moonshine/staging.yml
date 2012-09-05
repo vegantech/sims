@@ -1,6 +1,9 @@
 # Primary domain application will be accessed as 
 :domain: staging.sims-staging.info  #wisims.org 
 
+:ruby: 'src193'
+
+
 :default_url: https://staging.sims-staging.info
 
 # Domain aliases for applaction. One common use of this is for asset hosts.

@@ -38,7 +38,7 @@
     :network: 216.180.248.0
     :broadcast: 216.180.248.255
   - :name: eth0:3
-    :desc: *.newdomain.sims.widpi.managedmachine.com
+    :desc: "*.newdomain.sims.widpi.managedmachine.com"
     :address: 216.180.248.245
     :netmask: 255.255.255.0
     :network: 216.180.248.0
