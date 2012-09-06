@@ -16,6 +16,7 @@ If you want to remove a recommended monitor, be sure to uncheck it everywhere it
 
 <%= form_tag({}, {:name=>"monitor_form"}) do %>
   <div class="standardForm">
+    <%=hidden_field_tag :id, @intervention_definition.id %>
    <% @probe_definitions_in_groups.each do |k,g| %>
     <%= content_tag :h2, k.to_s.titleize %>
     <% g[:clusters].each do |k,ic| %>
