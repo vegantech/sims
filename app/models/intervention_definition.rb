@@ -55,7 +55,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   scope :restrict_tiers_and_disabled, lambda {|student_tier, district|
-    if district.lock_tier
+    if district.lock_tier?
       enabled.restrict_tiers(student_tier)
     else
       enabled

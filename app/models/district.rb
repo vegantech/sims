@@ -276,6 +276,14 @@ class District < ActiveRecord::Base
     windows_live.present? && windows_live != "0"
   end
 
+  def lock_tier?
+    lock_tier.present? && lock_tier != "0"
+  end
+
+  def restrict_free_lunch?
+    restrict_free_lunch.present? && restrice_free_lunch != "0"
+  end
+
 
 
 private
