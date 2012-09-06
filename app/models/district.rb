@@ -281,7 +281,7 @@ class District < ActiveRecord::Base
   end
 
   def restrict_free_lunch?
-    restrict_free_lunch.present? && restrice_free_lunch != "0"
+    restrict_free_lunch.present? && restrict_free_lunch != "0"
   end
 
 
