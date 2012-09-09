@@ -4,6 +4,7 @@ defaults: &defaults
   username: root
   reconnect: true
   collation: utf8_general_ci
+  local_infile: true
 #  password: root
 
 development: &DEVELOPMENT
