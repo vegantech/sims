@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626021737) do
+ActiveRecord::Schema.define(:version => 20120909153928) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -883,7 +883,7 @@ ActiveRecord::Schema.define(:version => 20120626021737) do
     t.integer  "roles_mask",                            :default => 0,     :null => false
     t.boolean  "all_students",                          :default => false, :null => false
     t.boolean  "all_schools",                           :default => false, :null => false
-    t.string   "encrypted_password",                                       :null => false
+    t.string   "encrypted_password",                    :default => "",    :null => false
     t.datetime "reset_password_sent_at"
   end
 
