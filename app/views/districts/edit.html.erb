@@ -22,11 +22,29 @@
         <%= help_popup "If checked, the lunch status will be hidden from the extended profile unless the user is a principal of the student." %>
       </div>
       <div class ="form_row">
-       <%= f.label :forgot_password, 'Allow Password Recovery?' %>
+        <%= f.label :forgot_password, "Allow Password <br/> Recovery?".html_safe %>
         <%= f.check_box :forgot_password %>
         <%= help_popup "If checked, users will be able to reset their password by email if they forget it.  They must also have their email address assigned
         in SIMS." %>
       </div>
+      <br clear ="both">
+      <div class ="form_row">
+        <%= f.label :google_apps %>
+        <%= f.check_box :google_apps %><br />
+        <%= f.label :google_apps_domain %>
+        <%= f.text_field :google_apps_domain %>
+        <%= help_popup "If you use gmail or google apps, users can login using their email and password.   You must  also enter your domain by entering it here Checking this will provide a google mail link/image on the login page.  <p>Your google apps admin may need to: <ul> <li> go to google apps</li> <li>Manage this domain</li><li>Click on Advanced tools in the blue bar</li><li>go to Federated Login in the Authentication section and click</li><li> Check the box to allow users to sign into 3rd party websites and save.</li></ul></p>".html_safe %>
+      </div>
+
+    <% if defined? ::WINDOWS_LIVE_CONFIG %>
+        <div class ="form_row">
+          <%= f.label :windows_live %>
+          <%= f.check_box :windows_live %>
+          <%= help_popup "If you use hotmail, outlook.com or live.com for email users can login using their email and password.   Checking this will
+        provide a windows live link/image on the login page" %>
+      </div>
+    <% end %>
+
       <div class ="form_row">
        <%= f.label :custom_interventions %>
         <%= f.select :custom_interventions, [['Enabled',''],['Content Admins','content_admins'],['Disabled','disabled'] ] %>

@@ -27,7 +27,7 @@ describe CSVImporter::Enrollments do
 
       @should_keep_enrollment = Factory(:student,:district_id => @district.id,  :district_student_id => 'keep_enrollment')
       @should_keep_enrollment.enrollments.create!(:grade => '01', :school_id => @school_with_link.id)
-      @should_keep_enrollment.enrollments.create!(:grade => 'this_grade_should_go', :school_id => @school_with_link.id)
+      @should_keep_enrollment.enrollments.create!(:grade => 'grade_should_go', :school_id => @school_with_link.id)
 
       @should_gain_enrollment = Factory(:student,:district_id => @district.id,  :district_student_id => 'gain_enrollment')
       @i=CSVImporter::Enrollments.new "#{Rails.root}/spec/csv/enrollments.csv",@district

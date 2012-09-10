@@ -11,6 +11,16 @@
           <%= hidden_field_tag "user[district_id_for_login]"  , current_district.to_param %>
         <% end %>
       </div>
+      <div style="float:right">
+      <% if current_district.windows_live? %>
+        <%= link_to image_tag("WindowsLive-128.png", :alt => "Windows Live"), omniauth_authorize_path(resource_name, "windowslive") %>
+      <% end %>
+      <% if current_district.google_apps? %>
+        <%= link_to image_tag("Gmail-128.png",:alt => "Sign in with Gmail/Google Apps"), omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %>
+      <% end %>
+    </div>
+
+
 
       <div class = "form_row">
         <%= f.label :username, "Login" %>
@@ -27,7 +37,7 @@
       <% if current_district.new_record? or  current_district.forgot_password? %>
         <%= f.submit "Forgot Password?", :name => "forgot_password" %>
       <% end %>
-      </div>
+        </div>
     </fieldset>
 
     <% if current_district.persisted? %>
@@ -36,10 +46,12 @@
     <% end  %>
 
     <% if current_district.google_apps? %>
-      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %><br />
+      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %>
+      <%= help_popup "You can login with your district email and password.  You will be prompted to authorize SIMS.   This just lets you use that to login." %><br />
     <% end %>
     <% if current_district.windows_live? %>
-      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %><br />
+      <%= link_to "Sign in with Windows Live", omniauth_authorize_path(resource_name, "windowslive") %>
+      <%= help_popup "You can login with your district email and password.  You will be prompted to authorize SIMS.  This just lets you use that to login." %><br />
     <% end %>
   <% end %>
 </div>

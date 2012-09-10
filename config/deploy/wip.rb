@@ -1,4 +1,3 @@
-require 'bundler/capistrano'
 load "#{File.dirname(__FILE__)}/prohibition.rb"
 server "vegantech.com", :app, :web, :db, :primary => true
 

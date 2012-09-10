@@ -33,8 +33,8 @@
 
 # Use :app_symlinks to setup directories under public/ that you want to persist
 # across deployments. They'll be symlinked to the shared directory.
-#:app_symlinks:
-#  - system
+:app_symlinks:
+  - system
 
 # Use :shared_config to copy directories straight from your local project directory
 # to the server: these are files that you don't have/want in scm.
@@ -43,10 +43,8 @@
 
 # The entries in shared_children are created in #{application}/shared
 :shared_children:
-- system
 - log
 - pids
-- config
 
 # Specify native dependencies of gems. Moonshine comes with some default values of this, but this allows you to add to thim.
 # Please file an issue at http://github.com/railsmachine/moonshine/issues if there are additional gem dependencies moonshine should know about.

@@ -12,7 +12,7 @@ module Moonshine
         # sane defaults
         set :branch, 'master'
         set :scm, :git
-        set :git_enable_submodules, 1
+       # set :git_enable_submodules, false
         set :keep_releases, 5
         ssh_options[:paranoid] = false
         ssh_options[:forward_agent] = true
@@ -83,6 +83,7 @@ module Moonshine
             set :moonshine_rails_env_yml do
               if moonshine_rails_env_yml_path.exist?
                 require 'yaml'
+                puts moonshine_rails_env_yml_path
                 YAML::load(ERB.new(moonshine_rails_env_yml_path.read).result)
               else
                 {}
@@ -362,7 +363,9 @@ module Moonshine
 
           desc 'Install Ruby + Rubygems'
           task :install do
+            puts 'before install deps'
             install_deps
+            puts 'after install deps'
             send fetch(:ruby)
             install_rubygems
             install_moonshine_deps
@@ -432,6 +435,25 @@ module Moonshine
               './configure --prefix=/usr',
               'make',
               'sudo make install'
+            ].join(' && ')
+          end
+
+          task :src193 do
+            remove_ruby_from_apt
+            pv = "1.9.3-p194"
+            p = "ruby-#{pv}"
+            sudo 'apt-get install -q -y libyaml-dev'
+
+            run [
+              'cd /tmp',
+              "sudo rm -rf #{p}* || true",
+              'sudo mkdir -p /usr/lib/ruby/gems/1.9/gems || true',
+              "wget -q http://ftp.ruby-lang.org/pub/ruby/1.9/#{p}.tar.gz",
+              "tar xzf #{p}.tar.gz",
+                "cd /tmp/#{p}",
+              './configure --prefix=/usr',
+                'make',
+                'sudo make install'
             ].join(' && ')
           end
 

@@ -49,7 +49,14 @@ describe LinksAndAttachmentsHelper do
       object=mock(:assets=>[link_asset,both_asset,empty_asset,attach_asset])
 
       helper.links_and_attachments(object, :dict).should == "<dict>link_asset -- www.link_asset.ant</dict><dict>both_asset -- www.both_asset.mil</dict><dict>original_filename -- new_doc_url</dict><dict>original_filename -- new_doc_url</dict>"
+    end
 
+    it 'should not display anything when the assets are destroyed' do
+      comment = StudentComment.new
+      asset = comment.assets.build(:url => 'test', :name => 'test')
+      asset.destroy
+      comment.assets.should_not be_empty
+      helper.links_and_attachments(comment, :dict).should == ''
     end
 
   end

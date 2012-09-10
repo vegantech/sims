@@ -38,7 +38,7 @@ gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'mysql2', '~> 0.2.7'
+gem 'mysql2', '0.2.19b3'
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
@@ -78,7 +78,7 @@ group :cucumber do
 end
 
 group :development do
-  gem "capistrano",'2.5.0', :require => false
+  gem "capistrano", :require => false
   gem "capistrano-ext", :require => false
   gem "thin"
   gem "metrical", :platforms => :ruby_19

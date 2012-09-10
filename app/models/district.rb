@@ -67,6 +67,7 @@ class District < ActiveRecord::Base
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate  :check_keys, :on => :update
+  validates :google_apps_domain, :presence => true, :if => :google_apps?
   before_destroy :make_sure_there_are_no_schools
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
@@ -265,6 +266,24 @@ class District < ActiveRecord::Base
       self.settings[:restrict_free_lunch] = true if self.settings[:restrict_free_lunch].nil?
     end
   end
+
+  public
+  def google_apps?
+    google_apps.present? && google_apps != "0"
+  end
+
+  def windows_live?
+    windows_live.present? && windows_live != "0"
+  end
+
+  def lock_tier?
+    lock_tier.present? && lock_tier != "0"
+  end
+
+  def restrict_free_lunch?
+    restrict_free_lunch.present? && restrict_free_lunch != "0"
+  end
+
 
 
 private

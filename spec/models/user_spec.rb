@@ -156,7 +156,7 @@ describe User do
       s3=Factory(:school, :district => @user.district)
       s4=Factory(:school)
       @user.update_attribute(:all_students, true)
-      @user.schools.should == [s1,s2,s3]
+      @user.schools.should =~ [s1,s2,s3]
     end
 
     it 'should return s1 and s3 for user with access to s1 and special access tp s3' do

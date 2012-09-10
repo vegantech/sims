@@ -20,15 +20,16 @@ module CSVImporter
       def removed
       end
 
-#      def related
-#      end
+      def related
+        []
+      end
 
       def how_often
         ""
       end
 
       def alternate
-
+        "admins_of_schools"
       end
 
       def upload_responses

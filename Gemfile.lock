@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/vegantech/railmail.git
-  revision: 456fa63d0a264f37ff82f04f1df5d2d0bd7b84e4
+  revision: 12e19f9a4bc21142f0691f5b2fe7091008e244cb
   branch: skip_authorize_and_authenticate
   specs:
     railmail (3.0.0)
@@ -59,12 +59,12 @@ GEM
     arrayfields (4.7.4)
     bcrypt-ruby (3.0.1)
     builder (2.1.2)
-    capistrano (2.5.0)
+    capistrano (2.13.3)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.0)
-      net-ssh-gateway (>= 1.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
     capybara (1.1.2)
@@ -142,14 +142,14 @@ GEM
       guard (>= 1.1)
       spork (>= 0.8.4)
     hashie (1.2.0)
-    highline (1.6.11)
+    highline (1.6.14)
     hirb (0.6.0)
     httpauth (0.1)
     i18n (0.5.0)
     jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
-    json (1.7.4)
+    json (1.7.5)
     json_pure (1.6.5)
     jwt (0.1.4)
       json (>= 1.2.4)
@@ -191,12 +191,12 @@ GEM
     mime-types (1.19)
     multi_json (1.0.4)
     multipart-post (1.1.5)
-    mysql2 (0.2.18)
+    mysql2 (0.2.19b3)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
       net-ssh (>= 2.0.9)
-    net-ssh (2.3.0)
+    net-ssh (2.5.2)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
     newrelic_rpm (2.14.1)
@@ -340,7 +340,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   airbrake
-  capistrano (= 2.5.0)
+  capistrano
   capistrano-ext
   capybara
   cells
@@ -362,7 +362,7 @@ DEPENDENCIES
   libnotify
   memcache-client
   metrical
-  mysql2 (~> 0.2.7)
+  mysql2 (= 0.2.19b3)
   newrelic_rpm
   nokogiri (= 1.4.4)
   omniauth-google-apps

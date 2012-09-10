@@ -54,7 +54,6 @@ module Sims
     config.filter_parameters += [:password]
 
     config.middleware.use 'ExtendedLogger'
-    config.middleware.use 'ChartProxy'
     config.middleware.swap ActionDispatch::BestStandardsSupport, Sims::BestStandardsSupport
 
 #    config.action_mailer.delivery_method = :railmail
