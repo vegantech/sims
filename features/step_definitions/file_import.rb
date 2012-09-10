@@ -159,7 +159,7 @@ end
 
 
 When /^I remove the student and state_id$/ do
-  Student.update_all("district_id = null, district_student_id = null, id_state = null")
+  Student.update_all("district_id = null, district_student_id = '', id_state = null")
 end
 
 Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, bool|
