@@ -354,7 +354,7 @@ var CSS = (function(){
 /*   EVENT FUNCTIONS                                                   */
 /* ******************************************************************* */
 
-var Event = (function(){
+var PopupEvent = (function(){
 	var ev = {};
 	
 	// Resolve an event using IE's window.event if necessary
@@ -805,7 +805,7 @@ Popup.hideAll = function() {
 	}
 };
 // Catch global events as a trigger to hide auto-hide popups
-Event.add(document, "mouseup", Popup.hideAll, false);
+PopupEvent.add(document, "mouseup", Popup.hideAll, false);
 
 // A simple class method to show a popup without creating an instance
 Popup.show = function(divObject, referenceObject, position, options, modal) {
@@ -921,7 +921,7 @@ Popup.prototype.show = function(options, modal) {
 	
 	// Make sure clicks on the DIV don't bubble up to the document
 	this.div.onclick = function(e) { 
-		Event.cancelBubble(Event.resolve(e));
+		PopupEvent.cancelBubble(PopupEvent.resolve(e));
 	};
 	this.div.onmouseup = this.div.onclick;
 	
@@ -1142,7 +1142,7 @@ Popup.prototype.addScreen = function() {
 		this.screen.style.backgroundColor = this.screenColor;
 		this.screen.className=Popup.screenClass;;
 		CSS.setStyle(this.screen,"opacity",this.screenOpacity);
-		this.screen.onclick = function(e) { Event.cancelBubble(Event.resolve(e)); }
+		this.screen.onclick = function(e) { PopupEvent.cancelBubble(PopupEvent.resolve(e)); }
 	}
 	if (this.screenIframeShim==null) {
 		this.screenIframeShim = this.createIframe();
