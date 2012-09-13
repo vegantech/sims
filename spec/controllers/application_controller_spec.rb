@@ -142,29 +142,29 @@ describe ApplicationController do
       it 'www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
       it 'example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
 
       it 'https://www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.env["HTTPS"] = "on"
         @req.stub(:port => "443")
-        @c.send(:root_url_with_subdomain).should == "https://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "https://rspec.example.com:443/"
       end
       it 'training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
       it 'https://training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
     end
     describe 'without_subdomain' do
@@ -176,34 +176,34 @@ describe ApplicationController do
       it 'www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       it 'example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
 
       it '127.0.0.1:3000' do
         @req.env["HTTP_HOST"] = "127.0.0.1"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://127.0.0.1/"
+        @c.send(:root_url_without_subdomain).should == "http://127.0.0.1:80/"
       end
       it 'https://www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.env["HTTPS"] = "on"
         @req.stub(:port => "443")
-        @c.send(:root_url_without_subdomain).should == "https://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "https://www.example.com:443/"
       end
       it 'training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       it 'https://training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       describe 'sims-open' do
         before do
@@ -220,12 +220,12 @@ describe ApplicationController do
         it 'sims-open.vegantech.com' do
           @req.env["HTTP_HOST"] = "sims-open.vegantech.com"
           @req.stub(:port => "80")
-          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com/"
+          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com:80/"
         end
         it 'training.sims-open.vegantech.com' do
           @req.env["HTTP_HOST"] = "training.sims-open.vegantech.com"
           @req.stub(:port => "80")
-          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com/"
+          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com:80/"
         end
       end
 

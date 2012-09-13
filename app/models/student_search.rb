@@ -4,8 +4,9 @@ class StudentSearch
   #This allows me to use it in url_for as a singleton resource
   def self.model_name
     ActiveModel::Name.new(StudentSearch).tap{|s|
-      s.instance_variable_set :@singular, "student_searches"
-      s.instance_variable_set :@plural, "student_search"
+      def s.route_key
+        "student_search"
+      end
     }
   end
 
