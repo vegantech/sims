@@ -27,12 +27,12 @@ class StudentSearchesController < ApplicationController
   # RJS methods for search page
 
   def grade
-    @users=current_user.filtered_members_by_school(current_school,params)
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @users=current_user.filtered_members_by_school(current_school,sliced_params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   def member
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   private
@@ -50,6 +50,10 @@ class StudentSearchesController < ApplicationController
       redirect_to schools_url and return
     end
     return true
+  end
+
+  def sliced_params
+    params.slice(:grade, :user, :school_id)
   end
 
 end
