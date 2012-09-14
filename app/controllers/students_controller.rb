@@ -131,10 +131,9 @@ class StudentsController < ApplicationController
     else
       missed_students = @students
     end
-    Enrollment.send(:preload_associations, missed_students,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
-                    {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]})
-
-
+    ActiveRecord::Associations::Preloader.new(missed_students,
+     {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
+                    {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]}).run
     @flags_above_threshold= flags_above_threshold
   end
 

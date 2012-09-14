@@ -1,9 +1,10 @@
 <div class="form_row">
-<% if @goal_definitions.blank? %>
+  <% if @goal_definitions.blank? %>
   Interventions are not available, no goals defined.
   <%= link_to :back, :back %>
 <%else%>
-  <%= remote_form_for :goal_definition, :url => interventions_goals_path(:custom_intervention => custom_intervention?) do |f| %>
+  <%= remote_form_for :goal_definition,(@goal_definition || GoalDefinition.new),  :url =>
+      interventions_goals_path(:custom_intervention => custom_intervention?) do |f| %>
       <%= f.label(:id,'Assign Goal') %>
       <%= f.collection_select(:id, @goal_definitions, :id, :title, {:prompt => ""}, {:onchange => "$('spinnergoals').show();this.form.onsubmit()", :class => "fixed_width"}) %>
 <%= spinner("goals") %>
