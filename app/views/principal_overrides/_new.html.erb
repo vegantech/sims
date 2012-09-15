@@ -1,7 +1,7 @@
 <% if @principal_override.can_create? %>
 
 
-  <%= form_remote_for(:principal_override,:url=>principal_overrides_path, :html=>{:id=>'new_principal_override_form'}) do |f| %>
+  <%= form_remote_for(:principal_override,@principal_override,:url=>principal_overrides_path, :html=>{:id=>'new_principal_override_form'}) do |f| %>
   <%= f.error_messages %>
 
     <%= f.label :start_tier, "Current Tier:" %>
