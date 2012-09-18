@@ -1,5 +1,5 @@
 <%= error_messages_for 'custom_flag' %>
-<%= form_remote_for(@custom_flag) do |form| %>
+<%= form_for(@custom_flag, :remote => true) do |form| %>
   <label for='custom_flag_reason'>Please enter your reason for this custom:</label>
   <%= form.text_field :reason%> <br />
   <label for='custom_flag_category'>Category:</label><% flagtypes= Flag::FLAGTYPES %>
