@@ -242,31 +242,6 @@ class District < ActiveRecord::Base
     google_apps_domain.present?
   end
 
-  begin
-    after_initialize :default_settings_to_hash
-    raise "Remove this block" if Rails.version > "3.2"
-    serialize :settings, Hash
-    SETTINGS.each do |s|
-      define_method("#{s}=") do |value|
-        self.settings ||= {}
-        @old_key = settings[:key] if s==:key
-
-        self.settings[s] = value
-        self.settings_will_change!
-      end
-
-      define_method(s) {(settings || Hash.new)[s]}
-      define_method("#{s}?") {!!send(s)}
-    end
-
-
-    private
-    def default_settings_to_hash
-      self.settings ||= {}
-      self.settings[:restrict_free_lunch] = true if self.settings[:restrict_free_lunch].nil?
-    end
-  end
-
   public
   def google_apps?
     google_apps.present? && google_apps != "0"

@@ -36,7 +36,7 @@ module ApplicationHelper
         hsh = ::Rails.application.routes.recognize_path url
       end
     end
-    ctrl = "#{hsh[:controller]}Controller".camelize.constantize
+    ctrl = "#{hsh[:controller]}_controller".camelize.constantize
     link_to(name, url, html_options) if   current_user.authorized_for?(ctrl.controller_path)
   end
 

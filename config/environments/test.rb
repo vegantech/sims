@@ -32,5 +32,7 @@ Sims::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  config.active_record.mass_assignment_sanitizer = :strict
+  config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
 Spawn::default_options( {:method => :yield})
