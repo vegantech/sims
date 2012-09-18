@@ -1,4 +1,4 @@
-require 'fastercsv'
+require 'csv'
 class ReferralReport
   def initialize(district)
     @district = district
@@ -13,7 +13,7 @@ class ReferralReport
   end
 
   def referral_report
-    csv_string = FasterCSV.generate(:row_sep=>"\r\n") do |csv|
+    csv_string = CSV.generate(:row_sep=>"\r\n") do |csv|
       csv << ["personID","referral_request","main_concerns","interventions_tried","family_involvement","external_factors","date","schoolyear"]
       dates_of_sims_data.each do |student|
         if student["id"]

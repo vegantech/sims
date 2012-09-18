@@ -29,18 +29,13 @@ class Role
 
 
   def self.cache_key
-    Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.to_s)
+    Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.inspect)
   end
 
 
   def self.mask_to_roles(mask)
     roles=ROLES.reject{ |r| (mask || 0)[ROLES.index(r)].zero?}
-    roles.singleton_class.send(:define_method, "<<") do
-      puts 'You probably want to use += instead'
-     #Switching to rails 3 would allow me to redefine array as an association
-      super
-    end
-  roles
+    roles.tap {|r| r.singleton_class.send(:undef_method, "<<")}
   end
 
   def self.roles_to_mask(roles=[])

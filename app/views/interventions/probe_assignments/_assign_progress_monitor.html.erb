@@ -1,9 +1,8 @@
-<% readonly = false if readonly.nil? %>
 <br class="brclear" />
 <p>
 
-  <%= label 'intervention[intervention_probe_assignment]',:probe_definition_id, "#{readonly ? '' : 'Assign'} Progress Monitor" %>
-  <% if readonly %>
+  <%= label 'intervention[intervention_probe_assignment]',:probe_definition_id, "#{readonly? ? '' : 'Assign'} Progress Monitor" %>
+  <% if readonly? %>
     <%= @intervention.assigned_probes %>
   <% elsif Array(@recommended_monitors).size == 1 && @intervention.new_record? && !custom_intervention?%>
     <% @intervention_probe_assignment ||=@intervention.intervention_probe_assignment(@recommended_monitors.first.probe_definition_id) if (@recommended_monitors.first.probe_definition) %>
@@ -27,5 +26,5 @@
 </p>
 <br class="brclear" />
 <div id="intervention_probe_assignment">
-  <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail', :locals => {:readonly => readonly } %>
+  <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail' %>
 </div>

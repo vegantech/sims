@@ -18,7 +18,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe SystemFlag do
   describe 'summary' do
     it 'should construct the summary' do
-      sf = SystemFlag.new(:reason => 'Reason', :created_at => Time.parse("8/11/09 2:13 pm CDT"))
+      sf = SystemFlag.new(:reason => 'Reason', :created_at => Time.parse("2009-08-11 2:13 pm CDT"))
       sf.summary.should == 'Reason on 08/11/2009'
     end
   end

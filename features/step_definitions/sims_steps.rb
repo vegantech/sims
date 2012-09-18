@@ -300,12 +300,6 @@ Given /^there is an email containing "(.*)"$/ do |target_text|
   last_mail.should match(/#{target_text}/)
 end
 
-When /^I press within (.*)$/ do | scope|
-  within(scope) do |scoped|
-    scoped.click_button
-  end
-end
-
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
@@ -313,7 +307,7 @@ Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
-  date = date_string.to_date
+  date = Date.strptime date_string, '%m/%d/%Y'
   @student.comments.create!(:body => content, :created_at => date)
 end
 

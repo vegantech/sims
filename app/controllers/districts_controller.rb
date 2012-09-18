@@ -82,7 +82,7 @@ class DistrictsController < ApplicationController
 
 
   def bulk_import_form
-     @uuid = (0..29).to_a.map {|x| rand(10)}
+     @uuid = CGI.escape((0..29).to_a.map {|x| rand(10)}.join )
   end
 
   def bulk_import
@@ -98,8 +98,9 @@ class DistrictsController < ApplicationController
           @results = "#{importer.messages.join(", ")} #{x}"
           #request redirect_to root_url
         rescue => e
-          Rails.logger.error "Spawn Exception #{Time.now} #{e.message}"
+          Rails.logger.error "Spawn Exception #{Time.now} #{e.message} #{e.backtrace}"
           Airbrake.notify(
+            :backtrace => e.backtrace,
             :error_class => "Spawn Error",
             :error_message => "Spawn Error: #{e.message}"
           )

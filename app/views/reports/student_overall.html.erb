@@ -28,7 +28,7 @@
   <%= subreport_selected(@opts[:team_notes]) do %>
     <% unless @student.comments.empty? %>
       <h2>Team Notes</h2>
-      <%= render :partial => "student_comments/comment", :collection => @student.comments, :locals =>{:no_actions=> true} %>
+      <%= render :partial => "student_comments/comment", :collection => @student.comments %>
     <% end %>
   <% end %>
 
@@ -38,11 +38,11 @@
     <% else %>
     <h2>Interventions</h2>
     <h3 class="intervention_summary"><span>Active Interventions</span></h3>
-    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.active, :no_action=>true} %>
+    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.active} %>
 
 
     <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
-    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.inactive, :no_action => true} %>
+    <%= render :partial => 'students/intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
     <% end %>
   <% end %>
 
