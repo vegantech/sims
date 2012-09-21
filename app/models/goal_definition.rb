@@ -23,6 +23,8 @@ class GoalDefinition < ActiveRecord::Base
       x
     end
   end
+
+  scope :enabled, where(:disabled => false)
   validates_uniqueness_of :description, :scope=>[:district_id,:title]
 
   validates_presence_of :title, :description
