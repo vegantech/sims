@@ -59,6 +59,7 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_goals' do
     it 'should populate @goal_definitions' do
+      GoalDefinition.delete_all
       self.should_receive(:find_goal_definition).twice
       populate_goals
       @goal_definitions.should == []
@@ -70,6 +71,7 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_objectives' do
     it 'should populate @objective_definitions' do
+      ObjectiveDefinition.delete_all
       self.should_receive(:find_objective_definition).twice
       @goal_definition=mock_goal_definition(:objective_definitions => ObjectiveDefinition)
       populate_objectives
@@ -83,6 +85,7 @@ describe "Populate Intervention Dropdowns Module" do
   describe 'populate_categories' do
 
     it 'should populate @intervention_clusters' do
+      InterventionCluster.delete_all
       self.should_receive(:find_intervention_cluster).twice
       @objective_definition=mock_objective_definition(:intervention_clusters => InterventionCluster)
       InterventionCluster.should_receive(:include_sld_criteria_from_definitions).twice.and_return([])
