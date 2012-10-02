@@ -31,7 +31,7 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def current_district
-    @current_district ||= mock_district(:goal_definitions => [])
+    @current_district ||= mock_district(:goal_definitions => GoalDefinition)
   end
 
   def flash
@@ -71,7 +71,7 @@ describe "Populate Intervention Dropdowns Module" do
   describe 'populate_objectives' do
     it 'should populate @objective_definitions' do
       self.should_receive(:find_objective_definition).twice
-      @goal_definition=mock_goal_definition(:objective_definitions => [])
+      @goal_definition=mock_goal_definition(:objective_definitions => ObjectiveDefinition)
       populate_objectives
       @objective_definitions.should == []
       @objective_definition = true

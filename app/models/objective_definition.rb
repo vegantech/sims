@@ -18,6 +18,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   belongs_to :goal_definition
   has_many :intervention_clusters, :order =>'intervention_clusters.position', :dependent=> :destroy
   has_many :intervention_definitions, :through => :intervention_clusters
+  scope :enabled, where(:disabled => false)
 
   validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]

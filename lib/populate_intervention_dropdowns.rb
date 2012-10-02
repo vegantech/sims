@@ -38,22 +38,19 @@ protected
 
   def populate_categories
     find_intervention_cluster
-    @intervention_clusters = @objective_definition.intervention_clusters.include_sld_criteria_from_definitions if @objective_definition
-    @intervention_clusters.reject!(&:disabled) if @intervention_clusters
+    @intervention_clusters = @objective_definition.intervention_clusters.enabled.include_sld_criteria_from_definitions if @objective_definition
     populate_definitions if @intervention_cluster
   end
 
   def populate_objectives
     find_objective_definition
-    @objective_definitions = @goal_definition.objective_definitions if @goal_definition
-    @objective_definitions.reject!(&:disabled) if @objective_definitions
+    @objective_definitions = @goal_definition.objective_definitions.enabled if @goal_definition
     populate_categories if @objective_definition
   end
 
   def populate_goals
     find_goal_definition
-    @goal_definitions = current_district.goal_definitions # not for js
-    @goal_definitions.reject!(&:disabled)
+    @goal_definitions = current_district.goal_definitions.enabled # not for js
     populate_objectives if @goal_definition
   end
 
@@ -62,7 +59,7 @@ protected
     @goal_definition ||=
       if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
         current_district.goal_definitions.find_by_id(params[:goal_id] || params[:goal_definition][:id])
-      elsif current_district.goal_definitions.reject(&:disabled).size == 1
+      elsif current_district.goal_definitions.enabled.one?
         current_district.goal_definitions.first
       else
         nil
@@ -75,7 +72,7 @@ protected
     @objective_definition ||= 
       if params[:objective_id] || (params[:objective_definition] && params[:objective_definition][:id])
         @goal_definition.objective_definitions.find_by_id(params[:objective_id] || params[:objective_definition][:id])
-      elsif @goal_definition.objective_definitions.reject(&:disabled).size == 1
+      elsif @goal_definition.objective_definitions.enabled.one?
         @goal_definition.objective_definitions.first
       end
   end
@@ -85,7 +82,7 @@ protected
     @intervention_cluster ||= 
       if params[:category_id] || (params[:intervention_cluster] && params[:intervention_cluster][:id])
         @objective_definition.intervention_clusters.find_by_id(params[:category_id] || params[:intervention_cluster][:id])
-      elsif @objective_definition.intervention_clusters.reject(&:disabled).size == 1
+      elsif @objective_definition.intervention_clusters.enabled.one?
         @objective_definition.intervention_clusters.first
       end
   end
@@ -95,7 +92,7 @@ protected
     @intervention_definition ||= 
       if params[:definition_id] || (params[:intervention_definition] && params[:intervention_definition][:id])
         @intervention_cluster.intervention_definitions.find_by_id(params[:definition_id] || params[:intervention_definition][:id])
-      elsif @intervention_cluster.intervention_definitions.reject(&:disabled).size == 1
+      elsif @intervention_cluster.intervention_definitions.enabled.one?
         @intervention_cluster.intervention_definitions.first
       end
   end
