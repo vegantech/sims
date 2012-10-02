@@ -2,6 +2,8 @@ ENV["RAILS_ENV"] = "cucumber"
 require 'simplecov'
 SimpleCov.start 'rails' do
   coverage_dir 'spec/coverage/cucumber'
+  add_filter "/vendor"
+  merge_timeout "2400"
 end
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 

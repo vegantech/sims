@@ -137,6 +137,7 @@ class CreateTrainingDistrict
     CSV.table("#{path}/goal_definitions.csv").each do |ck|
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       next if ck.to_hash[:deleted_at].to_i !=0
+      ckhash[:disabled] = false if ckhash[:disabled].nil?
       newcd= district.goal_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       goalhash[ck[:id]]=newcd.id
     end
@@ -145,6 +146,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
+      ckhash[:disabled] = false if ckhash[:disabled].nil?
       newcd= ObjectiveDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       objectivehash[ck[:id]]=newcd.id
     end
@@ -153,6 +155,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
+      ckhash[:disabled] = false if ckhash[:disabled].nil?
       newcd= InterventionCluster.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       clusterhash[ck[:id]]=newcd.id
     end
@@ -162,6 +165,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
       mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
+      ckhash[:disabled] = false if ckhash[:disabled].nil?
       unless ckhash[:disabled] or ckhash[:custom]
         ckhash[:notify_email] = nil
         newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier).except(:deleted_at,:copied_at,:copied_from))
