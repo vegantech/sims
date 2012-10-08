@@ -4,7 +4,7 @@ before_script:
   - "cp config/database.yml.mysql config/database.yml;"
   - "bundle exec rake db:create:all db:schema:load;"
 
-services: 
+services:
   - memcached
 branches:
   only:
