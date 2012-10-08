@@ -1,6 +1,6 @@
 begin
   require 'memcache'
-  MEMCACHE = MemCache.new('127.0.0.1', :timeout => 2)
+  MEMCACHE = MemCache.new('localhost:11211', :timeout => nil)
   unless MEMCACHE.servers.first.alive?
     puts 'MEMCACHE SERVER DEAD' + MEMCACHE.servers.inspect
     MEMCACHE = nil
