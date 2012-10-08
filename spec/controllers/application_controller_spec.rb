@@ -97,25 +97,25 @@ describe ApplicationController do
     end
     it 'should work normally with under <50 ids' do
       controller.send :selected_student_ids=, [1,2,3]
-      if ENV['TRAVIS']
-        puts "SKIPPING because memcache is not working on travis-ci"
-      else
-        controller.send(:selected_student_ids).should == [1,2,3]
-      end
+      controller.send(:selected_student_ids).should == [1,2,3]
     end
 
     it 'should cache when there are more than 50 ids' do
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
-      controller.send(:selected_student_ids).should == values
-      controller.instance_variable_set "@memcache_student_ids", nil
-      @session[:session_id] = "bush"
-      controller.send(:selected_student_ids).should_not == values  #if session_id changes
-      controller.instance_variable_set "@memcache_student_ids", nil
-      @session[:session_id] = "tree"
-      controller.stub!(:current_user => User.new)
-      controller.send(:selected_student_ids).should_not == values  #if user changes
+      if ENV['TRAVIS']
+        puts "SKIPPING because memcache is not working on travis-ci"
+      else
+        controller.send(:selected_student_ids).should == values
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "bush"
+        controller.send(:selected_student_ids).should_not == values  #if session_id changes
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "tree"
+        controller.stub!(:current_user => User.new)
+        controller.send(:selected_student_ids).should_not == values  #if user changes
+      end
     end
 
   end
