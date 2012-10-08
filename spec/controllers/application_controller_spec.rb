@@ -97,7 +97,7 @@ describe ApplicationController do
     end
     it 'should work normally with under <50 ids' do
       controller.send :selected_student_ids=, [1,2,3]
-      if ENV['travis']
+      if ENV['TRAVIS']
         puts "SKIPPING because memcache is not working on travis-ci"
       else
         controller.send(:selected_student_ids).should == [1,2,3]
