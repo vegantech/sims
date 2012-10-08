@@ -175,3 +175,6 @@ When /^I enter all csv urls$/ do
   end
 end
 
+Given /^TRAVIS\-PENDING$/ do
+  pending if ENV['TRAVIS']
+end

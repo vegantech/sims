@@ -1,11 +1,9 @@
 rvm: 1.9.3
-before_install: rvm install rubygems 1.8.17; sudo apt-get install -y unzip
+before_install: rvm install rubygems 1.8.17; sudo apt-get install -y unzip; sudo service memcached stop; sudo service memcached start
 before_script:
   - "cp config/database.yml.mysql config/database.yml;"
   - "bundle exec rake db:create:all db:schema:load;"
 
-services:
-  - memcache
 branches:
   only:
   - master
