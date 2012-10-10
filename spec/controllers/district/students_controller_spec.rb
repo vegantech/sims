@@ -158,4 +158,8 @@ describe District::StudentsController do
 
   end
 
+
+  describe "check_id_state" do
+    it 'should have specs'
+  end
 end
