@@ -233,6 +233,20 @@ class District < ActiveRecord::Base
     return res,msg
   end
 
+  def can_claim?(student)
+    if VerifyStudentInDistrictExternally.enabled?
+      begin
+        res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
+      rescue StudentVerificationError => e
+        logger.info "Student verification error e.inspect"
+        msg='Error verifiying student location'
+      end
+    else
+      res = student.district.blank?
+    end
+    res
+  end
+
   def self.find_by_subdomain(subdomain)
     where(:abbrev => parse_subdomain(subdomain)).first || only_district ||
        new(:name => 'Please Select a District')

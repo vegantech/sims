@@ -128,6 +128,10 @@ describe District do
     end
   end
 
+  describe 'can_claim?' do
+    it 'should have specs'
+  end
+
   describe 'find_by_subdomain' do
     let!(:district) {District.delete_all;Factory(:district, :abbrev => 'rspec123')}
     describe 'with matching subdomain' do
