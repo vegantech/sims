@@ -74,7 +74,7 @@ class District::StudentsController < ApplicationController
 
     render :update do |page|
       if @student
-        if  current_district.can_claim?(@student.district)
+        if  current_district.can_claim?(@student)
           page.alert('Follow the link if you want to try to claim this student for your district')
           page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
         else
