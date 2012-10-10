@@ -1,7 +1,8 @@
 <%=render :partial => 'team_consultations/draft' %>
 <%=link_to_remote "Create Team Consultation Form",new_team_consultation_url %> <br />
 <% current_student.team_consultations.pending.each do |pending_concern| %>
-  <%= link_to_remote "Respond to Request for Information - #{pending_concern.school_team}", new_consultation_form_url(:team_consultation_id => pending_concern)  %> <br />
+  <%= link_to_remote "Respond to Request for Information - #{pending_concern.school_team}", new_consultation_form_url(:team_consultation_id => pending_concern)  %>
+  <%= help_popup "This presents a blank form for you.  If you are looking for the initial request, it is in the Responses to Request for Information below." %> <br />
 <% end %>
 
     <div id ="consultation_form"></div>
