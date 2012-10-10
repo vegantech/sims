@@ -74,11 +74,11 @@ class District::StudentsController < ApplicationController
 
     render :update do |page|
       if @student
-        if  @student.district
-          page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
-        else
+        if  current_district.can_claim?(@student)
           page.alert('Follow the link if you want to try to claim this student for your district')
           page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
+        else
+          page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
         end
       end
     end
