@@ -186,4 +186,15 @@ def check_student
     end
     root_url(opts)
   end
+  def disable_gc
+    GC.disable
+    begin
+      yield
+    ensure
+      GC.enable
+      GC.start
+    end
+  end
+
+
 end
