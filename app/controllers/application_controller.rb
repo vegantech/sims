@@ -190,4 +190,15 @@ def check_student
   def readonly?
     false
   end
+
+  def disable_gc
+    GC.disable
+    begin
+      yield
+    ensure
+      GC.enable
+      GC.start
+    end
+  end
+
 end

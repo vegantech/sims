@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
-	before_filter :enforce_session_selections, :except => [:index, :create, :search]
+  before_filter :enforce_session_selections, :except => [:index, :create, :search]
   skip_before_filter :verify_authenticity_token
+  around_filter :disable_gc, :only => :index
+
 
   # GET /students
   def index
