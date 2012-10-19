@@ -3,7 +3,7 @@ class DistrictsController < ApplicationController
 
   # GET /districts
   def index
-    @districts = District.normal
+    @districts = District.for_dropdown
 
     respond_to do |format|
       format.html # index.html.erb

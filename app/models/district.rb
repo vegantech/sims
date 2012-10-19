@@ -56,6 +56,7 @@ class District < ActiveRecord::Base
   scope :normal, where(:admin=>false).order('name')
   scope :admin, where(:admin=>true)
   scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
+  scope :for_dropdown, normal.select("id,name,abbrev")
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
