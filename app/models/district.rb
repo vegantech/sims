@@ -25,6 +25,7 @@ class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions, :google_apps, :windows_live]
+  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps, :windows_live]
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
@@ -278,28 +279,14 @@ class District < ActiveRecord::Base
     private
     def default_settings_to_hash
       self.settings ||= {}
-      self.settings[:restrict_free_lunch] = true if self.settings[:restrict_free_lunch].nil?
+      self.settings[:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
     end
   end
 
   public
-  def google_apps?
-    google_apps.present? && google_apps != "0"
+  BOOLEAN_SETTINGS.each do |setting|
+    define_method("#{setting}?") {self.settings[setting].present? && self.settings[setting] != "0"}
   end
-
-  def windows_live?
-    windows_live.present? && windows_live != "0"
-  end
-
-  def lock_tier?
-    lock_tier.present? && lock_tier != "0"
-  end
-
-  def restrict_free_lunch?
-    restrict_free_lunch.present? && restrict_free_lunch != "0"
-  end
-
-
 
 private
 
