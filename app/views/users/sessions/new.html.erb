@@ -6,7 +6,7 @@
       <div class = "form_row">
         <% if current_district.blank? || current_district.new_record? %>
           <%= f.label :district_id_for_login, "District" %>
-          <%= f.collection_select :district_id_for_login, District.normal, :id, :name %>
+          <%= f.collection_select :district_id_for_login, District.for_dropdown, :id, :name %>
         <% else  %>
           <%= hidden_field_tag "user[district_id_for_login]"  , current_district.to_param %>
         <% end %>

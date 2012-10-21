@@ -1,7 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
   rescue_from Devise::ChangingPasswordInsteadOfFailedLogin, :with => :change_password_instead_of_login
   layout 'main'
-  around_filter :disable_gc, :only => :new
 
   def create
     if params["forgot_password"]

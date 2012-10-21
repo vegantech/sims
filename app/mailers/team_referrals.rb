@@ -3,7 +3,7 @@ class TeamReferrals < MailerWithSubdomains
   default :from => DEFAULT_EMAIL
 
   def concern_note_created(note, sent_at = Time.now)
-    subject =    'Team Consultation Form Created'
+    subject =    "Team Consultation Form Created -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")
     @district = note.student.district
     @recipient_name= note.recipients.join(", ")
@@ -25,12 +25,12 @@ class TeamReferrals < MailerWithSubdomains
 
 
   def concern_note_withdrawn(note, sent_at = Time.now)
-    subject=    'Team Consultation Form Withdrawn'
+    subject=    "Team Consultation Form Withdrawn -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")
     @district = note.student.district
     @recipient_name= note.recipients.join(", ")
     @student_name = note.student.fullname
-    @requestor_name = note.requestor.fullname,
+    @requestor_name = note.requestor.fullname
     @note = note
 
     mail(:subject => subject, :to => recipients, :subject => subject)
