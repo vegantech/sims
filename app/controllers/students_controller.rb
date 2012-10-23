@@ -79,7 +79,7 @@ class StudentsController < ApplicationController
      return ic_entry if params[:id] == "ic_jump"
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
-        session[:school_id] = (student.schools & current_user.schools).first
+        session[:school_id] = (student.schools & current_user.schools).first.id
         session[:selected_student]=params[:id]
         self.selected_student_ids=[params[:id]]
         return true
@@ -99,6 +99,7 @@ class StudentsController < ApplicationController
   end
 
   def ic_entry
+    #TODO FIXME
       session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
       student = current_district.students.find_by_district_student_id(params[:contextID])
       if student

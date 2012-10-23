@@ -42,6 +42,7 @@ Feature: Create Custom Intervention
     And I press "Choose Category"
 
     Then I should see "Custom Intervention Name"
+    And the custom intervention should have the school and user set
 
   Scenario: Create invalid existing
     #feature for 212

@@ -10,9 +10,9 @@ describe TeamReferrals do
 
 
       proc{@mail=TeamReferrals.concern_note_created(note).deliver}.should change(ActionMailer::Base.deliveries,:size).by(1)
-      @mail.subject.should ==  'Team Consultation Form Created'
+      @mail.subject.should ==  'Team Consultation Form Created -- Testing'
       @mail.header["to"].to_s.should ==  user.email
-      expected_body =  "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming team meeting.\n\n\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message,\n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
+      expected_body =  "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming (Testing) team meeting.\n\n\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message,\n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
       @mail.body.raw_source.should == expected_body
 
     end
