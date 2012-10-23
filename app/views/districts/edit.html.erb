@@ -47,8 +47,16 @@
 
       <div class ="form_row">
        <%= f.label :custom_interventions %>
-        <%= f.select :custom_interventions, [['Enabled',''],['Content Admins','content_admins'],['Disabled','disabled'] ] %>
-        <%= help_popup "You can restrict custom interventions to content administrators, or disable them." %>
+        <%= f.select :custom_interventions, [['Enabled',''],['Only Author', 'only_author'],['Content Admins','content_admins'],['Disabled','disabled'] ] %>
+        <%= help_popup "<dl><dt>Enabled</dt>
+        <dd>custom interventions will be available and shared with the author and the selected school.</dd>
+        <dt>Only Author</dt>
+        <dd>custom interventions will be available but only seen for reuse by the author.</dd>
+        <dt>Content Admins</dt>
+        <dd>new custom interventions will only be available for content administrators, but they will be shared with the selected school.</dd>
+        <dt>Disabled</dt>
+        <dd>no one will be able to create a custom intervention, but existing ones will be available for reuse by the author.</dd>
+        </dl>" %>
       </div>
       <div class ="form_row">
         <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} ".html_safe %>
