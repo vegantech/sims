@@ -68,6 +68,20 @@ class InterventionDefinition < ActiveRecord::Base
   [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
   ).order("tiers.position,intervention_clusters.position,intervention_definitions.position")
 
+  scope :for_dropdown, lambda {|student_tier, district, school_id, user|
+    res=restrict_tiers_and_disabled(student_tier, district)
+      if ["disabled","only_author"].include? district.custom_interventions
+        #shared only with author
+        return res.where(["custom = ? or user_id = ?", false, user.id])
+      else
+        #shared with author and school (enabled and content_admins)
+        return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
+      end
+  }
+
+
+
+
 
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
 

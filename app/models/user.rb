@@ -363,7 +363,9 @@ class User < ActiveRecord::Base
   end
 
   def custom_interventions_enabled?
-    district.custom_interventions.blank? || (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
+    district.custom_interventions.blank? ||
+      district.custom_interventions == "only_author" ||
+      (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
   end
 
 protected
