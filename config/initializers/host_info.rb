@@ -39,6 +39,7 @@ if defined?(SIMS_DOMAIN)
 else
   sessionhash.merge!( :domain => ".lvh.me")
 end
+sessionhash[:domain]= nil if ENV['NO_SIMS_DOMAIN']
 
 Sims::Application.config.session_store :cookie_store, sessionhash
 if Object.const_defined?('SIMS_DOMAIN')
