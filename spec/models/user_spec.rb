@@ -432,6 +432,17 @@ describe User do
        end
      end
 
+     describe 'one_off' do
+       let(:custom_intervention){'one_off'}
+       its(:custom_interventions_enabled?) {should == true}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
+
+
      describe 'enabled' do
        let(:custom_intervention){''}
        its(:custom_interventions_enabled?) {should == true}

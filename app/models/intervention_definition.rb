@@ -73,7 +73,9 @@ class InterventionDefinition < ActiveRecord::Base
       if ["disabled","only_author"].include? district.custom_interventions
         #shared only with author
         return res.where(["custom = ? or user_id = ?", false, user.id])
-      else
+        elsif district.custom_interventions == 'one_off'
+          return res.where(["custom = ?", false])
+        else
         #shared with author and school (enabled and content_admins)
         return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
       end
