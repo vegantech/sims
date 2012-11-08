@@ -31,7 +31,7 @@ protected
       @tiers=current_district.tiers
     else
       @intervention_definitions = @intervention_cluster.intervention_definitions.for_dropdown(
-        current_student.max_tier, current_district, current_school_id, current_user)
+        current_student.max_tier, current_district, current_school_id, current_user) if @intervention_cluster
     end
     populate_intervention if @intervention_definition
   end
