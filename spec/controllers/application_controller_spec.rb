@@ -236,6 +236,45 @@ describe ApplicationController do
     end
   end
 
+  describe 'check_domain' do
+    before do
+      @c = ApplicationController.new
+      @req = ActionDispatch::TestRequest.new
+      @c.request =@req
+      #@c.set_current_view_context
+    end
+
+    it 'should return true for devise controller' do
+      @c.should_receive(:devise_controller?).and_return true
+      @c.send(:check_domain).should be_true
+    end
+
+    it 'should pass through if there is no current district' do
+      @c.should_receive(:current_district).and_return nil
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should pass through if the current district matches the subdomain' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.should_receive(:current_subdomain).and_return "test"
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should sign out if the subdomain matches another district' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "other")
+      Factory(:district, :abbrev => "other")
+      @c.should_receive(:sign_out_and_redirect)
+      @c.send(:check_domain).should be_false
+    end
+
+    it 'should pass theough if the subdomain matches no district' do
+      @c.stub!(:current_district => mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "www")
+      @c.send(:check_domain).should be_nil
+    end
+  end
+
 
 
 end
