@@ -39,7 +39,7 @@ class StudentSearchesController < ApplicationController
 
 
   def check_school_and_set_grades
-    @grades = current_school.grades_by_user(current_user)
+    @grades = check_school.grades_by_user(current_user)
     if @grades.blank?
       if current_school.students.empty?
         flash[:notice] = "#{current_school} has no students enrolled."
@@ -50,6 +50,14 @@ class StudentSearchesController < ApplicationController
       redirect_to schools_url and return
     end
     return true
+  end
+
+  def check_school
+    if params[:school_id] != current_school_id
+      @school = current_user.schools.find(params["school_id"])
+      session[:school_id] = @school.id
+    end
+    current_school
   end
 
 end
