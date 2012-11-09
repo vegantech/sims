@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
 
-  before_filter :fixie6iframe,:authenticate_user!, :authorize
+  before_filter :fixie6iframe,:authenticate_user!,:check_domain, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
@@ -196,5 +196,13 @@ def check_student
     end
   end
 
+
+  def check_domain
+    return true if devise_controller?
+    if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
+      sign_out_and_redirect root_url
+      return false
+    end
+  end
 
 end
