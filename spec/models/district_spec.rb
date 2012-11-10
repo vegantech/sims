@@ -167,4 +167,55 @@ describe District do
     end
   end
 
+  describe 'boolean settings' do
+    subject {District.new}
+
+    describe 'restrict_free_lunch' do
+      its(:restrict_free_lunch?) {should be}
+    end
+
+    District::BOOLEAN_SETTINGS.each do |setting|
+      describe setting do
+        ["1",true].each do |truth_value|
+          describe "when set to #{truth_value}" do
+            subject {District.new setting => truth_value }
+            its("#{setting}?") {should be_true}
+          end
+        end
+        describe setting do
+          ["0",nil,false].each do |truth_value|
+            describe "when set to #{truth_value}" do
+              subject {District.new setting => truth_value }
+              its("#{setting}?") {should be_false}
+            end
+          end
+        end
+      end
+
+    end
+  end
+#  describe 'when set to nil' do
+#    subject {District.new :restrict_free_lunch => nil}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to "0"' do
+#        subject {District.new :restrict_free_lunch => "0"}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to "1"' do
+#        subject {District.new :restrict_free_lunch => "1"}
+#        its(:restrict_free_lunch?) {should be_true}
+#      end
+#      describe 'when set to false' do
+#        subject {District.new :restrict_free_lunch => false}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to true' do
+#        subject {District.new :restrict_free_lunch => true}
+#        its(:restrict_free_lunch?) {should be}
+#      end
+#
+#    end
+#  end
+#
 end

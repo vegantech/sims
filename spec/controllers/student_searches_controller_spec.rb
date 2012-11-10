@@ -36,11 +36,13 @@ describe StudentSearchesController do
 
 
   describe 'show' do
+    let(:user) {mock_user}
     describe 'GET' do
+      before do
+        controller.stub!(:current_school => school, :current_school_id => school.id, :current_user => user)
+      end
+
       it 'should redirect with a flash when the school is empty' do
-        user=mock_user
-        controller.stub!(:current_school => school)
-        controller.stub!(:current_user => user)
         school.should_receive(:grades_by_user).with(user).and_return([])
         school.should_receive(:students).and_return([])
         get :show, :school_id => school.id
@@ -50,9 +52,6 @@ describe StudentSearchesController do
       end
 
       it 'should redirect with a flash when there are no authorized students' do
-        user=mock_user
-        controller.stub!(:current_school => school)
-        controller.stub!(:current_user => user)
         school.should_receive(:grades_by_user).with(user).and_return([])
         school.should_receive(:students).and_return([1])
         get :show, :school_id => school.id
@@ -61,13 +60,8 @@ describe StudentSearchesController do
 
       end
 
-
-
       it 'should set @grades and render search template' do
-        user=mock_user
         school.should_receive(:enrollment_years).and_return([1,2,3])
-        controller.stub!(:current_school => school)
-        controller.stub!(:current_user => user)
         school.should_receive(:grades_by_user).with(user).and_return ['*','1','2']
         user.should_receive(:filtered_groups_by_school).with(school).and_return ['g1']
         user.should_receive(:filtered_members_by_school).with(school).and_return ['m1','m2']
@@ -78,6 +72,28 @@ describe StudentSearchesController do
         assigns(:users).should == ['m1', 'm2']
         assigns(:groups).should == ['g1']
         response.should render_template('search')
+      end
+
+      describe 'school mismatch' do
+        before do
+          controller.stub!(:current_school_id => nil)
+          user.stub!(:schools => School)
+        end
+        it 'should redirect if the school is not authorized' do
+          get :show, :school_id => -123
+          response.should redirect_to(root_url)
+
+        end
+
+        it 'should set the school if the school is authorized' do
+          School.should_receive(:find).with(school.id).and_return(school)
+          school.should_receive(:grades_by_user).with(user).and_return([])
+          school.should_receive(:students).and_return([])
+          lambda {
+            get :show, :school_id => school.id
+          }.should change {session[:school_id]}.from(nil).to(school.id)
+        end
+
       end
     end
 

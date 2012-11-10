@@ -25,6 +25,9 @@ class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions, :google_apps, :windows_live]
+
+  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps]
+  BOOLEAN_SETTINGS <<  :windows_live  if defined? ::WINDOWS_LIVE_CONFIG
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username
@@ -56,6 +59,7 @@ class District < ActiveRecord::Base
   scope :normal, where(:admin=>false).order('name')
   scope :admin, where(:admin=>true)
   scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
+  scope :for_dropdown, normal.select("id,name,abbrev")
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
 
@@ -277,28 +281,14 @@ class District < ActiveRecord::Base
     private
     def default_settings_to_hash
       self.settings ||= {}
-      self.settings[:restrict_free_lunch] = true if self.settings[:restrict_free_lunch].nil?
+      self.settings[:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
     end
   end
 
   public
-  def google_apps?
-    google_apps.present? && google_apps != "0"
+  BOOLEAN_SETTINGS.each do |setting|
+    define_method("#{setting}?") {self.settings[setting].present? && self.settings[setting] != "0"}
   end
-
-  def windows_live?
-    windows_live.present? && windows_live != "0"
-  end
-
-  def lock_tier?
-    lock_tier.present? && lock_tier != "0"
-  end
-
-  def restrict_free_lunch?
-    restrict_free_lunch.present? && restrict_free_lunch != "0"
-  end
-
-
 
 private
 

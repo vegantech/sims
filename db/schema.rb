@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920161336) do
+ActiveRecord::Schema.define(:version => 20121023015949) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20120920161336) do
   end
 
   add_index "districts", ["abbrev"], :name => "index_districts_on_abbrev"
+  add_index "districts", ["admin", "name"], :name => "index_districts_on_admin_and_name"
 
   create_table "element_definitions", :force => true do |t|
     t.integer  "question_definition_id"
@@ -358,7 +359,7 @@ ActiveRecord::Schema.define(:version => 20120920161336) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                  :default => false
+    t.boolean  "custom",                  :default => false, :null => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"

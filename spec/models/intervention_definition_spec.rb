@@ -133,4 +133,56 @@ describe InterventionDefinition do
       end
     end
   end
+  describe 'for_dropdown' do
+    before :all do
+      InterventionDefinition.delete_all
+      @cucumber_user = Factory(:user)
+      @cucumber_district = @cucumber_user.district
+      @cucumber_school = Factory(:school, :district => @cucumber_district)
+      gd=Factory(:goal_definition, :district => @cucumber_district)
+      od=Factory(:objective_definition, :goal_definition => gd)
+      @category = Factory(:intervention_cluster, :objective_definition => od)
+      @suss = Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
+              :user_id => @cucumber_user.id, :school_id => @cucumber_school.id, :custom => true)
+      @suds = Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
+              :user_id => @cucumber_user.id, :school_id => -1, :custom => true)
+      @duss = Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
+              :user_id => -1, :school_id => @cucumber_school.id, :custom => true)
+      @duds = Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
+              :user_id => -1, :school_id => -1, :custom => true)
+      @dis = Factory(:intervention_definition, :intervention_cluster => @category, :title => "disabled",
+              :disabled => true)
+      @sys = Factory(:intervention_definition, :intervention_cluster => @category, :title => "system")
+    end
+
+    it 'district custom interventions disabled' do
+      @cucumber_district.custom_interventions = "disabled"
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys, @suss, @suds]
+    end
+
+    it 'district custom interventions enabled' do
+      @cucumber_district.custom_interventions = ""
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys, @suss, @suds, @duss]
+    end
+
+    it 'district custom interventions content_admins' do
+      @cucumber_district.custom_interventions = "content_admins"
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys, @suss, @suds, @duss]
+    end
+
+    it 'district custom interventions only_author' do
+      @cucumber_district.custom_interventions = "only_author"
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys, @suss, @suds]
+    end
+
+    it 'district custom interventions only_author' do
+      @cucumber_district.custom_interventions = "one_off"
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys]
+    end
+  end
 end

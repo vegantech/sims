@@ -1,5 +1,5 @@
 class StatsController < ApplicationController
-  skip_before_filter :authenticate_user!, :authorize
+  skip_before_filter :authenticate_user!, :authorize, :check_domain
 
   def index
     #TODO test and refactor
