@@ -440,7 +440,7 @@ module Moonshine
 
           task :src193 do
             remove_ruby_from_apt
-            pv = "1.9.3-p194"
+            pv = "1.9.3-p327"
             p = "ruby-#{pv}"
             sudo 'apt-get install -q -y libyaml-dev'
 
