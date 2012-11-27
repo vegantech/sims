@@ -165,4 +165,8 @@ class InterventionsController < ApplicationController
       redirect_to current_student and return false
     end
   end
+
+  def readonly?
+    params[:action] == "show"
+  end
 end
