@@ -1,3 +1,5 @@
+
+<br /> <%#This br is a fix for IE6.   Weird, but it works. %>
 <%=fields_for @intervention do |iform| %>
   <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
     <%= render '/interventions/comments/form', :form => f %>
