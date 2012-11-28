@@ -1,18 +1,8 @@
-require 'test/unit'
-
-begin
-  require File.dirname(__FILE__) + '/../../../../config/boot'
-  Rails::Initializer.run
-rescue LoadError
-  require 'rubygems'
-  require 'activerecord'
-end
-
-# Search for fixtures first
-fixture_path = File.dirname(__FILE__) + '/fixtures/'
-Dependencies.load_paths.insert(0, fixture_path)
-
-require 'active_record/fixtures'
+require "test/unit"
+require "rubygems"
+gem "activerecord", "3.2.0"
+require "active_record"
+require "active_support/core_ext/logger"
 
 require File.expand_path(File.dirname(__FILE__) + '/../lib/validates_date_time')
 
@@ -22,33 +12,42 @@ ActiveRecord::Base.establish_connection(ENV['DB'] || 'mysql')
 
 load(File.dirname(__FILE__) + '/schema.rb')
 
-Test::Unit::TestCase.fixture_path = File.dirname(__FILE__) + '/fixtures/'
+class Person < ActiveRecord::Base
+  validates_date :date_of_birth, :allow_blank => true
+  validates_date :date_of_death, :allow_blank => true, :before => lambda { Date.current + 1.day }, :after => :date_of_birth
 
-class Test::Unit::TestCase #:nodoc:
-  self.use_transactional_fixtures = true
-  self.use_instantiated_fixtures = false
-  
-  fixtures :people
-  
-  def p
-    people(:jonathan)
+  validates_date :date_of_arrival, :allow_blank => true, :before => :date_of_departure, :after => '1 Jan 1800', :before_message => "avant %s", :after_message => "apres %s", :message => "malfaisance"
+
+  validates_time :time_of_birth, :allow_blank => true, :before => [lambda { Time.now }]
+  validates_time :time_of_death, :allow_blank => true, :after => [:time_of_birth, '7pm'], :before => [lambda { 10.years.from_now }]
+
+  validates_date_time :date_and_time_of_birth, :allow_blank => true, :before => '2008-01-01 01:01:01', :after => '1981-01-01 01:01am'
+
+  validates_date :required_date
+end
+
+class ActiveRecord::TestCase
+  attr_reader :person
+
+  def setup
+    @person = Person.create!(:required_date => "2006-01-01")
   end
-  
+
   def assert_update_and_equal(expected, attributes = {})
-    assert p.update_attributes!(attributes), "#{attributes.inspect} should be valid"
-    assert_equal expected, p.send(attributes.keys.first).to_s
+    assert person.update_attributes!(attributes), "#{attributes.inspect} should be valid"
+    assert_equal expected, person.send(attributes.keys.first).to_s
   end
-  
+
   def assert_update_and_match(expected, attributes = {})
-    assert p.update_attributes(attributes), "#{attributes.inspect} should be valid"
-    assert_match expected, p.send(attributes.keys.first).to_s
+    assert person.update_attributes(attributes), "#{attributes.inspect} should be valid"
+    assert_match expected, person.send(attributes.keys.first).to_s
   end
-  
+
   def assert_invalid_and_errors_match(expected, attributes = {})
-    assert !p.update_attributes(attributes)
-    assert_match expected, p.errors.full_messages.join
+    assert !person.update_attributes(attributes)
+    assert_match expected, person.errors.full_messages.join("")
   end
-  
+
   def with_us_date_format(&block)
     ValidatesDateTime.us_date_format = true
     yield

@@ -1,6 +1,6 @@
 <div id="categories" class ="form_row">
 <% if @intervention_clusters %>
-  <%= remote_form_for :intervention_cluster,
+  <%= remote_form_for :intervention_cluster, (@intervention_cluster || InterventionCluster.new),
     :url => interventions_categories_path(@goal_definition, @objective_definition,
                                                  :custom_intervention => custom_intervention?) do |f| %>
     <%= f.label :id, 'Assign Category' %>

@@ -59,7 +59,8 @@ module Sims
 #    config.action_mailer.delivery_method = :railmail
     config.time_zone = 'Central Time (US & Canada)'
     config.cache_store = :mem_cache_store
-    config.paths.app.manifests 'app/manifests', :eager_load => false
+    config.paths['app/manifests'] = "app/manifests"
+    config.paths['app/manifests'].skip_eager_load!
 
     config.to_prepare do
       Devise::Mailer.layout "email"
