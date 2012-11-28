@@ -1,4 +1,4 @@
-<% readonly ||= false %>
+<% readonly ||= (readonly? || false) %>
 <% noform ||= false %>
 <% if comment %>
 <%= content_tag_for :tr, comment do %>

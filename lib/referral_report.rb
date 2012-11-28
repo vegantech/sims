@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'csv'
 class ReferralReport
   def initialize(district)
@@ -21,6 +23,7 @@ class ReferralReport
            answers = ActiveRecord::Base.connection.select_rows("select position, ra.text from recommendation_answers ra inner join recommendation_answer_definitions rad on ra.recommendation_answer_definition_id = rad.id  and ra.recommendation_id where ra.recommendation_id = #{student["id"]}").flatten
            answers.each do |string|
              unless string.respond_to?("integer?")
+               string=string.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
                string.gsub! /\342\200\230/m, "'"
                string.gsub! /\342\200\231/m, "'"
                string.gsub! /\342\200\234/m, '"'

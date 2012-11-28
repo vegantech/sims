@@ -1,3 +1,5 @@
+ssh_options[:keys] = %w('~/.ssh/id_rsa')
+
 set :stages, %w(staging production wip pilot2 veg_open open2 other)
 set :default_stage, 'staging'
 require 'capistrano/ext/multistage' rescue 'YOU NEED TO INSTALL THE capistrano-ext GEM'
