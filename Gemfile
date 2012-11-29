@@ -54,6 +54,7 @@ gem 'devise', '~> 1.5.0'
 gem 'omniauth-google-apps'
 gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
+gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
 gem 'sneaky-save'
 
 group :test do
