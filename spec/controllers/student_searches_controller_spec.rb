@@ -86,7 +86,7 @@ describe StudentSearchesController do
         end
 
         it 'should set the school if the school is authorized' do
-          School.should_receive(:find).with(school.id).and_return(school)
+          School.should_receive(:find).with(school.id.to_s).and_return(school)
           school.should_receive(:grades_by_user).with(user).and_return([])
           school.should_receive(:students).and_return([])
           lambda {
