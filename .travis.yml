@@ -8,3 +8,4 @@ branches:
   only:
   - master
   - wip
+  - rails3.1_ruby_1.9.3
