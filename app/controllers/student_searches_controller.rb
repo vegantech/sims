@@ -57,7 +57,7 @@ class StudentSearchesController < ApplicationController
   end
 
   def check_school
-    if params[:school_id] != current_school_id
+    if params[:school_id] != current_school_id.to_s
       @school = current_user.schools.find(params["school_id"])
       session[:school_id] = @school.id
     end
