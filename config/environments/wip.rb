@@ -26,6 +26,14 @@ config.active_support.deprecation = :log
  config.action_mailer.raise_delivery_errors = false
  config.action_mailer.delivery_method = :test
 
+
+
+  # Do not compress assets
+  config.assets.compress = false
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
+
 #ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.sims-open.vegantech.com')
 
 # Settings specified here will take precedence over those in config/environment.rb
