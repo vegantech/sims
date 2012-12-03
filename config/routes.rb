@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Sims::Application.routes.draw do
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks", :sessions => "users/sessions", :passwords => "users/passwords"} do
     match '/logout' => 'users/sessions#destroy', :as => :logout
     match '/login' => "users/sessions#new"

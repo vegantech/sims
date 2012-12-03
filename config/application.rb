@@ -3,9 +3,13 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 require File.expand_path('../../lib/best_standards_support',__FILE__)
 
-# If you have a Gemfile, require the gems listed there, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+if defined?(Bundler)
+  # If you precompile assets before deploying to production, use this line
+  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  # If you want your assets lazily compiled in production, use this line
+  # Bundler.require(:default, :assets, Rails.env)
+end
+
 
 module Sims
   class Application < Rails::Application
@@ -22,17 +26,6 @@ module Sims
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-=begin
-     SIMS_BASE_PLUGINS = [:validates_date_time, :acts_as_list,  :paperclip,
-       :spawn, :statistics,  :unobtrusive_date_picker, :will_paginate, :airbrake, :mysql_sets]
-       if ENV['RAILS_ENV'] == "test" || ENV['RAILS_ENV'] == 'cucumber'
-         config.plugins =  [ :validates_date_time, :all ]
-       elsif ENV['RAILS_ENV'] == "production"
-         config.plugins =  SIMS_BASE_PLUGINS
-       else
-         config.plugins =  SIMS_BASE_PLUGINS# | [:railmail]
-       end
-=end
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
@@ -61,6 +54,13 @@ module Sims
     config.cache_store = :mem_cache_store
     config.paths['app/manifests'] = "app/manifests"
     config.paths['app/manifests'].skip_eager_load!
+
+    # Enable the asset pipeline
+    config.assets.enabled = false
+
+    # Version of your assets, change this if you want to expire all your assets
+    config.assets.version = '1.0'
+
 
     config.to_prepare do
       Devise::Mailer.layout "email"
