@@ -47,7 +47,6 @@ class Intervention < ActiveRecord::Base
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
   has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant
   has_many :participant_users, :through => :intervention_participants, :source => :user
-
   has_many :intervention_probe_assignments, :dependent => :destroy
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
@@ -225,6 +224,11 @@ class Intervention < ActiveRecord::Base
     !sld? || (mins_per_week >= 0.8 * intervention_definition.mins_per_week)
   end
 
+  def participant_user_ids=(ids)
+    #remove duplicates and blanks
+    ids=ids.reject(&:blank?).uniq
+    self.participant_users=User.where(:id =>(ids))
+  end
   protected
 
   def create_other_students
@@ -336,4 +340,5 @@ class Intervention < ActiveRecord::Base
   def notify_new_participant(participant)
     participant.send_email = true unless new_record? or @creation_email or called_internally
   end
+
 end
