@@ -1,11 +1,11 @@
 <h2>Question Definition <%= question_definition.position %></h2>
 <span style="float:left">
-  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
-                     :url => move_checklist_builder_question_path(:id => question_definition, :direction => "up") %><br />
-  <%= link_to_remote image_tag("arrow-down.gif"), 
-                     :url => move_checklist_builder_question_path(:id => question_definition, :direction => "down") %>
-</span>
-<table>
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'),  :method => :post,
+    :url => move_checklist_builder_question_path(:id => question_definition, :direction => "up") %><br />
+    <%= link_to_remote image_tag("arrow-down.gif"), :method => :post,
+      :url => move_checklist_builder_question_path(:id => question_definition, :direction => "down") %>
+    </span>
+    <table>
   <tr class="cycle_odd_lvl2"> 
     <td>Text:</td>
     <td><%=h question_definition.text %></td>

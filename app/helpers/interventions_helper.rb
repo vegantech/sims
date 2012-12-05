@@ -29,9 +29,9 @@ module InterventionsHelper
         options_from_collection_for_select_with_css_class(  c[group], :id, :title,'sld','sld?', :selected => selected) if c[group]
       end
     end
-    select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
-               :onchange => "$('spinnerdefinitions').show();form.onsubmit()",
-               :name => "intervention_definition[id]")
+   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
+              :onchange => "$('spinnerdefinitions').show();simulate(this.form,'submit')",
+              :name => "intervention_definition[id]")
   end
 
 

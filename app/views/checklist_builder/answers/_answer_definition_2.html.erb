@@ -1,8 +1,8 @@
 <h4>Answer Definition <%= answer_definition.position %></h4>
 <span style="float:left">
-<%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), :method => :post,
                    :url => move_checklist_builder_answer_path(:id => answer_definition, :direction => "up") %><br />
-<%= link_to_remote image_tag("arrow-down.gif"), 
+                   <%= link_to_remote image_tag("arrow-down.gif"), :method => :post,
                    :url => move_checklist_builder_answer_path(:id => answer_definition, :direction => "down") %>
 </span>
 <table>
