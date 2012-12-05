@@ -15,7 +15,7 @@ module InterventionsHelper
       end
     end
    select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
-              :onchange => "$('spinnerdefinitions').show();form.onsubmit()",
+              :onchange => "$('spinnerdefinitions').show();simulate(this.form,'submit')",
               :name => "intervention_definition[id]")
   end
 
