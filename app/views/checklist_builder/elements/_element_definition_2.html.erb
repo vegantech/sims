@@ -1,10 +1,10 @@
 <h3>Element Definition <%=h element_definition.position %></h3>
 <span style="float:left">
-  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
-                     :url => move_checklist_builder_element_path(:id => element_definition, :direction => "up") %><br />
-  <%= link_to_remote image_tag("arrow-down.gif"), 
-                     :url => move_checklist_builder_element_path(:id => element_definition, :direction => "down") %>
-</span>
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), :method => :post,
+    :url => move_checklist_builder_element_path(:id => element_definition, :direction => "up") %><br />
+    <%= link_to_remote image_tag("arrow-down.gif"), :method => :post,
+      :url => move_checklist_builder_element_path(:id => element_definition, :direction => "down") %>
+    </span>
 <table>
   <tr class="cycle_odd_lvl3">
     <td>Text:</td>

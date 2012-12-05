@@ -1,4 +1,4 @@
-<%= remote_form_for(@consultation_form_request) do |f| %>
+<%= form_for(@consultation_form_request, :remote => true) do |f| %>
   <%= f.error_messages %>
   <p>
     Who do you want to gather information from?
