@@ -21,7 +21,7 @@ describe InterventionsHelper do
       tier=Tier.create!(:title=>'Tiered Intervention Select')
       int_def=Factory(:intervention_definition,:tier=>tier)
       d=helper.tiered_intervention_definition_select([int_def])
-      d.should have_tag("select#intervention_definition_id.fixed_width[onchange=\"$('spinnerdefinitions').show();form.onsubmit()\"]",:with=>{ :name => 'intervention_definition[id]'}) do
+      d.should have_tag("select#intervention_definition_id.fixed_width[onchange=\"$('spinnerdefinitions').show();simulate(this.form,'submit')\"]",:with=>{ :name => 'intervention_definition[id]'}) do
           with_tag("option", :with => {:value =>""})
           with_tag("optgroup",:with => {:label=>tier.to_s}) do
             with_option(int_def.title, :with => {:value => int_def.id})
