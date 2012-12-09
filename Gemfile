@@ -36,7 +36,7 @@ gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'mysql2', "0.3.12b4"
+gem 'mysql2', ">= 0.3.12b4"
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
