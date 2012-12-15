@@ -23,6 +23,7 @@ Feature: User Maintenance
     Then I fill in "Password" with "cuke"
     Then I press "Create"
     Then I should see "Password doesn't match confirmation"
+    Then I fill in "Password" with "cuke"
     Then I fill in "Password confirmation" with "cuke"
     Then I press "Create"
     And I should see "Cuke U. AAUser IV"

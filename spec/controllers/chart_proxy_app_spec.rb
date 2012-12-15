@@ -4,7 +4,6 @@ class ChartProxyApp
   include ActionController::UrlFor
   include ActionController::Testing
   include Rails.application.routes.url_helpers
-  include ActionController::Compatibility
 end
 
 describe ChartProxyApp do

@@ -70,11 +70,7 @@ describe LinkAndAttachmentAssets do
 
   def set_date_back_2_days(o)
     t = 2.days.ago
-    o.class.record_timestamps=false
-    o.updated_at =t
-    o.save!
-    o.class.record_timestamps = true
+    o.class.update_all("updated_at = '#{t.to_s(:db)}' where id = #{o.id}")
     t
-
   end
 end

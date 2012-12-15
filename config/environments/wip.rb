@@ -9,7 +9,7 @@ config.cache_classes = true
 # config.logger = SyslogLogger.new
 
 # Full error reports are disabled and caching is turned on
-config.action_controller.consider_all_requests_local = false
+config.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 
 
@@ -25,6 +25,14 @@ config.active_support.deprecation = :log
 # Disable delivery errors, bad email addresses will be ignored
  config.action_mailer.raise_delivery_errors = false
  config.action_mailer.delivery_method = :test
+
+
+
+  # Do not compress assets
+  config.assets.compress = false
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
 
 #ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.sims-open.vegantech.com')
 

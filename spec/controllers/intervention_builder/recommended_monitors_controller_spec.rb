@@ -14,7 +14,7 @@ describe InterventionBuilder::RecommendedMonitorsController do
 
   describe "assign_probes_to_intervention_defnition" do
     it "should not allow duplicates" do
-      intervention_definition = mock_intervention_definition(:ancestor_ids => [1,2,3,4,5,6])
+      intervention_definition = mock_intervention_definition(:ancestor_ids => [1,2,3,4])
       district = mock_district(:find_intervention_definition_by_id => intervention_definition)
       controller.stub!(:current_district => district )
       intervention_definition.should_receive(:probe_definition_ids=).with(["1","3","2","4"])

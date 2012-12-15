@@ -137,7 +137,7 @@ class InterventionsController < ApplicationController
 
   def add_benchmark
     @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-    render :action => 'interventions/probe_assignments/add_benchmark'
+    render :action => 'probe_assignments/add_benchmark'
   end
 
   private

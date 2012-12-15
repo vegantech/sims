@@ -86,7 +86,7 @@ describe StudentSearchesController do
         end
 
         it 'should set the school if the school is authorized' do
-          School.should_receive(:find).with(school.id).and_return(school)
+          School.should_receive(:find).with(school.id.to_s).and_return(school)
           school.should_receive(:grades_by_user).with(user).and_return([])
           school.should_receive(:students).and_return([])
           lambda {
@@ -130,8 +130,8 @@ describe StudentSearchesController do
     end
     describe 'passed *' do
       it 'should assign same value for @groups as student_groups and @users as group_users' do
-        @user.should_receive(:filtered_members_by_school).with(school,{"grade"=>"*", "action"=>"grade", "controller"=>"student_searches", "school_id" => school.id}).and_return([1,2,3,4])
-        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>"*",  "action"=>"grade", "controller"=>"student_searches", "school_id" => school.id}).and_return([5,6,7,8])
+        @user.should_receive(:filtered_members_by_school).with(school,{"grade"=>"*", "school_id" => school.id.to_s}).and_return([1,2,3,4])
+        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>"*", "school_id" => school.id.to_s}).and_return([5,6,7,8])
 
         xhr :post, :grade, :grade=>"*", :school_id => school.id
         assigns(:groups).should == [5,6,7,8]
@@ -142,8 +142,8 @@ describe StudentSearchesController do
 
     describe 'passed 01' do
       it 'should call filter student groups by grade and assign @groups and @users accordingly' do
-        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01',  "action"=>"grade", "controller"=>"student_searches", "school_id" => school.id}).and_return(['g1-1','g1-3'])
-        @user.should_receive(:filtered_members_by_school).with(school,{"grade"=>'01', "action"=>"grade", "controller"=>"student_searches", "school_id" => school.id}).and_return(['g1-6','g1-8'])
+        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01', "school_id" => school.id.to_s}).and_return(['g1-1','g1-3'])
+        @user.should_receive(:filtered_members_by_school).with(school,{"grade"=>'01', "school_id" => school.id.to_s}).and_return(['g1-6','g1-8'])
 
         xhr :post, :grade, :grade=>"01", :school_id => school.id
         assigns(:groups).should == ['g1-1','g1-3']
@@ -163,7 +163,7 @@ describe StudentSearchesController do
     end
     describe 'passed * for grade and "" for user' do
       it 'should assign same value for @groups as student groups' do
-        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'*',"user"=>"",  "action"=>"member", "controller"=>"student_searches", "school_id" => school.id}).and_return([1,2,3,4])
+        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'*',"user"=>"", "school_id" => school.id.to_s}).and_return([1,2,3,4])
 
         xhr :post, :member, :grade=>"*", :user=>"", :school_id => school.id
         assigns(:groups).should == [1,2,3,4]
@@ -172,7 +172,7 @@ describe StudentSearchesController do
 
     describe 'passed blank for user and 01 for grade' do
       it 'should call filter student groups by grade and assign @groups accordingly' do
-        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01',"user"=>"",  "action"=>"member", "controller"=>"student_searches", "school_id" => school.id}).and_return([1,2,4])
+        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01',"user"=>"", "school_id" => school.id.to_s}).and_return([1,2,4])
         xhr :post, :member, :grade=>"01", :user=>"", :school_id => school.id
         assigns(:groups).should == [1,2,4]
 
@@ -182,7 +182,7 @@ describe StudentSearchesController do
 
     describe 'passed 5 for user and 01 for grade' do
       it 'should filter by both grade and user' do
-        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01',"user"=>"5",  "action"=>"member", "controller"=>"student_searches", "school_id" => school.id}).and_return([2])
+        @user.should_receive(:filtered_groups_by_school).with(school,{"grade"=>'01',"user"=>"5", "school_id" => school.id.to_s}).and_return([2])
         xhr :post, :member, :grade=>"01", :user=>"5", :school_id => school.id
         assigns(:groups).should == [2]
       end

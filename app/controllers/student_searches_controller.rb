@@ -27,12 +27,12 @@ class StudentSearchesController < ApplicationController
   # RJS methods for search page
 
   def grade
-    @users=current_user.filtered_members_by_school(current_school,params)
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @users=current_user.filtered_members_by_school(current_school,sliced_params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   def member
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   private
@@ -52,8 +52,12 @@ class StudentSearchesController < ApplicationController
     return true
   end
 
+  def sliced_params
+    params.slice(:grade, :user, :school_id)
+  end
+
   def check_school
-    if params[:school_id] != current_school_id
+    if params[:school_id] != current_school_id.to_s
       @school = current_user.schools.find(params["school_id"])
       session[:school_id] = @school.id
     end
