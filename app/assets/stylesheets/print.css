@@ -1,3 +1,9 @@
+/*
+ *= require common
+ *= require datepicker
+ *= require_self
+*/
+
 #header {
   display: none;
 }
