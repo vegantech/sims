@@ -99,11 +99,10 @@ module ApplicationHelper
   end
 
   def link_to_with_icon(name, url, suffix="")
-    ext_match = /\.\w+$/
-    ext = (name.match ext_match)
-    file = "#{name.split(ext_match).first.to_s.gsub(/_/," ")}#{suffix}"
-    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext[0][1..-1].downcase}.gif"
-    icon = "icon_htm.gif" unless  File.exist?(File.join(Rails.public_path,"images",icon))
+    ext = name.split(".").last.split("?").first
+    file = name.split("." + ext).first.to_s.gsub(/_/," ") + suffix
+    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext.downcase}.gif"
+    icon = "icon_htm.gif" if  Sims::Application.assets.find_asset(icon).nil?
     blank={}
     blank[:target]="_blank" unless url=="#"
     link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}".html_safe, url, blank
