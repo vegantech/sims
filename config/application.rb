@@ -56,10 +56,14 @@ module Sims
     config.paths['app/manifests'].skip_eager_load!
 
     # Enable the asset pipeline
-    config.assets.enabled = false
+    config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Change the path that assets are served from
+    # # config.assets.prefix = "/assets"
+
 
 
     config.to_prepare do
