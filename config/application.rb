@@ -61,6 +61,7 @@ module Sims
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    config.assets.precompile += %w( tablesort.js application-p.js print.css screen.css pdf.css googiespell.css spellerStyle.css )
     # Change the path that assets are served from
     # # config.assets.prefix = "/assets"
 
