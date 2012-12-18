@@ -3,7 +3,7 @@
   <head>
     <meta name="pdfkit-orientation" content="<%= content_for?(:orientation) ? yield(:orientation) : "Landscape" %>">
     <meta name="pdfkit-header-center" content="<%=Time.current.to_s(:long)%>  -- <%=yield :title%>">
-    <%=stylesheet_link_tag "#{request.protocol}#{request.host_with_port}/stylesheets/pdf.css" %>
+    <%=stylesheet_link_tag "#{request.protocol}#{request.host_with_port}#{asset_path "pdf.css"}" %>
   </head>
   <body>
     <%= yield %>
