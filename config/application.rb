@@ -56,10 +56,16 @@ module Sims
     config.paths['app/manifests'].skip_eager_load!
 
     # Enable the asset pipeline
-    config.assets.enabled = false
+    config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.assets.precompile += %w( tablesort.js application-p.js print.css screen.css pdf.css googiespell.css spellerStyle.css defaults.js prototype.js )
+    config.assets.precompile += ["*lang/*", "*spellerpages/*"]
+    # Change the path that assets are served from
+    # # config.assets.prefix = "/assets"
+
 
 
     config.to_prepare do

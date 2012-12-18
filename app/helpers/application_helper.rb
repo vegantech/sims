@@ -99,22 +99,21 @@ module ApplicationHelper
   end
 
   def link_to_with_icon(name, url, suffix="")
-    ext_match = /\.\w+$/
-    ext = (name.match ext_match)
-    file = "#{name.split(ext_match).first.to_s.gsub(/_/," ")}#{suffix}"
-    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext[0][1..-1].downcase}.gif"
-    icon = "icon_htm.gif" unless  File.exist?(File.join(Rails.public_path,"images",icon))
+    ext = name.split(".").last.split("?").first
+    file = name.split("." + ext).first.to_s.gsub(/_/," ") + suffix
+    icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext.downcase}.gif"
+    icon = "icon_htm.gif" if  Sims::Application.assets.find_asset(icon).nil?
     blank={}
     blank[:target]="_blank" unless url=="#"
     link_to "#{image_tag(icon, :class=>"menu_icon")} #{file}".html_safe, url, blank
   end
 
-  def plus_minus_li( title, &blk)
+  def plus_minus_li( title, content=nil, &blk)
     id = title.gsub(/ /, '_')
-    content = with_output_buffer(&blk)
+    content ||= with_output_buffer(&blk)
 
     content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ")  +
+      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('#{asset_path "minus-8.png"}')\" : \"url('#{asset_path "plus-8.png"}')\") ")  +
       content_tag(:ul, content, :id => "ul#{id}")
     end
   end
