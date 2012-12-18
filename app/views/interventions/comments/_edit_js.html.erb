@@ -1,11 +1,17 @@
-<%=fields_for @intervention do |iform| %>
-  <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
-    <%= render '/interventions/comments/form', :form => f %>
+<br /> <%#This br is a fix for IE6.   Weird, but it works. %>
+<%= content_tag_for :span, comment, "edit_now"  do %>
+  <%=fields_for @intervention do |iform| %>
+    <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
+      <%= render '/interventions/comments/form', :form => f %>
+    <% end %>
   <% end %>
-<% end %>
 
-<% if comment.changed? %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => {:comment => comment}, :noform => true)} %>
-<% else %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => { :comment => comment})} %>
+  <% if comment.changed? %>
+    <%# Validation error on parent %>
+    <%= link_to_function('Cancel',nil){|page|  page.remove(dom_id(comment,"edit_now"))
+      page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment',
+        :locals => {:comment => InterventionComment.find(comment)})} %>
+    <% else %>
+      <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => { :comment => comment})} %>
+    <% end %>
 <% end %>

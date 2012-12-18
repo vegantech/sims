@@ -21,6 +21,10 @@ describe "Populate Intervention Dropdowns Module" do
    @current_school ||= mock_school(:quicklist => [])
   end
 
+  def current_school_id
+    current_school.id
+  end
+
   def current_user
     @current_user ||= mock_user()
   end
@@ -31,7 +35,7 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def current_district
-    @current_district ||= mock_district(:goal_definitions => [])
+    @current_district ||= mock_district(:goal_definitions => GoalDefinition)
   end
 
   def flash
@@ -59,6 +63,7 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_goals' do
     it 'should populate @goal_definitions' do
+      GoalDefinition.delete_all
       self.should_receive(:find_goal_definition).twice
       populate_goals
       @goal_definitions.should == []
@@ -70,8 +75,9 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_objectives' do
     it 'should populate @objective_definitions' do
+      ObjectiveDefinition.delete_all
       self.should_receive(:find_objective_definition).twice
-      @goal_definition=mock_goal_definition(:objective_definitions => [])
+      @goal_definition=mock_goal_definition(:objective_definitions => ObjectiveDefinition)
       populate_objectives
       @objective_definitions.should == []
       @objective_definition = true
@@ -82,8 +88,9 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_categories' do
     it 'should populate @intervention_clusters' do
+      InterventionCluster.delete_all
       self.should_receive(:find_intervention_cluster).twice
-      @objective_definition=mock_objective_definition(:intervention_clusters => [])
+      @objective_definition=mock_objective_definition(:intervention_clusters => InterventionCluster)
       populate_categories
       @intervention_clusters.should == []
       @intervention_cluster = true
@@ -96,7 +103,8 @@ describe "Populate Intervention Dropdowns Module" do
     it 'should populate @intervention_definitions if not custom' do
       self.should_receive(:find_intervention_definition)
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
-      InterventionDefinition.should_receive(:restrict_tiers_and_disabled).with(max_tier, current_district).and_return([])
+      InterventionDefinition.should_receive(:for_dropdown).with(
+        max_tier, current_district,current_school_id,current_user).and_return([])
       populate_definitions
       @intervention_definitions.should == []
     end

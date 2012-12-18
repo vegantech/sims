@@ -198,6 +198,20 @@ describe Student do
 
 
 
+  describe 'safe_destroy' do
+    let(:student) {Factory(:student)}
+
+    it 'should destroy the student with no custom content' do
+      student.safe_destroy
+      student.should be_destroyed
+    end
+
+    it 'should not destroy a student with custom content in the db' do
+      Factory(:custom_flag, :student => student)
+      student.safe_destroy
+      student.should_not be_destroyed
+    end
+  end
 
 
 

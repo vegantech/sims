@@ -11,6 +11,7 @@ describe DistrictsController do
   before do
     @district=mock_district(:admin? => true)
     District.stub!(:normal => @n=[1,2,3,4,5,6])
+    District.stub!(:for_dropdown => @n)
 
     controller.stub!(:current_district=>@district)
   end

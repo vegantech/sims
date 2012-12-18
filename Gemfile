@@ -1,4 +1,5 @@
-source 'http://rubygems.org'
+source "http://bundler-api.herokuapp.com"
+source :rubygems
 
 gem 'rails', '3.2.8'
 
@@ -36,7 +37,7 @@ gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'mysql2', "0.3.12b4"
+gem 'mysql2', ">= 0.3.12b4"
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
@@ -54,6 +55,7 @@ gem 'devise', '~> 1.5.0'
 gem 'omniauth-google-apps'
 gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
+gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
 gem 'sneaky-save'
 
 group :test do
@@ -90,6 +92,12 @@ group :development do
   gem 'libnotify'
 end
 
+
+group :assets do
+  gem 'sass-rails',   "~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+end
 
 gem 'rpm_contrib'
 gem 'newrelic_rpm'

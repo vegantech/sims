@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909153928) do
+ActiveRecord::Schema.define(:version => 20121023015949) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20120909153928) do
   end
 
   add_index "districts", ["abbrev"], :name => "index_districts_on_abbrev"
+  add_index "districts", ["admin", "name"], :name => "index_districts_on_admin_and_name"
 
   create_table "element_definitions", :force => true do |t|
     t.integer  "question_definition_id"
@@ -304,7 +305,7 @@ ActiveRecord::Schema.define(:version => 20120909153928) do
     t.text     "description"
     t.integer  "district_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",    :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier", :default => false, :null => false
@@ -336,7 +337,7 @@ ActiveRecord::Schema.define(:version => 20120909153928) do
     t.text     "description"
     t.integer  "objective_definition_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",                :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier",             :default => false, :null => false
@@ -358,7 +359,7 @@ ActiveRecord::Schema.define(:version => 20120909153928) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                  :default => false
+    t.boolean  "custom",                  :default => false, :null => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"
@@ -457,7 +458,7 @@ ActiveRecord::Schema.define(:version => 20120909153928) do
     t.text     "description"
     t.integer  "goal_definition_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",           :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier",        :default => false, :null => false

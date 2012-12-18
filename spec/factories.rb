@@ -146,4 +146,10 @@ FactoryGirl.define do
     f.association :user
     f.body  "This is the factory generated note"
   end
+  
+  factory :custom_flag do |f|
+    f.association :student
+    f.reason "Factory Reason"
+    f.category "attendance"
+  end
 end

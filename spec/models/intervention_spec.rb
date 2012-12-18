@@ -265,4 +265,24 @@ describe Intervention do
     end
 
   end
+
+  describe 'participant_user_ids=' do
+    let(:intervention) {Factory.build(:intervention)}
+    let(:user) {Factory(:user)}
+
+    it 'should support new users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_users.should == [user]
+    end
+
+    it 'should support editing users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_user_ids = ["","",2,3]
+      intervention.participant_users.should == []
+    end
+
+
+  end
 end

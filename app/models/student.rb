@@ -331,6 +331,10 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def safe_destroy
+    destroy unless reload.has_content?
+  end
+
   protected
 
   def save_extended_profile

@@ -104,14 +104,18 @@ describe ApplicationController do
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
-      controller.send(:selected_student_ids).should == values
-      controller.instance_variable_set "@memcache_student_ids", nil
-      @session[:session_id] = "bush"
-      controller.send(:selected_student_ids).should_not == values  #if session_id changes
-      controller.instance_variable_set "@memcache_student_ids", nil
-      @session[:session_id] = "tree"
-      controller.stub!(:current_user => User.new)
-      controller.send(:selected_student_ids).should_not == values  #if user changes
+      if ENV['TRAVIS']
+        puts "SKIPPING because memcache is not working on travis-ci"
+      else
+        controller.send(:selected_student_ids).should == values
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "bush"
+        controller.send(:selected_student_ids).should_not == values  #if session_id changes
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "tree"
+        controller.stub!(:current_user => User.new)
+        controller.send(:selected_student_ids).should_not == values  #if user changes
+      end
     end
 
   end
@@ -229,6 +233,45 @@ describe ApplicationController do
         end
       end
 
+    end
+  end
+
+  describe 'check_domain' do
+    before do
+      @c = ApplicationController.new
+      @req = ActionDispatch::TestRequest.new
+      @c.request =@req
+      #@c.set_current_view_context
+    end
+
+    it 'should return true for devise controller' do
+      @c.should_receive(:devise_controller?).and_return true
+      @c.send(:check_domain).should be_true
+    end
+
+    it 'should pass through if there is no current district' do
+      @c.should_receive(:current_district).and_return nil
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should pass through if the current district matches the subdomain' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.should_receive(:current_subdomain).and_return "test"
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should sign out if the subdomain matches another district' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "other")
+      Factory(:district, :abbrev => "other")
+      @c.should_receive(:sign_out_and_redirect)
+      @c.send(:check_domain).should be_false
+    end
+
+    it 'should pass theough if the subdomain matches no district' do
+      @c.stub!(:current_district => mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "www")
+      @c.send(:check_domain).should be_nil
     end
   end
 

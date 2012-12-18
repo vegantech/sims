@@ -9,12 +9,7 @@ module ChecklistsHelper
        end
 
      if menu
-         title="Special Ed Eligibility Criteria"
-         id = title.gsub(/ /, '_')
-         content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-         link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ".html_safe) +
-         content_tag(:ul,f.join("").html_safe, :id => "ul#{id}")
-         end
+       plus_minus_li("Special Ed Eligibility Criteria" ,f.join("").html_safe)
      else
        content_tag(:ul, f.join.html_safe)
      end
