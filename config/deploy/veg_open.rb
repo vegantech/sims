@@ -1,4 +1,5 @@
 load "#{File.dirname(__FILE__)}/prohibition.rb"
+load "deploy/assets"
 set :application, "sims-open"
 set :default_url, 'http://sims-open.vegantech.com'
 
@@ -7,4 +8,4 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 set :domain, "sims-open.vegantech.com"
 after  :setup_domain_constant, :enable_subdomains
 
-#set :branch, 'rails3.1_ruby_1.9.3'
+set :branch, 'asset_pipeline'
