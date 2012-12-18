@@ -4,12 +4,17 @@ module Moonshine::Manifest::Rails::Apache
       :keep_alive => 'Off',
       :max_keep_alive_requests => 100,
       :keep_alive_timeout => 15,
+      :start_servers => 2,
       :max_clients => 150,
       :server_limit => 16,
+      :min_spare_threads => 25,
+      :max_spare_threads => 75,
+      :threads_per_child => 25,
+      :max_requests_per_child => 0,
       :timeout => 300,
       :trace_enable => 'On',
       :gzip => false,
-      :gzip_types => ['text/html', 'text/plain', 'text/xml', 'text/css', 'application/x-javascript', 'application/javascript']
+      :gzip_types => ['text/html', 'text/plain', 'text/xml', 'text/css', 'application/x-javascript', 'application/javascript', 'application/json']
     }
   end
 
@@ -29,16 +34,18 @@ module Moonshine::Manifest::Rails::Apache
       a2enmod('deflate')
     end
 
-    if configuration[:apache][:users]
-      htpasswd = configuration[:apache][:htpasswd] || "#{configuration[:deploy_to]}/shared/config/htpasswd"
-      
+    htpasswd = configuration[:apache][:htpasswd] || "#{configuration[:deploy_to]}/shared/config/htpasswd"
+
+    if configuration[:apache][:users].present?
       file htpasswd, :ensure => :file, :owner => configuration[:user], :mode => '644'
       
       configuration[:apache][:users].each do |user,pass|
         exec "htpasswd #{user}",
           :command => "htpasswd -b #{htpasswd} #{user} #{pass}",
-          :unless  => "grep '#{user}' #{htpasswd}"
+          :require => file(htpasswd)
       end
+    else
+      file htpasswd, :ensure => :absent
     end
 
     apache2_conf = template(rails_template_dir.join('apache2.conf.erb'), binding)
@@ -61,7 +68,12 @@ ExtendedStatus On
 </IfModule>
 STATUS
 
-
+    file '/etc/apache2/envvars',
+      :ensure => :present,
+      :content => template(rails_template_dir.join('apache.envvars.erb'), binding),
+      :mode => '644',
+      :require => package('apache2-mpm-worker'),
+      :notify => service('apache2')
 
     file '/etc/apache2/mods-available/status.conf',
       :ensure => :present,
