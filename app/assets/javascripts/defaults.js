@@ -1,2 +1,3 @@
 //=require prototype
+//=require effects
 //
