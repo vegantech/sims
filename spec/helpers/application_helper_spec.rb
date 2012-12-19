@@ -76,6 +76,26 @@ describe ApplicationHelper do
 
   end
 
+  describe 'body' do
+    it 'without user or student' do
+      helper.stub!(:current_user => nil)
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == "<body>dog</body>"
+    end
+    it 'without student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == '<body data-user="6">dog</body>'
+    end
+
+    it 'with user and student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => 82)
+      helper.body(){"dog"}.should == '<body data-student="82" data-user="6">dog</body>'
+    end
+
+  end
+
   describe 'restrict_to_principals?' do
     it 'should return false when the user is a principal of the student'  do
       user = mock_user

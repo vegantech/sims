@@ -13,8 +13,10 @@
 
       <%= asset_form.label :url %>
       <%= asset_form.text_field :url %>
-
-      <%= link_to_function "remove", "$(this).up('.asset').remove()" %>
+      <% if jquery? %>
+      <% else %>
+        <%= link_to_function "remove", "$(this).up('.asset').remove()" %>
+      <% end %>
     </p>
   <% end -%>
 </div>

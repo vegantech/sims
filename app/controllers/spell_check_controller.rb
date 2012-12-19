@@ -11,7 +11,6 @@ class SpellCheckController < ApplicationController
     @words=[]
 
     @original_texts = params[:textinputs] || []
-#    raise @original_text
 
 
     @original_texts.each_with_index do |box, idx|

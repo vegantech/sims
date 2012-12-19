@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :index_url_with_page, :root_url_without_subdomain, :readonly?
+    :index_url_with_page, :root_url_without_subdomain, :jquery?, :readonly?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -48,6 +48,11 @@ class ApplicationController < ActionController::Base
 
   def current_student_id
     session[:selected_student]
+  end
+
+  def current_student_id=(sid)
+    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    session[:selected_student]=sid
   end
 
 
@@ -185,6 +190,14 @@ def check_student
       opts[:host] = request.host
     end
     root_url(opts)
+  end
+
+  def session_domain
+    Sims::Application.config.session_options[:domain]
+  end
+
+  def jquery?
+    false
   end
 
   def readonly?

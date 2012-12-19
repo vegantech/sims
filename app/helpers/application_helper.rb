@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def spell_check_button
-    button_to_function('Check Spelling', "var f=this.form;var speller = new spellChecker();speller.textInputs=$$('#'+f.id + ' .spell_check');speller.openChecker();") +
+    submit_tag("Check Spelling", :class =>"spell_check_button", :name => nil) +
       help_popup("If you have any problems with the spell check, please email spell_check_problems@simspilot.org . " )
   end
 
@@ -49,9 +49,9 @@ module ApplicationHelper
     s = [link_to('Home', root_path)]
     s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
     s << link_to_if_current_or_condition('Student Search', [current_school,:student_search], session[:search])
-    s << link_to_if_current_or_condition('Student Selection', students_path, session[:selected_student])
+    s << link_to_if_current_or_condition('Student Selection', students_path, current_student_id)
     #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
-    s << link_to_if_current_or_condition(current_student, student_path(current_student), session[:selected_student]) if session[:selected_student] && !current_student.new_record?
+    s << link_to_if_current_or_condition(current_student, student_path(current_student), current_student_id) if current_student_id && !current_student.new_record?
     s.compact.join(' -> ').html_safe
   end
 
@@ -90,12 +90,12 @@ module ApplicationHelper
     end
   end
 
-  def help_popup(msg)
-    content_tag(:span, "?", :class=>"help-question", :onmouseover=>"return overlib('#{escape_javascript(msg)}');", :onmouseout => "return nd();").html_safe unless msg.blank?
+  def help_popup(msg,tag=:span)
+     content_tag tag,'?', :class => "help-question", :'data-help' => escape_javascript(msg)
   end
 
   def spinner(suffix = nil)
-    image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none"
+    image_tag "spinner.gif", :id => "spinner#{suffix}", :style => "display:none", :class => 'spinner'
   end
 
   def link_to_with_icon(name, url, suffix="")
@@ -113,7 +113,7 @@ module ApplicationHelper
     content ||= with_output_buffer(&blk)
 
     content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-      link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('#{asset_path "minus-8.png"}')\" : \"url('#{asset_path "plus-8.png"}')\") ")  +
+      link_to(title, "#", :class => "plus_minus") +
       content_tag(:ul, content, :id => "ul#{id}")
     end
   end
@@ -139,5 +139,13 @@ module ApplicationHelper
 
   def style_display_none_unless(cond)
     'style="display:none;"'.html_safe unless cond
+  end
+
+  def body
+    uid = current_user ? current_user.id : nil
+    sid = current_student_id
+    content_tag :body, "data-user" => uid, "data-student" => sid do
+      yield
+    end
   end
 end

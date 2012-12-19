@@ -1,0 +1,17 @@
+<%= content_tag_for :span, student_comment do  %><p>
+  <b>Author:</b>
+  <%=h student_comment.user %>
+  <br />
+  <b>Date Updated:</b>
+  <%= student_comment.updated_at.to_s(:long) %>
+  <br />
+  <b>Note:</b>
+  <%=h student_comment.body %>
+
+  <ul>    <%=links_and_attachments student_comment ,'li'%> </ul>
+  <% if current_user == student_comment.user && !(defined?no_actions && no_actions)%>
+    <br />
+    <%= link_to 'Edit',  edit_student_student_comment_path(@student,student_comment), :method=> :get, :remote => true %>
+    <%= link_to 'Delete', [@student,student_comment], :confirm => 'Are you sure you want to remove this note??', :method => :delete, :remote => true %>
+  <% end %>
+</p><% end %>

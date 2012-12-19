@@ -64,4 +64,8 @@ class StudentSearchesController < ApplicationController
     current_school
   end
 
+  def jquery?
+    true
+  end
+
 end

@@ -4,6 +4,9 @@ class CustomFlagsController < ApplicationController
   before_filter :enforce_session_selections
   skip_before_filter :verify_authenticity_token
 
+  def index
+    @student = current_student
+  end
   # GET /custom_flags/new
   # GET /custom_flags/new.xml
   def new

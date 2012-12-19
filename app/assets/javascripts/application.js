@@ -7,13 +7,37 @@
 
 
 document.observe("dom:loaded", function() {
+  new PeriodicalExecuter(checkSession, 30);
   document.observe('click', function(e,el) {
     if (el = e.findElement('.toggler')) {
       $(el.readAttribute("data-toggle-id")).toggle();
       e.stop();
     }
+    if (el = e.findElement('.plus_minus')) {
+	el.up('li').toggleClassName('minus');
+        e.stop();
+    }
+    if (el = e.findElement('.spell_check_button')) {
+	var f=el.form;
+	var speller = new spellChecker();
+	speller.textInputs=$$('#'+f.id + ' .spell_check');
+	speller.openChecker();
+	e.stop();
+    }
+  });
 
-    });
+  document.observe('mouseover', function(e,el) {
+   if (el = e.findElement('.help-question')) {
+      return overlib(el.readAttribute("data-help"));
+   }
+  });
+
+  document.observe('mouseout', function(e,el) {
+   if (el = e.findElement('.help-question')) {
+     nd();
+   }
+  });
+
 });
 
 function check_same_boxes(obj) {
@@ -173,14 +197,6 @@ Event.observe(window,'load',function(){
   Checklist.setup();
 })
 
-function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'inline')
-          e.style.display = 'none';
-       else
-          e.style.display = 'inline';
-    }
-
 
 function new_probe_scores() {
   var scores=$$('div#new_probe_forms input[type="text"]');
@@ -245,3 +261,48 @@ function show_or_hide_team_consultation_form(e,team_ids_with_assets) {
 
 
 }
+
+/**
+ * Get value from the document cookie
+ *
+ * @param string name Name of the variable to retrieve
+ * @return mixed
+ */
+function cookieGet(name)
+{
+	name = name + "=";
+	var cookies = document.cookie.split(';');
+
+	for (var i = 0; i < cookies.length; i++) {
+		var c = cookies[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1, c.length);
+		}
+		if (c.indexOf(name) === 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+
+	return null;
+}
+
+function checkSession() {
+	  cookie_student = cookieGet('selected_student');
+	  cookie_user = cookieGet('user_id');
+	  page_user = document.body.readAttribute('data-user');
+	  page_student = document.body.readAttribute('data-student');
+	  str = "";
+	  if(page_user  && cookie_user != page_user){
+		  str +="You've been logged out or another user is using SIMS in another window or tab.  ";
+	  }
+	  if(page_student && cookie_student != page_student){
+		  str +="Currently, you cannot select two different students in different windows or tabs";
+	  }
+
+	  if(str != ""){
+		str = "<br />Using multiple windows or tabs can cause errors or misplaced data in SIMS.  If you are seeing this message, you should close this window.<br /> " + str;
+	  window.scrollTo(1,1);
+	  }
+	  $('session_notice').update(str);
+
+  }

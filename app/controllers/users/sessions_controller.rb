@@ -7,6 +7,7 @@ class Users::SessionsController < Devise::SessionsController
       reset_password and return
     else
       super
+      cookies[:user_id]={:value =>current_user.id, :domain => session_domain}
     end
   end
 
@@ -24,6 +25,13 @@ class Users::SessionsController < Devise::SessionsController
     super
   end
 
+  def destroy
+    super
+    cookies[:user_id]={:value =>nil, :domain => session_domain}
+    cookies[:selected_student]={:value =>nil, :domain => session_domain}
+  end
+
+
   private
 
   def change_password_instead_of_login
@@ -40,6 +48,10 @@ class Users::SessionsController < Devise::SessionsController
       self.resource = User.new(resource.attributes.merge(:district_id_for_login => resource.district_id))
       render :action => 'new'
     end
+  end
+
+  def jquery?
+    true
   end
 
 end

@@ -10,7 +10,7 @@ module ChecklistsHelper
 
      if menu
        plus_minus_li("Special Ed Eligibility Criteria" ,f.join("").html_safe)
-     else
+    else
        content_tag(:ul, f.join.html_safe)
      end
    else
