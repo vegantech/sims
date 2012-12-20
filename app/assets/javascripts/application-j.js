@@ -21,10 +21,10 @@ $(function() {
   $('a.plus_minus').click(function() {
     return $(this).parent('li').toggleClass('minus');
   });
-  $('.help-question,.popup').mouseover(function() {
+  $('body').on("mouseover",".popup",function(event) {
     return overlib($(this).data().help);
   });
-  $('.help-question,.popup').mouseout(function() {
+  $('body').on("mouseout",".popup",function(event) {
     return nd();
   });
   $('.dbl_toggler').dblclick(function() {
@@ -53,6 +53,19 @@ $(function() {
 	speller.textInputs=$('#'+f.id + ' .spell_check');
 	speller.openChecker();
   });
+  $('body').on("click",".cancel_link",function(event) {
+    event.preventDefault();
+    $("#" + $(this).data().show).show();
+    $("#" + $(this).data().remove).remove();
+    $(this).parents($(this).data().removeUp).first().remove();
+  });
+  $('body').on("click",".new_asset_link",function(event) {
+    event.preventDefault();
+    $(this).before($(this).prev(".hidden_asset").first().clone().show());
+  });
+
+
+
 
   setInterval(checkSession,3000);
 });

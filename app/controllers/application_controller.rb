@@ -197,7 +197,7 @@ def check_student
   end
 
   def jquery?
-    false
+    true
   end
 
   def readonly?

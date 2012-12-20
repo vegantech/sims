@@ -75,6 +75,10 @@ class ChecklistsController < ApplicationController
       format.html { redirect_to(current_student) }
     end
   end
+  private
+  def jquery?
+    false
+  end
 end
 
 

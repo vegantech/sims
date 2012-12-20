@@ -56,9 +56,5 @@ class RecommendationsController < ApplicationController
     redirect_to current_student
   end
 
-  private
-  def jquery?
-    true
-  end
 end
 

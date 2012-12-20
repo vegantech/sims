@@ -50,8 +50,4 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
-  def jquery?
-    true
-  end
-
 end

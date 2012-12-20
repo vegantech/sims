@@ -32,10 +32,4 @@ class SchoolsController < ApplicationController
       school_student_search_url(current_school)
     end
   end
-
-  def jquery?
-    true
-  end
-
-
 end

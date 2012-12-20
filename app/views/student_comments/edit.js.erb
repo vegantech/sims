@@ -1,0 +1,3 @@
+$("#<%=dom_id(@student_comment)%>").hide();
+$("#<%=dom_id(@student_comment,"edit")%>").remove();
+$("#<%=dom_id(@student_comment)%>").after("<%=escape_javascript(render "/student_comments/edit")%>");

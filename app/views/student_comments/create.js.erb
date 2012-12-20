@@ -1,13 +1,5 @@
-<% if false %>
-$('#team_notes_count').html("<%=team_notes_count(@student_comment.student)%>");
-
-
-<% else %>
-  alert('before');
-  $('#new_team_note_link').hide();
-
-$('#studentflags').html("<%=escape_javascript(status_display @student_comment.student, true)%>")
-$('#no_team_notes').hide();
-$('#new_team_note').insertAfter("<%=escape_javascript(render @student_comment)%>");
-  alert('woo');
-<% end %>
+$('#new_team_note_link').show();
+$('#new_student_comment').after("<%=escape_javascript(render @student_comment)%>");
+$('#new_student_comment').remove();
+$('#team_notes_count').html("<%=escape_javascript(team_notes_count(@student_comment.student))%>");
+$('#studentflags').html("<%=escape_javascript(status_display @student_comment.student, true)%>");

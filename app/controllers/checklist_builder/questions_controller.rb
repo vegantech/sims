@@ -102,4 +102,9 @@ class ChecklistBuilder::QuestionsController < ApplicationController
     @checklist_definition = current_district.checklist_definitions.find(params[:checklist_id])
   end
 
+  private
+  def jquery?
+    false
+  end
+
 end

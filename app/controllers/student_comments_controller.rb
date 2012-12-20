@@ -64,12 +64,4 @@ class StudentCommentsController < ApplicationController
       format.js
     end
   end
-
-  private
-  def jquery?
-    true
-  end
-
-
-
 end
