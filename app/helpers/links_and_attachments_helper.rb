@@ -3,7 +3,8 @@ module LinksAndAttachmentsHelper
   def add_asset_link(name, parent, suffix="")
     if jquery?
       a=content_tag :div, :class => "hidden_asset", :style => "display:none" do
-        render Asset.new, :parent => parent
+
+        render :partial => "/assets/asset", :object =>Asset.new, :locals => {:parent => parent}
       end
       a + link_to(name, "", :class => "new_asset_link", :data => {:parent => parent, :suffix => suffix})
     else
