@@ -1,10 +1,12 @@
 //=require popup
 //=require jquery
 //=require jquery_ujs
+//=require jquery.effects.pulsate
 //=require overlib
 //=require spellerpages/spellChecker
 //=require simulate
 //=require datepicker
+//=require scrollTo
 //=require_self
 
 //
@@ -21,10 +23,10 @@ $(function() {
   $('a.plus_minus').click(function() {
     return $(this).parent('li').toggleClass('minus');
   });
-  $('body').on("mouseover",".popup",function(event) {
+  $('body').on("mouseover",".popup,.help-question",function(event) {
     return overlib($(this).data().help);
   });
-  $('body').on("mouseout",".popup",function(event) {
+  $('body').on("mouseout",".popup,.help-question",function(event) {
     return nd();
   });
   $('.dbl_toggler').dblclick(function() {

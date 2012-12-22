@@ -1,0 +1,10 @@
+$("#team_consultation_request").replaceWith("<%= escape_javascript( render "team_consultations/commands") %>");
+$("#team_consultations").replaceWith("<%= escape_javascript( render "team_consultations/list", :team_consultations => current_student.team_consultations.pending) %>").show();
+$("#student_flags").replaceWith("<%= escape_javascript( status_display(current_student,  true)) %>");
+$("#consultation_forms").replaceWith("<%= escape_javascript( render "consultation_forms/list",
+                                                            :consultation_forms => current_student.pending_consultation_forms
+                                                           ) %>").show();
+
+$.scrollTo(0);
+$("#flash_notice").html("<%= flash.discard(:notice).html_safe %>");
+$('#studentflags').effect('pulsate');

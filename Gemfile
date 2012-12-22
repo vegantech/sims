@@ -58,6 +58,9 @@ gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:w
 gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
 gem 'sneaky-save'
 gem 'jquery-rails'
+gem "jquery-scrollto-rails"
+gem 'jquery-ui-rails'
+
 
 group :test do
   gem 'simplecov', :require => false
