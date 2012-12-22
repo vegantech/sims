@@ -70,3 +70,5 @@
     :network: 10.0.4.0
     :broadcast: 10.0.4.255
 
+:assets:
+  :enabled: true
