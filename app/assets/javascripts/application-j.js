@@ -65,6 +65,10 @@ $(function() {
     event.preventDefault();
     $(this).before($(this).prev(".hidden_asset").first().clone().show());
   });
+  $('body').on("click",".presubmit",function(event) {
+    $(this).closest("form").find("input[name=" + $(this).data().toChange+ "]").val($(this).data().newValue);
+  });
+
 
 
 
