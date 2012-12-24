@@ -1,0 +1,2 @@
+$('#<%=dom_id @consultation_form%>').after("<%=escape_javascript render "show"%>");
+$('#<%=dom_id(@consultation_form, "show_hide_view")%>').html('<%=link_to "Show/Hide","", :class => "toggler", :data => {:toggle_id => dom_id(@consultation_form,"show")}%>');
