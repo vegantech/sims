@@ -58,6 +58,7 @@ $(function() {
   $('body').on("click",".cancel_link",function(event) {
     event.preventDefault();
     $("#" + $(this).data().show).show();
+    $("#" + $(this).data().show2).show();
     $("#" + $(this).data().remove).remove();
     $(this).parents($(this).data().removeUp).first().remove();
   });
