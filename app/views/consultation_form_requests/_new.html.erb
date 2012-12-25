@@ -27,7 +27,7 @@
 
   <p>
     <%= f.submit 'Save' %>
-    <%= link_to 'Cancel', current_student %>
+    <%= link_to 'Cancel', current_student, :class => "cancel_link", :data => {:remove_up => "form"} %>
   </p>
 <% end %>
 

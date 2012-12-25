@@ -1,1 +1,0 @@
-  page.replace_html("consultation_form_request", :partial=>"new")
