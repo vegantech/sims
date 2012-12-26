@@ -72,6 +72,10 @@ $(function() {
   $('body').on("click",".presubmit",function(event) {
     $(this).closest("form").find("input[name=" + $(this).data().toChange+ "]").val($(this).data().newValue);
   });
+  $('body').on("click","#new_user_school_assignment_link",function(event) {
+    event.preventDefault();
+    $("#user_school_assignments").append($("#hidden_user_school_assignment tr").first().clone());
+  });
 
 
 

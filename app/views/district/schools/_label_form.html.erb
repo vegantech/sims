@@ -16,11 +16,18 @@
 
     </thead>
     <tbody id = "user_school_assignments">
-        <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>
+      <%= render :partial => 'user_school_assignment', :collection => @school.user_school_assignments %>
     </tbody>
   </table>
 
   <div>
-    <%= add_user_school_assignment_link "Add a user" %>
+    <% if @users %>
+      <table id="hidden_user_school_assignment">
+        <%= render :partial => "user_school_assignment", :object => UserSchoolAssignment.new %>
+      </table>
+      <%= link_to "Add a user","#", :id => "new_user_school_assignment_link" %>
+    <% else %>
+      <p>There are more than 100 users in the district; please assign new  school assignments through the add/remove users interface.</p>
+    <% end %>
   </div>
-  </fieldset>
+</fieldset>
