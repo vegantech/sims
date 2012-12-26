@@ -1,4 +1,0 @@
-page.replace_html( 'tiers',
-:partial => "tier",
-:collection => @tiers)
-page.safe_highlight dom_id(@tier)

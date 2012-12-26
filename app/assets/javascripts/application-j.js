@@ -2,6 +2,7 @@
 //=require jquery
 //=require jquery_ujs
 //=require jquery.effects.pulsate
+//=require jquery.effects.highlight
 //=require overlib
 //=require spellerpages/spellChecker
 //=require simulate
@@ -14,6 +15,8 @@
 // This file is automatically included by javascript_include_tag :defaults
 //
 //
+
+$.fx.speeds._default= 750;
 
 $(function() {
   $('body').on("click",".toggler",function(event) {
