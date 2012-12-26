@@ -10,7 +10,7 @@
             method: 'get',
             parameters: 'X-Progress-ID=' + uuid,
             onSuccess: function(xhr){
-              var upload = xhr.responseText.evalJSON();
+              var upload = eval(xhr.responseText);
               if(upload.state == 'uploading'){
                 upload.percent = Math.floor((upload.received / upload.size) * 100);
                 $('bar').setStyle({width: upload.percent + "%"});
