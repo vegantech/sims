@@ -3,6 +3,7 @@
 //=require jquery_ujs
 //=require jquery.effects.pulsate
 //=require jquery.effects.highlight
+//=require jquery.nested-fields
 //=require overlib
 //=require spellerpages/spellChecker
 //=require simulate
@@ -74,16 +75,13 @@ $(function() {
   });
   $('body').on("click","#new_user_school_assignment_link",function(event) {
     event.preventDefault();
-    $("#user_school_assignments").append($("#hidden_user_school_assignment tr").first().clone());
+    $("#user_school_assignments").append($("#hidden_user_school_assignment tr, #hidden_user_school_assignment div").first().clone().removeAttr('disabled'));
+    $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");
   });
 
-
-
-
-
+  $('form #staff_assignments').nestedFields();
   setInterval(checkSession,3000);
 });
-
 
 /**
  * Get value from the document cookie

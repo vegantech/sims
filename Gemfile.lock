@@ -59,6 +59,8 @@ GEM
       builder
       girl_friday
     arel (2.2.3)
+    awesome_nested_fields (0.6.0)
+      rails (>= 3.0.0)
     awesome_print (1.1.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
@@ -381,6 +383,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   airbrake
+  awesome_nested_fields
   capistrano
   capistrano-ext
   capybara

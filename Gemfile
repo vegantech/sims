@@ -60,6 +60,8 @@ gem 'sneaky-save'
 gem 'jquery-rails'
 gem "jquery-scrollto-rails"
 gem 'jquery-ui-rails'
+gem 'awesome_nested_fields'
+
 
 
 group :test do

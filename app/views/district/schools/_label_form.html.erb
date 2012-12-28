@@ -23,7 +23,7 @@
   <div>
     <% if @users %>
       <table id="hidden_user_school_assignment">
-        <%= render :partial => "user_school_assignment", :object => UserSchoolAssignment.new %>
+        <%= render :partial => "user_school_assignment", :object => UserSchoolAssignment.new, :locals => {:disable => true}  %>
       </table>
       <%= link_to "Add a user","#", :id => "new_user_school_assignment_link" %>
     <% else %>

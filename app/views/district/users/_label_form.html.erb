@@ -25,10 +25,13 @@ Choosing 'All students' gives the user access to every student in the school.   
   <%= render :partial => 'user_school_assignment', :collection => @user.user_school_assignments %>
 </div>
 
-<div class="form_row">
-  <%= add_user_school_assignment_link "Add a school assignment" %>
-</div>
 
+<div>
+  <span id="hidden_user_school_assignment">
+    <%= render :partial => "user_school_assignment", :object => UserSchoolAssignment.new, :locals => {:disable => true} %>
+  </span>
+  <%= link_to "Add a school assignment","#", :id => "new_user_school_assignment_link" %>
+</div>
 
 <% unless current_district.staff_assignments.empty? %>
   <h2>Staff Assignments
