@@ -79,7 +79,7 @@ $(function() {
     $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");
   });
 
-  $('form #staff_assignments').nestedFields();
+  $('form .awesome_nested').nestedFields();
   setInterval(checkSession,3000);
 });
 

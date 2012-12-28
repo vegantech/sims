@@ -48,7 +48,6 @@ class District::SchoolsController < ApplicationController
   # PUT /district_schools/1.xml
   def update
     params[:school] ||= {}
-    params[:school][:existing_user_school_assignment_attributes] ||= {}
     @school = current_district.schools.find(params[:id])
 
     if @school.update_attributes(params[:school])
