@@ -78,6 +78,18 @@ $(function() {
     $("#user_school_assignments").append($("#hidden_user_school_assignment tr, #hidden_user_school_assignment div").first().clone().removeAttr('disabled'));
     $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");
   });
+  $('form#new_student #student_id_state').blur(function() {
+	  $('#spinnerid_state').show();
+	  $.ajax({
+		  dataType: 'script',
+		  type: 'GET',
+		  data: 'id_state=' + $(this).val(),
+		  url: '/district/students/check_id_state',
+		  complete: function( ) {
+			  $('#spinnerid_state').hide();
+		  }
+	  });
+  });
 
   $('form .awesome_nested').nestedFields();
   setInterval(checkSession,3000);

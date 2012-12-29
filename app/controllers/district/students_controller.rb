@@ -70,7 +70,7 @@ class District::StudentsController < ApplicationController
   end
 
   def check_id_state
-    @student = Student.find_by_id_state(params['student']['id_state']) if params['student']['id_state'].present?
+    @student = Student.find_by_id_state(params['id_state']) if params['id_state'].present?
   end
 
   def claim

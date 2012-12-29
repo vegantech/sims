@@ -62,7 +62,7 @@ Sims::Application.routes.draw do
         get :check_id_state
       end
       member do
-        get :claim
+        put :claim
       end
     end
   end
