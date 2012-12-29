@@ -1,1 +1,0 @@
-page.replace_html(:new_student_form, :partial=>"groups/students/new_student_form")
