@@ -13,9 +13,11 @@ jQuery ->
       url: '/unattached_interventions/'+id+'/update_end_date',
     )
   $('#unattached_interventions .participants_list_intervention select').change ->
+    id=parseInt $(@).parent('div.participants_list_intervention').attr('id').replace("participants_list_intervention_","")
+    alert id
     $.ajax(
       dataType: 'script',
       type: 'PUT',
       data: {user_id: @value},
-      url: '/unattached_interventions/'+id,
+      url: '/unattached_interventions/'+id
     )
