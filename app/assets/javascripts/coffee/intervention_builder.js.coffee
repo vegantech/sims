@@ -1,5 +1,8 @@
 jQuery ->
-  $('#unattached_interventions .end_date SELECT').change ->
+  $('#probe_definition_list input[type=checkbox]').click ->
+    $('.' +@className ).prop('checked', @checked)
+    ###
+    $('#unattached_interventions .end_date SELECT').change ->
     id = parseInt(@id.replace("end_date",""))
     date_fields = $(@).parent().children 'select'
     for i in [0..2]
@@ -20,3 +23,6 @@ jQuery ->
       data: {user_id: @value},
       url: '/unattached_interventions/'+id
     )
+
+}
+###
