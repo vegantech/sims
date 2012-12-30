@@ -99,3 +99,10 @@ tr .handle {
 
 }
 
+#intervention_definition_list a.move_link {
+  display: inline;
+  text-decoration:none; }
+
+#intervention_definition_list a.move_link:hover {
+  text-decoration:none; }
+

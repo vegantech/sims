@@ -1,21 +1,8 @@
-<script language="javascript">
-  function select_others(obj) {
-  // go through everything with same id and make checked = boxname.checked
-     val=obj.value
-     chk=obj.checked
-     selected_boxes = document.monitor_form.elements["probes[]"];
-     for (x = 0; x < selected_boxes.length; x++){
-       if (selected_boxes[x].value==val) {
-         selected_boxes[x].checked = chk;}
-       }
-     }
-</script>
-
 title: <%=@intervention_definition.title%> <br />
 If you want to remove a recommended monitor, be sure to uncheck it everywhere it appears on screen.
 
 <%= form_tag({}, {:name=>"monitor_form"}) do %>
-  <div class="standardForm">
+  <div id="assign_probes_to_intervention" class="standardForm">
     <%=hidden_field_tag :id, @intervention_definition.id %>
     <%=hidden_field_tag "probes[]", "" %>
    <% @probe_definitions_in_groups.each do |k,g| %>
@@ -26,11 +13,9 @@ If you want to remove a recommended monitor, be sure to uncheck it everywhere it
 
 
         <%=check_box_tag("probes[]", probe.id,@intervention_definition.probe_definitions.include?(probe),
-          :onclick=>"select_others(this);", :id=>probe.id) %>
+                         :id=>probe.id, :class => probe.id) %>
 
-        <span onmouseover = "return overlib('<%= escape_javascript probe.description %>');"
-                    onmouseout = "return nd();">
-          <%= label_tag probe.id, probe.title %> <br />
+                    <%= label_tag probe.id, probe.title, :class => 'popup', :data => {:help => probe.description} %> <br />
         </span>
       <% end %>
 

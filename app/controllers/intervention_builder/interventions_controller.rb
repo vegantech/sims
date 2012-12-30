@@ -121,10 +121,9 @@ class InterventionBuilder::InterventionsController < ApplicationController
   end
 
   def sort
-    params[:intervention_definition_list].each_with_index do |id, index|
+    params[:intervention_definition_list].split(",").each_with_index do |id, index|
       @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
     end
-    render :nothing => true
   end
 
   private

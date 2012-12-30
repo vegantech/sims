@@ -1,6 +1,6 @@
 <%= content_tag_for :tr, intervention_definition do %>
   <td><span class="handle"><%=image_tag 'anchor.png' %></span><br />
-    <%=move_up_down_buttons intervention_definition -%> <br />
+    <%=move_up_down_links intervention_definition -%> <br />
     <%= check_box_tag 'id[]',intervention_definition.id, false, :id => "ck_#{intervention_definition.position}" %>
   </td>
   <td align="center">

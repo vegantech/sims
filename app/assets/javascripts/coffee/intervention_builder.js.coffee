@@ -1,28 +1,14 @@
 jQuery ->
-  $('#probe_definition_list input[type=checkbox]').click ->
+  $('#intervention_definition_list').sortable(
+    {handle:".handle"},
+    update: (event, ui) ->
+      id=$(@).sortable('toArray').toString().replace(/intervention_definition_/g,"")
+      $.ajax(
+        dataType: 'script',
+        type: 'POST',
+        data: {intervention_definition_list: id},
+        url: $(@).data().url
+      )
+  )
+  $('#probe_definition_list input[type=checkbox], #assign_probes_to_intervention input[type=checkbox]').click ->
     $('.' +@className ).prop('checked', @checked)
-    ###
-    $('#unattached_interventions .end_date SELECT').change ->
-    id = parseInt(@id.replace("end_date",""))
-    date_fields = $(@).parent().children 'select'
-    for i in [0..2]
-      month = date_fields[i].value if date_fields[i].name.match(/month/)
-      day = date_fields[i].value if date_fields[i].name.match(/day/)
-      year = date_fields[i].value if date_fields[i].name.match(/year/)
-    $.ajax(
-      dataType: 'script',
-      type: 'PUT',
-      data: {year: year, month: month, day:day},
-      url: '/unattached_interventions/'+id+'/update_end_date',
-    )
-  $('#unattached_interventions .participants_list_intervention select').change ->
-    id=parseInt $(@).parent('div.participants_list_intervention').attr('id').replace("participants_list_intervention_","")
-    $.ajax(
-      dataType: 'script',
-      type: 'PUT',
-      data: {user_id: @value},
-      url: '/unattached_interventions/'+id
-    )
-
-}
-###
