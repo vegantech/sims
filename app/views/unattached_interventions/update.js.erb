@@ -1,0 +1,6 @@
+<%if @participant %>
+  // <%= escape_javascript(debug @participant) %>
+<%=jdom @intervention, 'new_participant'%>.before(<%=ejsr :partial => "unattached_interventions/participant",
+                              :object => @participant%>);
+<%=jdom @intervention, "no_participants"%>.html('');
+<%end%>
