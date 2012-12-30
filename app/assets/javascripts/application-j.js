@@ -9,6 +9,7 @@
 //=require simulate
 //=require datepicker
 //=require scrollTo
+//=require_tree ./coffee
 //=require_self
 
 //
