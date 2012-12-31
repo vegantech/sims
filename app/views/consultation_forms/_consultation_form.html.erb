@@ -3,7 +3,7 @@
     <% teams = Array(consultation_form.object.school_team || current_school.school_teams) %>
     <% teams.each do |team| %>
       <% if team.assets.present? %>
-        <p>Templates and instructions from the <%=team %> team:</p>
+        <%=div_for(team, :assets){"Templates and instructions from the #{team} team" } %>
 
         <ul><%=links_and_attachments team,'li' %> </ul>
       <% end %>

@@ -17,6 +17,7 @@ module ConsultationFormRequestsHelper
   end
 
   def show_or_hide_form_onchange()
+    return {}
     team_ids_with_assets = []
     @teams.each { |team| team_ids_with_assets << team.id if team.assets.any? } if defined?(@teams)
     {:onchange =>"show_or_hide_team_consultation_form(this,'[#{team_ids_with_assets.join(',')}]');"}
