@@ -16,5 +16,4 @@ jQuery ->
       $('form#bulk_upload_form').prop "target", 'progressFrame'
     success: ->
       $('#form_import_results').show()
-
   })
