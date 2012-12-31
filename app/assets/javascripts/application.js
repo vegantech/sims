@@ -75,29 +75,6 @@ function unselectStudents(){
     }
 }
 
-function grouped_change_date(){
-  for (x=1; x<4; x++){
-    val=$$('form.edit_grouped_progress_entry > select:nth-child('+(x+1) +')')[0];
-    $$('td.date >select:nth-child('+ x+ ')').each(function(n) {
-        n.value = val.value;
-        });
-  }
-
-}
-
-
-function calculate_percentage(field){
-  base_id = field.id.replace("_numerator","").replace("_denominator","")
-  numerator = $(base_id+'_numerator').value
-  denominator = $(base_id+'_denominator').value
-  score_field = $(base_id+'_score')
-  score =  parseInt(100*numerator/denominator);
-  if(!isNaN(score)){
-    score_field.value = score ;
-  }
-
-}
-
 
 function change_date(new_record){
     
