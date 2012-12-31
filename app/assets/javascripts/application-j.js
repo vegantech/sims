@@ -5,6 +5,7 @@
 //=require jquery.effects.highlight
 //=require jquery.ui.sortable
 //=require jquery.nested-fields
+//=require jquery.uploadProgress
 //=require overlib
 //=require spellerpages/spellChecker
 //=require simulate
