@@ -4,7 +4,7 @@
     :url => interventions_objectives_path(@goal_definition,
                                                  :custom_intervention => custom_intervention?) do |f| %>
                                                    <%= f.label(:id, 'Assign Objective') %>
-    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:onchange=>"$('spinnerobjectives').show();simulate(this.form,'submit')", :class=>"fixed_width"}) %>
+    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:class=>"fixed_width sim_submit"}) %>
     <%= spinner("objectives") %>
     <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>

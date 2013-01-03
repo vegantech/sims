@@ -1,4 +1,5 @@
 jQuery ->
+  $(document).on "change","select#team_consultation_team_id", ->
   $('#intervention_definition_list').sortable(
     {handle:".handle"},
     update: (event, ui) ->

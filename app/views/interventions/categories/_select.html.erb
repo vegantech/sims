@@ -4,7 +4,7 @@
     :url => interventions_categories_path(@goal_definition, @objective_definition,
                                                  :custom_intervention => custom_intervention?) do |f| %>
     <%= f.label :id, 'Assign Category' %>
-    <%= f.collection_select(:id, @intervention_clusters, :id, :title, {:prompt => ''}, {:onchange => "$('spinnercategories').show();simulate(this.form,'submit')", :class => "fixed_width"}) %>
+    <%= f.collection_select(:id, @intervention_clusters, :id, :title, {:prompt => ''}, {:class => "fixed_width sim_submit"}) %>
     <%= spinner("categories") %>
     <%= content_tag :noscript, submit_tag("Choose Category") %><br />
     <div id="category_description"><%=description(@intervention_cluster) %></div>

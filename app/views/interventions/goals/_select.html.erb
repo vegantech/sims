@@ -5,7 +5,7 @@
 <%else%>
   <%= form_for :goal_definition, :url => interventions_goals_path(:custom_intervention => custom_intervention?), :remote => true do |f| %>
       <%= f.label(:id,'Assign Goal') %>
-      <%= f.collection_select(:id, @goal_definitions, :id, :title, {:prompt => ""}, {:onchange => "$('spinnergoals').show();simulate(this.form,'submit')", :class => "fixed_width"}) %>
+      <%= f.collection_select(:id, @goal_definitions, :id, :title, {:prompt => ""}, {:class => "fixed_width sim_submit"}) %>
 <%= spinner("goals") %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>

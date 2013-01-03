@@ -14,8 +14,7 @@ module InterventionsHelper
         options_from_collection_for_select(  c[group], :id, :title, :selected => selected) if c[group]
       end
     end
-   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
-              :onchange => "$('spinnerdefinitions').show();simulate(this.form,'submit')",
+   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width sim_submit",
               :name => "intervention_definition[id]")
   end
 
@@ -35,7 +34,7 @@ module InterventionsHelper
             options_from_collection_for_select(col, :id, :title)
           end
         end
-        concat(select_tag("intervention_definition_id",options.html_safe, :onchange => "form.submit()"))
+        concat(select_tag("intervention_definition_id",options.html_safe))
         concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
     end
