@@ -8,3 +8,5 @@ jQuery ->
   $('#checklist input.autoset').click ->
     cls = @className.split(" ")[1]
     $(this).parents('table').find('input.' + cls).prop('checked','checked')
+  $('input.show_elig').click ->
+    $('#elig_criteria').show()

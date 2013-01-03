@@ -82,7 +82,7 @@ module ChecklistsHelper
    a=b.collect do |k,v|
      opts={}
      next  if  v[:show_elig] && !show_referral_option?
-     opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
+     opts={:class => 'show_elig'} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +
        form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
