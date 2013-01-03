@@ -5,3 +5,6 @@ jQuery ->
       $('div.questionDiv:visible').hide "blind", {direction: "vertical"},500
       question.show "blind", {direction: "vertical"}, 500
     false
+  $('#checklist input.autoset').click ->
+    cls = @className.split(" ")[1]
+    $(this).parents('table').find('input.' + cls).prop('checked','checked')
