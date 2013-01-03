@@ -1,10 +1,12 @@
 <%= div_for participant do %>
-<%="#{participant.fullname}" %>
-<%= hidden_field_tag "intervention[participant_user_ids][]" ,participant.id%>
-<%if @intervention.new_record? %>
-<%= link_to("X", "#", :onclick => "this.parentNode.parentNode.removeChild(this.parentNode)") %>
-<% else %>
-  <%= link_to_function("X", nil, {:href=>intervention_participant_path(@intervention,participant),:method=>:delete, :confirm=>"Are you sure?"}) { |page|
-    page[dom_id(participant)].remove() }%>
-<% end %>
+  <%="#{participant.fullname}" %>
+  <%= hidden_field_tag "intervention[participant_user_ids][]" ,participant.id%>
+  <%if @intervention.new_record? %>
+    <%= link_to("X", "#", :class => "cancel_link", :data => {:remove_up => 'div'} )%>
+  <% else %>
+    <%= link_to("X", intervention_participant_path(@intervention,participant),
+                :method => :delete,
+                :class => 'cancel_link', :data => {:remove_up => 'div', :jconfirm => 'Are you sure?'}
+                )%>
+  <% end %>
 <% end %>

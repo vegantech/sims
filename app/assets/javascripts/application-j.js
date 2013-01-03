@@ -65,10 +65,13 @@ $(function() {
   });
   $('body').on("click",".cancel_link",function(event) {
     event.preventDefault();
-    $("#" + $(this).data().show).show();
-    $("#" + $(this).data().show2).show();
-    $("#" + $(this).data().remove).remove();
-    $(this).parents($(this).data().removeUp).first().remove();
+    if(!$(this).data().jconfirm || confirm($(this).data().jconfirm)) {
+	    $("#" + $(this).data().show).show();
+	    $("#" + $(this).data().show2).show();
+	    $("#" + $(this).data().remove).remove();
+	    $(this).parents($(this).data().removeUp).first().remove();
+    }
+    return(false);
   });
   $('body').on("click",".new_asset_link",function(event) {
     event.preventDefault();

@@ -6,9 +6,13 @@
   end
 %>
 <div>
+<%=hidden_field_tag "intervention[participant_user_ids][]","" %>
   <div id="participants_list">
     <%= render :partial => 'interventions/participants/new' if !readonly? && params[:add_participant] %>
     <%= render :partial => "interventions/participants/participant", :collection => @intervention.participant_users %>
   </div>
-  <%= link_to_function("Add Participant", :href => fallback_url) {|page| page.insert_html(:top, 'participants_list', :partial => 'interventions/participants/new')} unless readonly? %>
+  <% unless readonly? %>
+    <%= link_to("Add Participant", fallback_url, :id => "new_participant_link" )  %>
+    <%= render "interventions/participants/new_disabled" %>
+  <% end %>
 </div>
