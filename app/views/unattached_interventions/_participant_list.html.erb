@@ -1,6 +1,6 @@
-<% div_for(intervention, "participants_list") do %>
-  
-  <% div_for(intervention, "no_participants", :style=>"color: red;" ) do %>
+<%=div_for(intervention, "participants_list") do %>
+
+  <%= div_for(intervention, "no_participants", :style=>"color: red;" ) do %>
     <%="There are no participants assigned." if intervention.intervention_participants.blank? %>
   <% end %>
   <%= render :partial => "unattached_interventions/participant", :collection => intervention.intervention_participants %>

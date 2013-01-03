@@ -1,4 +1,4 @@
-<% div_for participant do %>
+<%= div_for participant do %>
   <%  if participant.user %>
   <span <%="style='color:red'" unless participant.intervention.student.belongs_to_user? participant.user  %> >
     <%="#{participant.fullname}" %></span>
