@@ -99,6 +99,7 @@ module ApplicationHelper
   end
 
   def link_to_with_icon(name, url, suffix="")
+    return "" if name.blank?
     ext = name.split(".").last.split("?").first
     file = name.split("." + ext).first.to_s.gsub(/_/," ") + suffix
     icon= ext.blank? ? "icon_htm.gif" : "icon_#{ext.downcase}.gif"
