@@ -76,66 +76,6 @@ function unselectStudents(){
 }
 
 
-function change_date(new_record){
-    
-    var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
-    var timeNum = document.StudentInterventionForm.elements["intervention[time_length_number]"].value;
-
-    var typeMultiplier = 0;
-
-      
-    if(timeType == 0){
-      //Day
-      typeMultiplier = 1;
-    }else if(timeType == 1){
-      //Week
-      typeMultiplier = 7;
-    }else if(timeType == 2){
-      //Month
-      typeMultiplier = 30;
-    }else if(timeType == 3){
-      //Quarter
-      typeMultiplier = 45;
-    }else if(timeType == 4){
-      //Semester
-      typeMultiplier = 90;
-    }else if(timeType == 5){
-      //SchoolYear
-      typeMultiplier = 180;
-    }
-    
-    
-    if((typeMultiplier >= 1)&&(timeNum >= 1)){
-        var dateMonth=document.StudentInterventionForm.elements["intervention[start_date(2i)]"].selectedIndex
-        var dateDay=document.StudentInterventionForm.elements["intervention[start_date(3i)]"].value;
-        var dateYear=document.StudentInterventionForm.elements["intervention[start_date(1i)]"].value;
-      
-      //Create the Date object for the starting date
-        var startDate=new Date(dateYear, dateMonth , dateDay);
-        var millisec = startDate.getTime();
-      var newMillisec = millisec+1000*60*60*24*(typeMultiplier * timeNum);
-      var endDate = new Date();
-      endDate.setTime(newMillisec);
-      var YearDiff = endDate.getFullYear()-dateYear;
-      
-      document.StudentInterventionForm.elements["intervention[end_date(3i)]"].value = endDate.getDate().toString();
-      document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value = endDate.getFullYear()
-      document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value = ((endDate.getMonth() + 1).toString());
-      
-      if((new_record == 'true') && (typeof(document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"])) !== 'undefined'){
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(1i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(2i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(3i)]"].value;
-
-
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(3i)]"].value;
-
-      }
-      }
-     
-    }
 
 
 var Checklist = {

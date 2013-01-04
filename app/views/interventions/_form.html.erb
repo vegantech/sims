@@ -23,8 +23,8 @@
         <%= "(Rec: #{@intervention.intervention_definition.time_length_summary})" unless @intervention.intervention_definition.blank? %>
       <% else %>
         <%= form.label :time_length_number, 'Duration:' %>
-        <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date('#{@intervention.new_record?}');"} %>
-        <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:onchange => "change_date('#{@intervention.new_record?}');"}) %>
+        <%= form.select :time_length_number, (1..100).to_a ,{}, {:class =>"change_date"} %>
+        <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:class => 'change_date'}) %>
         <%= "(Rec: #{@intervention_definition.time_length_summary})" unless custom_intervention? or @intervention_definition.blank? %>
       <% end %>
 
@@ -36,7 +36,7 @@
       <%= @intervention.start_date %>
     <% else %>
       <%= form.label :start_date , 'Start Date:' %>
-      <%= form.unobtrusive_date_picker :start_date ,{:order=>[:month,:day,:year]}, {:onchange => "change_date('#{@intervention.new_record?}');"}%>
+      <%= form.unobtrusive_date_picker :start_date ,{:order=>[:month,:day,:year]}, {:class => 'change_date'}%>
     <% end %>
   </div>
   <br class="brclear" />
