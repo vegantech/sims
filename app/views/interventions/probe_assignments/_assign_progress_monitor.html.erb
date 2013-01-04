@@ -15,11 +15,7 @@
     <% ipa='custom' if @intervention_probe_assignment and @intervention_probe_assignment.probe_definition and @intervention_probe_assignment.probe_definition.new_record? %>
 
     <%= select('intervention[intervention_probe_assignment]', :probe_definition_id, options, {:include_blank => true,
-:selected => ipa },
-{:onchange => remote_function(:url => ajax_probe_assignment_interventions_url(:custom_intervention => custom_intervention?), :method => :get,
-              :with =>
-             "'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&intervention_id=#{@intervention.id}'",
-             :before => "$('spinnerassign_progress').show();", :class => "fixed_width")}) %>
+               :selected => ipa }, :data => {:custom => custom_intervention?, :intervention_id => @intervention.id }, :class =>'fixed_width') %>
 
     <%= spinner("assign_progress") %>
   <% end %>

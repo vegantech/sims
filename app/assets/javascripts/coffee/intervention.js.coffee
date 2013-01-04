@@ -1,4 +1,4 @@
-adjust_end_date = ->
+window.adjust_end_date = ->
     timeMult = parseInt($('#intervention_time_length_number').val())
     timeScope = $('#intervention_time_length_id option:selected').text()
     switch timeScope
@@ -18,6 +18,14 @@ adjust_end_date = ->
       $('#intervention_end_date-dd').val(startDate.getDate())
       $('#intervention_end_date-mm').val(1+startDate.getMonth())
       $('#intervention_end_date').val(startDate.getFullYear())
+
+      $('#intervention\\[intervention_probe_assignment\\]_first_date').val $('#intervention_start_date').val()
+      $('#intervention\\[intervention_probe_assignment\\]_first_date-mm').val $('#intervention_start_date-mm').val()
+      $('#intervention\\[intervention_probe_assignment\\]_first_date-dd').val $('#intervention_start_date-dd').val()
+
+      $('#intervention\\[intervention_probe_assignment\\]_end_date').val $('#intervention_end_date').val()
+      $('#intervention\\[intervention_probe_assignment\\]_end_date-mm').val $('#intervention_end_date-mm').val()
+      $('#intervention\\[intervention_probe_assignment\\]_end_date-dd').val $('#intervention_end_date-dd').val()
       ###
       #set progress monitor start and end dates to match
       debugger
@@ -39,7 +47,18 @@ jQuery ->
     false
   $(document).on "change","select.change_date", ->
     adjust_end_date()
-
+  $(document).on "change","select#intervention_intervention_probe_assignment_probe_definition_id", ->
+    $('#spinnerassign_progress').show()
+    $.ajax(
+      dataType: 'script',
+      type: 'GET',
+      url: '/interventions/ajax_probe_assignment',
+      data:{id: @value, intervention_id: $(@).data().interventionID, custom_intervention: $(@).data().customIntervention}
+    )
+  $(document).on "click","a.intervention_comment_cancel", ->
+    event.preventDefault()
+    $(@).parents('tr').next('tr.intervention_comment').show()
+    $(@).parents('tr').remove()
 
     ###
 function change_date(new_record){

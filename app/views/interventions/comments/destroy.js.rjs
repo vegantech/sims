@@ -1,1 +1,0 @@
-page.remove(dom_id(@intervention_comment)) unless @intervention_comment.blank?
