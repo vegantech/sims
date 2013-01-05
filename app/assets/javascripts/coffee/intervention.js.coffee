@@ -1,4 +1,4 @@
-window.adjust_end_date = ->
+window.adjust_end_date = (pd=false) ->
     timeMult = parseInt($('#intervention_time_length_number').val())
     timeScope = $('#intervention_time_length_id option:selected').text()
     switch timeScope
@@ -15,9 +15,11 @@ window.adjust_end_date = ->
     startDate= new Date($('#intervention_start_date').val(), (-1 + parseInt $('#intervention_start_date-mm').val()), $('#intervention_start_date-dd').val())
     if timeVal > 0
       startDate.setDate(startDate.getDate() + timeVal)
-      $('#intervention_end_date-dd').val(startDate.getDate())
-      $('#intervention_end_date-mm').val(1+startDate.getMonth())
-      $('#intervention_end_date').val(startDate.getFullYear())
+
+      if pd == false
+        $('#intervention_end_date-dd').val(startDate.getDate())
+        $('#intervention_end_date-mm').val(1+startDate.getMonth())
+        $('#intervention_end_date').val(startDate.getFullYear())
 
       $('#intervention\\[intervention_probe_assignment\\]_first_date').val $('#intervention_start_date').val()
       $('#intervention\\[intervention_probe_assignment\\]_first_date-mm').val $('#intervention_start_date-mm').val()
@@ -49,18 +51,94 @@ jQuery ->
     adjust_end_date()
   $(document).on "change","select#intervention_intervention_probe_assignment_probe_definition_id", ->
     $('#spinnerassign_progress').show()
-    $.ajax(
+    $.ajax
       dataType: 'script',
       type: 'GET',
       url: '/interventions/ajax_probe_assignment',
-      data:{id: @value, intervention_id: $(@).data().interventionID, custom_intervention: $(@).data().customIntervention}
-    )
+      data:
+        id: @value
+        intervention_id: $(@).data().interventionId
+        custom_intervention: $(@).data().customIntervention
   $(document).on "click","a.intervention_comment_cancel", ->
     event.preventDefault()
     $(@).parents('tr').next('tr.intervention_comment').show()
     $(@).parents('tr').remove()
+  $(document).on "click","a#enter_view_scores_link", ->
+    $('#spinnerscore_link').show()
+  $(document).on "click","a.preview_graph", ->
+    event.preventDefault()
+    $.ajax
+      dataType: 'text',
+      type: 'POST',
+      url: @href,
+      success: (data) ->
+        alert data
+      data:
+        $(@).parents('#intervention_probe_assignment').find('input').serialize()
+
+
+    debugger
+
+
 
     ###
+      :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
+      :with => "new_probe_scores()"})
+
+function new_probe_scores() {
+  var scores=$$('div#new_probe_forms input[type="text"]');
+  var i1=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(1i)]\"]');
+  var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
+  var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
+  var goal=$('intervention_intervention_probe_assignment_goal').getValue();
+
+  var first2=$('intervention[intervention_probe_assignment]_first_date-mm');
+  var first3=$('intervention[intervention_probe_assignment]_first_date-dd');
+  var first1=$('intervention[intervention_probe_assignment]_first_date');
+  
+  var last2=$('intervention[intervention_probe_assignment]_end_date-mm');
+  var last3=$('intervention[intervention_probe_assignment]_end_date-dd');
+  var last1=$('intervention[intervention_probe_assignment]_end_date');
+
+  var s="";
+
+  var arLen=scores.length;
+  for ( var i=0, len=arLen; i<len; ++i ){
+    dates= scores[i].up().previousSiblings()[1].childElements();
+
+    i1=dates[3];
+    i2=dates[1];
+    i3=dates[2];
+    
+
+
+    s=s + 'probes[' +i+ '][score]=' + scores[i].getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1.getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2.getValue() + '&' ;
+    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3.getValue() + '&' ;
+
+  }
+    s=s + 'goal='+goal + '&' ;
+
+    s= s + 'first_date(1i)='+first1.getValue() + '&';
+    s= s + 'first_date(2i)='+first2.getValue() + '&';
+    s= s + 'first_date(3i)='+first3.getValue() + '&';
+
+    s= s + 'end_date(1i)='+last1.getValue() + '&';
+    s= s + 'end_date(2i)='+last2.getValue() + '&';
+    s= s + 'end_date(3i)='+last3.getValue() + '&';
+
+  return s;
+
+
+}
+
+
+
+
+
+
+
 function change_date(new_record){
     var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
     var timeNum = document.StudentInterventionForm.elements["intervention[time_length_number]"].value;

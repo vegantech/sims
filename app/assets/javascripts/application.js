@@ -115,56 +115,6 @@ Event.observe(window,'load',function(){
 })
 
 
-function new_probe_scores() {
-  var scores=$$('div#new_probe_forms input[type="text"]');
-  var i1=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(1i)]\"]');
-  var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
-  var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
-  var goal=$('intervention_intervention_probe_assignment_goal').getValue();
-
-  var first2=$('intervention[intervention_probe_assignment]_first_date-mm');
-  var first3=$('intervention[intervention_probe_assignment]_first_date-dd');
-  var first1=$('intervention[intervention_probe_assignment]_first_date');
-  
-  var last2=$('intervention[intervention_probe_assignment]_end_date-mm');
-  var last3=$('intervention[intervention_probe_assignment]_end_date-dd');
-  var last1=$('intervention[intervention_probe_assignment]_end_date');
-
-  var s="";
-
-  var arLen=scores.length;
-  for ( var i=0, len=arLen; i<len; ++i ){
-    dates= scores[i].up().previousSiblings()[1].childElements();
-
-    i1=dates[3];
-    i2=dates[1];
-    i3=dates[2];
-    
-
-
-    s=s + 'probes[' +i+ '][score]=' + scores[i].getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1.getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2.getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3.getValue() + '&' ;
-
-  }
-    s=s + 'goal='+goal + '&' ;
-
-    s= s + 'first_date(1i)='+first1.getValue() + '&';
-    s= s + 'first_date(2i)='+first2.getValue() + '&';
-    s= s + 'first_date(3i)='+first3.getValue() + '&';
-
-    s= s + 'end_date(1i)='+last1.getValue() + '&';
-    s= s + 'end_date(2i)='+last2.getValue() + '&';
-    s= s + 'end_date(3i)='+last3.getValue() + '&';
-
-  return s;
-
-
-}
-
-
-
 function show_or_hide_team_consultation_form(e,team_ids_with_assets) {
   //if the team has no attachments, and the form is blank
   if(!team_ids_with_assets.include(e.value) ||
