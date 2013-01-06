@@ -72,14 +72,9 @@ jQuery ->
       type: 'POST',
       url: @href,
       success: (data) ->
-        alert data
+        $("a.preview_graph").nextAll('div').html(data)
       data:
-        $(@).parents('#intervention_probe_assignment').find('input').serialize()
-
-
-    debugger
-
-
+        $(@).parents('#intervention_probe_assignment').find('input,select').serialize()
 
     ###
       :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
