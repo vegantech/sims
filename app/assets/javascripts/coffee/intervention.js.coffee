@@ -75,6 +75,15 @@ jQuery ->
         $("a.preview_graph").nextAll('div').html(data)
       data:
         $(@).parents('#intervention_probe_assignment').find('input,select').serialize()
+  $('a#end_intervention_link').click ->
+    $(window).scrollTo $('#end_intervention_reasons').show()
+  $('#end_intervention_reasons input[type=radio]').click ->
+    if $('#end_intervention_reasons input[type=radio]:checked').length < 2
+      $('#end_submit_tag').prop('disabled', 'disabled')
+    else
+      $('#end_submit_tag').removeAttr('disabled')
+
+
 
     ###
       :method => :get, :update => {:success => "graph_#{probe_assignment_counter}"},
