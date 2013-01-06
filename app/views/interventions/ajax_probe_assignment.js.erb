@@ -5,4 +5,5 @@ $('#intervention_probe_assignment').html(<%=ejsr "interventions/probe_assignment
 datePickerController.create();
 <% if @intervention_probe_assignment.blank?  || @intervention_probe_assignment.new_record? %>
   window.adjust_end_date(true);
+  $('form .awesome_nested').nestedFields();
 <% end %>

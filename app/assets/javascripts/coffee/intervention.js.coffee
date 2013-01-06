@@ -58,7 +58,7 @@ jQuery ->
       data:
         id: @value
         intervention_id: $(@).data().interventionId
-        custom_intervention: $(@).data().customIntervention
+        custom_intervention: $(@).data().custom
   $(document).on "click","a.intervention_comment_cancel", ->
     event.preventDefault()
     $(@).parents('tr').next('tr.intervention_comment').show()
