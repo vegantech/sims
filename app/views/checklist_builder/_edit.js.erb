@@ -1,5 +1,5 @@
 <% object_param = object.class.name.underscore %>
-<%=jdom object, "edit_#{object_param}_link"%>.toggleText('Edit ','Cancel Edit').effect('highlight');
+<%=jdom object, "edit_link"%>.toggleText('Edit ','Cancel Edit').effect('highlight');
 <%=jdom object, "details"%>.empty().hide();
 <%=jdom object, "show_link"%>.text('Show Details')
 <%=jdom object, "new_#{child}_notice"%>.empty().hide();

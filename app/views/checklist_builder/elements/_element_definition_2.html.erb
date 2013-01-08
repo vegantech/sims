@@ -18,13 +18,9 @@
     <td colspan="2">
       <%= link_to_remote content_tag(:span, "Show Details", :id => dom_id(element_definition, "show_link")), 
                          :url => checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition), 
-                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
-                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
                          :method => :get %> |
-      <%= link_to_remote content_tag(:span, "Edit", :id => dom_id(element_definition, "edit_link")), 
+      <%= link_to_remote content_tag(:span, "Edit ", :id => dom_id(element_definition, "edit_link")), 
                          :url => edit_checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
-                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
-                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
                          :method => :get %> |
       <%= link_to_remote 'Delete', 
                          :url => checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
@@ -32,13 +28,9 @@
                          :method => :delete %> |
       <%= link_to_remote content_tag(:span, "Add Answer", :id => dom_id(element_definition, "add_answer_definition_link")), 
                          :url => new_checklist_builder_answer_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
-                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
-                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
                          :method => :get %> |
       <%= link_to_remote content_tag(:span, "Show Answer Definitions", :id => dom_id(element_definition, "view_answer_definitions_toggle")),
                          :url => checklist_builder_answers_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
-                         :loading => "Element.show('#{dom_id(element_definition, "spinner")}')",
-                         :complete => "Element.hide('#{dom_id(element_definition, "spinner")}')",
                          :method => :get %>
       <%= image_tag "spinner.gif", :id => dom_id(element_definition, "spinner"), :style => "display:none;" %>
     </td>

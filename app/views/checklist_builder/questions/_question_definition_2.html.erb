@@ -15,7 +15,7 @@
       <%= link_to_remote content_tag(:span, "Show Details", :id => dom_id(question_definition,"show_link")), 
                          :url => checklist_builder_question_path(question_definition.checklist_definition, question_definition), 
                          :method => :get %> |
-      <%= link_to_remote content_tag(:span, "Edit", :id => dom_id(question_definition,"edit_link")), 
+      <%= link_to_remote content_tag(:span, "Edit ", :id => dom_id(question_definition,"edit_link")), 
                          :url => edit_checklist_builder_question_path(question_definition.checklist_definition, question_definition),
                          :method => :get %> |
       <%= link_to_remote 'Delete', 
