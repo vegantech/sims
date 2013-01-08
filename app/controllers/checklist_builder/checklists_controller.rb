@@ -111,8 +111,4 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
 
     redirect_to checklist_builder_checklists_url
   end
-  private
-  def jquery?
-    false
-  end
 end

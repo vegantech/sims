@@ -1,0 +1,8 @@
+<% object_param = object.class.name.underscore %>
+<%=jdom object, "edit_#{object_param}_link"%>.toggleText('Edit ','Cancel Edit').effect('highlight');
+<%=jdom object, "details"%>.empty().hide();
+<%=jdom object, "show_link"%>.text('Show Details')
+<%=jdom object, "new_#{child}_notice"%>.empty().hide();
+<%=jdom object, "new_#{child}_link"%>.text('Add <%=child.split("_").first.capitalize%>');
+<%=jdom object, "new_#{child}"%>.empty().hide();
+<%=jdom object, "edit"%>.html(<%=ejsr "rjs_edit_form",  object_param.to_sym => object %>).slideToggle();
