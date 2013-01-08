@@ -1,7 +1,7 @@
 source "http://bundler-api.herokuapp.com"
 source :rubygems
 
-gem 'rails', '3.1.9'
+gem 'rails', '3.1.10'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
