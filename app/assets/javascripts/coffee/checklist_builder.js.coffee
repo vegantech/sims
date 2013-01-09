@@ -1,7 +1,7 @@
 jQuery ->
-  $('.checklist_definition a').bind 'ajax:before', ->
+  $(document).on 'ajax:before', '.checklist_definition a', ->
     $(@).siblings('img.spinner').show()
-  $('.checklist_definition a').bind 'ajax:complete', ->
+  $(document).on 'ajax:complete', '.checklist_definition a', ->
     $(@).siblings('img.spinner').hide()
   $(document).on "click","a.hide_notice", ->
     $(@).parent('div').slideToggle()

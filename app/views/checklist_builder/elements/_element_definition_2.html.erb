@@ -32,7 +32,7 @@
       <%= link_to_remote content_tag(:span, "Show Answer Definitions", :id => dom_id(element_definition, "view_answer_definitions_toggle")),
                          :url => checklist_builder_answers_path(element_definition.checklist_definition, element_definition.question_definition, element_definition),
                          :method => :get %>
-      <%= image_tag "spinner.gif", :id => dom_id(element_definition, "spinner"), :style => "display:none;" %>
+      <%= spinner dom_id(element_definition)%>
     </td>
   </tr>
 </table>

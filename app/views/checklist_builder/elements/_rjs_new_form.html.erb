@@ -7,6 +7,6 @@
     <%= submit_tag "Create" %> |
     <%= spell_check_button %> |
 
-    <%= link_to_remote "Cancel", edit_checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition) %>
+    <%= link_to_remote "Cancel", new_checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition) %>
   </p>
 <%- end -%>

@@ -28,7 +28,7 @@
       <%= link_to_remote content_tag(:span, "Show Element Definitions", :id => dom_id(question_definition,"view_element_definitions_toggle")),
                          :url => checklist_builder_elements_path(question_definition.checklist_definition, question_definition),
                          :method => :get %>
-      <%= image_tag "spinner.gif", :id => dom_id(question_definition,"spinner"), :style => "display:none" %>
+      <%= spinner dom_id(question_definition) %>
     </td>
   </tr>
 </table>
