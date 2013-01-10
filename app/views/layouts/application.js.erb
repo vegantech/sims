@@ -1,5 +1,5 @@
 <%=yield%>
-<% if jquery? && flash[:notice] %>
+<% if flash[:notice] %>
   $('#flash_notice').html("<%=raw flash[:notice]%>").show();
   <%flash.discard%>
 <% end %>

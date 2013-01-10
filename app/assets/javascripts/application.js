@@ -1,133 +1,106 @@
+//=require popup
+//=require jquery
+//=require jquery_ujs
+//=require jquery.effects.pulsate
+//=require jquery.effects.highlight
+//=require jquery.effects.blind
+//=require jquery.ui.sortable
+//=require jquery.nested-fields
+//=require jquery.uploadProgress
+//=require overlib
+//=require spellerpages/spellChecker
+//=require simulate
+//=require datepicker
+//=require scrollTo
+//=require_tree ./coffee
+//=require_self
+
+//
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 //
 //
 
+$.fx.speeds._default= 750;
 
-
-
-document.observe("dom:loaded", function() {
-  new PeriodicalExecuter(checkSession, 30);
-  document.observe('click', function(e,el) {
-    if (el = e.findElement('.toggler')) {
-      $(el.readAttribute("data-toggle-id")).toggle();
-      e.stop();
-    }
-    if (el = e.findElement('.plus_minus')) {
-	el.up('li').toggleClassName('minus');
-        e.stop();
-    }
-    if (el = e.findElement('.spell_check_button')) {
-	var f=el.form;
+$(function() {
+  $('body').on("click",".toggler",function(event) {
+    event.preventDefault();
+    $("#" + $(this).data().toggleId).toggle();
+  });
+  $('a.plus_minus').click(function() {
+    return $(this).parent('li').toggleClass('minus');
+  });
+  $('body').on("mouseover",".popup,.help-question",function(event) {
+    return overlib($(this).data().help);
+  });
+  $('body').on("mouseout",".popup,.help-question",function(event) {
+    return nd();
+  });
+  $('.dbl_toggler').dblclick(function() {
+    return $("#" + $(this).data().toggleId).toggle();
+  });
+  $('#student_search_form #search_criteria_grade').change(function() {searchCriteriaAjax("grade",$(this));});
+  $('#student_search_form #search_criteria_user_id').change(function() {searchCriteriaAjax("member",$(this));}); 
+  $('#student_search_form .flag_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
+  });
+  $('#student_search_form .active_intervention_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_active_intervention').checked = true;
+  });
+  $('#check_all').click(function() {
+    var checked;
+    checked = $('#check_all')[0].checked;
+    return $('form input:checkbox').each(function() {
+      this.checked = checked;
+      return true;
+    });
+  });
+  $('body').on("click",".spell_check_button",function(event){
+	event.preventDefault();
+	var f=this.form;
 	var speller = new spellChecker();
-	speller.textInputs=$$('#'+f.id + ' .spell_check');
+	speller.textInputs=$('#'+f.id + ' .spell_check');
 	speller.openChecker();
-	e.stop();
+  });
+  $('body').on("click",".cancel_link",function(event) {
+    event.preventDefault();
+    if(!$(this).data().jconfirm || confirm($(this).data().jconfirm)) {
+	    $("#" + $(this).data().show).show();
+	    $("#" + $(this).data().show2).show();
+	    $("#" + $(this).data().remove).remove();
+	    $(this).parents($(this).data().removeUp).first().remove();
     }
+    return(false);
+  });
+  $('body').on("click",".new_asset_link",function(event) {
+    event.preventDefault();
+    $(this).before($(this).prev(".hidden_asset").first().clone().show());
+  });
+  $('body').on("click",".presubmit",function(event) {
+    $(this).closest("form").find("input[name=" + $(this).data().toChange+ "]").val($(this).data().newValue);
+  });
+  $('body').on("click","#new_user_school_assignment_link",function(event) {
+    event.preventDefault();
+    $("#user_school_assignments").append($("#hidden_user_school_assignment tr, #hidden_user_school_assignment div").first().clone().removeAttr('disabled'));
+    $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");
+  });
+  $('form#new_student #student_id_state').blur(function() {
+	  $('#spinnerid_state').show();
+	  $.ajax({
+		  dataType: 'script',
+		  type: 'GET',
+		  data: 'id_state=' + $(this).val(),
+		  url: '/district/students/check_id_state',
+		  complete: function( ) {
+			  $('#spinnerid_state').hide();
+		  }
+	  });
   });
 
-  document.observe('mouseover', function(e,el) {
-   if (el = e.findElement('.help-question')) {
-      return overlib(el.readAttribute("data-help"));
-   }
-  });
-
-  document.observe('mouseout', function(e,el) {
-   if (el = e.findElement('.help-question')) {
-     nd();
-   }
-  });
-
+  $('form .awesome_nested').nestedFields();
+  setInterval(checkSession,3000);
 });
-
-function check_same_boxes(obj) {
-  $$('.'+obj.className).each(function(s){
-      s.checked=obj.checked;
-      });
-
-}
-
-function searchByIntervention() {
-  document.getElementById('search_criteria_search_type_active_intervention').checked = true;
-}
-
-function searchByFlag() {
-   document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
-}
-
-function selectStudents(){
-    selected_boxes = document.select_students_form.elements["id[]"];
-    for (x = 0; x < selected_boxes.length; x++){
-      selected_boxes[x].checked = true;
-    }
-    if(!(selected_boxes.length > 0)){
-      selected_boxes.checked = true;
-    }
-}
-
-function unselectStudents(){
-    selected_boxes = document.select_students_form.elements["id[]"];
-    for (x = 0; x < selected_boxes.length; x++){
-      selected_boxes[x].checked = false;
-    }
-    if(!(selected_boxes.length > 0)){
-      selected_boxes.checked = false;
-    }
-}
-
-
-
-
-var Checklist = {
-  setup:function() {
-          if (!($$('a.questionLink')[0] == null)) {
-    $$('a.questionLink').invoke('observe', 'click', Checklist.showQuestion)
-          }
-  },
-  showQuestion:function(e) {
-    Event.stop(e)
-
-    var element = Element.extend(Event.element(e))
-
-    var questionDiv = element.up('p').next('div.questionDiv')
-    
-    if (!questionDiv.visible()) {
-      Checklist.hideAllVisibleQuestions()
-      new Effect.BlindDown(questionDiv, {queue:'end', 
-                                         duration:0.75,
-                                         afterFinish:Checklist.scrollToQuestion})
-    }
-  },
-  hideAllVisibleQuestions:function() {
-    $A($$('div.questionDiv')).each(function(div) {
-      if (div.visible()) {
-        new Effect.BlindUp(div, {queue:'end', duration:0.75})
-      }
-    })
-  },
-  scrollToQuestion:function(e) {
-    e.element.previous('p').scrollTo()
-  }
-}
-
-Event.observe(window,'load',function(){
-  Checklist.setup();
-})
-
-
-function show_or_hide_team_consultation_form(e,team_ids_with_assets) {
-  //if the team has no attachments, and the form is blank
-  if(!team_ids_with_assets.include(e.value) ||
-  $$('form.new_team_consultation textarea').any(function(textarea) { return textarea.value != ""}))
-  {
-    $("form_consultation_form").show();
-    }
-  else{
-    $("form_consultation_form").hide();
-  }
-
-
-}
 
 /**
  * Get value from the document cookie
@@ -156,8 +129,8 @@ function cookieGet(name)
 function checkSession() {
 	  cookie_student = cookieGet('selected_student');
 	  cookie_user = cookieGet('user_id');
-	  page_user = document.body.readAttribute('data-user');
-	  page_student = document.body.readAttribute('data-student');
+	  page_user = $('body').data('user');
+	  page_student = $('body').data('student');
 	  str = "";
 	  if(page_user  && cookie_user != page_user){
 		  str +="You've been logged out or another user is using SIMS in another window or tab.  ";
@@ -170,6 +143,36 @@ function checkSession() {
 		str = "<br />Using multiple windows or tabs can cause errors or misplaced data in SIMS.  If you are seeing this message, you should close this window.<br /> " + str;
 	  window.scrollTo(1,1);
 	  }
-	  $('session_notice').update(str);
+	  $('#session_notice').html(str);
 
   }
+
+function searchCriteriaAjax(crit,field) {
+	var school_id = $('#student_search_form').data().school;
+	var spinnerfield = field.next('img.spinner');
+	$.ajax({
+		url: "/schools/" + school_id + "/student_search/"+ crit,
+		beforeSend: function(){ spinnerfield.show();},
+		success: function(){ spinnerfield.hide();},
+		data: {
+			grade: escape($('#search_criteria_grade').val()),
+		user: escape($('#search_criteria_user_id').val())
+		},
+		dataType: "script"
+	}
+	);
+};
+
+//from http://thetimbanks.com/2011/03/22/jquery-extension-toggletext-method/
+jQuery.fn.toggleText = function (value1, value2) {
+	    return this.each(function () {
+		            var $this = $(this),
+		               text = $this.text();
+
+	            if (text.indexOf(value1) > -1)
+		                $this.text(text.replace(value1, value2));
+	            else
+		                $this.text(text.replace(value2, value1));
+	        });
+};
+

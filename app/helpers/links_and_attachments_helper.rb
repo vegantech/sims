@@ -1,22 +1,10 @@
 module LinksAndAttachmentsHelper
 
   def add_asset_link(name, parent, suffix="")
-    if jquery?
-      a=content_tag :div, :class => "hidden_asset", :style => "display:none" do
-
-        render :partial => "/assets/asset", :object =>Asset.new, :locals => {:parent => parent}
-      end
-      a + link_to(name, "", :class => "new_asset_link", :data => {:parent => parent, :suffix => suffix})
-    else
-      link_to_function name do |page|
-        page.append_asset_link(parent,suffix)
-      end
+    a=content_tag :div, :class => "hidden_asset", :style => "display:none" do
+      render :partial => "/assets/asset", :object =>Asset.new, :locals => {:parent => parent}
     end
-  end
-
-  def append_asset_link(parent,suffix="")
-    page.insert_html :bottom, "assets#{suffix}", :partial => 'assets/asset', :object => Asset.new,
-        :locals =>{:parent => parent}
+    a + link_to(name, "", :class => "new_asset_link", :data => {:parent => parent, :suffix => suffix})
   end
 
   def links_and_attachments(obj, tag_type)
@@ -32,7 +20,5 @@ module LinksAndAttachmentsHelper
       end
       str.html_safe
     end
-
   end
-
 end
