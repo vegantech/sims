@@ -205,6 +205,7 @@ Sims::Application.routes.draw do
             end
             collection do
               put :disable
+              post :disable
               post :sort
             end
           end

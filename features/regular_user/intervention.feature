@@ -58,7 +58,6 @@ Feature: Create Intervention
     Given I start at the student profile page
 
     When I follow "Edit/Add Comment"
-    And I should see onchange for "Assign Progress Monitor" that calls "ajax_probe_assignment"
 
     And I select "First Progress Monitor" from "Assign Progress Monitor"
     And xhr "onchange" "Assign Progress Monitor"
