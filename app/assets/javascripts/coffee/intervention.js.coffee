@@ -41,7 +41,7 @@ jQuery ->
     simulate @form, "submit"
   $(document).on "click",".remove_participant", ->
     $(@).parent('div').remove()
-  $(document).on "click", '.edit_intervention a#new_participant_link, .new_intervention a#new_participant_link', ->
+  $(document).on "click", '.edit_intervention a#new_participant_link, .new_intervention a#new_participant_link', (event) ->
     event.preventDefault()
     $("#participants_list").append($("div.hidden_participant").last().clone().show())
     $('#participants_list div').show()
@@ -59,13 +59,13 @@ jQuery ->
         id: @value
         intervention_id: $(@).data().interventionId
         custom_intervention: $(@).data().custom
-  $(document).on "click","a.intervention_comment_cancel", ->
+  $(document).on "click","a.intervention_comment_cancel", (event) ->
     event.preventDefault()
     $(@).parents('tr').next('tr.intervention_comment').show()
     $(@).parents('tr').remove()
   $(document).on "click","a#enter_view_scores_link", ->
     $('#spinnerscore_link').show()
-  $(document).on "click","a.preview_graph", ->
+  $(document).on "click","a.preview_graph", (event ) ->
     event.preventDefault()
     $.ajax
       dataType: 'text',

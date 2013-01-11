@@ -5,7 +5,7 @@ jQuery ->
     $('#grouped_progress_list td select:first-child').val($('#global_date select:first-child').val())
     $('#grouped_progress_list td select:nth-child(2)').val($('#global_date select:nth-child(2)').val())
     $('#grouped_progress_list td select:nth-child(3)').val($('#global_date select:nth-child(3)').val())
-  $('form.edit_grouped_progress_entry a#new_participant_link').click ->
+  $('form.edit_grouped_progress_entry a#new_participant_link').click (event) ->
     event.preventDefault()
     $("#participants_list").append($("div.hidden_participant").last().clone().show())
     $('#participants_list div').show()
