@@ -9,7 +9,6 @@
 //=require jquery.uploadProgress
 //=require overlib
 //=require spellerpages/spellChecker
-//=require simulate
 //=require datepicker
 //=require scrollTo
 //=require_tree ./coffee
