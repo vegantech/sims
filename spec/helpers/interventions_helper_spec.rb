@@ -7,7 +7,7 @@ describe InterventionsHelper do
       tier=Tier.create!(:title=>'Tiered Intervention Select')
       int_def=Factory(:intervention_definition,:tier=>tier)
       d=helper.tiered_intervention_definition_select([int_def])
-      d.should have_tag("select#intervention_definition_id.fixed_width[onchange=\"$('spinnerdefinitions').show();simulate(this.form,'submit')\"]",:with=>{ :name => 'intervention_definition[id]'}) do
+      d.should have_tag("select#intervention_definition_id.fixed_width.sim_submit",:with=>{ :name => 'intervention_definition[id]'}) do
           with_tag("option", :with => {:value =>""})
           with_tag("optgroup",:with => {:label=>tier.to_s}) do
             with_option(int_def.title, :with => {:value => int_def.id})
@@ -41,7 +41,7 @@ describe InterventionsHelper do
       tq=helper.tiered_quicklist(arr)
       tq.should =~ /Objective 1 : 1-Basic.*Objective 1 : 2-Basic.*Objective 2 : 3-Basic.*Objective 3 : 2-Basic.*Objective 3 : 3-Basic/
       tq.should =~ /<select .*><option value=""/  #tests LH647
-      tq.should have_tag("select#intervention_definition_id[onchange=\"form.submit()\"]") do
+      tq.should have_tag("select#intervention_definition_id") do
         with_tag("option", :value=>"")
       end
    end

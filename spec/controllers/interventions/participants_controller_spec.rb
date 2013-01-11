@@ -14,7 +14,8 @@ describe Interventions::ParticipantsController do
     student=mock_student
     @intervention=mock_intervention
     student.stub_association!(:interventions,:find=>@intervention)
-    @intervention.stub_association!(:intervention_participants, :build=>mock_intervention_participant, :find=>mock_intervention_participant)
+    @intervention.stub_association!(:intervention_participants, :build=>mock_intervention_participant, :find=>mock_intervention_participant,
+                                    :find_by_user_id => mock_intervention_participant)
     controller.stub!(:current_student).and_return(student)
     controller.stub!(:current_school).and_return(mock_school(:assigned_users=>[1,2,3]))
   end

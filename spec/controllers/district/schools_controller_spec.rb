@@ -82,7 +82,7 @@ describe District::SchoolsController do
     describe "with valid params" do
       it "should update the requested schools" do
         School.should_receive(:find).with("37").and_return(mock_schools)
-        mock_schools.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        mock_schools.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :school => {:these => 'params'}
       end
 
@@ -109,7 +109,7 @@ describe District::SchoolsController do
     describe "with invalid params" do
       it "should update the requested schools" do
         School.should_receive(:find).with("37").and_return(mock_schools)
-        mock_schools.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        mock_schools.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :school => {:these => 'params'}
       end
 

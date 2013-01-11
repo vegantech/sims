@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
   def require_current_school
     if current_school.blank?
       if request.xhr?
-        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');" if request.xhr?
+        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');"
       else
         flash[:notice] = "Please reselect the school"
         redirect_to schools_url
