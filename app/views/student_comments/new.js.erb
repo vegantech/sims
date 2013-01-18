@@ -1,0 +1,3 @@
+$('#new_team_note_link').hide();
+$('#new_student_comment').remove();
+$('#new_team_note_link').after("<%=escape_javascript(render(:partial=>'new', :locals=>{:format => :js, :target => "upload_frame"}))%>");

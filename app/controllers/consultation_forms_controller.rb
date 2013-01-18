@@ -75,6 +75,7 @@ class ConsultationFormsController < ApplicationController
   def destroy
     @consultation_form = ConsultationForm.find_by_user_id_and_id(current_user,params[:id])
     @consultation_form.destroy
+    flash[:notice] = "Consultation Form has been removed"
     respond_to do |format|
       format.js
     end

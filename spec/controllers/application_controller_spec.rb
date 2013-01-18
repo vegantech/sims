@@ -60,12 +60,8 @@ describe ApplicationController do
 
         controller.should_receive(:current_school).and_return("")
         @req.should_receive(:xhr?).and_return(true)
-        page=mock_object({})
-        page.should_receive(:[]).with(:flash_notice).and_return(page)
-        page.should_receive(:insert).with("<br />Please reselect the school.")
-        controller.should_receive(:render).and_yield(page)
+        controller.should_receive(:render).with({:js=>"$('#flash_notice').prepend('<br />Please reselect the school.');"})
         controller.send(:require_current_school).should == false
-
       end
 
       it 'should return true if there is a school' do

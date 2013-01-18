@@ -6,11 +6,7 @@
   <p>
     <%= submit_tag "Create" %> |
     <%= spell_check_button %> |
-
-    <%= link_to_function "Cancel", nil do |page|
-      page.remove_content dom_id(checklist_definition,"new_question_definition")
-      page.change_link dom_id(checklist_definition,"add_question_definition_link"), "Add Question"
-    end %>
+    <%= link_to_remote "Cancel",new_checklist_builder_question_path(checklist_definition), :method => :get %>
   </p>
 <%- end -%>
 

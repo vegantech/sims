@@ -1,0 +1,19 @@
+<%if @intervention.end_date_changed? || @end_date.nil? %>
+  $('#end_date<%=@intervention.id%>-mm').val(<%=@intervention.end_date_was.month%>);
+  $('#end_date<%=@intervention.id%>-dd').val(<%=@intervention.end_date_was.day%>);
+  $('#end_date#<%=@intervention.id%>').val(<%=@intervention.end_date_was.year%>);
+  $('#print_end_date<%=@intervention.id%>').html("<%=@intervention.end_date_was.to_s%>");
+  $('#end_date<%=@intervention.id%>').parents('td').css("color","red");
+
+<% else %>
+  $('#print_end_date<%=@intervention.id%>').html("<%=@intervention.end_date.to_s%>");
+
+  <%  if @end_date < Date.today || @intervention.invalid? %>
+    <% color = 'red' %>
+    $('#end_date<%=@intervention.id%>').siblings('div.end_date_expired').show();
+  <%  else %>
+    <% color = 'black' %>
+    $('#end_date<%=@intervention.id%>').siblings('div.end_date_expired').hide();
+  <%   end %>
+  $('#end_date<%=@intervention.id%>').parents('td').css("color","<%=color%>");
+<% end %>

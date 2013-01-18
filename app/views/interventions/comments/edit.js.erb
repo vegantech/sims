@@ -1,0 +1,2 @@
+$(<%=jdom @intervention_comment%>).hide();
+$(<%=jdom @intervention_comment%>).before(<%=ejsr :partial => 'interventions/comments/edit_js', :locals =>{ :comment => @intervention_comment}%>);

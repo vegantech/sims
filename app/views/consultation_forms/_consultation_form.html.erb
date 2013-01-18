@@ -3,7 +3,7 @@
     <% teams = Array(consultation_form.object.school_team || current_school.school_teams) %>
     <% teams.each do |team| %>
       <% if team.assets.present? %>
-        <p>Templates and instructions from the <%=team %> team:</p>
+        <%=div_for(team, :assets){"Templates and instructions from the #{team} team" } %>
 
         <ul><%=links_and_attachments team,'li' %> </ul>
       <% end %>
@@ -16,7 +16,7 @@
     <p>You can upload documentation here or a completed template here:</p>
     <%= render :partial => '/assets/asset_form', :locals => {:form=>consultation_form, :parent =>consultation_form.object_name}  %>
   <% end %>
-  <%= link_to_function 'Show/Hide Form', "$('#{dom_id(consultation_form.object,"form")}').toggle()"  %>
+  <%= link_to 'Show/Hide Form',"", :class => "toggler", :data => {:toggle_id =>  dom_id(consultation_form.object,"form")}  %>
 <% end %>
 
 

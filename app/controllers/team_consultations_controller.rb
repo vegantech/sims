@@ -86,6 +86,7 @@ class TeamConsultationsController < ApplicationController
   def destroy
     @team_consultation = current_user.team_consultations.find(params[:id])
     @team_consultation.destroy
+    flash[:notice] = "The team consultation has been withdrawn"
 
     respond_to do |format|
       format.html { redirect_to(@team_consultation.student) }

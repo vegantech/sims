@@ -1,4 +1,0 @@
-page.replace_html( 'goal_definition_list',
-:partial => "goal_definition",
-:collection => @goal_definitions)
-page.safe_highlight dom_id(@goal_definition)

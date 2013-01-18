@@ -1,6 +1,6 @@
-<h3 class="extended_profile", ondblclick="$('extended_profile').toggle();"><span>Extended Profile</span></h3>
+<h3 class="extended_profile dbl_toggler" data-toggle-id="extended_profile"><span>Extended Profile</span></h3>
 <% if @student.extended_profile? %>
-  <%= link_to_function 'Show/Hide Extended Profile', "$('extended_profile').toggle()" unless defined?(in_report) %>
+  <%= link_to( 'Show/Hide Extended Profile',"" ,:class => 'toggler', "data-toggle-id" => "extended_profile") unless defined?(in_report) %>
   <div id="extended_profile" <%=style_display_none_unless(defined?(in_report)) %> >
      <% ext_pro = @student.ext_summary || @student.build_ext_summary %>
     <%#=extended_profile(@student)%>

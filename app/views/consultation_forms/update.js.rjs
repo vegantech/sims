@@ -1,7 +1,0 @@
-  page.replace_html("consultation_forms", :partial => "consultation_forms/list", :locals =>  {:consultation_forms => current_student.pending_consultation_forms})
-  page.replace_html("consultation_form", flash[:notice])
-  page.show("consultation_forms")
-  page.show("show_hide_view_#{dom_id(@consultation_form)}")
-  page.show("edit_#{dom_id(@consultation_form)}")
-
-

@@ -39,8 +39,9 @@ Feature: Student Maintenance
     Then I follow "Add/Remove Students"
     Then I follow "New Student"
     And I fill in "State ID" with "1234"
-    And page source should contain "onblur"
+    #  And page source should contain "onblur"
     And I call ajax check_id_state with "1234"
+    And PENDING this needs to be switched to jquery, or selenium
     Then I should see an alert
     When I enter url "/district/students/new"
     And I fill in "State ID" with ""
@@ -55,6 +56,7 @@ Feature: Student Maintenance
     Then I follow "New Student"
     And I fill in "State ID" with "1234"
     And I call ajax check_id_state with "1234"
+    And PENDING this needs to be switched to jquery, or selenium
     # Then I should see a popup that the student was found
     Then I should see an alert
     And I should see "Claim First Last for your district"
@@ -63,6 +65,7 @@ Feature: Student Maintenance
     Given I am a district admin
     And student exists with no district and id_state of 1234
     And I start at the home page
+    And PENDING this needs to be switched to jquery, or selenium
     When I follow Claim First Last for your district
     Then I should see "Student First Last has been added to your district"
     And I should see "1234"

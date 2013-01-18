@@ -8,7 +8,7 @@
     <td <%=highlight_if_wrong_element(@checklist,question_definition,element_definition) -%> valign="top" >
       <center>
 
-        <%= radio_button_tag "element_definition[#{element_definition.id}]", answer_definition.id, is_checked , autoset_onclick(question_definition,answer_definition)
+        <%= radio_button_tag "element_definition[#{element_definition.id}]", answer_definition.id, is_checked , :class => autoset(answer_definition)
 %>
       </center>
 

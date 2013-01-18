@@ -1,0 +1,16 @@
+<%= content_tag_for :tr, comment, :class => hidden do %>
+  <td>
+    <%= content_tag_for :span, comment, "span" do %>
+      <%= h comment %>
+    <% end %>
+  </td>
+  <% if current_user == comment.user and !readonly %>
+    <td>
+      <%= link_to 'Edit', edit_intervention_comment_path(@intervention, comment), {:target => "_blank", :remote => true} %>
+    </td>
+    <td>
+      <%= link_to 'Delete',  intervention_comment_path(@intervention, comment),
+        :confirm => 'Are you sure you want to remove this comment?', :method => :delete, :remote => true %>
+      </td>
+    <% end %>
+<% end %>

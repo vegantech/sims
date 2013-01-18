@@ -1,0 +1,3 @@
+<% object_param = object.class.name.underscore %>
+<%=jdom parent,object_param.pluralize%>.html(<%=ejsr :partial => object_param, :collection => object.sibling_definitions%>);
+<%=jdom object%>.effect('highlight');

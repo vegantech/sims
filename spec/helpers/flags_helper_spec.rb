@@ -49,7 +49,7 @@ describe FlagsHelper do
   describe 'image_with_popup' do
     it 'should return an imagetag with an onmouseover and onmouse_out' do
       result = helper.image_with_popup("dog.jpg", "This is the popup")
-      result.should == %q{<img alt="Dog" onmouseout="return nd();" onmouseover="return overlib('This is the popup');" src="/assets/dog.jpg" /> }
+      result.should == %q{<img alt="Dog" class="popup" data-help="This is the popup" src="/assets/dog.jpg" /> }
     end
   end
 
@@ -89,8 +89,7 @@ describe FlagsHelper do
         it 'should return a form' do
           cf = mock_flag(:category => 'languagearts', :summary => 'Current Flag Summary', :icon => 'CF.png')
           student = mock_student(:current_flags => {'math' => [cf]})
-
-          helper.current_flags(student, true).should ==  "<form accept-charset=\"UTF-8\" action=\"/ignore_flags/new?category=languagearts\" data-remote=\"true\" method=\"get\" style=\"display:inline\"><div style=\"margin:0;padding:0;display:inline\"><input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" /></div><input onmouseout=\"return nd();\" onmouseover=\"return overlib('Math : Current Flag Summary');\" src=\"/assets/CF.png\" type=\"image\" /></form>"
+          helper.current_flags(student, true).should == "<form accept-charset=\"UTF-8\" action=\"/ignore_flags/new?category=languagearts\" data-remote=\"true\" method=\"get\" style=\"display:inline\"><div style=\"margin:0;padding:0;display:inline\"><input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" /></div><input class=\"popup\" data-help=\"Math : Current Flag Summary\" src=\"/assets/CF.png\" type=\"image\" /></form>"
        end
       end
     end

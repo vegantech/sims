@@ -23,7 +23,7 @@ describe StudentsHelper do
       group=mock_district(:title=>"THE TITLE",:id=>'id1')
       o=helper.intervention_group_checkbox(group)
       o.should include(label_tag(dom_id(group),"THE TITLE"))
-      o.should include(check_box_tag("intervention_group_types[]",'id1', false, :id=>dom_id(group), :onclick=>"searchByIntervention()"))
+      o.should include(check_box_tag("intervention_group_types[]",'id1', false, :id=>dom_id(group), :class=>"active_intervention_checkbox"))
 
 
     end

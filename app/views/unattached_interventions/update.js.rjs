@@ -1,9 +1,0 @@
-if @participant
-  puts @participant.inspect
-  page.insert_html :before, dom_id(@intervention,'new_participant'), :partial => "unattached_interventions/participant", :object => @participant
-   page[dom_id(
-     @intervention,"no_participants")
-   ].innerHTML= "" 
- 
-end
-

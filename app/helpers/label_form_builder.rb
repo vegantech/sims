@@ -11,6 +11,7 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
     define_method(name) do |field, *args|
       options = args.extract_options!
       l=options[:label].html_safe if options[:label].present?
+      wrap = options[:wrap] || :div
       label =  label(field, l, :class => options[:label_class])
       if to_spell_check.include?(name)
         options[:class] = "#{options[:class]} spell_check"
@@ -21,15 +22,16 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
 
       help = options[:help]? ' '+@template.help_popup(options[:help]) : ''
       remove_link = ' ' + (options[:remove_link] || '')
-      @template.content_tag(:div, (label.html_safe  + super(field,*args) + help.html_safe + remove_link.html_safe).html_safe, :class => 'form_row')  #wrap with a div form_Row
+      @template.content_tag(wrap, (label.html_safe  + super(field,*args) + help.html_safe + remove_link.html_safe).html_safe, :class => 'form_row')  #wrap with a div form_Row
     end
   end
 
   def check_box(field,*args)
     options = args.extract_options!
+    wrap = options[:wrap] || :div
     label = @template.content_tag(:b,label(field, options[:label], :class => options[:label_class]))
     help = options[:help]? ' ' +@template.help_popup(options[:help]) : ''
-    @template.content_tag(:div, ('' +  label + help + super(field,*args)).html_safe, :class => 'form_row')  #wrap with a div form_Row
+    @template.content_tag(:wrap, ('' +  label + help + super(field,*args)).html_safe, :class => 'form_row')  #wrap with a div form_Row
   end
 
 

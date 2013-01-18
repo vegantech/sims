@@ -62,7 +62,7 @@ Sims::Application.routes.draw do
         get :check_id_state
       end
       member do
-        get :claim
+        put :claim
       end
     end
   end
@@ -110,8 +110,8 @@ Sims::Application.routes.draw do
   resources :schools , :only => [:index, :show, :create] do
     resource :student_search, :only => [:show, :create] do
       collection do
-        post :member
-        post :grade
+        get :member
+        get :grade
       end
     end
   end
@@ -205,6 +205,7 @@ Sims::Application.routes.draw do
             end
             collection do
               put :disable
+              post :disable
               post :sort
             end
           end

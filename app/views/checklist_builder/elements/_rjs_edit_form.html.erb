@@ -7,9 +7,6 @@
     <%= submit_tag "Update" %> | 
     <%= spell_check_button %> |
 
-    <%= link_to_function "Cancel", nil do |page|
-      page.remove_content dom_id(element_definition, "edit")
-      page.change_link dom_id(element_definition, "edit_link"), "Edit"
-    end %>
+    <%= link_to_remote "Cancel", edit_checklist_builder_element_path(element_definition.checklist_definition, element_definition.question_definition, element_definition) %>
   </p>
 <%- end -%>

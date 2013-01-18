@@ -90,7 +90,7 @@ describe District::UsersController do
       let(:user) {mock_model(User, :update_attributes => true, :to_s => "udpate user")}
       it "should update the requested user" do
         User.should_receive(:find).with("37").and_return(user)
-        user.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        user.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :user => {:these => 'params'}
       end
 
@@ -156,7 +156,7 @@ describe District::UsersController do
       let(:user) {mock_model(User, :update_attributes => false, :to_s => "udpate user")}
       it "should update the requested user" do
         User.should_receive(:find).with("37").and_return(user)
-        user.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        user.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :user => {:these => 'params'}
       end
 

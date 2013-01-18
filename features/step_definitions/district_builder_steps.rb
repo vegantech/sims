@@ -32,7 +32,7 @@ Then /^page source should contain "([^\"]*)"$/ do |taboo|
 end
 
 When /^I follow Claim First Last for your district$/ do
-  visit claim_district_student_url(Student.last)
+  page.driver.put claim_district_student_url(Student.last)
 end
 
 When /^I magically visit "([^\"]*)"$/ do |url|

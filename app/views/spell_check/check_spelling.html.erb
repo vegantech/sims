@@ -17,7 +17,6 @@
     words[<%=idx%>] = [];
     suggs[<%=idx%>] = [];
 
-
     <% @words[idx].each_with_index do |pair, i| %>
       words[<%=idx%>][<%= i %>] = '<%= pair[0] %>';
       suggs[<%=idx%>][<%= i %>] = [<%= raw pair[1] %>];

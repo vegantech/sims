@@ -111,5 +111,4 @@ class ChecklistBuilder::AnswersController < ApplicationController
   def load_element_definition
     @element_definition = @question_definition.element_definitions.find(params[:element_id])
   end
-
 end

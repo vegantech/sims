@@ -1,247 +1,177 @@
+//=require popup
+//=require jquery
+//=require jquery_ujs
+//=require jquery.effects.pulsate
+//=require jquery.effects.highlight
+//=require jquery.effects.blind
+//=require jquery.ui.sortable
+//=require jquery.nested-fields
+//=require jquery.uploadProgress
+//=require overlib
+//=require spellerpages/spellChecker
+//=require datepicker
+//=require scrollTo
+//=require_tree ./coffee
+//=require_self
+
+//
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 //
 //
 
+$.fx.speeds._default= 750;
 
-
-
-document.observe("dom:loaded", function() {
-  document.observe('click', function(e,el) {
-    if (el = e.findElement('.toggler')) {
-      $(el.readAttribute("data-toggle-id")).toggle();
-      e.stop();
-    }
-
+$(function() {
+  $('body').on("click",".toggler",function(event) {
+    event.preventDefault();
+    $("#" + $(this).data().toggleId).toggle();
+  });
+  $('a.plus_minus').click(function() {
+    return $(this).parent('li').toggleClass('minus');
+  });
+  $('body').on("mouseover",".popup,.help-question",function(event) {
+    return overlib($(this).data().help);
+  });
+  $('body').on("mouseout",".popup,.help-question",function(event) {
+    return nd();
+  });
+  $('.dbl_toggler').dblclick(function() {
+    return $("#" + $(this).data().toggleId).toggle();
+  });
+  $('#student_search_form #search_criteria_grade').change(function() {searchCriteriaAjax("grade",$(this));});
+  $('#student_search_form #search_criteria_user_id').change(function() {searchCriteriaAjax("member",$(this));}); 
+  $('#student_search_form .flag_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
+  });
+  $('#student_search_form .active_intervention_checkbox').click(function(){
+    document.getElementById('search_criteria_search_type_active_intervention').checked = true;
+  });
+  $('#check_all').click(function() {
+    var checked;
+    checked = $('#check_all')[0].checked;
+    return $('form input:checkbox').each(function() {
+      this.checked = checked;
+      return true;
     });
+  });
+  $('body').on("click",".spell_check_button",function(event){
+	event.preventDefault();
+	var f=this.form;
+	var speller = new spellChecker();
+	speller.textInputs=$('#'+f.id + ' .spell_check');
+	speller.openChecker();
+  });
+  $('body').on("click",".cancel_link",function(event) {
+    event.preventDefault();
+    if(!$(this).data().jconfirm || confirm($(this).data().jconfirm)) {
+	    $("#" + $(this).data().show).show();
+	    $("#" + $(this).data().show2).show();
+	    $("#" + $(this).data().remove).remove();
+	    $(this).parents($(this).data().removeUp).first().remove();
+    }
+    return(false);
+  });
+  $('body').on("click",".new_asset_link",function(event) {
+    event.preventDefault();
+    $(this).before($(this).prev(".hidden_asset").first().clone().show());
+  });
+  $('body').on("click",".presubmit",function(event) {
+    $(this).closest("form").find("input[name=" + $(this).data().toChange+ "]").val($(this).data().newValue);
+  });
+  $('body').on("click","#new_user_school_assignment_link",function(event) {
+    event.preventDefault();
+    $("#user_school_assignments").append($("#hidden_user_school_assignment tr, #hidden_user_school_assignment div").first().clone().removeAttr('disabled'));
+    $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");
+  });
+  $('form#new_student #student_id_state').blur(function() {
+	  $('#spinnerid_state').show();
+	  $.ajax({
+		  dataType: 'script',
+		  type: 'GET',
+		  data: 'id_state=' + $(this).val(),
+		  url: '/district/students/check_id_state',
+		  complete: function( ) {
+			  $('#spinnerid_state').hide();
+		  }
+	  });
+  });
+
+  $('form .awesome_nested').nestedFields();
+  setInterval(checkSession,3000);
 });
 
-function check_same_boxes(obj) {
-  $$('.'+obj.className).each(function(s){
-      s.checked=obj.checked;
-      });
+/**
+ * Get value from the document cookie
+ *
+ * @param string name Name of the variable to retrieve
+ * @return mixed
+ */
+function cookieGet(name)
+{
+	name = name + "=";
+	var cookies = document.cookie.split(';');
 
+	for (var i = 0; i < cookies.length; i++) {
+		var c = cookies[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1, c.length);
+		}
+		if (c.indexOf(name) === 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+
+	return null;
 }
 
-function searchByIntervention() {
-  document.getElementById('search_criteria_search_type_active_intervention').checked = true;
-}
+function checkSession() {
+	  cookie_student = cookieGet('selected_student');
+	  cookie_user = cookieGet('user_id');
+	  page_user = $('body').data('user');
+	  page_student = $('body').data('student');
+	  str = "";
+	  if(page_user  && cookie_user != page_user){
+		  str +="You've been logged out or another user is using SIMS in another window or tab.  ";
+	  }
+	  if(page_student && cookie_student != page_student){
+		  str +="Currently, you cannot select two different students in different windows or tabs";
+	  }
 
-function searchByFlag() {
-   document.getElementById('search_criteria_search_type_flagged_intervention').checked = true;
-}
+	  if(str != ""){
+		str = "<br />Using multiple windows or tabs can cause errors or misplaced data in SIMS.  If you are seeing this message, you should close this window.<br /> " + str;
+	  window.scrollTo(1,1);
+	  }
+	  $('#session_notice').html(str);
 
-function selectStudents(){
-    selected_boxes = document.select_students_form.elements["id[]"];
-    for (x = 0; x < selected_boxes.length; x++){
-      selected_boxes[x].checked = true;
-    }
-    if(!(selected_boxes.length > 0)){
-      selected_boxes.checked = true;
-    }
-}
-
-function unselectStudents(){
-    selected_boxes = document.select_students_form.elements["id[]"];
-    for (x = 0; x < selected_boxes.length; x++){
-      selected_boxes[x].checked = false;
-    }
-    if(!(selected_boxes.length > 0)){
-      selected_boxes.checked = false;
-    }
-}
-
-function grouped_change_date(){
-  for (x=1; x<4; x++){
-    val=$$('form.edit_grouped_progress_entry > select:nth-child('+(x+1) +')')[0];
-    $$('td.date >select:nth-child('+ x+ ')').each(function(n) {
-        n.value = val.value;
-        });
   }
 
-}
+function searchCriteriaAjax(crit,field) {
+	var school_id = $('#student_search_form').data().school;
+	var spinnerfield = field.next('img.spinner');
+	$.ajax({
+		url: "/schools/" + school_id + "/student_search/"+ crit,
+		beforeSend: function(){ spinnerfield.show();},
+		success: function(){ spinnerfield.hide();},
+		data: {
+			grade: escape($('#search_criteria_grade').val()),
+		user: escape($('#search_criteria_user_id').val())
+		},
+		dataType: "script"
+	}
+	);
+};
 
+//from http://thetimbanks.com/2011/03/22/jquery-extension-toggletext-method/
+jQuery.fn.toggleText = function (value1, value2) {
+	    return this.each(function () {
+		            var $this = $(this),
+		               text = $this.text();
 
-function calculate_percentage(field){
-  base_id = field.id.replace("_numerator","").replace("_denominator","")
-  numerator = $(base_id+'_numerator').value
-  denominator = $(base_id+'_denominator').value
-  score_field = $(base_id+'_score')
-  score =  parseInt(100*numerator/denominator);
-  if(!isNaN(score)){
-    score_field.value = score ;
-  }
+	            if (text.indexOf(value1) > -1)
+		                $this.text(text.replace(value1, value2));
+	            else
+		                $this.text(text.replace(value2, value1));
+	        });
+};
 
-}
-
-
-function change_date(new_record){
-    
-    var timeType = document.StudentInterventionForm.elements["intervention[time_length_id]"].selectedIndex;
-    var timeNum = document.StudentInterventionForm.elements["intervention[time_length_number]"].value;
-
-    var typeMultiplier = 0;
-
-      
-    if(timeType == 0){
-      //Day
-      typeMultiplier = 1;
-    }else if(timeType == 1){
-      //Week
-      typeMultiplier = 7;
-    }else if(timeType == 2){
-      //Month
-      typeMultiplier = 30;
-    }else if(timeType == 3){
-      //Quarter
-      typeMultiplier = 45;
-    }else if(timeType == 4){
-      //Semester
-      typeMultiplier = 90;
-    }else if(timeType == 5){
-      //SchoolYear
-      typeMultiplier = 180;
-    }
-    
-    
-    if((typeMultiplier >= 1)&&(timeNum >= 1)){
-        var dateMonth=document.StudentInterventionForm.elements["intervention[start_date(2i)]"].selectedIndex
-        var dateDay=document.StudentInterventionForm.elements["intervention[start_date(3i)]"].value;
-        var dateYear=document.StudentInterventionForm.elements["intervention[start_date(1i)]"].value;
-      
-      //Create the Date object for the starting date
-        var startDate=new Date(dateYear, dateMonth , dateDay);
-        var millisec = startDate.getTime();
-      var newMillisec = millisec+1000*60*60*24*(typeMultiplier * timeNum);
-      var endDate = new Date();
-      endDate.setTime(newMillisec);
-      var YearDiff = endDate.getFullYear()-dateYear;
-      
-      document.StudentInterventionForm.elements["intervention[end_date(3i)]"].value = endDate.getDate().toString();
-      document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value = endDate.getFullYear()
-      document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value = ((endDate.getMonth() + 1).toString());
-      
-      if((new_record == 'true') && (typeof(document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"])) !== 'undefined'){
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(1i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(2i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][first_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[start_date(3i)]"].value;
-
-
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(1i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(1i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(2i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(2i)]"].value;
-       document.StudentInterventionForm.elements["intervention[intervention_probe_assignment][end_date(3i)]"].value = document.StudentInterventionForm.elements["intervention[end_date(3i)]"].value;
-
-      }
-      }
-     
-    }
-
-
-var Checklist = {
-  setup:function() {
-          if (!($$('a.questionLink')[0] == null)) {
-    $$('a.questionLink').invoke('observe', 'click', Checklist.showQuestion)
-          }
-  },
-  showQuestion:function(e) {
-    Event.stop(e)
-
-    var element = Element.extend(Event.element(e))
-
-    var questionDiv = element.up('p').next('div.questionDiv')
-    
-    if (!questionDiv.visible()) {
-      Checklist.hideAllVisibleQuestions()
-      new Effect.BlindDown(questionDiv, {queue:'end', 
-                                         duration:0.75,
-                                         afterFinish:Checklist.scrollToQuestion})
-    }
-  },
-  hideAllVisibleQuestions:function() {
-    $A($$('div.questionDiv')).each(function(div) {
-      if (div.visible()) {
-        new Effect.BlindUp(div, {queue:'end', duration:0.75})
-      }
-    })
-  },
-  scrollToQuestion:function(e) {
-    e.element.previous('p').scrollTo()
-  }
-}
-
-Event.observe(window,'load',function(){
-  Checklist.setup();
-})
-
-function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'inline')
-          e.style.display = 'none';
-       else
-          e.style.display = 'inline';
-    }
-
-
-function new_probe_scores() {
-  var scores=$$('div#new_probe_forms input[type="text"]');
-  var i1=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(1i)]\"]');
-  var i2=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(2i)]\"]');
-  var i3=$$('div#new_probe_forms *[name=\"intervention[intervention_probe_assignment][new_probes][][administered_at(3i)]\"]');
-  var goal=$('intervention_intervention_probe_assignment_goal').getValue();
-
-  var first2=$('intervention[intervention_probe_assignment]_first_date-mm');
-  var first3=$('intervention[intervention_probe_assignment]_first_date-dd');
-  var first1=$('intervention[intervention_probe_assignment]_first_date');
-  
-  var last2=$('intervention[intervention_probe_assignment]_end_date-mm');
-  var last3=$('intervention[intervention_probe_assignment]_end_date-dd');
-  var last1=$('intervention[intervention_probe_assignment]_end_date');
-
-  var s="";
-
-  var arLen=scores.length;
-  for ( var i=0, len=arLen; i<len; ++i ){
-    dates= scores[i].up().previousSiblings()[1].childElements();
-
-    i1=dates[3];
-    i2=dates[1];
-    i3=dates[2];
-    
-
-
-    s=s + 'probes[' +i+ '][score]=' + scores[i].getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(1i)]=' + i1.getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(2i)]=' + i2.getValue() + '&' ;
-    s=s + 'probes['+ i+'][administered_at(3i)]=' + i3.getValue() + '&' ;
-
-  }
-    s=s + 'goal='+goal + '&' ;
-
-    s= s + 'first_date(1i)='+first1.getValue() + '&';
-    s= s + 'first_date(2i)='+first2.getValue() + '&';
-    s= s + 'first_date(3i)='+first3.getValue() + '&';
-
-    s= s + 'end_date(1i)='+last1.getValue() + '&';
-    s= s + 'end_date(2i)='+last2.getValue() + '&';
-    s= s + 'end_date(3i)='+last3.getValue() + '&';
-
-  return s;
-
-
-}
-
-
-
-function show_or_hide_team_consultation_form(e,team_ids_with_assets) {
-  //if the team has no attachments, and the form is blank
-  if(!team_ids_with_assets.include(e.value) ||
-  $$('form.new_team_consultation textarea').any(function(textarea) { return textarea.value != ""}))
-  {
-    $("form_consultation_form").show();
-    }
-  else{
-    $("form_consultation_form").hide();
-  }
-
-
-}

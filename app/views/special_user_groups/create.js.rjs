@@ -1,2 +1,0 @@
-page.insert_html :bottom, :group_users, :partial=>"special_user_group_assignment", :object => @special_user_group
-page.replace_html :new_user_assignment_form, :partial=>"add_special_user_group_link"

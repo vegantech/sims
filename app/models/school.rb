@@ -14,8 +14,6 @@
 #
 
 class School < ActiveRecord::Base
-  after_update :save_user_school_assignments
-
   belongs_to :district
   has_many :enrollments, :dependent => :destroy
   has_many :students, :through =>:enrollments
@@ -28,10 +26,10 @@ class School < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
-  attr_protected :district_id
-
-
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
+  accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
+
+  attr_protected :district_id
 
   define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct schools.id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
@@ -66,36 +64,13 @@ class School < ActiveRecord::Base
     name
   end
 
-  def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
-    user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
-      attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
-      if attributes
-        user_school_assignment.attributes = attributes
-      else
-        user_school_assignments.delete(user_school_assignment)
-      end
-    end
-  end
-
-  def new_user_school_assignment_attributes=(usa_attributes)
-    usa_attributes.each do |attributes|
-      user_school_assignments.build(attributes)
-    end
-  end
-
   def virtual_groups
     special_user_groups.virtual_groups(enrollments.grades)
- end
+  end
 
   def quicklist
     InterventionDefinition.find(:all,:joins=>:quicklist_items,
     :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
-  end
-
-  def save_user_school_assignments
-    user_school_assignments.each do |user_school_assignment|
-      user_school_assignment.save
-    end
   end
 
   def enrollment_years

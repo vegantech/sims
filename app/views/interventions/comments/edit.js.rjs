@@ -1,2 +1,0 @@
-page.replace_html(dom_id(@intervention_comment),:partial => 'interventions/comments/edit_js', :locals =>{ :comment => @intervention_comment})
-

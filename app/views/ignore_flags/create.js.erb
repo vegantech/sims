@@ -1,0 +1,5 @@
+$('#customflag').html("<%=escape_javascript(render :partial=>'custom_flags/list', :locals=>{:student=>current_student}) %>");
+$('#studentflags').html("<%= escape_javascript(status_display current_student, true) %>");
+$('#ignoredflags').html("<%= escape_javascript(ignore_flags current_student, true) %>");
+$('#studentflags').effect("pulsate");
+$('#ignoredflags').effect("pulsate");

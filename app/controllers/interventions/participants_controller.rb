@@ -47,9 +47,12 @@ class Interventions::ParticipantsController < ApplicationController
   # DELETE /intervention_participants/1
   # DELETE /intervention_participants/1.xml
   def destroy
-    @intervention_participant = @intervention.intervention_participants.find(params[:id])
+    @intervention_participant = @intervention.intervention_participants.find_by_user_id(params[:id])
     @intervention_participant.destroy
-    redirect_to(@intervention)
+    respond_to do |format|
+      format.js {}
+      format.html{ redirect_to(@intervention)}
+    end
   end
 
   protected

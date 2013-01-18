@@ -50,6 +50,11 @@ class ApplicationController < ActionController::Base
     session[:selected_student]
   end
 
+  def current_student_id=(sid)
+    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    session[:selected_student]=sid
+  end
+
 
   def current_student
     @student ||= Student.find_by_id(current_student_id)
@@ -82,9 +87,7 @@ class ApplicationController < ActionController::Base
   def require_current_school
     if current_school.blank?
       if request.xhr?
-        render :update do  |page|
-          page[:flash_notice].insert  "<br />Please reselect the school."
-        end
+        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');"
       else
         flash[:notice] = "Please reselect the school"
         redirect_to schools_url
@@ -185,6 +188,10 @@ def check_student
       opts[:host] = request.host
     end
     root_url(opts)
+  end
+
+  def session_domain
+    Sims::Application.config.session_options[:domain]
   end
 
   def readonly?

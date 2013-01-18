@@ -1,7 +1,7 @@
 source "http://bundler-api.herokuapp.com"
 source :rubygems
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -44,8 +44,6 @@ gem 'memcache-client'
 gem 'cells'
 gem 'paperclip', '~> 2.7.0'
 gem "spawn", :git => 'git://github.com/rfc2822/spawn'
-gem 'prototype-rails'
-gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
 gem 'acts_as_list'
 gem 'will_paginate'
@@ -57,6 +55,12 @@ gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
 gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
 gem 'sneaky-save'
+gem 'jquery-rails'
+gem "jquery-scrollto-rails"
+gem 'jquery-ui-rails'
+gem 'awesome_nested_fields'
+
+
 
 group :test do
   gem 'simplecov', :require => false
@@ -94,8 +98,8 @@ end
 
 
 group :assets do
-  gem 'sass-rails',   "~> 3.1.0"
-  gem 'coffee-rails', "~> 3.1.0"
+  gem 'sass-rails',   "~> 3.2.0"
+  gem 'coffee-rails', "~> 3.2.0"
   gem 'uglifier'
 end
 

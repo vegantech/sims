@@ -55,5 +55,6 @@ class RecommendationsController < ApplicationController
     @recommendation.destroy
     redirect_to current_student
   end
+
 end
 

@@ -30,14 +30,14 @@
       <th>Updated on</th>
     </tr>
     </thead>
-    <tbody id="intervention_definition_list">
+    <tbody id="intervention_definition_list" data-url="<%=sort_intervention_builder_interventions_path(@goal_definition,@objective_definition,@intervention_cluster) %>">
   <%= render :partial => 'intervention_definition', :collection => @intervention_definitions %>
   </tbody>
 </table>
   <%= submit_tag 'Disable Selected Interventions', :confirm => 'Disable Selected Intervention Definitions?' %>
 <% end %>
 
-<%= sortable_element('intervention_definition_list', :tag => 'tr', :url => sort_intervention_builder_interventions_path(@goal_definition,@objective_definition,@intervention_cluster),:handle => 'handle') %>
+<%#= sortable_element('intervention_definition_list', :tag => 'tr', :url => ,:handle => 'handle') %>
 
 <br />
 

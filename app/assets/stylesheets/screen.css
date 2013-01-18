@@ -99,3 +99,25 @@ tr .handle {
 
 }
 
+#intervention_definition_list a.move_link {
+  display: inline;
+  text-decoration:none; }
+
+#intervention_definition_list a.move_link:hover {
+  text-decoration:none; }
+
+.bar {
+  width: 300px;
+}
+
+#progress {
+  background: #A2E5A2;
+  border: 1px solid #222;
+  margin-top: 20px;
+}
+#progressbar {
+  width: 0px;
+  height: 24px;
+  background: #A2E5A2;
+}
+

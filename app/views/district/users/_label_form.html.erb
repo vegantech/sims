@@ -21,12 +21,23 @@
 Choosing 'All students' gives the user access to every student in the school.   Choosing 'Admin' allows a user to adminster the school, and is typically for the school secretary." %>
 </h2>
 
-<div id= "user_school_assignments">
-  <%= render :partial => 'user_school_assignment', :collection => @user.user_school_assignments %>
-</div>
+<div id= "user_school_assignments" class ="awesome_nested">
+  <div class ="items">
+    <%= label_form.nested_fields_for :user_school_assignments do |f| %>
+      <div class="user_school_assignment item form_row">
+        <%= f.collection_select('school_id', @schools, :id, :to_s,{:wrap => :span}) %>
+        <%= f.check_box :admin %>
+        <%= f.check_box :all_students %>
+        <%= f.hidden_field :id %>
+        <%= f.hidden_field :_destroy %>
 
-<div class="form_row">
-  <%= add_user_school_assignment_link "Add a school assignment" %>
+        <%= link_to "Remove", "#", :class =>"remove" %>
+      </div>
+    <% end %>
+  </div>
+  <div>
+    <%= link_to "Add a school assignment","#", :id => "new_user_school_assignment_link", :class => "add" %>
+  </div>
 </div>
 
 

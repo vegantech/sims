@@ -44,19 +44,6 @@ describe ConsultationFormRequestsHelper do
       helper.show_consultation_form?(f).should be_false
     end
   end
-  describe 'show_or_hide_form_onchange' do
-    it 'should provide a list with no team ids if no teams have assets' do
-      helper.show_or_hide_form_onchange.should == {:onchange=>"show_or_hide_team_consultation_form(this,'[]');"}
-    end
-    it 'should provide a list with the team ids having assets' do
-      team1_with_assets = mock_school_team(:id => 1, :assets => ['yes'])
-      team2_without_assets = mock_school_team(:id => 2,:assets => [])
-      team3_with_assets =mock_school_team(:id => 3, :assets => ['indeed'])
-      @teams = [team1_with_assets,team2_without_assets,team3_with_assets]
-      helper.show_or_hide_form_onchange.should == {:onchange=>"show_or_hide_team_consultation_form(this,'[1,3]');"}
-    end
-
-  end
   describe 'team_consultation_form' do
     it 'should create when the team_consultation is new' do
       helper.team_consultation_form(TeamConsultation.new){}.should ==

@@ -5,21 +5,8 @@ describe LinksAndAttachmentsHelper do
 
   describe 'add_asset_link' do
     it 'add_asset_link should call link_to_function with name' do
-      helper.should_receive(:link_to_function).with('fake_name').and_return('result')
-      helper.add_asset_link('fake_name', 'fake_parent').should == 'result'
+      helper.add_asset_link('fake_name', 'fake_parent').should == "<div class=\"hidden_asset\" style=\"display:none\"><div class=\"asset\">\n      <p>\n       <br />\n\n      <label for=\"fake_parent_new_asset_attributes__document\">File:</label>\n      <input id=\"fake_parent_new_asset_attributes__document\" name=\"fake_parent[new_asset_attributes][][document]\" type=\"file\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__name\">Name for url</label>\n      <input id=\"fake_parent_new_asset_attributes__name\" name=\"fake_parent[new_asset_attributes][][name]\" size=\"30\" type=\"text\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__url\">Url</label>\n      <input id=\"fake_parent_new_asset_attributes__url\" name=\"fake_parent[new_asset_attributes][][url]\" size=\"30\" type=\"text\" />\n      <a href=\"#\" class=\"cancel_link\" data-remove-up=\".asset\">remove</a>\n      </p>\n</div>\n</div><a href=\"\" class=\"new_asset_link\" data-parent=\"fake_parent\" data-suffix=\"\">fake_name</a>"
     end
-
-    it 'should render add rjs to the bottom' do
-      helper.should_receive(:render).and_return('RENDERED_CONTENT')
-      resp=fake_update_page(:append_asset_link,'fake_parent')
-      resp.should == 'Element.insert("assets", { bottom: "RENDERED_CONTENT" });'
-    end
-
-    it 'should call append_asset_link on page' do
-      helper.should_receive(:add_asset_link).and_return("AppendAssetLink")
-      helper.add_asset_link('one','two').should ==  'AppendAssetLink'
-    end
-
   end
 
   def fake_update_page(method,*args)

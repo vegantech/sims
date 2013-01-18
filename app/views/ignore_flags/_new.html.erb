@@ -4,5 +4,5 @@ Please enter your reason to ignore the <%=Flag::TYPES[@ignore_flag.category][:hu
 <%= form.text_field :reason%>
 <%=form.hidden_field :category%>
 <%= submit_tag "Ignore Flag"%>
-<%= link_to :cancel, student_url(current_student) %>
+  <%= link_to :cancel, custom_flags_path(:student_id => @ignore_flag.student), :remote => true %>
 <%end%>
