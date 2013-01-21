@@ -8,6 +8,5 @@
 
 
 <div class="center_submit">
-<%#= link_to_function('Cancel',nil,{:href=>edit_intervention_path(@intervention)}){|page|  page.replace_html(dom_id(@intervention_comment),:partial => 'interventions/comments/comment', :object=>@intervention_comment)} %>
 <%= link_to_function('Cancel', "self.close()") %>
 </div>
