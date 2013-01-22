@@ -118,7 +118,7 @@ describe User do
     it 'should return true if principal of a group or special user group and false if not' do
       u=@user
       u.principal?.should == false
-      u.user_group_assignments.create!(:is_principal=>true, :group_id=>11)
+      u.user_group_assignments.create!(:is_principal=>true, :group=>Group.new)
       u.principal?.should == true
       u.user_group_assignments.clear
       u.principal?.should == false

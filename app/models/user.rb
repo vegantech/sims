@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   has_many :user_school_assignments, :dependent => :destroy
   has_many :special_user_groups, :dependent => :destroy
   has_many :special_schools, :through => :special_user_groups, :source=>:school
-  has_many :user_group_assignments, :dependent => :destroy
+  has_many :user_group_assignments, :dependent => :destroy, :inverse_of => :user
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
