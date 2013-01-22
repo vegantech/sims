@@ -131,7 +131,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash[:disabled] = false if ckhash[:disabled].nil?
-      newcd= district.goal_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
+      newcd= district.goal_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
       goalhash[ck[:id]]=newcd.id
     end
 
@@ -178,7 +178,7 @@ class CreateTrainingDistrict
       next if ck.to_hash[:deleted_at].to_i !=0
       ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
       if ckhash[:active] and !ckhash[:custom]
-        newcd= district.probe_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
+        newcd= district.probe_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
         probe_hash[ck[:id]]=newcd.id
       end
     end
@@ -253,7 +253,7 @@ class CreateTrainingDistrict
       ckhash = ck.to_hash.delete_if{|k,v| v == 0}
       ckhash[:active]=!!district.abbrev.match(/^training/) || district.abbrev =='madison'
 
-      newcd= district.checklist_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
+      newcd= district.checklist_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:district_id,:id))
       checklisthash[ck[:id]]=newcd.id
     end
 
