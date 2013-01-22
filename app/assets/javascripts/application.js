@@ -1,9 +1,9 @@
 //=require popup
 //=require jquery
 //=require jquery_ujs
-//=require jquery.effects.pulsate
-//=require jquery.effects.highlight
-//=require jquery.effects.blind
+//=require jquery.ui.effect-pulsate
+//=require jquery.ui.effect-highlight
+//=require jquery.ui.effect-blind
 //=require jquery.ui.sortable
 //=require jquery.nested-fields
 //=require jquery.uploadProgress

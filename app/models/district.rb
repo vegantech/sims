@@ -262,7 +262,7 @@ class District < ActiveRecord::Base
 
   begin
     after_initialize :default_settings_to_hash
-    raise "Remove this block" if Rails.version > "3.2"
+    #raise "Remove this block" if Rails.version > "3.2"
     serialize :settings, Hash
     SETTINGS.each do |s|
       define_method("#{s}=") do |value|
