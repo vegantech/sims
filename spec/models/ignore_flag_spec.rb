@@ -20,7 +20,6 @@ describe IgnoreFlag do
     @valid_attributes = {
       :category => "attendance",
       :reason => "value for reason",
-      :type => "value for type"
     }
   end
 
@@ -47,7 +46,7 @@ describe IgnoreFlag do
     a.category="suspension"
     a.user_id=55
     a.save
-    b=IgnoreFlag.new(a.attributes)
+    b=IgnoreFlag.new(a.attributes.except("id","type"))
     a.should be_valid
     b.should_not be_valid
   end
