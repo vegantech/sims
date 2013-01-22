@@ -243,10 +243,9 @@ describe Intervention do
       @intervention = Factory.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
                                     :selected_ids => [@student1.id.to_s, @student2.id.to_s],
                                    :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
-      Intervention.should_receive(:create!).and_return(2)
-      Notifications.should_receive(:intervention_starting).with([@intervention,2]).and_return(mock(:deliver=>true))
+      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(:deliver=>true))
       Notifications.should_not_receive(:intervention_participant_added)
-      @intervention.save
+      @intervention.save!
      end
     end
 
