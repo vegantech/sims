@@ -6,7 +6,7 @@ Feature: Forgot Password
     Scenario: District with forgot password disabled
         Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
         When I go to the home page
-        Then I should not see "Forgot Password" within "#user_new"
+        Then I should not see "Forgot Password" within "#new_user"
 
     Scenario: Expired Token
         Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
