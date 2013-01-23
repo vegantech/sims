@@ -49,12 +49,16 @@ As the configuration of this server is managed with Moonshine, please refrain
 from installing any gems, packages, or dependencies directly on the server.
 ----------------
 """
-    file '/var/run/motd',
-      :mode => '644',
-      :content => `uname -snrvm`+motd_contents
+    if ubuntu_intrepid?
+      file '/var/run/motd',
+        :mode => '644',
+        :content => `uname -snrvm`+motd_contents
+    end
+
     file '/etc/motd.tail',
       :mode => '644',
       :content => motd_contents
+
   end
 
   #### Hostname
@@ -79,13 +83,29 @@ from installing any gems, packages, or dependencies directly on the server.
   # and makes sending emails, a common task for many Rails apps,
   # easy to setup.
   #
+  # To disable postfix from running, include this in config/moonshine.yml:
+  #
+  #     :postfix:
+  #       :enabled: false
+  #
   # We also allow configuring the hostname used for sending email
   # via the `configuration[:mailname]` variable, which can be set
   # in a recipe/manifest via the `configure(opts)` method or in
   # a Moonshine YML file.
 
   def postfix
+    options = configuration[:postfix] || {}
+    enabled = if options[:enable] == nil || options[:enable] == true
+                true
+              else
+                false
+              end
+
     package 'postfix', :ensure => :latest
+    service 'postfix', :ensure => (enabled ? :running : :stopped),
+                       :enable => enabled,
+                       :require => package('postfix')
+
     file '/etc/mailname',
       :ensure  => :present,
       :content => (configuration[:mailname] || Facter.fqdn || Facter.hostname || ''),
@@ -196,6 +216,23 @@ CONFIG
       hash[:logoutput] = (hash[:logoutput] || :on_failure)
       super(name, hash)
     end
+  end
+  
+  #### Resolv.conf
+  
+  # This allows you to manage /etc/resolv.conf, adding, removing and re-ordering nameservers.
+  
+  def resolv_conf
+    configure(:resolv => {})
+    if configuration[:resolv][:nameservers].nil? || configuration[:resolv][:nameservers].empty?
+      configuration[:resolv][:nameservers] = ['8.8.4.4','8.8.8.8','208.67.222.222','208.67.220.220']
+    end
+    
+    file '/etc/resolv.conf',
+      :ensure => :present,
+      :mode => '744',
+      :owner => 'root',
+      :content => template(File.join(File.dirname(__FILE__), 'templates', 'resolv.conf.erb'))
   end
 
 private

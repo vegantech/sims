@@ -9,13 +9,8 @@ module ChecklistsHelper
        end
 
      if menu
-         title="Special Ed Eligibility Criteria"
-         id = title.gsub(/ /, '_')
-         content_tag(:li, :class => "plus_minus", :id => "li#{id}") do
-         link_to_function(title, "toggle_visibility('ul#{id}'); $('li#{id}').style.listStyleImage =( $('ul#{id}').style.display != 'none' ? \"url('/images/minus-8.png')\" : \"url('/images/plus-8.png')\") ".html_safe) +
-         content_tag(:ul,f.join("").html_safe, :id => "ul#{id}")
-         end
-     else
+       plus_minus_li("Special Ed Eligibility Criteria" ,f.join("").html_safe)
+    else
        content_tag(:ul, f.join.html_safe)
      end
    else
@@ -77,27 +72,6 @@ module ChecklistsHelper
     'class="incorrectAnswer"'
   end
 
-  def autoset_onclick(question_definition, answer_definition)
-    @autoset_others_hash ||= {}
-    onclick = {}
-    unless @autoset_others_hash[[question_definition,answer_definition.value]]
-      if answer_definition.autoset_others?
-        st=[]
-        question_definition.element_definitions.each do |ed|
-
-          answer = ed.answer_definitions.find_by_autoset_others_and_value(true,answer_definition.value)
-          st << ('document.checklist_form.elements["element_definition[' +"#{ed.id}"+']"][' +"#{-1 + answer.position }" +'].checked=true') unless answer.blank?
-      end
-        st=st.join(";")
-        @autoset_others_hash[[question_definition,answer_definition.value]] = st
-    end
-      d=@autoset_others_hash[[question_definition,answer_definition.value]]
-
-      onclick = {:onclick=>d}
-    end
-    onclick
-  end
-
   def autoset_message(answer_definition)
     ('&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />').html_safe if answer_definition.autoset_others?
   end
@@ -108,7 +82,7 @@ module ChecklistsHelper
    a=b.collect do |k,v|
      opts={}
      next  if  v[:show_elig] && !show_referral_option?
-     opts={:onclick=>"Element.show('elig_criteria')"} if v[:show_elig]
+     opts={:class => 'show_elig'} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +
        form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
@@ -134,5 +108,13 @@ module ChecklistsHelper
   def markdown(t)
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     @markdown.render(h(t)).html_safe
+  end
+
+  def autoset(answer_definition)
+    if answer_definition.autoset_others?
+      "autoset answer#{answer_definition.position}"
+    else
+      "answer#{answer_definition.position}"
+    end
   end
 end

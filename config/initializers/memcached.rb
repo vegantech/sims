@@ -4,10 +4,11 @@ begin
   unless MEMCACHE.servers.first.alive?
     puts 'MEMCACHE SERVER DEAD'
     MEMCACHE = nil
+  else
+    MEMCACHE.stats
   end
-  MEMCACHE.stats
 rescue 
-  puts 'Memcache could not be loaded' + $!
+  puts 'Memcache could not be loaded' + ($!).inspect
   MEMCACHE = nil
 end
 #periodically call remote, update status

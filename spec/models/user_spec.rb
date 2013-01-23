@@ -118,7 +118,7 @@ describe User do
     it 'should return true if principal of a group or special user group and false if not' do
       u=@user
       u.principal?.should == false
-      u.user_group_assignments.create!(:is_principal=>true, :group_id=>11)
+      u.user_group_assignments.create!(:is_principal=>true, :group=>Group.new)
       u.principal?.should == true
       u.user_group_assignments.clear
       u.principal?.should == false
@@ -233,9 +233,9 @@ describe User do
     it 'should assign the role when appended with <<' do
       u=Factory(:user)
       u.roles_mask.should == 0
-      $stdout.should_receive(:write).with("You probably want to use += instead").once
-      $stdout.should_receive(:write).with("\n").once
+      expect {
       u.roles << Role::ROLES.first
+      }.to raise_error(NoMethodError)
 #      u.roles_mask.should == 1   warning for now
 
 
@@ -279,19 +279,24 @@ describe User do
        @e2=@user.user_school_assignments.create!(:school_id=>'2',:admin=>true)
      end
 
-     it 'should remove existing ones whene there are none' do
-       @user.update_attribute('existing_user_school_assignment_attributes',{})
+     it 'should not change existing ones when there are none' do
+       @user.update_attribute('user_school_assignments_attributes',[])
+       @user.user_school_assignments.should == [@e1,@e2]
+     end
+
+     it 'should not removeexisting ones' do
+       @user.update_attribute('user_school_assignments_attributes',[{:id => @e1.id, :_destroy => 1},{:id => @e2.id, :_destroy => '1'} ])
        @user.user_school_assignments.should be_empty
      end
 
      it 'should change existing ones when there are none' do
-       @user.update_attributes('existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:school_id=>'3'}})
+       @user.update_attributes('user_school_assignments_attributes'=>{:id=>@e1.id.to_s,:school_id=>'3'})
        @e1.reload.school_id.should == 3
-       @user.user_school_assignments.should ==[@e1]
+       @user.user_school_assignments.should ==[@e1,@e2]
      end
 
      it 'should not validate when changing existing to match' do
-       @user.update_attributes('existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:school_id=>'2',:admin=>true}, @e2.id.to_s=>{:school_id=>'2'}})
+       @user.update_attributes('user_school_assignments_attributes'=>[{:id => @e1.id.to_s,:school_id=>'2',:admin=>true}, {:id => @e2.id.to_s,:school_id=>'2'}])
        @user.should_not be_valid
        @user.user_school_assignments.first.errors_on(:admin).should_not be_nil
        @user.user_school_assignments.first.errors_on(:school_id).should_not be_nil
@@ -300,26 +305,26 @@ describe User do
      end
 
      it 'should add new user_school_assignment' do
-       @user.update_attributes('new_user_school_assignment_attributes'=>[{:school_id=>1, :admin=>true}]).should be_true
+       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true}]).should be_true
        @user.user_school_assignments.find_by_school_id_and_admin(1,true).should_not be_nil
        @user.user_school_assignments[0..1].should == [@e1,@e2]
      end
 
      it 'should not new user_school_assignment that matches existing ' do
-       @user.update_attributes('new_user_school_assignment_attributes'=>[{:school_id=>'1', :admin=>false}]).should be_false
+       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>'1', :admin=>false}]).should be_false
        @user.should_not be_valid
      end
 
      it 'should not new user_school_assignment that matches changed existing ' do
-       @user.update_attributes({'new_user_school_assignment_attributes'=>[{:school_id=>1, :admin=>true}],
-                              'existing_user_school_assignment_attributes'=>{@e1.id.to_s=>{:admin=>true}}}
+       @user.update_attributes({'user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true},
+                              {:id => @e1.id.to_s,:admin=>true}]}
                              ).should be_false
        @user.should_not be_valid
      end
 
 
      it 'should not new user_school_assignment that matches itself' do
-       @user.update_attributes('new_user_school_assignment_attributes'=>
+       @user.update_attributes('user_school_assignments_attributes'=>
                               [{:school_id=>'3', :admin=>false},{:school_id=>'3', :admin=>false}]).should be_false
        @user.should_not be_valid
      end
@@ -431,6 +436,17 @@ describe User do
          its(:custom_interventions_enabled?) {should == true}
        end
      end
+
+     describe 'one_off' do
+       let(:custom_intervention){'one_off'}
+       its(:custom_interventions_enabled?) {should == true}
+
+       describe 'content_admin' do
+         let(:role) {"content_admin"}
+         its(:custom_interventions_enabled?) {should == true}
+       end
+     end
+
 
      describe 'enabled' do
        let(:custom_intervention){''}

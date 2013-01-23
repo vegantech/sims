@@ -7,17 +7,30 @@ class Users::SessionsController < Devise::SessionsController
       reset_password and return
     else
       super
+      cookies[:user_id]={:value =>current_user.id, :domain => session_domain}
     end
   end
 
   def new
+    #Users who are signed in, but go directly to the login page
+    #are prompted to log in, but stay as the previous user
+    sign_out if user_signed_in? 
+    #fix for above
     if session["user_return_to"]
       p=Rack::Utils.parse_nested_query(URI.parse(session["user_return_to"]).query)
-      params["district_abbrev"] ||= p["district_abbrev"]
+      params["district_abbrev"] ||= (p["district_abbrev"].presence || current_subdomain.presence)
+      @current_district = nil if current_district.new_record?
       params.deep_merge!("user" => {"username" => p["username"]}) if p["username"]
     end
     super
   end
+
+  def destroy
+    super
+    cookies[:user_id]={:value =>nil, :domain => session_domain}
+    cookies[:selected_student]={:value =>nil, :domain => session_domain}
+  end
+
 
   private
 

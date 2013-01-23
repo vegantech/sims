@@ -30,13 +30,12 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :district_id_for_login
   attr_accessor :district_id_for_login
   include FullName, Devise::LegacyPassword
-  after_update :save_user_school_assignments
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
   has_many :special_user_groups, :dependent => :destroy
   has_many :special_schools, :through => :special_user_groups, :source=>:school
-  has_many :user_group_assignments, :dependent => :destroy
+  has_many :user_group_assignments, :dependent => :destroy, :inverse_of => :user
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
@@ -73,6 +72,7 @@ class User < ActiveRecord::Base
                   team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
   accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
+  accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
 
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -128,8 +128,8 @@ class User < ActiveRecord::Base
 #  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
-
   validate :validate_unique_user_school_assignments
+
 
 
   def authorized_groups_for_school(school,grade=nil)
@@ -234,24 +234,6 @@ class User < ActiveRecord::Base
     paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
-  end
-
-  def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
-    user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
-      attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
-
-      if attributes
-        user_school_assignment.attributes = attributes
-      else
-        user_school_assignments.delete(user_school_assignment)
-      end
-    end
-  end
-
-  def new_user_school_assignment_attributes=(usa_attributes)
-    usa_attributes.each do |attributes|
-      user_school_assignments.build(attributes)
-    end
   end
 
   def self.remove_from_district(user_ids = [])
@@ -365,6 +347,7 @@ class User < ActiveRecord::Base
   def custom_interventions_enabled?
     district.custom_interventions.blank? ||
       district.custom_interventions == "only_author" ||
+      district.custom_interventions == "one_off" ||
       (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
   end
 
@@ -386,12 +369,6 @@ protected
 
   end
 
-  def save_user_school_assignments
-    user_school_assignments.each do |user_school_assignment|
-      user_school_assignment.save(:validate => false)
-    end
-  end
-
   def blank_password_ok?
     email.present? && district && district.key.present?
   end
@@ -405,5 +382,7 @@ protected
      staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
   end
 
-
+  def duplicate_user_school_assignment?(attributes)
+     staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
+  end
 end

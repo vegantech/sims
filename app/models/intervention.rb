@@ -45,9 +45,8 @@ class Intervention < ActiveRecord::Base
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
-  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant
+  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
-
   has_many :intervention_probe_assignments, :dependent => :destroy
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
@@ -97,7 +96,7 @@ class Intervention < ActiveRecord::Base
     int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
     int.auto_implementer=true if int.auto_implementer.nil?
 
-    int.selected_ids = nil if int.selected_ids.to_a.size == 1
+    int.selected_ids = nil if Array(int.selected_ids).size == 1
 
     int
   end
@@ -220,6 +219,13 @@ class Intervention < ActiveRecord::Base
   def goal_objective_category
     [goal_definition.title, objective_definition.title, intervention_cluster.title].join(" ")
   end
+
+
+  def participant_user_ids=(ids)
+    #remove duplicates and blanks
+    ids=ids.reject(&:blank?).uniq
+    self.participant_users=User.where(:id =>(ids))
+  end
   protected
 
   def create_other_students
@@ -331,4 +337,5 @@ class Intervention < ActiveRecord::Base
   def notify_new_participant(participant)
     participant.send_email = true unless new_record? or @creation_email or called_internally
   end
+
 end

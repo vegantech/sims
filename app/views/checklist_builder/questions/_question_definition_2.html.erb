@@ -1,11 +1,11 @@
 <h2>Question Definition <%= question_definition.position %></h2>
 <span style="float:left">
-  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
-                     :url => move_checklist_builder_question_path(:id => question_definition, :direction => "up") %><br />
-  <%= link_to_remote image_tag("arrow-down.gif"), 
-                     :url => move_checklist_builder_question_path(:id => question_definition, :direction => "down") %>
-</span>
-<table>
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'),  :method => :post,
+    :url => move_checklist_builder_question_path(:id => question_definition, :direction => "up") %><br />
+    <%= link_to_remote image_tag("arrow-down.gif"), :method => :post,
+      :url => move_checklist_builder_question_path(:id => question_definition, :direction => "down") %>
+    </span>
+    <table>
   <tr class="cycle_odd_lvl2"> 
     <td>Text:</td>
     <td><%=h question_definition.text %></td>
@@ -14,13 +14,9 @@
     <td colspan="2">
       <%= link_to_remote content_tag(:span, "Show Details", :id => dom_id(question_definition,"show_link")), 
                          :url => checklist_builder_question_path(question_definition.checklist_definition, question_definition), 
-                         :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %> |
-      <%= link_to_remote content_tag(:span, "Edit", :id => dom_id(question_definition,"edit_link")), 
+      <%= link_to_remote content_tag(:span, "Edit ", :id => dom_id(question_definition,"edit_link")), 
                          :url => edit_checklist_builder_question_path(question_definition.checklist_definition, question_definition),
-                         :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %> |
       <%= link_to_remote 'Delete', 
                          :url => checklist_builder_question_path(question_definition.checklist_definition, question_definition),
@@ -28,15 +24,11 @@
                          :method => :delete %> |
       <%= link_to_remote content_tag(:span, "Add Element", :id => dom_id(question_definition,"add_element_definition_link")),
                          :url => new_checklist_builder_element_path(question_definition.checklist_definition, question_definition),
-                         :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %> |
       <%= link_to_remote content_tag(:span, "Show Element Definitions", :id => dom_id(question_definition,"view_element_definitions_toggle")),
                          :url => checklist_builder_elements_path(question_definition.checklist_definition, question_definition),
-                         :loading => "Element.show('#{dom_id(question_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(question_definition,"spinner")}')",
                          :method => :get %>
-      <%= image_tag "spinner.gif", :id => dom_id(question_definition,"spinner"), :style => "display:none" %>
+      <%= spinner dom_id(question_definition) %>
     </td>
   </tr>
 </table>

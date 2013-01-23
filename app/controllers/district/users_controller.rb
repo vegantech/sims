@@ -48,7 +48,6 @@ class District::UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     params[:user] ||= {}
-    params[:user][:existing_user_school_assignment_attributes] ||= {}
     @user = current_district.users.find(params[:id])
 
     respond_to do |format|

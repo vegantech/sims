@@ -2,6 +2,8 @@
 :domain: simspilot.org 
 #wisims.org 
 
+:ruby: 'src193'
+
 :default_url: https://www.simspilot.org
 
 # Domain aliases for applaction. One common use of this is for asset hosts.
@@ -68,3 +70,5 @@
     :network: 10.0.4.0
     :broadcast: 10.0.4.255
 
+:assets:
+  :enabled: true

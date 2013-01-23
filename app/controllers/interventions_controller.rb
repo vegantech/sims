@@ -137,7 +137,7 @@ class InterventionsController < ApplicationController
 
   def add_benchmark
     @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-    render :action => 'interventions/probe_assignments/add_benchmark'
+    render :action => 'probe_assignments/add_benchmark'
   end
 
   private
@@ -149,7 +149,7 @@ class InterventionsController < ApplicationController
       if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
         student = intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
-        session[:selected_student] = student.id
+        self.current_student_id = student.id
         self.selected_student_ids = [student.id]
         @intervention = intervention
       else
@@ -164,5 +164,9 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Intervention could not be found"
       redirect_to current_student and return false
     end
+  end
+
+  def readonly?
+    params[:action] == "show"
   end
 end

@@ -7,6 +7,15 @@ Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
+  require 'simplecov'
+
+  unless ENV['DRB']
+    SimpleCov.start 'rails' do
+      coverage_dir 'spec/coverage/unit_functional'
+      add_filter "/vendor/"
+      merge_timeout 1200
+    end
+  end
 
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
@@ -44,6 +53,11 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  SimpleCov.start 'rails' do
+    coverage_dir 'spec/coverage/unit_functional'
+    merge_timeout 1200
+    add_filter "/vendor/"
+  end
   # This code will be run each time you run your specs.
   Dir[Rails.root.join("app/controllers/district/*.rb")].each {|f| require f}
 end

@@ -1,6 +1,0 @@
-page.replace_html "intervention_probe_assignment", ''
-page << "datePickerController.cleanUp();"
-page.replace_html "intervention_probe_assignment", :partial=>"interventions/probe_assignments/intervention_probe_assignment_detail"
-page << "datePickerController.create();"
-page.hide "spinnerassign_progress"
-

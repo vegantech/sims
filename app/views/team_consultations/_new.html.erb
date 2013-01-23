@@ -5,7 +5,7 @@
   <% if current_district.show_team_consultation_attachments? %>
     <p>
     <%= f.label :recipient_id, 'Recipient' %>
-    <%= f.collection_select :team_id, @teams, :id, :to_s, {}, show_or_hide_form_onchange %>
+    <%= f.collection_select :team_id, @teams, :id, :to_s %>
     </p>
   <% end %>
 
@@ -21,8 +21,8 @@
   <% end %>
   </p>
   <p>
-  <%= f.submit 'Save', :onclick =>'this.form.elements("team_consultation[draft]").value=false' %>
-  <%= f.submit 'Save as Draft', :onclick =>'this.form.elements("team_consultation[draft]").value=true' %>
+  <%= f.submit 'Save', :class=>'presubmit', :data => {:to_change =>"team_consultation\\[draft\\]", :new_value=> false} %>
+  <%= f.submit 'Save as Draft', :class=>'presubmit', :data => {:to_change =>"team_consultation\\[draft\\]", :new_value=> true} %>
   <%= spell_check_button %>
 
     <%= link_to :cancel, current_student %>

@@ -27,19 +27,19 @@ class StudentSearchesController < ApplicationController
   # RJS methods for search page
 
   def grade
-    @users=current_user.filtered_members_by_school(current_school,params)
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @users=current_user.filtered_members_by_school(current_school,sliced_params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   def member
-    @groups=current_user.filtered_groups_by_school(current_school,params)
+    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   private
 
 
   def check_school_and_set_grades
-    @grades = current_school.grades_by_user(current_user)
+    @grades = check_school.grades_by_user(current_user)
     if @grades.blank?
       if current_school.students.empty?
         flash[:notice] = "#{current_school} has no students enrolled."
@@ -50,6 +50,18 @@ class StudentSearchesController < ApplicationController
       redirect_to schools_url and return
     end
     return true
+  end
+
+  def sliced_params
+    params.slice(:grade, :user, :school_id)
+  end
+
+  def check_school
+    if params[:school_id] != current_school_id.to_s
+      @school = current_user.schools.find(params["school_id"])
+      session[:school_id] = @school.id
+    end
+    current_school
   end
 
 end

@@ -32,6 +32,4 @@ class SchoolsController < ApplicationController
       school_student_search_url(current_school)
     end
   end
-
-
 end

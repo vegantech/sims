@@ -1,4 +1,3 @@
-<% readonly = false if readonly.nil? %>
 <div class="new_form">
   <%= form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
     <div class="form_row">
@@ -20,7 +19,7 @@
       <%= description(@intervention) %>
 
     </div>
-    <% if readonly %>
+    <% if readonly? %>
       <div class ="form_row">
         <div class="fake_label">Ended:</div><%="#{@intervention.ended_at} by #{@intervention.ended_by}- #{@intervention.end_reason}"%>
       </div>
@@ -28,9 +27,9 @@
     <div class ="form_row">
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
-    <%= render(:partial => f, :locals => {:readonly => readonly}) %>
+    <%= render(:partial => f) %>
     <div class="center_submit">
-      <% unless readonly %>
+      <% unless readonly? %>
         <%= f.submit "Save"  %>
         <%= spell_check_button %>
       <% end %>
@@ -39,7 +38,7 @@
 </div>
 <div class="center_submit">
   <% if @intervention.active? %>
-    <%= link_to_function 'End', "$('end_intervention_reasons').show();location.href='#end_intervention_reasons'" %>
+    <%= link_to 'End', '#end_intervention_reasons', :id => 'end_intervention_link' %>
     <%=help_popup("After clicking end, you will prompted to answer some questions at the bottom of the page about the intervention.") %>
   <% else %>
     <%= link_to 'Undo End', undo_end_intervention_path(@intervention), :method=>:put,:confirm=>"Are you sure you want to unend this intervention?" %>
@@ -52,21 +51,15 @@
     If you made changes above, then save them first. <br />
     <b> Was the intervention implemented with 80% fidelity based on the criteria above?
     </b> <br />
-    <%= radio_button_tag('fidelity', true,false,
-                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
-                        ) %>
+    <%= radio_button_tag('fidelity', true,false) %>
       <label for="fidelity_true">Yes</label><br />
-      <%= radio_button_tag('fidelity', false,false,
-                           {:onclick=> "$('end_check').value |= 1;$('end_submit_tag').disabled=$('end_check').value < 3;"}
-                          ) %>
+      <%= radio_button_tag('fidelity', false,false) %>
       <label for="fidelity_false">No</label><br />
       <br />
     <b> Please choose a reason for ending this intervention.</b> <br />
     <%Intervention::END_REASONS.each do |end_reason| %>
-      <%= radio_button_tag('end_reason', end_reason,false,
-                           {:onclick=> "$('end_check').value |= 2;$('end_submit_tag').disabled=$('end_check').value < 3;"}
-                          ) %>
-      <label for="end_reason_<%=end_reason.underscore.gsub(" ","_")%>"><%=end_reason %></label><br />
+      <%= radio_button_tag('end_reason', end_reason,false) %>
+      <label for="end_reason_<%=end_reason.underscore.gsub(" ","_").capitalize%>"><%=end_reason %></label><br />
     <% end %>
   <%=hidden_field_tag 'end_check', 0 %>
     <%= submit_tag 'End Intervention', :confirm=>"Are you sure you want to end this intervention?" ,:disabled=>true, :id => 'end_submit_tag'%>

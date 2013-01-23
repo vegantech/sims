@@ -1,3 +1,0 @@
-page.hide :enter_view_score_link
-page.replace_html :enter_view_scores, :partial=>'interventions/probe_assignments/index'
-page << "datePickerController.create();"

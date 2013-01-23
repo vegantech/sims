@@ -82,7 +82,7 @@ class DistrictsController < ApplicationController
 
 
   def bulk_import_form
-     @uuid = (0..29).to_a.map {|x| rand(10)}
+     @uuid = CGI.escape((0..29).to_a.map {|x| rand(10)}.join )
   end
 
   def bulk_import
@@ -98,8 +98,9 @@ class DistrictsController < ApplicationController
           @results = "#{importer.messages.join(", ")} #{x}"
           #request redirect_to root_url
         rescue => e
-          Rails.logger.error "Spawn Exception #{Time.now} #{e.message}"
+          Rails.logger.error "Spawn Exception #{Time.now} #{e.message} #{e.backtrace}"
           Airbrake.notify(
+            :backtrace => e.backtrace,
             :error_class => "Spawn Error",
             :error_message => "Spawn Error: #{e.message}"
           )
@@ -113,9 +114,13 @@ class DistrictsController < ApplicationController
       if defined?MEMCACHE
         @results =
           MEMCACHE.get("#{current_district.id}_import")
-        @results.to_s.gsub!(/#{ImportCSV::EOF}$/, '<script>keep_polling=false</script>')
+        unless @results.match(/#{ImportCSV::EOF}/)
+          @results <<"<script>setTimeout(function(){
+                                   $('#import_results').load('/districts/bulk_import');
+                                       }, 5000);</script>"
+        end
         if request.xhr?
-          render :text => @results and return
+          render :text => @results + Time.now.to_s and return
         end
 
       else

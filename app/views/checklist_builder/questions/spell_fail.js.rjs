@@ -1,2 +1,0 @@
-page.update_content dom_id(@question_definition,"edit"), :partial => "rjs_edit_form", :locals => { :question_definition => @question_definition }
-set_flash_notice page

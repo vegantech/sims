@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :index_url_with_page, :root_url_without_subdomain
+    :index_url_with_page, :root_url_without_subdomain, :readonly?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password").
 
-  before_filter :fixie6iframe,:authenticate_user!, :authorize
+  before_filter :fixie6iframe,:authenticate_user!,:check_domain, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
@@ -48,6 +48,11 @@ class ApplicationController < ActionController::Base
 
   def current_student_id
     session[:selected_student]
+  end
+
+  def current_student_id=(sid)
+    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    session[:selected_student]=sid
   end
 
 
@@ -82,9 +87,7 @@ class ApplicationController < ActionController::Base
   def require_current_school
     if current_school.blank?
       if request.xhr?
-        render :update do  |page|
-          page[:flash_notice].insert  "<br />Please reselect the school."
-        end
+        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');"
       else
         flash[:notice] = "Please reselect the school"
         redirect_to schools_url
@@ -186,6 +189,15 @@ def check_student
     end
     root_url(opts)
   end
+
+  def session_domain
+    Sims::Application.config.session_options[:domain]
+  end
+
+  def readonly?
+    false
+  end
+
   def disable_gc
     GC.disable
     begin
@@ -196,5 +208,13 @@ def check_student
     end
   end
 
+
+  def check_domain
+    return true if devise_controller?
+    if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
+      sign_out_and_redirect root_url
+      return false
+    end
+  end
 
 end

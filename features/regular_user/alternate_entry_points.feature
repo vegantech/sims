@@ -24,3 +24,6 @@ Feature: Alternate Entry Points
     And I fill in "Password" with "oneschool"
     Then I press "Login"
     Then I should see "Add new comment about the intervention plan"
+
+  Scenario: bookmarked school search
+		Given I am at the student search page

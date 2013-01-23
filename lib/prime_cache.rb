@@ -21,7 +21,7 @@ class PrimeCache
     miss=0
     last_ran_key= ctrl.fragment_cache_key("prime_cache_last_ran")
     last_ran = ctrl.read_fragment(last_ran_key) || 10.years.ago
-    this_run = Time.now
+    this_run = Time.now.to_s
 
 
 

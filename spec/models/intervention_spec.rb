@@ -243,10 +243,9 @@ describe Intervention do
       @intervention = Factory.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
                                     :selected_ids => [@student1.id.to_s, @student2.id.to_s],
                                    :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
-      Intervention.should_receive(:create!).and_return(2)
-      Notifications.should_receive(:intervention_starting).with([@intervention,2]).and_return(mock(:deliver=>true))
+      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(:deliver=>true))
       Notifications.should_not_receive(:intervention_participant_added)
-      @intervention.save
+      @intervention.save!
      end
     end
 
@@ -263,6 +262,26 @@ describe Intervention do
         @intervention.save
       end
     end
+
+  end
+
+  describe 'participant_user_ids=' do
+    let(:intervention) {Factory.build(:intervention)}
+    let(:user) {Factory(:user)}
+
+    it 'should support new users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_users.should == [user]
+    end
+
+    it 'should support editing users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_user_ids = ["","",2,3]
+      intervention.participant_users.should == []
+    end
+
 
   end
 end

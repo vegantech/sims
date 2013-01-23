@@ -1,4 +1,0 @@
-page.replace_html(:override,flash[:notice])
-page.replace('principal_override_request_sidebar', render_cell(:principal_overrides,:user_requests, :user=>current_user))
-page.replace('principal_override_response_sidebar', render_cell(:principal_overrides,:principal_responses, :user=>current_user)) if current_user.principal?
-set_flash_notice page

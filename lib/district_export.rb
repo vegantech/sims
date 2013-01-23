@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'fastercsv'
+require 'csv'
 class DistrictExport
   def self.generate(district)
     self.new.generate(district)
@@ -7,7 +7,7 @@ class DistrictExport
 
   def no_double_quotes field
     return if field.blank?
-        string=field.to_s
+        string=field.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
         string.gsub! /\342\200\230/m, "'"
         string.gsub! /\342\200\231/m, "'"
         string.gsub! /\342\200\234/m, '"'
@@ -91,8 +91,8 @@ class DistrictExport
 
   def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
     @files[table]=headers
-    FasterCSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
-    FasterCSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
+    CSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
+    CSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       tsv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")

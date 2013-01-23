@@ -142,7 +142,7 @@ class ImportCSV
 
       @messages << "Problem with zipfile #{originalname}" unless
         system "unzip  -qq -o #{filename} -d #{@f_path}"
-      @filenames = Dir.glob(File.join(@f_path, "*.csv")).collect
+      @filenames = Dir.glob(File.join(@f_path, "*.csv"))
     else
       false
     end

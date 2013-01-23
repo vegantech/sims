@@ -3,6 +3,7 @@ require 'active_record/fixtures'
 module UseOldFixturesKey
   STATIC_IDENTIFY_VALUES = {
     :alpha_first_attendance => 184330814,
+    :wi_mmsd => 647352205,
     :day => 85852977,
     :week => 782065165,
     :month => 785548667,

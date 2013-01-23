@@ -13,6 +13,8 @@ Feature: Custom Intervention Settings
 			| content_admins | true           | true     |
 			| disabled       | false          | false    |
 			| disabled       | true           | false    |
+			| one_off        | true           | true     |
+			| one_off        | false          | true     |
 
 
 	Scenario: Include or exclude custom interventions based on settings
@@ -37,3 +39,7 @@ Feature: Custom Intervention Settings
 			| only_author    | different_user_same_school      | false    |
 			| only_author    | same_user_different_school      | true     |
 			| only_author    | different_user_different_school | false    |
+			| one_off        | same_user_same_school           | false    |
+			| one_off        | different_user_same_school      | false    |
+			| one_off        | same_user_different_school      | false    |
+			| one_off        | different_user_different_school | false    |

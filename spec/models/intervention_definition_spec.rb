@@ -178,5 +178,11 @@ describe InterventionDefinition do
       InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
         [@sys, @suss, @suds]
     end
+
+    it 'district custom interventions only_author' do
+      @cucumber_district.custom_interventions = "one_off"
+      InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
+        [@sys]
+    end
   end
 end

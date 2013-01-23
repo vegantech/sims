@@ -1,0 +1,17 @@
+<%= content_tag_for :tr, principal_override,actions.join do %>
+  <td><%=h principal_override.teacher %></td>
+  <td><%=h principal_override.student %></td>
+  <td><%=h principal_override.principal %></td>
+  <td><%=h principal_override.status_text %></td>
+  <td><%=h principal_override.start_tier %></td>
+  <td><%=h principal_override.end_tier%></td>
+  <td><%=h principal_override.teacher_request %></td>
+  <td><%=h principal_override.principal_response %></td>
+  <%[:accept,:reject].each do |a| %>
+    <td><%= link_to_remote a.to_s.capitalize, :url=>edit_principal_override_path(principal_override, :response=>a), :method=>:get if actions.include?(a)%></td>
+  <% end %>
+  <td><%= link_to_remote 'Delete', principal_override, :confirm => 'Are you sure?', :method => :delete if actions.include?(:delete)%></td>
+  <td><%= link_to_remote 'Undo', undo_principal_override_path(principal_override), :confirm => 'Are you sure?', :method => :put if actions.include?(:undo)%></td>
+<% end %>
+<%= content_tag_for :tr, principal_override, 'pending_form' do end if actions.include?(:accept) %>
+

@@ -1,11 +1,10 @@
-<%=fields_for @intervention do |iform| %>
-  <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
-    <%= render '/interventions/comments/form', :form => f %>
-  <% end %>
-<% end %>
-
-<% if comment.changed? %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => {:comment => comment}, :noform => true)} %>
-<% else %>
-  <%= link_to_function('Cancel',nil){|page|  page.replace_html(dom_id(comment),:partial => 'interventions/comments/comment', :locals => { :comment => comment})} %>
+<%=content_tag_for :tr, comment, "edit_row" do %>
+  <td colspan="2">
+    <%=fields_for @intervention do |iform| %>
+      <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
+        <%= render '/interventions/comments/form', :form => f %>
+      <% end %>
+    <% end %>
+    <%=link_to "Cancel", "", :class => "intervention_comment_cancel"%>
+  </td>
 <% end %>

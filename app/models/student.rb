@@ -51,6 +51,8 @@ class Student < ActiveRecord::Base
   has_one :ext_summary, :dependent => :delete
   has_and_belongs_to_many :personal_groups
   attr_protected :district_id
+  accepts_nested_attributes_for :enrollments, :allow_destroy => true
+  accepts_nested_attributes_for :system_flags, :allow_destroy => true
 
 
 
@@ -138,7 +140,6 @@ class Student < ActiveRecord::Base
 
   delegate :recommendation_definition, :to => '(checklist_definition or return nil)'
 
-  after_update :save_system_flags, :save_enrollments
   after_save :save_extended_profile
   #  before_validation :clear_extended_profile
 
@@ -229,52 +230,6 @@ class Student < ActiveRecord::Base
     principals
   end
 
-  def new_system_flag_attributes=(system_flag_attributes)
-    system_flag_attributes.each do |attributes|
-      system_flags.build(attributes)
-    end
-  end
-
-  def existing_system_flag_attributes=(system_flag_attributes)
-    system_flags.reject(&:new_record?).each do |system_flag|
-      attributes = system_flag_attributes[system_flag.id.to_s]
-      if attributes
-        system_flag.attributes = attributes
-      else
-        system_flags.destroy(system_flag)
-      end
-    end
-  end
-
-  def save_enrollments
-    enrollments.each do |enrollment|
-      enrollment.save(:validate => false)
-    end
-  end
-
-  def new_enrollment_attributes=(enrollment_attributes)
-    enrollment_attributes.each do |attributes|
-      enrollments.build(attributes)
-    end
-  end
-
-  def existing_enrollment_attributes=(enrollment_attributes)
-    enrollments.reject(&:new_record?).each do |enrollment|
-      attributes = enrollment_attributes[enrollment.id.to_s]
-      if attributes
-        enrollment.attributes = attributes
-      else
-        enrollments.delete(enrollment)
-      end
-    end
-  end
-
-  def save_system_flags
-    system_flags.each do |system_flag|
-      system_flag.save(:validate => false)
-    end
-  end
-
   def belongs_to_user?(user)
     user.district_id == district_id &&
    (user.all_students? || user.groups.find_by_id(group_ids) ||
@@ -329,6 +284,10 @@ class Student < ActiveRecord::Base
     rescue ActiveRecord::StatementInvalid
       logger.warn "Unable to get lock for touch in student!"
     end
+  end
+
+  def safe_destroy
+    destroy unless reload.has_content?
   end
 
   protected

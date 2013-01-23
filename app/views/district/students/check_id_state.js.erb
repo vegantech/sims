@@ -1,0 +1,10 @@
+<% if @student %>
+  <% if current_district.can_claim?(@student) %>
+    $('#claim_student').html('<%=link_to "Claim #{@student} for your district", claim_district_student_path(@student), :method => :put, :id => 'claim_student_link'%>');
+    $('#dogpoop').focus();
+    alert("Follow the link at the top if you want to claim this student for your district");
+  <% else %>
+    alert("Student exists in <%=@student.district%>  You may have mistyped the id, or the other district has not yet removed this student.");
+    $('#student_id_state').focus();
+  <% end %>
+<% end %>

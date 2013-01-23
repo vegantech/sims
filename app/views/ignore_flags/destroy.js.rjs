@@ -1,7 +1,0 @@
-page.replace_html("studentflags", "#{status_display current_student, true}")
-page.replace_html("ignoredflags", "#{ignore_flags current_student, true}")
-page.call("nd")
-page.visual_effect :pulsate, 'studentflags'
-page.visual_effect :pulsate, 'ignoredflags'
-
-set_flash_notice page

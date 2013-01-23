@@ -64,6 +64,4 @@ class StudentCommentsController < ApplicationController
       format.js
     end
   end
-
-
 end

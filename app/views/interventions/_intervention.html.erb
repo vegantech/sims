@@ -15,7 +15,7 @@
             <%= help_popup "When checked, all students you selected will be assigned this intervention.  If there is a progress monitor assigned, then
             participants of this intervention will be able to use the grouped progress assignments to enter comments and scores for this
             intervention." %>
-            <%= link_to_function "Student List" , "$('intervention_student_list').toggle()" %>
+            <%= link_to "Student List" ,"#", :class => 'toggler', :data => {:toggle_id => 'intervention_student_list'} %>
             <div id="intervention_student_list" style="display:none">
               The following students have been selected to be assigned to this intervention: <br />
               <ul>

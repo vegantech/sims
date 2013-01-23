@@ -1,15 +1,15 @@
 <a name="<%= dom_id(element_definition, "new_answer_definition_errors_anchor") %>">
   <div id="<%= dom_id(element_definition, "new_answer_definition_errors") %>" style="display:none"></div>
 </a>
-<%- remote_form_for :answer_definition, :url => checklist_builder_answers_path, :html=>{:id => 'new_answer_definition_form'} do |f| -%>
+<%= form_for :answer_definition, :url => checklist_builder_answers_path, :id => 'new_answer_definition_form', :remote => true do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :answer_definition => answer_definition } %>
   <p>
     <%= submit_tag "Create" %> |
     <%= spell_check_button %> |
 
-    <%= link_to_function "Cancel", nil do |page|
-      page.remove_content dom_id(element_definition, "new_answer_definition")
-      page.change_link dom_id(element_definition, "add_answer_definition_link"), "Add Answer"
-    end %>
+    <%= link_to_remote "Cancel",  new_checklist_builder_answer_path(
+    element_definition.checklist_definition,
+    element_definition.question_definition,
+    element_definition) %>
   </p>
 <%- end -%>

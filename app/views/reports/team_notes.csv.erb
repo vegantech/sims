@@ -1,5 +1,5 @@
 "Student", "Date", "User Name", "Team Note"
-<%= raw(FasterCSV.generate do |csv|
+<%= raw(CSV.generate do |csv|
   @reporter.team_notes.each do |note|
       csv << [
         note.student.fullname,

@@ -1,2 +1,0 @@
-page.insert_html(:bottom, 'new_probe_forms', :partial =>"interventions/probes/new")
-page << "datePickerController.create();"

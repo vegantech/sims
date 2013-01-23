@@ -1,3 +1,0 @@
-page.replace_html(:override, :partial=>'new')
-page.show(:override)
-set_flash_notice page

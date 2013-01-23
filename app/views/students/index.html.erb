@@ -1,6 +1,6 @@
-<a href="" onclick="selectStudents();">all</a> | <a href="" onclick="unselectStudents();">none</a> <%=spinner %>
 <%= form_tag({}, {:name => "select_students_form"}) do %>
-
+  <%= check_box_tag('', '',false, :id => 'check_all') %>
+  <%= label_tag "check_all", "Select All" %>
   <p class="center_submit">
     <%= submit_tag "select for problem solving", :name => 'process' %>
   </p>
@@ -17,7 +17,7 @@
           <th class="sortable">ESL</th>
           <th class="sortable">SpEd</th>
           <th>Status</th>
-          <th><%=help_popup("Click on a column to sort.  You can hold down shift to sort by multiple columns.")  %> </th>
+          <th><%=help_popup("Click on a column to sort.  You can hold down shift to sort by multiple columns.", :div)  %></th>
         </tr>
       </thead>
       <tbody>
