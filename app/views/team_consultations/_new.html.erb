@@ -9,7 +9,8 @@
     </p>
   <% end %>
 
-  <%= f.fields_for :consultation_forms do |consultation_form| %> 
+  <%= f.fields_for :consultation_forms do |consultation_form| %>
+    <%=consultation_form.hidden_field :new_team_consult, :value => true %>
     <%= render :partial => 'consultation_forms/consultation_form', :object => consultation_form %>
   <% end %>
 

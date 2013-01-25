@@ -14,6 +14,12 @@ When /^I follow "([^\"]*)" "([^\"]*)"$/ do |arg1, arg2|
   else
     fail
   end
-    
 end
 
+When /^The district is set to email on responses$/ do
+  @user.district.update_attribute :email_on_team_consultation_response, true
+end
+
+When /^The district is not set to email on responses$/ do
+  @user.district.update_attribute :email_on_team_consultation_response, false
+end
