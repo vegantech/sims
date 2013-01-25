@@ -78,6 +78,8 @@ group :cucumber do
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
   gem 'rspec-rails','~>2.6', :require => false
+  gem 'sauce'
+  gem 'sauce-cucumber'
 end
 
 group :development do

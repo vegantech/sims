@@ -87,6 +87,7 @@ GEM
       main
       ruby_parser (~> 2.3)
       sexp_processor (~> 3.0)
+    cmdparse (2.0.5)
     cocaine (0.3.0)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
@@ -203,6 +204,7 @@ GEM
     multi_json (1.2.0)
     multipart-post (1.1.5)
     mysql2 (0.3.12b4)
+    net-http-persistent (2.8)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -291,6 +293,8 @@ GEM
       ruby2ruby (~> 1.2.5)
       ruby_parser (~> 2.0)
       sexp_processor (~> 3.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rinku (1.7.2)
     ripper_ruby_parser (0.0.8)
       sexp_processor (~> 3.0)
@@ -330,6 +334,20 @@ GEM
       railties (~> 3.1.0)
       sass (>= 3.1.10)
       tilt (~> 1.3.2)
+    sauce (2.2.2)
+      capybara (~> 1.0)
+      childprocess (>= 0.1.6)
+      cmdparse (>= 2.0.2)
+      highline (>= 1.5.0)
+      json (>= 1.2.0)
+      net-http-persistent
+      net-ssh
+      net-ssh-gateway
+      rest-client
+      selenium-webdriver (>= 0.1.2)
+    sauce-cucumber (2.1.1)
+      cucumber (>= 1.2.0)
+      sauce (>= 2.1.0)
     selenium-webdriver (2.25.0)
       childprocess (>= 0.2.5)
       libwebsocket (~> 0.1.3)
@@ -418,6 +436,8 @@ DEPENDENCIES
   rspec-html-matchers
   rspec-rails (~> 2.6)
   sass-rails (~> 3.1.0)
+  sauce
+  sauce-cucumber
   simplecov
   sneaky-save
   spawn!
