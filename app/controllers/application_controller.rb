@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   end
 
   def multiple_selected_students?
-    selected_student_ids.to_a.size > 1
+    Array(selected_student_ids).size > 1
   end
 
   def current_student_id
