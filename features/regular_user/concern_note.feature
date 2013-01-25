@@ -44,3 +44,22 @@ Feature: Concern Note
     When I follow "view" within "tr.consultation_form:last-of-type"
     Then I should see "Spinach"
 
+	Scenario: Send email on team consultation response
+		Given Shawn Balestracci is a team contact for "Cucumber"
+		And I follow "Create Team Consultation Form"
+		And I press "Save"
+		And a clear email queue
+		When The district is not set to email on responses
+		And I go to the current student profile page
+		When I follow "Respond to Request for Information"
+		And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
+		And I press "Create"
+		Then I should receive no emails
+		When The district is set to email on responses
+		And I go to the current student profile page
+		When I follow "Respond to Request for Information"
+		And I fill in "consultation_form_consultation_form_concerns_attributes_5_strengths" with "Spinach"
+		And I press "Create"
+		Then I should receive an email
+		When I open the email
+		Then I should see "Team Consultation Form Response -- Cucumber" in the email subject

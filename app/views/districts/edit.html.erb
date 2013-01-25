@@ -44,6 +44,15 @@
         provide a windows live link/image on the login page" %>
       </div>
     <% end %>
+    <div class ="form_row">
+      <%= f.label :email_on_team_consultation_response, "Email on <br/> Consultation Form <br/> Response".html_safe %>
+      <%= f.check_box :email_on_team_consultation_response %>
+      <%= help_popup "When checked, team contacts will receive an email whenever someone completes a response to a team consultation.
+       Otherwise team contacts will receive an email only on new team consultations." %>
+     </div>
+     <br clear ="both" />
+
+
 
       <div class ="form_row">
        <%= f.label :custom_interventions %>
@@ -61,6 +70,8 @@
         <dd>no one will be able to create a custom intervention, but existing ones will be available for reuse by the author.</dd>
         </dl>" %>
       </div>
+
+
       <div class ="form_row">
         <%= f.label :logo, "Attach or replace logo<br/> #{District::LOGO_SIZE} ".html_safe %>
         <%= f.file_field :logo %>
