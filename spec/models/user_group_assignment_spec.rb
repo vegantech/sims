@@ -14,5 +14,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe UserGroupAssignment do
+  before(:each) do
+    @valid_attributes = {
+      :user => User.new,
+      :group => Group.new,
+      :is_principal => false
+    }
+  end
+
   it 'should have actual specs'
 end

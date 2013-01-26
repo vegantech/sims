@@ -149,4 +149,8 @@ module ApplicationHelper
       yield
     end
   end
+
+  def windows_live?(district = current_district)
+    defined?(::WINDOWS_LIVE_CONFIG) && district.windows_live?
+  end
 end

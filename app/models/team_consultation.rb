@@ -29,6 +29,8 @@ class TeamConsultation < ActiveRecord::Base
   scope :pending, where(:complete=>false, :draft=>false)
   scope :draft, where(:draft => true)
 
+  scope :pending_for_user, lambda {|user| where(:complete => false).where(["(draft = ?) OR (draft = ? AND requestor_id = ?)",false,true,user]) }
+
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
   define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_requests, :count => :all, :select => 'distinct district_id', :joins => :student

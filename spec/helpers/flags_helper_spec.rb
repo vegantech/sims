@@ -20,13 +20,33 @@ describe FlagsHelper do
 
   describe 'team_concerns' do
     it 'should return an empty string when there are no concerns' do
-      team_concerns(Student.new).should == ''
+      helper.team_concerns(Student.new).should == ''
     end
 
     it 'should return an image when there is  concern' do
       student=Factory(:student)
       student.team_consultations.create!
-      helper.team_concerns(student).should == image_tag('/assets/comments.png', :alt => 'Team Consultations')
+      helper.team_concerns(student).should ==
+        "<img alt=\"Comments\" class=\"popup\" data-help=\"Open Team Consultations\" src=\"/assets/comments.png\" /> "
+    end
+
+  end
+
+  describe 'default_show_team_concerns?' do
+    it 'should be false if the district setting is disabled' do
+      helper.stub(:team_concerns? => true)
+      helper.stub(:current_district => District.new)
+      helper.default_show_team_concerns?(Student.new,User.new).should be_false
+    end
+    it 'should be false if there are no pending concerns'do
+      helper.stub(:team_concerns? => false)
+      helper.stub(:current_district => District.new(:show_team_consultations_if_pending => true))
+      helper.default_show_team_concerns?(Student.new,User.new).should be_false
+    end
+    it 'should be true if te district setting is enabled and there are pending concerns' do
+      TeamConsultation.stub!(:pending_for_user => [2])
+      helper.stub(:current_district => District.new(:show_team_consultations_if_pending => true))
+      helper.default_show_team_concerns?(Student.new,User.new).should be_true
     end
 
   end

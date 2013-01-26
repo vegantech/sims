@@ -12,7 +12,8 @@ module NavigationHelpers
       '/'
     when /the current student profile page/
       "/students/#{@student.id}"
-
+    when /the cucumber student profile page/
+      student_path(cucumber_student)
 
 
     # Add more mappings here.
