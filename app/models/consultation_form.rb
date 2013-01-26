@@ -26,6 +26,8 @@ class ConsultationForm < ActiveRecord::Base
   delegate :school_team,  :to => '(team_consultation or return nil)'
   attr_writer :school, :student
   attr_protected :district_id
+  after_create :email_concern_recipient
+  attr_accessor :new_team_consult
 
 
   define_statistic :consultation_forms , :count => :all, :joins => {:team_consultation => :student}
@@ -57,6 +59,12 @@ class ConsultationForm < ActiveRecord::Base
   def set_user
     if user_id.nil? and team_consultation.present?
       self.user_id = team_consultation.requestor_id
+    end
+  end
+
+  def email_concern_recipient
+    if !new_team_consult and user and user.district.email_on_team_consultation_response?
+      TeamReferrals.concern_note_response(self).deliver
     end
   end
 

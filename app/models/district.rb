@@ -24,10 +24,10 @@
 class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-  SETTINGS = [:key, :previous_key, :restrict_free_lunch, :forgot_password, :lock_tier, :google_apps_domain, :custom_interventions, :google_apps, :windows_live]
-
-  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps]
+  SETTINGS = [:key, :previous_key, :google_apps_domain, :custom_interventions ]
+  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps, :email_on_team_consultation_response, :show_team_consultations_if_pending]
   BOOLEAN_SETTINGS <<  :windows_live  if defined? ::WINDOWS_LIVE_CONFIG
+  SETTINGS.push *BOOLEAN_SETTINGS
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   has_many :users, :order => :username

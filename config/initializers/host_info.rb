@@ -27,7 +27,8 @@ else
 end
 sessionhash= {
     :key         => '_sims-open2_session',
-    :secret      => secret
+    :secret      => secret,
+    :secure => (Rails.env.production? || Rails.env.staging? )
     }
 
 if ENV['SIMS_DOMAIN']

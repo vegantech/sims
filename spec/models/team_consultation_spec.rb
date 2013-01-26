@@ -32,7 +32,7 @@ describe TeamConsultation do
 
     end
 
-    it 'should return an array of users when there is a school team' 
+    it 'should return an array of users when there is a school team'
 
   end
 
@@ -46,5 +46,16 @@ describe TeamConsultation do
     tc = TeamConsultation.create(:complete => true)
     tc.undo_complete!
     tc.reload.complete.should be_false
+  end
+
+  describe 'pending_for_user' do
+    it 'should have drafts for the user, and open consultations' do
+      u=Factory(:user)
+      @open_consultation = TeamConsultation.create!
+      @closed_consultation = TeamConsultation.create! :complete => true
+      @draft_by_user = TeamConsultation.create! :requestor => u, :draft => true
+      @draft_other_user = TeamConsultation.create! :draft => true, :requestor => User.new
+      TeamConsultation.pending_for_user(u).should =~ [@open_consultation, @draft_by_user]
+    end
   end
 end
