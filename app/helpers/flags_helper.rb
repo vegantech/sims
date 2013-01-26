@@ -33,20 +33,20 @@ module FlagsHelper
     end
   end
 
-  def team_concerns?(student = current_student, user = current_user)
-    student.team_consultations.pending_for_user(user).present?
+  def team_concerns?(student = current_student)
+    student.team_consultations.pending.present?
   end
 
   def team_concerns(student)
     if team_concerns?(student)
-      image_with_popup('comments.png', "Open Team Consultations or Drafts by You")
+      image_with_popup('comments.png', "Open Team Consultations")
     else
       ''
     end
   end
 
   def default_show_team_concerns?(student = current_student, user = current_user)
-    current_district.show_team_consultations_if_pending? && team_concerns?(student,user)
+    current_district.show_team_consultations_if_pending? && student.team_consultations.pending_for_user(user).present?
   end
 
 
