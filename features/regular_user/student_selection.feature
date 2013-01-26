@@ -3,12 +3,12 @@ Feature: Student Selection
   A SIMS USER
   Should be able to choose which ones to work with
 
-@javascript
+@selenium
   Scenario: Check all and none
 		Given 4 students
 		And I am at the student selection page
-		When I follow "all"
+		When I check "Select All"
 		Then all students should be selected
-		When I follow "none"
+		When I check "Select All"
 		Then no students should be selected
 
