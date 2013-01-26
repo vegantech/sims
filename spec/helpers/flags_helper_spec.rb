@@ -29,7 +29,7 @@ describe FlagsHelper do
       student.team_consultations.create!
       helper.should_receive(:current_user).and_return(User.new)
       helper.team_concerns(student).should ==
-        "<img alt=\"Comments\" onmouseout=\"return nd();\" onmouseover=\"return overlib('Open Team Consultations or Drafts by You');\" src=\"/assets/comments.png\" /> "
+        "<img alt=\"Comments\" class=\"popup\" data-help=\"Open Team Consultations or Drafts by You\" src=\"/assets/comments.png\" /> "
     end
 
   end
