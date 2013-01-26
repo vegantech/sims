@@ -20,16 +20,14 @@ describe FlagsHelper do
 
   describe 'team_concerns' do
     it 'should return an empty string when there are no concerns' do
-      helper.should_receive(:current_user).and_return(User.new)
       helper.team_concerns(Student.new).should == ''
     end
 
     it 'should return an image when there is  concern' do
       student=Factory(:student)
       student.team_consultations.create!
-      helper.should_receive(:current_user).and_return(User.new)
       helper.team_concerns(student).should ==
-        "<img alt=\"Comments\" onmouseout=\"return nd();\" onmouseover=\"return overlib('Open Team Consultations or Drafts by You');\" src=\"/assets/comments.png\" /> "
+        "<img alt=\"Comments\" onmouseout=\"return nd();\" onmouseover=\"return overlib('Open Team Consultations');\" src=\"/assets/comments.png\" /> "
     end
 
   end
@@ -46,7 +44,7 @@ describe FlagsHelper do
       helper.default_show_team_concerns?(Student.new,User.new).should be_false
     end
     it 'should be true if te district setting is enabled and there are pending concerns' do
-      helper.stub(:team_concerns? => true)
+      TeamConsultation.stub!(:pending_for_user => [2])
       helper.stub(:current_district => District.new(:show_team_consultations_if_pending => true))
       helper.default_show_team_concerns?(Student.new,User.new).should be_true
     end
