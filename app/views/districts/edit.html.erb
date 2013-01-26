@@ -27,6 +27,7 @@
         <%= help_popup "If checked, users will be able to reset their password by email if they forget it.  They must also have their email address assigned
         in SIMS." %>
       </div>
+
       <br clear ="both">
       <div class ="form_row">
         <%= f.label :google_apps %>
@@ -51,6 +52,16 @@
        Otherwise team contacts will receive an email only on new team consultations." %>
      </div>
      <br clear ="both" />
+      <hr />
+
+    <div class ="form_row">
+      <%= f.label :show_team_consultations_if_pending, "Expland Team <br/> Consultation Section <br/>On Profile ".html_safe %>
+      <%= f.check_box :show_team_consultations_if_pending %>
+      <%= help_popup "When checked, The team consultation section will be expanded if there are any open consultations of it the user has any draft consultations." %>
+     </div>
+     <br clear ="both" />
+      <hr />
+
 
 
 

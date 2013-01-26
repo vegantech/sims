@@ -3,7 +3,7 @@
              "http://www.vegantech.com/sims/doc/team_consult_step_by_step_directions6.2010.docx")%>
 </h2>
 <%= link_to_function "Show/Hide Team Consultations" , "$('consultations_group').toggle()" %>
-<div id = "consultations_group" style="display:none">
+<div id = "consultations_group" <%=raw('style="display:none"') unless default_show_team_concerns?%> >
   <h3 class="team_consultations_header" ondblclick="$('team_consultation_request').toggle();"><span>New Team Consult</span></h3>
   <%= link_to_function "Show/Hide" , "$('team_consultation_request').toggle()" %>
   <div id = "team_consultation_request">
