@@ -79,7 +79,7 @@ group :cucumber do
   gem 'launchy'
   gem 'rspec-rails','~>2.6', :require => false
   gem 'sauce'
-  gem 'sauce-cucumber'
+  #gem 'sauce-cucumber'
 end
 
 group :development do
