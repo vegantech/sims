@@ -141,4 +141,8 @@ module ApplicationHelper
   def style_display_none_unless(cond)
     'style="display:none;"'.html_safe unless cond
   end
+
+  def windows_live?(district = current_district)
+    defined?(::WINDOWS_LIVE_CONFIG) && disitrict.windows_live?
+  end
 end
