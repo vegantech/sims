@@ -1,7 +1,0 @@
-page << if_visible(dom_id(@question_definition, "element_definitions"))
-page.remove_content dom_id(@question_definition, "element_definitions")
-page.change_link dom_id(@question_definition, "view_element_definitions_toggle"), "Show Element Definitions"
-page << "} else {"
-page.insert_content dom_id(@question_definition, "element_definitions"), :partial => "element_definition", :collection => @element_definitions
-page.change_link dom_id(@question_definition, "view_element_definitions_toggle"), "Hide Element Definitions"
-page << "}"

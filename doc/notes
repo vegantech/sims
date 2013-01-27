@@ -1,3 +1,25 @@
+Setting up asset pipeline on railsmachine
+wget http://nodejs.org/dist/v0.8.16/node-v0.8.16.tar.gz
+tar -xzvf node-v0.8.16.tar.gz 
+cd node-v0.8.16
+ls
+./configure 
+make
+
+
+
+wget https://github.com/simplejson/simplejson/archive/master.zip
+unzip master
+cd simplejson-master/
+sudo python setup.py install
+
+edit node tools/install.py to change import json to import simplejson as json
+
+Do this on server ^^^
+
+==================
+
+
 Restoring deleted data
 restore backup
 mysql sims_open_production -u root -p  <backup.sql

@@ -22,7 +22,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :probe_definition
   belongs_to :frequency
   has_many :probes, :dependent => :destroy
-  
 
   delegate :title, :to => :probe_definition
   delegate :student, :to => :intervention
@@ -30,13 +29,15 @@ class InterventionProbeAssignment < ActiveRecord::Base
   validate :last_date_must_be_after_first_date
   validate :goal_in_range
 
+  after_initialize :set_default_frequency_multiplier
+
   accepts_nested_attributes_for :probe_definition
 
   RECOMMENDED_FREQUENCY = 2
 
 #  validates_date :first_date, :end_date
 
-  named_scope :active, :conditions => {:enabled=>true}
+  scope :active, where(:enabled=>true)
 
 
   def self.disable(ipas)
@@ -69,16 +70,16 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def to_param
     unless new_record?
-      id
+      id.to_s
     else
       "pd#{probe_definition_id}"
     end
   end
 
   def graph(graph_type=nil)
-    ProbeGraph.new(:graph_type => graph_type, 
-                   :probes => probes.to_a, 
-                   :probe_definition => probe_definition, 
+    ProbeGraph.new(:graph_type => graph_type,
+                   :probes => probes.to_a,
+                   :probe_definition => probe_definition,
                    :district => student.district,
                    :first_date => first_date,
                    :end_date => end_date,
@@ -91,8 +92,8 @@ protected
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end
 
-  def after_initialize
-    self.frequency_multiplier=RECOMMENDED_FREQUENCY if self.frequency_multiplier.blank?
+  def set_default_frequency_multiplier
+    self.frequency_multiplier=RECOMMENDED_FREQUENCY if read_attribute(:frequency_multiplier).blank?
   end
 
   def goal_in_range
@@ -106,7 +107,7 @@ protected
       end
 
     end
-        
+
   end
 
 end

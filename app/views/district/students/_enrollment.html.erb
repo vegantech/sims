@@ -1,23 +1,17 @@
-<div class="enrollment">
-  <% new_or_existing = enrollment.new_record? ? 'new' : 'existing' %> 
-  <% prefix = "student[#{new_or_existing}_enrollment_attributes][]" %>
-
-
-  <% fields_for prefix, enrollment  do |enrollment_form| %>
-  <%= error_messages_for :enrollment, :object => enrollment %>
+<div class="enrollment item">
+  <%= f.error_messages %>
   <p>
-    <%=enrollment_form.label :school_id, 'School'%>
-    <%= enrollment_form.collection_select(:school_id, current_district.schools, :id, :to_s , :prompt => "Please Select a School") %>
-    <%=enrollment_form.label :grade %> 
-    <%= enrollment_form.text_field :grade , :size=>5%>
-    <%=enrollment_form.label :end_year %> 
-    <%= enrollment_form.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %> 
+    <%=f.label :school_id, 'School'%>
+    <%= f.collection_select(:school_id, current_district.schools, :id, :to_s , :prompt => "Please Select a School") %>
+    <%=f.label :grade %>
+    <%= f.text_field :grade , :size=>5%>
+    <%=f.label :end_year %>
+    <%= f.select(:end_year, ((Date.today.year-10)..(Date.today.year+10)).to_a) %>
+    <%=f.hidden_field :id %>
+    <%=f.hidden_field :_destroy %>
     <%= help_popup "The end year is for the calendar year for this enrollment.  For the 2010-2011 school year it should be 2011. " %>
 
-    <%= link_to_function "Remove", "$(this).up('.enrollment').remove()" %>
-  </p>
-  <% end %>
-
-</p>
+    <%= link_to "Remove","#", :class => "remove" %>
+    </p>
 </div>
 

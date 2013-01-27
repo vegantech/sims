@@ -1,11 +1,11 @@
-<% @title1 = 'Student Reports:' 
+<% @title1 = 'Student Reports:'
 	 @title2 = 'Reports Selection' %>
 
    <h2>Choose Student Flag Report Format for Selected Students</h2>
-   <p>The students on this report are based on the choices you made on the <%= link_to 'Student Search', search_students_path %> screen.</p>
+   <p>The students on this report are based on the choices you made on the <%= link_to 'Student Search', [current_school, :student_search] %> screen.</p>
 
-<% form_tag do %>
+<%= form_tag do %>
 	Format: <%= select :report_params, :format, @filetypes, {:selected => @selected_filetype} %>
   <%= submit_tag 'Generate Report', :name => 'generate' %>
 <% end %>
-<%= @report %>
+<%= @report.to_s.html_safe %>

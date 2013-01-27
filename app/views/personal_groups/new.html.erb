@@ -6,7 +6,7 @@ selection.  If you'd like to select different students
 then click "Student Search" or "Student Selection"
 in the breadcrumbs.</p>
 
-<% form_for(@personal_group) do |f| %>
+<%= form_for(@personal_group) do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :name %><br />
@@ -15,13 +15,11 @@ in the breadcrumbs.</p>
  <p> Students </p>
  <% @students.each do |student| %>
    <%= check_box_tag "personal_group[student_ids][]", student.id, true, :id => "personal_group_student_ids_#{student.id}" %>
-   
    <%= label_tag "personal_group_student_ids_#{student.id}", student %> <br />
  <% end %>
  </p>
 
 
-  
   <p>
     <%= f.submit 'Create' %>
   </p>

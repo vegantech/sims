@@ -1,1 +1,0 @@
-page.update_content dom_id(@answer_definition, "edit"), :partial => "rjs_edit_form", :locals => {:answer_definition => @answer_definition}

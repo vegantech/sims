@@ -1,0 +1,12 @@
+<h1>Add Student</h1>
+<%if  @students.blank? %>
+  There are no more enrolled students to assign to this group.
+<% else %>
+  <%= form_for(@student, :url=>group_students_path(@group), :remote => true) do |f| %>
+    <%=  f.error_messages %>
+    <%= f.collection_select(:id,@students, :id,:to_s) %>
+    <p>
+      <%= f.submit "Add Student" %>
+    </p>
+  <% end %>
+<% end %>

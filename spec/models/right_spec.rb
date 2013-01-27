@@ -12,5 +12,4 @@ describe Right do
     Right.const_set "RIGHTS", oldrights
 
   end
-  
 end

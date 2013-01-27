@@ -5,7 +5,7 @@ class DocController < ActionController::Base
   end
 
 #  caches_page :index, :district_upload
-  require 'lib/csv_importer/base_system_flags'
+  require File.expand_path 'lib/csv_importer/base_system_flags'
 
   def index
   end
@@ -15,7 +15,7 @@ class DocController < ActionController::Base
       doc=params[:id].gsub(/[^a-zA-Z0-9_]/,"")
       if doc
         @importer = "CSVImporter/#{doc}".classify.pluralize.constantize
-        render :action => "doc/district_upload/file_api" and return
+        render :template => "doc/district_upload/file_api" and return
       end
     end
   end

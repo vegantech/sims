@@ -1,6 +1,6 @@
 <div id="checklist">
-  <%- form_for(@checklist) do |f| -%>
-    <%= render :partial => f, 
+  <%= form_for(@checklist) do |f| -%>
+    <%= render :partial => f,
     :locals => { :checklist => @checklist ,:edit=>true} %>
     <p>
     <%= submit_tag "Submit#{' and Make Recommendation' if @checklist.checklist_definition.recommendation_definition}" %>

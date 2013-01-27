@@ -2,12 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 include PopulateInterventionDropdowns
 describe "Populate Intervention Dropdowns Module" do
+  def session
+    {}
+  end
   def selected_student_ids
     [1, 2]
-  end
-
-  def session
-    {:user_id => 1}
   end
 
   def params
@@ -22,13 +21,21 @@ describe "Populate Intervention Dropdowns Module" do
    @current_school ||= mock_school(:quicklist => [])
   end
 
+  def current_school_id
+    current_school.id
+  end
+
+  def current_user
+    @current_user ||= mock_user()
+  end
+
   def max_tier
    @mock_tier ||= mock_tier()
 
   end
 
   def current_district
-    @current_district ||= mock_district(:goal_definitions => [])
+    @current_district ||= mock_district(:goal_definitions => GoalDefinition)
   end
 
   def flash
@@ -41,21 +48,22 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'values_from_session' do
     it 'should produce a subset of the session' do
-      values_from_session.should == ({:user_id => 1, :selected_ids => [1, 2], :school_id => nil})
+      values_from_session.should == ({:user_id => current_user.id, :selected_ids => [1, 2], :school_id => nil})
     end
   end
 
   describe 'build_from_session_and_params' do
     it 'should build intervention from session and params' do
-      intervention=mock_object(:intervention_probe_assignment => true)
+      intervention=mock(:intervention_probe_assignment => true)
       mock_intervention.should_receive(:build_and_initialize).with(values_from_session.merge(:test => true)).and_return(intervention)
       build_from_session_and_params.should == intervention
     end
   end
 
 
-  describe 'populate_goals' do 
+  describe 'populate_goals' do
     it 'should populate @goal_definitions' do
+      GoalDefinition.delete_all
       self.should_receive(:find_goal_definition).twice
       populate_goals
       @goal_definitions.should == []
@@ -67,8 +75,9 @@ describe "Populate Intervention Dropdowns Module" do
 
   describe 'populate_objectives' do
     it 'should populate @objective_definitions' do
+      ObjectiveDefinition.delete_all
       self.should_receive(:find_objective_definition).twice
-      @goal_definition=mock_goal_definition(:objective_definitions => [])
+      @goal_definition=mock_goal_definition(:objective_definitions => ObjectiveDefinition)
       populate_objectives
       @objective_definitions.should == []
       @objective_definition = true
@@ -76,11 +85,12 @@ describe "Populate Intervention Dropdowns Module" do
       populate_objectives
     end
   end
- 
+
   describe 'populate_categories' do
     it 'should populate @intervention_clusters' do
+      InterventionCluster.delete_all
       self.should_receive(:find_intervention_cluster).twice
-      @objective_definition=mock_objective_definition(:intervention_clusters => [])
+      @objective_definition=mock_objective_definition(:intervention_clusters => InterventionCluster)
       populate_categories
       @intervention_clusters.should == []
       @intervention_cluster = true
@@ -88,17 +98,18 @@ describe "Populate Intervention Dropdowns Module" do
       populate_categories
     end
   end
- 
+
   describe 'populate_definitions' do
     it 'should populate @intervention_definitions if not custom' do
       self.should_receive(:find_intervention_definition)
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
-      InterventionDefinition.should_receive(:restrict_tiers_and_disabled).with(max_tier).and_return([])
+      InterventionDefinition.should_receive(:for_dropdown).with(
+        max_tier, current_district,current_school_id,current_user).and_return([])
       populate_definitions
       @intervention_definitions.should == []
     end
     it 'should populate @intervention_definition if custom' do
-      flash[:custom_intervention] = true
+      params[:custom_intervention] = "true"
       self.should_receive(:find_intervention_definition)
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)
       InterventionDefinition.should_receive(:build).and_return "1"

@@ -11,11 +11,11 @@
         <th>Intervention Title</th>
         <th>Start Date</th>
         <th>Progress Monitor</th>
-        <th> </th> 
+        <th> </th>
       </tr>
     </thead>
     <tbody>
-      <%=render :partial => 'students/intervention', :collection => interventions, :locals=>{:no_action=>(defined?no_action && no_action)} %>
+      <%=render :partial => 'students/intervention', :collection => interventions %>
     </tbody>
   </table>
 <% end %>

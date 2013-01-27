@@ -1,10 +1,11 @@
 class InterventionBuilder::GoalsController < ApplicationController
-  additional_write_actions :regenerate_intervention_pdfs, :interventions_without_recommended_monitors
   skip_before_filter :verify_authenticity_token, :only => :regenerate_intervention_pdfs
   helper_method :move_path
+  cache_sweeper :intervention_builder_sweeper
 
   def regenerate_intervention_pdfs
-    CreateInterventionPdfs.generate(current_district)
+    #these are now generated upon request
+    #CreateInterventionPdfs.generate(current_district)
     redirect_to :back
   end
 
@@ -43,8 +44,6 @@ class InterventionBuilder::GoalsController < ApplicationController
   # POST /goal_definitions
   def create
     @goal_definition = current_district.goal_definitions.build(params[:goal_definition])
-    
-
     respond_to do |format|
       if @goal_definition.save
         flash[:notice] = 'Goal was successfully created.'
@@ -108,7 +107,7 @@ class InterventionBuilder::GoalsController < ApplicationController
     end
     respond_to do |format|
       format.html {redirect_to intervention_builder_goals_url}
-      format.js {@goal_definitions=current_district.goal_definitions} 
+      format.js {@goal_definitions=current_district.goal_definitions}
     end
   end
 

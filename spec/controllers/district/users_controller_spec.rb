@@ -1,11 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe District::UsersController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   def mock_user(stubs={})
-    @mock_user ||= mock_model(User, stubs)
+    @mock_user ||= mock_model(User,stubs.merge(:first_name => 'Mock', :last_name => 'User', :to_s => 'Mock User'))
   end
 
   before do
@@ -22,7 +24,7 @@ describe District::UsersController do
 
     it "should expose all users as @users" do
       get :index
-      assigns[:users].should == [mock_user]
+      assigns(:users).should == [mock_user]
     end
 
   end
@@ -33,7 +35,7 @@ describe District::UsersController do
       mock_user.should_receive(:roles=).with('regular_user')
 
       get :new
-      assigns[:user].should equal(mock_user)
+      assigns(:user).should equal(mock_user)
     end
   end
 
@@ -41,40 +43,42 @@ describe District::UsersController do
     it "should expose the requested user as @user" do
       User.should_receive(:find).with("37").and_return(mock_user)
       get :edit, :id => "37"
-      assigns[:user].should equal(mock_user)
+      assigns(:user).should equal(mock_user)
     end
   end
 
   describe "responding to POST create" do
     describe "with valid params" do
+      let(:user) {mock_model(User, :save => true)}
       it "should expose a newly created user as @user" do
-        User.should_receive(:build).with({'these' => 'params'}).and_return(mock_user(:save => true))
+        User.should_receive(:build).with({'these' => 'params'}).and_return(user)
         post :create, :user => {:these => 'params'}
-        assigns(:user).should equal(mock_user)
+        assigns(:user).should equal(user)
       end
 
       it "should redirect to the created user" do
-        User.stub!(:build).and_return(mock_user(:save => true))
+        User.stub!(:build).and_return(user)
         post :create, :user => {}
         response.should redirect_to(district_users_url)
       end
 
       it "should should set the flash with a link back to edit the created user" do
-        User.stub!(:build).and_return(mock_user(:save => true))
+        User.stub!(:build).and_return user
         post :create, :user => {}
-        flash[:notice].should match(/#{edit_district_user_path(mock_user)}/)
+        flash[:notice].should match(/#{edit_district_user_path(user)}/)
       end
-     end
+    end
 
     describe "with invalid params" do
+      let(:user) {mock_model(User, :save => false)}
       it "should expose a newly created but unsaved user as @user" do
-        User.stub!(:build).with({'these' => 'params'}).and_return(mock_user(:save => false))
+        User.stub!(:build).with({'these' => 'params'}).and_return(user)
         post :create, :user => {:these => 'params'}
-        assigns(:user).should equal(mock_user)
+        assigns(:user).should equal(user)
       end
 
       it "should re-render the 'new' template" do
-        User.stub!(:build).and_return(mock_user(:save => false))
+        User.stub!(:build).and_return(user)
         post :create, :user => {}
         response.should render_template('new')
       end
@@ -83,33 +87,48 @@ describe District::UsersController do
 
   describe "responding to PUT udpate" do
     describe "with valid params" do
+      let(:user) {mock_model(User, :update_attributes => true, :to_s => "udpate user")}
       it "should update the requested user" do
-        User.should_receive(:find).with("37").and_return(mock_user)
-        mock_user.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        User.should_receive(:find).with("37").and_return(user)
+        user.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :user => {:these => 'params'}
       end
 
       it "should expose the requested user as @user" do
-        User.stub!(:find).and_return(mock_user(:update_attributes => true))
+        User.stub!(:find).and_return user
         put :update, :id => "1"
-        assigns(:user).should equal(mock_user)
+        assigns(:user).should equal(user)
       end
 
       it "should redirect to the user" do
-        User.stub!(:find).and_return(mock_user(:update_attributes => true))
+        User.stub!(:find).and_return user
         put :update, :id => "1"
         response.should redirect_to(district_users_url)
       end
 
+      describe "when editing self" do
+        it 'should keep the user logged in' do
+          User.stub!(:find).and_return user
+          controller.stub!(:current_user => user)
+          controller.should_receive(:sign_in)
+          put :update, :id => "1"
+        end
+
+        it 'should not sign the lsa in as someone else' do
+          User.stub!(:find).and_return user
+          controller.stub!(:current_user => User.new)
+          controller.should_not_receive(:sign_in)
+          put :update, :id => "1"
+        end
+      end
+
       describe 'with staff assignments' do
         before(:each) do
-          @mock_user = mock_user(:update_attributes => true)
-          User.stub!(:find).and_return(@mock_user)
+          User.stub!(:find).and_return(user)
         end
 
         def user_string
-          "<a href=\"#{edit_district_user_path(@mock_user)}\">#{@mock_user.to_s}</a>"
-
+          "<a href=\"#{edit_district_user_path(user)}\">#{user.to_s}</a>"
         end
 
         it 'should set the flash when complete when there have been no staff assignment changes' do
@@ -131,23 +150,24 @@ describe District::UsersController do
 
         end
       end
-   end
+    end
 
     describe "with invalid params" do
+      let(:user) {mock_model(User, :update_attributes => false, :to_s => "udpate user")}
       it "should update the requested user" do
-        User.should_receive(:find).with("37").and_return(mock_user)
-        mock_user.should_receive(:update_attributes).with({"existing_user_school_assignment_attributes"=>{}, "these"=>"params"})
+        User.should_receive(:find).with("37").and_return(user)
+        user.should_receive(:update_attributes).with({"these"=>"params"})
         put :update, :id => "37", :user => {:these => 'params'}
       end
 
       it "should expose the user as @user" do
-        User.stub!(:find).and_return(mock_user(:update_attributes => false))
+        User.stub!(:find).and_return user
         put :update, :id => "1"
-        assigns(:user).should equal(mock_user)
+        assigns(:user).should equal(user)
       end
 
       it "should re-render the 'edit' template" do
-        User.stub!(:find).and_return(mock_user(:update_attributes => false))
+        User.stub!(:find).and_return user
         put :update, :id => "1"
         response.should render_template('edit')
       end
@@ -162,7 +182,8 @@ describe District::UsersController do
     end
 
     it "should redirect to the users list" do
-      User.stub!(:find).and_return(mock_user(:remove_from_district => true))
+      user = mock_model(User, :remove_from_district => true)
+      User.stub!(:find).and_return user
       delete :destroy, :id => "1"
       response.should redirect_to(district_users_url)
     end

@@ -1,0 +1,25 @@
+<%@stats.each do |klass, metrics| %>
+    <h2><%= fix_names(klass.titleize) %></h2>
+    <table>
+      <% metrics.each do |name,value|  %>
+        <tr>
+          <td width="350px"><%=name.to_s.titleize%></td>
+          <td><%=value%></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <br /> <br />
+
+  <p>These statistics include records created after <%=@start_date %> and before <%=@end_date %>.  It's based on the creation timestamp in the database, so it doesn't track access or modifications of existing records.
+  Records that have been deleted do not appear in these stats.   </p>
+
+  <%= form_tag do %>
+    <%=hidden_field_tag :without, @without unless @without.blank? %>
+    <%=unobtrusive_date_text_picker_tag :start, @start_date, :format => 'y-m-d', :divider => "-" %> <br />
+    <%=unobtrusive_date_text_picker_tag :end , @end_date, :format => 'y-m-d', :divider => "-"%> <br />
+
+
+    <%= submit_tag 'Change Dates' %>
+  <% end %>

@@ -42,8 +42,6 @@ describe Enrollment do
     end
 
 
-    
-
   end
 
   describe 'search class method' do
@@ -57,13 +55,13 @@ describe Enrollment do
 
     describe 'with year' do
       it 'should have call year_search' do
-        Enrollment.should_receive(:scoped).and_return(s=mock_object(:scoped=>s))
+        Enrollment.should_receive(:scoped).and_return(s=mock(:scoped=>s))
         Enrollment.should_receive(:year_search).with('*',s).and_return(s)
         Enrollment.search({:year=>'*', :search_type => 'list_all'})
       end
     end
 
-    describe 'with student group' do 
+    describe 'with student group' do
       it 'should return only students in that grade' do
         Enrollment.delete_all
         e1,e2,e3 = %w{1 2 3}.collect{|i| Enrollment.create! :grade=>i.to_s, :student_id=>99999, :school_id=>999}
@@ -103,9 +101,9 @@ describe Enrollment do
 
       it 'should restrict to a user with access to all students but filtering to him/herself #607' do
 
-        @user1.special_user_groups.create!(:grouptype =>SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT, :district_id => @user1.district_id)
+        @user1.update_attribute(:all_students, true)
         Enrollment.search(:search_type=>'list_all',:user => @user1, :user_id=>@user1.id.to_s, :school_id=>999).should == [@e1,@e2]
-        @user1.special_user_groups.clear
+        @user1.update_attribute(:all_students, false)
       end
     end
 
@@ -125,7 +123,7 @@ describe Enrollment do
 
 
       end
-      
+
 
     end
 
@@ -239,13 +237,13 @@ describe Enrollment do
         @e1.student.system_flags.create!(:category => 'attendance', :reason=> 'attendance_flag')
         @e1.student.system_flags.create!(:category => 'math', :reason=> 'math_flag')
         @e1.student.ignore_flags.create!(:category => 'math', :reason=> 'math_flag')
-        
+
         @e2.student.system_flags.create!(:category => 'math', :reason => 'math_flag')
         @e3.student.custom_flags.create!(:category => 'suspension', :reason => 'suspension_flag')
 
         @e4.student.system_flags.create!(:category => 'attendance', :reason=> 'attendance_flag')
         @e4.student.ignore_flags.create!(:category => 'attendance', :reason=> 'anti-attendance_flag')
-        
+
         @e5.student.ignore_flags.create!(:category => 'attendance', :reason=> 'anti-attendance_flag')
       end
 

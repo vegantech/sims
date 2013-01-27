@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentCommentsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
 
   def mock_student_comment(stubs={})
     @mock_student_comment ||= mock_model(StudentComment, stubs)
@@ -27,7 +28,7 @@ describe StudentCommentsController do
 
         StudentComment.should_receive(:build).and_return(mock_student_comment)
         get :new,:student_id => "2"
-        assigns[:student_comment].should equal(mock_student_comment)
+        assigns(:student_comment).should equal(mock_student_comment)
       end
 
     end
@@ -39,7 +40,7 @@ describe StudentCommentsController do
 
         StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
         get :edit, :id => "37",:student_id => "2"
-        assigns[:student_comment].should equal(mock_student_comment)
+        assigns(:student_comment).should equal(mock_student_comment)
       end
 
     end
@@ -50,7 +51,7 @@ describe StudentCommentsController do
 
         it "should expose a newly created student_comment as @student_comment" do
           StudentComment.should_receive(:build).with({'these' => 'params'}).and_return(mc=mock_student_comment(:save => true))
-          mc.should_receive(:user=).with(@u)
+          mc.should_receive(:user=)
           #controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
           post :create, :student_comment => {:these => 'params'},:student_id => "2"
           assigns(:student_comment).should equal(mock_student_comment)
@@ -58,7 +59,7 @@ describe StudentCommentsController do
 
         it "should redirect to the created student_comment" do
           StudentComment.stub!(:build).and_return(mc=mock_student_comment(:save => true))
-          mc.should_receive(:user=).with(@u)
+          mc.should_receive(:user=)
 
           post :create, {:student_comment => {},:student_id => "2"}, :selected_student_ids=>[1]
           flash[:notice].should ==('Team Note was successfully created.')

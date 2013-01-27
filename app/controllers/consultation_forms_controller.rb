@@ -7,9 +7,8 @@ class ConsultationFormsController < ApplicationController
     @consultation_form = nil unless @consultation_form.district == current_district
 
     respond_to do |format|
-      format.js
       format.html # show.html.erb
-      format.xml  { render :xml => @consultation_form }
+      format.js
     end
   end
 
@@ -19,20 +18,18 @@ class ConsultationFormsController < ApplicationController
     @consultation_form = current_student.team_consultations.find(params[:team_consultation_id]).consultation_forms.build
 
     respond_to do |format|
-      format.js
       format.html # new.html.erb
-      format.xml  { render :xml => @consultation_form }
+      format.js
     end
   end
 
   def edit
     @consultation_form = ConsultationForm.find_by_user_id_and_id(current_user,params[:id])
     respond_to do |format|
-      format.js
       format.html # show.html.erb
-      format.xml  { render :xml => @consultation_form }
+      format.js
     end
- 
+
   end
 
   def update
@@ -43,18 +40,14 @@ class ConsultationFormsController < ApplicationController
         msg= 'ConsultationForm was updated.'
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
-        format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
         format.js  {responds_to_parent {render}}
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
 
-      format.js
       format.html # show.html.erb
-      format.xml  { render :xml => @consultation_form }
+      format.js
     end
- 
   end
 
 
@@ -72,11 +65,9 @@ class ConsultationFormsController < ApplicationController
         msg= 'ConsultationForm was successfully created.'
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
-        format.xml  { render :xml => @consultation_form, :status => :created, :location => @consultation_form }
       else
         format.html { render :action => "new" }
         format.js { responds_to_parent{render} }
-        format.xml  { render :xml => @consultation_form.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -84,6 +75,7 @@ class ConsultationFormsController < ApplicationController
   def destroy
     @consultation_form = ConsultationForm.find_by_user_id_and_id(current_user,params[:id])
     @consultation_form.destroy
+    flash[:notice] = "Consultation Form has been removed"
     respond_to do |format|
       format.js
     end

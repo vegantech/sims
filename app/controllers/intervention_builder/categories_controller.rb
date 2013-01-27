@@ -1,6 +1,7 @@
 class InterventionBuilder::CategoriesController < ApplicationController
   helper_method :move_path
-  
+  cache_sweeper :intervention_builder_sweeper
+
   # GET /intervention_clusters
   before_filter(:get_objective_definition, :except=>:suggestions)
   def index
@@ -62,7 +63,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
     else
       @intervention_cluster.destroy
     end
-    
+
     respond_to do |format|
       format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
     end
@@ -74,7 +75,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
     else
       @intervention_cluster.disable!
     end
-    
+
     respond_to do |format|
       format.html { redirect_to intervention_builder_categories_url }
     end
@@ -88,8 +89,8 @@ class InterventionBuilder::CategoriesController < ApplicationController
       @intervention_cluster.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
-      format.js {@intervention_clusters=@objective_definition.intervention_clusters} 
+      format.html {redirect_to :action => :index}
+      format.js {@intervention_clusters=@objective_definition.intervention_clusters}
     end
   end
 

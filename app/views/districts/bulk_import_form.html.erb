@@ -1,55 +1,22 @@
-<script>
-  function setup_progress_iframe(e) {
-    $('progress').show();
-    $$("body").first().insert({bottom: "<iframe id='progressFrame' src='/blank.html'  name='progressFrame' style='display:none; width:0; height:0; position: absolute; top:30000px;'></iframe>"});
-    $(e).up('form').writeAttribute("target", "progressFrame");
-    var uuid = $('X-Progress-ID').value;
-    new PeriodicalExecuter(
-    function(pe){
-          new Ajax.Request("/progress",{
-            method: 'get',
-            parameters: 'X-Progress-ID=' + uuid,
-            onSuccess: function(xhr){
-              var upload = xhr.responseText.evalJSON();
-              if(upload.state == 'uploading'){
-                upload.percent = Math.floor((upload.received / upload.size) * 100);
-                $('bar').setStyle({width: upload.percent + "%"});
-                $('bar').update(upload.percent + "%");
-                if(upload.percent == 100){
-                  $('form_import_results').update('Processing file, this may take a few minutes. <%=image_tag 'spinner.gif' %>');
-                  pe.stop();
-                }
-
-              }
-                else if(upload.state == 'done'){
-                  pe.stop();
-                }
-            }
-        })
-      },2);
-
-    e.up('form').submit();
-    return false;
-  }
-
-</script>
-
-<% form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true} do %>
+<%= form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true, :id => "bulk_upload_form"} do %>
   <%= label_tag 'import_file', 'File to Import' %>
   <%= file_field_tag 'import_file'%>
   <%= hidden_field_tag 'X-Progress-ID', @uuid %>
-  <%= submit_tag 'Import', :onclick => "setup_progress_iframe(this);" %>
+  <%= submit_tag 'Import'%>
 <% end %>
 
 
-<div id='progress' style="display:none">
+<div id='upload_progress' style='display:none'>
   File upload in progress (Step 1, then there is some processing on the server)
-  <div id='bar' style='width: 0%;  background-color: #A2E5A2'>
+<div id='progressbar' class="bar">
+  <div id='percents' style='width: 0%; background-color: #A2E5A2'>
      0%
   </div>
 </div>
+</div>
 
-<div id='form_import_results' style="color: green">
+<div id='form_import_results' style="color: green; display:none">
+  Processing file, this may take a few minutes.  <%=image_tag 'spinner'%>
 </div>
 
 <div id='file_formats'>

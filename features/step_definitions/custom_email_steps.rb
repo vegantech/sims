@@ -18,9 +18,9 @@ Then %r{^I should see "([^"]*?)" in the email$} do |text|
 end
 
 When /^I click the change_password link in the email$/ do
-  current_email.body.should =~ /#{@user.district.abbrev}.example.com/
-  current_email.body.should =~ /change_password\?id=#{@user.id}&token=#{@user.reload.token}/
-  visit("/change_password?id=#{@user.id}&token=#{@user.token}&district_abbrev=#{@user.district.abbrev}")
+  current_email.body.should =~ /.example.com.*district_abbrev=#{@user.district.abbrev}/
+  current_email.body.should =~ /users\/password\/edit?.*reset_password_token=#{@user.reload.reset_password_token}/
+  visit("/users/password/edit?reset_password_token=#{@user.reset_password_token}&district_abbrev=#{@user.district.abbrev}")
 end
 
 

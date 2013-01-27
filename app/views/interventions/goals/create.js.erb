@@ -1,0 +1,10 @@
+$('#intervention').remove();
+datePickerController.cleanUp();
+$('#definitions').remove();
+$('#categories').remove();
+$('#objectives').replaceWith(<%=ejsr "interventions/objectives/select"%>);
+datePickerController.create();
+$('#spinnergoals').hide();
+<% if @objective_definitions %>
+  $('#objective_definition_id').focus();
+<% end %>

@@ -1,0 +1,2 @@
+<%=jdom @checklist_definition, "question_definitions"%>.html(<%=ejsr(:partial => "question_definition", :collection => @question_definitions)%>).slideToggle();
+<%=jdom @checklist_definition, "view_question_definitions_toggle"%>.toggleText('Show','Hide').effect('highlight');

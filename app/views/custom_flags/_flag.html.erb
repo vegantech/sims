@@ -1,6 +1,6 @@
 <li>
-<%=Flag::TYPES[flag.category][:humanize]-%>- 
+<%=Flag::TYPES[flag.category][:humanize]-%>-
 <%= flag.reason %> by <%= flag.user %> on
 <%= flag.created_at.to_date %>
-<%= link_to_remote_degrades "Remove", :url=> delete_custom_flag_path(flag) %>
+<%= link_to "Remove", delete_custom_flag_path(flag) , :remote => true%>
 </li>

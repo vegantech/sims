@@ -58,8 +58,22 @@ end
 
 
 #collect emails from slas and school admins from districts that have logged in since a given date
-active_district_ids = (DistrictLog.connection.select_values "select distinct district_id from district_logs where created_at > '2011-07-01' and body like 'Successful login%'")
-
-emails = User.find_all_by_district_id(active_district_ids,:select => 'distinct email',
-    :conditions => "roles_mask & #{Role.roles_to_mask(Role::ADMIN_ROLES)} > 0 and email is not null and email != ''").collect(&:email).uniq; nil
+active_district_ids = DistrictLog.success.where("created_at > '2012-02-01'").select("distinct district_id").collect(&:district_id)
+emails = User.find_by_sql("SELECT `users`.* FROM `users` left JOIN `user_school_assignments` ON `user_school_assignments`.`user_id` = `users`.`id` WHERE ((roles_mask & #{Role.roles_to_mask(Role::ADMIN_ROLES)} > 0) or (`user_school_assignments`.`admin` = 1)) and district_id IN (#{active_district_ids.join(",")} ) and email is not null and email <> ''").collect(&:email).uniq; nil
 File.open('admin_emails', 'w') {|f| f.puts emails.join(", ")}
+
+
+#restore a deleted team consultation
+mysqldump sims_open_production -u root team_consultations --where "id = 21981" --no-create-info --compact >restore.sql
+mysqldump sims_open_production -u root consultation_forms --where "team_consultation_id = 21981" --no-create-info --compact >> restore.sql
+mysqldump sims_open_production -u root consultation_form_concerns --where "consultation_form_id = 24491" --no-create-info --compact >> restore.sql
+
+
+#remove duplicate recommended monitors
+rs= RecommendedMonitor.group([:probe_definition_id, :intervention_definition_id]).having("count(id) > 1 and min(position) and min(id)") ;nil
+rs.each {|rm| RecommendedMonitor.where(["id != ? and probe_definition_id = ? and intervention_definition_id = ?",rm.id,rm.probe_definition_id, rm.intervention_definition_id]).each(&:destroy)}
+
+#convert district logs
+DistrictLog.where("body like 'Failed%'").update_all("body = trim(LEADING 'Failed login of ' from body), status=1")
+DistrictLog.where("body like 'Success%' and user_id is not null").update_all("body = NULL, status=0")
+DistrictLog.where("body like 'Success%' and user_id is null").update_all("status=0")

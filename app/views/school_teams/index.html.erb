@@ -14,7 +14,7 @@
 <% @school_teams.each do |school_team| %>
   <tr>
     <td><b><%=h school_team.name %></b></td>
-    <td><%=school_team.school_team_memberships.collect(&:to_s).join(", ") %></td>
+    <td><%=school_team.school_team_memberships.collect(&:to_s).join(", ").html_safe %></td>
     <td><%= link_to 'Edit', edit_school_team_path(school_team) %></td>
     <td><%= link_to 'Delete', school_team, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

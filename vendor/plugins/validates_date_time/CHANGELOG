@@ -1,3 +1,15 @@
+[3 March 2011]
+
+* Upgrade for Rails 3
+
+[5 March 2009]
+
+* Add support for I18N [Roman Shterenzon]
+
+[18 February 2009]
+
+* Fix errors caused by assigning values that don't respond to #strip.
+
 [26 May 2008]
 
 * Fix incorrect validation of 24 hour times including meridian, eg: 18:20 AM.

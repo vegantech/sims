@@ -1,0 +1,33 @@
+"Name", "Student Num", "Grade", "Flag Reason", "FlagType"
+<%= raw(CSV.generate do |csv|
+  @reporter.current_flagged_students.each do |flagged_student|
+    flagged_student.flags.current.each do |flagtype, flags|
+      csv << [
+        flagged_student.fullname,
+        flagged_student.number,
+        flagged_student.enrollments.first.grade,
+        flags.collect(&:summary).join(" "),
+        Flag::TYPES[flagtype][:humanize]
+
+      ]
+    end
+  end
+  @reporter.ignore_flags.each do |flagged_student|
+    csv << [
+      flagged_student.fullname,
+      flagged_student.number,
+      flagged_student.enrollments.first.grade,
+      flagged_student.ignore_flags.summary,
+      flagged_student.ignore_flags.humanized_categories
+    ]
+  end
+  @reporter.custom_flags.each do |flagged_student|
+    csv << [
+      flagged_student.fullname,
+      flagged_student.number,
+      flagged_student.enrollments.first.grade,
+      flagged_student.custom_flags.summary.join(" "),
+      flagged_student.custom_flags.humanized_categories
+    ]
+  end
+end) %>

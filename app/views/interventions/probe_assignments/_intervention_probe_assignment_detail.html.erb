@@ -1,8 +1,15 @@
-<% readonly = false if readonly.nil? %>
 <% if @intervention_probe_assignment %>
   <br class="brclear" />
-  <% fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
-      <%= ipa.hidden_field :probe_definition_id %>
+  <%= fields_for 'intervention[intervention_probe_assignment]', @intervention_probe_assignment do |ipa| %>
+    <%= ipa.hidden_field :probe_definition_id %>
+    <% unless  custom_intervention? && @intervention_probe_assignment.probe_definition.new_record? %>
+      <div class = "form_row">
+        <div class="fake_label">Description</div>
+        <div> <%=@intervention_probe_assignment.probe_definition.description %> </div>
+      </div>
+      <br class="brclear" />
+    <% end %>
+
       <div class = "form_row">
         <div class="fake_label">&nbsp;</div>
         <div>
@@ -18,23 +25,23 @@
       <br class="brclear" />
 
       <%= error_messages_for(:object => @intervention_probe_assignment, :object_name => 'Probe Assignment') %>
-      <%= render(:partial => 'interventions/probe_assignments/custom_probe_definition', :locals => {:ipa => ipa}) if flash[:custom_intervention] && @intervention_probe_assignment.probe_definition.new_record? %>
+      <%= render(:partial => 'interventions/probe_assignments/custom_probe_definition', :locals => {:ipa => ipa}) if custom_intervention? && @intervention_probe_assignment.probe_definition.new_record? %>
 
       <div class="form_row_wrap_label">
         <%= ipa.label :frequency_multiplier, 'Frequency:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.frequency_summary %>
         <% else %>
           <%= ipa.select :frequency_multiplier, (1..20).to_a %>
-          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {}) %> 
+          <%= ipa.collection_select(:frequency_id, Frequency.all, :id, :title, {}, {}) %>
         <% end %>
-        (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>) 
+        (Rec: <%= InterventionProbeAssignment::RECOMMENDED_FREQUENCY %>)
       </div>
       <br class="brclear" />
 
       <div class="form_row">
         <%= ipa.label :first_date , 'First Date:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.first_date %>
         <% else %>
           <%= ipa.unobtrusive_date_picker :first_date ,{:order=>[:month,:day,:year]}, {} %>
@@ -44,7 +51,7 @@
 
       <div class="form_row">
         <%= ipa.label :end_date, 'Last Date:' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.end_date %>
         <% else %>
           <%= ipa.unobtrusive_date_picker :end_date, {:order=>[:month,:day,:year]}, {} %>
@@ -52,33 +59,31 @@
       </div>
       <div class="form_row">
         <%= ipa.label :goal, 'Goal' %>
-        <% if readonly %>
+        <% if readonly? %>
           <%= @intervention_probe_assignment.goal %>
         <% else %>
           <%= ipa.text_field :goal, :size=>4 %> (<%=@intervention_probe_assignment.valid_score_range%>)
         <% end %>
         <%= help_popup "This will show up as a green line on the individual graph to represent a goal for this student." %>
       </div>
- 
+
       <%= yield :custom_probe_assets %>
     <% unless @intervention.new_record? %>
       <div class="form_row">
         <div class="fake_label">Scores:</div>
-        <div id="enter_view_score_link"> 
-          <%=link_to_remote "#{readonly ? 'View' : 'Enter/view scores'}", {:url => intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :loading => "$('spinnerscore_link').show();"}, {:href => "?enter_score=true", :id => 'enter_view_scores_link'} unless params[:enter_score] %>
+        <div id="enter_view_score_link">
+          <%=link_to("#{readonly? ? 'View' : 'Enter/view scores'}", intervention_probe_assignments_path(@intervention, :probe_definition_id => @intervention_probe_assignment.probe_definition_id), :method => :get, :id => 'enter_view_scores_link', :remote => true) unless params[:enter_score] %>
           <%= spinner 'score_link' %>
         </div>
       </div>
       <br class="brclear" />
       <div id="enter_view_scores">
-        <% if params[:enter_score] 
+        <% if params[:enter_score]
           @intervention_probe_assignment = @intervention.intervention_probe_assignment(params[:probe_definition_id])
           @intervention_probe_assignments = [@intervention_probe_assignment] | @intervention.intervention_probe_assignments %>
           <%= render :partial => 'interventions/probe_assignments/index' %>
         <% end %>
       </div>
-    <% else %>
-      <script>change_date('<%= @intervention.new_record? %>');</script>
     <% end %>
     <br class="brclear" />
   <% end %>

@@ -9,5 +9,3 @@ class Interventions::QuicklistsController < ApplicationController
            :category_id => @id.intervention_cluster_id, :definition_id => @id.id)
   end
 end
-
-

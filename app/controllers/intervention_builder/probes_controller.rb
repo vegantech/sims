@@ -1,7 +1,7 @@
 class InterventionBuilder::ProbesController < ApplicationController
   skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   skip_before_filter :verify_authenticity_token, :only => :disable
-  additional_read_actions :add_benchmark
+  cache_sweeper :intervention_builder_sweeper
 
   def index
     params[:enabled]=true and params[:commit]=true unless params[:commit]
@@ -55,7 +55,7 @@ class InterventionBuilder::ProbesController < ApplicationController
     if params[:commit]
       pds=current_district.probe_definitions.find_all_by_id(params[:id])
       pds.each{|i| i.update_attribute(:active,false)}
-      flash[:notice] = "#{@template.pluralize(pds.size, 'Progress Monitor')} disabled."
+      flash[:notice] = "#{view_context.pluralize(pds.size, 'Progress Monitor')} disabled."
       redirect_to intervention_builder_probes_url and return
     end
 

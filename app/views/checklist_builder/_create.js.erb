@@ -1,0 +1,12 @@
+<% object_param = object.class.name.underscore %>
+<%if object.new_record? %>
+  window.scrollTo(<%=jdom parent, "new_#{object_param}_errors"%>);
+  <%=jdom parent, "new_#{object_param}_errors"%>.html("<%=escape_javascript error_messages_for(object_param)%>").show();
+<% else %>
+  <%=jdom parent, "new_#{object_param}"%>.slideToggle().empty();
+  <%=jdom parent, "add_#{object_param}_link"%>.text('Add <%=object_param.split('_').first.capitalize%>').effect('highlight');
+  <%=jdom parent, "new_#{object_param}_notice"%>.html(<%=ejsr :partial => "checklist_builder/notice", :object => flash.discard(:notice)%>).show().effect('highlight');
+  <%=jdom parent, "#{object_param.tableize}"%>.html(<%=ejsr :partial => object_param, :collection => parent.send(object_param.pluralize) %>).show().effect('highlight');
+  <%=jdom parent, "view_#{object_param.tableize}_toggle"%>.text("Hide <%=object_param.pluralize.titleize%>");
+<% end %>
+

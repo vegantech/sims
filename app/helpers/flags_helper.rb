@@ -8,8 +8,7 @@ module FlagsHelper
 
 
   def image_with_popup(image, popup)
-    image_tag(image,"onmouseover" => "return overlib('#{popup}');",
-      "onmouseout" => "return nd();") + " "
+    image_tag(image, :class => "popup", "data-help" => popup.html_safe) + " "
   end
 
   def status_display(student, changeable = false)
@@ -19,33 +18,37 @@ module FlagsHelper
     str += team_notes(student)
     str += ignore_flags(student)
     str += custom_flags(student)
+    str.html_safe
   end
 
   def team_notes?(student)
     student.comments.present?
-
   end
 
   def team_notes(student)
     if team_notes?(student)
        image_with_popup('note.png',"#{pluralize student.comments.count, "team note"}")
     else
-      ''
+      ''.html_safe
     end
   end
 
   def team_concerns?(student = current_student)
-    student.team_consultations_pending.present?
+    student.team_consultations.pending.present?
   end
 
   def team_concerns(student)
     if team_concerns?(student)
-      image_tag('comments.png', :alt=>'Team Consultations')
+      image_with_popup('comments.png', "Open Team Consultations")
     else
       ''
     end
   end
-  
+
+  def default_show_team_concerns?(student = current_student, user = current_user)
+    current_district.show_team_consultations_if_pending? && student.team_consultations.pending_for_user(user).present?
+  end
+
 
   def custom_flags(student)
     unless student.custom_flags.blank?
@@ -66,12 +69,11 @@ module FlagsHelper
       s = student.ignore_flags.collect do |igflag|
         popup = "#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
 
-        form_remote_tag(:url => {:action => "unignore_flag", :id => igflag, :controller => "custom_flags"},
-          :html => {:class => "flag_button", :style => "display:inline"}) +
-          image_submit_tag(igflag.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
-          "</form>"
+        form_tag(igflag,
+          {:class => "flag_button", :style => "display:inline", :remote => true, :method => "delete"}) {
+          image_submit_tag(igflag.icon, :class => "popup", "data-help" => popup.html_safe) }
       end
-      s.join(" ")
+      s.join(" ").html_safe
     end
   end
 
@@ -81,10 +83,9 @@ module FlagsHelper
       popup = "#{Flag::FLAGTYPES[flagtype][:humanize]} : #{flag_summary(flags)}"
 
       if changeable
-        form_remote_tag(:url => {:action => "ignore_flag", :category => flags.first.category, :controller => "custom_flags"},
-          :html => {:style => "display:inline"}) +
-          image_submit_tag(flags.first.icon, "onmouseover" => "return overlib('#{popup}');", "onmouseout" => "return nd();") +
-          "</form>"
+        form_tag(new_ignore_flag_path(:category => flags.first.category),
+          {:style => "display:inline", :remote => true, :method => :get}) {
+          image_submit_tag(flags.first.icon, :class => "popup", "data-help" => popup.html_safe) }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
       end
@@ -92,12 +93,12 @@ module FlagsHelper
   end
 
   def flag_select
-   '<div>'+ Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>") + '</div>'
+   content_tag( :div,  Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>").html_safe)
   end
 
   def flag_checkbox(flagtype)
     f = Flag::TYPES[flagtype.to_s]
-    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :onclick => "searchByFlag()") +
+    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :class=>"flag_checkbox") +
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 
@@ -105,8 +106,8 @@ module FlagsHelper
     flag_legend_controllers = ["students","flag_descriptions", "flag_categories"]
     if flag_legend_controllers.include?(controller.controller_name)
       cache ["flag_legend2",current_district] do
-        @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id) 
-        yield 
+        @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id)
+        yield
       end
     end
   end

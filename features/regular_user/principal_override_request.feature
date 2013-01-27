@@ -13,14 +13,14 @@ Feature: Principal Override Request
     Then I should see "Overrides unavailable, no tiers defined."
 
   Scenario: Request Principal Override when there are no principals
-    When I follow "Request Principal Override to unlock next tier"  
+    When I follow "Request Principal Override to unlock next tier"
     Then I should see "There are no principals assigned to this student"
 
   Scenario: Request Principal Override when there are principals
-    When I follow "Request Principal Override to unlock next tier"  
-    And I fill it in with "sothing"
-    And I press the button
-    Then I should see 1 override requests
-    When I follow 1 override requests
-    Then I should see delete
+    When I follow "Request Principal Override to unlock next tier"
+    And PENDING I fill it in with "something"
+    And PENDING I press the button
+    Then PENDING I should see 1 override requests
+    When PENDING I follow 1 override requests
+    Then PENDING I should see delete
 

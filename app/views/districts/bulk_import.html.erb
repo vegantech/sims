@@ -1,31 +1,14 @@
 <h1>Import Status and Results</h1>
 <div id="import_results" style ="color:green" >
-  <%=@results %>
+  <%=raw @results %>
 </div>
 
 <script>
-  var keep_polling = true;
   try
       {
         if (self.parent.frames.length != 0){
           window.top.location=self.location;
         }
       }
-   catch (Exception) {}
-
+   catch (Exception) {};
  </script>
-
-
-
-  <!--
-          var top_progress = window.top.document.getElementById('form_import_results');
-          Element.update(top_progress , $('import_results').innerHTML);
-                  }
-
-                  -->
-
-
-
-
-                  <%= periodically_call_remote(:url => '/districts/bulk_import', :frequency => '5', :update => 'import_results', :method => :get, :condition=> 'keep_polling')  %>
-

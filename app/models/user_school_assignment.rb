@@ -19,13 +19,14 @@ class UserSchoolAssignment < ActiveRecord::Base
   # validates_presence_of :school_id
   # validates_presence_of :user_id
 
-  named_scope :admin, :conditions => {:admin => true}
-  named_scope :non_admin, :conditions => {:admin => false}
+  scope :admin, where(:admin => true)
+  scope :non_admin, where(:admin => false)
+  scope :school_id, select("school_id")
   after_save :create_all_students
   after_destroy :remove_special_user_groups
 
   def all_students
-    !!user.special_user_groups.find_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL) if user
+    !!user.special_user_groups.find_by_school_id_and_grade(school_id, nil) if user
   end
 
   def all_students=(val)
@@ -45,12 +46,10 @@ private
 
   def create_all_students
     if @all_students
-      d=user.special_user_groups.find_or_create_by_school_id_and_grade_and_grouptype_and_district_id(school_id,nil,SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,user.district_id) 
-
+      d=user.special_user_groups.find_or_create_by_school_id_and_grade(school_id,nil)
     elsif @all_students ==false
-     user.special_user_groups.find_all_by_school_id_and_grade_and_grouptype(school_id, nil, SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL).each(&:destroy)
+     user.special_user_groups.find_all_by_school_id_and_grade(school_id, nil).each(&:destroy)
     end
-
   end
 
 end

@@ -23,4 +23,10 @@ describe InterventionComment do
   it "should create a new instance given valid attributes" do
     InterventionComment.create!(@valid_attributes)
   end
+
+  it 'should not allow changing user id'
+
+  it 'should get the user from the intervention when creating'
+
+
 end

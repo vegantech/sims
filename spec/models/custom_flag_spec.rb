@@ -20,7 +20,6 @@ describe CustomFlag do
     @valid_attributes = {
       :category => "attendance",
       :reason => "value for reason",
-      :type => "value for type"
     }
   end
 

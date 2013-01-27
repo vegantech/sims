@@ -32,7 +32,7 @@ class VerifyStudentInDistrictExternally
 
   def self.verify(student,district)
     if enabled?
-      verify_externally(student,district)
+      new.verify_externally(student,district)
     else
       raise StudentVerificationError, 'External Verification is not enabled'
     end
@@ -43,7 +43,7 @@ class VerifyStudentInDistrictExternally
 #false return false
 #error raise exception
 
-  def self.verify_externally(student,district)
+  def verify_externally(student,district)
 
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
@@ -65,7 +65,7 @@ class VerifyStudentInDistrictExternally
    retries =2
    begin
      timeout(5) do
-     @@response=http.request(request)
+     @response=http.request(request)
    end
    rescue TimeoutError
      if retries >0
@@ -75,13 +75,13 @@ class VerifyStudentInDistrictExternally
        raise StudentVerificationError, 'Connection Timeout'
        puts 'Connection timeout'
      end
-   rescue Exception => err 
+   rescue Exception => err
      raise StudentVerificationError, 'Connection Timeout'
    end
 
    #raise if timeout
-   Rails.cache.write("ext_verify_cookie", @@response.response['set-cookie'], :ttl=>25.minutes.to_i)
-   parsed_response=Nokogiri.parse(@@response.body)
+   Rails.cache.write("ext_verify_cookie", @response.response['set-cookie'], :ttl=>25.minutes.to_i)
+   parsed_response=Nokogiri.parse(@response.body)
 
    if parsed_response.css('error').first.content == "false"
      return parsed_response.css('found').first.content == "true"

@@ -1,0 +1,7 @@
+$('#<%=dom_id @intervention_participant%>').remove();
+
+<% intervention = @intervention_participant.intervention
+if intervention.participant_users.blank? %>
+  $('#<%=dom_id intervention, "no_participants"%>').html("There are no participants assigned.");
+ <% end %>
+ 

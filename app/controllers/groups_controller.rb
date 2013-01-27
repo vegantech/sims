@@ -1,11 +1,7 @@
-class GroupsController < ApplicationController
-  additional_read_actions :show_special
-  additional_write_actions :add_student_form, :add_student, :remove_student, :add_user_form, :add_user, :remove_user, :remove_special,
-      :add_special_form, :add_special
+class GroupsController < SchoolAdminController
   # GET /groups
   def index
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])
-    @virtual_groups = current_school.virtual_groups
     redirect_to(index_url_with_page(:title => params[:title], :page => @groups.total_pages)) and return if wp_out_of_bounds?(@groups)
     capture_paged_controller_params
 
@@ -43,7 +39,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully created."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully created.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "new" }
@@ -57,7 +53,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated."
+        flash[:notice] = "#{edit_obj_link(@group)} was successfully updated.".html_safe
         format.html { redirect_to(@group) }
       else
         format.html { render :action => "edit" }
@@ -141,45 +137,5 @@ end
       format.js {}
 
     end
-  end
-
-  def show_special
-    #TODO REFACTOR THESE duplicate lines
-    @group=params[:id]
-    grade = @group.split("_").last.downcase
-    grade= nil if grade == "school"
-    @special_user_groups = current_school.special_user_groups.find_all_by_grade(grade)
-  end
-
-  def remove_special
-    @group = current_school.special_user_groups.find(params[:id])
-    @group.destroy
-    respond_to do |format|
-      format.js {}
-    end
-  end
-
-  def add_special_form
-    @group=params[:id]
-    grade = @group.split("_").last.downcase
-    grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL)
-    @users = current_school.assigned_users
-
-
-  end
-
-  def add_special
-    @group=params[:id]
-    grade = @group.split("_").last.downcase
-    grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => current_district))
-
-    if @special_user_group.save
-    else
-      @users=current_school.assigned_users
-      render :action=>:add_special_form
-    end
-
   end
 end

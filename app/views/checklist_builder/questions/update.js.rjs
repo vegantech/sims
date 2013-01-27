@@ -1,7 +1,0 @@
-if @question_definition.valid?
-  page.update_content(dom_id(@question_definition), :partial => "question_definition_2", :locals=>{:question_definition => @question_definition})
-else
-  page.insert_or_update_error_content dom_id(@question_definition,"edit_errors"), error_messages_for("question_definition")
-  page.redirect_to "##{dom_id(@checklist_definition,'edit_errors_anchor')}"
-  
-end

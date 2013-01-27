@@ -1,9 +1,9 @@
 <div id="checklist">
-  <p>Completed by <%= checklist.teacher %> on 
+  <p>Completed by <%= checklist.teacher %> on
   <%= checklist.updated_at.to_date %> </p>
-  
-  <%- form_for checklist do |f| -%>
-    <%= render :partial => 'checklists/form', 
+
+  <%= form_for checklist do |f| -%>
+    <%= render :partial => 'checklists/form',
     :locals => { :view=>true } %>
     <%=render :partial=>"recommendations/view",:locals=>{:recommendation=>checklist.recommendation} if checklist.recommendation%>
     <%- end -%>

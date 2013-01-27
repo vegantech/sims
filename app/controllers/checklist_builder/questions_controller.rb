@@ -101,5 +101,4 @@ class ChecklistBuilder::QuestionsController < ApplicationController
   def load_checklist_definition
     @checklist_definition = current_district.checklist_definitions.find(params[:checklist_id])
   end
-
 end

@@ -2,40 +2,29 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  include ControllerRights
   #TODO replace this default district constant
-
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :current_user_id, :index_url_with_page
+    :index_url_with_page, :root_url_without_subdomain, :readonly?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery # :secret => 'f94867ed424ccea84323251f7aa373db'
-  
-  # See ActionController::Base for details 
-  # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password"). 
-  filter_parameter_logging :password
+#  protect_from_forgery # :secret => 'f94867ed424ccea84323251f7aa373db'
 
-  before_filter :fixie6iframe,:options_for_microsoft_office_protocol_discovery,:authenticate, :authorize#, :current_district
+  # See ActionController::Base for details
+  # Uncomment this to filter the contents of submitted sensitive data parameters
+  # from your application log (in this case, all fields with names like "password").
+
+  before_filter :fixie6iframe,:authenticate_user!,:check_domain, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
-  
   private
 
-  def current_user_id
-    session[:user_id]
-  end
-
-  def current_user
-    @current_user ||= (User.find_by_id(current_user_id) || User.new )
-  end
-
   def student_id_cache_key
-    "student_ids_#{current_user_id}_#{session[:session_id][0..40]}"
+    "student_ids_#{current_user.id}_#{session[:session_id][0..40]}"
   end
+
   def selected_student_ids
     if session[:selected_students] == "memcache"
       @memcache_student_ids ||= Rails.cache.read(student_id_cache_key)
@@ -54,11 +43,16 @@ class ApplicationController < ActionController::Base
   end
 
   def multiple_selected_students?
-    selected_student_ids.to_a.size > 1
+    Array(selected_student_ids).size > 1
   end
 
   def current_student_id
     session[:selected_student]
+  end
+
+  def current_student_id=(sid)
+    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    session[:selected_student]=sid
   end
 
 
@@ -74,34 +68,17 @@ class ApplicationController < ActionController::Base
     @school ||= School.find_by_id(current_school_id)
   end
 
-  def current_district_id
-    session[:district_id]
-  end
-
   def current_district
-    @current_district ||= District.find_by_id(current_district_id)
-  end
-
-  def authenticate
-    subdomains
-    redirect_to logout_url() if current_district_id and current_district.blank?
-    unless current_user_id 
-      flash[:notice] = "You must be logged in to reach that page"
-      session[:requested_url] = request.url
-      redirect_to root_url(:username => params[:username])
-      return false
-    end
-    true
+    @current_district ||=  current_user.try(:district) || District.find_by_subdomain(params[:district_abbrev].presence || current_subdomain.presence)
   end
 
   def authorize
+    return true if devise_controller?
     controller = self.class.controller_path  # may need to change this
-    action_group = action_group_for_current_action
-    unless current_user.authorized_for?(controller, action_group)
-      logger.info "Authorization Failure: controller is #{controller}. action_name is #{action_name}. action_group is #{action_group}."
-      
+    unless current_user.authorized_for?(controller)
+      logger.info "Authorization Failure: controller is #{controller}"
       flash[:notice] =  "You are not authorized to access that page"
-      redirect_to root_url
+      redirect_to not_authorized_url
       return false
     end
     true
@@ -110,53 +87,14 @@ class ApplicationController < ActionController::Base
   def require_current_school
     if current_school.blank?
       if request.xhr?
-        render :update do  |page|
-          page[:flash_notice].insert  "<br />Please reselect the school." 
-        end
+        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');"
       else
         flash[:notice] = "Please reselect the school"
-        redirect_to schools_url 
+        redirect_to schools_url
       end
       return false
     end
     return true
-  end
-
-  class_inheritable_array :read_actions,:write_actions
-  self.read_actions = ['index', 'select', 'show', 'preview', 'read' , 'raw', 'part', 'suggestions']  #read raw and part are from railmail
-  self.write_actions = ['create', 'update', 'destroy', 'new', 'edit', 'move', 'disable', 'disable_all', 'resend'] #resend is from railmail
-
-  def action_group_for_current_action
-    if self.class.write_actions.include?(action_name)
-      'write_access'
-    elsif self.class.read_actions.include?(action_name)
-      #put in the defaults here,   override this and call super in individual controllers
-      "read_access"
-    else
-      nil
-    end
-  end
-
-  def self.additional_read_actions(*args)
-     self.read_actions = Array(args).flatten.map(&:to_s)
-  end
-
-  def self.additional_write_actions(*args)
-     self.write_actions= Array(args).flatten.map(&:to_s)
-  end
-
-  def subdomains
-    if current_subdomain
-      g=current_subdomain
-      s=g.split("-").reverse
-      params[:district_abbrev] = s.pop
-    end
-        district = District.find_by_abbrev(params[:district_abbrev]) 
-      if district
-        redirect_to logout_url and return if current_district and current_district != district
-        @districts =[]
-        @current_district = district
-      end
   end
 
   rescue_from(ActiveRecord::RecordNotFound) do
@@ -173,19 +111,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-  def options_for_microsoft_office_protocol_discovery
-    render :nothing => true, :status => :ok if request.method == :options #:ok => 200
-  end
-
   def fixie6iframe
+    #TODO THIS SHOULD BE MIDDLEWARE
     response.headers['P3P']= 'CP = "CAO PSA OUR"'
   end
 
 def check_student
     #TODO generalize this
     student=Student.find_by_id(params[:student_id]) || Student.new
-
     if student.belongs_to_user?(current_user)
       @student=student
     else
@@ -223,8 +156,65 @@ def check_student
     wp_collection.out_of_bounds? && wp_collection.total_entries > 0
   end
 
-  def current_user=(user)
-    session[:user_id] = user.id
-    @curret_user = user
+  def  handle_unverified_request
+    raise ActionController::InvalidAuthenticityToken #for now
+    super
   end
+
+  def current_subdomain
+    #base this on tld somehow
+    request.subdomain(SIMS_DOMAIN_LENGTH).gsub(/^www(.)?/,'')
+  end
+
+  def root_url_with_subdomain
+    opts = {}
+    opts[:port] = request.port unless [80,443].include? request.port.to_i
+
+    if request.domain && ENABLE_SUBDOMAINS
+      opts[:host] =  "#{current_district.try(:abbrev) || 'www' }.#{request.domain(SIMS_DOMAIN_LENGTH)}"
+    else
+      opts[:host] = request.host
+    end
+    root_url(opts)
+  end
+
+  def root_url_without_subdomain
+    opts = {}
+    opts[:port] = request.port unless [80,443].include? request.port.to_i
+
+    if request.domain
+      opts[:host] =  "www.#{request.domain(SIMS_DOMAIN_LENGTH)}"
+    else
+      opts[:host] = request.host
+    end
+    root_url(opts)
+  end
+
+  def session_domain
+    Sims::Application.config.session_options[:domain]
+  end
+
+  def readonly?
+    false
+  end
+
+  def disable_gc
+    GC.disable
+    begin
+      yield
+    ensure
+      GC.enable
+      GC.start
+    end
+  end
+
+
+  def check_domain
+    return true if devise_controller?
+    if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
+      sign_out_and_redirect root_url
+      return false
+    end
+  end
+
 end

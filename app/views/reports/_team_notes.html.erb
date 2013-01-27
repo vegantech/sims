@@ -1,0 +1,28 @@
+<%@reporter.grouped_team_notes.each do |student,notes| %>
+  <table class="student_comments_table">
+    <% if student %>
+      <caption><%= link_to student.fullname, student_url(student)%></caption>
+    <% end %>
+    <thead>
+      <tr>
+        <% unless student %> <th>Student</th> <% end %>
+        <th>Date</th>
+        <th>User Name</th>
+        <th>Team Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%notes.each do |note| %>
+        <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+          <% unless student %>  <td> <%=  link_to note.student.fullname, student_url(note.student) %> </td> <% end %>
+          <td> <%= note.created_at.to_date.to_s(:report) %> </td>
+          <td> <%= note.user.try(:fullname) %> </td>
+          <td> <%= note.body%> </td>
+        </tr>
+      <% end %>
+      <% reset_cycle %>
+
+    </tbody>
+
+  </table>
+<% end %>

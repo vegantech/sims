@@ -16,12 +16,6 @@ module ConsultationFormRequestsHelper
     f.object.filled_in? || team.nil? || team.assets.blank?
   end
 
-  def show_or_hide_form_onchange()
-    team_ids_with_assets = []
-    @teams.each { |team| team_ids_with_assets << team.id if team.assets.any? } if defined?(@teams)
-    {:onchange =>"show_or_hide_team_consultation_form(this,'[#{team_ids_with_assets.join(',')}]');"}
-  end
-
   def team_consultation_form(team_consultation)
     html_options = {:multipart => true, :target =>"upload_frame"}
 

@@ -1,0 +1,9 @@
+<% object_param = object.class.name.underscore %>
+<% chk_typ = object_param.split("_").first.capitalize %>
+<%=jdom parent, "new_#{object_param}"%>.html(<%=ejsr(:partial => "rjs_new_form",
+                                                                           :locals => { parent.class.name.underscore.to_sym => parent,
+                                                                             object_param.to_sym => object }) %>).slideToggle();
+<%=jdom parent, "add_#{object_param}_link"%>.toggleText('Add <%=chk_typ%>','Reset Add  <%=chk_typ%> Form').effect('highlight');
+<%=jdom parent, "edit_#{object_param}_link"%>.text('Edit');
+<%=jdom parent, "edit"%>.empty();
+<%=jdom parent, "new_question_definition_notice"%>.empty();

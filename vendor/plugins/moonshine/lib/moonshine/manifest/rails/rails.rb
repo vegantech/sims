@@ -111,15 +111,15 @@ module Moonshine::Manifest::Rails::Rails
                   end
         bundler_dependencies = bundler.dependencies_for(:default, rails_env.to_sym)
         bundler_dependencies.each do |dependency|
-          system_dependencies = configuration[:apt_gems][dependency.name.to_sym] || []
+          system_dependencies = configuration[:apt_gems][dependency.name.to_s] || []
           system_dependencies.each do |system_dependency|
             package system_dependency,
               :ensure => :installed,
               :before => exec('bundle install')
           end
         end
-      end     
-      
+      end
+
       bundle_install_without_groups = configuration[:bundler] && configuration[:bundler][:install_without_groups] || "development test"
       bundle_install_options = [
          '--deployment',
@@ -161,14 +161,18 @@ module Moonshine::Manifest::Rails::Rails
       "#{configuration[:deploy_to]}/releases"
     ]
     if configuration[:shared_children].is_a?(Array)
-      shared_dirs = configuration[:shared_children].map { |d| "#{configuration[:deploy_to]}/shared/#{d}" }
-      dirs += shared_dirs
+      shared_children_with_parents = configuration[:shared_children].map do |d|
+        d.split("/").inject([]) {|these_dirs, dir| these_dirs.empty? ? [dir] : these_dirs << "#{these_dirs.last}/#{dir}" }
+      end.flatten
+      dirs += shared_children_with_parents.map {|d| "#{configuration[:deploy_to]}/shared/#{d}" }
     end
+
     if configuration[:app_symlinks].is_a?(Array)
       dirs += ["#{configuration[:deploy_to]}/shared/public"]
       symlink_dirs = configuration[:app_symlinks].map { |d| "#{configuration[:deploy_to]}/shared/public/#{d}" }
       dirs += symlink_dirs
     end
+
     dirs.each do |dir|
       file dir,
       :ensure => :directory,
@@ -176,6 +180,19 @@ module Moonshine::Manifest::Rails::Rails
       :group => configuration[:group] || configuration[:user],
       :mode => '775'
     end
+  end
+
+  def rails_asset_pipeline
+    file "#{configuration[:deploy_to]}/shared/assets",
+      :ensure => :directory, 
+      :owner => configuration[:user],
+      :group => configuration[:group] || configuration[:user],
+      :mode => '775'
+    file "#{rails_root}/public/assets",
+      :ensure => "#{configuration[:deploy_to]}/shared/assets",
+      :require => file("#{configuration[:deploy_to]}/shared/assets")
+    rake 'assets:precompile',
+      :require => [file("#{rails_root}/public/assets"), exec('rails_gems')]
   end
 
   # Creates package("#{name}") with <tt>:provider</tt> set to <tt>:gem</tt>.
@@ -267,7 +284,7 @@ module Moonshine::Manifest::Rails::Rails
   # Creates exec("rake #name") that runs in <tt>rails root</tt> of the rails
   # app, with RAILS_ENV properly set
   def rake(name, options = {})
-    exec("#{try_bundle_exec} rake #{name}", {
+    exec("#{try_bundle_exec}rake #{name}", {
       :command => "#{try_bundle_exec}rake #{name}",
       :alias => "rake #{name}",
       :user => configuration[:user],
@@ -279,7 +296,7 @@ module Moonshine::Manifest::Rails::Rails
     }.merge(options)
   )
   end
-  
+
   def try_bundle_exec
     gemfile_path = rails_root.join('Gemfile')
     if gemfile_path.exist?
@@ -288,7 +305,7 @@ module Moonshine::Manifest::Rails::Rails
       ''
     end
   end
-  
+
   # Creates a sandbox environment so that ENV changes are reverted afterwards
   OLDENV = {}
   def sandbox_environment

@@ -1,0 +1,41 @@
+<% content_for :title do%>
+  <%=@student.fullname %> <%=@student.number%> has <%=pluralize(@student.interventions.size,"intervention").sub(/^0 /, 'no ') %>
+<% end %>
+
+
+   <%@student.interventions.for_report.group_by(&:goal_objective_category).each do |category,interventions| %>
+      <table class="student_interventions_table">
+        <caption><%= category %> </caption>
+        <thead>
+          <tr>
+            <th>Intervention</th>
+            <th>Description</th>
+            <th>Start Date <br />End Date </th>
+            <th>Frequency <br />Duration </th>
+            <th>Ended By</th>
+            <th>Ended On</th>
+            <th>Last Updated</th>
+            <th>Tier</th>
+            <th>Participants</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%interventions.each do |intervention| %>
+            <tr class="pbi_avoid <%=cycle("even","odd") %>" >
+            <td> <%= intervention.title %> </td>
+            <td> <%= intervention.description %> </td>
+            <td> <%= intervention.start_date%><br /> <%= intervention.end_date %> </td>
+            <td> <%= intervention.frequency_summary%><br /> <%= intervention.time_length_summary %> </td>
+            <td> <%= (intervention.ended_by || User.new).fullname %> </td>
+            <td> <%= intervention.ended_at %> </td>
+            <td> <%= intervention.updated_at.to_date.to_s(:report) %> </td>
+            <td> <%= intervention.tier_summary %> </td>
+            <td> <%= intervention.participant_users.collect(&:fullname).join(" ") %> </td>
+         </tr>
+        <% end %>
+        <% reset_cycle %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <%= yield :title %>

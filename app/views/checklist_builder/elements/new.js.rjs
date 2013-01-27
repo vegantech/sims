@@ -1,9 +1,0 @@
-page << if_not_visible(dom_id(@question_definition, "new_element_definition"))
-page.remove_content_and_change_link_if_visible dom_id(@question_definition, "edit"), dom_id(@question_definition, "edit_link"), "Edit"
-page.remove_content_and_change_link_if_visible dom_id(@question_definition, "details"), dom_id(@question_definition, "show_link"), "Show Details"
-page.remove_content_if_visible dom_id(@question_definition, "new_element_definition_notice")
-page.insert_content dom_id(@question_definition, "new_element_definition"), :partial => "rjs_new_form", :locals => { :element_definition => @element_definition, :question_definition => @question_definition }
-page.change_link dom_id(@question_definition, "add_element_definition_link"), "Reset Add Element Form"
-page << "}else{"
-page.update_content dom_id(@question_definition, "new_element_definition"), :partial => "rjs_new_form", :locals => { :element_definition => @element_definition, :question_definition => @question_definition }
-page << "}"

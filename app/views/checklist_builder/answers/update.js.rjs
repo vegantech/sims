@@ -1,1 +1,0 @@
-page.update_content dom_id(@answer_definition), :partial => "answer_definition_2", :locals => {:answer_definition => @answer_definition}

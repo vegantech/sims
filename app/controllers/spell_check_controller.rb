@@ -1,5 +1,5 @@
 class SpellCheckController < ApplicationController
-  skip_before_filter :authenticate, :authorize, :verify_authenticity_token
+  skip_before_filter :authenticate_user!, :authorize, :verify_authenticity_token
 
 
   include ActionView::Helpers::SanitizeHelper
@@ -11,7 +11,6 @@ class SpellCheckController < ApplicationController
     @words=[]
 
     @original_texts = params[:textinputs] || []
-#    raise @original_text
 
 
     @original_texts.each_with_index do |box, idx|

@@ -1,16 +1,15 @@
 <% consultation_form ||= @consultation_form || show %>
-<% content_tag_for :tr, consultation_form, "edit_form" do %>
+<%= content_tag_for :tr, consultation_form, "edit_form" do %>
   <td colspan="6">
-    <% form_for(@consultation_form,:url => consultation_form_path(consultation_form, :format =>:js), :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
+    <%= form_for(@consultation_form,:url => consultation_form_path(consultation_form, :format =>:js), :html=>{:multipart => true, :target=>"upload_frame"}) do |f| %>
       <%= render :partial => 'consultation_forms/consultation_form', :object => f %>
       <%=submit_tag 'Update' %>
       <%= spell_check_button %>
-      <%=link_to_function('cancel') do |page|
-        page.show("show_hide_view_#{dom_id(@consultation_form)}")
-        page.show("edit_#{dom_id(@consultation_form)}")
-        page.remove("edit_form_consultation_form_#{consultation_form.id}")
-     end %>
-
-  <% end %>
-</td>
+      <%= link_to 'cancel', '#', :class => 'cancel_link', :data => {
+        :show => dom_id(@consultation_form, "show_hide_view"),
+        :show2 => dom_id(@consultation_form, "edit"),
+        :remove => dom_id(@consultation_form, "edit_form")}
+      %>
+    <% end %>
+  </td>
 <% end %>

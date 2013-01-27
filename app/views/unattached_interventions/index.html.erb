@@ -4,8 +4,8 @@
 
 
 <p>The red fields show why that intervention is considered unattached.</p>
-<%form_tag do %>
-<table>
+<%=form_tag do %>
+<table id="unattached_interventions">
   <thead>
     <tr>
       <th>Student</th>
@@ -34,17 +34,14 @@
         <td><%=link_to intervention.student, intervention.student, :target => "_blank" %> </td>
         <td><%=intervention.title %></td>
         <td><%=intervention.start_date %> </td>
-        <td <%= "style='color: red;'"  if intervention.end_date < Date.today%> > <center>
+        <td <%= "style='color: red;'".html_safe  if intervention.end_date < Date.today%> class="end_date" > <center>
           <span id = "print_end_date<%=intervention.id%>" class ="print-only"> <%= intervention.end_date %> </span>
           
           <%= unobtrusive_date_picker_tags intervention.end_date, 
             {:order => [:month, :day, :year], :start_year => intervention.start_date.year, :end_year => 2.years.since().year, 
-              :prefix => "end_date#{intervention.id}", :range_low => intervention.start_date},
-              {:onchange => remote_function(:url =>  update_end_date_unattached_intervention_path(intervention), 
-                                            :with => "'month=' + $('end_date#{intervention.id}-mm').value + '&day=' + $('end_date#{intervention.id}-dd').value +'&year=' + $('end_date#{intervention.id}').value",
-                        :method => 'put')}
+              :prefix => "end_date#{intervention.id}", :range_low => intervention.start_date}
            %>
-           * <div  style="<%="display:none" unless intervention.end_date < Date.today %>" class="end_date_expired screen-only">Expired end date.</div>
+           * <div "<%=style_display_none_unless(intervention.end_date < Date.today) %>" class="end_date_expired screen-only">Expired end date.</div>
          </center>
          </td>
         <td style="padding-left: 15px"><%=render :partial => "participant_list", :locals=>{:intervention => intervention} %></td>

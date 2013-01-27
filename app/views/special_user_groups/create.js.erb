@@ -1,0 +1,2 @@
+$('#new_user_assignment_form').html("<%=escape_javascript(render 'add_special_user_group_link')%>");
+$('#group_users').append("<%=escape_javascript(render :partial=>"special_user_group_assignment", :object => @special_user_group)%>");

@@ -1,8 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe ChecklistBuilder::QuestionsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
 
   before do
     district=mock_district
@@ -24,7 +25,7 @@ describe ChecklistBuilder::QuestionsController do
   describe "GET 'show'" do
     it "should be successful" do
       QuestionDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'show', :id=>37
+      get 'show', :id=>'37'
       assigns(:question_definition).should == 'yes'
     end
   end
@@ -39,7 +40,7 @@ describe ChecklistBuilder::QuestionsController do
   describe "GET 'edit'" do
     it "should be successful" do
       QuestionDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'edit', :id=>37
+      get 'edit', :id=>'37'
       assigns(:question_definition).should == 'yes'
     end
   end
@@ -47,7 +48,7 @@ describe ChecklistBuilder::QuestionsController do
 
   describe "GET 'create'" do
     it "should be successful" do
-    pending
+      pending
       get 'create'
       response.should be_success
     end
@@ -55,7 +56,7 @@ describe ChecklistBuilder::QuestionsController do
 
   describe "GET 'update'" do
     it "should be successful" do
-    pending
+      pending
       get 'update'
       response.should be_success
     end
@@ -71,7 +72,7 @@ describe ChecklistBuilder::QuestionsController do
 
   describe "GET 'move'" do
     it "should be successful" do
-    pending
+      pending
       get 'move'
       response.should be_success
     end

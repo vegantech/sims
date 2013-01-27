@@ -11,8 +11,8 @@ class StudentCommentsController < ApplicationController
   def edit
     @student_comment = current_user.student_comments.find(params[:id])
     respond_to do |format|
-      format.js
       format.html
+      format.js
     end
   end
 
@@ -30,8 +30,8 @@ class StudentCommentsController < ApplicationController
          }
         format.js {responds_to_parent {render}}
       else
-        format.js { responds_to_parent{render :action => "new" } }
         format.html { render :action => "new" }
+        format.js { responds_to_parent{render :action => "new" } }
       end
     end
   end
@@ -48,8 +48,8 @@ class StudentCommentsController < ApplicationController
         }
         format.js {responds_to_parent {render}}
       else
-        format.js   { responds_to_parent{render :action => "edit" } }
         format.html { render :action => "edit" }
+        format.js   { responds_to_parent{render :action => "edit" } }
       end
     end
   end
@@ -64,6 +64,4 @@ class StudentCommentsController < ApplicationController
       format.js
     end
   end
-
-
 end

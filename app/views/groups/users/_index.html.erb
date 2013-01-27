@@ -1,0 +1,10 @@
+<h1> Users </h1>
+<div id="group_users">
+  <%= render :partial => 'groups/users/user_assignment', :collection=>@group.user_group_assignments %>
+</div>
+
+<div id="new_user_assignment_form">
+  <%= render :partial => 'groups/users/add_user_assignment_link' %>
+
+</div>
+

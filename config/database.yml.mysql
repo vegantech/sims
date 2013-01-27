@@ -1,9 +1,10 @@
 defaults: &defaults
-  adapter: mysql
+  adapter: mysql2
   encoding: utf8
   username: root
   reconnect: true
   collation: utf8_general_ci
+  local_infile: true
 #  password: root
 
 development: &DEVELOPMENT
@@ -11,7 +12,7 @@ development: &DEVELOPMENT
   <<: *defaults
 
 test: &TEST
-  database: sims_open_test 
+  database: sims_open_test
   <<: *defaults
 
 production: &PRODUCTION

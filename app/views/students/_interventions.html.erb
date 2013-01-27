@@ -1,10 +1,10 @@
-<h2 class="intervention_summary",  ondblclick="$('interventions').toggle();">Intervention and Progress Monitoring</h2>
+<h2 class="intervention_summary dbl_toggler",  data-toggle-id="interventions">Intervention and Progress Monitoring</h2>
 <div id="interventions" >
 <h3 class="intervention_summary"><span>Assign New Intervention and Progress Monitor</span></h3>
 
-  <%=content_tag :span, link_to("Select New Intervention and Progress Monitor from Menu", new_intervention_path)%> <br />
-  <%=content_tag :span, link_to("Create New Custom Intervention and Progress Monitor", new_intervention_path(:custom_intervention=>true))%> <br />
-  <%=link_to_remote_degrades("Select from Intervention Quicklist", :url=>interventions_quicklists_path, :method => :get) %> <br />
+  <%=content_tag :div, link_to("Select New Intervention and Progress Monitor from Menu", new_intervention_path)%>
+  <%=content_tag :div, link_to("Create New Custom Intervention and Progress Monitor", new_intervention_path(:custom_intervention=>true)) if custom_intervention_enabled?%>
+  <%=link_to("Select from Intervention Quicklist", interventions_quicklists_path, :method => :get, :remote => true) %> <br />
     <span id="quicklist"> </span>
 
 <% if @student.interventions.active.present? %>
@@ -15,7 +15,7 @@
 <% end %>
 <% if @student.interventions.inactive.present? %>
   <h3 class="intervention_summary"><span>Inactive Interventions</span></h3>
-  <%= link_to_function "Show/Hide" , "$('inactive_interventions').toggle()" %> <%=inactive_interventions_count(@student) %>
+  <%= link_to "Show/Hide","",:class => "toggler","data-toggle-id" => "inactive_interventions" %> <%=inactive_interventions_count(@student) %>
   <div id='inactive_interventions' style='display:none'>
     <%= render :partial => 'intervention_table', :locals=>{:interventions => @student.interventions.inactive} %>
   </div>

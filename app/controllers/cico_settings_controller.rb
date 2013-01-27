@@ -1,4 +1,5 @@
 class CicoSettingsController < ApplicationController
+  #needs to be restricted to school admin
   # GET /cico_settings
   # GET /cico_settings.xml
   def index

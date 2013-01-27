@@ -37,7 +37,7 @@
       <% configuration[:apache][:deny].to_a.each do |deny| %>
       deny from <%= deny %>
       <% end %>
-      <% configuration[:apache][:allow].to_a.each do |allow| %> 
+      <% configuration[:apache][:allow].to_a.each do |allow| %>
       allow from <%= allow %>
       <% end %>
       <% if configuration[:apache][:users] %>
@@ -46,6 +46,22 @@
       Satisfy <%= configuration[:apache][:satisfy] || 'Any' %>
     </Limit>
   </Location>
+  <% end %>
+
+  <% if asset_pipeline_enabled? %>
+    # Recommendations for asset pipline: http://guides.rubyonrails.org/asset_pipeline.html#in-production
+    <LocationMatch "^/assets/.*$">
+      Header unset ETag
+      FileETag None
+      # RFC says only cache for 1 year
+      ExpiresActive On
+      ExpiresDefault "access plus 1 year"
+    </LocationMatch>
+  <% else %>
+    # Using the Rails Asset pipeline? Enable it with:
+    #
+    #   :assets:
+    #     :enabled: true
   <% end %>
 
   ##
@@ -152,7 +168,7 @@
   # - The domain part of the URL must be equal to the value of the ServerName
   #   directive of the VirtualHost block that defines the web application.
   # - Unless the web application is deployed on port 80, the URL should
-  #   contain the web application’s port number too.
+  #   contain the web application's port number too.
   # - The path part of the URL must point to some URI that the web
   #   application handles.
   #
@@ -169,14 +185,14 @@
   # By default, Passenger groups applcations by the the path they are served out of,
   # ie /srv/yourapp/current.
   #
-  # At times, it may be useful be serving the same app from multiple vhosts, but have 
+  # At times, it may be useful be serving the same app from multiple vhosts, but have
   # them be have different workers. For example, you may have a /ping URL that needs to
-  # respond quickly, without being affected by the rest of the app. In this case, you can: 
+  # respond quickly, without being affected by the rest of the app. In this case, you can:
   #
   #  * create a new vhost pointing at the same app
-  #  * set PassengerAppGroupName to ping 
+  #  * set PassengerAppGroupName to ping
   #  * configure a proxy to forward /ping to the new vhost
-  
+
   <% if configuration[:passenger][:app_group_name] %>
   PassengerAppGroupName <%= configuration[:passenger][:app_group_name] %>
   <% else %>
@@ -211,7 +227,7 @@
   RewriteCond %{REQUEST_URI} !\.(css|jpg|png|gif)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
-  RewriteRule ^.*$ - [R=503,L]
+  RewriteRule ^.*$ /system/maintenance.html [R=<%= configuration[:passenger][:maintenance_status_code] || 503 %>,L]
 <% end %>
 
   # Rewrite index to check for static
@@ -283,7 +299,7 @@
       <% configuration[:apache][:deny].to_a.each do |deny| %>
       deny from <%= deny %>
       <% end %>
-      <% configuration[:apache][:allow].to_a.each do |allow| %> 
+      <% configuration[:apache][:allow].to_a.each do |allow| %>
       allow from <%= allow %>
       <% end %>
       <% if configuration[:apache][:users] %>
@@ -292,6 +308,22 @@
       Satisfy <%= configuration[:apache][:satisfy] || 'Any' %>
     </Limit>
   </Location>
+  <% end %>
+
+  <% if asset_pipeline_enabled? %>
+    # Recommendations for asset pipline: http://guides.rubyonrails.org/asset_pipeline.html#in-production
+    <LocationMatch "^/assets/.*$">
+      Header unset ETag
+      FileETag None
+      # RFC says only cache for 1 year
+      ExpiresActive On
+      ExpiresDefault "access plus 1 year"
+    </LocationMatch>
+  <% else %>
+    # Using the Rails Asset pipeline? Enable it with:
+    #
+    #   :assets:
+    #     :enabled: true
   <% end %>
 
   ##
@@ -397,7 +429,7 @@
   # - The domain part of the URL must be equal to the value of the ServerName
   #   directive of the VirtualHost block that defines the web application.
   # - Unless the web application is deployed on port 80, the URL should
-  #   contain the web application’s port number too.
+  #   contain the web application's port number too.
   # - The path part of the URL must point to some URI that the web
   #   application handles.
   #
@@ -441,7 +473,7 @@
   RewriteCond %{REQUEST_URI} !\.(css|jpg|png|gif)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
-  RewriteRule ^.*$ - [R=503,L]
+  RewriteRule ^.*$ /system/maintenance.html [R=<%= configuration[:passenger][:maintenance_status_code] || 503 %>,L]
 <% end %>
 
   # Rewrite index to check for static

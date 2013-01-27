@@ -44,32 +44,39 @@ class Intervention < ActiveRecord::Base
   belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
-  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
-  has_many :intervention_participants, :dependent => :delete_all
+  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
+  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
-
-  has_many :intervention_probe_assignments, :dependent => :destroy 
+  has_many :intervention_probe_assignments, :dependent => :destroy
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
-  
+  accepts_nested_attributes_for :comments, :reject_if =>proc{|e| e["comment"].blank?}
 
+  after_initialize :set_defaults_from_definition
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
-  before_update :assign_user_to_comment
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
 
 
-  delegate :title, :tier, :description, :intervention_cluster, :to => :intervention_definition
+
+  delegate :title, :tier, :description, :intervention_cluster,:tier_summary, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
-  named_scope :active, :conditions => {:active => true}, :order => 'created_at desc'
-  named_scope :inactive, :conditions => {:active => false}, :order => 'created_at desc'
+  scope :desc, order("created_at desc")
+  scope :active, where(:active => true).desc
+  scope :inactive, where(:active => false).desc
+  scope :for_report
+
+  scope :author_or_participant, lambda { |user_id|
+    includes([:intervention_participants, :user,:frequency, :time_length, :intervention_definition]).where(
+      ["interventions.user_id = :user_id or intervention_participants.user_id = :user_id", {:user_id => user_id}])
+  }
 
 
 
@@ -77,8 +84,6 @@ class Intervention < ActiveRecord::Base
   define_statistic :students_with_interventions , :count => :all,  :select => 'distinct student_id', :joins => :student
   define_statistic :districts_with_interventions, :count => :all, :select => 'distinct district_id', :joins => {:intervention_definition => {:intervention_cluster => {:objective_definition => :goal_definition}}}
   define_statistic :users_with_interventions, :count => :all, :select => 'distinct user_id', :joins => :user
-
-  acts_as_reportable # if defined? Ruport
 
   def self.build_and_initialize(args)
     # TODO Refactor
@@ -91,9 +96,19 @@ class Intervention < ActiveRecord::Base
     int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
     int.auto_implementer=true if int.auto_implementer.nil?
 
-    int.selected_ids = nil if int.selected_ids.to_a.size == 1
+    int.selected_ids = nil if Array(int.selected_ids).size == 1
 
     int
+  end
+
+  def self.for_user_interventions_report(user_id, filter,start_date = 5.years.ago,end_date = Date.today)
+    ints = author_or_participant(user_id).where(:updated_at => start_date..(end_date+2))
+    if filter == "Current"
+      ints = ints.where(["active = ?",true])
+    elsif filter == "Ended"
+      ints = ints.where(["active = ?",false])
+    end
+    ints
   end
 
 
@@ -135,7 +150,7 @@ class Intervention < ActiveRecord::Base
     intervention_probe_assignments.update_all(:enabled => false) #disable all others
     params.stringify_keys! unless params.blank? #fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
-  
+
     if params['probe_definition_id'] == 'custom'
       params['probe_definition_id'] = nil
     end
@@ -153,19 +168,12 @@ class Intervention < ActiveRecord::Base
     end
   end
 
-  def comment=(txt)
-    @comment=comments.build(:comment=>txt[:comment]) if txt[:comment].present?
-  end
-  def comment
-    @comment
-  end
-
   def assigned_probes
     intervention_probe_assignments.active.collect(&:title).join(";")
   end
 
   def report_summary
-    "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active}"
+    "#{title} #{'Ended: ' + ended_at.to_s(:chatty) unless active?}"
   end
 
   def set_missing_values_from_intervention_definition
@@ -195,21 +203,29 @@ class Intervention < ActiveRecord::Base
   end
 
   def orphaned?
-    active? && 
+    active? &&
       (end_date < Date.today ||
        participant_users.blank? ||
        !participant_users.all?{|ipu| student.belongs_to_user? ipu}
-      ) 
+      )
 
   end
 
   def self.orphaned
     #an orphaned intervention is one that is unended past the expected end date or one where no participants can access the student  (be sure to check district_id of student as well)
-
     find(:all).select(&:orphaned?)
-
   end
-  
+
+  def goal_objective_category
+    [goal_definition.title, objective_definition.title, intervention_cluster.title].join(" ")
+  end
+
+
+  def participant_user_ids=(ids)
+    #remove duplicates and blanks
+    ids=ids.reject(&:blank?).uniq
+    self.participant_users=User.where(:id =>(ids))
+  end
   protected
 
   def create_other_students
@@ -219,20 +235,20 @@ class Intervention < ActiveRecord::Base
     # make sure it creates interventions for each student
     if self.apply_to_all == "1"
       comment = {:comment => comments.present? ? comments.first.comment : nil}
-      student_ids = self.selected_ids
+      student_ids = Array(self.selected_ids)
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
+        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false, :comment_author => self.comment_author,
           :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
-                                                  :comment => comment ,:intervention_probe_assignment => ipa))
+                                                  :comments_attributes => {"0" => comment} ,:intervention_probe_assignment => ipa))
       end
     end
     true
   end
 
   def assign_implementer
-    @creation_email = true
+    @creation_email = true if new_record?  #used for distingushing between new particioant and creation email
     if self.auto_implementer == "1"
       self.participant_user_ids |= [self.user_id]
       # intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)
@@ -259,14 +275,13 @@ class Intervention < ActiveRecord::Base
     return true unless defined?(@ipa)
     if @ipa.probe_definition.intervention_definitions.blank?
       pd=@ipa.probe_definition
-      pd.intervention_definitions << self.intervention_definition  
+      pd.intervention_definitions << self.intervention_definition
       pd.user_id = user_id
       pd.school_id = school_id
       pd.district_id = goal_definition.district_id
       pd.custom = true
 
     end
-    
     @ipa.save
 
   end
@@ -274,17 +289,17 @@ class Intervention < ActiveRecord::Base
   def send_creation_emails
     # PENDING
     @interventions = Array(self) | Array(@interventions)
-    unless self.called_internally 
-      Notifications.deliver_intervention_starting(@interventions)
+     unless self.called_internally
+      Notifications.intervention_starting(@interventions).deliver
     end
 
     true
   end
-  
+
   def validate_intervention_probe_assignment
     return true unless defined? @ipa
     return true if @ipa.valid?
-    errors.add_to_base("Progress Monitor Assignment is invalid") 
+    errors.add(:base,"Progress Monitor Assignment is invalid")
     false
   end
 
@@ -296,16 +311,16 @@ class Intervention < ActiveRecord::Base
 
   def default_end_date
    if time_length_number and time_length
-      (start_date + (time_length_number*time_length.days).days) 
+      (start_date + (time_length_number*time_length.days).days)
    else
       start_date
    end
   end
 
-  def after_initialize
+  def set_defaults_from_definition
     return unless new_record?
     self.start_date ||= Date.today
-   
+
     if intervention_definition.blank? || intervention_definition.new_record?
       self.frequency ||= Frequency.find_by_title('Weekly')
       self.frequency_multiplier ||= 2
@@ -315,14 +330,12 @@ class Intervention < ActiveRecord::Base
     else
       set_missing_values_from_intervention_definition
     end
-    
-    self.end_date ||= default_end_date 
+
+    self.end_date ||= default_end_date
   end
 
-  def assign_user_to_comment
-    if @comment && @comment.user.blank?
-      @comment.user_id = comment_author || self.user_id
-    end
+  def notify_new_participant(participant)
+    participant.send_email = true unless new_record? or @creation_email or called_internally
   end
 
 end

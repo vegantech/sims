@@ -37,7 +37,7 @@ class ConsultationFormRequest < ActiveRecord::Base
   end
 
   def whom=(target)
-    @whom=target 
+    @whom=target
   end
 
 
@@ -45,7 +45,7 @@ class ConsultationFormRequest < ActiveRecord::Base
 
   def email_requests
     get_recipients
-    TeamReferrals.deliver_gather_information_request(@recipients, student, requestor) if @recipients
+    TeamReferrals.gather_information_request(@recipients, student, requestor).deliver if @recipients
   end
 
 
@@ -64,7 +64,7 @@ class ConsultationFormRequest < ActiveRecord::Base
     if @whom.include?('other') && @user_ids.present?
         @user_ids |= school_team.user_ids if school_team
         self.team_id=nil
-        create_school_team(:anonymous=>true,:user_ids=>@user_ids) 
+        create_school_team(:anonymous=>true,:user_ids=>@user_ids)
     end
   end
 end

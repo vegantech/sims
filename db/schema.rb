@@ -1,15 +1,17 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110612171205) do
+ActiveRecord::Schema.define(:version => 20130126060537) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -180,9 +182,11 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "status"
   end
 
   add_index "district_logs", ["district_id", "created_at"], :name => "index_district_logs_on_district_id_and_created_at"
+  add_index "district_logs", ["district_id", "status"], :name => "index_district_logs_on_district_id_and_status"
   add_index "district_logs", ["district_id", "user_id"], :name => "index_district_logs_on_district_id_and_user_id"
 
   create_table "districts", :force => true do |t|
@@ -191,17 +195,16 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.integer  "state_dpi_num"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",                 :default => false
+    t.boolean  "admin",             :default => false
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.string   "marked_state_goal_ids"
-    t.string   "key",                   :default => ""
-    t.string   "previous_key",          :default => ""
-    t.boolean  "lock_tier",             :default => false, :null => false
-    t.boolean  "restrict_free_lunch",   :default => true
+    t.text     "settings"
   end
+
+  add_index "districts", ["abbrev"], :name => "index_districts_on_abbrev"
+  add_index "districts", ["admin", "name"], :name => "index_districts_on_admin_and_name"
 
   create_table "element_definitions", :force => true do |t|
     t.integer  "question_definition_id"
@@ -360,7 +363,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.text     "description"
     t.integer  "district_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",    :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier", :default => false, :null => false
@@ -376,7 +379,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.string   "district_group_id", :limit => 20, :default => "", :null => false
   end
 
-  add_index "groups", ["school_id", "district_group_id"], :name => "index_groups_on_school_id_and_district_group_id"
+  add_index "groups", ["district_group_id"], :name => "index_groups_on_id_district"
   add_index "groups", ["school_id"], :name => "index_groups_on_school_id"
 
   create_table "groups_students", :id => false, :force => true do |t|
@@ -387,17 +390,12 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   add_index "groups_students", ["group_id"], :name => "index_groups_students_on_group_id"
   add_index "groups_students", ["student_id"], :name => "index_groups_students_on_student_id"
 
-  create_table "groups_students_new", :id => false, :force => true do |t|
-    t.integer "group_id"
-    t.integer "student_id"
-  end
-
   create_table "intervention_clusters", :force => true do |t|
     t.string   "title"
     t.text     "description"
     t.integer  "objective_definition_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",                :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier",             :default => false, :null => false
@@ -419,7 +417,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   create_table "intervention_definitions", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.boolean  "custom",                                                                                                                                                                                                                        :default => false
+    t.boolean  "custom",                  :default => false, :null => false
     t.integer  "intervention_cluster_id"
     t.integer  "tier_id"
     t.integer  "time_length_id"
@@ -521,7 +519,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.text     "description"
     t.integer  "goal_definition_id"
     t.integer  "position"
-    t.boolean  "disabled"
+    t.boolean  "disabled",           :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exempt_tier",        :default => false, :null => false
@@ -536,6 +534,8 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "personal_groups", ["user_id", "school_id"], :name => "index_personal_groups_on_user_id_and_school_id"
 
   create_table "personal_groups_students", :id => false, :force => true do |t|
     t.integer "personal_group_id", :null => false
@@ -604,26 +604,6 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   add_index "probe_definitions", ["minimum_score"], :name => "index_probe_definitions_on_minimum_score"
   add_index "probe_definitions", ["school_id"], :name => "index_probe_definitions_on_school_id"
   add_index "probe_definitions", ["user_id"], :name => "index_probe_definitions_on_user_id"
-
-  create_table "probe_questions", :force => true do |t|
-    t.integer  "probe_definition_id"
-    t.integer  "number"
-    t.string   "operator"
-    t.integer  "first_digit"
-    t.integer  "second_digit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "probe_questions", ["probe_definition_id"], :name => "index_probe_questions_on_probe_definition_id"
-
-  create_table "probe_questions_probes", :id => false, :force => true do |t|
-    t.integer "probe_id"
-    t.integer "probe_question_id"
-  end
-
-  add_index "probe_questions_probes", ["probe_id"], :name => "index_probe_questions_probes_on_probe_id"
-  add_index "probe_questions_probes", ["probe_question_id"], :name => "index_probe_questions_probes_on_probe_question_id"
 
   create_table "probes", :force => true do |t|
     t.date     "administered_at"
@@ -736,28 +716,6 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   add_index "recommended_monitors", ["intervention_definition_id"], :name => "index_recommended_monitors_on_intervention_definition_id"
   add_index "recommended_monitors", ["probe_definition_id"], :name => "index_recommended_monitors_on_probe_definition_id"
 
-  create_table "roles", :force => true do |t|
-    t.string   "name"
-    t.integer  "district_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "asset_file_name"
-    t.string   "asset_content_type"
-    t.integer  "asset_file_size"
-    t.datetime "asset_updated_at"
-  end
-
-  add_index "roles", ["district_id"], :name => "index_roles_on_district_id"
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
-  end
-
-  add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
-  add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
-
   create_table "school_team_memberships", :force => true do |t|
     t.integer  "school_team_id"
     t.integer  "user_id"
@@ -788,16 +746,13 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
 
   create_table "special_user_groups", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "district_id"
     t.integer  "school_id"
-    t.integer  "grouptype"
     t.string   "grade"
     t.boolean  "is_principal", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "special_user_groups", ["district_id"], :name => "index_special_user_groups_on_district_id"
   add_index "special_user_groups", ["school_id"], :name => "index_special_user_groups_on_school_id"
   add_index "special_user_groups", ["user_id"], :name => "index_special_user_groups_on_user_id"
 
@@ -819,16 +774,6 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   add_index "student_comments", ["student_id"], :name => "index_student_comments_on_student_id"
   add_index "student_comments", ["user_id"], :name => "index_student_comments_on_user_id"
 
-  create_table "student_groups_1001893421_importer", :id => false, :force => true do |t|
-    t.string  "district_student_id", :limit => 40, :null => false
-    t.string  "district_group_id",   :limit => 20, :null => false
-    t.integer "mapped_student_id"
-    t.integer "mapped_group_id"
-  end
-
-  add_index "student_groups_1001893421_importer", ["district_student_id", "district_group_id"], :name => "temporary_index_0"
-  add_index "student_groups_1001893421_importer", ["mapped_student_id", "mapped_group_id"], :name => "mapped_index"
-
   create_table "students", :force => true do |t|
     t.integer  "district_id"
     t.string   "last_name"
@@ -846,27 +791,10 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.string   "suffix"
   end
 
-  add_index "students", ["district_id", "district_student_id"], :name => "index_students_on_district_id_and_district_student_id"
   add_index "students", ["district_id"], :name => "index_students_on_district_id"
+  add_index "students", ["district_student_id"], :name => "index_students_on_id_district"
   add_index "students", ["id_state", "district_id", "birthdate", "first_name", "last_name"], :name => "null_id_state_match"
   add_index "students", ["id_state"], :name => "index_students_on_id_state"
-
-  create_table "students_1001893421_importer", :id => false, :force => true do |t|
-    t.integer "id_state"
-    t.string  "district_student_id"
-    t.string  "number"
-    t.string  "first_name"
-    t.string  "middle_name"
-    t.string  "last_name"
-    t.string  "suffix"
-    t.date    "birthdate"
-    t.string  "esl"
-    t.boolean "special_ed"
-  end
-
-  add_index "students_1001893421_importer", ["district_student_id"], :name => "temporary_index_1"
-  add_index "students_1001893421_importer", ["id_state", "birthdate", "first_name", "last_name"], :name => "null_id_state_match"
-  add_index "students_1001893421_importer", ["id_state"], :name => "temporary_index_0"
 
   create_table "team_consultations", :force => true do |t|
     t.integer  "student_id"
@@ -920,7 +848,7 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
   add_index "user_school_assignments", ["user_id"], :name => "index_user_school_assignments_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "username",         :limit => 100
+    t.string   "username",               :limit => 100
     t.binary   "passwordhash"
     t.string   "first_name"
     t.string   "last_name"
@@ -930,27 +858,17 @@ ActiveRecord::Schema.define(:version => 20110612171205) do
     t.string   "email"
     t.string   "middle_name"
     t.string   "suffix"
-    t.string   "salt",                            :default => ""
-    t.string   "district_user_id", :limit => 40,  :default => "", :null => false
-    t.string   "token"
-    t.integer  "roles_mask",                      :default => 0,  :null => false
+    t.string   "salt",                                  :default => ""
+    t.string   "district_user_id",       :limit => 40,  :default => "",    :null => false
+    t.string   "reset_password_token"
+    t.integer  "roles_mask",                            :default => 0,     :null => false
+    t.boolean  "all_students",                          :default => false, :null => false
+    t.boolean  "all_schools",                           :default => false, :null => false
+    t.string   "encrypted_password",                    :default => "",    :null => false
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "users", ["district_id", "district_user_id"], :name => "index_users_on_district_id_and_id_district"
   add_index "users", ["roles_mask"], :name => "index_users_on_roles_mask"
-
-  create_table "users_1001893421_importer", :id => false, :force => true do |t|
-    t.string "district_user_id"
-    t.string "username"
-    t.string "first_name"
-    t.string "middle_name"
-    t.string "last_name"
-    t.string "suffix"
-    t.string "email"
-    t.string "passwordhash"
-    t.string "salt"
-  end
-
-  add_index "users_1001893421_importer", ["district_user_id"], :name => "temporary_index_0"
 
 end

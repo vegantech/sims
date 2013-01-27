@@ -1,5 +1,8 @@
-class GroupedProgressEntry 
-  attr_accessor :global_date, :intervention, :probe_definition 
+class GroupedProgressEntry
+#  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
+  attr_accessor :global_date, :intervention, :probe_definition
   NUMBER_OF_STUDENTS_ON_GRAPH=15
 
   def errors
@@ -21,13 +24,17 @@ class GroupedProgressEntry
     @student_ids =student_ids
     @school = School.find(search[:school_id])
   end
-  
+
   def to_param
     "#{@intervention.intervention_definition_id}-#{@intervention.probe_definition_id}"
   end
 
   def to_s
     "#{@intervention.title}"
+  end
+
+  def id
+    self.object_id
   end
 
   def staff
@@ -57,25 +64,25 @@ class GroupedProgressEntry
       end
     end
     if student_interventions.all?(&:valid?)
-      student_interventions.each(&:save) 
+      student_interventions.each(&:save)
       User.find_all_by_id(participants).each do |user|
         new_intervention_participant = student_interventions.collect(&:id)- user.interventions_as_participant_ids
         user.interventions_as_participant_ids |= new_intervention_participant
         user.save
-        Notifications.deliver_intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id)) unless new_intervention_participant.blank?
+        Notifications.intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id),Intervention.find_all_by_id(new_intervention_participant)).deliver unless new_intervention_participant.blank?
       end
       true
     else
       false
     end
   end
-    COLORS= [ "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000", 
-        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
-        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0", 
-        "400000", "004000", "000040", "404000", "400040", "004040", "404040", 
-        "200000", "002000", "000020", "202000", "200020", "002020", "202020", 
-        "600000", "006000", "000060", "606000", "600060", "006060", "606060", 
-        "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0", 
+    COLORS= [ "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000",
+        "800000", "008000", "000080", "808000", "800080", "008080", "808080",
+        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0",
+        "400000", "004000", "000040", "404000", "400040", "004040", "404040",
+        "200000", "002000", "000020", "202000", "200020", "002020", "202020",
+        "600000", "006000", "000060", "606000", "600060", "006060", "606060",
+        "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0",
         "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
 
 
@@ -87,7 +94,7 @@ class GroupedProgressEntry
 
      ipa.size
     end
-    
+
     def aggregate_chart(page=0)
 #      probe_scores
  #       scores, grouped by date?
@@ -138,9 +145,9 @@ class GroupedProgressEntry
    #   probe_defintion
     #  probe_brenchmark
 
-      
 
-      
+
+
       { 'chdl' => students.collect(&:fullname).join("|"),
         'chco' => COLORS[low..high].join(","),
         'cht' => 'lxy',
@@ -154,7 +161,7 @@ class GroupedProgressEntry
     end
 
 
-  
+
 
   class ScoreComment
     attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator
@@ -175,7 +182,7 @@ class GroupedProgressEntry
     def update_attributes(params)
       @comment = params['comment']
       @intervention.comment_author=@user.id
-      @intervention.comment = {:comment => @comment}
+      @intervention.comments_attributes = {"0" => {:comment => @comment}}
       begin
         @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
       rescue ArgumentError
@@ -188,7 +195,7 @@ class GroupedProgressEntry
     end
 
     def valid?
-      if @intervention.valid? && (!@probe || @probe.valid?)  && @errors.blank? 
+      if @intervention.valid? && (!@probe || @probe.valid?)  && @errors.blank?
         true
       else
         @errors += @intervention.errors.full_messages.join(", ") +' ' + @probe.errors.full_messages.join(", ")
@@ -197,10 +204,10 @@ class GroupedProgressEntry
     end
 
     def save
-      @intervention.save! 
+      @intervention.save!
       @probe.save! unless @probe.blank?
     end
-    
+
     def student
       @intervention.student
     end
@@ -209,21 +216,25 @@ class GroupedProgressEntry
     end
   end
 
+  def persisted?
+    true
+  end
+
 private
   def self.interventions(id)
     #TODO TESTS
-    Intervention.find(:all,:include => :intervention_participants, 
+    Intervention.find(:all,:include => :intervention_participants,
                       :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end
 
   def self.interventions2(id, student_ids)
     Intervention.find_all_by_active_and_student_id(true,student_ids,
-                      :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition], 
-    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)  
+                      :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition],
+    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)
       and intervention_probe_assignments.id is not null and intervention_probe_assignments.enabled=true",id,id],
-    :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id', 
-    :having => 'count(distinct student_id) > 1', 
-    :select => 'intervention_definitions.title, interventions.id, 
+    :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id',
+    :having => 'count(distinct student_id) > 1',
+    :select => 'intervention_definitions.title, interventions.id,
     interventions.intervention_definition_id,probe_definition_id, count(distinct student_id) as student_count'
                      )
   end

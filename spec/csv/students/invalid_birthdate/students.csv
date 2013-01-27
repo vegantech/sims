@@ -1,0 +1,4 @@
+id_state,district_student_id,number,first_name,middle_name,last_name,suffix,birthdate,esl,special_ed
+997,7,INVALID_BIRTHDATE,Invalid,Birth,Date,,2003-00-00,false,"Y"
+998,8,ZERO)BIRTHDATE,ZERO,Birth,Date,,0,false,"Y"
+

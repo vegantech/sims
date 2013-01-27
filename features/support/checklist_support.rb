@@ -4,7 +4,7 @@ def cucumber_district
 end
 
 def cucumber_user
-  @cucumber_user ||= Factory(:user, :username => "cucumber_user", :district => cucumber_district, :first_name => "Cucumber", :all_students_in_district => '1', :roles => ['regular_user'])
+  @cucumber_user ||= Factory(:user, :username => "cucumber_user", :district => cucumber_district, :first_name => "Cucumber", :all_students => true, :roles => ['regular_user'])
 end
 
 def cucumber_student

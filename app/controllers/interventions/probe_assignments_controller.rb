@@ -1,7 +1,6 @@
 class Interventions::ProbeAssignmentsController < ApplicationController
   before_filter :load_intervention
-  additional_write_actions  'disable_all', 'preview_graph'
-  
+
   def index
     #need t odo something with probe definition id (that's the active one, and might need building)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment(params[:probe_definition_id])
@@ -9,7 +8,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
 
     respond_to do |format|
       format.js
-      format.html # index.html.erb
+      format.html {redirect_to edit_intervention_url(@intervention, :enter_score => true)} # index.html.erb
     end
   end
 
@@ -24,18 +23,8 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   end
 
   def preview_graph
-    if params[:id]
-      @ipa = InterventionProbeAssignment.find(params[:id])
-    else
-      @ipa = @intervention.intervention_probe_assignments.build(:probe_definition_id=>params[:probe_definition_id])
-    end
-
-    @ipa.goal = params[:goal]
-    set_date(@ipa,"first_date", params)
-    set_date(@ipa,"end_date", params)
-#    render :text=> params[:intervention][:intervention_probe_assignment][:new_probes].inspect and return
-    @probes = @ipa.probes.build(params[:probes].values)
-#    render :text => @ipa.probes.size.to_s and return
+    @ipa = InterventionProbeAssignment.find_by_id(params[:id]) || InterventionProbeAssignment.build
+    @ipa.attributes = params[:intervention][:intervention_probe_assignment]
     @count = params[:count].to_i
     render :layout => false
   end
