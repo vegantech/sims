@@ -28,7 +28,6 @@ class ProbeDefinition < ActiveRecord::Base
   has_many :recommended_monitors, :dependent => :delete_all
   has_many :intervention_definitions,:through => :recommended_monitors
   has_many :intervention_probe_assignments
-  has_many :probe_questions, :dependent => :delete_all
   accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description

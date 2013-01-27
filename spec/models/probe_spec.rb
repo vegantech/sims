@@ -18,7 +18,6 @@ describe Probe do
     @valid_attributes = {
       :administered_at => Time.now,
       :score => "1",
-      :assessment_type => "value for assessment_type",
     }
   end
 
