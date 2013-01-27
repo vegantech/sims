@@ -429,12 +429,8 @@ DEPENDENCIES
   rpm_contrib
   rspec-html-matchers
   rspec-rails (~> 2.6)
-<<<<<<< HEAD
-  sass-rails (~> 3.1.0)
-  sauce
-=======
   sass-rails (~> 3.2.0)
->>>>>>> master
+  sauce
   simplecov
   sneaky-save
   spawn!
