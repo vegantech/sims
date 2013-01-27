@@ -63,6 +63,7 @@ module Sauce
         job_name = Sauce::Capybara::Cucumber.name_from_scenario(scenario)
         custom_data = {}
 
+
         if using_jenkins?
           custom_data.merge!({:commit => ENV['GIT_COMMIT'] || ENV['SVN_COMMIT'],
                        :jenkins_node => ENV['NODE_NAME'],
@@ -74,9 +75,10 @@ module Sauce
                              'custom-data' => custom_data)
         job.save unless job.nil?
 
-        Sauce.config do |c|
-          c[:name] = Sauce::Capybara::Cucumber.name_from_scenario(scenario)
-        end
+        #This makes the test show up as not found in saucelabs
+       # Sauce.config do |c|
+       #   c[:name] = Sauce::Capybara::Cucumber.name_from_scenario(scenario)
+       # end
 
         if using_jenkins?
           # If we're running under Jenkins, we should dump the
@@ -92,6 +94,8 @@ module Sauce
           output << "job-name=#{Sauce::Capybara::Cucumber.jenkins_name_from_scenario(scenario)}"
           puts output.join(' ')
         end
+
+        #Capybara.app_host = "http://127.0.0.1:3002"
 
         block.call
 
@@ -111,11 +115,11 @@ end
 
 
 begin
-  Before('@selenium') do
-    Sauce::Capybara::Cucumber.before_hook
-  end
+  #Before('@javascript') do
+  #  Sauce::Capybara::Cucumber.before_hook
+  #end
 
-  Around('@selenium') do |scenario, block|
+  Around('@javascript') do |scenario, block|
     Sauce::Capybara::Cucumber.around_hook(scenario, block)
   end
 rescue NoMethodError # This makes me sad
