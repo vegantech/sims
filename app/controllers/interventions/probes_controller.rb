@@ -57,35 +57,6 @@ class Interventions::ProbesController < ApplicationController
     end
   end
 
-  def new_assessment
-    @probe = @intervention_probe_assignment.probes.build(:assessment_type=>:baseline)
-  end
-
-  def update_assessment
-    #Not put,  update is type of assessment in contrast to baseline/new
-    @probe = @intervention_probe_assignment.probes.build(:assessment_type=>:update)
-    render :action=>"new_assessment"
-  end
-
-  def save_assessment
-
-    @probe = @intervention_probe_assignment.probes.build(params[:probe])
-    @probe.calculate_score(params)
-    @probe.save!
-
-    if params[:commit] == "Submit Without Printing"
-      flash[:notice]="Assessment Score Saved"
-      redirect_to(@intervention)
-    elsif params[:commit] == "Submit And Print Results"
-      print_results
-      render :action=>"print_results"
-    else
-      raise "Invalid commit"
-    end
-
-
-  end
-
 
   protected
   def load_intervention
@@ -99,21 +70,5 @@ class Interventions::ProbesController < ApplicationController
     else
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.find(pdi)
     end
-  end
-
-  def print_results
-    @questions=@probe.probe_questions
-    @allquestions=@probe.probe_definition.probe_questions
-    setup_report(@questions,@allquestions)
-
-  end
-
-  def setup_report(questions, allQuestions)
-     diffQuestions = allQuestions - questions
-       allQuestions.each do |question|
-         if diffQuestions.include?(question)
-           flash["answer_#{question.number}"] = question.first_digit + question.second_digit
-         end
-      end
   end
 end
