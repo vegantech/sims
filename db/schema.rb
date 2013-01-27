@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023015949) do
+ActiveRecord::Schema.define(:version => 20130126060537) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -541,26 +542,6 @@ ActiveRecord::Schema.define(:version => 20121023015949) do
   add_index "probe_definitions", ["minimum_score"], :name => "index_probe_definitions_on_minimum_score"
   add_index "probe_definitions", ["school_id"], :name => "index_probe_definitions_on_school_id"
   add_index "probe_definitions", ["user_id"], :name => "index_probe_definitions_on_user_id"
-
-  create_table "probe_questions", :force => true do |t|
-    t.integer  "probe_definition_id"
-    t.integer  "number"
-    t.string   "operator"
-    t.integer  "first_digit"
-    t.integer  "second_digit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "probe_questions", ["probe_definition_id"], :name => "index_probe_questions_on_probe_definition_id"
-
-  create_table "probe_questions_probes", :id => false, :force => true do |t|
-    t.integer "probe_id"
-    t.integer "probe_question_id"
-  end
-
-  add_index "probe_questions_probes", ["probe_id"], :name => "index_probe_questions_probes_on_probe_id"
-  add_index "probe_questions_probes", ["probe_question_id"], :name => "index_probe_questions_probes_on_probe_question_id"
 
   create_table "probes", :force => true do |t|
     t.date     "administered_at"

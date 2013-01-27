@@ -262,7 +262,7 @@ class District < ActiveRecord::Base
 
   begin
     after_initialize :default_settings_to_hash
-    raise "Remove this block" if Rails.version > "3.2"
+    #raise "Remove this block" if Rails.version > "3.2"
     serialize :settings, Hash
     SETTINGS.each do |s|
       define_method("#{s}=") do |value|
@@ -280,8 +280,8 @@ class District < ActiveRecord::Base
 
     private
     def default_settings_to_hash
-      self.settings ||= {}
-      self.settings[:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
+      self[:settings] ||= {}
+      self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
     end
   end
 

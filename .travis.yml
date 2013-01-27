@@ -8,5 +8,3 @@ branches:
   only:
   - master
   - wip
-  - jquery
-  - rails3.2_ruby_1.9.3

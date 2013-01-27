@@ -254,13 +254,7 @@ Sims::Application.routes.draw do
     end
   end
   scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id", :module => "interventions" do
-    resources :probes do
-      collection do
-        get :new_assessment
-        get :update_assessment
-        post :save_assessment
-      end
-    end
+    resources :probes
   end
 
 

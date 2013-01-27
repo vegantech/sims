@@ -1,6 +1,5 @@
 <p>
 <% if @intervention.active? && probe_assignment.id == @intervention_probe_assignment.id %>
-  <%#= display_assessment_links(probe_assignment) %>
   <%= fields_for 'intervention[intervention_probe_assignment][new_probes][]', probe_assignment.probes.build, :index => 0  do |paf| %>
     <div id="new_probe_forms">
       <%= render :partial =>"interventions/probes/form", :locals=>{:form=>paf, :probe_assignment =>probe_assignment, :index=>0} %>
