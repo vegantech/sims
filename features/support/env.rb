@@ -1,9 +1,12 @@
 ENV["RAILS_ENV"] = "cucumber"
-require 'simplecov'
-SimpleCov.start 'rails' do
-  coverage_dir 'spec/coverage/cucumber'
-  add_filter "/vendor"
-  merge_timeout "2400"
+unless ENV['SAUCE']
+  require 'simplecov'
+  SimpleCov.start 'rails' do
+    coverage_dir 'spec/coverage/cucumber'
+    add_filter "/vendor"
+    merge_timeout "2400"
+  end
+
 end
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 
@@ -49,6 +52,13 @@ end
 
 
 require 'sauce/cucumber'
+
+if ENV['SAUCE']
+  Capybara.app_host = "http://127.0.0.1:3333"
+  Capybara.run_server = false
+  DatabaseCleaner.strategy = :truncation#, {:except => %w[widgets]}
+end
+
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
