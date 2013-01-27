@@ -26,7 +26,7 @@ else
   secret = '9df9dcab8db4a1ccd72c79b014440d19d31042f8f6bcbec04c6c940c034d1cb210073b5613d0873544133aef0e5c21f197018d9a7ed23afbef31bc52b38c68ad'
 end
 sessionhash= {
-    :key         => '_sims-open2_session',
+    :key         => '_sims-open4_session',
     :secret      => secret,
     :secure => (Rails.env.production? || Rails.env.staging? )
     }

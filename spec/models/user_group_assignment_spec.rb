@@ -23,7 +23,4 @@ describe UserGroupAssignment do
   end
 
   it 'should have actual specs'
-  it "should create a new instance given valid attributes" do
-    UserGroupAssignment.create!(@valid_attributes)
-  end
 end
