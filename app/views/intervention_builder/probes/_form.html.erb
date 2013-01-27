@@ -34,14 +34,15 @@
 <!--[eoform:probe_definition]-->
 </table>
 
-<div id="benchmarks">
-  <% form.fields_for :probe_definition_benchmarks do |benchmark_fields| %>
-    <%= render :partial => 'intervention_builder/probes/benchmark_fields', :locals => { :probe_definition_benchmark => benchmark_fields.object, :index =>"e_#{benchmark_fields.object.id}", :form=>form} %>
+<span class="awesome_nested">
+<div id="benchmarks" class="items">
+  <%= form.nested_fields_for :probe_definition_benchmarks do |benchmark_fields| %>
+    <%= render 'intervention_builder/probes/benchmark_fields', :form=>benchmark_fields %>
   <% end %>
 </div>
 
 <p>
-  <%= render :partial => 'intervention_builder/probes/add_benchmark_link', :locals => { :index => @probe_definition.probe_definition_benchmarks.size } %>
+<%=link_to 'Add Benchmark', '#', :class => 'add'%>
 </p>
-
+</span>
 <%= render :partial => '/assets/asset_form', :locals => {:form=>form, :parent =>'probe_definition'}  %>

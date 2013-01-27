@@ -60,14 +60,16 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     # :apt_gems in <tt>moonshine.yml</tt> you do not need to include it here.
     package 'aspell', :ensure => :installed
     package 'zip', :ensure => :installed
+    package 'libxml2-dev'#, :before => exec('bundle install')
+    package 'libxslt1-dev'#, :before => exec('bundle install')
 
-    daily_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
+    daily_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
     cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 6
 
-    weekly_jobs = "cd #{configuration[:deploy_to]}/current && /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
+    weekly_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
     cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 7, :weekday => 0
 
-    prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 /usr/bin/ruby script/runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags >> #{configuration[:deploy_to]}/current/log/prime_cache.log"
+    prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 bundle exec rails runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags >> #{configuration[:deploy_to]}/current/log/prime_cache.log"
     cron 'prime_cache', :command => prime_cache, :user => configuration[:user], :minute => "*/10"
 
     cron 'backup_daily', :command => "/home/rails/backups/backup.sh", :hour => 8,:user => configuration[:user], :minute => 0
@@ -95,4 +97,5 @@ class ApplicationManifest < Moonshine::Manifest::Rails
   end
   # The following line includes the 'application_packages' recipe defined above
   recipe :application_packages
+
 end

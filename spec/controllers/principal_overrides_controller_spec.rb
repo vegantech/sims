@@ -1,35 +1,37 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PrincipalOverridesController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
 
   before do
     @override=mock_principal_override
     @user=mock_user(:grouped_principal_overrides=>[@override],
-                  :principal_override_requests=>PrincipalOverride, 
-                  :principal_override_responses => PrincipalOverride)
-    @student = mock_student                  
+    :principal_override_requests=>PrincipalOverride,
+    :principal_override_responses => PrincipalOverride)
+    @student = mock_student
     controller.stub!(:current_user => @user, :current_student => @student)
   end
 
-  
+
   describe "responding to GET index" do
 
     it "should expose all principal_overrides as @principal_overrides" do
-      @user.should_receive(:grouped_principal_overrides).and_return({:r=>[1,2,3]})
+      @user.should_receive(:grouped_principal_overrides).and_return({'r'=>[1,2,3]})
       get :index
-      assigns[:principal_overrides].should == {:r=>[1,2,3]}
+      assigns(:principal_overrides).should == {'r'=>[1,2,3]}
     end
 
   end
 
   describe "responding to GET new" do
-  
+
     it "should expose a new principal_override as @principal_override" do
       PrincipalOverride.should_receive(:build).with(:student=>@student).and_return(@override)
       get :new
-      assigns[:principal_override].should equal(@override)
+      assigns(:principal_override).should equal(@override)
     end
 
   end
@@ -43,7 +45,7 @@ describe PrincipalOverridesController do
         PrincipalOverride.should_receive(:find).with("37").and_return(@override)
         @override.should_receive(:setup_response_for_edit).with('accept')
         get :edit, :id => "37", :response => 'accept'
-        assigns[:principal_override].should equal(@override)
+        assigns(:principal_override).should equal(@override)
       end
     end
 
@@ -62,7 +64,7 @@ describe PrincipalOverridesController do
   describe "responding to POST create" do
 
     describe "with valid params" do
-      
+
       it "should expose a newly created principal_override as @principal_override" do
         pending
         PrincipalOverride.should_receive(:new).with({'these' => 'params'}).and_return(mock_principal_override(:save => true))
@@ -76,9 +78,9 @@ describe PrincipalOverridesController do
         post :create, :principal_override => {}
         response.should redirect_to(principal_override_url(mock_principal_override))
       end
-      
+
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved principal_override as @principal_override" do
@@ -94,9 +96,9 @@ describe PrincipalOverridesController do
         post :create, :principal_override => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT udpate" do
@@ -125,7 +127,7 @@ describe PrincipalOverridesController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       before do
@@ -170,7 +172,7 @@ describe PrincipalOverridesController do
       delete :destroy, :id => "37"
 
     end
-  
+
   end
 
   describe 'responding to PUT undo' do

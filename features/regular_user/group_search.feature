@@ -3,7 +3,7 @@ Feature: Search By Student Groups
   A SIMS user
   Should be able to find students by Student Group criteria
 
-	Background: 
+	Background:
 		Given clear login dropdowns
 
   Scenario: User With One Group
@@ -40,7 +40,6 @@ Feature: Search By Student Groups
     Then I should see "Orange, Alfie"
     And I should not see "Yerbie, Harold"
 
-  
 
 
   Scenario: User with Two groups picks one shared by another user Lighthouse 209
@@ -62,9 +61,6 @@ Feature: Search By Student Groups
     Then I press "Search for Students"
     Then I should see "Mellow, Yellow"
     Then I should not see "Fred, Red"
-    
-    
-
 
 
   Scenario: User with two groups, changes member  grade 3
@@ -74,17 +70,16 @@ Feature: Search By Student Groups
     And I have access to ["Blue Team","Red Team"]
     And "Other_Guy" has access to ["Blue Team"]
     And I start at the search page
-    
     And I should see select box with id of "search_criteria_group_id" and contains ["Filter by Group","Blue Team", "Red Team"]
     And I should see select box with id of "search_criteria_user_id" and contains ["All Staff","Other Guy", "default user"]
     And I should see select box with id of "search_criteria_grade" and contains ["*", "1", "3"]
 
-    And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]
-  
+    #And I should see javascript code that will do xhr for "search_criteria_user_id" that updates ["search_criteria_group_id"]
     And I select "3" from "search_criteria_grade"
-    #and I ignore the rjs call 
+    #and I ignore the rjs call
     When I select "Other Guy" from "search_criteria_user_id"
-    And xhr "search_criteria_user_id" updates ["search_criteria_group_id"]  
+    And PENDING need to fix expression
+    And xhr "search_criteria_user_id" updates ["search_criteria_group_id"]
     Then I should verify rjs has options ["Blue Team"]
 
 

@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe StudentInterventionsReport do
+describe "StudentInterventionsReport" do
+  before :all do
+    pending "this should be moved to cucumber"
+  end
 
   describe 'for student with no interventions' do
     it 'should say has no interventions' do
@@ -24,13 +27,13 @@ describe StudentInterventionsReport do
       @report.should match(/Category Title 1/)
       @report.should match(/Intervention Definition Title 1/)
       @report.should match(/Intervention Definition Desc 1/)
-      @report.should match(/08\/20\/08/)
-      @report.should match(/09\/20\/08/)
+      @report.should match(/08\/20\/2008/)
+      @report.should match(/09\/20\/2008/)
       @report.should match(/3 times weekly/)
       @report.should match(/1 month/)
       @report.should match(/Ender Wiggin/)
-      @report.should match(/09\/18\/08/)
-      @report.should match(/09\/19\/08/)
+      @report.should match(/09\/18\/2008/)
+      @report.should match(/09\/19\/2008/)
       @report.should match(/Tier - 1/)
     end
 
@@ -89,13 +92,13 @@ describe StudentInterventionsReport do
     mock_intervention(
               :save => true,
               :intervention_definition => mock_int_def,
-              :start_date => '08/20/08',
-              :end_date => '09/20/08',
+              :start_date => '08/20/2008',
+              :end_date => '09/20/2008',
               :frequency_summary => '3 times weekly',
               :time_length_summary => '1 month',
               :ended_by => mock_ended_teacher,
-              :ended_at => '09/18/08',
-              :updated_at => '09/19/08',
+              :ended_at => '09/18/2008',
+              :updated_at => '09/19/2008',
               :intervention_participants => intervention_people,
               :intervention_probe_definitions => mock_intervention_probe_assignments(2))
   end

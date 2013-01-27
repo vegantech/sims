@@ -8,8 +8,7 @@ Feature: District Admin
     And I go to the home page
 #    Then I should see "Manage Districts"
     When I enter url "/districts"
-    Then I should see "New district"
-    
+    Then I should see "New District"
 
 
   Scenario: District Admin of Normal District
@@ -17,7 +16,7 @@ Feature: District Admin
     And I go to the home page
     Then I should not see "Add/Remove Districts"
     When I enter url "/districts"
-    Then I should not see "New district"
+    Then I should not see "New District"
 
 
   Scenario:  test district_admin
@@ -31,7 +30,7 @@ Feature: District Admin
     And I follow "Change your logo and url"
     And I should not see "Sorry, help not found."
     And I follow "Home"
-    And page should contain "news_items"
+    And I should see "New news_item"
     And I should see "WI Test District Administration"
     And I should see "Add/Remove Users"
     And I should see "Add/Remove Students"
@@ -40,12 +39,34 @@ Feature: District Admin
 
   #Edit User
     When I follow "Add/Remove Users"
-    When I follow "edit" within "#tr_880270606"
+    When I follow "Edit" within "#tr_659073605"
     Then I should see "Editing user"
     Then I press "Update"
 
   # lighthouse ticket 158 editing a second time causes a validation error
-    When I follow "edit" within "#tr_880270606"
+    When I follow "Edit" within "#tr_659073605"
     Then I should see "Editing user"
     Then I press "Update"
 
+  Scenario: Edit your district District
+    Given I am a district admin
+    When I go to the home page
+    And I follow "Edit your district"
+    Then I should see "Custom interventions"
+
+  Scenario: Edit your district settings
+    Given I am a district admin
+    When I go to the home page
+    And I follow "Edit your district"
+    And I uncheck all district_settings boxes
+    And I press "Update"
+    Then all boolean district settings should be false
+    When I follow "Edit your district"
+    And I check all district_settings boxes
+    And I fill in "Google apps domain" with "whatever"
+    And I press "Update"
+    Then all boolean district settings should be true
+    When I follow "Edit your district"
+    And I uncheck all district_settings boxes
+    And I press "Update"
+    Then all boolean district settings should be false

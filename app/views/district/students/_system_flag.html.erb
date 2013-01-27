@@ -1,17 +1,12 @@
-<div class="system_flag">
-  <% new_or_existing = system_flag.new_record? ? 'new' : 'existing' %> 
-  <% prefix = "student[#{new_or_existing}_system_flag_attributes][]" %>
-
-
-  <% fields_for prefix, system_flag  do |system_flag_form| %>
-  <%= error_messages_for :system_flag, :object => system_flag %>
+<div class="system_flag item">
+  <%= f.error_messages %>
   <p>
-    <%=system_flag_form.label :category%>
-    <%= system_flag_form.select(:category,Flag::FLAGTYPES.collect{|h,k| [k[:humanize],h]} ) %>
-    <%=system_flag_form.label :reason %> <%= system_flag_form.text_field :reason %>
-  <% end %>
-
-  <%= link_to_function "Remove", "$(this).up('.system_flag').remove()" %>
+    <%=f.label :category%>
+    <%= f.select(:category,Flag::FLAGTYPES.collect{|h,k| [k[:humanize],h]} ) %>
+    <%=f.label :reason %> <%= f.text_field :reason %>
+    <%=f.hidden_field :id %>
+    <%=f.hidden_field :_destroy %>
+  <%= link_to "Remove", "#", :class => "remove"%>
 </p>
 </div>
 

@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     <% concerns_form.object.build_concerns %>
-    <% concerns_form.fields_for :consultation_form_concerns do |concern_fields| %>
+    <%= concerns_form.fields_for :consultation_form_concerns do |concern_fields| %>
       <tr>
         <td>
           <%= concern_fields.hidden_field :area %>

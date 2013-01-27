@@ -1,4 +1,4 @@
-<h3 class="conclusions_and_recommendations"  ondblclick="$('recommendations').toggle();"><span>Conclusions and Recommendations</span> </h3>
+<h3 class="conclusions_and_recommendations dbl_toggler"  data-toggle-id="recommendations"><span>Conclusions and Recommendations</span> </h3>
 <div id="recommendations">
   <% @student.recommendations.group_by(&:tier).each do |g,r| %>
     <%= content_tag :h4, g %>
@@ -8,7 +8,7 @@
   <%=link_to "Complete Conclusion and Recommendation", new_recommendation_url unless @student.recommendation_definition%> <br />
 
   <span id="override_out">
-    <%= link_to_remote_degrades("Request Principal Override to unlock next tier", :url=>new_principal_override_url) %>
+    <%= link_to_remote("Request Principal Override to unlock next tier", new_principal_override_url) %>
   </span>
   <div id="override" style="display:none">
   </div>

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
-describe CSVImporter::AllStudentsInSchools do
+describe CSVImporter::UserSchoolAssignments do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
@@ -53,11 +53,11 @@ describe CSVImporter::AllStudentsInSchools do
       [@should_keep_role,@should_gain_role].each{|u| check_user_school_assignments u}
       @dup_person_id.reload.user_school_assignments.count.should == 2
 
-      @dup_person_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
+      @dup_person_id.schools.should =~ [@school_no_link, @school_with_link]
       @dup_person_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
       
-      @role_no_district_user_id.school_ids.to_set.should == [@school_no_link.id, @school_with_link.id].to_set
-      @role_no_district_user_id.user_school_assignments.collect(&:school_id).to_set.should == [@school_no_link.id, @school_with_link.id].to_set
+      @role_no_district_user_id.schools.should =~ [@school_no_link, @school_with_link]
+      @role_no_district_user_id.user_school_assignments.collect(&:school_id).should =~ [@school_no_link.id, @school_with_link.id]
     end
 
     def check_user_school_assignments u

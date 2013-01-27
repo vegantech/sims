@@ -1,0 +1,2 @@
+$('#group_students').append("<%=escape_javascript(render :partial => "groups/students/student", :object => @student)%>");
+$("#new_student_form").html("<%=escape_javascript(render "groups/students/add_student_link")%>");

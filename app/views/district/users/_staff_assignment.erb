@@ -1,0 +1,12 @@
+<div class="staff_assignment item">
+  <p>
+  <%remove_link = link_to "Remove", "#", :class => "remove"%>
+  <% if staff_assignment.object.new_record? %>
+    <%= staff_assignment.collection_select('school_id', @schools, :id, :to_s, :remove_link => remove_link) %>
+  <% else %>
+    <%= staff_assignment.object.school %> <%= remove_link %>
+  <% end %>
+  <%= staff_assignment.hidden_field :id %>
+  <%= staff_assignment.hidden_field :_destroy %>
+  </p>
+</div>

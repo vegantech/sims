@@ -2,7 +2,7 @@
 
 <div id="claim_student"></div>
 
-<% form_for(@student, :url=>district_students_url, :method=>:post, :html=> {:multipart => true}) do |f| %>
+<%= form_for(@student, :url=>district_students_url, :method=>:post, :html=> {:multipart => true}) do |f| %>
 
   <%= render :partial => f %>
   <p>
@@ -10,4 +10,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Back', district_students_path %>
+<%= link_to 'Back', index_url_with_page %>

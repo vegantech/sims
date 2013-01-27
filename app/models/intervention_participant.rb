@@ -11,35 +11,31 @@
 #  updated_at      :datetime
 #
 
-require 'ruport'
-
 class InterventionParticipant < ActiveRecord::Base
   belongs_to :user
-  belongs_to :intervention
+  belongs_to :intervention, :inverse_of => :intervention_participants
 
   delegate :email, :fullname, :to => '(user or return nil)'
-  attr_writer :skip_email
 
-  after_create :send_new_participant_email
 
   validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
-  validates_presence_of :user_id, :role, :intervention_id
-  acts_as_reportable # if defined? Ruport
+  validates_presence_of :user_id, :intervention
+  after_create :notify_new_participant, :if => :send_email
 
   AUTHOR = -1
   IMPLEMENTER = 0
   PARTICIPANT = 1
 
   ROLES = %w{Implementer Participant Author}
-  named_scope :implementer, :conditions => {:role => IMPLEMENTER}
-  
+  scope :implementer, where(:role => IMPLEMENTER)
   define_statistic :participants , :count => :all, :joins => :user
   define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
+  attr_accessor :send_email
 
   RoleStruct = Struct.new(:id, :name)
 
   def role_title
-    ROLES[role] 
+    ROLES[role]
   end
 
   def toggle_role!
@@ -57,19 +53,8 @@ class InterventionParticipant < ActiveRecord::Base
 
   end
 
-  protected
-
-  def before_create
-    if intervention.created_at == intervention.updated_at     
-      @skip_email = true if Time.now - intervention.created_at < 1.second
-    end
-      @skip_email ||= caller.to_s.include?("grouped_progress_entry")
-      true
-  end
-
-  def send_new_participant_email
-    unless @skip_email
-      Notifications.deliver_intervention_participant_added(self)
-    end
+  private
+  def notify_new_participant
+    Notifications.intervention_participant_added(self,intervention).deliver
   end
 end

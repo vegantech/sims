@@ -1,0 +1,15 @@
+"Student", "Title / Status", "Start Date", "End Date", "Frequency", "Time Length", "Author", "Active"
+<%= raw(CSV.generate do |csv|
+    @interventions.each do |intervention|
+      csv <<[
+        intervention.student.fullname,
+        intervention.report_summary,
+        intervention.start_date,
+        intervention.end_date,
+        intervention.frequency_summary,
+        intervention.time_length_summary,
+        intervention.user.try(:fullname),
+        intervention.active
+      ]
+    end
+end) %>

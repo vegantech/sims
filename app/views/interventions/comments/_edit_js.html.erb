@@ -1,0 +1,10 @@
+<%=content_tag_for :tr, comment, "edit_row" do %>
+  <td colspan="2">
+    <%=fields_for @intervention do |iform| %>
+      <%= iform.fields_for :comments,  comment, :child_index =>comment.id do |f| %>
+        <%= render '/interventions/comments/form', :form => f %>
+      <% end %>
+    <% end %>
+    <%=link_to "Cancel", "", :class => "intervention_comment_cancel"%>
+  </td>
+<% end %>

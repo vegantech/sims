@@ -1,38 +1,37 @@
 module StudentsHelper
   def selected_navigation
     if multiple_selected_students?
-      index = selected_students_ids.index(current_student_id)
-      ret = "Student #{index+1} of #{selected_students_ids.size} &nbsp;&nbsp; "
+      index = selected_student_ids.index(current_student_id)
+      ret = "Student #{index+1} of #{selected_student_ids.size} &nbsp;&nbsp; "
 
       unless index == 0
-        ret += link_to('<<', student_url(selected_students_ids.first))
+        ret += link_to('<<', student_url(selected_student_ids.first))
         ret += "&nbsp;&nbsp;"
-        ret += link_to('Previous', student_url(selected_students_ids[index-1]))
+        ret += link_to('Previous', student_url(selected_student_ids[index-1]))
         ret += "&nbsp;&nbsp;"
       end
 
-      unless index == (selected_students_ids.size() -1)
-        ret += link_to('Next', student_url(selected_students_ids[index+1]))
+      unless index == (selected_student_ids.size() -1)
+        ret += link_to('Next', student_url(selected_student_ids[index+1]))
         ret += "&nbsp;&nbsp;"
-        ret += link_to('>>', student_url(selected_students_ids.last))
+        ret += link_to('>>', student_url(selected_student_ids.last))
       end
-      content_tag :p, ret
+      content_tag :p, ret.html_safe
     end
   end
 
   def intervention_group_checkbox(grp)
-    '<div class="small_bump_right">' +
-    check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :onclick=>"searchByIntervention()") + 
-      label_tag(dom_id(grp), grp.title) +
-    "</div>"
+    content_tag :div, :class => "small_bump_right" do
+    check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :class => 'active_intervention_checkbox') +
+      label_tag(dom_id(grp), grp.title)
+    end.html_safe
   end
 
   def active_intervention_size
     current_district.search_intervention_by.size
-
   end
   def active_intervention_select
-    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}
+    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}.html_safe
   end
 
   def id_district_desc(obj)
@@ -57,14 +56,36 @@ module StudentsHelper
   end
 
   def team_notes_count(student)
-    "<span id='team_notes_count'>(#{student.comments.size})</span>"
+    content_tag :span, "(#{student.comments.size})", :id => 'team_notes_count'
   end
 
   def active_interventions_count(student)
-    "<span id='active_interventions_count'>(#{student.interventions.active.size})</span>"
+    content_tag :span, "(#{student.interventions.active.size})", :id =>'active_interventions_count'
   end
 
   def inactive_interventions_count(student)
-    "<span id='inactive_interventions_count'>(#{student.interventions.inactive.size})</span>"
+    content_tag :span, "(#{student.interventions.inactive.size})", :id => 'inactive_interventions_count'
+  end
+
+  def grade_select(grades)
+    grades.unshift("*") if grades.length > 1
+    select(:search_criteria,:grade,grades)
+  end
+
+  def year_select(years)
+    years.unshift(["All","*"])
+    select(:search_criteria,:year,years)
+  end
+
+  def group_select_options(groups)
+    if groups.length > 1 or current_user.all_students_in_school?(current_school)
+      groups.unshift(Group.new(:title=>'Filter by Group'))
+    end
+    groups
+  end
+
+  def group_member_select_options(members)
+    members.unshift(User.new(:first_name=>'All', :last_name=>'Staff')) if members.size > 1 or current_user.all_students_in_school?(current_school)
+    members
   end
 end

@@ -1,7 +1,7 @@
 class InterventionsController < ApplicationController
-  additional_write_actions 'end', 'quicklist', 'quicklist_options', 'ajax_probe_assignment', 'undo_end', 'add_benchmark'
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :authorize, :only => [:add_benchmark]
+  skip_before_filter :verify_authenticity_token
 
   include PopulateInterventionDropdowns
 
@@ -24,10 +24,6 @@ class InterventionsController < ApplicationController
       redirect_to students_url and return
     end
 
-    flash.keep(:custom_intervention)
-    flash[:custom_intervention] ||= params[:custom_intervention]
-    @quicklist = true if params[:quicklist]
-    @intervention_comment = InterventionComment.new
     @tiers=current_district.tiers
 
     respond_to do |format|
@@ -38,15 +34,16 @@ class InterventionsController < ApplicationController
   # GET /interventions/1/edit
   def edit
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
-    @intervention_probe_assignment = @intervention.intervention_probe_assignment 
+    @intervention_probe_assignment = @intervention.intervention_probe_assignment
     @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
-    @intervention_comment = InterventionComment.new
+    @intervention_comment = @intervention.comments.detect(&:new_record?) || InterventionComment.new
     @tiers = current_district.tiers
   end
 
   # POST /interventions
   def create
     params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
+    params[:intervention][:comment_author] = current_user.id
 
     @intervention = build_from_session_and_params
     @tiers=current_district.tiers
@@ -57,6 +54,8 @@ class InterventionsController < ApplicationController
     else
       # This is to make validation work
       i = @intervention
+      @intervention_comment = @intervention.comments.first
+
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition
       @intervention_cluster = @intervention.intervention_cluster
@@ -64,10 +63,9 @@ class InterventionsController < ApplicationController
       populate_goals
       @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
-      flash.keep(:custom_intervention)
       # end code to make validation work
       render :action => "new"
-    end       
+    end
   end
 
   # PUT /interventions/1
@@ -75,7 +73,7 @@ class InterventionsController < ApplicationController
     if params[:intervention]
       params[:intervention][:participant_user_ids] ||=[]
       params[:intervention][:intervention_probe_assignment] ||= {}
-      params[:intervention][:comment_author] = current_user.id if params[:intervention][:comment]
+      params[:intervention][:comment_author] = current_user.id
     end
     @tiers = current_district.tiers
 
@@ -87,7 +85,7 @@ class InterventionsController < ApplicationController
         format.html do
           edit
           params[:enter_score] = true
-          @intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
+          #@intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
           render :action => "edit"
         end
       end
@@ -112,34 +110,12 @@ class InterventionsController < ApplicationController
   end
 
   def undo_end
-    
+
     @intervention.undo_end
     redirect_to current_student
   end
 
-
-  def quicklist_options
-
-    @quicklist_intervention_definitions = (current_school || School.new).quicklist.reject(&:disabled)
-    respond_to do |format|
-      format.js
-      format.html
-    end
-  end
-
-  def quicklist # post
-    # FIXME scope this somehow
-    @intervention_definition = InterventionDefinition.find(params[:quicklist_item][:intervention_definition_id])
-    @intervention_cluster = @intervention_definition.intervention_cluster
-    @objective_definition = @intervention_cluster.objective_definition
-    @goal_definition = @objective_definition.goal_definition
-
-    redirect_to new_intervention_url(:goal_id => @goal_definition, :objective_id => @objective_definition,
-           :category_id => @intervention_cluster, :definition_id => @intervention_definition)#:quicklist => true)
-  end
-
   def ajax_probe_assignment
-    flash.keep(:custom_intervention)
     @intervention = current_student.interventions.find_by_id(params[:intervention_id]) || Intervention.new
     if params[:id] == 'custom'
       @intervention_probe_assignment = @intervention.intervention_probe_assignments.build if @intervention
@@ -154,15 +130,14 @@ class InterventionsController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html {render :layout => false}
       format.js
-      format.html {render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'}
     end
-      
   end
 
   def add_benchmark
     @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-    render :action => 'interventions/probe_assignments/add_benchmark'
+    render :action => 'probe_assignments/add_benchmark'
   end
 
   private
@@ -174,8 +149,8 @@ class InterventionsController < ApplicationController
       if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
         student = intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
-        session[:selected_student] = student.id
-        session[:selected_students] = [student.id]
+        self.current_student_id = student.id
+        self.selected_student_ids = [student.id]
         @intervention = intervention
       else
         flash[:notice] = 'Intervention not available'
@@ -189,5 +164,9 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Intervention could not be found"
       redirect_to current_student and return false
     end
+  end
+
+  def readonly?
+    params[:action] == "show"
   end
 end

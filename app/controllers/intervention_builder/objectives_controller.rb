@@ -1,8 +1,9 @@
 class InterventionBuilder::ObjectivesController < ApplicationController
-  
+
 
   helper_method :move_path
   before_filter :get_goal_definition, :except => :suggestions
+  cache_sweeper :intervention_builder_sweeper
 
   # GET /objective_definitions
   def index
@@ -34,7 +35,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
   # POST /objective_definitions
   def create
     @objective_definition = @goal_definition.objective_definitions.build(params[:objective_definition])
-    
+
     respond_to do |format|
       if @objective_definition.save
         flash[:notice] = 'Objective was successfully created.'
@@ -92,8 +93,8 @@ class InterventionBuilder::ObjectivesController < ApplicationController
       @objective_definition.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
-      format.js {@objective_definitions=@goal_definition.objective_definitions} 
+      format.html {redirect_to :action => :index}
+      format.js {@objective_definitions=@goal_definition.objective_definitions}
     end
   end
 
@@ -103,7 +104,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
     @goal_definition = current_district.goal_definitions.find(params[:goal_id])
     @objective_definition = @goal_definition.objective_definitions.find(params[:id]) if params[:id]
   end
-  
+
   def move_path(item, direction)
     move_intervention_builder_objective_path(:id=>item,:direction=>direction)
   end

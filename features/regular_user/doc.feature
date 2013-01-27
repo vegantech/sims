@@ -12,7 +12,9 @@ Feature: Documentation Generation/View
     And I follow "Instructions for CSV Generation"
     Then I should see "examples.csv"
 
-    
+  Scenario: Example CSV
+    When I enter url "/doc/district_upload/examples"
+    Then I should see "Alternate Files"
 
-
-
+  Scenario: All Individual CSV Docs
+	When I enter all csv urls

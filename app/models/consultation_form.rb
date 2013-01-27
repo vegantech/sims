@@ -17,13 +17,17 @@
 #
 
 class ConsultationForm < ActiveRecord::Base
+  include LinkAndAttachmentAssets
   belongs_to :user
   belongs_to :team_consultation
-  
+
   has_many :consultation_form_concerns, :dependent => :destroy
   delegate :district,  :to => '(team_consultation or return nil)'
   delegate :school_team,  :to => '(team_consultation or return nil)'
   attr_writer :school, :student
+  attr_protected :district_id
+  after_create :email_concern_recipient
+  attr_accessor :new_team_consult
 
 
   define_statistic :consultation_forms , :count => :all, :joins => {:team_consultation => :student}
@@ -40,6 +44,11 @@ class ConsultationForm < ActiveRecord::Base
      0.upto(ConsultationFormConcern::AREAS.length() -1 ){|i| consultation_form_concerns.build(:area => i)} if consultation_form_concerns.blank?
   end
 
+  def filled_in?
+    do_differently.present? || parent_notified.present? || not_in_sims.present? ||
+      desired_outcome.present? || race_culture.present? || consultation_form_concerns.any?(&:filled_in?)
+  end
+
  private
   def set_team_consultation
     if @student.present? && @school.present?
@@ -52,5 +61,11 @@ class ConsultationForm < ActiveRecord::Base
       self.user_id = team_consultation.requestor_id
     end
   end
-  
+
+  def email_concern_recipient
+    if !new_team_consult and user and user.district.email_on_team_consultation_response?
+      TeamReferrals.concern_note_response(self).deliver
+    end
+  end
+
 end

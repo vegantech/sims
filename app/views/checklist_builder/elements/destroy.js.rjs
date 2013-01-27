@@ -1,3 +1,0 @@
-page.update_content "flash_notice", flash[:notice]
-page.remove_content dom_id(@element_definition) if @element_definition.frozen?
-page.update_content dom_id(@element_definition.question_definition,"element_definitions"), :partial => "element_definition", :collection => @element_definition.sibling_definitions

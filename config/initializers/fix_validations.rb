@@ -1,8 +1,8 @@
-class ActiveRecord::Errors 
+class ActiveRecord::Errors
   #a suggested fix from http://stackoverflow.com/questions/2067945/issues-with-displaying-validation-messages-with-nested-forms-rails-2-3
-  def errors_hash 
-    return @errors 
-  end 
+  def errors_hash
+    return @errors
+  end
 end
 
 ActiveRecord::Base.class_eval do
@@ -20,7 +20,7 @@ ActiveRecord::Base.class_eval do
       hash
     end
     if collection.length > hashes.length
-      self.errors.add_to_base(message)
+      self.errors.add(:base,message)
     end
   end
 end

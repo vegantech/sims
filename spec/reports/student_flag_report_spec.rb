@@ -3,17 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe StudentFlagReport do
   describe 'render_text' do
     it 'should generate correct text output' do
+      pending "The report methods should be tested"
       @school=Factory(:school)
       @student=Factory(:student, :first_name=>"Student1")
       @student.enrollments.create!(:school=>@school, :grade=>"3")
       @student2=Factory(:student, :first_name=>"Student2")
       @student2.enrollments.create!(:school=>@school, :grade=>"3")
-     
       @student.custom_flags.create!(:category=>"suspension", :reason=>"Custom Behavior")
       @student.ignore_flags.create!(:category=>"math", :reason=>"Ignored Math")
       @student.system_flags.create!(:category=>"attendance", :reason=>"Attendance rate of 25%")
 
-     
 
 
       pending 'This really is not implemented properly yet'

@@ -1,11 +1,11 @@
 <% cache(["probe_builder_index",probe_definition]) do %>
-<% content_tag_for :tr, probe_definition do %>
+<%= content_tag_for :tr, probe_definition do %>
    <td>
     <%= link_to 'Show', intervention_builder_probe_path(probe_definition)  %> <br />
         <%= link_to 'Edit', edit_intervention_builder_probe_path(probe_definition)  %>   <br />
-    <%= link_to (probe_definition.active? ? 'Disable' : 'Enable'), disable_intervention_builder_probe_path(probe_definition) , 
-      :confirm => 'Are you sure?', :method => :put %> 
-      <%= check_box_tag 'id[]',probe_definition.id, false, :class => "ck_#{probe_definition.id}", :onclick => 'check_same_boxes(this)' %>
+    <%= link_to (probe_definition.active? ? 'Disable' : 'Enable'), disable_intervention_builder_probe_path(probe_definition) ,
+      :confirm => 'Are you sure?', :method => :put %>
+      <%= check_box_tag 'id[]',probe_definition.id, false, :class => "ck_#{probe_definition.id}" %>
 
       <br />
     <%= link_to 'Delete', intervention_builder_probe_path(probe_definition),
@@ -13,7 +13,7 @@
     <%=link_to 'Recommend Int Defs', url_for(:controller=>"intervention_builder/recommended_monitors",:action=>"assign_interventions_to_probe",:id=>probe_definition) %>  <br />
   </td>
  <td>
-      <%='(Deactivated) ' unless probe_definition.active? %> 
+      <%='(Deactivated) ' unless probe_definition.active? %>
       <%=h probe_definition.title %>
   </td>
   <td>

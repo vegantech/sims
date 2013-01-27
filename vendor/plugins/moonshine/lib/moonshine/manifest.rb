@@ -64,12 +64,16 @@ class Moonshine::Manifest < ShadowPuppet::Manifest
   end
 
   # The current environment's database configuration
-  def database_environment
+  def self.database_environment
    if configuration[:database]
      configuration[:database][rails_env.to_sym]
     else
       {}
     end
+  end
+  
+  def database_environment
+    self.class.database_environment
   end
 
   # The current deployment target. Best when used with capistrano-ext's multistage settings.
@@ -150,14 +154,16 @@ class Moonshine::Manifest < ShadowPuppet::Manifest
   def self.template(pathname, b = binding)
     pathname = Pathname.new(pathname) unless pathname.kind_of?(Pathname)
 
-    template_contents = if local_template(pathname).exist?
-                          template_contents = local_template(pathname).read
-                        elsif pathname.exist?
-                          template_contents = pathname.read
-                        else
-                          raise LoadError, "Can't find template #{pathname}"
-                        end
-    ERB.new(template_contents).result(b)
+    pathname = if local_template(pathname).exist?
+                 local_template(pathname)
+               elsif pathname.exist?
+                 pathname
+               else
+                 raise LoadError, "Can't find template #{pathname}"
+               end
+    erb = ERB.new(pathname.read)
+    erb.filename = pathname.to_s
+    erb.result(b)
   end
 
   def template(pathname, b = binding)

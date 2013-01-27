@@ -42,6 +42,7 @@ Feature: Create Custom Intervention
     And I press "Choose Category"
 
     Then I should see "Custom Intervention Name"
+    And the custom intervention should have the school and user set
 
   Scenario: Create invalid existing
     #feature for 212
@@ -67,7 +68,7 @@ Feature: Create Custom Intervention
     # And I go Back to student profile screen
 
     # And I should see "Choose Goal"
-    And page should contain "Choose Category"
+    And page source should contain "Choose Category"
 
   Scenario: Create invalid custom
     #missing title    feature for #212
@@ -95,5 +96,5 @@ Feature: Create Custom Intervention
     And I should see "Title can't be blank"
 
     # And I should see "Choose Category"
-    And page should contain "Choose Category"
+    And page source should contain "Choose Category"
 

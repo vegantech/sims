@@ -3,10 +3,11 @@
 
 <h2>Choose Sections for Student Report <%= @student.fullname %></h2>
 
-<% form_tag :action => "student_overall", :student_id => @student do %><br/ >
+<%= form_tag :action => "student_overall", :student_id => @student do %><br/ >
   <% @opts.each do |section| %>
     <%= check_box :report_params, section, :checked => true %>
-    <label for="report_params_<%= section.to_s %>"><%= section.to_s.humanize.gsub(/ and or /, ' and/or ') %></label><br/>
+    <label for="report_params_<%= section.to_s %>"><%= section.to_s.humanize.gsub(/ and or /, ' and/or ') %></label>
+    <%= help_popup ReportsController::STUDENT_OVERALL_OPTIONS_HELP[section] %><br/>
   <% end %><br/>
 
   <%= submit_tag "Generate Report", :name => 'generate' %>

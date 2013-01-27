@@ -1,7 +1,0 @@
-page.replace_html('new_team_note', :partial=>'students/add_note_link')
-page.insert_html(:after, 'new_team_note', :partial=>'comment', :object=>@student_comment)
-page.select('#no_team_notes').each do |value|
-  value.hide()
-end
-page.replace_html('team_notes_count', team_notes_count(@student_comment.student))
-page.replace_html("studentflags", "#{status_display @student_comment.student, true}")

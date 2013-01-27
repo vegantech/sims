@@ -1,6 +1,6 @@
 <h1>Editing Question Definition <%= @question_definition.rank %> for Checklist Definition <%= @checklist_definition.checklist_definition_id %></h1>
 <%= error_messages_for :question_definition %>
-<%- form_for :question_definition, :url => question_definition_path(@checklist_definition, @question_definition), :html => { :method => :put, :id => dom_id(@question_definition, 'form') } do |f| -%>
+<%= form_for :question_definition, :url => question_definition_path(@checklist_definition, @question_definition), :html => { :method => :put, :id => dom_id(@question_definition, 'form') } do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :question_definition => @question_definition } %>
   <p>
     <%= submit_tag "Update" %>

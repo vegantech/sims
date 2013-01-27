@@ -13,7 +13,6 @@ class Frequency < ActiveRecord::Base
   #TODO ADD POSITION
   @all_cache_order = "id"
   include AllCache
-  acts_as_reportable
 
   def to_s
     title

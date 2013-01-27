@@ -1,7 +1,7 @@
 module CSVImporter
   class AllSchools < CSVImporter::Base
 
-    FIELD_DESCRIPTIONS = { 
+    FIELD_DESCRIPTIONS = {
       :district_user_id => 'Key for user'
     }
 
@@ -10,7 +10,7 @@ module CSVImporter
       def description
         "List of users with access to all schools in the district. Be sure to also give them regular user access and to assign them to groups."
       end
-      
+
       def csv_headers
         [:district_user_id]
       end
@@ -63,24 +63,25 @@ module CSVImporter
     end
 
     def delete
-      query = "delete from sug using special_user_groups sug
-      inner join users on sug.user_id = users.id
-      where users.district_id = #{@district.id}
-      and sug.grouptype = #{SpecialUserGroup::ALL_SCHOOLS_IN_DISTRICT}
-      and users.district_user_id != ''
-      "
-      SpecialUserGroup.connection.delete query
+      query = "update users u
+               left outer join #{temporary_table_name} t_r on t_r.district_user_id = u.district_user_id
+               set all_schools = false,
+               u.updated_at = CURDATE()
+               where t_r.district_user_id is null and u.district_user_id != '' and u.all_schools = 1
+               and u.district_id = #{@district.id}
+               "
+      User.connection.update query
     end
 
     def insert
-      query=("insert into special_user_groups
-      (user_id,grouptype,district_id, created_at, updated_at)
-      select u.id , #{SpecialUserGroup::ALL_SCHOOLS_IN_DISTRICT},#{@district.id}, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
-      users u on u.district_user_id = tug.district_user_id
-      and u.district_id = #{@district.id}  
-      "
-      )
-      SpecialUserGroup.connection.update query
+      query = "update users u
+               inner join #{temporary_table_name} t_r on t_r.district_user_id = u.district_user_id
+               set all_schools = true,
+               u.updated_at = CURDATE()
+               where u.district_user_id != '' and u.all_schools = 0
+               and u.district_id = #{@district.id}
+               "
+      User.connection.update query
     end
   end
 end

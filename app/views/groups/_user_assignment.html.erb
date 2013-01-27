@@ -1,5 +1,0 @@
-<% div_for user_assignment do %>
-<%= user_assignment.user %><%="-Principal" if user_assignment.is_principal? %>
- <%=link_to_remote_degrades "Remove User", :url=>remove_user_group_path(@group,:user_assignment_id=>user_assignment), :method=>:delete %>
-
-<% end %>

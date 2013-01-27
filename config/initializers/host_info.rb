@@ -1,3 +1,11 @@
+
+
+# Use the database for sessions instead of the cookie-based default,
+# which shouldn't be used to store highly confidential information
+# (create the session table with "rails generate session_migration")
+# Sims::Application.config.session_store :active_record_store
+
+
 #SIMS_DOMAIN = #sims-open.vegantech.com
 SIMS_PROTO="http"  #change to https when we're using that.
 #DEFAULT_URL = #'http://www.simspilot2.org:3000'
@@ -7,11 +15,11 @@ SIMS_PROTO="http"  #change to https when we're using that.
 
 # Your secret key for verifying cookie session data integrity.
 # If you change this key, all old sessions will become invalid!
-# Make sure the secret is at least 30 characters and all random, 
+# Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
 #
 #
-secret_file = File.join(RAILS_ROOT,"config","secret")
+secret_file = Rails.root.join("config","secret")
 if File.exist?(secret_file)
   secret=File.read(secret_file)
 else
@@ -19,23 +27,30 @@ else
 end
 sessionhash= {
     :key         => '_sims-open2_session',
-    :secret      => secret
+    :secret      => secret,
+    :secure => (Rails.env.production? || Rails.env.staging? )
     }
 
-sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}") if defined? SIMS_DOMAIN
-    
+if ENV['SIMS_DOMAIN']
+  SIMS_DOMAIN = ENV['SIMS_DOMAIN']
+end
 
-ActionController::Base.session = sessionhash
+if defined?(SIMS_DOMAIN)
+  sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}")
+else
+  sessionhash.merge!( :domain => ".lvh.me")
+end
 
-# Use the database for sessions instead of the cookie-based default,
-# which shouldn't be used to store highly confidential information
-# (create the session table with "rake db:sessions:create")
-# ActionController::Base.session_store = :active_record_store
+Sims::Application.config.session_store :cookie_store, sessionhash
+if Object.const_defined?('SIMS_DOMAIN')
 
-host="www.#{Object.const_get("SIMS_DOMAIN")}" if Object.const_defined?('SIMS_DOMAIN')
+  SIMS_DOMAIN_LENGTH = (SIMS_DOMAIN.split(".").length() -1)
+  host="www.#{Object.const_get("SIMS_DOMAIN")}"
+else
+  SIMS_DOMAIN_LENGTH = 1
+end
 ActionMailer::Base.default_url_options = {
   :only_path => false,
   :protocol => SIMS_PROTO,
   :host => host ||"www.sims_test_host"
 }
-  

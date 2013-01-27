@@ -1,9 +1,8 @@
- <% form_for(@intervention_participant,:url=>intervention_participant_url(@intervention,@intervention_participant), :method => :put) do |f| %>
+ <%= form_for(@intervention_participant,:url=>intervention_participant_url(@intervention,@intervention_participant), :method => :put) do |f| %>
   <%= f.error_messages %>
  <p>
     <%= f.label :role %><br />
     <%= f.select(:role, InterventionParticipant::ROLES[0..-2]) %>
-    
  <p>
     <%= f.submit "Update" %>
   </p>

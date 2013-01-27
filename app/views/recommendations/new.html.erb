@@ -1,15 +1,14 @@
 <% if @recommendation.recommendation_definition %>
 <%
-@title1="Checklist to Address Culturally Responsive Practices: Part 2" 
+@title1="Checklist to Address Culturally Responsive Practices: Part 2"
 @subtitle1="Summarize progress and make recommendations"
 @title2= "Progress and Recommendations for #{@recommendation.student.fullname}"
 %>
-<% form_for @recommendation  do |f| -%>
+<%= form_for @recommendation  do |f| -%>
   <%=render :partial=>f, :locals=>{:recommendation=>@recommendation, :show_previous=>true}%>
    <%= submit_tag "Submit" %>
    <%= submit_tag "Save Draft", :name=>"draft" %>
   <%= spell_check_button %>
- 
 <%- end -%>
 <br clear="left"/>
 <% else %>

@@ -1,10 +1,9 @@
 class UnattachedInterventionsController < ApplicationController
-  additional_read_actions :update_end_date
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
     if current_school.blank?
-     flash[:notice] = "Please select a school first"  
+     flash.now[:notice] = "Please select a school first"
     else
       @users =  current_school.assigned_users
     end
@@ -12,7 +11,6 @@ class UnattachedInterventionsController < ApplicationController
     @new_participant = InterventionParticipant.new
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @interventions }
     end
   end
 
@@ -39,7 +37,7 @@ class UnattachedInterventionsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html 
+      format.html
       format.js
     end
   end
@@ -54,9 +52,9 @@ class UnattachedInterventionsController < ApplicationController
         @participant = nil
       end
     end
-    
+
     respond_to do |format|
-      format.html 
+      format.html
       format.js
     end
     #create participant
@@ -83,7 +81,7 @@ class UnattachedInterventionsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js  
+      format.js
     end
   end
 

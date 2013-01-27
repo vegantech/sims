@@ -1,13 +1,8 @@
-<% if session[:user_id] %>
+<% if user_signed_in? %>
   <p>Welcome to SIMS.
   You can use the menu at the left to navigate.  In most cases you will want to select a school.</p>
-<% else %>
-  <%=render :partial => 'login/login' %>
 <% end %>
 
-<p>
-  Hold your mouse over  <%=help_popup("Hovering over the ? will show you additional help for some features in SIMS")  %> to find additional help.
-  </p>
   <br / >
 
 

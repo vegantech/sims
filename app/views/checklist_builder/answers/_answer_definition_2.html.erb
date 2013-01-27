@@ -1,8 +1,8 @@
 <h4>Answer Definition <%= answer_definition.position %></h4>
 <span style="float:left">
-<%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), 
+  <%= link_to_remote image_tag("arrow-up.gif", :class => 'button_space_below'), :method => :post,
                    :url => move_checklist_builder_answer_path(:id => answer_definition, :direction => "up") %><br />
-<%= link_to_remote image_tag("arrow-down.gif"), 
+                   <%= link_to_remote image_tag("arrow-down.gif"), :method => :post,
                    :url => move_checklist_builder_answer_path(:id => answer_definition, :direction => "down") %>
 </span>
 <table>
@@ -18,19 +18,15 @@
     <td colspan="2">
       <%= link_to_remote content_tag(:span, "Show Details", :id => dom_id(answer_definition,"show_link")),
                          :url => checklist_builder_answer_path(answer_definition.checklist_definition, answer_definition.question_definition, answer_definition.element_definition, answer_definition),
-                         :loading => "Element.show('#{dom_id(answer_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(answer_definition,"spinner")}')",
                          :method => :get %> |
-      <%= link_to_remote content_tag(:span, "Edit", :id => dom_id(answer_definition,"edit_link")),
+      <%= link_to_remote content_tag(:span, "Edit ", :id => dom_id(answer_definition,"edit_link")),
                          :url => edit_checklist_builder_answer_path(answer_definition.checklist_definition, answer_definition.question_definition, answer_definition.element_definition, answer_definition),
-                         :loading => "Element.show('#{dom_id(answer_definition,"spinner")}')",
-                         :complete => "Element.hide('#{dom_id(answer_definition,"spinner")}')",
                          :method => :get %> |
       <%= link_to_remote 'Delete', 
                          :url => checklist_builder_answer_path(answer_definition.checklist_definition, answer_definition.question_definition, answer_definition.element_definition, answer_definition),
                          :confirm => 'Are you sure?  This cannot be undone.', 
                          :method => :delete %>
-      <%= image_tag "spinner.gif", :id => dom_id(answer_definition,"spinner"), :style => "display:none" %>
+      <%= spinner dom_id(answer_definition) %>
     </td>
   </tr>
 </table>

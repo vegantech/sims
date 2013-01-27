@@ -27,14 +27,14 @@ DEFAULTS: &DEFAULTS
   roles_mask: <%=Role.roles_to_mask('regular_user') %>
 
 one:
-  passwordhash: 
+  passwordhash:
   first_name: MyString
   last_name: MyString
   district: wi_test
   <<: *DEFAULTS
 
 two:
-  passwordhash: 
+  passwordhash:
   first_name: MyString
   last_name: MyString
   <<: *DEFAULTS
@@ -42,7 +42,7 @@ two:
 allstudents:
   first_name: "All"
   last_name: "Students"
-  passwordhash: <%= User.encrypted_password("allstudents") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("allstudents") %>
   district: wi_test
   <<: *DEFAULTS
 
@@ -50,7 +50,7 @@ allstudents:
 alphaprin:
   first_name: "Principal"
   last_name: "Alpha Elementary"
-  passwordhash: <%= User.encrypted_password("alphaprin") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("alphaprin") %>
   district: wi_test
   <<: *DEFAULTS
 
@@ -58,28 +58,28 @@ alphaprin:
 alphagradethree:
   first_name: "Grade 3"
   last_name: "Alpha Elementary"
-  passwordhash: <%= User.encrypted_password("alphagradethree") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("alphagradethree") %>
   district: wi_test
   <<: *DEFAULTS
 
 
   first_name: No
   last_name: schools
-  passwordhash: <%= User.encrypted_password("noschools") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("noschools") %>
   district: wi_test
   <<: *DEFAULTS
 
 nogroups:
   first_name: No
   last_name: groups
-  passwordhash: <%= User.encrypted_password("nogroups") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("nogroups") %>
   district: wi_test
   <<: *DEFAULTS
 
 district_admin:
   first_name: Default
   last_name: District_Admin
-  passwordhash: <%= User.encrypted_password("district_admin") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("district_admin") %>
   district: wi_test
   roles_mask: <%=Role.roles_to_mask %w{regular_user news_admin local_system_administrator} %>
   <<: *DEFAULTS
@@ -89,7 +89,7 @@ content_builder:
   first_name: District
   last_name: Content Builder
   district: wi_test
-  passwordhash: <%= User.encrypted_password("content_builder") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("content_builder") %>
   username: content_builder
   roles_mask: <%=Role.roles_to_mask %w{content_admin} %>
 
@@ -98,7 +98,7 @@ system_admin:
   last_name: Adminsitrator
   username: district_admin
   district: admin_admin_admin
-  passwordhash: <%= User.encrypted_password("district_admin") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("district_admin") %>
   roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin local_system_administrator} %>
  
 us_admin:
@@ -106,7 +106,7 @@ us_admin:
   last_name: Adminsitrator
   username: district_admin
   district: us_admin_admin
-  passwordhash: <%= User.encrypted_password("district_admin") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("district_admin") %>
   roles_mask: <%=Role.roles_to_mask %w{news_admin country_admin state_admin local_system_administrator} %>
  
 wi_admin:
@@ -114,7 +114,7 @@ wi_admin:
   last_name: Adminsitrator
   username: district_admin
   district: wi_admin
-  passwordhash: <%= User.encrypted_password("district_admin") %>
+  passwordhash: <%= Devise::LegacyPassword.legacy_encrypted_password("district_admin") %>
   roles_mask: <%=Role.roles_to_mask %w{news_admin state_admin local_system_administrator} %>
   
 

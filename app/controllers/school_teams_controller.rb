@@ -1,4 +1,4 @@
-class SchoolTeamsController < ApplicationController
+class SchoolTeamsController < SchoolAdminController
   # GET /school_teams
   # GET /school_teams.xml
   def index
@@ -6,7 +6,6 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @school_teams }
     end
   end
 
@@ -17,7 +16,6 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @school_team }
     end
   end
 
@@ -26,10 +24,8 @@ class SchoolTeamsController < ApplicationController
   def new
     @school_team = SchoolTeam.new
     set_users_in_groups
-    
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @school_team }
     end
   end
 
@@ -46,13 +42,11 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.save
-        flash[:notice] = 'SchoolTeam was successfully created.'
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully created.".html_safe
         format.html { redirect_to(school_teams_url) }
-        format.xml  { render :xml => @school_team, :status => :created, :location => @school_team }
       else
         set_users_in_groups
         format.html { render :action => "new" }
-        format.xml  { render :xml => @school_team.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -65,13 +59,11 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       if @school_team.update_attributes(params[:school_team])
-        flash[:notice] = 'SchoolTeam was successfully updated.'
+        flash[:notice] = "#{edit_obj_link(@school_team)} was successfully updated.".html_safe
         format.html { redirect_to(school_teams_url) }
-        format.xml  { head :ok }
       else
         set_users_in_groups
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @school_team.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -84,7 +76,6 @@ class SchoolTeamsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(school_teams_url) }
-      format.xml  { head :ok }
     end
   end
 

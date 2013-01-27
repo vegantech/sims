@@ -1,4 +1,4 @@
-<% content_tag_for :tr, team_consultation  do %>
+<%= content_tag_for :tr, team_consultation  do %>
   <td> <%= team_consultation.school_team %> </td>
   <td> <%= team_consultation.recipients.join(", ") %> </td>
   <td> <%= team_consultation.requestor %> </td>
@@ -6,23 +6,23 @@
   <% if team_consultation.complete? %>
     <td> <%= team_consultation.consultation_forms.collect(&:user).compact.join('<br />') %> </td>
   <% end %>
-  
   <td>
   <% if team_consultation.complete? %>
-    <%content_tag_for :span, team_consultation, "show_hide_view" do %>
-      <%= link_to_remote_degrades "view" , {:url =>team_consultation, :method => :get} %>&nbsp;&nbsp;&nbsp;
+    <%=content_tag_for :span, team_consultation, "show_hide_view" do %>
+      <%= link_to_remote "view" , team_consultation, :method => :get %>&nbsp;&nbsp;&nbsp;
+      <%= link_to_remote "Undo Complete" , undo_complete_team_consultation_path(team_consultation), :method => :put %>&nbsp;&nbsp;&nbsp;
 
     <% end %>
   <% else %>
     <!--   Edit  -->
     <% if team_consultation.requestor == current_user && team_consultation.consultation_forms.all?{|cf| cf.user_id == current_user.id }%>
-      <%= link_to_remote_degrades("Withdraw",{:url=> team_consultation, :method => :delete, :confirm => "This will remove your team consultation request."})  %>&nbsp;&nbsp;&nbsp;
+      <%= link_to_remote("Withdraw",team_consultation, :method => :delete, :confirm => "This will remove your team consultation request.")  %>&nbsp;&nbsp;&nbsp;
     <% end %>
     <% if team_consultation.recipients.include?(current_user) %>
         <!-- Schedule  -->
-        &nbsp;<%= link_to_remote_degrades "Gather Information", :url => new_consultation_form_request_url %>&nbsp;&nbsp;&nbsp;
+        &nbsp;<%= link_to_remote "Gather Information", new_consultation_form_request_url %>&nbsp;&nbsp;&nbsp;
 
-      <%= link_to_remote_degrades "Complete", :confirm => "Are you Sure?", :url => complete_team_consultation_path(team_consultation), :method => :put %>
+      <%= link_to_remote "Complete", complete_team_consultation_path(team_consultation),:confirm => "Are you Sure?" , :method => :put %>
     <% end %>
   <% end %>
   </td>

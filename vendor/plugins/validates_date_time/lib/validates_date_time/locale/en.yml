@@ -1,0 +1,8 @@
+en:
+  errors:
+    messages:
+      date: "is an invalid date"
+      dummy_time: "is an invalid time"
+      time: "is an invalid date time"
+      before: "must be before %{value}"
+      after: "must be after %{value}"

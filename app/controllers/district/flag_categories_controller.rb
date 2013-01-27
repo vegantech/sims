@@ -6,7 +6,6 @@ class District::FlagCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @flag_categories }
     end
   end
 
@@ -17,7 +16,6 @@ class District::FlagCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @flag_category }
     end
   end
 
@@ -35,10 +33,8 @@ class District::FlagCategoriesController < ApplicationController
       if @flag_category.save
         flash[:notice] = 'FlagCategory was successfully created.'
         format.html { redirect_to(flag_categories_url) }
-        format.xml  { render :xml => @flag_category, :status => :created, :location => @flag_category }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @flag_category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -53,10 +49,8 @@ class District::FlagCategoriesController < ApplicationController
       if @flag_category.update_attributes(params[:flag_category])
         flash[:notice] = 'FlagCategory was successfully updated.'
         format.html { redirect_to(flag_categories_url) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @flag_category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -69,7 +63,6 @@ class District::FlagCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(flag_categories_url) }
-      format.xml  { head :ok }
     end
   end
 end

@@ -1,5 +1,6 @@
-<% content_for :news do %>
-  <%= render :partial => 'main/news' %>
+<% content_for :bottom_of_main do %>
+  <p>
+  Hold your mouse over  <%=help_popup("Hovering over the ? will show you additional help for some features in SIMS")  %> to find additional help.
+  </p>
 <% end %>
-<%= render :file => RAILS_ROOT+"/app/views/layouts/application.html.erb" %>
-
+<%= render :template => 'layouts/application' %>

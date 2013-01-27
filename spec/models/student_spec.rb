@@ -27,7 +27,7 @@ describe Student do
     @student = Factory(:student, :id_state => 1234)
   end
 
-  it "should be valid"  
+  it "should be valid"
 
 
  describe 'extended_profile?' do
@@ -35,7 +35,7 @@ describe Student do
     describe 'when file exists' do
       it 'should return true' do
         pending
-      
+
         @student.extended_profile?.should be_true
       end
     end
@@ -56,11 +56,11 @@ describe Student do
       student.save
       student.extended_profile.should match(/should set the extended profile for the student on save/)
       puts student.extended_profile
-      
+
     end
 
   end
-  
+
 
   describe 'extended_profile' do
     describe 'when file exists' do
@@ -72,7 +72,7 @@ describe Student do
     end
     describe 'when file does not exist' do
       it 'should return nil' do
-        @student.extended_profile.should == '' 
+        @student.extended_profile.should == ''
       end
     end
   end
@@ -95,20 +95,20 @@ describe Student do
   end
 
   describe 'belongs_to_user?' do
-    
+
     it 'should return false if there are no enrollments in the grade' do
       pending
       Enrollment.delete_all
       Enrollment.student_belonging_to_user?(User.new).should == false
     end
 
-    it 'should return true if the grade contains a student belonging to that user' do 
+    it 'should return true if the grade contains a student belonging to that user' do
     pending
       school = School.create!(:name => 'My School', :district => mock_district)
       e = Enrollment.create!(:grade=>'1',:school=>school, :student=>mock_student)
       user = User.new
       user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([e])
-    
+
       Enrollment.student_belonging_to_user?(user).should == true
     end
 
@@ -139,23 +139,6 @@ describe Student do
     Student.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
-  describe 'find_checklist' do
-    before do
-      Checklist.stub!({:find=>@mc=mock_checklist(:show_score? => true)})
-
-    end
-    it 'should include the answes and score by default' do
-      @mc.should_receive(:score_checklist)
-      Student.new.find_checklist('55').should ==@mc
-    end
-
-    it 'should just find if show is false' do
-      Student.new.find_checklist('55', show=false).should == @mc
-    end
-
-
-  end
-
   describe 'max_tier' do
     before do
       @district=@student.district
@@ -183,14 +166,53 @@ describe Student do
       Checklist.should_receive(:max_tier).and_return(high_tier)
       @student.max_tier.should == high_tier
     end
-  
+
 
   end
 
+  describe 'birthdate' do
+    let(:student) {Factory.build(:student)}
+    
+    it 'should allow a blank birthdate' do
+      student.birthdate = ''
+      student.should be_valid
+    end
 
- 
-     
-  
+    it 'should allow a birthdate set to 0' do
+      student.birthdate = '0'
+      student.should be_valid
+    end
+
+    it 'should allow a birthdate set to nil' do
+      student.birthdate = nil
+      student.should be_valid
+    end
+
+
+    it 'should not allow an invalid birthdate' do
+      student.birthdate = "2000"
+      student.birthdate.should be_nil
+    end
+  end
+
+
+
+
+  describe 'safe_destroy' do
+    let(:student) {Factory(:student)}
+
+    it 'should destroy the student with no custom content' do
+      student.safe_destroy
+      student.should be_destroyed
+    end
+
+    it 'should not destroy a student with custom content in the db' do
+      Factory(:custom_flag, :student => student)
+      student.safe_destroy
+      student.should_not be_destroyed
+    end
+  end
+
 
 
 

@@ -12,10 +12,14 @@
   DocumentRoot <%= configuration[:deploy_to] + "/current/public" %>
 
   <Directory <%= configuration[:deploy_to] + "/current/public" %>>
+    <% if configuration[:passenger][:limit_except] %>
+      <%= configuration[:passenger][:limit_except] %>
+    <% end %>
     Options FollowSymLinks
     AllowOverride <%= if configuration[:apache]; configuration[:apache][:allow_override] || 'None'; else 'None'; end %>
     Order allow,deny
     Allow from all
+    <%= "FileETag #{configuration[:apache][:file_etag]}" if configuration[:apache][:file_etag] %>
   </Directory>
 
   <% if configuration[:apache ] && (configuration[:apache][:users] || configuration[:apache][:allow] || configuration[:apache][:deny]) %>
@@ -33,7 +37,7 @@
       <% configuration[:apache][:deny].to_a.each do |deny| %>
       deny from <%= deny %>
       <% end %>
-      <% configuration[:apache][:allow].to_a.each do |allow| %> 
+      <% configuration[:apache][:allow].to_a.each do |allow| %>
       allow from <%= allow %>
       <% end %>
       <% if configuration[:apache][:users] %>
@@ -42,6 +46,22 @@
       Satisfy <%= configuration[:apache][:satisfy] || 'Any' %>
     </Limit>
   </Location>
+  <% end %>
+
+  <% if asset_pipeline_enabled? %>
+    # Recommendations for asset pipline: http://guides.rubyonrails.org/asset_pipeline.html#in-production
+    <LocationMatch "^/assets/.*$">
+      Header unset ETag
+      FileETag None
+      # RFC says only cache for 1 year
+      ExpiresActive On
+      ExpiresDefault "access plus 1 year"
+    </LocationMatch>
+  <% else %>
+    # Using the Rails Asset pipeline? Enable it with:
+    #
+    #   :assets:
+    #     :enabled: true
   <% end %>
 
   ##
@@ -88,7 +108,7 @@
   # Use this option to specify the default RACK_ENV value. The default
   # setting is production.
 
-  RackEnv <%= configuration[:passenger][:rails_env] || ENV['RAILS_ENV'] || 'production' %>
+  RackEnv <%= configuration[:passenger][:rack_env] || configuration[:passenger][:rails_env] || ENV['RAILS_ENV'] || 'production' %>
 
   ## RailsEnv
   #
@@ -114,6 +134,71 @@
 
   RailsSpawnMethod <%= configuration[:passenger][:rails_spawn_method] || 'smart' %>
 
+  ## PassengerMinInstances
+  #
+  # This specifies the minimum number of application instances that must be
+  # kept around whenever Phusion Passenger cleans up idle instances. You should
+  # set this option to a non-zero value if you want to avoid potentially long
+  # startup times after a website has been idle for an extended period.
+  #
+  # Please note that this option does not pre-start application instances during
+  # Apache startup. It just makes sure that when the application is first accessed:
+  # - at least the given number of instances will be spawned.
+  # - the given number of processes will be kept around even when instances are
+  #   being idle cleaned (see PassengerPoolIdleTime).
+  #
+  # If you want to pre-start application instances during Apache startup, then you
+  # should use the PassengerPreStart directive, possibly in combination with
+  # PassengerMinInstances.
+
+  <% if configuration[:passenger][:min_instances] %>
+  PassengerMinInstances <%= configuration[:passenger][:min_instances] %>
+  <% end %>
+
+  ## PassengerPreStart
+  #
+  # By default, Phusion Passenger does not start any application instances
+  # until said web application is first accessed. The result is that the
+  # first visitor of said web application might experience a small delay as
+  # Phusion Passenger is starting the web application on demand. If that is
+  # undesirable, then this directive can be used to pre-started application
+  # instances during Apache startup.
+  #
+  # This directive only accepts a URL that fits the following criteria:
+  # - The domain part of the URL must be equal to the value of the ServerName
+  #   directive of the VirtualHost block that defines the web application.
+  # - Unless the web application is deployed on port 80, the URL should
+  #   contain the web application's port number too.
+  # - The path part of the URL must point to some URI that the web
+  #   application handles.
+  #
+  # You probably want to combine this with PassengerMinInstances.
+  #
+  # Example URL: http://example.com/
+
+  <% if configuration[:passenger][:pre_start_url] %>
+  PassengerPreStart <%= configuration[:passenger][:pre_start_url] %>
+  <% end %>
+
+  ## PassengerAppGroupName
+  #
+  # By default, Passenger groups applcations by the the path they are served out of,
+  # ie /srv/yourapp/current.
+  #
+  # At times, it may be useful be serving the same app from multiple vhosts, but have
+  # them be have different workers. For example, you may have a /ping URL that needs to
+  # respond quickly, without being affected by the rest of the app. In this case, you can:
+  #
+  #  * create a new vhost pointing at the same app
+  #  * set PassengerAppGroupName to ping
+  #  * configure a proxy to forward /ping to the new vhost
+
+  <% if configuration[:passenger][:app_group_name] %>
+  PassengerAppGroupName <%= configuration[:passenger][:app_group_name] %>
+  <% else %>
+  #PassengerAppGroupName <%= configuration[:application] %>
+  <% end %>
+
   # Deflate
   <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE <%= configuration[:apache][:gzip_types].join(' ') %>
@@ -121,6 +206,8 @@
     BrowserMatch ^Mozilla/4\.0[678] no-gzip
     BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
   </IfModule>
+
+  RequestHeader set X-Request-Start "%t"
 
   RewriteEngine On
 
@@ -136,9 +223,11 @@
 	<%= configuration[:passenger][:maintenance_rewrite] %>
 <% else %>
   # Check for maintenance file and redirect all requests
+  ErrorDocument 503 /system/maintenance.html
   RewriteCond %{REQUEST_URI} !\.(css|jpg|png|gif)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
-  RewriteRule ^.*$ /system/maintenance.html [L]
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [R=<%= configuration[:passenger][:maintenance_status_code] || 503 %>,L]
 <% end %>
 
   # Rewrite index to check for static
@@ -164,7 +253,7 @@
   RequestHeader set X_FORWARDED_PROTO "https"
 
   SSLEngine on
-  SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+  SSLCipherSuite <%= configuration[:ssl][:cipher_suite] || 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL' %>
   SSLCertificateFile    <%= configuration[:ssl][:certificate_file] || '/etc/ssl/certs/ssl-cert-snakeoil.pem' %>
   SSLCertificateKeyFile <%= configuration[:ssl][:certificate_key_file] || '/etc/ssl/private/ssl-cert-snakeoil.key' %>
   <% if configuration[:ssl][:certificate_chain_file] %>
@@ -185,10 +274,14 @@
   DocumentRoot <%= configuration[:deploy_to] + "/current/public" %>
 
   <Directory <%= configuration[:deploy_to] + "/current/public" %>>
+    <% if configuration[:passenger][:limit_except] %>
+      <%= configuration[:passenger][:limit_except] %>
+    <% end %>
     Options FollowSymLinks
-    AllowOverride None
+    AllowOverride <%= if configuration[:apache]; configuration[:apache][:allow_override] || 'None'; else 'None'; end %>
     Order allow,deny
     Allow from all
+    <%= "FileETag #{configuration[:apache][:file_etag]}" if configuration[:apache][:file_etag] %>
   </Directory>
 
   <% if configuration[:apache ] and (configuration[:apache][:users] || configuration[:apache][:allow] || configuration[:apache][:deny]) %>
@@ -206,7 +299,7 @@
       <% configuration[:apache][:deny].to_a.each do |deny| %>
       deny from <%= deny %>
       <% end %>
-      <% configuration[:apache][:allow].to_a.each do |allow| %> 
+      <% configuration[:apache][:allow].to_a.each do |allow| %>
       allow from <%= allow %>
       <% end %>
       <% if configuration[:apache][:users] %>
@@ -215,6 +308,22 @@
       Satisfy <%= configuration[:apache][:satisfy] || 'Any' %>
     </Limit>
   </Location>
+  <% end %>
+
+  <% if asset_pipeline_enabled? %>
+    # Recommendations for asset pipline: http://guides.rubyonrails.org/asset_pipeline.html#in-production
+    <LocationMatch "^/assets/.*$">
+      Header unset ETag
+      FileETag None
+      # RFC says only cache for 1 year
+      ExpiresActive On
+      ExpiresDefault "access plus 1 year"
+    </LocationMatch>
+  <% else %>
+    # Using the Rails Asset pipeline? Enable it with:
+    #
+    #   :assets:
+    #     :enabled: true
   <% end %>
 
   ##
@@ -255,6 +364,13 @@
   # RailsAllowModRewrite is deprecated. Passenger supports mod_rewrite by default now. configure(:passenger => { :allow_mod_rewrite => true/false }) if you still wish to use it.
   <% end %>
 
+  ## RackEnv
+  #
+  # Use this option to specify the default RACK_ENV value. The default
+  # setting is production.
+
+  RackEnv <%= configuration[:passenger][:rack_env] || configuration[:passenger][:rails_env] || ENV['RAILS_ENV'] || 'production' %>
+
   ## RailsEnv
   #
   # Use this option to specify the default RAILS_ENV value. The default
@@ -279,6 +395,52 @@
 
   RailsSpawnMethod <%= configuration[:passenger][:rails_spawn_method] || 'smart' %>
 
+  ## PassengerMinInstances
+  #
+  # This specifies the minimum number of application instances that must be
+  # kept around whenever Phusion Passenger cleans up idle instances. You should
+  # set this option to a non-zero value if you want to avoid potentially long
+  # startup times after a website has been idle for an extended period.
+  #
+  # Please note that this option does not pre-start application instances during
+  # Apache startup. It just makes sure that when the application is first accessed:
+  # - at least the given number of instances will be spawned.
+  # - the given number of processes will be kept around even when instances are
+  #   being idle cleaned (see PassengerPoolIdleTime).
+  #
+  # If you want to pre-start application instances during Apache startup, then you
+  # should use the PassengerPreStart directive, possibly in combination with
+  # PassengerMinInstances.
+
+  <% if configuration[:passenger][:min_instances] %>
+  PassengerMinInstances <%= configuration[:passenger][:min_instances] %>
+  <% end %>
+
+  ## PassengerPreStart
+  #
+  # By default, Phusion Passenger does not start any application instances
+  # until said web application is first accessed. The result is that the
+  # first visitor of said web application might experience a small delay as
+  # Phusion Passenger is starting the web application on demand. If that is
+  # undesirable, then this directive can be used to pre-started application
+  # instances during Apache startup.
+  #
+  # This directive only accepts a URL that fits the following criteria:
+  # - The domain part of the URL must be equal to the value of the ServerName
+  #   directive of the VirtualHost block that defines the web application.
+  # - Unless the web application is deployed on port 80, the URL should
+  #   contain the web application's port number too.
+  # - The path part of the URL must point to some URI that the web
+  #   application handles.
+  #
+  # You probably want to combine this with PassengerMinInstances.
+  #
+  # Example URL: http://example.com/
+
+  <% if configuration[:passenger][:pre_start_url] %>
+  PassengerPreStart <%= configuration[:passenger][:pre_start_url] %>
+  <% end %>
+
   # Deflate
   <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE <%= configuration[:apache][:gzip_types].join(' ') %>
@@ -286,6 +448,8 @@
     BrowserMatch ^Mozilla/4\.0[678] no-gzip
     BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
   </IfModule>
+
+  RequestHeader set X-Request-Start "%t"
 
   RewriteEngine On
 
@@ -305,9 +469,11 @@
 	<%= configuration[:passenger][:maintenance_rewrite] %>
 <% else %>
   # Check for maintenance file and redirect all requests
+  ErrorDocument 503 /system/maintenance.html
   RewriteCond %{REQUEST_URI} !\.(css|jpg|png|gif)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
-  RewriteRule ^.*$ /system/maintenance.html [L]
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [R=<%= configuration[:passenger][:maintenance_status_code] || 503 %>,L]
 <% end %>
 
   # Rewrite index to check for static

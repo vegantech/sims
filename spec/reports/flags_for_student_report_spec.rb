@@ -1,9 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe FlagsForStudentReport do
+describe "FlagsForStudentReport" do
   describe 'render_text' do
     it 'should generate correct text output' do
-      now = Time.parse("2008-12-12 00:00 UTC")
+      pending "Move this to a feature"
+      now = Time.zone.parse("2008-12-12 00:00")
       Time.stub!(:now => now)
 
       d = mock_district(:key=>'D#')

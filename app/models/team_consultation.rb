@@ -18,16 +18,18 @@ class TeamConsultation < ActiveRecord::Base
   belongs_to :requestor, :class_name =>'User'
   belongs_to :school_team, :foreign_key => 'team_id'
   has_many :consultation_forms, :dependent => :destroy
-  
   delegate :district,  :to => '(student or return nil)'
+  delegate :name,  :to => :school_team, :prefix => true
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
-  after_validation_on_update :email_concern_recipient, :if=>'draft_changed?'
+  after_validation :email_concern_recipient, :if=>'draft_changed?', :on => :update
   after_destroy :email_concern_recipient_about_withdrawal
-  named_scope :complete, :conditions => {:complete=>true}
-  named_scope :pending, :conditions => {:complete=>false, :draft=>false}
-  named_scope :draft, :conditions => :draft
+  scope :complete, where(:complete=>true)
+  scope :pending, where(:complete=>false, :draft=>false)
+  scope :draft, where(:draft => true)
+
+  scope :pending_for_user, lambda {|user| where(:complete => false).where(["(draft = ?) OR (draft = ? AND requestor_id = ?)",false,true,user]) }
 
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
   define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student
@@ -37,13 +39,13 @@ class TeamConsultation < ActiveRecord::Base
 
   def email_concern_recipient
     if student && requestor && !draft
-      TeamReferrals.deliver_concern_note_created(self)
+      TeamReferrals.concern_note_created(self).deliver
     end
   end
 
   def email_concern_recipient_about_withdrawal
     if student && requestor
-      TeamReferrals.deliver_concern_note_withdrawn(self)
+      TeamReferrals.concern_note_withdrawn(self).deliver
     end
   end
 
@@ -51,7 +53,7 @@ class TeamConsultation < ActiveRecord::Base
 
   def recipients
     if school_team.present?
-    User.find_all_by_id(school_team.contact_ids) 
+    User.find_all_by_id(school_team.contact_ids)
     else
       []
     end
@@ -59,5 +61,9 @@ class TeamConsultation < ActiveRecord::Base
 
   def complete!
     update_attribute(:complete, true)
+  end
+
+  def undo_complete!
+    update_attribute(:complete, false)
   end
 end

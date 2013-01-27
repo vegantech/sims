@@ -13,5 +13,4 @@
 class TimeLength < ActiveRecord::Base
   @all_cache_order ="days"
   include AllCache
-  acts_as_reportable
 end

@@ -2,13 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'test/unit'
 
 describe DistrictsController do
-  it_should_behave_like "an authenticated controller"
   it_should_behave_like "an authorized controller"
+  include_context "authorized"
+  include_context "authenticated"
+
   fixtures :districts
 
   before do
     @district=mock_district(:admin? => true)
     District.stub!(:normal => @n=[1,2,3,4,5,6])
+    District.stub!(:for_dropdown => @n)
 
     controller.stub!(:current_district=>@district)
   end
@@ -30,7 +33,7 @@ describe DistrictsController do
 
   it 'should get new' do
     get :new
-    assigns[:district].new_record?.should be_true
+    assigns(:district).new_record?.should be_true
     response.should be_success
   end
 
@@ -41,23 +44,25 @@ describe DistrictsController do
       flash[:notice].should ==  'District was successfully created.'
 
       response.should redirect_to(districts_url)
-   end
-  
+    end
+
     it 'should render new when  invalid district' do
       @n.should_receive(:build).with(nil).and_return(m=mock_district(:save=>false))
       post :create
-      assigns[:district].should == m
+      assigns(:district).should == m
       response.should render_template("new")
-  end
+    end
   end
 
 
-  def test_should_get_edit
+  it 'test_should_get_edit' do
+    pending 'test:unuit needs updating'
     get :edit, :id => districts(:one).id
     assert_response :success
   end
 
-  def test_should_update_district
+  it  'test_should_update_district' do
+    pending 'test unit needs updating'
     @district.should_receive(:update_attributes).and_return(true)
     put :update, :id => districts(:one).id, :district => { }
     assert_redirected_to root_url
@@ -71,8 +76,8 @@ describe DistrictsController do
   end
 
 
-  def test_should_destroy_district
-    pending
+  it 'test_should_destroy_district' do
+    pending 'test unit needs updating'
     assert_difference('District.count', -1) do
       delete :destroy, :id => districts(:one).id
     end

@@ -1,11 +1,10 @@
-<% readonly = true
-@intervention = detail %>
+<% @intervention = detail %>
 <div class="new_form">
-  <% form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
+  <%= form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
     <div class="form_row">
       <div class="fake_label">Objective</div><%=@intervention.objective_definition %>
     </div>
-  
+
     <p>
       <div class="fake_label">Category</div><%=@intervention.intervention_cluster %>
       <%= description(@intervention.intervention_cluster) %>
@@ -18,7 +17,7 @@
       <div class="fake_label">Tier</div><%=@intervention.tier %> <br />
       <br class="brclear" />
       <%= description(@intervention) %>
-      
+
     </div>
     <% unless @intervention.active? %>
       <div class ="form_row">
@@ -28,7 +27,6 @@
     <div class ="form_row">
       <div class="fake_label">Created:</div><%="#{@intervention.created_at.to_date} by #{@intervention.user}"%>
     </div>
-    
   <br class="brclear" />
   <p>
 
@@ -60,7 +58,7 @@
   <div class="form_row">
     <%= f.label :participant_users, 'Participants' %>
     <table><tr><td>
-      <%= render :partial => 'interventions/participants/list', :locals => {:form => f , :readonly => readonly} %>
+      <%= render :partial => 'interventions/participants/list', :locals => {:form => f } %>
     </td></tr></table>
   </div>
   <br class="brclear" />
@@ -70,9 +68,8 @@
 
 <h3> Comments</h3>
   <%= content_tag :table, render_with_empty(:partial => "interventions/comments/comment", :collection => detail.comments.reject(&:new_record?),
-     :empty => "<tr><td>There are no comments for this intervention.</td></tr>", :locals => {:readonly => true}
+     :empty => "<tr><td>There are no comments for this intervention.</td></tr>"
      ) %>
-                                           
 
 
 
@@ -88,6 +85,6 @@
     params[:probe_definition_id] = ipa.probe_definition_id
   
   %>
-    <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail', :locals => {:readonly => readonly } %>
+    <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'  %>
   <% end %>
   <hr />

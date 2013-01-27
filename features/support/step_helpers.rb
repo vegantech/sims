@@ -6,20 +6,20 @@ def go_to_page page_name
   else
     log_in
     # flunk response.body
-    click_link 'School Selection' if response.body.include?('School Selection')
+    click_link 'School Selection' if page.has_content?('School Selection')
 
     page_name = page_name.sub(/^the /i, '').sub(/ page$/i, '')
 
     case page_name
     when 'search'
-      click_button 'Choose School' unless response.body.include?("Default School has been automatically selected.")
-      puts response.body unless response.body.include?('Search')
+      click_button 'Choose School' unless page.has_content?("Default School has been automatically selected.")
+      puts page.body unless page.has_button? 'Search'
     when 'school selection'
     when 'new role'
     when 'student profile'
       # search
-      unless response.body.include?("Default School has been automatically selected.")
-        select("Default School")
+      unless page.has_content?("Default School has been automatically selected.")
+        select("Default School", :from=> "school_id")
         click_button "Choose School"
       end
       click_button "Search for Students"
@@ -32,15 +32,14 @@ def go_to_page page_name
 end
 
 def click_all_name_id_brackets
-  doc=Hpricot(response.body)
-  doc.search("//input[@name='id[]']").each do |elem|
-    check(elem[:id])
+  all('input[name="id[]"]').each do |elem|
+    elem.set(true) #check
   end
 end
 
 def verify_select_box id, options
   options=Array(eval(options))
-  response.should have_dropdown(id, options)
+  page.should have_select(id, :options=>options)
 end
 
 def log_in
@@ -50,7 +49,7 @@ def log_in
   fill_in 'Login', :with => @default_user.username
   fill_in 'Password', :with => @default_user.username
   click_button 'Login'
-  response.should_not have_text(/Authentication Failure/)
+  page.should_not have_content("Authentication Failure")
 end
 
 def find_or_create_user user_name
@@ -63,13 +62,12 @@ def create_user user_name='first_last', password=user_name
     :last_name => user_name.split("_").last || 'Last',
     :password=> password,
     :district_id => default_district.id
-    
 end
 
 def create_school school_name
   found = School.find_by_name(school_name)
   s = found || Factory(:school,:name => school_name, :district_id => default_district.id)
-  default_user.schools << s unless default_user.schools.include?(s)
+  default_user.user_school_assignments.create!(:school => s) unless default_user.schools.include?(s)
   @school||=s
   s
 end
@@ -117,7 +115,7 @@ def create_default_student
   @default_user.groups << g
   @default_user.save!
 
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :district => @student.district)
+  @default_user.special_user_groups.create!(:school_id=>@school.id)
 
   @student
 end
@@ -141,6 +139,16 @@ def clear_login_dropdowns
   #School.destroy_all
   District.delete_all
   @default_district=nil
+end
+
+def setup_intervention(opts = {})
+  dist = opts.delete :district
+  i=Factory(:intervention,opts)
+  if dist
+    d=i.intervention_definition.district
+    i.goal_definition.update_attribute(:district_id, dist.id)
+    d.toggle!(:admin)
+  end
 end
 
 private

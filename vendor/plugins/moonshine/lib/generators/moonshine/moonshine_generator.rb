@@ -1,4 +1,8 @@
+require File.join(File.dirname(__FILE__), '..', 'moonshine_helper')
+
 class MoonshineGenerator < Rails::Generators::Base
+  include MoonshineGeneratorHelpers
+  
   desc Pathname.new(__FILE__).dirname.join('..', '..', '..', 'generators', 'moonshine', 'USAGE').read
   argument :name, :optional => true, :default => 'application'
  
@@ -6,7 +10,8 @@ class MoonshineGenerator < Rails::Generators::Base
   class_option :user, :default => 'rails', :desc => 'User to use on remote server', :type => :string
   class_option :domain, :default => 'yourapp.com', :desc => 'Domain name of your application', :type => :string
   class_option :repository, :default => 'git@github.com:username/your_app_name.git', :desc => 'git or subversion repository to deploy from', :type => :string
-  class_option :ruby, :default => 'ree187', :desc => 'Ruby version to install. Currently supports: mri, ree, ree187, src187', :type => :string
+
+  class_option :ruby, :default => default_ruby, :desc => 'Ruby version to install. Currently supports: mri, ree, ree187, src187, src192, src193', :type => :string
   class_option :multistage, :default => false, :desc => 'setup multistage deployment environment', :type => :boolean
 
   def self.source_root
@@ -19,6 +24,25 @@ class MoonshineGenerator < Rails::Generators::Base
     template "moonshine.rb", "app/manifests/#{file_name}.rb"
     template "moonshine.yml", "config/moonshine.yml"
     template "deploy.rb", "config/deploy.rb"
+
+    if ActiveSupport::VERSION::MAJOR == 3 && ActiveSupport::VERSION::MINOR >= 1
+      app_manifests_load_prevention_string = <<-EOS
+
+  # don't attempt to auto-require the moonshine manifests into the rails env
+  config.paths['app/manifests'] = 'app/manifests'
+  config.paths['app/manifests'].skip_eager_load!
+
+EOS
+    else 
+      app_manifests_load_prevention_string = <<-EOS
+
+  # don't attempt to auto-require the moonshine manifests into the rails env
+  config.paths.app.manifests 'app/manifests', :eager_load => false
+
+EOS
+    end
+
+    environment app_manifests_load_prevention_string, :verbose => true
 
     if options[:multistage]
       template 'staging-deploy.rb', 'config/deploy/staging.rb'
@@ -76,7 +100,7 @@ protected
   end
 
   def application
-    @application ||= File.basename(RAILS_ROOT)
+    @application ||= File.basename(rails_root_path)
   end
 
   

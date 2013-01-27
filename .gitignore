@@ -7,7 +7,9 @@ doc/api
 doc/app
 config/database.yml
 config/secret
+config/windows_live.yml
 *~
+*.swp
 *.sqlite3
 db/*.sqlite3-journal
 coverage
@@ -19,3 +21,8 @@ public/javascripts/all.js
 public/system
 sims_open.tmproj
 rerun.txt
+.bundle
+vendor/cache
+db/*.sqlite3
+tmp/
+deploy_all.sh

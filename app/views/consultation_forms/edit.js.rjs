@@ -1,3 +1,0 @@
-page.insert_html(:after, "#{dom_id(@consultation_form)}", :partial=>"edit")
-page.hide("show_hide_view_#{dom_id(@consultation_form)}")
-page.hide("edit_#{dom_id(@consultation_form)}")

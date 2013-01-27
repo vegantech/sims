@@ -1,8 +1,8 @@
 class InterventionBuilder::InterventionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :disable
-  additional_write_actions :sort
   before_filter(:get_intervention_cluster, :except=>:suggestions)
   helper_method :move_path
+  cache_sweeper :intervention_builder_sweeper
   # GET /intervention_definitions
   def index
     params[:enabled]=true and params[:commit]=true unless params[:commit]
@@ -14,7 +14,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
         @intervention_definitions.reject!(&:disabled) unless params[:disabled]
         @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
       end
-      
       if params[:custom] || params[:system]
         @intervention_definitions.reject!(&:custom) unless params[:custom]
         @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
@@ -62,7 +61,6 @@ class InterventionBuilder::InterventionsController < ApplicationController
   # PUT /intervention_definitions/1
   def update
     @intervention_definition.attributes=params[:intervention_definition]
-    
     respond_to do |format|
       if @intervention_definition.save
         flash[:notice] = 'Intervention was successfully updated.'
@@ -102,7 +100,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
       @intervention_definitions.each(&:disable!)
     end
 
-    flash[:notice] = "#{@template.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
+    flash[:notice] = "#{view_context.pluralize(@intervention_definitions.size, 'Intervention Definition')} #{a}."
     respond_to do |format|
       format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
     end
@@ -117,16 +115,15 @@ class InterventionBuilder::InterventionsController < ApplicationController
       @intervention_definition.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
-      format.js {@intervention_definitions=@intervention_cluster.intervention_definitions} 
+      format.html {redirect_to :action => :index}
+      format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}
     end
   end
 
   def sort
-    params[:intervention_definition_list].each_with_index do |id, index|
+    params[:intervention_definition_list].split(",").each_with_index do |id, index|
       @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
     end
-    render :nothing => true
   end
 
   private

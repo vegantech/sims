@@ -16,32 +16,14 @@ describe ApplicationHelper do
     helper.spinner.should match(/spinner.gif.*display:none/)
     helper.spinner("suffix").should match(/spinnersuffix/)
   end
- 
-  it 'should provide link_to_remote with graceful degradition to html when javascript is off' do
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")}).should ==
-      helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
-
-
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}}).should ==
-     helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
-  end
-
-  
-  it 'should provide link_to_remote_if' do
-    helper.link_to_remote_if(false,"blah").should == "blah"
-    helper.link_to_remote_if(true,"links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"}).should ==
-      helper.link_to_remote_degrades("links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"})
-  end
 
   it 'should provide link_to_with_icon' do
     file="testing_of_Stuff.doc"
     url="http://www.test.com"
     r=helper.link_to_with_icon( file, url, " Suffix")
-    r.should have_tag("a[href=?]>img[src*=?]",url, "icon_doc.gif")
+    r.should have_tag("a[href=\"#{url}\"]>img[src*=\"icon_doc.gif\"]")
     r.should match(/testing of Stuff Suffix/)
-    r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=?]>img[src*=?]",url, "icon_htm.gif")
+    r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=\"#{url}\"]>img[src*=\"icon_htm.gif\"]")
 
 
   end
@@ -61,7 +43,7 @@ describe ApplicationHelper do
       helper.li_link_to_if_authorized('Shawn').should be_nil
     end
     it 'should wrap the link in li tags if authorized' do
-      
+
       helper.should_receive(:link_to_if_authorized).and_return 'zzz'
       helper.li_link_to_if_authorized('Shawn').should == '<li>zzz</li>'
     end
@@ -82,16 +64,36 @@ describe ApplicationHelper do
     it 'should link to a hash based path' do
       helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
       helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  helper.link_to('rauknauk','/railmail')
-      
+
     end
 
     it 'should prepend a / to the controller to fix 236' do
       helper.should_receive(:current_user).and_return(mock_user('authorized_for?'=>true))
-      helper.should_receive(:link_to).with("rauknauk", {:controller=>"/railmail", :action=>"index"}, {}).and_return('eeeeeeee')
+      helper.should_receive(:link_to).with("rauknauk", {:controller=>"/railmail"}, {}).and_return('eeeeeeee')
       helper.link_to_if_authorized('rauknauk',:controller=>'railmail').should ==  'eeeeeeee'
 
     end
-    
+
+  end
+
+  describe 'body' do
+    it 'without user or student' do
+      helper.stub!(:current_user => nil)
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == "<body>dog</body>"
+    end
+    it 'without student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == '<body data-user="6">dog</body>'
+    end
+
+    it 'with user and student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => 82)
+      helper.body(){"dog"}.should == '<body data-student="82" data-user="6">dog</body>'
+    end
+
   end
 
   describe 'restrict_to_principals?' do
@@ -121,5 +123,28 @@ describe ApplicationHelper do
     end
   end
 
-  
+  describe 'windows_live?' do
+    it 'should work' do
+      old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE
+      no_live = District.new
+      no_live.stub!(:windows_live? => false)
+      live = District.new
+      live.stub!(:windows_live? => true)
+
+      Object.send :remove_const, "WINDOWS_LIVE_CONFIG" if defined? ::WINDOWS_LIVE
+      helper.windows_live?(no_live).should be_false
+      helper.windows_live?(live).should be_false
+
+      ::WINDOWS_LIVE_CONFIG=2
+      helper.windows_live?(no_live).should be_false
+      helper.windows_live?(live).should be_true
+
+      Object.send :remove_const, "WINDOWS_LIVE_CONFIG"
+
+      ::WINDOWS_LIVE_CONFIG = old_const if defined? old_const
+
+    end
+  end
+
+
 end

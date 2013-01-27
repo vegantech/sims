@@ -1,0 +1,4 @@
+<div class="hidden_participant">
+  <%= select_tag("intervention[participant_user_ids][]", options_for_select(@users), :disabled => 'disabled') %>
+  <%= link_to("X", "#", :class => "cancel_link", :data => {:remove_up => 'div'}) %>
+</div>

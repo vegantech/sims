@@ -1,5 +1,5 @@
 <h1>New Progress Monitor</h1>
-<% form_for(new_probe_definition(@probe_definition), :url=>intervention_builder_probes_path, :html => { :multipart => true }) do |f| %>
+<%= form_for(new_probe_definition(@probe_definition), :url=>intervention_builder_probes_path, :html => { :multipart => true }) do |f| %>
   <%= render :partial => f %>
   <%= submit_tag 'Create' %>
   <%= spell_check_button %>

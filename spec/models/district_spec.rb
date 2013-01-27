@@ -72,19 +72,6 @@ describe District do
     district.search_intervention_by.should == []
   end
 
-  describe "available_roles" do
-    it 'should merge system and district roles' do
-      district_roles=[1,2,4]
-      system_roles = [2,3,5]
-      district=District.new
-
-      district.should_receive(:roles).and_return(district_roles)
-      System.should_receive(:roles).and_return(system_roles)
-      district.available_roles.should == [1,2,4,3,5]
-    end
-
-  end
-
  describe 'admin district' do
     it 'should return the state admin district for a leaf (normal) district' do
       @local_district.admin_district.should == @state_district
@@ -94,7 +81,7 @@ describe District do
   describe 'key validation' do
     it 'should fail validation if there is a previous key and the key is changed' do
       @local_district.previous_key = 'different'
-      @local_district.key = nil
+      @local_district.key = 'notdog'
       @local_district.save!
 
       @local_district.key = 'dog'
@@ -107,16 +94,128 @@ describe District do
       @local_district.key= 'cat'
       @local_district.save
 
-      @local_district.previous_key.should == 'dog'
-
-      
-      
-      
-
-      
-      
+      @local_district.previous_key.should == 'notdog'
 
     end
 
   end
+
+
+  it 'should have spec for check keys'
+
+  describe 'claim student' do
+    it 'should not call external verification if it is not setup' do
+      district=District.new
+      VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(false)
+      VerifyStudentInDistrictExternally.should_not_receive(:verify)
+      district.claim(Student.new)
+    end
+
+    it 'should call external verification if it is setup' do
+      district=District.new
+      VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(true)
+      VerifyStudentInDistrictExternally.should_receive(:verify)
+      district.claim(Student.new)
+    end
+
+    #initially I just want to try to claim the student if STUDENT_LOCATION_VERIFICATION_URL is defined
+    it 'should have specs'
+
+    it 'should' do
+      pending  %q{check hash
+      2. if districtless check historical enrollments, if last district was current district allow reclaimaing
+       3.check dpi location verification}
+    end
+  end
+
+  describe 'can_claim?' do
+    it 'should have specs'
+  end
+
+  describe 'find_by_subdomain' do
+    let!(:district) {District.delete_all;Factory(:district, :abbrev => 'rspec123')}
+    describe 'with matching subdomain' do
+      specify{ District.find_by_subdomain('rspec123').should == district }
+      specify{ District.find_by_subdomain('rspec123-wi-us').should == district }
+    end
+
+    it 'should return the  first normal district when there is only 1' do
+      District.normal.count.should == 1
+      District.find_by_subdomain('nothere').should == district
+    end
+
+    it 'should return the first admin district when there is only 1 district' do
+      district.toggle!(:admin)
+      District.count.should == 1
+      District.find_by_subdomain('nothere').should == district
+    end
+
+    it 'should not return the first admin district when there are multiple normal' do
+      other_district2 = Factory(:district)
+      other_district1 = Factory(:district)
+      new_district = District.find_by_subdomain('nothere')
+      new_district.should be_new_record
+      new_district.name.should == "Please Select a District"
+    end
+
+
+    it 'should create a new district when not found' do
+      other_district = Factory(:district)
+      new_district= District.find_by_subdomain('nothere')
+      new_district.should be_new_record
+      new_district.name.should == "Please Select a District"
+    end
+  end
+
+  describe 'boolean settings' do
+    subject {District.new}
+
+    describe 'restrict_free_lunch' do
+      its(:restrict_free_lunch?) {should be}
+    end
+
+    District::BOOLEAN_SETTINGS.each do |setting|
+      describe setting do
+        ["1",true].each do |truth_value|
+          describe "when set to #{truth_value}" do
+            subject {District.new setting => truth_value }
+            its("#{setting}?") {should be_true}
+          end
+        end
+        describe setting do
+          ["0",nil,false].each do |truth_value|
+            describe "when set to #{truth_value}" do
+              subject {District.new setting => truth_value }
+              its("#{setting}?") {should be_false}
+            end
+          end
+        end
+      end
+
+    end
+  end
+#  describe 'when set to nil' do
+#    subject {District.new :restrict_free_lunch => nil}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to "0"' do
+#        subject {District.new :restrict_free_lunch => "0"}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to "1"' do
+#        subject {District.new :restrict_free_lunch => "1"}
+#        its(:restrict_free_lunch?) {should be_true}
+#      end
+#      describe 'when set to false' do
+#        subject {District.new :restrict_free_lunch => false}
+#        its(:restrict_free_lunch?) {should be_false}
+#      end
+#      describe 'when set to true' do
+#        subject {District.new :restrict_free_lunch => true}
+#        its(:restrict_free_lunch?) {should be}
+#      end
+#
+#    end
+#  end
+#
 end

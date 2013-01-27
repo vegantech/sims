@@ -1,4 +1,4 @@
-<div>
-  <%= select_tag("student_intervention[participant_user_ids][]", options_for_select(users)) %>
-  <%= link_to("X", "#", :onclick => "this.parentNode.parentNode.removeChild(this.parentNode)") %>
+<div class="hidden_participant">
+  <%= select_tag("student_intervention[participant_user_ids][]", options_for_select(users), :disabled => 'disabled') %>
+  <%= link_to "X", "#", :class => 'cancel_link', :data => {:remove_up => 'div'} %>
 </div>

@@ -1,0 +1,2 @@
+$("#<%=dom_id(@student_comment,"edit")%>").remove();
+$("#<%=dom_id(@student_comment)%>").html("<%=escape_javascript(render @student_comment)%>").show();

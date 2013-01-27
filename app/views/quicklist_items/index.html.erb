@@ -5,7 +5,7 @@ the most used interventions, or ones that you recommend.
 </p>
 
 
-<% form_tag '',:id =>'quicklist_items' do %>
+<%= form_tag '',:id =>'quicklist_items' do %>
   <% @goals.reject(&:disabled).each do |goal| %>
   <%=link_to  goal.title,"##{goal.title.to_s.gsub(/ /,"_")}" %>
 <% end %>
@@ -19,8 +19,8 @@ the most used interventions, or ones that you recommend.
         <%= content_tag :h3, tier %>
         <%interventions.each do |intervention| %>
           <div class="quicklist_item">
-          <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %> 
-          <%= label_tag dom_id(intervention), intervention.title %> 
+          <%= check_box_tag "intervention_definition_ids[]", intervention.id, @quicklist_items.include?(intervention), {:id=>dom_id(intervention)} %>
+          <%= label_tag dom_id(intervention), intervention.title %>
         </div>
         <% end %>
       <% end %>

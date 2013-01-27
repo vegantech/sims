@@ -12,7 +12,7 @@
 #
 
 class Tier < ActiveRecord::Base
-  
+
   belongs_to :district
   has_many :checklists, :foreign_key=>:from_tier
   has_many :recommendations
@@ -20,10 +20,10 @@ class Tier < ActiveRecord::Base
   has_many :principal_override_requests, :class_name=>'PrincipalOverride', :foreign_key=>:start_tier_id
   has_many :principal_override_acceptances, :class_name=>'PrincipalOverride', :foreign_key=>:end_tier_id
 
-  before_destroy :move_children_to_delete_successor, :if => :used_at_all? 
+  before_destroy :move_children_to_delete_successor, :if => :used_at_all?
   acts_as_list :scope => :district_id
-  acts_as_reportable
   validates_presence_of :title
+  attr_protected :district_id
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :select => 'distinct title'
@@ -45,7 +45,7 @@ class Tier < ActiveRecord::Base
   end
 
   def not_needed_anymore?
-    result = self.checklists | self.recommendations | 
+    result = self.checklists | self.recommendations |
               self.intervention_definitions | self.principal_override_requests |
               self.principal_override_acceptances
     result = nil if result.empty?

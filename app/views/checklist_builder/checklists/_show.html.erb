@@ -38,24 +38,20 @@
   <tr>
       <td colspan="4">
         <%= link_to 'Preview', preview_checklist_builder_checklist_path(checklist_definition) %> |
-          <%= link_to "Edit",  edit_checklist_builder_checklist_path(checklist_definition) %>
+          <%= link_to "Edit",  edit_checklist_builder_checklist_path(checklist_definition) %> |
         <%= link_to 'Back', checklist_builder_checklists_path %> |
-        <%= link_to_remote content_tag(:span, "Add Question", :id => dom_id(checklist_definition,:add_question_definition_link)), 
-                           :url => new_checklist_builder_question_path(checklist_definition),
-                           :loading => "Element.show('#{dom_id checklist_definition,:spinner }')",
-                           :complete => "Element.hide('#{dom_id checklist_definition,:spinner }')",
-                           :method => :get %> |
-                           <%= link_to_remote content_tag(:span, "Show Question Definitions", :id => dom_id(checklist_definition,:view_question_definitions_toggle)),
-                           :url => checklist_builder_questions_path(checklist_definition),
-                           :loading => "Element.show('#{dom_id checklist_definition, :spinner}')",
-                           :complete => "Element.hide('#{dom_id checklist_definition, :spinner}')",
-                           :method => :get %>
-                           <%= image_tag "spinner.gif", :id => "#{dom_id(checklist_definition,:spinner)}", :style => "display:none" %>
+        <%= link_to_remote "Add Question", new_checklist_builder_question_path(checklist_definition),
+          :id => dom_id(checklist_definition,:add_question_definition_link),
+          :method => :get %> |
+          <%= link_to_remote "Show Question Definitions", checklist_builder_questions_path(checklist_definition),
+          :id => dom_id(checklist_definition,:view_question_definitions_toggle),
+          :method => :get %>
+          <%= spinner dom_id(checklist_definition) %>
       </td>
     </tr>
   </table>
-  <%div_for(checklist_definition,:preview ,:style=>"display:none"){} %>
-  <%div_for( checklist_definition, :edit, :style=>"display:none") {} %>
-  <%div_for(checklist_definition,:new_question_definition_notice ,:style=>"display:none"){} %>
-  <%div_for(checklist_definition,:new_question_definition ,:style=>"display:none"){} %>
-  <%content_tag_for(:ul, checklist_definition, :question_definitions, :style=>"display:none") {} %>
+  <%=div_for(checklist_definition,:preview ,:style=>"display:none"){} %>
+  <%=div_for( checklist_definition, :edit, :style=>"display:none") {} %>
+  <%=div_for(checklist_definition,:new_question_definition_notice ,:style=>"display:none"){} %>
+  <%=div_for(checklist_definition,:new_question_definition ,:style=>"display:none"){} %>
+  <%=content_tag_for(:ul, checklist_definition, :question_definitions, :style=>"display:none") {} %>

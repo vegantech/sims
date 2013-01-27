@@ -3,8 +3,15 @@
 #  and in `app/manifest/<%=  file_name%>.rb` via `configuration`
 
 # ruby to install at `cap deploy:setup` time. If you change this value, you
-# need to run `cap ruby:upgrade`. Currently allowed values include: mri,
-# src187, ree, ree187
+# need to run `cap ruby:upgrade`.
+#
+# As of time of generating, these are valid values:
+# * mri (as installed by Ubuntu)
+# * src187
+# * ree
+# * ree187
+# * src192
+# * src193
 :ruby: <%= ruby %>
 
 # Name of your application. Should be something with only alphanumerics, hypens
@@ -35,6 +42,7 @@
 #:scm: git
 # Reposistory URI for checking out code at deploy time
 :repository: <%= repository %>
+:deploy_via: remote_cache
 
 # Use :app_symlinks to setup directories under public/ that you want to persist
 # across deployments. They'll be symlinked to the shared directory.
@@ -51,7 +59,7 @@
 - system
 - log
 - pids
-- config
+- tmp
 
 # Specify native dependencies of gems. Moonshine comes with some preconfigured
 # defaults, but this allows you to add to them. Please file an issue at

@@ -24,7 +24,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Intervention do
-  describe 'something' do 
+  describe 'something' do
     it 'should' do
       pending 'Remove this, after refactoring'
       e= {"end_date(3i)"=>"25", "start_date(1i)"=>"2009", "apply_to_all"=>"0", "start_date(2i)"=>"4", "auto_implementer"=>"0", "intervention_probe_assignment"=>{"end_date(3i)"=>"25", "probe_definition_id"=>"", "probe_definition"=>{"title"=>"", "minimum_score"=>"", "description"=>"jhj", "maximum_score"=>""}, "frequency_multiplier"=>"2", "first_date(1i)"=>"2009", "first_date(2i)"=>"4", "frequency_id"=>"284292352", "first_date(3i)"=>"26", "end_date(1i)"=>"2009", "end_date(2i)"=>"7"}, "start_date(3i)"=>"26", "frequency_multiplier"=>"1", "time_length_id"=>"503752779", "frequency_id"=>"284292352", "intervention_definition_id"=>"", "comment"=>{"comment"=>""}, "end_date(1i)"=>"2009", "time_length_number"=>"1", "intervention_definition"=>{"title"=>"Custom Intervention Title", "description"=>"Custom Intervention Desc", "tier_id"=>"284451385", "intervention_cluster_id"=>"34708545"}, "end_date(2i)"=>"7"}
@@ -33,7 +33,6 @@ describe Intervention do
       id=i.intervention_definition
       id.valid?
       puts id.errors.inspect
-      
       i.save #should fail but won't yet
       ProbeDefinition.count.should == c
 
@@ -78,7 +77,7 @@ describe Intervention do
         i.save!
         i.should be_valid
 
-        i.reload 
+        i.reload
         i.update_attributes(:intervention_probe_assignment => {'first_date(1i)' => '2009', 'first_date(2i)' => '1', 'first_date(3i)' => '1',
           'end_date(1i)' => '2004', 'end_date(2i)' => '1', 'end_date(3i)' => '1', 'probe_definition_id' => 2}).should be_false
       end
@@ -105,7 +104,7 @@ describe Intervention do
 
   it "should end an intervention" do
     i = Factory(:intervention, :start_date => 2.days.ago, :end_date => Date.today)
-    
+
     i.end(1)
     i.active.should ==(false)
     i.ended_by_id.should ==(1)
@@ -138,7 +137,7 @@ describe Intervention do
         Intervention.new.frequency_multiplier.should == InterventionDefinition::DEFAULT_FREQUENCY_MULTIPLIER
         Intervention.new.frequency.should == Frequency.find_by_title('Weekly')
       end
-    
+
       it 'should have the time length set to 4 weeks' do
         TimeLength.create!(:days=>1, :title => 'Day')
         TimeLength.create!(:days=>7, :title => 'Week')
@@ -152,7 +151,6 @@ describe Intervention do
         tl=TimeLength.new(:days => 3, :title => 'Triad')
         attrs = {:time_length => tl, :time_length_number => 5, :start_date =>"2006-05-05"}
         Intervention.new(attrs).end_date.should == "2006-05-20".to_date
-
       end
     end
 
@@ -174,9 +172,116 @@ describe Intervention do
         intervention.end_date.should == 210.days.since(Date.today)
       end
     end
-      
 
-    
+    describe 'build and initialize' do
+      it 'should set auto_implementor to true if it has not already been set' do
+        Intervention.build_and_initialize({}).auto_implementer.should be_true
+      end
+
+      it 'should leave auto_implementor alone if it is set to 0' do
+        Intervention.build_and_initialize({:auto_implementer => "0"}).auto_implementer.should == "0"
+      end
+      it 'should also have proper specs for build and initialize'
+    end
+  end
+
+    it 'should test adding and editing a comment'
+
+  describe 'creating for other students' do
+    before :all do
+      @student1 = Factory(:student)
+      @student2 = Factory(:student, :district => @student1.district)
+      @intervention = Factory.build(:intervention, :student => @student1)
+    end
+    describe 'with apply_to_all = 1' do
+      before :all do
+        @intervention.apply_to_all = '1'
+      end
+
+      it 'should add the comment to all interventions' do
+        @intervention.comments.build(:comment => "woo")
+        @intervention.comment_author = @intervention.user_id
+        @intervention.send(:create_other_students)
+        Intervention.last.comments.first.comment.should == "woo"
+      end
+
+      it 'should not create additional interventions and the selected students is a string matching the intervention student' do
+        Intervention.should_not_receive :create!
+        @intervention.selected_ids = @student1.id.to_s
+        @intervention.send(:create_other_students)
+      end
+
+      it 'should not create additional interventions and the selected students is a array matching the intervention student' do
+        Intervention.should_not_receive :create!
+        @intervention.selected_ids = [@student1.id.to_s]
+        @intervention.send(:create_other_students)
+      end
+
+      it 'should create an additional intervention for the other selected student' do
+        Intervention.should_receive :create!
+        @intervention.selected_ids = [@student1.id.to_s, @student2.id.to_s]
+        @intervention.send(:create_other_students)
+      end
+    end
+
+    it 'should not create additional interventions when apply to all is false' do
+      Intervention.should_not_receive :create!
+      @intervention.selected_ids = [@student1.id.to_s, @student2.id.to_s]
+      @intervention.apply_to_all = '0'
+      @intervention.send(:create_other_students)
+    end
+  end
+
+  describe 'email' do
+    describe 'new intervention' do
+     it 'should send intervention starting email' do
+      Intervention.delete_all
+      @student1 = Factory(:student)
+      @student2 = Factory(:student, :district => @student1.district)
+      @user1 = Factory(:user, :district => @student1.district)
+      @user2 = Factory(:user, :district => @student1.district)
+      @intervention = Factory.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
+                                    :selected_ids => [@student1.id.to_s, @student2.id.to_s],
+                                   :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
+      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(:deliver=>true))
+      Notifications.should_not_receive(:intervention_participant_added)
+      @intervention.save!
+     end
+    end
+
+    describe 'updating intervention' do
+      it 'should send new participant email if a new participant is added' do
+        @intervention= Factory(:intervention)
+        @user2 = Factory(:user, :district => @intervention.user.district)
+        @user3 = Factory(:user, :district => @intervention.user.district)
+        @intervention = Intervention.find(@intervention.id)
+        Notifications.should_not_receive(:intervention_starting)
+        Notifications.should_receive(:intervention_participant_added).twice.and_return(mock(:deliver => true))
+        @intervention.frequency_multiplier = 10
+        @intervention.participant_user_ids=[@user2.id.to_s, @user3.id.to_s]
+        @intervention.save
+      end
+    end
+
+  end
+
+  describe 'participant_user_ids=' do
+    let(:intervention) {Factory.build(:intervention)}
+    let(:user) {Factory(:user)}
+
+    it 'should support new users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_users.should == [user]
+    end
+
+    it 'should support editing users' do
+      intervention.participant_user_ids = [user.id, "","",user.id,1,2,3,"5"]
+      intervention.save
+      intervention.participant_user_ids = ["","",2,3]
+      intervention.participant_users.should == []
+    end
+
 
   end
 end

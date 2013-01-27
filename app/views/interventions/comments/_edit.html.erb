@@ -1,4 +1,4 @@
-<% form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
+<%= form_for(@intervention_comment, :url=>intervention_comment_path(@intervention,@intervention_comment),:method=>:put) do |f| %>
   <%= render :partial=>f %>
   <div class="center_submit">
     <%= f.submit "Update" %>
@@ -8,6 +8,5 @@
 
 
 <div class="center_submit">
-<%#= link_to_function('Cancel',nil,{:href=>edit_intervention_path(@intervention)}){|page|  page.replace_html(dom_id(@intervention_comment),:partial => 'interventions/comments/comment', :object=>@intervention_comment)} %>
 <%= link_to_function('Cancel', "self.close()") %>
 </div>

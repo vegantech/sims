@@ -1,0 +1,9 @@
+$('#<%=dom_id @principal_override,"undo"%>').remove();
+$('#<%=dom_id @principal_override,"delete"%>').replaceWith("<%=escape_javascript(render @principal_override, :actions => [:delete])%>");
+
+
+$('#principal_override_request_sidebar').replaceWith("<%=escape_javascript( render_cell(:principal_overrides,:user_requests, :user=>current_user))%>");
+$('#principal_override_response_sidebar').replaceWith("<%=escape_javascript( render_cell(:principal_overrides,:principal_responses, :user=>current_user))%>");
+
+$('#tbody_acceptreject').append("<%=escape_javascript(render @principal_override, :actions => [:accept,:reject])%>");
+

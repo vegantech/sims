@@ -1,17 +1,42 @@
 module Moonshine::Manifest::Rails::Passenger
+
+  BLESSED_VERSION = '3.0.17'
+
   # Install the passenger gem
   def passenger_gem
     configure(:passenger => {})
-    if configuration[:passenger][:version] && configuration[:passenger][:version] < "3.0"
+    package 'libcurl4-openssl-dev', :ensure => :installed
+    
+    if configuration[:passenger][:enterprise]
+      package "passenger",
+        :provider => :gem, 
+        :ensure => :absent
+
+      raise "Passenger Enterprise enabled, but no gemfile specified. Update config/moonshine.yml with :gemfile for :passenger and try again" unless configuration[:passenger][:gemfile]
+
+      exec 'install passenger-enterprise-server gem',
+        :command => "gem install #{configuration[:passenger][:gemfile]}",
+        :unless => "gem list | grep passenger-enterprise-server | grep #{configuration[:passenger][:version]}",
+        :cwd => rails_root, 
+        :require => [ package('libcurl4-openssl-dev'), package('passenger')]
+
+      file '/etc/passenger-enterprise-license',
+        :ensure => :present,
+        :content => template(File.join(File.dirname(__FILE__), 'templates', 'passenger-enterprise-license'))
+    elsif configuration[:passenger][:version] && configuration[:passenger][:version] < "3.0"
       package "passenger",
         :ensure => configuration[:passenger][:version],
         :provider => :gem
-    else
+    elsif configuration[:passenger][:version].nil? || configuration[:passenger][:version] == :latest
       package "passenger",
-        :ensure => (configuration[:passenger][:version] || :latest),
+        :ensure => BLESSED_VERSION,
         :provider => :gem,
-        :require => [ package('libcurl4-gnutls-dev') ]
-      package 'libcurl4-gnutls-dev', :ensure => :installed
+        :require => [ package('libcurl4-openssl-dev') ]
+    elsif configuration[:passenger][:version]
+      package "passenger",
+        :ensure => (configuration[:passenger][:version]),
+        :provider => :gem,
+        :require => [ package('libcurl4-openssl-dev') ]
     end
   end
 
@@ -46,7 +71,7 @@ module Moonshine::Manifest::Rails::Passenger
         package("apache2-threaded-dev"),
         exec('symlink_passenger')
       ],
-      :timeout => -1
+      :timeout => 108000
 
     load_template = "LoadModule passenger_module #{configuration[:passenger][:path]}/ext/apache2/mod_passenger.so"
 
@@ -64,7 +89,9 @@ module Moonshine::Manifest::Rails::Passenger
       :notify => service("apache2"),
       :alias => "passenger_conf"
 
-    a2enmod 'passenger', :require => [exec("build_passenger"), file("passenger_conf"), file("passenger_load")]
+    a2enmod 'headers', :notify => service('apache2')
+
+    a2enmod 'passenger', :require => [exec("build_passenger"), file("passenger_conf"), file("passenger_load"), exec('a2enmod headers')]
   end
 
   # Creates and enables a vhost configuration named after your application.
@@ -83,17 +110,28 @@ module Moonshine::Manifest::Rails::Passenger
 
   def passenger_configure_gem_path
     configure(:passenger => {})
-    return configuration[:passenger][:path] if configuration[:passenger][:path]
-    version = begin
-      configuration[:passenger][:version] || Gem::SourceIndex.from_installed_gems.find_name("passenger").last.version.to_s
-    rescue
-      `gem install passenger --no-ri --no-rdoc`
-      `passenger-config --version`.chomp
+    if configuration[:passenger][:enterprise]
+      raise "You must define a version for passenger enterprise in moonshine.yml" if configuration[:passenger][:version].blank?
+      configure(:passenger => {:path => "#{Gem.dir}/gems/passenger-enterprise-server-#{configuration[:passenger][:version]}"})
+    elsif configuration[:passenger][:version].nil? || configuration[:passenger][:version] == :latest
+      configure(:passenger => { :path => "#{Gem.dir}/gems/passenger-#{BLESSED_VERSION}" })
+    elsif configuration[:passenger][:version]
+      configure(:passenger => { :path => "#{Gem.dir}/gems/passenger-#{configuration[:passenger][:version]}" })
     end
-    configure(:passenger => { :path => "#{Gem.dir}/gems/passenger-#{version}" })
   end
 
 private
+
+  def supports_passenger_buffer_response?
+    if configuration[:passenger][:version] 
+      major, minor, patch = configuration[:passenger][:version].split('.').map {|version| version.to_i }
+
+      # introduced in 3.0.11
+      major >= 3 && minor >= 0 && patch >= 11
+    else # blessed version does support it
+      true
+    end
+  end
 
   def passenger_config_boolean(key, default = true)
     if key.nil?

@@ -1,0 +1,19 @@
+<div id="debug">
+  <%= link_to "params", '#', "data-toggle-id" => "params_debug_info", :class => 'toggler' %> |
+  <%= link_to "session", '#', "data-toggle-id" => "session_debug_info", :class => 'toggler' %> |
+  <%= link_to "environment", '#', "data-toggle-id" => "env_debug_info", :class => 'toggler' %> |
+  <%= link_to "request", '#', "data-toggle-id" => "request_debug_info", :class => 'toggler' %>
+  <fieldset id="params_debug_info" class="debug_info" style="display:none">
+    <%=debug(params) %>
+  </fieldset>
+  <fieldset id="session_debug_info" class="debug_info" style="display:none">
+    <%=debug(session) %>
+  </fieldset>
+  <fieldset id="env_debug_info" class="debug_info" style="display:none">
+    <%=debug(request.env) %>
+  </fieldset>
+  <fieldset id="request_debug_info" class="debug_info" style="display:none">
+    <%=debug(request) %>
+  </fieldset>
+</div>
+

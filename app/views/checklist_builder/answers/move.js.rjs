@@ -1,6 +1,0 @@
-page << if_visible(dom_id(@answer_definition.element_definition,"answer_definitions"))
-page.replace_html dom_id(@answer_definition.element_definition,"answer_definitions"),
-:partial => "answer_definition",
-:collection => @answer_definition.sibling_definitions
-page.safe_highlight dom_id(@answer_definition)
-page << "}"

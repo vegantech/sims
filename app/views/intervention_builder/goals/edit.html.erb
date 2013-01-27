@@ -2,7 +2,7 @@
 
 <%= error_messages_for :goal_definition %>
 
-<% form_for(@goal_definition, :url=>intervention_builder_goal_path(@goal_definition), :html=>{:method=>:put}) do |f| %>
+<%= form_for(@goal_definition, :url=>intervention_builder_goal_path(@goal_definition), :html=>{:method=>:put}) do |f| %>
 <%= render :partial => f, :locals=>{:submit_text=>"Update"} %>
 <% end %>
 

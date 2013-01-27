@@ -37,9 +37,9 @@ class Asset < ActiveRecord::Base
   def url_exists
     case url
      when /^\/file/
-       File.exists?(File.join(RAILS_ROOT,url))
+       File.exists?(File.join(Rails.root,url))
      when /^\/help/
-      File.exists?(File.join(RAILS_ROOT,'app/views/help',"_#{url.split('/').last}.html.erb"))
+      File.exists?(File.join(Rails.root,'app/views/help',"_#{url.split('/').last}.html.erb"))
      else
        false #go to it yourself
      end

@@ -1,0 +1,19 @@
+<p>
+  <b>Title:</b>
+  <%=h @group.titleize %>
+  </p>
+
+  <h2> Users </h2>
+  <div id="group_users">
+    <%= render :partial => 'special_user_group_assignment', :collection=>@special_user_groups %>
+  </div>
+
+  <div id="new_user_assignment_form">
+    <%= render :partial => 'add_special_user_group_link' %>
+
+  </div>
+
+
+  <p>
+<%= link_to 'Back', groups_path %>
+</p>

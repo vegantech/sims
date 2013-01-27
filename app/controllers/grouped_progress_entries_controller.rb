@@ -1,7 +1,6 @@
 class GroupedProgressEntriesController < ApplicationController
-  additional_read_actions :aggregate
   before_filter :confirm_search
-  
+
   # GET /grouped_progress_entries
   # GET /grouped_progress_entries.xml
   def index
@@ -38,10 +37,8 @@ class GroupedProgressEntriesController < ApplicationController
       if @grouped_progress_entry.update_attributes(params[:student_intervention])
         flash[:notice] = 'Scores and Comments were successfully entered.'
         format.html { redirect_to(grouped_progress_entries_url) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @grouped_progress_entry.errors, :status => :unprocessable_entity }
       end
     end
   end

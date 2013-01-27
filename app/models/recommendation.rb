@@ -28,15 +28,18 @@ class Recommendation < ActiveRecord::Base
   belongs_to :tier
   belongs_to :district
   has_many :recommendation_answers, :dependent => :destroy
+  attr_protected :district_id
 
 
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
-#  validates_presence_of :checklist_id, 
+#  validates_presence_of :checklist_id,
   validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
   attr_accessor :request_referral, :school
 
   define_statistic :count, :count => :all,:joins => :student
   define_statistic :count_of_districts, :count => :all, :select => 'distinct students.district_id', :joins => :student
+  before_save :mark_promoted_if_needed
+  after_initialize :setup_from_checklist_or_definition
 
 
    #there's a custom sort for this in the checklist helper
@@ -50,10 +53,10 @@ class Recommendation < ActiveRecord::Base
     5 => {:text => "The student has not made progress.  Make a referral to special education.",:promote=>true,
           :show_elig => true},
     6 => {:text => "Other", :require_other => true ,:promote=>true}
-  
+
   }
 
-  STATUS={ 
+  STATUS={
           :unknown => "UNKNOWN_STATUS",
           :draft => "Draft, make changes to recommendation and submit.",
           :can_refer => "Referred to Special Ed.",
@@ -63,7 +66,7 @@ class Recommendation < ActiveRecord::Base
           :passed =>  "Recommendation submitted, next tier is available.",
           :failing_score => "Submitted, did not meet criteria to move to next tier.",
           :optional_checklist => "Optional Checklist Completed."
-        }  
+        }
 
   def should_promote?
     if RECOMMENDATION[recommendation][:text] == "Other" then
@@ -78,11 +81,11 @@ class Recommendation < ActiveRecord::Base
       STATUS[:draft]
     elsif promoted? and RECOMMENDATION[recommendation][:show_elig]
       STATUS[:can_refer]
-    elsif promoted? 
+    elsif promoted?
       STATUS[:passed]
     elsif !promoted? and RECOMMENDATION[recommendation][:show_elig]
       checklist.fake_edit= checklist == student.checklists.last
-      (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer] 
+      (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer]
     elsif !promoted? and should_promote?
       checklist.fake_edit = checklist == student.checklists.last if checklist
       STATUS[:failing_score]
@@ -107,10 +110,10 @@ class Recommendation < ActiveRecord::Base
   def answers=(hsh={})
     hsh.each do |h|
       h=h.last if h.is_a?Array and h.size==2
-      h.symbolize_keys!
+      h=h.symbolize_keys
       if h[:recommendation_answer_definition_id]
         a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
-          recommendation_answers.build(h) 
+          recommendation_answers.build(h)
         a.text=h[:text]
         a.draft=self.draft
       end
@@ -137,10 +140,10 @@ class Recommendation < ActiveRecord::Base
 
   protected
 
-  def after_initialize
+  def setup_from_checklist_or_definition
     if checklist
       self.recommendation_definition ||= checklist.checklist_definition.recommendation_definition if checklist
-      self.district_id ||= checklist.district_id 
+      self.district_id ||= checklist.district_id
       self.student_id ||= checklist.student_id
       self.tier_id ||= checklist.from_tier
     else
@@ -158,12 +161,12 @@ class Recommendation < ActiveRecord::Base
      should_promote? unless recommendation.blank? or self.draft?
   end
 
-  def before_save
+  def mark_promoted_if_needed
     if draft?
       self.promoted=false
       return true
     elsif errors.empty? and recommendation and should_promote?
-      if checklist 
+      if checklist
         self.promoted=validate_for_tier_escalation
       else
         self.promoted=true
@@ -171,7 +174,7 @@ class Recommendation < ActiveRecord::Base
     end
     true
   end
-          
+
   def validate_for_tier_escalation
     return true unless checklist
     checklist.score_checklist

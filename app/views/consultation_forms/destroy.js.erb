@@ -1,0 +1,7 @@
+$("#consultation_forms").html("<%= escape_javascript( render "consultation_forms/list",
+                                                            :consultation_forms => current_student.pending_consultation_forms
+                                                           ) %>");
+<% if current_student.pending_consultation_forms.blank? %>
+  $('#consultation.forms').hide();
+<% end %>
+

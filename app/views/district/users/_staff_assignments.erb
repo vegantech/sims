@@ -1,0 +1,10 @@
+<span class="awesome_nested">
+<div id="user_staff_assignments" class="items">
+  <%= form.nested_fields_for :staff_assignments do |staff_assignment| %>
+    <%= render :partial => 'staff_assignment',:object => staff_assignment %>
+  <% end %>
+</div>
+<div class="form_row">
+  <%= link_to "Add a staff assignment","#", :class  => "add" %>
+</div>
+</span>
