@@ -23,6 +23,7 @@ Feature: User Maintenance
     Then I fill in "Password" with "cuke"
     Then I press "Create"
     Then I should see "Password doesn't match confirmation"
+    Then I fill in "Password" with "cuke"
     Then I fill in "Password confirmation" with "cuke"
     Then I press "Create"
     And I should see "Cuke U. AAUser IV"
@@ -61,4 +62,17 @@ Feature: User Maintenance
 
 #delete one
 #delete last
+  Scenario: District admin should see staff assignments section if some have been added
+    Given I am a district admin
+    And the other district admin is gone
+    And I am assigned to "Test School"
+    And I start at the home page
+    Then I follow "Add/Remove Users"
+    When I follow "Edit"
+    And I fill in "Password" with "Password"
+    And I fill in "Password confirmation" with "Password"
+    And I press "Update"
+    Then I should not see "Please Login"
+    And I should see "was successfully updated"
 
+#

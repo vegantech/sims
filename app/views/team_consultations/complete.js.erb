@@ -1,0 +1,21 @@
+$("#team_consultation_request").html("<%= escape_javascript( render "team_consultations/commands") %>");
+$("#team_consultations").html("<%= escape_javascript( render "team_consultations/list", :team_consultations => current_student.team_consultations.pending) %>");
+$("#student_flags").html("<%= escape_javascript( status_display(current_student,  true)) %>");
+$("#consultation_forms").html("<%= escape_javascript( render "consultation_forms/list",
+                                                            :consultation_forms => current_student.pending_consultation_forms
+                                                           ) %>");
+
+$("#completed_consultations").html("<%= escape_javascript( render "team_consultations/list",
+                                                            :team_consultations => current_student.team_consultations.complete
+                                                           ) %>");
+$.scrollTo(1);
+
+$('#completed_consultations').show();
+$('#studentflags').effect('pulsate');
+<% if current_student.team_consultations.pending.blank? %>
+  $('#team_consultations').hide();
+<% end %>
+
+<% if current_student.pending_consultation_forms.blank? %>
+  $('#consultation.forms').hide();
+<% end %>

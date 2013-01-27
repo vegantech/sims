@@ -1,5 +1,5 @@
-require 'bundler/capistrano'
 load "#{File.dirname(__FILE__)}/prohibition.rb"
+load "deploy/assets"
 server "vegantech.com", :app, :web, :db, :primary => true
 
   set :login_note, 'This is a work in progress (unstable) demo.   You use names like oneschool (look to the menu at the left for more.)

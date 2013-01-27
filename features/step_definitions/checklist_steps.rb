@@ -8,6 +8,17 @@ Given /^I am at the student profile page$/ do
   click_button 'Login'
 end
 
+Given /^I am at the student search page$/ do
+  minimum_for_profile
+  @school ||= Factory(:school, :district => cucumber_district)
+  @enrollment ||= Factory(:enrollment, :school => @school, :student => @student)
+  visit school_student_search_url(@school)
+  fill_in "Login", :with =>cucumber_user.username
+  fill_in 'Password', :with => cucumber_user.username
+  click_button 'Login'
+end
+
+
 When /^I try to view an invalid checklist$/ do
     visit checklist_url("invalid")
 end
@@ -17,7 +28,7 @@ Then /^I should be at the student profile page$/ do
 end
 
 Then /^I should see a notice for "([^"]*)"$/ do |regexp|
-  with_scope "#flash_notice" do
+  with_scope("flash_notice") do
     page.should have_content(regexp)
   end
 end

@@ -53,6 +53,7 @@ Feature: Sims Demo Walkthrough
     Then I press "Choose Objective"
     Then I select "Reading problems" from "intervention_cluster_id"
     Then I press "Choose Category"
+    Given PENDING intervention definitions is empty
     Then I select "Reading one" from "intervention_definition_id"
     Then I press "Choose Intervention"
 
@@ -284,10 +285,8 @@ Feature: Sims Demo Walkthrough
     And I fill in "Password" with "nogroups"
     Then I press "Login"
     Then I follow "School Selection"
-#    And I should see "Alpha Elementary"
-#    Then I press "Choose School"
     And I should see "User doesn't have access to any students at Alpha Elementary"
-    And page should have a "Choose School" button
+
 
 
   Scenario: allstudents

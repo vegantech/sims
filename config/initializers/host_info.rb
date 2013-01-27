@@ -27,8 +27,13 @@ else
 end
 sessionhash= {
     :key         => '_sims-open2_session',
-    :secret      => secret
+    :secret      => secret,
+    :secure => (Rails.env.production? || Rails.env.staging? )
     }
+
+if ENV['SIMS_DOMAIN']
+  SIMS_DOMAIN = ENV['SIMS_DOMAIN']
+end
 
 if defined?(SIMS_DOMAIN)
   sessionhash.merge!( :domain =>  ".#{SIMS_DOMAIN}")

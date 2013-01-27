@@ -1,5 +1,4 @@
-<% readonly = true
-@intervention = detail %>
+<% @intervention = detail %>
 <div class="new_form">
   <%= form_for(@intervention, :html=>{:name=>"StudentInterventionForm", :multipart => true}) do |f| %>
     <div class="form_row">
@@ -58,7 +57,7 @@
   <div class="form_row">
     <%= f.label :participant_users, 'Participants' %>
     <table><tr><td>
-      <%= render :partial => 'interventions/participants/list', :locals => {:form => f , :readonly => readonly} %>
+      <%= render :partial => 'interventions/participants/list', :locals => {:form => f } %>
     </td></tr></table>
   </div>
   <br class="brclear" />
@@ -68,7 +67,7 @@
 
 <h3> Comments</h3>
   <%= content_tag :table, render_with_empty(:partial => "interventions/comments/comment", :collection => detail.comments.reject(&:new_record?),
-     :empty => "<tr><td>There are no comments for this intervention.</td></tr>", :locals => {:readonly => true}
+     :empty => "<tr><td>There are no comments for this intervention.</td></tr>"
      ) %>
 
 
@@ -85,6 +84,6 @@
     params[:probe_definition_id] = ipa.probe_definition_id
 
   %>
-    <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail', :locals => {:readonly => readonly } %>
+    <%= render :partial => 'interventions/probe_assignments/intervention_probe_assignment_detail'  %>
   <% end %>
   <hr />

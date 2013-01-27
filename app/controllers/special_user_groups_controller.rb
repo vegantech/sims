@@ -1,4 +1,4 @@
-class SpecialUserGroupsController < ApplicationController
+class SpecialUserGroupsController < SchoolAdminController
   def show
     #TODO push group search to model
     @group=params[:id]
@@ -16,13 +16,13 @@ class SpecialUserGroupsController < ApplicationController
     @group=params[:id]
     grade = @group.split("-").last.downcase
     grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(:grade=>grade, :grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL)
+    @special_user_group = current_school.special_user_groups.build(:grade=>grade)
     @users = current_school.assigned_users
   end
 
   # POST /groups
   def create
-    @special_user_group = current_school.special_user_groups.build(params[:special_user_group].merge(:grouptype=> SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL, :district => current_district))
+    @special_user_group = current_school.special_user_groups.build(params[:special_user_group])
     @group = @special_user_group.title.parameterize
     if @special_user_group.save
     else

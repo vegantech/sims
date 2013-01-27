@@ -1,0 +1,9 @@
+$.scrollTo(1);
+$("#consultation_form").empty();
+$("#team_consultation_request").html("<%= escape_javascript( render "team_consultations/commands") %>");
+$("#student_flags").html("<%= escape_javascript( status_display(current_student,  true)) %>");
+$('#studentflags').effect('pulsate');
+$("#team_consultations").html("<%= escape_javascript( render "team_consultations/list", :team_consultations => current_student.team_consultations.pending) %>").show();
+$("#consultation_forms").html("<%= escape_javascript( render "consultation_forms/list",
+                                                            :consultation_forms => current_student.pending_consultation_forms
+                                                           ) %>").show();

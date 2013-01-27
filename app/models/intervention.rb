@@ -44,22 +44,21 @@ class Intervention < ActiveRecord::Base
   belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
-  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC"
-  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant
+  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
+  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
-
   has_many :intervention_probe_assignments, :dependent => :destroy
   validates_numericality_of :time_length_number, :frequency_multiplier
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
+  accepts_nested_attributes_for :comments, :reject_if =>proc{|e| e["comment"].blank?}
 
   after_initialize :set_defaults_from_definition
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
   after_save :save_assigned_monitor
-  before_update :assign_user_to_comment
 
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
@@ -96,7 +95,7 @@ class Intervention < ActiveRecord::Base
     int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
     int.auto_implementer=true if int.auto_implementer.nil?
 
-    int.selected_ids = nil if int.selected_ids.to_a.size == 1
+    int.selected_ids = nil if Array(int.selected_ids).size == 1
 
     int
   end
@@ -168,13 +167,6 @@ class Intervention < ActiveRecord::Base
     end
   end
 
-  def comment=(txt)
-    @comment=comments.build(:comment=>txt[:comment]) if txt[:comment].present?
-  end
-  def comment
-    @comment
-  end
-
   def assigned_probes
     intervention_probe_assignments.active.collect(&:title).join(";")
   end
@@ -232,6 +224,11 @@ class Intervention < ActiveRecord::Base
     !sld? || (mins_per_week >= 0.8 * intervention_definition.mins_per_week)
   end
 
+  def participant_user_ids=(ids)
+    #remove duplicates and blanks
+    ids=ids.reject(&:blank?).uniq
+    self.participant_users=User.where(:id =>(ids))
+  end
   protected
 
   def create_other_students
@@ -245,9 +242,9 @@ class Intervention < ActiveRecord::Base
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
       @interventions = student_ids.collect do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false,
+        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false, :comment_author => self.comment_author,
           :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
-                                                  :comment => comment ,:intervention_probe_assignment => ipa))
+                                                  :comments_attributes => {"0" => comment} ,:intervention_probe_assignment => ipa))
       end
     end
     true
@@ -340,13 +337,8 @@ class Intervention < ActiveRecord::Base
     self.end_date ||= default_end_date
   end
 
-  def assign_user_to_comment
-    if @comment && @comment.user.blank?
-      @comment.user_id = comment_author || self.user_id
-    end
-  end
-
   def notify_new_participant(participant)
     participant.send_email = true unless new_record? or @creation_email or called_internally
   end
+
 end

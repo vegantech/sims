@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class GroupsController < SchoolAdminController
   # GET /groups
   def index
     @groups=current_school.groups.paged_by_title(params[:title],params[:page])

@@ -19,6 +19,7 @@ class TeamConsultation < ActiveRecord::Base
   belongs_to :school_team, :foreign_key => 'team_id'
   has_many :consultation_forms, :dependent => :destroy
   delegate :district,  :to => '(student or return nil)'
+  delegate :name,  :to => :school_team, :prefix => true
   accepts_nested_attributes_for :consultation_forms
 
   after_create :email_concern_recipient
@@ -27,6 +28,8 @@ class TeamConsultation < ActiveRecord::Base
   scope :complete, where(:complete=>true)
   scope :pending, where(:complete=>false, :draft=>false)
   scope :draft, where(:draft => true)
+
+  scope :pending_for_user, lambda {|user| where(:complete => false).where(["(draft = ?) OR (draft = ? AND requestor_id = ?)",false,true,user]) }
 
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
   define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student

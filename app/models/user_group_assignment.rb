@@ -12,11 +12,19 @@
 #
 
 class UserGroupAssignment < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :inverse_of => :user_group_assignments
   belongs_to :group
 
   scope :principal, where(:is_principal => true)
+  scope :student_id_for_school, lambda{ |school|
+    joins(:group).where(
+      "groups.school_id" => school).joins(
+      "inner join groups_students on
+         groups_students.group_id = groups.id").select("
+         groups_students.student_id")
+  }
+
 
   validates_uniqueness_of :user_id, :scope => :group_id, :message=>"-- Remove the user first"
-  validates_presence_of :user_id, :group_id
+  validates_presence_of :user, :group
 end

@@ -38,7 +38,7 @@ class TeamConsultationsController < ApplicationController
   # POST /team_consultations.xml
   def create
     params[:team_consultation] ||= {}
-    params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user_id)
+    params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user.id)
     params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 
@@ -86,6 +86,7 @@ class TeamConsultationsController < ApplicationController
   def destroy
     @team_consultation = current_user.team_consultations.find(params[:id])
     @team_consultation.destroy
+    flash[:notice] = "The team consultation has been withdrawn"
 
     respond_to do |format|
       format.html { redirect_to(@team_consultation.student) }

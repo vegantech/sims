@@ -24,7 +24,6 @@ class InterventionsController < ApplicationController
       redirect_to students_url and return
     end
 
-    @intervention_comment = InterventionComment.new
     @tiers=current_district.tiers
 
     respond_to do |format|
@@ -37,13 +36,14 @@ class InterventionsController < ApplicationController
     @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
     @intervention_probe_assignment = @intervention.intervention_probe_assignment
     @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
-    @intervention_comment = InterventionComment.new
+    @intervention_comment = @intervention.comments.detect(&:new_record?) || InterventionComment.new
     @tiers = current_district.tiers
   end
 
   # POST /interventions
   def create
     params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
+    params[:intervention][:comment_author] = current_user.id
 
     @intervention = build_from_session_and_params
     @tiers=current_district.tiers
@@ -54,6 +54,8 @@ class InterventionsController < ApplicationController
     else
       # This is to make validation work
       i = @intervention
+      @intervention_comment = @intervention.comments.first
+
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition
       @intervention_cluster = @intervention.intervention_cluster
@@ -71,7 +73,7 @@ class InterventionsController < ApplicationController
     if params[:intervention]
       params[:intervention][:participant_user_ids] ||=[]
       params[:intervention][:intervention_probe_assignment] ||= {}
-      params[:intervention][:comment_author] = current_user.id if params[:intervention][:comment]
+      params[:intervention][:comment_author] = current_user.id
     end
     @tiers = current_district.tiers
 
@@ -83,7 +85,7 @@ class InterventionsController < ApplicationController
         format.html do
           edit
           params[:enter_score] = true
-          @intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
+          #@intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
           render :action => "edit"
         end
       end
@@ -135,7 +137,7 @@ class InterventionsController < ApplicationController
 
   def add_benchmark
     @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-    render :action => 'interventions/probe_assignments/add_benchmark'
+    render :action => 'probe_assignments/add_benchmark'
   end
 
   private
@@ -147,7 +149,7 @@ class InterventionsController < ApplicationController
       if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
         student = intervention.student
         session[:school_id] = (student.schools & current_user.schools).first.id
-        session[:selected_student] = student.id
+        self.current_student_id = student.id
         self.selected_student_ids = [student.id]
         @intervention = intervention
       else
@@ -162,5 +164,9 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Intervention could not be found"
       redirect_to current_student and return false
     end
+  end
+
+  def readonly?
+    params[:action] == "show"
   end
 end

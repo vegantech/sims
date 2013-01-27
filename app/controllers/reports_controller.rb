@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  skip_before_filter :authorize, :authenticate, :only => [:statewide_interventions, :statewide_progress_monitors, :intervention_definition_summary_report]
+  skip_before_filter :authorize, :authenticate_user!, :only => [:statewide_interventions, :statewide_progress_monitors, :intervention_definition_summary_report]
   skip_before_filter :verify_authenticity_token
 
   before_filter :check_student, :only => [:student_interventions, :student_overall_options, :student_overall]
@@ -185,5 +185,9 @@ class ReportsController < ApplicationController
     else
       nil
     end
+  end
+
+  def readonly?
+    true
   end
 end

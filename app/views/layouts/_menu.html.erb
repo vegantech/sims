@@ -1,5 +1,5 @@
 <ul>
-  <% if session[:user_id] %>
+  <% if user_signed_in? %>
     <li><%= link_to "Home", root_path %> </li>
     <%= li_link_to_if_authorized 'School Selection', schools_path %>
     <% cache ["core_pract_and_intervention_pdf_menu",current_district] do %>
@@ -9,30 +9,29 @@
 
     <% end %>
 
-    <% cache ["menu",current_district,current_user.roles_mask,Right.cache_key,session[:search].blank?] do %>
+    <% cache ["menu",current_district,current_user.try(:roles_mask),Right.cache_key,session[:search].blank?] do %>
 
       <% if session[:search] %>
-      <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
-      <%= li_link_to_if_authorized "Personal Groups",personal_groups_path,{},help_popup(PersonalGroup::DESCRIPTION) if current_district.show_personal_groups? %>
+        <%= li_link_to_if_authorized 'Group Progress Assignment',grouped_progress_entries_path%>
+        <%= li_link_to_if_authorized "Personal Groups",personal_groups_path,{},help_popup(PersonalGroup::DESCRIPTION) if current_district.show_personal_groups? %>
       <% end %>
       <%= li_link_to_if_authorized 'Checklist Builder', checklist_builder_checklists_path %>
       <%= li_link_to_if_authorized 'Intervention Builder', intervention_builder_goals_path %>
       <%= li_link_to_if_authorized 'Progress Monitor Builder', intervention_builder_probes_path %>
       <%= li_link_to_if_authorized 'Flag Categories/Core Practices', flag_categories_path %>
       <%= li_link_to_if_authorized 'Tier Builder', tiers_path %>
-      <%= li_link_to_if_authorized('SIMS Virtual Outbox', {:controller=>'railmail'}, {:target=>:blank}) if defined? RailmailController or Rails.env.development? %>
       <%= content_tag(:li, link_to_with_icon(current_district.active_checklist_document.original_filename,
-        current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
+                                             current_district.active_checklist_document.url )) if current_district && current_district.active_checklist_document? %>
       <%= mmsd_eligibility_criteria(menu=true) if current_district %>
 
-      <% end %>
-      <%= plus_minus_li "Reports" do %>
-          <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
-          <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
-              regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
+    <% end %>
+    <%= plus_minus_li "Reports" do %>
+      <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
+      <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
+        regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
 
-          <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
-              interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
+        <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
+          interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
           <% if current_student  %>
             <%= li_link_to_if_authorized "<b>Student Report</b>".html_safe, {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
             <%= li_link_to_if_authorized "Student Interventions", {:controller => 'reports', :action => 'student_interventions', :student_id => current_student.id } %>
@@ -40,13 +39,13 @@
           <%= li_link_to_if_authorized 'User Interventions', '/reports/user_interventions' %>
           <%= li_link_to_if_authorized "Grouped Progress Monitors and Comments", '/reports/grouped_progress_entry' if session[:search] %>
           <%= li_link_to_if_authorized "Flagged Students", '/reports/student_flag_summary' if session[:search] %>
-      <%  end %>
+        <%  end %>
 
       <li><%= link_to "Change Password", change_password_path %></li>
-      <li><%= render :partial => 'login/logout' %></li>
+      <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
     <% elsif !defined?DEFAULT_URL %>
       <li>Please login.</li>
-      <% if @districts.blank? or @districts.size < 100 %>
+      <% unless Rails.env.production? %>
         <li>For this demo, use oneschool as the username and password for a basic user</li>
         <li>alphaprin for a principal and school admin</li>
         <li>content_builder to access the builders</li>
@@ -57,9 +56,9 @@
   <% end %>
 
 
-  <% cache ["help",current_user.roles_mask,Role.cache_key] do %>
+  <% cache ["help",current_user.try(:roles_mask),Role.cache_key] do %>
   <%= plus_minus_li "Help" do %>
-    <% if session[:user_id] %>
+    <% if user_signed_in? %>
       <% current_user.roles.each do |role| %>
         <%= plus_minus_li role.humanize do %>
           <%Role::HELP[role].each do |role_help| %>
@@ -70,5 +69,6 @@
     <% end %>
   <% end %>
 <% end %>
+    <%= li_link_to('SIMS Virtual Outbox', railmail_index_url, {:target=>:blank}) if defined? RailmailController or Rails.env.development? %>
 
 </ul>

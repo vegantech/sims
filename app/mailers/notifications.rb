@@ -9,7 +9,7 @@ class Notifications < MailerWithSubdomains
 
   def change_password(user)
     @district = user.district
-    subject  =  '[SIMS] Email Registration'
+    subject  =  '[SIMS] Email Registration/ Change Password'
     recipients = user.email
 
     @user=user
@@ -29,7 +29,7 @@ class Notifications < MailerWithSubdomains
 
   def principal_override_response(override)
     subject =   "[SIMS] Principal Override #{override.action.capitalize}ed"
-    recipients override.teacher.email
+    recipients = override.teacher.email
     @district = override.student.district
 
     @override = override
@@ -73,7 +73,7 @@ class Notifications < MailerWithSubdomains
     intervention_person = Array(intervention_person)
     @intervention_person = intervention_person.first
     @intervention = Array(intervention || @intervention_person.intervention).first
-    recipients @intervention_person.email
+    recipients =@intervention_person.email
     sent_on    Time.now
     @district = @intervention_person.user.district
     @participants = @intervention.participants_with_author
@@ -98,10 +98,10 @@ class Notifications < MailerWithSubdomains
   end
 
   def district_upload_results msg, admin_email
-    @subject = 'SIMS Upload Results'
-    @recipients = admin_email
+    subject = 'SIMS Upload Results'
+    recipients = admin_email
     @msg = msg
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
   def self.setup_ending_reminders(district = nil)

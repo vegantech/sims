@@ -1,0 +1,7 @@
+<% object_param = object.class.name.underscore %>
+<%if object.valid? %>
+  <%=jdom object%>.html(<%=ejsr "#{object_param}_2", object_param.to_sym => object %>).effect('highlight');
+<%else%>
+  <%=jdom object, "edit_errors"%>.html("<%=escape_javascript error_messages_for(object_param)%>").show();
+  window.scrollTo(<%=jdom parent, "edit_#{object_param}_errors"%>);
+<%end%>

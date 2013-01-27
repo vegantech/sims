@@ -21,15 +21,21 @@
 #
 
 class User < ActiveRecord::Base
-  include FullName
-  after_update :save_user_school_assignments
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :omniauthable, :recoverable#, :registerable
+#        :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :district_id_for_login
+  attr_accessor :district_id_for_login
+  include FullName, Devise::LegacyPassword
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
-  has_many :schools, :through => :user_school_assignments, :order => "name"
   has_many :special_user_groups, :dependent => :destroy
   has_many :special_schools, :through => :special_user_groups, :source=>:school
-  has_many :user_group_assignments, :dependent => :destroy
+  has_many :user_group_assignments, :dependent => :destroy, :inverse_of => :user
   has_many :groups, :through => :user_group_assignments, :order => :title
   has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
   has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
@@ -54,8 +60,9 @@ class User < ActiveRecord::Base
   has_many :logs, :class_name => 'DistrictLog'
 
 
-  attr_accessor :password, :all_students_in_district, :old_password
   attr_protected :district_id
+
+  scope :non_admin, where("username not in ('tbiever', 'district_admin')")
 
   scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
   left outer join student_comments on users.id = student_comments.user_id
@@ -65,6 +72,7 @@ class User < ActiveRecord::Base
                   team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
   accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
+  accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
 
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -117,16 +125,11 @@ class User < ActiveRecord::Base
 
   validates_presence_of :username, :last_name, :first_name
   validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
-  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
+#  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
-
   validate :validate_unique_user_school_assignments
 
-
-
-
-  after_save :district_special_groups
 
 
   def authorized_groups_for_school(school,grade=nil)
@@ -178,68 +181,6 @@ class User < ActiveRecord::Base
     User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
   end
 
-
-  def authorized_schools(school_id=nil)
-    c_hash = {}
-    c_hash[:conditions] = {:id=>school_id} unless school_id.blank?
-    #TODO make all students in school implicit
-    if special_user_groups.all_schools_in_district.find_by_district_id(self.district_id)
-      district.schools.find(:all,c_hash)
-    else
-      sc_hash = {}
-      sc_hash[:conditions] = {:school_id => school_id} unless school_id.blank?
-      schools.find(:all,c_hash) | special_user_groups.find(:all,sc_hash).collect(&:school).compact.flatten
-    end
-  end
-
-  def self.authenticate(username, password)
-    @user = self.find_by_username(username)
-
-    if @user && @user.passwordhash.blank? && @user.salt.blank?
-      if @user.district.key.present? && @user.district.key == password
-        @user.update_attribute(:token, Digest::SHA1.hexdigest("#{@user.district.key}#{rand}#{@user.id}"))
-        Notifications.change_password(@user).deliver
-        #send the email
-        @user = User.new(:token => @user.token)
-
-        return @user
-      else
-        @user = nil
-      end
-
-
-    end
-
-    if @user
-      unless(@user.allowed_password_hashes(password).include?(@user.passwordhash_before_type_cast.downcase[0..39]))
-         @user = nil unless Rails.env.development? || ENV["SKIP_PASSWORD"]=="skip-password"
-      end
-      @user
-    end
-  end
-
-  def allowed_password_hashes(password)
-    district_key = district.key if district
-    next_key = self.district.previous_key if self.district
-
-    bare = User.encrypted_password(password,salt, nil, nil)
-    with_sys_key_and_no_district_key = User.encrypted_password(password,salt, nil)
-
-    with_district_key_and_no_system_key = User.encrypted_password(password, salt, district_key, nil)
-    with_district_key_and_system_key = User.encrypted_password(password, salt, district_key)
-
-    with_next_district_key_and_no_system_key = User.encrypted_password(password, salt,  next_key, nil)
-    with_next_district_key_and_system_key = User.encrypted_password(password, salt, next_key, System::HASH_KEY)
-
-    [bare, with_sys_key_and_no_district_key, with_district_key_and_no_system_key, with_district_key_and_system_key,
-      with_next_district_key_and_no_system_key,  with_next_district_key_and_system_key ]
-  end
-
-  def self.encrypted_password(password, salt=nil, district_key = nil, system_hash = System::HASH_KEY)
-    Digest::SHA1.hexdigest("#{system_hash}#{password.downcase}#{district_key}#{salt}")
-  end
-
-
   def authorized_for?(controller)
     !new_record? && Role.has_controller?(controller.to_s,roles)
   end
@@ -255,26 +196,6 @@ class User < ActiveRecord::Base
     overrides
   end
 
-  def password=(pass)
-    if pass.blank?
-      @password_confirmation=@password=pass
-    else
-      @password = pass
-      self.salt = [Array.new(8){rand(256).chr}.join].pack("m").chomp unless salt_changed?
-      set_passwordhash pass
-    end
-  end
-
-  def set_passwordhash(pass)
-    district_key = self.district.key if self.district
-    self.passwordhash = User.encrypted_password(pass, self.salt, district_key)
-  end
-
-  def reset_password!
-    update_attribute(:passwordhash,User.encrypted_password("district_admin"))
-    "Password reset to district_admin"
-  end
-
   def principal?
     !!(user_group_assignments.principal.first || special_user_groups.principal.first)
   end
@@ -283,7 +204,7 @@ class User < ActiveRecord::Base
     return [] if school.blank?
     Intervention.find_all_by_active(true,:select => "distinct interventions.*",
                                     :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
-        left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true   and special_user_groups.district_id = #{self.district_id}
+        left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true
         left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
           and user_group_assignments.user_id = #{self.id} and user_group_assignments.is_principal=true
@@ -294,17 +215,14 @@ class User < ActiveRecord::Base
 
         ",
            :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
-           or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  (( sug.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT}  )
-           or (sug.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and sug.school_id = enrollments.school_id
-           and ( sug.grade is null or sug.grade = enrollments.grade ) )
-           )
+           or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  ((iu.all_students = 1 )
+           or ( sug.school_id = enrollments.school_id
+           and ( sug.grade is null or sug.grade = enrollments.grade ) ))
            union select 2 from groups_students gs inner join user_group_assignments uga on gs.group_id =uga.group_id where gs.student_id = students.id and uga.user_id = iu.id
-
-
            )
 
-           ) and ((special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
-          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
+           ) and ((iu.all_students = 1 ) or
+          (special_user_groups.school_id = enrollments.school_id
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
           ) or user_group_assignments.id is not null)
     ")#.select(&:orphaned?)
@@ -312,34 +230,10 @@ class User < ActiveRecord::Base
 
   end
 
-  def all_students_in_district
-    #called in district/users/_district_groups.html.erb
-    special_user_groups.all_students_in_district.find_by_district_id(self.district_id)
-
-  end
-
   def self.paged_by_last_name(last_name="", page="1")
     paginate :per_page => 25, :page => page,
       :conditions=> ['last_name like ?', "%#{last_name}%"],
       :order => 'last_name'
-  end
-
-  def existing_user_school_assignment_attributes=(user_school_assignment_attributes)
-    user_school_assignments.reject(&:new_record?).each do |user_school_assignment|
-      attributes = user_school_assignment_attributes[user_school_assignment.id.to_s]
-
-      if attributes
-        user_school_assignment.attributes = attributes
-      else
-        user_school_assignments.delete(user_school_assignment)
-      end
-    end
-  end
-
-  def new_user_school_assignment_attributes=(usa_attributes)
-    usa_attributes.each do |attributes|
-      user_school_assignments.build(attributes)
-    end
   end
 
   def self.remove_from_district(user_ids = [])
@@ -354,38 +248,6 @@ class User < ActiveRecord::Base
   end
   def remove_from_district
     User.remove_from_district(self[:id])
-  end
-
-  def change_password(params)
-    if self.passwordhash.blank? && self.salt.blank?
-      errors.add(:old_password, "is incorrect") and return false  if (!self.district.key.present? || self.district.key != params[:old_password])
-
-      errors.add(:password, 'cannot be blank') and return false if params['password'].blank?
-      errors.add(:password_confirmation, 'must match password') and return false if params['password'] != params['password_confirmation']
-
-      self.password = params['password']
-      self.password_confirmation = params['password_confirmation']
-      return false if self.token != params['token']
-      self.token = nil
-      self.save
-      return true
-    end
-
-    if !self.district.users.authenticate(self.username, params['old_password'])
-      errors.add(:old_password, "is incorrect")
-    elsif params['password'].blank?
-      errors.add(:password, 'cannot be blank')
-    elsif params['password'] != params['password_confirmation']
-      errors.add(:password_confirmation, 'must match password')
-    else
-      self.password = params['password']
-      self.password_confirmation = params['password_confirmation']
-      self.save
-      return true
-    end
-
-    false
-
   end
 
   def roles=(roles)
@@ -407,47 +269,10 @@ class User < ActiveRecord::Base
       find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
-=begin
-
-                    left outer join  user_group_assignments on user_group_assignments.user_id = #{self.id}
-                    inner join groups_students on groups_students.group_id = user_group_assignments.group_id
-                    and groups_students.student_id = students.id
-
-
-
-
- and
-special_user_groups.user_id = #{self.id} and special_user_groups.district_id = #{self.district_id})
-or (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
-and (special_user_groups.grade is null or special_user_groups.grade = enrollments.grade))
-or (user_group_assignments.id is not null)
-
-=end
-
-  def authorized_students(num=:all)
-    district.students.find(num,
-        :joins => "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
-        left outer join enrollments on enrollments.student_id = students.id
-        left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
-          and user_group_assignments.user_id = #{self.id}
-          )
-         on groups_students.student_id = students.id",
-        :conditions => "(special_user_groups.grouptype = #{SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT} ) or
-          (special_user_groups.grouptype=#{SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL} and special_user_groups.school_id = enrollments.school_id
-          and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
-          ) or user_group_assignments.id is not null
-    ")
-  end
 
   def last_login
-    @last_login ||=logs.find_by_body("Successful Login of #{fullname}", :order => "updated_at desc").try(:updated_at)
+    @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
   end
-
-  def record_successful_login
-    logs.create(:body => "Successful login of #{fullname}",:district_id => district_id)
-    logger.info "Successful login of #{fullname} at #{district.name}"
-  end
-
 
   def self.find_by_fullname(fullname)
     #this fails if the middle name is excluded from the search
@@ -455,7 +280,75 @@ or (user_group_assignments.id is not null)
   end
 
   def all_students_in_school?(school)
-    special_user_groups.all_students_in_school?(school)
+    all_students? || special_user_groups.all_students_in_school?(school)
+  end
+
+  def admin_of_school?(school)
+    user_school_assignments.admin.exists?(:school_id => school.id)
+  end
+
+   def schools
+    s=School.where(:district_id => district_id).order("schools.name")
+    if all_schools_in_district?
+      s
+    else
+      s.where("schools.id in (#{user_school_assignments.school_id.to_sql})
+        or
+        schools.id in (#{special_user_groups.school_id.to_sql})")
+    end
+  end
+
+  def all_schools_in_district?
+    all_students? || all_schools?
+  end
+
+  def students_for_school(school)
+    s=Student.includes(:enrollments).where(:enrollments=>{:school_id => school}, :district_id=> district_id)
+    if all_students?
+      s
+    else
+      s.where("students.id in (#{special_user_groups.for_school(school).student_id.to_sql}) or
+              students.id in (#{user_group_assignments.student_id_for_school(school).to_sql})
+              ")
+    end
+  end
+
+  def self.find_first_by_auth_conditions(conditions)
+    conditions[:district_id] = conditions.delete(:district_id_for_login) unless conditions.keys == [:reset_password_token]
+    super conditions
+  end
+
+  def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
+    data = access_token['info']
+
+    if user = User.where(:email => data['email']).first
+      return user
+    end
+  end
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session['devise.googleapps_data'] && session['devise.googleapps_data']['user_info']
+        user.email = data['email']
+      end
+    end
+  end
+
+  def send_reset_password_instructions(use_key = false)
+    if email.blank?
+      errors.add(:base, 'User does not have email assigned in SIMS.  Contact your LSA for assistance')
+    elsif !use_key && !district.try(:forgot_password)
+      errors.add(:base, "This district does not support password recovery.  Contact your LSA for assistance")
+    else
+      super()
+    end
+  end
+
+  def custom_interventions_enabled?
+    district.custom_interventions.blank? ||
+      district.custom_interventions == "only_author" ||
+      district.custom_interventions == "one_off" ||
+      (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
   end
 
 protected
@@ -465,7 +358,7 @@ protected
     ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
  Student.send(:construct_finder_sql, :select => "students.id",
                   :joins =>
-"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}   and special_user_groups.district_id = #{self.district_id}
+"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
          left outer join enrollments on enrollments.student_id = students.id
          left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
            and user_group_assignments.user_id = #{self.id})
@@ -474,24 +367,6 @@ protected
 
 
 
-  end
-
-
-
-  def district_special_groups
-
-    if @all_students_in_district == "1"
-      special_user_groups.find_or_create_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).update_attribute(:district_id, self.district_id)
-    elsif @all_students_in_district == "0" or new_record?
-      special_user_groups.find_by_district_id_and_grouptype(self.district_id,SpecialUserGroup::ALL_STUDENTS_IN_DISTRICT).try(:destroy)
-    end
-
-  end
-
-  def save_user_school_assignments
-    user_school_assignments.each do |user_school_assignment|
-      user_school_assignment.save(:validate => false)
-    end
   end
 
   def blank_password_ok?
@@ -507,6 +382,7 @@ protected
      staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
   end
 
-
-
+  def duplicate_user_school_assignment?(attributes)
+     staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
+  end
 end

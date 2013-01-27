@@ -1,7 +1,6 @@
 <% if @principal_override.can_create? %>
 
-
-  <%= form_remote_for(:principal_override,:url=>principal_overrides_path, :html=>{:id=>'new_principal_override_form'}) do |f| %>
+  <%= form_for(@principal_override ,:id=>'new_principal_override_form', :remote => true) do |f| %>
   <%= f.error_messages %>
 
     <%= f.label :start_tier, "Current Tier:" %>
@@ -20,4 +19,4 @@
   <%= @principal_override.unavailable_reason %>
 <% end %>
 
-<%= link_to 'Cancel', @principal_override.student %>
+<%= link_to 'Cancel', @principal_override.student, :class => "toggler", "data-toggle-id" =>"override"  %>

@@ -43,7 +43,7 @@ describe TeamConsultationsController do
   describe "POST create" do
     before do
       @mock_student = mock_student
-      controller.stub!(:current_student_id => '2', :current_user_id => '3', :current_student => @mock_student)
+      controller.stub!(:current_student_id => '2', :current_user => mock_user(:id =>'3'), :current_student => @mock_student)
       controller.stub_association!(:current_school, :school_teams => [])
     end
 

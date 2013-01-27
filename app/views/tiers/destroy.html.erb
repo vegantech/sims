@@ -1,7 +1,7 @@
 <h1>Please confirm delete</h1>
  This tier is in use.  Are you sure you want to move everything to <%=@tier.delete_successor %>?
 
-<%= form_for @tier, {}, :html=> {:method=>'delete'} do |f| %>
+<%= form_for @tier, :method=>'delete' do |f| %>
   <p>
     <%= submit_tag 'Delete', :name=>'delete_confirmation' %>
   </p>

@@ -7,7 +7,7 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
     @back_path =  intervention_builder_intervention_url(*@intervention_definition.ancestor_ids)
 
     if request.post? and params[:commit]
-      flash[:notice=] = "Changes saved for #{@intervention_definition.title}" if @intervention_definition.probe_definition_ids=params[:probes].uniq
+      flash[:notice] = "Changes saved for #{@intervention_definition.title}" if @intervention_definition.probe_definition_ids=params[:probes].uniq
       redirect_to @back_path and return
     end
     @recommended_monitors = @intervention_definition.recommended_monitors.collect(&:probe_definition_id)
@@ -19,10 +19,10 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
     @probe_definition=current_district.probe_definitions.find(params[:id])
 
     if request.post? and params[:commit]
-      flash[:notice=] = "Changes saved for #{@probe_definition.title}" if @probe_definition.intervention_definition_ids=params[:int_defs]
+      flash[:notice] = "Changes saved for #{@probe_definition.title}" if @probe_definition.intervention_definition_ids=params[:int_defs]
       redirect_to intervention_builder_probes_url and return
     end
-    @recommended_monitors = @probe_definition.recommended_monitors.collect(&    :intervention_definition_id)
+    @recommended_monitors = @probe_definition.recommended_monitors.collect(&:intervention_definition_id)
     @goal_definitions=current_district.goal_definitions.find(:all,:include=>{:objective_definitions=>{:intervention_clusters=>:intervention_definitions}})
   end
 

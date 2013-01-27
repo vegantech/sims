@@ -24,6 +24,10 @@ password is the user\'s password in lowercase, district_key is set by the distri
         [:district_user_id, :username, :first_name, :middle_name, :last_name, :suffix, :email, :passwordhash, :salt]
       end
 
+      def optional_headers
+        [:passwordhash, :salt]
+      end
+
       def overwritten
         "Users with matching district_user_id in the file will be overwritten."
       end
@@ -149,7 +153,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
           true
         end
     end
-                                                                    
   end
 end
 

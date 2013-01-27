@@ -1,5 +1,5 @@
 module CSVImporter
-  require 'fastercsv'
+  require 'csv'
   class Base
     attr_reader :messages
     FIELD_DESCRIPTIONS = {}
@@ -88,6 +88,9 @@ module CSVImporter
       def append_info
         "Unsupported for this file"
       end
+      def optional_headers
+        []
+      end
     end
 
   protected
@@ -134,7 +137,7 @@ module CSVImporter
     def confirm_header row
       h= row.split(",").collect(&:strip)
       h=h.delete_if(&:blank?).collect(&:to_sym)
-      if h.join(",") == csv_headers.join(",")
+      if (h - optional_headers).join(",")  == (csv_headers - optional_headers).join(",")
         return h
       else
         @messages << "Invalid file,  file must have headers #{ csv_headers.join(",")} \n\nbut file had #{row.strip[0..511]}"
@@ -227,6 +230,10 @@ module CSVImporter
     private
     def csv_headers
       self.class.csv_headers
+    end
+
+    def optional_headers
+      self.class.optional_headers
     end
 
     def append_failure?

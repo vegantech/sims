@@ -14,8 +14,8 @@
         <th>Response</th>
       </tr>
     </thead>
-    <tbody id="<%="tbody_#{actions}"%>">
-      <%= render :partial=>'override',:collection=>overrides, :locals=>{:actions=>actions} %>
+    <tbody id="<%="tbody_#{actions.join}"%>">
+      <%= render overrides, :actions=>actions %>
     </tbody>
 
   </table>

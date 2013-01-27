@@ -6,13 +6,11 @@ class Interventions::CommentsController < ApplicationController
     @last_comment = params[:last_comment]
   end
   # GET /comments/new
-  # GET /comments/new.xml
   def new
     @intervention_comment = @intervention.comments.build
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @intervention_comment }
     end
   end
 
@@ -27,12 +25,12 @@ class Interventions::CommentsController < ApplicationController
     @intervention_comment = @intervention.comments.find(params[:id])
     respond_to do |format|
       format.html
+      format.js
     end
 
   end
 
   # POST /comments
-  # POST /comments.xml
   def create
     @intervention_comment = @intervention.comments.build(params[:intervention_comment].merge('user'=>current_user))
 
@@ -47,11 +45,10 @@ class Interventions::CommentsController < ApplicationController
   end
 
   # PUT /comments/1
-  # PUT /comments/1.xml
   def update
     @intervention_comment = @intervention.comments.find(params[:id])
     @intervention_comment.comment = params[:intervention_comment][:comment] unless params[:intervention_comment].blank?
-  
+
 
     respond_to do |format|
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
@@ -65,7 +62,6 @@ class Interventions::CommentsController < ApplicationController
   end
 
   # DELETE /comments/1
-  # DELETE /comments/1.xml
   def destroy
     @intervention_comment = @intervention.comments.find(params[:id])
     @intervention_comment.destroy 

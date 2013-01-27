@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<%= stylesheet_link_tag "/stylesheets/spellerStyle" %>
-<%= javascript_include_tag "/javascripts/spellerpages/wordWindow" %>
+<%= stylesheet_link_tag "spellerStyle" %>
+<%= javascript_include_tag "spellerpages/wordWindow" %>
 <script type="text/javascript" language="javascript">
 // <![CDATA[
 	var suggs = new Array();
@@ -17,10 +17,9 @@
     words[<%=idx%>] = [];
     suggs[<%=idx%>] = [];
 
-
     <% @words[idx].each_with_index do |pair, i| %>
       words[<%=idx%>][<%= i %>] = '<%= pair[0] %>';
-      suggs[<%=idx%>][<%= i %>] = [<%= pair[1] %>];
+      suggs[<%=idx%>][<%= i %>] = [<%= raw pair[1] %>];
     <% end %>
   <% end %>
 

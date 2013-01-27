@@ -1,4 +1,3 @@
-<% readonly = false if readonly.nil? %>
 <%= form.error_messages %>
 <p>
 
@@ -7,7 +6,7 @@
   </p>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <% if readonly %>
+    <% if readonly? %>
       <div class ="fake_label">Frequency</div><%= @intervention.frequency_summary %>
       <%= "(Rec: #{@intervention.intervention_definition.frequency_summary})" unless @intervention.intervention_definition.blank? %>
     <% else %>
@@ -19,13 +18,13 @@
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <% if readonly %>
+    <% if readonly? %>
         <div class ="fake_label">Duration</div><%= @intervention.time_length_summary %>
         <%= "(Rec: #{@intervention.intervention_definition.time_length_summary})" unless @intervention.intervention_definition.blank? %>
       <% else %>
         <%= form.label :time_length_number, 'Duration:' %>
-        <%= form.select :time_length_number, (1..100).to_a ,{}, {:onchange=>"change_date('#{@intervention.new_record?}');"} %>
-        <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:onchange => "change_date('#{@intervention.new_record?}');"}) %>
+        <%= form.select :time_length_number, (1..100).to_a ,{}, {:class =>"change_date"} %>
+        <%= form.collection_select(:time_length_id, TimeLength.all(:order => :days),:id,:title,{},  {:class => 'change_date'}) %>
         <%= "(Rec: #{@intervention_definition.time_length_summary})" unless custom_intervention? or @intervention_definition.blank? %>
       <% end %>
 
@@ -48,17 +47,17 @@
 
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <% if readonly %>
+    <% if readonly? %>
       <div class="fake_label">Start Date:</div>
       <%= @intervention.start_date %>
     <% else %>
       <%= form.label :start_date , 'Start Date:' %>
-      <%= form.unobtrusive_date_picker :start_date ,{:order=>[:month,:day,:year]}, {:onchange => "change_date('#{@intervention.new_record?}');"}%>
+      <%= form.unobtrusive_date_picker :start_date ,{:order=>[:month,:day,:year]}, {:class => 'change_date'}%>
     <% end %>
   </div>
   <br class="brclear" />
   <div class="form_row_wrap_label">
-    <% if readonly %>
+    <% if readonly? %>
      <div class="fake_label">End Date:</div>
      <%= @intervention.end_date %>
     <% else %>
@@ -71,20 +70,20 @@
   <div class="form_row">
     <%= form.label :participant_users, 'Participants' %>
     <table><tr><td>
-      <%= render :partial => 'interventions/participants/list', :locals => {:form => form , :readonly => readonly} %>
+      <%= render :partial => 'interventions/participants/list', :locals => {:form => form } %>
     </td></tr></table>
   </div>
   <br class="brclear" />
   <br class="brclear" />
-  <%= render :partial => 'interventions/probe_assignments/assign_progress_monitor', :locals => {:form => form, :readonly => readonly, :custom => custom_intervention?} unless !readonly and @recommended_monitors.blank? and !custom_intervention? %>
+  <%= render :partial => 'interventions/probe_assignments/assign_progress_monitor', :locals => {:form => form, :custom => custom_intervention?} unless !readonly? and @recommended_monitors.blank? and !custom_intervention? %>
   <br class="brclear" />
 
-  <%= render :partial => "interventions/comments/index" %>
+  <%= render  "interventions/comments/index" %>
 
   <br class="brclear" />
-  <% unless readonly %>
+  <% unless readonly? %>
   <br class="brclear" />
-    <%= form.fields_for :comment, @intervention_comment do |comment_fields| %>
+    <%= form.fields_for :comments, (@intervention_comment || InterventionComment.new) do |comment_fields| %>
       <%= comment_fields.label :comment, 'Add new comment about the intervention plan and progress' %>
       <%= comment_fields.text_area :comment, :rows => 5, :class => "fixed_width spell_check" %>
       <% @spell_check_fields = [1] %>

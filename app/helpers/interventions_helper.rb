@@ -9,7 +9,6 @@ module InterventionsHelper
     ret
   end
 
-
   def options_from_collection_for_select_with_css_class(collection, value_method, text_method, css_class,method_for_using_class, opts={})
       ret = options_from_collection_for_select(  collection, value_method, text_method, opts)
       collection.each do |option_item|
@@ -30,9 +29,8 @@ module InterventionsHelper
         options_from_collection_for_select_with_css_class(  c[group], :id, :title,'sld','sld?', :selected => selected) if c[group]
       end
     end
-    select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width",
-               :onchange => "$('spinnerdefinitions').show();form.onsubmit()",
-               :name => "intervention_definition[id]")
+   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width sim_submit",
+              :name => "intervention_definition[id]")
   end
 
 
@@ -44,14 +42,14 @@ module InterventionsHelper
       form_tag "/interventions/quicklists" do
         concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
         options = ""
-        options << content_tag( :option,{},:value => "")
+        options << content_tag( :option,"",:value => "")
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
         gqi.sort.each do |group,col|
           options << content_tag(:optgroup, :label => h(group.to_s)) do
             options_from_collection_for_select_with_css_class(col, :id, :title,'sld','sld?')
           end
         end
-        concat(select_tag("intervention_definition_id",options.html_safe, :onchange => "form.submit()"))
+        concat(select_tag("intervention_definition_id",options.html_safe))
         concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
     end
@@ -59,6 +57,10 @@ module InterventionsHelper
   end
 
   def custom_intervention?
-    params[:custom_intervention] == "true"
+    (params[:custom_intervention] == "true") &&  custom_intervention_enabled?
+  end
+
+  def custom_intervention_enabled?
+    current_user.custom_interventions_enabled?
   end
 end

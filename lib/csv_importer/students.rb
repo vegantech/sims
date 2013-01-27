@@ -78,7 +78,9 @@ module CSVImporter
             FIELDS TERMINATED BY ','
             OPTIONALLY ENCLOSED BY '"'
             (#{headers.join(", ")})
-            set birthdate=ifnull(str_to_date(@birthdate,"%Y-%m-%d"),str_to_date(@birthdate,"%m/%d/%Y")),
+            set birthdate=(ifnull(str_to_date(@birthdate,"%Y-%m-%d"),
+            str_to_date(@birthdate,"%m/%d/%Y")) + Interval 0 day
+            ),
             special_ed= case trim(lower(@special_ed))
         when 't' then true
         when 'y' then true

@@ -17,24 +17,6 @@ describe ApplicationHelper do
     helper.spinner("suffix").should match(/spinnersuffix/)
   end
 
-  it 'should provide link_to_remote with graceful degradition to html when javascript is off' do
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")}).should ==
-      helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
-
-
-
-     helper.link_to_remote_degrades("test",{:url=>{:controller=>"bob",:action=>"barker"}}).should ==
-     helper.link_to_remote("test",{:url=>{:controller=>"bob",:action=>"barker"}},{:href=>url_for(:action=>"barker", :controller=>"bob")})
-  end
-
-
-  it 'should provide link_to_remote_if' do
-    helper.link_to_remote_if(false,"blah").should == "blah"
-    helper.link_to_remote_if(true,"links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"}).should ==
-      helper.link_to_remote_degrades("links_to_remote", {:url=>{:action=>:index,:controller=>"main"}},{:style=>"display:none"})
-  end
-
   it 'should provide link_to_with_icon' do
     file="testing_of_Stuff.doc"
     url="http://www.test.com"
@@ -94,6 +76,26 @@ describe ApplicationHelper do
 
   end
 
+  describe 'body' do
+    it 'without user or student' do
+      helper.stub!(:current_user => nil)
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == "<body>dog</body>"
+    end
+    it 'without student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => nil)
+      helper.body(){"dog"}.should == '<body data-user="6">dog</body>'
+    end
+
+    it 'with user and student' do
+      helper.stub!(:current_user => mock_user(:id=> 6))
+      helper.stub!(:current_student_id => 82)
+      helper.body(){"dog"}.should == '<body data-student="82" data-user="6">dog</body>'
+    end
+
+  end
+
   describe 'restrict_to_principals?' do
     it 'should return false when the user is a principal of the student'  do
       user = mock_user
@@ -118,6 +120,29 @@ describe ApplicationHelper do
       helper.should_receive(:current_user).and_return(user)
       helper.should_receive(:current_district).and_return(mock_district('restrict_free_lunch?'=>true))
       helper.restrict_to_principals?(student).should be_true
+    end
+  end
+
+  describe 'windows_live?' do
+    it 'should work' do
+      old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE
+      no_live = District.new
+      no_live.stub!(:windows_live? => false)
+      live = District.new
+      live.stub!(:windows_live? => true)
+
+      Object.send :remove_const, "WINDOWS_LIVE_CONFIG" if defined? ::WINDOWS_LIVE
+      helper.windows_live?(no_live).should be_false
+      helper.windows_live?(live).should be_false
+
+      ::WINDOWS_LIVE_CONFIG=2
+      helper.windows_live?(no_live).should be_false
+      helper.windows_live?(live).should be_true
+
+      Object.send :remove_const, "WINDOWS_LIVE_CONFIG"
+
+      ::WINDOWS_LIVE_CONFIG = old_const if defined? old_const
+
     end
   end
 

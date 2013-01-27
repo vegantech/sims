@@ -9,11 +9,15 @@
   <!--[form:probe_definition]-->
     <tr>
       <td width="15%"><%= pdef.label :title %></td>
-      <td colspan="3"><%= pdef.text_field :title, :size => 51 ,:class => 'spell_check'%></td>
+      <td colspan="3"><%= pdef.text_field :title, :size => 51 ,:class => 'spell_check'%>
+        <span class="custom_intervetion_warning">(Do not include the student's name)</span>
+      </td>
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :description %></td>
-      <td colspan="3"><%= pdef.text_area :description, :cols => 50, :rows =>5 ,:class => 'spell_check' %></td>
+      <td colspan="3"><%= pdef.text_area :description, :cols => 50, :rows =>5 ,:class => 'spell_check' %>
+        <span class="custom_intervetion_warning">(Do not include the student's name)</span>
+      </td>
     </tr>
     <tr>
       <td width="15%"><%= pdef.label :minimum_score, 'Min score' %></td>
@@ -29,15 +33,17 @@
   <!--[eoform:probe_definition]-->
   </table>
 
-  <div id="benchmarks">
-    <% pdef.object.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
-      <%= render :partial => 'interventions/probe_assignments/benchmark_fields', :locals => {:probe_definition_benchmark => probe_definition_benchmark, :index =>"e_#{probe_definition_benchmark.id}"} %>
-    <% end %>
-  </div>
+  <span class="awesome_nested">
+    <div id="benchmarks" class="items">
+      <%= pdef.nested_fields_for :probe_definition_benchmarks do | probe_definition_benchmark | %>
+        <%= render :partial => 'interventions/probe_assignments/benchmark_fields', :locals => {:form => probe_definition_benchmark} %>
+      <% end %>
+    </div>
   <div class="form_row">
     <div class="fake_label">&nbsp;</div>
-     <%= render :partial => 'interventions/probe_assignments/add_benchmark_link', :locals => {:index => pdef.object.probe_definition_benchmarks.size} %>
+     <%= link_to 'Add Benchmark', '#', :class => 'add'%>
   </div>
+  </span>
   <br />
   <% content_for  :custom_probe_assets do %>
 

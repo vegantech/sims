@@ -1,1 +1,0 @@
-page.replace_html(:flash_notice, flash[:notice])

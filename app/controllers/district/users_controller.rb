@@ -48,7 +48,6 @@ class District::UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     params[:user] ||= {}
-    params[:user][:existing_user_school_assignment_attributes] ||= {}
     @user = current_district.users.find(params[:id])
 
     respond_to do |format|
@@ -56,6 +55,10 @@ class District::UsersController < ApplicationController
         flash[:notice] = "#{edit_obj_link(@user)} was successfully updated.".html_safe
         if params[:user][:staff_assignments_attributes] && current_district.staff_assignments.empty?
           flash[:notice] = "#{flash[:notice]}  All staff assignments have been removed, upload a new staff_assignments.csv if you want to use this feature.".html_safe
+        end
+        if @user == current_user
+          #Keep the user logged in in case s/he changed their own password here
+          sign_in(@user, :bypass => true)
         end
         format.html { redirect_to(index_url_with_page)}
       else

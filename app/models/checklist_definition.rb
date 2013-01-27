@@ -73,8 +73,6 @@ class ChecklistDefinition < ActiveRecord::Base
     !!@delete_document
   end
 
-
-
   protected
 
   def mark_other_checklist_definitions_inactive

@@ -1,6 +1,7 @@
-source 'http://rubygems.org'
+source "http://bundler-api.herokuapp.com"
+source :rubygems
 
-gem 'rails', '3.0.12'
+gem 'rails', '3.1.10'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -33,39 +34,45 @@ gem 'rails', '3.0.12'
 
 gem 'factory_girl_rails', '~> 1.7.0'
 gem 'redcarpet'
-gem "fastercsv", '1.2.3'
-gem 'system_timer'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'mysql2', '~> 0.2.7'
+gem 'mysql2', ">= 0.3.12b4"
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'memcache-client'
 gem 'cells'
 gem 'paperclip', '~> 2.7.0'
 gem "spawn", :git => 'git://github.com/rfc2822/spawn'
-gem 'prototype_legacy_helper', '0.0.0', :git => 'git://github.com/rails/prototype_legacy_helper.git'
 gem 'dynamic_form'
 gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
 gem 'statistics'
-gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache]
+gem 'devise', '~> 1.5.0'
+gem 'omniauth-google-apps'
+gem 'omniauth-windowslive'
+gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :branch => "skip_authorize_and_authenticate"
+gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
+gem 'sneaky-save'
+gem 'jquery-rails'
+gem "jquery-scrollto-rails"
+gem 'jquery-ui-rails'
+gem 'awesome_nested_fields'
+
+
 
 group :test do
-  gem 'rcov', ">=0.9.9", :require => false
+  gem 'simplecov', :require => false
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
-  gem 'sneaky-save'
   gem 'rspec-html-matchers'
 end
 
 group :cucumber do
-  gem 'rcov', ">=0.9.9", :require => false
+  gem 'simplecov',  :require => false
   gem 'capybara', :require => false
   gem 'cucumber-rails', :require => false
-  gem 'cucumber', :require => false#covered by cucumber-rails above
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
   gem 'email_spec','=1.2.1', :require => false
@@ -74,14 +81,27 @@ group :cucumber do
 end
 
 group :development do
-gem "capistrano",'2.5.0', :require => false
-gem "capistrano-ext", :require => false
-gem "thin"
-gem "metrical", :platforms => :ruby_19
-gem "ripper", :platforms => :ruby_19
-gem 'rspec-rails','~>2.6', :require => false
+  gem "capistrano", :require => false
+  gem "capistrano-ext", :require => false
+  gem "thin"
+  gem "metrical", :platforms => :ruby_19
+  #gem "ripper", :platforms => :ruby_19
+  gem 'rspec-rails','~>2.6', :require => false
+  gem 'spork'
+  gem 'guard'
+  gem 'guard-spork'
+  gem 'guard-rspec'
+  gem 'guard-cucumber'
+  gem 'rb-inotify'
+  gem 'libnotify'
 end
 
+
+group :assets do
+  gem 'sass-rails',   "~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+end
 
 gem 'rpm_contrib'
 gem 'newrelic_rpm'

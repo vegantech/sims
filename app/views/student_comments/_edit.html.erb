@@ -1,7 +1,7 @@
+<%=div_for @student_comment, "edit" do %>
 <%= form_for([@student,@student_comment], :format => :js, :html=>{:multipart => true, :target=>"upload_frame", :method => :put}) do |f| %>
   <%= render :partial=>f %>
 <% end %>
 
-  <%= link_to_function 'cancel',{:href=> url_for(@student)} do |page|
-    page[dom_id(@student_comment)].replace_html(:partial=>'student_comments/comment', :object=>@student_comment)
-    end  %>
+<%= link_to 'cancel', @student, :data => {:remove => dom_id(@student_comment, "edit"), :show => dom_id(@student_comment)}, :class => "cancel_link" %>
+<% end %>

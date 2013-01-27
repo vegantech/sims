@@ -54,17 +54,40 @@ class InterventionDefinition < ActiveRecord::Base
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
   end
 
-  scope :restrict_tiers_and_disabled, lambda {|student_tier|
-    where("intervention_definitions.disabled=false and
-      (!districts.lock_tier or goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
-      tiers.position <= #{student_tier.position})").joins([:tier, {:intervention_cluster => {:objective_definition => {:goal_definition => :district}}}])
+  scope :restrict_tiers_and_disabled, lambda {|student_tier, district|
+    if district.lock_tier?
+      enabled.restrict_tiers(student_tier)
+    else
+      enabled
+    end
   }
+  scope :restrict_tiers, lambda{ |student_tier|
+    where("goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
+          tiers.position <= #{student_tier.position}").joins([:tier, {:intervention_cluster => {:objective_definition => :goal_definition }}])
+  }
+
 
   scope :general, where(["intervention_definitions.custom is null or intervention_definitions.custom = ?",false])
   scope :enabled, where(:disabled => false)
   scope :for_report, general.enabled.includes(
   [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
   ).order("tiers.position,intervention_clusters.position,intervention_definitions.position")
+
+  scope :for_dropdown, lambda {|student_tier, district, school_id, user|
+    res=restrict_tiers_and_disabled(student_tier, district)
+      if ["disabled","only_author"].include? district.custom_interventions
+        #shared only with author
+        return res.where(["custom = ? or user_id = ?", false, user.id])
+        elsif district.custom_interventions == 'one_off'
+          return res.where(["custom = ?", false])
+        else
+        #shared with author and school (enabled and content_admins)
+        return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
+      end
+  }
+
+
+
 
 
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster

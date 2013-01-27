@@ -116,16 +116,15 @@ class InterventionBuilder::InterventionsController < ApplicationController
       @intervention_definition.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to index_url}
+      format.html {redirect_to :action => :index}
       format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}
     end
   end
 
   def sort
-    params[:intervention_definition_list].each_with_index do |id, index|
+    params[:intervention_definition_list].split(",").each_with_index do |id, index|
       @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
     end
-    render :nothing => true
   end
 
   private

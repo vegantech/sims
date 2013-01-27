@@ -94,7 +94,7 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params', "existing_system_flag_attributes"=>{}})
+        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :student => {:these => 'params'}
       end
 
@@ -122,7 +122,7 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params', "existing_system_flag_attributes"=>{}})
+        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, :id => "37", :student => {:these => 'params'}
       end
 
@@ -158,4 +158,8 @@ describe District::StudentsController do
 
   end
 
+
+  describe "check_id_state" do
+    it 'should have specs'
+  end
 end

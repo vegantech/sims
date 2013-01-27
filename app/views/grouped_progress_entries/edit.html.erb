@@ -19,28 +19,30 @@ Intervention-<%=@grouped_progress_entry %>
 <%= @probe_definition.probe_definition_benchmarks.join('<br />') %>
 
 <%= form_for(@grouped_progress_entry) do |f| %>
-  <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}, :onchange => 'grouped_change_date();'  %>
+  <span id="global_date">
+    <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}%>
+  </span>
 
 
   <%#= f.error_messages %>
   <table>
     <thead>
       <tr>
-        <th>&nbsp</th>
+        <th>&nbsp;</th>
         <th>Student</th>
         <th>Score <%=help_popup("You may enter a score in the left field, or a ratio using the right two fields which will populate the score field for you.")%></th>
         <th>Date</th>
         <th>Comment</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="grouped_progress_list">
       <% for @student_intervention in @grouped_progress_entry.student_interventions  %>
         <tr>
           <%= fields_for "student_intervention[]" do |field| %>
             <td><div style="color: red"><%=@student_intervention.errors%></div></td>
             <td><%= @student_intervention.student %></td>
-            <td><%@student_intervention.score%><%= field.text_field :score, :size=>4, :maxlength=>4%> or 
-              <%=field.text_field :numerator, :size => 4, :onchange=>'calculate_percentage(this);'%>:<%=field.text_field :denominator, :size =>4,:onchange=>'calculate_percentage(this)' %> </td>
+            <td><%= field.text_field :score, :size=>4, :maxlength=>4, :class => 'score'%> or
+              <%=field.text_field :numerator, :size => 4,:class => "numerator"%>:<%=field.text_field :denominator, :size =>4,:class => "demoninator"%> </td>
             <td class="date"><%@student_intervention.date%><%= field.unobtrusive_date_picker :date, :order => [:month, :day, :year] %></td>
             <td><%= field.text_area(:comment, :size => '25x2', :class => 'spell_check') %> </td>
 
@@ -51,8 +53,9 @@ Intervention-<%=@grouped_progress_entry %>
     </tbody>
   </table>
   <p>
-  <%=link_to_function("Add Participant", :href => '#') {|page| page.insert_html(:top, 'participants_list', :partial => 'new_participant', :locals => {:users => @grouped_progress_entry.staff})} %>
-  </p>
+  <%=link_to("Add Participant", '#', :id => 'new_participant_link') %>
+  <%= render  :partial => 'new_participant', :locals => {:users => @grouped_progress_entry.staff} %>
+</p>
   <div id="participants_list">
   </div>
   <p>

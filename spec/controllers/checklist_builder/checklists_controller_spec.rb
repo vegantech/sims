@@ -5,6 +5,9 @@ describe ChecklistBuilder::ChecklistsController do
   include_context "authorized"
   include_context "authenticated"
 
+  before do
+    controller.stub!(:current_user => mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"],:principal_override_requests=> [], "principal?" => false))
+  end
 
   render_views
   #Delete this example and add some real ones

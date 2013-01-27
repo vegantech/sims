@@ -110,5 +110,19 @@ describe CSVImporter::Students do
     end
   end
 
+  describe 'disallow invalid birthdates' do
+   
+    it 'should zero out or reject an invalid birthdate' do
+      District.delete_all
+      Student.delete_all
+      d=Factory(:district)
+      i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/invalid_birthdate/students.csv",d
+      i.import
+      d.students.first.birthdate.should be_nil
+      d.students.last.birthdate.should be_nil
+    end
+
+  end
+
 end
 

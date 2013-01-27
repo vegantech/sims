@@ -170,9 +170,48 @@ describe Student do
 
   end
 
+  describe 'birthdate' do
+    let(:student) {Factory.build(:student)}
+    
+    it 'should allow a blank birthdate' do
+      student.birthdate = ''
+      student.should be_valid
+    end
+
+    it 'should allow a birthdate set to 0' do
+      student.birthdate = '0'
+      student.should be_valid
+    end
+
+    it 'should allow a birthdate set to nil' do
+      student.birthdate = nil
+      student.should be_valid
+    end
+
+
+    it 'should not allow an invalid birthdate' do
+      student.birthdate = "2000"
+      student.birthdate.should be_nil
+    end
+  end
 
 
 
+
+  describe 'safe_destroy' do
+    let(:student) {Factory(:student)}
+
+    it 'should destroy the student with no custom content' do
+      student.safe_destroy
+      student.should be_destroyed
+    end
+
+    it 'should not destroy a student with custom content in the db' do
+      Factory(:custom_flag, :student => student)
+      student.safe_destroy
+      student.should_not be_destroyed
+    end
+  end
 
 
 

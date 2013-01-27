@@ -1,4 +1,4 @@
-class QuicklistItemsController < ApplicationController
+class QuicklistItemsController < SchoolAdminController
   # GET /quicklist_items
   # GET /quicklist_items.xml
   def index

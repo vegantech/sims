@@ -1,4 +1,0 @@
-page.replace_html( 'objective_definition_list',
-:partial => "objective_definition",
-:collection => @objective_definitions)
-page.safe_highlight dom_id(@objective_definition)

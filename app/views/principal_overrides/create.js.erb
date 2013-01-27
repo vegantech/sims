@@ -1,0 +1,5 @@
+$('#override').html("<%=flash[:notice]%>");
+$('#principal_override_request_sidebar').replaceWith("<%=escape_javascript(render_cell(:principal_overrides,:user_requests, :user=>current_user))%>");
+<% if current_user.principal? %>
+  $('#principal_override_response_sidebar').replaceWith("<%=escape_javascript(render_cell(:principal_overrides,:principal_responses, :user=>current_user))%>");
+<% end %>

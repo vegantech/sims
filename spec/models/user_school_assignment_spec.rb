@@ -31,8 +31,7 @@ describe UserSchoolAssignment do
     UserSchoolAssignment.delete_all
     SpecialUserGroup.delete_all
     usa=UserSchoolAssignment.create!(:user_id => 1, :school_id => 1)
-    sug= SpecialUserGroup.new(:school_id => 1, :user_id => 1, :grouptype=>3)
-    sug.district_id = 1
+    sug= SpecialUserGroup.new(:school_id => 1, :user_id => 1)
     sug.save!
     SpecialUserGroup.count.should == 1
     usa.destroy

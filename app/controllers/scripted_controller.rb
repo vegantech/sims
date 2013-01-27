@@ -43,11 +43,14 @@ class ScriptedController < ApplicationController
 
 
 protected
-  def authenticate
-    subdomains
+  def authenticate_user!
     authenticate_or_request_with_http_basic do |username, password|
-      username == params[:action] && @u=current_district.users.authenticate(username,password)
+      username == params[:action] && @u=current_district.users.find_by_username(username) and @u.try(:valid_password?,password)
     end
+  end
+
+  def current_district
+    @current_district ||= District.find_by_subdomain(params[:district_abbrev].presence || current_subdomain.presence)
   end
 
 

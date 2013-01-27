@@ -58,22 +58,23 @@ Feature: Login
     And I follow "Change Password"
 
 
-    When I fill in "Old password" with "wrong"
+    When I fill in "Current password" with "wrong"
+    And I fill in "Password" with "New"
     And I press "Change password"
-    Then I should see "Old password is incorrect"
+    Then I should see "Current password is invalid"
 
-    When I fill in "Old password" with "fr0d0L1v3s"
+    When I fill in "Current password" with "fr0d0L1v3s"
     And I press "Change password"
     Then I should see "Password cannot be blank"
 
-    When I fill in "Old password" with "fr0d0L1v3s"
+    When I fill in "Current password" with "fr0d0L1v3s"
     And I fill in "Password" with "New"
     And I fill in "Password confirmation" with "Something else"
     And I press "Change password"
-    Then I should see "Password confirmation must match password"
+    Then I should see "Password doesn't match confirmation"
 
 
-    When I fill in "Old password" with "fr0d0L1v3s"
+    When I fill in "Current password" with "fr0d0L1v3s"
     And I fill in "Password" with "New"
     And I fill in "Password confirmation" with "New"
     And I press "Change password"
@@ -112,15 +113,10 @@ Feature: Login
 
 
     When I click the change_password link in the email
-    Then I should see "Change password"
+    Then I should see "Change your password"
 
-    When I fill in "Old password" with "bnford"
-    And I fill in "Password" with "cucumber"
-    And I fill in "Password confirmation" with "cucumber"
-    And I press "Change password"
+    And I fill in "New password" with "cucumber"
+    And I fill in "Confirm new password" with "cucumber"
+    And I press "Change my password"
 
-    Then I should see "Your password has been changed"
-
-    And I should see "Please Login"
-
-
+    Then I should see "Your password was changed successfully. You are now signed in."

@@ -4,9 +4,9 @@ Given /^common data$/i do
   @district = default_district
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
-  @default_user.schools << @school
+  @default_user.user_school_assignments.create!(:school => @school)
   @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
-  @another_user.schools << @school
+  @another_user.user_school_assignments.create!(:school => @school)
   @default_user.save!
   create_default_student
   @student.district = @district
@@ -20,6 +20,7 @@ Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |u
 
   @user.update_attribute(:passwordhash,'')
   @user.update_attribute(:salt,'')
+  @user.update_attribute(:encrypted_password,'')
   @user.update_attribute(:email,'b723176@madison.k12.wi.us')
   @user.district.update_attribute(:key, key)
 
@@ -228,9 +229,9 @@ end
 Given /^load demo data$/ do
   fixtures_dir = Rails.root.join("test","fixtures")
 
-  Fixtures.reset_cache
+  ActiveRecord::Fixtures.reset_cache
   Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
-    Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
+    ActiveRecord::Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end
 end
 
@@ -254,15 +255,15 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    page.driver.post  "/students/grade_search/", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.get  "/schools/#{school.id}/student_search/grade", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   elsif observed_field == "search_criteria_user_id"
-    page.driver.post "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.get "/schools/#{school.id}/student_search/member", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
   else
     flunk page.source
   end
 
   Array(eval(target_fields)).each do |target_field|
-    page.source.should match(/Element.update\("#{target_field}"/)
+    page.source.should match(/\$('#{target_field}').html/)
   end
   #  response.should hav_text /"<option value=\"996332878\">default user</option>");"/
 end
@@ -299,12 +300,6 @@ Given /^there is an email containing "(.*)"$/ do |target_text|
   last_mail.should match(/#{target_text}/)
 end
 
-When /^I press within (.*)$/ do | scope|
-  within(scope) do |scoped|
-    scoped.click_button
-  end
-end
-
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
@@ -312,7 +307,7 @@ Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
-  date = date_string.to_date
+  date = Date.strptime date_string, '%m/%d/%Y'
   @student.comments.create!(:body => content, :created_at => date)
 end
 
@@ -329,8 +324,7 @@ Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_stri
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
-  @default_user.special_user_groups.create!(:grouptype=>SpecialUserGroup::ALL_STUDENTS_IN_SCHOOL,:school_id=>@school.id, :grade=>@student.enrollments.first.grade,
-                                           :district => @default_user.district)
+  @default_user.special_user_groups.create!(:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
 
   unauthorized_student.comments.create!(:body => content, :created_at => date)
 end
@@ -382,3 +376,18 @@ end
 Given /^PENDING/ do
   pending
 end
+
+Given /^user has no email address$/ do
+  @user.update_attribute(:email, nil)
+end
+
+Given /^user has an email address$/ do
+  @user.update_attribute(:email, "b723176@madison.k12.wi.us")
+end
+
+
+
+Given /^district has forgot_password$/ do
+  @user.district.update_attribute(:forgot_password, true)
+end
+

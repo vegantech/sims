@@ -1,9 +1,0 @@
-page << if_not_visible(dom_id(@answer_definition,"details"))
-page.remove_content_and_change_link_if_visible dom_id(@answer_definition,"edit"), dom_id(@answer_definition,"edit_link"), "Edit"
-page.insert_content dom_id(@answer_definition,"details"), :partial => "details", :locals => {:answer_definition => @answer_definition}
-page.change_link dom_id(@answer_definition,"show_link"), "Hide Details"
-page << "}else{"
-page.remove_content dom_id(@answer_definition,"details")
-page.change_link dom_id(@answer_definition,"show_link"), "Show Details"
-page << "}"
-set_flash_notice page

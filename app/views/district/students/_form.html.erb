@@ -5,17 +5,7 @@
 
     <div class="form_row">
       <%= form.label :id_state, "State ID"  %>
-      <% if form.object.new_record? %>
-        <%= form.text_field :id_state, :onblur =>remote_function(:url => {:action=>'check_id_state'},
-                                    :with => 'Form.Element.serialize(this)',
-                                    :before => "$('spinnerid_state').show()",
-                                    :complete => "$('spinnerid_state').hide()",
-                                    :method => :get
-
-                                    )  %>
-      <% else %>
-        <%= form.text_field :id_state %>
-      <% end %>
+      <%= form.text_field :id_state %>
       <%= spinner('id_state') %>
       <%= help_popup id_state_desc(form.object) %>
     </div>
@@ -80,22 +70,23 @@
   </fieldset>
 
 </div>
+<span class="awesome_nested">
+  <div id= "enrollments" class="items">
+    <%=form.nested_fields_for :enrollments do |f| %>
+      <%=render 'enrollment', :f => f %>
+    <% end %>
+  </div>
+  <%=link_to "Add Enrollment", "#", :class => "add" %>
+ </span>
 
- <div id= "enrollments">
-   <%=render :partial => 'enrollment' ,:collection => @student.enrollments ,:locals=>{:form =>form} %>
- </div>
-
-  <%=link_to_function 'Add Enrollment' do |page|
-   page.insert_html :bottom, :enrollments, :partial => 'enrollment' , :object => Enrollment.new(:end_year => Date.today.year)
-  end %>
-
-
-<div id= "system_flags">
-  <%= render :partial => 'system_flag', :collection => @student.system_flags, :locals => {:form => form} %>
-</div>
-<%=link_to_function 'Add System Flag' do |page|
-  page.insert_html :bottom, :system_flags, :partial => 'system_flag' , :object => SystemFlag.new
-end %>
+<span class="awesome_nested">
+  <div id= "system_flags" class ="items">
+    <%=form.nested_fields_for :system_flags do |f| %>
+      <%= render 'system_flag', :f => f %>
+    <% end %>
+  </div>
+  <%=link_to 'Add System Flag', "#", :class => "add" %>
+</span>
 
 <p>
 <%= render :partial => 'assets/asset_form', :locals => {:form=>form, :parent =>'student'}  %>

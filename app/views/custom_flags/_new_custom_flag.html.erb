@@ -1,5 +1,5 @@
 <%= error_messages_for 'custom_flag' %>
-<%= form_remote_for(@custom_flag) do |form| %>
+<%= form_for(@custom_flag, :remote => true) do |form| %>
   <label for='custom_flag_reason'>Please enter your reason for this custom:</label>
   <%= form.text_field :reason%> <br />
   <label for='custom_flag_category'>Category:</label><% flagtypes= Flag::FLAGTYPES %>
@@ -7,6 +7,6 @@
   <%=form.hidden_field :student_id%>
   <%=form.hidden_field :user_id %><br />
   <%= submit_tag "Save Custom Flag"%>
-  <%= link_to :cancel, @custom_flag.student %>
+  <%= link_to :cancel, custom_flags_path(:student_id => @custom_flag.student), :remote => true %>
 
 <%end%>

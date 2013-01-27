@@ -48,3 +48,25 @@ Feature: District Admin
     Then I should see "Editing user"
     Then I press "Update"
 
+  Scenario: Edit your district District
+    Given I am a district admin
+    When I go to the home page
+    And I follow "Edit your district"
+    Then I should see "Custom interventions"
+
+  Scenario: Edit your district settings
+    Given I am a district admin
+    When I go to the home page
+    And I follow "Edit your district"
+    And I uncheck all district_settings boxes
+    And I press "Update"
+    Then all boolean district settings should be false
+    When I follow "Edit your district"
+    And I check all district_settings boxes
+    And I fill in "Google apps domain" with "whatever"
+    And I press "Update"
+    Then all boolean district settings should be true
+    When I follow "Edit your district"
+    And I uncheck all district_settings boxes
+    And I press "Update"
+    Then all boolean district settings should be false

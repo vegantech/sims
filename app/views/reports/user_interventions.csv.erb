@@ -1,5 +1,5 @@
 "Student", "Title / Status", "Start Date", "End Date", "Frequency", "Time Length", "Author", "Active"
-<%= raw(FasterCSV.generate do |csv|
+<%= raw(CSV.generate do |csv|
     @interventions.each do |intervention|
       csv <<[
         intervention.student.fullname,

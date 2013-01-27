@@ -45,7 +45,6 @@ class District::StudentsController < ApplicationController
   # PUT /district_students/1
   # PUT /district_students/1.xml
   def update
-    params[:student][:existing_system_flag_attributes] ||= {}
     @student = current_district.students.find(params[:id])
 
     respond_to do |format|
@@ -70,18 +69,7 @@ class District::StudentsController < ApplicationController
   end
 
   def check_id_state
-    @student = Student.find_by_id_state(params['student']['id_state']) if params['student']['id_state'].present?
-
-    render :update do |page|
-      if @student
-        if  @student.district
-          page.alert("Student exists in #{@student.district}  You may have mistyped the id, or the other district has not yet removed this student.")
-        else
-          page.alert('Follow the link if you want to try to claim this student for your district')
-          page.replace_html(:claim_student, link_to("Claim #{@student} for your district", :action=>'claim', :id => @student.id , :method => :put))
-        end
-      end
-    end
+    @student = Student.find_by_id_state(params['id_state']) if params['id_state'].present?
   end
 
   def claim

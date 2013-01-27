@@ -6,7 +6,9 @@ end
 
 shared_context "authenticated" do
   before(:each) do
-    controller.should_receive(:authenticate).any_number_of_times.and_return(true)
+    controller.stub!(:check_domain=> true)
+    controller.should_receive(:authenticate_user!).any_number_of_times.and_return(true)
+    controller.stub!(:current_user => mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"]))
   end
 end
 
@@ -18,7 +20,7 @@ end
 
 shared_examples_for "an authenticated controller" do
   it 'should have an authenticate before_filter' do
-    before_filters(controller).should include(:authenticate)
+    before_filters(controller).should include(:authenticate_user!)
   end
 end
 
@@ -34,6 +36,7 @@ shared_examples_for "a schools_requiring controller" do
     before_filters(controller).should include(:require_current_school)
   end
 end
+
 
 def before_filters(controller)
  controller._process_action_callbacks.select{|k| k.kind == :before}.collect(&:filter)

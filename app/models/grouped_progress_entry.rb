@@ -33,6 +33,10 @@ class GroupedProgressEntry
     "#{@intervention.title}"
   end
 
+  def id
+    self.object_id
+  end
+
   def staff
      [nil] | @school.assigned_users.collect{|e| [e.fullname, e.id]}
   end
@@ -178,7 +182,7 @@ class GroupedProgressEntry
     def update_attributes(params)
       @comment = params['comment']
       @intervention.comment_author=@user.id
-      @intervention.comment = {:comment => @comment}
+      @intervention.comments_attributes = {"0" => {:comment => @comment}}
       begin
         @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
       rescue ArgumentError

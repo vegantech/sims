@@ -1,15 +1,13 @@
 <a name="<%= dom_id(question_definition,"edit_errors_anchor") %>">
   <div id="<%= dom_id(question_definition,"edit_errors") %>" style="display:none"></div>
 </a>
-<%- remote_form_for :question_definition, :url => checklist_builder_question_path(question_definition.checklist_definition, question_definition), :html => { :method => :put, :id => dom_id(question_definition,"form") } do |f| -%>
+<%= form_for question_definition, :url => checklist_builder_question_path(question_definition.checklist_definition, question_definition),  :method => :put, :id => dom_id(question_definition,"form"), :remote => true  do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :question_definition => question_definition } %>
   <p>
     <%= submit_tag "Update" %> | 
     <%= spell_check_button %> |
 
-    <%= link_to_function "Cancel", nil do |page|
-      page.remove_content dom_id(question_definition,"edit")
-      page.change_link dom_id(question_definition,"edit_link"), "Edit"
-    end %>
+    <%= link_to "Cancel",  edit_checklist_builder_question_path(question_definition.checklist_definition, question_definition),
+    :remote => true %>
   </p>
 <%- end -%>

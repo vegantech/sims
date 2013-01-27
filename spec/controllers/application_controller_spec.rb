@@ -18,23 +18,6 @@ describe ApplicationController do
       controller.stub!(:params).and_return(flash)
     end
 
-    it 'should authenticate' do
-      controller.should_receive(:current_user_id).and_return(true)
-      controller.send(:authenticate).should == true
-    end
-
-    it 'should redirect if false' do
-      controller.should_receive(:current_user_id).and_return false
-      controller.should_receive(:root_url).and_return 'root_url'
-      controller.should_receive(:redirect_to).with('root_url')
-      controller.should_receive(:flash).and_return(flash)
-      controller.should_receive(:session).at_least(:once).and_return(flash)
-      controller.send(:authenticate).should == false
-      flash[:notice].should_not == nil
-      flash[:requested_url].should == "gopher://www.example.com/"
-    end
-
-
     describe 'authorize' do
 
       it 'should return true if authorized' do
@@ -49,7 +32,7 @@ describe ApplicationController do
         user=mock_user
         controller.should_receive(:current_user).and_return(user)
         user.should_receive(:authorized_for?).with('application').and_return(false)
-        controller.should_receive(:root_url).and_return 'root_url'
+        controller.should_receive(:not_authorized_url).and_return 'root_url'
         controller.should_receive(:redirect_to).with('root_url')
         controller.should_receive(:flash).and_return(flash)
         controller.send(:authorize).should == false
@@ -77,12 +60,8 @@ describe ApplicationController do
 
         controller.should_receive(:current_school).and_return("")
         @req.should_receive(:xhr?).and_return(true)
-        page=mock_object({})
-        page.should_receive(:[]).with(:flash_notice).and_return(page)
-        page.should_receive(:insert).with("<br />Please reselect the school.")
-        controller.should_receive(:render).and_yield(page)
+        controller.should_receive(:render).with({:js=>"$('#flash_notice').prepend('<br />Please reselect the school.');"})
         controller.send(:require_current_school).should == false
-
       end
 
       it 'should return true if there is a school' do
@@ -101,55 +80,6 @@ describe ApplicationController do
       controller.send('multiple_selected_students?').should == false
     end
 
-    describe 'subdomains' do
-      it 'example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      it 'simspilot.example.com' do
-        controller.send('subdomains')
-        pending 'hmm?'
-
-      end
-
-
-      it 'sims.example.com' do
-        controller.stub!(:request => mock(:subdomain => 'test'))
-        controller.stub!(:params).and_return(flash)
-        controller.send('subdomains')
-        pending 'hmm?'
-      end
-
-      describe '' do
-        before do
-          controller.stub!(:request => mock(:subdomain => 'test'))
-          controller.stub!(:params).and_return(flash)
-          District.should_receive(:find_by_abbrev).with('test').and_return(@d=mock_district)
-        end
-
-        it 'example.com with explicit params in the url' do
-          flash[:district_abbrev]='test'
-          controller.send('subdomains')
-
-
-        end
-        it 'test.sims.example.com same district' do
-          controller.send('subdomains')
-          controller.instance_variable_get('@current_district').should == @d
-        end
-
-        it 'test.sims.example.com different district' do
-          controller.instance_variable_set('@current_district','fake')
-          controller.should_receive(:redirect_to)
-          controller.should_receive(:logout_url)
-          controller.send('subdomains')
-        end
-
-      end
-
-    end
-
   end
 
   describe 'check_student' do
@@ -158,8 +88,8 @@ describe ApplicationController do
 
   describe "selected_student_ids" do
     before do
-      @session = {:session_id => 'tree', :user_id => 222}
-      controller.stub!(:session => @session)
+      @session = {:session_id => 'tree'}
+      controller.stub!(:session => @session, :current_user => mock_user)
     end
     it 'should work normally with under <50 ids' do
       controller.send :selected_student_ids=, [1,2,3]
@@ -170,12 +100,18 @@ describe ApplicationController do
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
-      controller.send(:selected_student_ids).should == values
-      @session[:session_id] = "bush"
-      controller.send(:selected_student_ids).should != values  #if session_id changes or user_id changes
-      @session[:session_id] = "tree"
-      @session[:user_id] = 123
-      controller.send(:selected_student_ids).should != values  #if session_id changes or user_id changes
+      if ENV['TRAVIS']
+        puts "SKIPPING because memcache is not working on travis-ci"
+      else
+        controller.send(:selected_student_ids).should == values
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "bush"
+        controller.send(:selected_student_ids).should_not == values  #if session_id changes
+        controller.instance_variable_set "@memcache_student_ids", nil
+        @session[:session_id] = "tree"
+        controller.stub!(:current_user => User.new)
+        controller.send(:selected_student_ids).should_not == values  #if user changes
+      end
     end
 
   end
@@ -206,29 +142,29 @@ describe ApplicationController do
       it 'www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
       it 'example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
 
       it 'https://www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.env["HTTPS"] = "on"
         @req.stub(:port => "443")
-        @c.send(:root_url_with_subdomain).should == "https://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "https://rspec.example.com:443/"
       end
       it 'training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
       it 'https://training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com/"
+        @c.send(:root_url_with_subdomain).should == "http://rspec.example.com:80/"
       end
     end
     describe 'without_subdomain' do
@@ -240,34 +176,34 @@ describe ApplicationController do
       it 'www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       it 'example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
 
       it '127.0.0.1:3000' do
         @req.env["HTTP_HOST"] = "127.0.0.1"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://127.0.0.1/"
+        @c.send(:root_url_without_subdomain).should == "http://127.0.0.1:80/"
       end
       it 'https://www.example.com' do
         @req.env["HTTP_HOST"] = "www.example.com"
         @req.env["HTTPS"] = "on"
         @req.stub(:port => "443")
-        @c.send(:root_url_without_subdomain).should == "https://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "https://www.example.com:443/"
       end
       it 'training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       it 'https://training.example.com' do
         @req.env["HTTP_HOST"] = "training.example.com"
         @req.stub(:port => "80")
-        @c.send(:root_url_without_subdomain).should == "http://www.example.com/"
+        @c.send(:root_url_without_subdomain).should == "http://www.example.com:80/"
       end
       describe 'sims-open' do
         before do
@@ -284,15 +220,54 @@ describe ApplicationController do
         it 'sims-open.vegantech.com' do
           @req.env["HTTP_HOST"] = "sims-open.vegantech.com"
           @req.stub(:port => "80")
-          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com/"
+          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com:80/"
         end
         it 'training.sims-open.vegantech.com' do
           @req.env["HTTP_HOST"] = "training.sims-open.vegantech.com"
           @req.stub(:port => "80")
-          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com/"
+          @c.send(:root_url_without_subdomain).should == "http://www.sims-open.vegantech.com:80/"
         end
       end
 
+    end
+  end
+
+  describe 'check_domain' do
+    before do
+      @c = ApplicationController.new
+      @req = ActionDispatch::TestRequest.new
+      @c.request =@req
+      #@c.set_current_view_context
+    end
+
+    it 'should return true for devise controller' do
+      @c.should_receive(:devise_controller?).and_return true
+      @c.send(:check_domain).should be_true
+    end
+
+    it 'should pass through if there is no current district' do
+      @c.should_receive(:current_district).and_return nil
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should pass through if the current district matches the subdomain' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.should_receive(:current_subdomain).and_return "test"
+      @c.send(:check_domain).should be_nil
+    end
+
+    it 'should sign out if the subdomain matches another district' do
+      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "other")
+      Factory(:district, :abbrev => "other")
+      @c.should_receive(:sign_out_and_redirect)
+      @c.send(:check_domain).should be_false
+    end
+
+    it 'should pass theough if the subdomain matches no district' do
+      @c.stub!(:current_district => mock_district(:abbrev => "test"))
+      @c.stub!(:current_subdomain => "www")
+      @c.send(:check_domain).should be_nil
     end
   end
 

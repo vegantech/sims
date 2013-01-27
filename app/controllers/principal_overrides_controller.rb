@@ -48,7 +48,7 @@ class PrincipalOverridesController < ApplicationController
     @principal_override = PrincipalOverride.find(params[:id])
 
     respond_to do |format|
-      if @principal_override.update_attributes(params[:principal_override].merge(:principal_id=>current_user_id))
+      if @principal_override.update_attributes(params[:principal_override].merge(:principal_id=>current_user.id))
         flash[:notice] = 'PrincipalOverride was successfully updated.'
         format.html { redirect_to(principal_overrides_url) }
         format.js {}
