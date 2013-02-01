@@ -37,7 +37,7 @@ class Recommendation < ActiveRecord::Base
   attr_accessor :request_referral, :school
 
   define_statistic :count, :count => :all,:joins => :student
-  define_statistic :count_of_districts, :count => :all, :select => 'distinct students.district_id', :joins => :student
+  define_statistic :count_of_districts, :count => :all, :column_name => 'distinct students.district_id', :joins => :student
   before_save :mark_promoted_if_needed
   after_initialize :setup_from_checklist_or_definition
 
