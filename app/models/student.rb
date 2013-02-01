@@ -74,55 +74,24 @@ class Student < ActiveRecord::Base
     or consultation_form_requests.created_at <=?)"
   }
 
-  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :select => 'distinct students.id',
+  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct students.id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
-  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :select => 'distinct students.district_id',
+  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :column_name => 'distinct students.district_id',
     :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
-  define_statistic :districts_with_students, :count => :all, :select => 'distinct district_id'
+  define_statistic :districts_with_students, :count => :all, :column_name => 'distinct district_id'
 
   #TODO DRY THESE
   define_calculated_statistic :students_in_use  do
-
-    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
-
-    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count(:id, :conditions =>
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
-             #{d_conditions}
-            ")
-
+    stats_in_use.count
   end
 
 
   define_calculated_statistic :districts_with_students_in_use  do
-    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
-
-    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count('distinct district_id', :conditions =>
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
-             #{d_conditions}
-            ")
-
+    stats_in_use.count("distinct district_id")
   end
 
   define_calculated_statistic :schools_with_students_in_use  do
-    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
-
-    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count('distinct school_id' ,:joins => :enrollments, :conditions =>
-            "(exists (select 1 from interventions where interventions.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from student_comments where student_comments.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from team_consultations where team_consultations.student_id = students.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
-             #{d_conditions}
-            ")
-
+    stats_in_use.joins(:enrollments).count("distinct school_id")
   end
 
 
@@ -352,5 +321,20 @@ class Student < ActiveRecord::Base
     end
 
   end
+
+  def self.stats_in_use(filters={})
+    calc_start_date = filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = filters[:created_before] || "2100-01-01".to_date
+    date_conditions = {:created_at => calc_start_date..calc_end_date}
+    union = [TeamConsultation.select("student_id").where(date_conditions).to_sql,
+      Intervention.select("student_id").where(date_conditions).to_sql,
+      StudentComment.select("student_id").where(date_conditions).to_sql].join(" UNION ")
+    k=joins("inner join (#{union}) e on students.id=e.student_id")
+
+    k=k.where(["district_id != ?", filters[:without]]) if filters[:without]
+    k
+
+  end
+
 
 end
