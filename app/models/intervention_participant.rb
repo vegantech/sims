@@ -29,7 +29,7 @@ class InterventionParticipant < ActiveRecord::Base
   ROLES = %w{Implementer Participant Author}
   scope :implementer, where(:role => IMPLEMENTER)
   define_statistic :participants , :count => :all, :joins => :user
-  define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
+  define_statistic :users_as_participant , :count => :all,:column_name => 'distinct user_id', :joins => :user
   attr_accessor :send_email
 
   RoleStruct = Struct.new(:id, :name)
