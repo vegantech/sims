@@ -79,7 +79,7 @@ class SchoolTeamsController < SchoolAdminController
     end
   end
 
-  private 
+  private
   def set_users_in_groups
     @users = current_school.assigned_users
     @users_in_groups = @users.in_groups_of(3, false)
