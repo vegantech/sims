@@ -21,9 +21,9 @@ class StudentComment < ActiveRecord::Base
   attr_accessible :body, :existing_asset_attributes, :new_asset_attributes, :created_at
 
   define_statistic :team_notes , :count => :all, :joins => :student
-  define_statistic :students_with_notes , :count => :all,  :select => 'distinct student_id', :joins => :student
-  define_statistic :districts_with_team_notes, :count => :all, :select => 'distinct district_id', :joins => :student
-  define_statistic :users_with_team_notes, :count => :all, :select => 'distinct user_id', :joins => :user
+  define_statistic :students_with_notes , :count => :all,  :column_name => 'distinct student_id', :joins => :student
+  define_statistic :districts_with_team_notes, :count => :all, :column_name => 'distinct district_id', :joins => :student
+  define_statistic :users_with_team_notes, :count => :all, :column_name => 'distinct user_id', :joins => :user
 
 
   def date_user_student_school_grade

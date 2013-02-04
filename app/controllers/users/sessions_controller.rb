@@ -37,7 +37,7 @@ class Users::SessionsController < Devise::SessionsController
       respond_with({}, :location => new_user_session_url)
     else
       flash[:alert]= resource.errors.full_messages
-      self.resource = User.new(resource.attributes.merge(:district_id_for_login => resource.district_id))
+      self.resource = User.new(resource.attributes.except('district_id').merge(:district_id_for_login => resource.district_id))
       render :action => 'new'
     end
   end

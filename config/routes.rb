@@ -49,7 +49,7 @@ Sims::Application.routes.draw do
 
   resources :help
   resources :quicklist_items
-  resources :stats, :only => :index
+  match '/stats' => 'stats#index', :as  => :stats, :via => [:get, :post]
 
   match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier
   resources :tiers do

@@ -105,13 +105,13 @@ describe ApplicationHelper do
 
   describe 'windows_live?' do
     it 'should work' do
-      old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE
+      old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE_CONFIG
       no_live = District.new
       no_live.stub!(:windows_live? => false)
       live = District.new
       live.stub!(:windows_live? => true)
 
-      Object.send :remove_const, "WINDOWS_LIVE_CONFIG" if defined? ::WINDOWS_LIVE
+      Object.send :remove_const, "WINDOWS_LIVE_CONFIG" if defined? ::WINDOWS_LIVE_CONFIG
       helper.windows_live?(no_live).should be_false
       helper.windows_live?(live).should be_false
 
