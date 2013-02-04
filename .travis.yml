@@ -8,3 +8,4 @@ branches:
   only:
   - master
   - wip
+  - back_to_prototype
