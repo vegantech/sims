@@ -1,4 +1,4 @@
-<%= form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true, :id => "bulk_upload_form"} do %>
+<%= form_tag "/districts/bulk_import?X-Progress-ID=#{ @uuid}", {:multipart=>true, :id => "bulk_upload_form", :target =>'upload_frame'} do %>
   <%= label_tag 'import_file', 'File to Import' %>
   <%= file_field_tag 'import_file'%>
   <%= hidden_field_tag 'X-Progress-ID', @uuid %>
@@ -9,7 +9,7 @@
 <div id='upload_progress' style='display:none'>
   File upload in progress (Step 1, then there is some processing on the server)
 <div id='progressbar' class="bar">
-  <div id='percents' style='width: 0%; background-color: #A2E5A2'>
+  <div id='percents' style='width: 0%; background-color: #A2E5A2; display: none'>
      0%
   </div>
 </div>

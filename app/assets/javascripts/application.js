@@ -6,7 +6,6 @@
 //=require jquery.ui.effect-blind
 //=require jquery.ui.sortable
 //=require jquery.nested-fields
-//=require jquery.uploadProgress
 //=require overlib
 //=require spellerpages/spellChecker
 //=require datepicker
