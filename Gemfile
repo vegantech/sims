@@ -60,6 +60,7 @@ gem "jquery-scrollto-rails", :git => "git://github.com/JohnColvin/jquery-scrollt
 gem 'jquery-ui-rails'
 gem 'awesome_nested_fields'
 
+gem 'silence_rails_3_2_plugin_deprecations'
 
 
 group :test do

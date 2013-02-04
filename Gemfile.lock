@@ -339,6 +339,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip
     sexp_processor (3.2.0)
+    silence_rails_3_2_plugin_deprecations (0.0.1)
+      rails (~> 3.2.0)
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -422,6 +424,7 @@ DEPENDENCIES
   rspec-html-matchers
   rspec-rails (~> 2.6)
   sass-rails (~> 3.2.0)
+  silence_rails_3_2_plugin_deprecations
   simplecov
   sneaky-save
   spawn!
