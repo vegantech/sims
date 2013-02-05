@@ -109,6 +109,12 @@
           method = element.data('method');
           url = rails.href(element);
           data = element.data('params') || null;
+	  if(method == "put" && !data){
+		  ///Internet explorer doesn't set the content length in put requests
+		  //This causes a 411 error in strict servers like nginx (and thus passenger standalone)
+		  //this is a hack to force some data if there is a put
+		  data="e=e";
+	  }
         }
 
         options = {
