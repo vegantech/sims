@@ -1,6 +1,7 @@
 class StudentsController < ApplicationController
   before_filter :enforce_session_selections, :except => [:index, :create, :search]
   skip_before_filter :verify_authenticity_token
+  helper_method :index_cache_key
 
 
   # GET /students
@@ -64,7 +65,7 @@ class StudentsController < ApplicationController
       if  session[:search][:search_type] == 'flagged_intervention'
         []
       else
-        current_district.flag_categories.above_threshold(@students.collect(&:student_id))
+        current_district.flag_categories.above_threshold(@students.collect(&:id))
       end
   end
 
@@ -125,17 +126,21 @@ class StudentsController < ApplicationController
 
   def setup_students_for_index
     if cache_configured?
-      cache_keys =@students.collect{|s| s.index_cache_key}
+      cache_keys =@students.collect{|s| index_cache_key(s)}
       @cached_status = Rails.cache.read_multi(*cache_keys)
       misses= (cache_keys - @cached_status.keys)
-      missed_students =@students.select{|s| misses.include?s.index_cache_key}
+      missed_students =@students.select{|s| misses.include?(index_cache_key(s))}
     else
       missed_students = @students
     end
     ActiveRecord::Associations::Preloader.new(missed_students,
-     {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
-                    {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]}).run
+      [{:custom_flags=>:user}, {:interventions => :intervention_definition},
+                    {:flags => :user}, {:ignore_flags=>:user} ]).run
     @flags_above_threshold= flags_above_threshold
+  end
+
+  def index_cache_key(s)
+    fragment_cache_key ["status_display", s]
   end
 
 end

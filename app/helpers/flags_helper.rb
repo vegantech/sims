@@ -22,19 +22,19 @@ module FlagsHelper
   end
 
   def team_notes?(student)
-    student.comments.present?
+    student.comments.size >0
   end
 
   def team_notes(student)
     if team_notes?(student)
-       image_with_popup('note.png',"#{pluralize student.comments.count, "team note"}")
+       image_with_popup('note.png',"#{pluralize student.comments.size, "team note"}")
     else
       ''.html_safe
     end
   end
 
   def team_concerns?(student = current_student)
-    student.team_consultations.pending.present?
+    student.team_consultations_pending.size > 0
   end
 
   def team_concerns(student)

@@ -14,9 +14,10 @@ class UsageByDistrict
                               count(team_consultations.id) as team_consultations, count(distinct student_id) as students_with_team_consultations", 
                               :joins => {:student => :district}, :group => "districts.name", 
                               :conditions => "team_consultations.created_at between '#{start}' and '#{end_date}'")
-  
 
-    [i1,i2,i3].flatten.each {|i| dhash[i["name"]].merge!(i.attributes)}
+    i4= DistrictLog.joins(:district).successful_login_non_admin.select('districts.name, count(distinct user_id) as users_who_have_logged_in, count(district_logs.id) as successful_logins').where("district_logs.created_at" => start..end_date).group("districts.name")
+
+    [i1,i2,i3,i4].flatten.each {|i| dhash[i["name"]].merge!(i.attributes)}
     dhash.sort.each do |k,v|
       puts "#{v["name"]}: #{v.to_a[1..-1].collect{|k,v| "#{k} - #{v}"}.join(", ")}"
     end
