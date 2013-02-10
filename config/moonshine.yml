@@ -62,7 +62,7 @@
   :version: 3.0.18
   :pool_idle_time: 300
   :max_requests: 350
-  :min_instances: 2
+  :min_instances: 3
   :rails_spawn_method: smart-lv2
 
 #PassengerMaxPoolSize 15
