@@ -80,7 +80,7 @@ class StudentsController < ApplicationController
       student=Student.find(params[:id])
       if student.belongs_to_user?(current_user)
         session[:school_id] = (student.schools & current_user.schools).first.id
-        session[:selected_student]=params[:id]
+        self.current_student_id=params[:id]
         self.selected_student_ids=[params[:id]]
         return true
       end
