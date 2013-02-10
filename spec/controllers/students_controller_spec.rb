@@ -69,9 +69,8 @@ describe StudentsController do
 
     describe 'with selected_students' do
       before do
-        e1 = mock_enrollment(:student_id=>'5')
-        e2 = mock_enrollment(:student_id => '16')
-        e1.stub_association!(:student,:id => "5")
+        e1 = mock(:id=>'5')
+        e2 = mock(:id => '16')
         controller.should_receive(:student_search).and_return([e1,e2])
         post :create, {:id => ["5", "16"]},  {:search=>{}}
 
@@ -90,9 +89,9 @@ describe StudentsController do
     # This tests ticket #94
     describe 'without selecting all possible authorized students' do
       it 'should set selected_students and selected_student' do
-        e1 = mock_enrollment(:student_id=>'5')
-        e2 = mock_enrollment(:student_id=>'16')
-        e3 = mock_enrollment(:student_id=>'37')
+        e1 = mock_enrollment(:id=>'5')
+        e2 = mock_enrollment(:id=>'16')
+        e3 = mock_enrollment(:id=>'37')
         controller.should_receive(:student_search).and_return([e1,e2,e3])
 
         post :create, {:id => ["5", "16"]},  {:search=>{}}
