@@ -115,7 +115,7 @@ describe Enrollment do
         student2=Factory(:student, :esl=>false, :special_ed => false, :last_name => 'B')
         @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999)
         @e2 = student2.enrollments.create!(:grade=>"1",:school_id=>999)
-        res= Enrollment.search(:search_type=>'list_all',:index_includes=>true)
+        res= Enrollment.search(:search_type=>'list_all',:index_includes=>true,:school_id => 999)
         res.first.esl.should == true
         res.first.special_ed.should == true
         res.last.esl.should == false
