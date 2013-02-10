@@ -129,7 +129,7 @@ class Enrollment < ActiveRecord::Base
       ids=scope.collect(&:student_id)
       res=Student.joins(:enrollments).order('students.last_name, students.first_name').select(
         "students.id, grade, students.district_id, last_name, first_name, number, esl, special_ed, students.updated_at"
-      ).where(:id => ids).with_comments_count.with_pending_consultations_count.group("enrollments.id")
+      ).where(:id => ids).with_comments_count.with_pending_consultations_count.group("enrollments.id").where("enrollments.school_id" => sch_id)
 
 #this is worse.
 #      Enrollment.send(:preload_associations, res,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
