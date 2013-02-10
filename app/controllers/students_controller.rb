@@ -23,7 +23,7 @@ class StudentsController < ApplicationController
     # add selected students to session, then redirect to show
 
     @students = student_search( index_includes=true)
-    authorized_student_ids = @students.collect {|s| s.student_id.to_s}
+    authorized_student_ids = @students.collect {|s| s.id.to_s}
 
     if params[:id].blank?
       flash.now[:notice] = 'No students selected'
