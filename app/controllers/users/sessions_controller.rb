@@ -14,7 +14,7 @@ class Users::SessionsController < Devise::SessionsController
   def new
     #Users who are signed in, but go directly to the login page
     #are prompted to log in, but stay as the previous user
-    sign_out if user_signed_in? 
+    sign_out  && reset_session if user_signed_in? 
     #fix for above
     if session["user_return_to"]
       p=Rack::Utils.parse_nested_query(URI.parse(session["user_return_to"]).query)

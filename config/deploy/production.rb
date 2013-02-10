@@ -1,5 +1,5 @@
 server "sims.widpi.managedmachine.com", :app, :web, :db, :primary => true
-set :branch, 'back_to_prototype'
+#set :branch, 'back_to_prototype'
 
 set :domain, 'simspilot.org'
 set :default_url, 'https://simspilot.org'
