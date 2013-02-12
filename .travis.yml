@@ -1,8 +1,16 @@
+language: ruby
+gemfile: .travis.gemfile
 rvm: 1.9.3
-before_install: rvm install rubygems 1.8.17; sudo apt-get install -y unzip; sudo service memcached stop; sudo service memcached start
+
+services:
+  - memcached
+
+#before_install: rvm install rubygems 1.8.17; sudo apt-get install -y unzip
+before_install: sudo apt-get install -yqq unzip
 before_script:
   - "cp config/database.yml.mysql config/database.yml;"
-  - "bundle exec rake db:drop:all db:create:all db:schema:load;"
+  - "bundle exec rake db:schema:load"
+# drop:all db:create:all db:schema:load;"
 
 branches:
   only:

@@ -100,7 +100,7 @@ describe ApplicationController do
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
-      if ENV['TRAVIS']
+      if ENV['TRAVIS'] and false
         puts "SKIPPING because memcache is not working on travis-ci"
       else
         controller.send(:selected_student_ids).should == values

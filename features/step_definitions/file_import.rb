@@ -176,5 +176,5 @@ When /^I enter all csv urls$/ do
 end
 
 Given /^TRAVIS\-PENDING$/ do
-  pending if ENV['TRAVIS']
+  pending if (ENV['TRAVIS'] and false)
 end
