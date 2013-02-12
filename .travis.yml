@@ -9,9 +9,9 @@ services:
 before_install: sudo apt-get install -yqq unzip
 before_script:
   - "cp config/database.yml.mysql config/database.yml;"
-  - "bundle exec rake db:schema:load"
+#  - "bundle exec rake db:schema:load"
 # drop:all db:create:all db:schema:load;"
-
+script: "bundle exec rake db:create db:schema:load default"
 branches:
   only:
   - master
