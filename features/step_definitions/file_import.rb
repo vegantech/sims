@@ -174,7 +174,3 @@ When /^I enter all csv urls$/ do
     visit "/doc/district_upload/#{file.split('.csv').first}"
   end
 end
-
-Given /^TRAVIS\-PENDING$/ do
-  pending if (ENV['TRAVIS'] and false)
-end

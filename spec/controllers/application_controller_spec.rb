@@ -100,18 +100,14 @@ describe ApplicationController do
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
-      if ENV['TRAVIS'] and false
-        puts "SKIPPING because memcache is not working on travis-ci"
-      else
-        controller.send(:selected_student_ids).should == values
-        controller.instance_variable_set "@memcache_student_ids", nil
-        @session[:session_id] = "bush"
-        controller.send(:selected_student_ids).should_not == values  #if session_id changes
-        controller.instance_variable_set "@memcache_student_ids", nil
-        @session[:session_id] = "tree"
-        controller.stub!(:current_user => User.new)
-        controller.send(:selected_student_ids).should_not == values  #if user changes
-      end
+      controller.send(:selected_student_ids).should == values
+      controller.instance_variable_set "@memcache_student_ids", nil
+      @session[:session_id] = "bush"
+      controller.send(:selected_student_ids).should_not == values  #if session_id changes
+      controller.instance_variable_set "@memcache_student_ids", nil
+      @session[:session_id] = "tree"
+      controller.stub!(:current_user => User.new)
+      controller.send(:selected_student_ids).should_not == values  #if user changes
     end
 
   end
