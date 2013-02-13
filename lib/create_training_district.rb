@@ -1,6 +1,5 @@
 class CreateTrainingDistrict
   require 'csv'
-  require 'factory_girl_rails'
   def self.generate
       generate_one
       2.upto(20){ |i| generate_one(i.to_s)}

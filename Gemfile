@@ -32,7 +32,7 @@ gem 'rails', '3.2.12'
 # end
 
 
-gem 'factory_girl_rails', '~> 1.7.0', :require => false
+gem 'factory_girl_rails', '~> 1.7.0'
 gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
@@ -68,7 +68,6 @@ group :test do
   gem 'capybara', :require => false
   gem 'rspec-rails','~>2.6', :require => false
   gem 'rspec-html-matchers'
-  gem 'factory_girl_rails', '~> 1.7.0'
 end
 
 group :cucumber do
@@ -80,7 +79,6 @@ group :cucumber do
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
   gem 'rspec-rails','~>2.6', :require => false
-  gem 'factory_girl_rails', '~> 1.7.0'
 end
 
 group :development do
