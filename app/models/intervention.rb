@@ -131,7 +131,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def participants_with_author
-    intervention_participants | [intervention_participants.build(:user => self.user,:role => InterventionParticipant::AUTHOR)]
+    intervention_participants | [intervention_participants.build(:user => self.user,:role => InterventionParticipant::AUTHOR).destroy]
   end
 
   def auto_implementer?
