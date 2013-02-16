@@ -4,6 +4,7 @@ class InterventionBuilder::GoalsController < ApplicationController
   cache_sweeper :intervention_builder_sweeper
 
   def regenerate_intervention_pdfs
+    current_district.goal_definitions.each{|e| e.update_attribute(:updated_at, Time.now)}
     #these are now generated upon request
     #CreateInterventionPdfs.generate(current_district)
     redirect_to :back
