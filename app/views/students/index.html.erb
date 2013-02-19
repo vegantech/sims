@@ -45,11 +45,11 @@
           </td>
 
           <td>
-            <% if controller.send(:cache_configured?) && @cached_status.keys.include?(enrolled_student.index_cache_key) %>
-              <%= @cached_status[enrolled_student.index_cache_key] %>
+            <% if controller.send(:cache_configured?) && @cached_status.keys.include?(index_cache_key(enrolled_student)) %>
+              <%= @cached_status[index_cache_key(enrolled_student)] %>
             <% else %>
-              <%sd= status_display(enrolled_student.student) %>
-              <%Rails.cache.write(enrolled_student.index_cache_key, sd) if controller.send(:cache_configured?)%>
+              <%sd= status_display(enrolled_student) %>
+              <%Rails.cache.write(index_cache_key(enrolled_student), sd) if controller.send(:cache_configured?)%>
               <%= sd %>
             <% end %>
           </td>

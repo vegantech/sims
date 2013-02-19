@@ -26,7 +26,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   delegate :district, :to => :goal_definition, :allow_nil => true
 
   define_statistic :count , :count => :all, :joins => :goal_definition
-  define_statistic :distinct_titles , :count => :all,  :select => 'distinct objective_definitions.title', :joins=>:goal_definition
+  define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct objective_definitions.title', :joins=>:goal_definition
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => :goal_definition).length
   end

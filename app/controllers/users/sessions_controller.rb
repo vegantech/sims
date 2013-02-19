@@ -14,7 +14,7 @@ class Users::SessionsController < Devise::SessionsController
   def new
     #Users who are signed in, but go directly to the login page
     #are prompted to log in, but stay as the previous user
-    sign_out if user_signed_in? 
+    sign_out  && reset_session if user_signed_in? 
     #fix for above
     if session["user_return_to"]
       p=Rack::Utils.parse_nested_query(URI.parse(session["user_return_to"]).query)
@@ -45,7 +45,7 @@ class Users::SessionsController < Devise::SessionsController
       respond_with({}, :location => new_user_session_url)
     else
       flash[:alert]= resource.errors.full_messages
-      self.resource = User.new(resource.attributes.merge(:district_id_for_login => resource.district_id))
+      self.resource = User.new(resource.attributes.except('district_id').merge(:district_id_for_login => resource.district_id))
       render :action => 'new'
     end
   end

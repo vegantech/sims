@@ -2,8 +2,6 @@
 <% pdef.object.valid? if request.post?%>
 
 <%=pdef.error_messages  :object_name => 'Progress Monitor' %>
-<% pdef.object.district_id = current_district.id %>
-<%=pdef.hidden_field :district_id %>
 
   <table width="98%">
   <!--[form:probe_definition]-->

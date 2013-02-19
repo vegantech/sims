@@ -26,7 +26,7 @@ class Tier < ActiveRecord::Base
   attr_protected :district_id
 
   define_statistic :count , :count => :all
-  define_statistic :distinct , :count => :all,  :select => 'distinct title'
+  define_statistic :distinct , :count => :all,  :column_name => 'distinct title'
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
   end

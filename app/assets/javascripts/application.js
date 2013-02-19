@@ -6,11 +6,10 @@
 //=require jquery.ui.effect-blind
 //=require jquery.ui.sortable
 //=require jquery.nested-fields
-//=require jquery.uploadProgress
 //=require overlib
 //=require spellerpages/spellChecker
 //=require datepicker
-//=require scrollTo
+//=require jquery.scrollTo
 //=require_tree ./coffee
 //=require_self
 
@@ -23,17 +22,17 @@
 $.fx.speeds._default= 750;
 
 $(function() {
-  $('body').on("click",".toggler",function(event) {
+  $(document).on("click",".toggler",function(event) {
     event.preventDefault();
     $("#" + $(this).data().toggleId).toggle();
   });
   $('a.plus_minus').click(function() {
     return $(this).parent('li').toggleClass('minus');
   });
-  $('body').on("mouseover",".popup,.help-question",function(event) {
+  $(document).on("mouseover",".popup,.help-question",function(event) {
     return overlib($(this).data().help);
   });
-  $('body').on("mouseout",".popup,.help-question",function(event) {
+  $(document).on("mouseout",".popup,.help-question",function(event) {
     return nd();
   });
   $('.dbl_toggler').dblclick(function() {
@@ -55,14 +54,14 @@ $(function() {
       return true;
     });
   });
-  $('body').on("click",".spell_check_button",function(event){
+  $(document).on("click",".spell_check_button",function(event){
 	event.preventDefault();
 	var f=this.form;
 	var speller = new spellChecker();
 	speller.textInputs=$('#'+f.id + ' .spell_check');
 	speller.openChecker();
   });
-  $('body').on("click",".cancel_link",function(event) {
+  $(document).on("click",".cancel_link",function(event) {
     event.preventDefault();
     if(!$(this).data().jconfirm || confirm($(this).data().jconfirm)) {
 	    $("#" + $(this).data().show).show();
@@ -72,14 +71,14 @@ $(function() {
     }
     return(false);
   });
-  $('body').on("click",".new_asset_link",function(event) {
+  $(document).on("click",".new_asset_link",function(event) {
     event.preventDefault();
     $(this).before($(this).prev(".hidden_asset").first().clone().show());
   });
-  $('body').on("click",".presubmit",function(event) {
+  $(document).on("click",".presubmit",function(event) {
     $(this).closest("form").find("input[name=" + $(this).data().toChange+ "]").val($(this).data().newValue);
   });
-  $('body').on("click","#new_user_school_assignment_link",function(event) {
+  $(document).on("click","#new_user_school_assignment_link",function(event) {
     event.preventDefault();
     $("#user_school_assignments").append($("#hidden_user_school_assignment tr, #hidden_user_school_assignment div").first().clone().removeAttr('disabled'));
     $("#user_school_assignments select,#user_school_assignments input").removeAttr("disabled");

@@ -96,12 +96,7 @@
         <div class ="form_row" id="existing_logo" >
           <%= f.label :logo %>
           <%= image_tag(@district.logo.url, :alt => 'Photo', :title => 'Current logo', :size => District::LOGO_SIZE) %>
-          <%= link_to_function 'Remove Logo' do |page|
-            f.object.delete_logo = 1
-            page.replace_html 'existing_logo', hidden_field_tag('district[delete_logo]',"1")
-            page.insert_html :bottom, 'existing_logo', "Your logo will be removed when you hit update."
-            end %>
-
+          <%= link_to 'Remove Logo', '' %>
         <%= help_popup "You don't need to delete the logo if you want to replace it.   Use this if you want to remove the logo and return to the district name in the upper left corner of the page instead of an image." %>
         </div>
       <% end %>

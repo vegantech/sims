@@ -18,7 +18,7 @@ class InterventionParticipant < ActiveRecord::Base
   delegate :email, :fullname, :to => '(user or return nil)'
 
 
-  validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
+#  validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
   validates_presence_of :user_id, :intervention
   after_create :notify_new_participant, :if => :send_email
 
@@ -29,7 +29,7 @@ class InterventionParticipant < ActiveRecord::Base
   ROLES = %w{Implementer Participant Author}
   scope :implementer, where(:role => IMPLEMENTER)
   define_statistic :participants , :count => :all, :joins => :user
-  define_statistic :users_as_participant , :count => :all,:select => 'distinct user_id', :joins => :user
+  define_statistic :users_as_participant , :count => :all,:column_name => 'distinct user_id', :joins => :user
   attr_accessor :send_email
 
   RoleStruct = Struct.new(:id, :name)

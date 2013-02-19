@@ -27,3 +27,12 @@ Feature: Alternate Entry Points
 
   Scenario: bookmarked school search
 		Given I am at the student search page
+
+  Scenario: ic jump
+	Given There is an IC Jump Student
+	When I enter the ic jump to that student
+	Then I should see "Login"
+	When I login
+	Then I should be on the cucumber student profile page
+	And I should have a student_id cookie
+

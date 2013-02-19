@@ -74,7 +74,6 @@ class Notifications < MailerWithSubdomains
     @intervention_person = intervention_person.first
     @intervention = Array(intervention || @intervention_person.intervention).first
     recipients =@intervention_person.email
-    sent_on    Time.now
     @district = @intervention_person.user.district
     @participants = @intervention.participants_with_author
     @interventions = Array(intervention)

@@ -23,16 +23,17 @@ class PrimeCache
     last_ran = ctrl.read_fragment(last_ran_key) || 10.years.ago
     this_run = Time.now.to_s
 
-
-
-    Student.find_each(:include=>[:team_consultations_pending, :flags,:ignore_flags,:custom_flags, {:interventions=>:user}],
-                                                            :conditions =>  ["students.updated_at > ?",last_ran])  do |student|
-      key = ctrl.fragment_cache_key  ["status_display",student]
-      if Rails.cache.exist?(key)
-       hit+=1
-      else
-        miss+=1
-        Rails.cache.write key, ctrl.view_context.status_display(student)
+    Student.select("students.id,students.updated_at").with_comments_count.with_pending_consultations_count.where(
+      ["students.updated_at > ?",last_ran.to_time]).find_in_batches do |batch|
+      ActiveRecord::Associations::Preloader.new(batch,[:flags,:ignore_flags,:custom_flags, {:interventions=>:user}]).run
+      batch.each do |student|
+        key = ctrl.fragment_cache_key  ["status_display",student]
+        if Rails.cache.exist?(key)
+          hit+=1
+        else
+          miss+=1
+          Rails.cache.write key, ctrl.view_context.status_display(student)
+        end
       end
     end
     ctrl.write_fragment(last_ran_key,this_run)

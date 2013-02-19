@@ -3,10 +3,10 @@
 
 
    <h2>User Interventions for <%=current_user.fullname %></h2>
-<%= form_tag do %><br/ >
+<%= form_tag do %><br/>
 
   <%= label_tag 'start_date-mm', 'Start Date:' %><br/>
-  <%= unobtrusive_date_picker_tags @start_date,{:order => [:month,:day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date'  } %> <br / >
+  <%= unobtrusive_date_picker_tags @start_date,{:order => [:month,:day, :year], :start_year => 2008, :end_year => @today.year, :prefix => 'start_date'  } %> <br/>
 
 
   <%= label_tag 'end_date-mm', 'End Date:' %><br/>

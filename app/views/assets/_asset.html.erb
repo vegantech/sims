@@ -1,4 +1,4 @@
-<div class="asset">
+<div class="asset <%='hidden_asset' unless asset.new_record?%>">
   <% new_or_existing = asset.new_record? ? 'new' : 'existing' %>
   <% prefix = "#{parent}[#{new_or_existing}_asset_attributes][]" %>
   <%= fields_for prefix, asset do |asset_form| -%>

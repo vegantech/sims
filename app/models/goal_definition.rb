@@ -33,7 +33,7 @@ class GoalDefinition < ActiveRecord::Base
 
 
   define_statistic :count , :count => :all
-  define_statistic :distinct_titles , :count => :all,  :select => 'distinct title'
+  define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct title'
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => 'title', :having => 'count(title)=1',:select =>'distinct district_id').length
   end

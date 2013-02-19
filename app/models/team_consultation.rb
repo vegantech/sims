@@ -32,9 +32,9 @@ class TeamConsultation < ActiveRecord::Base
   scope :pending_for_user, lambda {|user| where(:complete => false).where(["(draft = ?) OR (draft = ? AND requestor_id = ?)",false,true,user]) }
 
   define_statistic :team_consultation_requests , :count => :all, :joins => :student
-  define_statistic :students_with_requests , :count => :all,  :select => 'distinct student_id', :joins => :student
-  define_statistic :districts_with_requests, :count => :all, :select => 'distinct district_id', :joins => :student
-  define_statistic :users_with_requests, :count => :all, :select => 'distinct requestor_id', :joins => :requestor
+  define_statistic :students_with_requests , :count => :all,  :column_name => 'distinct student_id', :joins => :student
+  define_statistic :districts_with_requests, :count => :all, :column_name => 'distinct district_id', :joins => :student
+  define_statistic :users_with_requests, :count => :all, :column_name => 'distinct requestor_id', :joins => :requestor
 
 
   def email_concern_recipient

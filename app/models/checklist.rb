@@ -31,7 +31,7 @@ class Checklist < ActiveRecord::Base
   attr_accessor :skip_cache
   attr_reader :build_errors
   define_statistic :count , :count => :all
-  define_statistic :count_of_districts, :count => :all, :select => 'distinct district_id'
+  define_statistic :count_of_districts, :count => :all, :column_name => 'distinct district_id'
   after_update :remove_deleted_answers
   before_validation :assign_associated_from_student, :on => :create
   attr_protected :district_id

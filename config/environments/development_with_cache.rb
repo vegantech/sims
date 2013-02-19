@@ -29,7 +29,6 @@ Sims::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
->>>>>>> asset_pipeline
 end
 
 require 'mail'
