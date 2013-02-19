@@ -29,7 +29,7 @@ class SchoolTeam < ActiveRecord::Base
   after_save :update_contacts
 
   def contact_ids=(ids)
-    @contact_ids=ids.collect(&:to_i)
+    @contact_ids=ids.select(&:present?).collect(&:to_i)
   end
 
   def contact_ids

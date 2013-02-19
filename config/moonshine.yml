@@ -62,7 +62,7 @@
   :version: 3.0.18
   :pool_idle_time: 300
   :max_requests: 350
-  :min_instances: 2
+  :min_instances: 3
   :rails_spawn_method: smart-lv2
 
 #PassengerMaxPoolSize 15
@@ -88,7 +88,7 @@
   :agent_key: c59ececc-7d50-4d2e-9a66-07ba3b85f797
 
 :memcached:
-    :max_memory: 256
+    :max_memory: 512
     :client:  1.8.1
     :enable_on_boot:  true
 

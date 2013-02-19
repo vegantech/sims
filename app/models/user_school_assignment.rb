@@ -30,10 +30,10 @@ class UserSchoolAssignment < ActiveRecord::Base
   end
 
   def all_students=(val)
-    if val =="true"
+    if val =="true" or val =="1"
       @all_students=true
 
-    elsif val == "false"
+    elsif val == "false" or val == "0"
       @all_students=false
     end
 

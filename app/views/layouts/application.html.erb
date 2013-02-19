@@ -22,17 +22,14 @@
             <%=current_district%>
           <% end %>
         </div>
-        <div id = "right_header">
+        <div id="right_header">
           <h1>SIMS:</h1>
           <h2>Student Intervention Monitoring System</h2>
         </div>
-        <br class='brclear' />
       </div>
       <div id="left_column">
-        <p>
         <h2>Menu</h2>
         <%=render "layouts/menu"%>
-        </p>
         <%= render "layouts/administration"%>
         <p><%= render "layouts/flag_legend"%></p>
 
@@ -62,9 +59,9 @@
         <% if current_student and current_student.max_tier %>
           Current Tier is <%=current_student.max_tier%>
         <% end %>
-        <br />
+        <br/>
         <%="Logged in as #{current_user} (#{current_school})" if user_signed_in? %>
-        <br /><br />
+        <br/><br/>
 
         <%= render :partial =>'districts/google_lsa'  if user_signed_in? && current_user.roles.include?("local_system_administrator") %>
         <%= render "layouts/dev_debug" if Rails.env.development?%>

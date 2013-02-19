@@ -69,7 +69,7 @@ FactoryGirl.define do
   factory :intervention_participant do |ip|
     ip.association :user
     ip.association :intervention
-    ip.role InterventionParticipant::PARTICIPANT
+    ip.role {InterventionParticipant::PARTICIPANT}
   end
 
   factory :intervention do |i|

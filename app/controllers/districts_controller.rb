@@ -87,38 +87,17 @@ class DistrictsController < ApplicationController
 
   def bulk_import
    # TODO REFACTOR THIS
-
     if request.post?
+      @results = ''
       MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
-      spawn_block do
-        begin
-          importer= ImportCSV.new params[:import_file], current_district
-          x=Benchmark.measure{importer.import}
-
-          @results = "#{importer.messages.join(", ")} #{x}"
-          #request redirect_to root_url
-        rescue => e
-          Rails.logger.error "Spawn Exception #{Time.now} #{e.message} #{e.backtrace}"
-          Airbrake.notify(
-            :backtrace => e.backtrace,
-            :error_class => "Spawn Error",
-            :error_message => "Spawn Error: #{e.message}"
-          )
-          MEMCACHE.set("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}") if defined?MEMCACHE
-          raise e
-        end
-
-      end
-      render :layout => 'bulk_import'
+      bulk_import_post_spawn
+      append_reload_js_to_results
+      render #:layout => 'bulk_import'
     else
       if defined?MEMCACHE
         @results =
           MEMCACHE.get("#{current_district.id}_import")
-        unless @results.match(/#{ImportCSV::EOF}/)
-          @results <<"<script>setTimeout(function(){
-                                   $('#import_results').load('/districts/bulk_import');
-                                       }, 5000);</script>"
-        end
+        append_reload_js_to_results
         if request.xhr?
           render :text => @results + Time.now.to_s and return
         end
@@ -127,7 +106,6 @@ class DistrictsController < ApplicationController
         redirect_to root_url and return
       end
     end
-
   end
 
   def logs
@@ -140,5 +118,38 @@ private
       flash[:notice] = 'You do not have access to this action'
       redirect_to root_url
     end
+  end
+
+  def append_reload_js_to_results
+    @results = '' if @results.nil?
+    unless @results.match(/#{ImportCSV::EOF}/)
+      @results <<"<script>setTimeout(function(){
+                                   $('#import_results').load('/districts/bulk_import');
+                                       }, 5000);</script>"
+    end
+
+  end
+
+  def bulk_import_post_spawn
+    spawn_block do
+      begin
+        importer= ImportCSV.new params[:import_file], current_district
+        x=Benchmark.measure{importer.import}
+
+        @results = "#{importer.messages.join(", ")} #{x}"
+        #request redirect_to root_url
+      rescue => e
+        Rails.logger.error "Spawn Exception #{Time.now} #{e.message} #{e.backtrace}"
+        Airbrake.notify(
+          :backtrace => e.backtrace,
+          :error_class => "Spawn Error",
+          :error_message => "Spawn Error: #{e.message}"
+        )
+        MEMCACHE.set("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}") if defined?MEMCACHE
+        raise e
+      end
+
+    end
+
   end
 end

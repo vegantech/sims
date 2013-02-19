@@ -82,36 +82,16 @@ class User < ActiveRecord::Base
     or consultation_form_requests.created_at <=?)"
   }
 
+
+
+
   define_calculated_statistic :users_in_use  do
-
-    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
-
-    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count(:id, :conditions =>
-            "(exists (select 1 from interventions where interventions.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from student_comments where student_comments.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from team_consultations where team_consultations.requestor_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
-             #{d_conditions}
-            ")
-
+    stats_in_use(@filters).count
   end
-
 
   define_calculated_statistic :districts_with_users_in_use  do
-    calc_start_date = @filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = @filters[:created_before] || "2100-01-01".to_date
-
-    d_conditions = "and district_id !=#{@filters[:without]}" if @filters[:without]
-      count('distinct district_id', :conditions =>
-            "(exists (select 1 from interventions where interventions.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from student_comments where student_comments.user_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}') or
-             exists (select 1 from team_consultations where team_consultations.requestor_id = users.id and created_at between '#{calc_start_date}' and '#{calc_end_date}'))
-             #{d_conditions}
-            ")
-
+    stats_in_use(@filters).count("distinct district_id")
   end
-
 
   define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
 
@@ -385,4 +365,19 @@ protected
   def duplicate_user_school_assignment?(attributes)
      staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
   end
+
+  def self.stats_in_use(filters={})
+    calc_start_date = filters[:created_after] || "2000-01-01".to_date
+    calc_end_date = filters[:created_before] || "2100-01-01".to_date
+    date_conditions = {:created_at => calc_start_date..calc_end_date}
+    union = [TeamConsultation.select("requestor_id as user_id").where(date_conditions).to_sql,
+      Intervention.select("user_id").where(date_conditions).to_sql,
+      StudentComment.select("user_id").where(date_conditions).to_sql].join(" UNION ")
+    k=joins("inner join (#{union}) e on users.id=e.user_id")
+
+    k=k.where(["district_id != ?", filters[:without]]) if filters[:without]
+    k
+
+  end
+
 end

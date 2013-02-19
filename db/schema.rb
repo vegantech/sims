@@ -585,7 +585,7 @@ ActiveRecord::Schema.define(:version => 20130126060537) do
     t.string   "subject",    :limit => 1024
     t.datetime "sent_at"
     t.datetime "read_at"
-    t.string   "raw",        :limit => 8000
+    t.text   "raw"
   end
 
   create_table "recommendation_answer_definitions", :force => true do |t|
