@@ -258,6 +258,12 @@ Sims::Application.routes.draw do
   end
 
 
+  resources :cico_settings do
+    resources :cico_school_days
+  end
+  match '/cico', :controller => 'cico'
+
+
   #or just railmail_index controller railmail?
   resources :railmail, :only => %w(index) do
     get  'raw',    :on => :member
