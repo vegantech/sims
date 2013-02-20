@@ -1,3 +1,4 @@
+require 'csv'
 class ReportsController < ApplicationController
   skip_before_filter :authorize, :authenticate_user!, :only => [:statewide_interventions, :statewide_progress_monitors, :intervention_definition_summary_report]
   skip_before_filter :verify_authenticity_token
@@ -130,7 +131,7 @@ class ReportsController < ApplicationController
     if File.exist?(abs_filename)
       File.read(abs_filename)
     else
-      html = render_to_string("intervention_definition_summary_report.html.erb",:layout => "pdf")
+      html = render_to_string("intervention_definition_summary_report.html",:layout => "pdf")
       cache_page(html,"/#{filename}")
       html
     end
@@ -150,9 +151,9 @@ class ReportsController < ApplicationController
     if report_class.class == Class
       @report = report_class.send("render_#{fmt}".to_sym, report_options)
     else
-      @report = render_to_string("#{report_class}.csv.erb", :layout => nil) if fmt == "csv"
-      @report = render_to_string("_#{report_class}.html.erb", :layout => nil) if fmt == "html"
-      @report = PDFKit.new(render_to_string("_#{report_class}.html.erb", :layout => "pdf")).to_pdf if fmt == "pdf"
+      @report = render_to_string("#{report_class}",:formats => [:csv] ,:layout => nil) if fmt == "csv"
+      @report = render_to_string("_#{report_class}",:formats => [:html] ,:layout => nil) if fmt == "html"
+      @report = PDFKit.new(render_to_string("_#{report_class}",:formats => [:html], :layout => "pdf")).to_pdf if fmt == "pdf"
     end
 
     if ['csv','pdf'].include? fmt

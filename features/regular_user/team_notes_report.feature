@@ -25,6 +25,7 @@ Feature: Team Notes
     And I select "March" from "end_date-mm"
     And I select "14" from "end_date-dd"
     And I select "2008" from "end_date"
+    When I select "html" from "Format:"
     And I press "Generate Report"
     Then I should see "Second Team Note"
     And I should see "Third Team Note"
@@ -36,3 +37,14 @@ Feature: Team Notes
     When I follow "Common Last"
     Then I should see "Intervention and Progress Monitoring"
     And I should see "Last, Common"
+
+    When I follow "Team Notes"
+    And I select "January" from "start_date-mm"
+    And I select "10" from "start_date-dd"
+    And I select "2008" from "start_date"
+    And I select "March" from "end_date-mm"
+    And I select "14" from "end_date-dd"
+    And I select "2008" from "end_date"
+    And I select "csv" from "Format:"
+    And I press "Generate Report"
+    #It should not error here

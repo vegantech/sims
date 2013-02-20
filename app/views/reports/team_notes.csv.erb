@@ -1,10 +1,10 @@
 "Student", "Date", "User Name", "Team Note"
-<%= raw(CSV.generate do |csv|
+<%= raw(::CSV.generate do |csv|
   @reporter.team_notes.each do |note|
       csv << [
-        note.student.fullname,
+        note.student.to_s,
         note.created_at.to_date.to_s(:report),
-        note.user.fullname,
+        note.user.to_s,
         note.body
       ]
     end

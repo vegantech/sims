@@ -1,5 +1,5 @@
 "Name", "Student Num", "Grade", "Flag Reason", "FlagType"
-<%= raw(CSV.generate do |csv|
+<%= raw(::CSV.generate do |csv|
   @reporter.current_flagged_students.each do |flagged_student|
     flagged_student.flags.current.each do |flagtype, flags|
       csv << [
