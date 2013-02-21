@@ -25,6 +25,7 @@ describe CSVImporter::AllStudentsInSchools do
       @dup_person_id = Factory(:user,:district_id => @district.id, :district_user_id => @should_gain_role.district_user_id)
       @dup_person_id.update_attribute(:all_students,true)
       @dup_person_id.special_user_groups.create!(:school_id => @school_no_link.id)
+      @user_and_principal = Factory(:user, :district_id => @district.id, :district_user_id => 'user_and_principal')
       [@role_no_district_user_id, @should_lose_role, @should_keep_role].each do |u|
         u.special_user_groups.create!(:school_id => @school_with_link.id)
       end
@@ -35,7 +36,7 @@ describe CSVImporter::AllStudentsInSchools do
       @i=CSVImporter::AllStudentsInSchools.new "#{Rails.root}/spec/csv/all_students_in_schools.csv",@district
       @i.import
 
-      @i.messages.should include("7 Users automatically assigned to a school")
+      @i.messages.should include("8 Users automatically assigned to a school")
 
 
       @no_role_or_district_user_id.reload.special_user_groups.size.should == 2
@@ -54,6 +55,8 @@ describe CSVImporter::AllStudentsInSchools do
 
       @role_no_district_user_id.reload.user_school_assignments.collect(&:school_id).should =~ [@school_no_link.id, @school_with_link.id]
       @role_no_district_user_id.special_user_groups.collect(&:school_id).should =~ [@school_no_link.id, @school_with_link.id]
+      @user_and_principal.special_user_groups.principal.count.should == 1
+      @user_and_principal.special_user_groups.count.should == 1
     end
 
     def check_special_user_groups u
