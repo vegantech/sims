@@ -56,7 +56,7 @@ describe CSVImporter::AllStudentsInSchools do
       @role_no_district_user_id.reload.user_school_assignments.collect(&:school_id).should =~ [@school_no_link.id, @school_with_link.id]
       @role_no_district_user_id.special_user_groups.collect(&:school_id).should =~ [@school_no_link.id, @school_with_link.id]
       @user_and_principal.special_user_groups.principal.count.should == 1
-      @user_and_principal.special_user_groups.count.should == 1
+      @user_and_principal.special_user_groups.count.should == 2
     end
 
     def check_special_user_groups u

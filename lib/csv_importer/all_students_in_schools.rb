@@ -77,7 +77,7 @@ module CSVImporter
     end
 
     def index_options
-      [[:district_user_id, :district_school_id]]
+      [[:district_user_id, :district_school_id],[:principal,:grade]]
     end
 
 
@@ -86,7 +86,6 @@ module CSVImporter
       t.integer :district_school_id, :limit => School.columns_hash["district_school_id"].limit, :null => School.columns_hash["district_school_id"].null
       t.boolean :principal
       t.string :grade
-      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
     end
 
     def remove_duplicates?
