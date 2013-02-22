@@ -14,7 +14,7 @@ class Notifications < MailerWithSubdomains
 
     @user=user
 
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
 
@@ -24,7 +24,7 @@ class Notifications < MailerWithSubdomains
     @district = override.student.district
 
     @override =override
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
   def principal_override_response(override)
@@ -33,7 +33,7 @@ class Notifications < MailerWithSubdomains
     @district = override.student.district
 
     @override = override
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
   def intervention_starting(interventions)
@@ -48,7 +48,7 @@ class Notifications < MailerWithSubdomains
 
     @participants = participants
     @interventions = interventions
-    mail(:subject => subject, :to => recipients, :subject => subject, :cc => watcher)
+    mail(:subject => subject, :to => recipients, :cc => watcher)
   end
 
   def intervention_ending_reminder(user,interventions, sent_at = Time.now)
@@ -58,13 +58,13 @@ class Notifications < MailerWithSubdomains
 
     @user = user
     @interventions = interventions
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
   def intervention_reminder(sent_at = Time.now)
     subject  =  'Notifications#intervention_reminder'
     recipients =  ''
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
 
   end
 
@@ -79,21 +79,21 @@ class Notifications < MailerWithSubdomains
     @interventions = Array(intervention)
    # intervention_person.collect(&:intervention)
     @participant = @intervention_person
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
 
   def special_ed_referral rec, user_name, user_email, student
-    @subject = 'SIMS- Checklist Completed'
+    subject = 'SIMS- Checklist Completed'
     @recommendation = rec  unless rec.blank?
     @student=student
     @headers = {}
 
     @user_name= user_name
-    @recipients = user_email
+    recipients = user_email
     @district = student.district
 
-    mail(:subject => subject, :to => recipients, :subject => subject)
+    mail(:subject => subject, :to => recipients)
   end
 
   def district_upload_results msg, admin_email
