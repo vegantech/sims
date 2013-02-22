@@ -22,8 +22,8 @@ class RecommendationObserver < ActiveRecord::Observer
         user_name ='Ted Szalkowski'
         user_email = 'tszalkowski@madison.k12.wi.us'
       when *["CHAVEZ ELEMENTARY", "CRESTWOOD ELEMENTARY", "FALK ELEMENTARY", "FRANKLIN ELEMENTARY", "HUEGEL ELEMENTARY", "LEOPOLD ELEMENTARY", "LINCOLN ELEMENTARY", "MIDVALE ELEMENTARY", "MUIR ELEMENTARY", "OLSON ELEMENTARY", "ORCHARD RIDGE ELEMENTARY", "RANDALL ELEMENTARY", "SHOREWOOD ELEMENTARY", "STEPHENS ELEMENTARY", "THOREAU ELEMENTARY", "VAN HISE ELEMENTARY"]
-        user_name = 'Lauri Weis'
-        user_email = "lweis@madison.k12.wi.us"
+        user_name = 'James Haessly'
+        user_email = "jhaessly@madison.k12.wi.us'
       else
         user_name = 'Unknown School'
         user_email = 'veganbuddy@gmail.com'
