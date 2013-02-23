@@ -1,6 +1,6 @@
 module ChecklistsHelper
   def mmsd_eligibility_criteria menu=false
-    if current_district && current_district.state_dpi_num == 3269
+    if current_district.try(:madison?)
     elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
      "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
        "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]

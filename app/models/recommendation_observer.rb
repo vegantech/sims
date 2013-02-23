@@ -9,7 +9,7 @@ class RecommendationObserver < ActiveRecord::Observer
   private
   def contact_coordinator recommendation
     #HARD CODE FOR MMSD FOR NOW
-    if recommendation.school && recommendation.send(:request_referral) && recommendation.school.district.state_dpi_num == 3269
+    if recommendation.school && recommendation.send(:request_referral) && recommendation.school.district.try(:madison?)
       sch = recommendation.school
       case sch.name.upcase
       when  /HIGH$/

@@ -260,6 +260,11 @@ class District < ActiveRecord::Base
     google_apps_domain.present?
   end
 
+  def madison?
+    #TODO replace references to this with district settings or other db options
+    state_dpi_num == 3269
+  end
+
   begin
     after_initialize :default_settings_to_hash
     #raise "Remove this block" if Rails.version > "3.2"
