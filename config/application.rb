@@ -46,7 +46,6 @@ module Sims
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    config.middleware.use 'ExtendedLogger'
     config.middleware.swap ActionDispatch::BestStandardsSupport, Sims::BestStandardsSupport
 
 #    config.action_mailer.delivery_method = :railmail
