@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126060537) do
+ActiveRecord::Schema.define(:version => 20130226034906) do
 
   create_table "answer_definitions", :force => true do |t|
     t.integer  "element_definition_id"
@@ -582,7 +582,7 @@ ActiveRecord::Schema.define(:version => 20130126060537) do
     t.string   "subject",    :limit => 1024
     t.datetime "sent_at"
     t.datetime "read_at"
-    t.text   "raw"
+    t.text     "raw"
   end
 
   create_table "recommendation_answer_definitions", :force => true do |t|
@@ -653,6 +653,14 @@ ActiveRecord::Schema.define(:version => 20130126060537) do
 
   add_index "recommended_monitors", ["intervention_definition_id"], :name => "index_recommended_monitors_on_intervention_definition_id"
   add_index "recommended_monitors", ["probe_definition_id"], :name => "index_recommended_monitors_on_probe_definition_id"
+
+  create_table "school_sp_ed_referrals", :force => true do |t|
+    t.integer  "school_id"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "school_team_memberships", :force => true do |t|
     t.integer  "school_team_id"

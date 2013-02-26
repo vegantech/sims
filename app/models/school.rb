@@ -27,6 +27,7 @@ class School < ActiveRecord::Base
   has_many :staff, :through => :staff_assignments, :source => :user
   has_many :personal_groups
   has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
+  has_one :school_sp_ed_referral, :dependent => :destroy
   accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
 
   attr_protected :district_id
