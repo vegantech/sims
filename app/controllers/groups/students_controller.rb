@@ -1,7 +1,7 @@
 class Groups::StudentsController < Groups::AssignmentsController
   def new
     @student = Student.new
-    @students=current_school.students.find(:all,:order => 'last_name, first_name') - @group.students
+    @students=current_school.students.order('last_name, first_name') - @group.students
     respond_to do |format|
       format.js {}
     end
