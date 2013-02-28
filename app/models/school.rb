@@ -70,8 +70,8 @@ class School < ActiveRecord::Base
   end
 
   def quicklist
-    InterventionDefinition.find(:all,:joins=>:quicklist_items,
-    :conditions => ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
+    InterventionDefinition.joins(:quicklist_items).where(
+      ["quicklist_items.district_id = ? or quicklist_items.school_id =?", self.district_id, self.id ])
   end
 
   def enrollment_years
@@ -80,9 +80,9 @@ class School < ActiveRecord::Base
   end
 
   def assigned_users
-    s= staff.find(:all,:order=>'last_name,first_name', :select => "distinct users.*")
+    s= staff.order('last_name,first_name').select("distinct users.*")
     if s.blank?
-      users.find(:all,:order=>'last_name,first_name', :select => "distinct users.*")
+      users.order('last_name,first_name').select("distinct users.*")
     else
       s
     end

@@ -25,7 +25,7 @@ class Asset < ActiveRecord::Base
   end
 
   def self.duplicates
-    find(:all, :group=>'name, url,attachable_id', :having => 'count(id)>1', :conditions => 'url <> "" and url is not null')
+    group('name, url,attachable_id').having('count(id)>1').where('url <> "" and url is not null')
   end
 
   def broken?
