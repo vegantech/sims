@@ -23,7 +23,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
   end
 
   def preview_graph
-    @ipa = InterventionProbeAssignment.find_by_id(params[:id]) || InterventionProbeAssignment.build
+    @ipa = InterventionProbeAssignment.find_by_id(params[:id]) || @intervention.intervention_probe_assignments.build
     @ipa.attributes = params[:intervention][:intervention_probe_assignment]
     @count = params[:count].to_i
     render :layout => false
