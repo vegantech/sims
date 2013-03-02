@@ -91,6 +91,7 @@ class DistrictsController < ApplicationController
       @results = ''
       MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
       bulk_import_post_spawn
+      ActiveRecord::Base.connection.reconnect!
       append_reload_js_to_results
       render #:layout => 'bulk_import'
     else
