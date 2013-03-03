@@ -23,10 +23,7 @@ Adjust the paths to match your platform (/ to \)
 
 git clone git://github.com/vegantech/sims.git
 cd sims
-git submodule init
-git submodule update 
-
-sudo rake gems:install 
+bundle
 
 
 
