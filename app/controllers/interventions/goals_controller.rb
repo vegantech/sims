@@ -6,7 +6,7 @@ class Interventions::GoalsController < ApplicationController
     respond_to do |format|
       format.html do
         if params[:goal_definition][:id].present?
-          redirect_to interventions_objectives_url(params[:goal_definition][:id], :custom_intervention => params[:custom_intervention])
+          redirect_to interventions_categories_url(params[:goal_definition][:id], :custom_intervention => params[:custom_intervention])
         else
           redirect_to :back
         end
