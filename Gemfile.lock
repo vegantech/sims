@@ -114,6 +114,7 @@ GEM
       nokogiri (>= 1.4.4)
       rack-test (>= 0.5.7)
     daemons (1.1.9)
+    dalli (2.6.2)
     database_cleaner (0.8.0)
     devise (1.5.4)
       bcrypt-ruby (~> 3.0)
@@ -191,7 +192,6 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     main (4.7.1)
-    memcache-client (1.8.5)
     method_source (0.8.1)
     metric_fu (2.1.1)
       Saikuro (>= 1.1.0)
@@ -396,6 +396,7 @@ DEPENDENCIES
   cells
   coffee-rails (~> 3.2.0)
   cucumber-rails
+  dalli
   database_cleaner (>= 0.5.0)
   devise (~> 1.5.0)
   dynamic_form
@@ -411,7 +412,6 @@ DEPENDENCIES
   jquery-ui-rails
   launchy
   libnotify
-  memcache-client
   metrical
   mysql2 (>= 0.3.12b4)
   newrelic_rpm

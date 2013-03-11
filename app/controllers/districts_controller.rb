@@ -89,22 +89,17 @@ class DistrictsController < ApplicationController
    # TODO REFACTOR THIS
     if request.post?
       @results = ''
-      MEMCACHE.set("#{current_district.id}_import",'') if defined?MEMCACHE
+      Rails.cache.write("#{current_district.id}_import",'')
       bulk_import_post_spawn
       ActiveRecord::Base.connection.reconnect!
       append_reload_js_to_results
       render #:layout => 'bulk_import'
     else
-      if defined?MEMCACHE
-        @results =
-          MEMCACHE.get("#{current_district.id}_import")
-        append_reload_js_to_results
-        if request.xhr?
-          render :text => @results + Time.now.to_s and return
-        end
-
-      else
-        redirect_to root_url and return
+      @results =
+        Rails.cache.read("#{current_district.id}_import")
+      append_reload_js_to_results
+      if request.xhr?
+        render :text => @results + Time.now.to_s and return
       end
     end
   end
@@ -146,7 +141,7 @@ private
           :error_class => "Spawn Error",
           :error_message => "Spawn Error: #{e.message}"
         )
-        MEMCACHE.set("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}") if defined?MEMCACHE
+        Rails.cache.write("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}")
         raise e
       end
 

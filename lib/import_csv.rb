@@ -59,14 +59,7 @@ class ImportCSV
 
   private
   def update_memcache
-    begin
-      if defined?MEMCACHE
-        MEMCACHE.set("#{@district.id}_import", @messages.join("<br/ > "), 120.minutes)
-      end
-    rescue
-      nil
-    end
-
+    Rails.cache.write("#{@district.id}_import", @messages.join("<br/ > "), expires_in: 120.minutes)
   end
 
   def process_file file_name
