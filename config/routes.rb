@@ -227,10 +227,6 @@ Sims::Application.routes.draw do
       end
     end
   end
-
-
-
-
   resources :interventions do
     member do
       put :undo_end

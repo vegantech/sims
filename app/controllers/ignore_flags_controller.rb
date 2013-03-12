@@ -5,7 +5,7 @@ class IgnoreFlagsController < ApplicationController
   def new
     @ignore_flag=current_student.ignore_flags.build(:category=>params[:category], :user_id => current_user.id)
     respond_to do |format|
-      format.html 
+      format.html
       format.js
     end
   end

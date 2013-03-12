@@ -10,9 +10,9 @@
 #
 
 class Frequency < ActiveRecord::Base
-  #TODO ADD POSITION
-  @all_cache_order = "id"
-  include AllCache
+  def self.all_cache
+    order("id")
+  end
 
   def to_s
     title

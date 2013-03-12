@@ -64,7 +64,7 @@ class Interventions::CommentsController < ApplicationController
   # DELETE /comments/1
   def destroy
     @intervention_comment = @intervention.comments.find(params[:id])
-    @intervention_comment.destroy 
+    @intervention_comment.destroy
 
     respond_to do |format|
       format.js
