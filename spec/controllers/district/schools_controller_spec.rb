@@ -12,7 +12,7 @@ describe District::SchoolsController do
 
   before do
     @district = mock_district(:users=> [])
-    @district.stub_association!(:users, :count => 10)
+    @district.stub_association!(:users, :size => 10)
     controller.stub!(:current_district => @district)
     @district.stub!(:schools => School)
   end
