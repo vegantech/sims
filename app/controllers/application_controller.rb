@@ -2,21 +2,14 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  #TODO replace this default district constant
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
     :index_url_with_page, :root_url_without_subdomain, :readonly?
 
-  # See ActionController::RequestForgeryProtection for details
-  # Uncomment the :secret if you're not using the cookie session store
-#  protect_from_forgery # :secret => 'f94867ed424ccea84323251f7aa373db'
+  #protect_from_forgery  TODO enable this
 
-  # See ActionController::Base for details
-  # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password").
-
-  before_filter :fixie6iframe,:authenticate_user!,:check_domain, :authorize
+  before_filter :authenticate_user!,:check_domain, :authorize
 
   SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
@@ -111,12 +104,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def fixie6iframe
-    #TODO THIS SHOULD BE MIDDLEWARE
-    response.headers['P3P']= 'CP = "CAO PSA OUR"'
-  end
 
-def check_student
+  def check_student
     #TODO generalize this
     student=Student.find_by_id(params[:student_id]) || Student.new
     if student.belongs_to_user?(current_user)

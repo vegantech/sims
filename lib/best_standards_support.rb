@@ -16,6 +16,7 @@ module Sims
     def call(env)
       status, headers, body = @app.call(env)
       headers["X-UA-Compatible"] = @header
+      headers['P5P']= 'CP = "CAO PSA OUR"'
       [status, headers, body]
     end
   end
