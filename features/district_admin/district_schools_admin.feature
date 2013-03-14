@@ -29,3 +29,16 @@ Feature: School Maintenance
     Then I fill in "Name" with "Cucumber Middle"
     Then I press "Update"
     Then I should see "Cucumber Middle"
+
+  Scenario: District admin should be able to add/edit schools with over 100 users in district #745
+    Given I am a district admin
+    And I start at the home page
+    And the district has 200 users
+    When I follow "Add/Remove Schools"
+    And I follow "New School"
+    Then I should see "There are more than 100 users in the district; please assign new school assignments through the add/remove users interface."
+
+    And I fill in "Name" with "Cucumber Elementary"
+    And I press "Create"
+    When I follow "Edit"
+    Then I should see "There are more than 100 users in the district; please assign new school assignments through the add/remove users interface."

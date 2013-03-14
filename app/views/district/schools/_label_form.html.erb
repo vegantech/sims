@@ -24,7 +24,7 @@
             <% if @users %>
               <%= f.collection_select('user_id', @users, :id, :to_s) %>
             <% else %>
-              <%= f.hidden_field 'user_id' %> <%= user_school_assignment.user.to_s %>
+              <%= f.hidden_field 'user_id' %> <%=f.object.try(:user).to_s%>
             <% end %>
           </td>
           <td>

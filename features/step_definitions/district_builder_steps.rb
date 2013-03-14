@@ -56,4 +56,11 @@ Given /^the other district admin is gone$/ do
   User.delete_all("username = 'district_admin'")
 end
 
+Given /^the district has (\d+) users$/ do |num_users|
+  ActiveRecord::Base.transaction do
+    num_users.to_i.times do
+      ActiveRecord::Base.connection.insert_sql "insert into users (district_id) values(#{@user.district_id}) " 
+    end
+  end
+end
 
