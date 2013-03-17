@@ -7,10 +7,9 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 require 'active_record/fixtures'
-ActiveRecord::Fixtures.create_fixtures("#{Rails.root}/test/fixtures", "frequencies")
-ActiveRecord::Fixtures.create_fixtures("#{Rails.root}/test/fixtures", "time_lengths")
-ActiveRecord::Fixtures.create_fixtures("#{Rails.root}/db/training", "recommendation_definitions")
-ActiveRecord::Fixtures.create_fixtures("#{Rails.root}/db/training", "recommendation_answer_definitions")
+%w(frequencies time_lengths recommendation_definitions recommendation_answer_definitions).each do |f|
+ActiveRecord::Fixtures.create_fixtures(Rails.root.join("db","training"),f)
+end
 System.bootstrap
 
 puts 'to create a training district, run rails runner CreateTrainingDistrict.generate_one'

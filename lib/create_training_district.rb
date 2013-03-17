@@ -289,8 +289,8 @@ class CreateTrainingDistrict
   end
 
   def self.generate_other_students(district,school,group)
-    first_names = IO.readlines('test/fixtures/common_first_names.txt')
-    last_names = IO.readlines('test/fixtures/common_last_names.txt')
+    first_names = IO.readlines('db/training/common_first_names.txt')
+    last_names = IO.readlines('db/training/common_last_names.txt')
     grades= ['K', '1', '2', '3', '4', '5']
 
     31.upto(60) do |i|
@@ -319,8 +319,8 @@ class CreateTrainingDistrict
 
 
   def self.generate_students(district,school,group)
-    first_names = IO.readlines('test/fixtures/common_first_names.txt')
-    last_names = IO.readlines('test/fixtures/common_last_names.txt')
+    first_names = IO.readlines('db/training/common_first_names.txt')
+    last_names = IO.readlines('db/training/common_last_names.txt')
 
     1.upto(30) do |i|
       s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",

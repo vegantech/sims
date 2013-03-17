@@ -23,13 +23,13 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret,
   "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
 after "deploy:restart",  "deploy:kickstart"
-after "deploy:cold", :load_fixtures, :create_intervention_pdfs, :create_file_directory, :create_secret
+after "deploy:cold", :seed, :create_intervention_pdfs, :create_file_directory, :create_secret
 
 
 namespace :deploy do
   desc "Reset Files and data"
   task :reset_files_and_data, :roles => "app" do
-    run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} rake db:drop db:create db:migrate db:fixtures:load && rm -rf #{deploy_to}/current/system/*"
+    run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} rake db:reset && rm -rf #{deploy_to}/current/system/*"
     create_intervention_pdfs
   end
 
@@ -70,9 +70,9 @@ task :copy_database_yml do
   run "cp  #{deploy_to}/database.yml.mysql #{release_path}/config/database.yml"
 end
 
-desc 'Load the fixtures from test/fixtures, this will overwrite whatever is in the db'
-task :load_fixtures do
-  run "cd #{deploy_to}/current && rake db:fixtures:load RAILS_ENV=#{fetch(:rails_env, "production")}"
+desc 'Seed the database'
+task :seed do
+  run "cd #{deploy_to}/current && rake db:seed RAILS_ENV=#{fetch(:rails_env, "production")}"
 end
 
 task :setup_domain_constant do
