@@ -91,7 +91,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg,tag=:span)
-     content_tag tag,'?', :class => "help-question", :'data-help' => escape_javascript(msg)
+     content_tag tag,'?', :class => "help-question", :'data-help' => sanitize_and_js_escape_double_quotes(msg)
   end
 
   def spinner(suffix = nil)
@@ -152,5 +152,9 @@ module ApplicationHelper
 
   def windows_live?(district = current_district)
     defined?(::WINDOWS_LIVE_CONFIG) && district.windows_live?
+  end
+
+  def sanitize_and_js_escape_double_quotes(text)
+    sanitize(text.gsub(/"/,"&quot"))
   end
 end

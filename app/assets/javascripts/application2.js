@@ -9,7 +9,7 @@ $(function() {
     return $(this).parent('li').toggleClass('minus');
   });
   $(document).on("mouseover",".popup,.help-question",function(event) {
-    return overlib($(this).data().help);
+    return overlib($(this).data().help, WIDTH, 300);
   });
   $(document).on("mouseout",".popup,.help-question",function(event) {
     return nd();

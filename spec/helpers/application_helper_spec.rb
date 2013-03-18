@@ -146,5 +146,12 @@ describe ApplicationHelper do
     end
   end
 
+  describe 'help_popup' do
+    it 'should escape properly' do
+      helper.help_popup(%q{test<script>alert('HACKED')</script><p> 'quoted' "double_quoted" </p>}).should == helper.content_tag(:span,"?", :class => "help-question", :'data-help' => "test<p> 'quoted' &quotdouble_quoted&quot </p>".html_safe)
+    end
+
+  end
+
 
 end
