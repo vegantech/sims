@@ -1,0 +1,14 @@
+daily:
+  title: Daily
+
+weekly:
+  title: Weekly
+
+biweekly: 
+  title: Bi-Weekly
+
+monthly: 
+  title: Monthly
+
+as_needed:
+  title: As Needed
