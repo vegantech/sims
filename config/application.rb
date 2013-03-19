@@ -64,6 +64,7 @@ module Sims
     config.assets.precompile += ["*lang/*", "*spellerpages/*"]
     # Change the path that assets are served from
     # # config.assets.prefix = "/assets"
+    config.action_mailer.raise_delivery_errors = false
 
 
 

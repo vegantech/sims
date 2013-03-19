@@ -5,7 +5,7 @@ Given /^common data$/i do
   @default_user.district = @district
   @school = Factory(:school, :district => @district, :name => "Default School")
   @default_user.user_school_assignments.create!(:school => @school)
-  @another_user = Factory(:user, :username => "cucumber_another", :district => @district)
+  @another_user = Factory(:user, :username => "cucumber_another", :district => @district, :email => 'cucumber@pickle.com')
   @another_user.user_school_assignments.create!(:school => @school)
   @default_user.save!
   create_default_student
