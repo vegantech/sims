@@ -21,7 +21,7 @@ Sims::Application.configure do
   config.active_support.deprecation = :log
 
   # Only use best-standards-support built into browsers
-  config.action_dispatch.best_standards_support = :builtin
+#  config.action_dispatch.best_standards_support = :builtin
 
   config.active_record.mass_assignment_sanitizer = :strict
   config.active_record.auto_explain_threshold_in_seconds = 0.5
