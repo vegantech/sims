@@ -11,10 +11,10 @@ Feature: Progress Monitor Builder
     And I fill in "Title" with "test_spellcheck_with_attachment"
     And I fill in "Description" with "test_spellcheck_with_attachment"
     And PENDING I am pending until I set up steam or some other js browser
-    And I attach the file "README" to "probe_definition_new_asset_attributes__document"
+    And I attach the file "README.mw" to "probe_definition_new_asset_attributes__document"
     And PENDING I am pending until webrat bug in ticket 198 (on webrat lighthouse) is fixed
     When I press "Create"
-    Then I should see "README"
+    Then I should see "README.md"
     And PENDING I am pending until I can figure out why attach_file behavior differs from browser
 
 

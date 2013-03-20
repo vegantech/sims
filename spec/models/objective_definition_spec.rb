@@ -32,7 +32,7 @@ describe ObjectiveDefinition do
   it 'should test destroy with a file attached LH 234' do
     #TODO this is really an issue with the links_and_attachments_lib, move (copy) this test there
     o=Factory(:objective_definition)
-    o.assets.create!(:document=>File.open(Rails.root.join("README")))
+    o.assets.create!(:document=>File.open(Rails.root.join("README.md")))
     lambda { o.destroy}.should_not raise_error
   end
 end

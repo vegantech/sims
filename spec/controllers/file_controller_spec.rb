@@ -13,7 +13,7 @@ describe FileController do
     end
 
     it 'should not show the README in rails root' do
-      get 'download', :filename =>'../README'
+      get 'download', :filename =>'../README.md'
     end
 
   end
