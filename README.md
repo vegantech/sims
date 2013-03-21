@@ -1,6 +1,10 @@
 SIMS-  Student Intervention Monitoring System
 ====
 [![Build Status](https://travis-ci.org/vegantech/sims.png?branch=master)](https://travis-ci.org/vegantech/sims)
+[![Dependency Status](https://gemnasium.com/vegantech/sims.png)](https://gemnasium.com/vegantech/sims)
+[![Code Climate](https://codeclimate.com/github/vegantech/sims.png)](https://codeclimate.com/github/vegantech/sims)
+[![Coverage Status](https://coveralls.io/repos/vegantech/sims/badge.png?branch=master)](https://coveralls.io/r/vegantech/sims)
+
 
 Track Student Interventions.   
 
