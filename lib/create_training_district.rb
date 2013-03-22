@@ -338,45 +338,9 @@ class CreateTrainingDistrict
   end
 
   def self.add_extended_profile(student)
-    student.create_ext_summary(
-    :streetAddress => "123 Training Blvd Apt #{student.first_name[0..1]}",
-    :cityStateZip => "Madison, WI 53704",
-    :HomeLanguage => "English",
-    :mealstatus => "F",
-    :englishProficiency => 7,
-    :specialEdStatus => "N",
-    :singleParent => false,
-    :raceEthnicity => "W",
-    :suspensions_in => 0,
-    :suspensions_out => 0,
-    :years_in_district => 7,
-    :school_changes => 2,
-    :years_at_current_school => 4,
-    :previous_school_name => "Previous Elementary",
-    :current_attendance_rate => 94.14,
-    :previous_attendance_rate => 94.58,
-    :esl => false,
-    :tardies => 3
-    )
-
-    student.ext_adult_contacts.create!(
-    :relationship => "Parent",
-    :guardian => true,
-    :firstName => "Plato",
-    :lastName => student.last_name,
-    :streetAddress => "123 Training Blvd Apt #{student.first_name[0..1]}",
-    :cityStateZip => "Madison, WI 53704",
-    :cellPhone => "(608)555-1212"
-    )
-
-    student.ext_siblings.create!(
-    :first_name => "Brother",
-    :last_name => student.last_name,
-    :student_number => "123456",
-    :age => 12,
-    :grade => "07",
-    :school_name => "Example Middle"
-    )
+    FactoryGirl.create :ext_summary, student: student
+    FactoryGirl.create :ext_adult_contact, student: student
+    FactoryGirl.create :ext_sibling, student: student
 
     student.ext_test_scores.create!(
     :name => "PMA 1 Total",
@@ -609,8 +573,6 @@ class CreateTrainingDistrict
     :date => date,
     :scaleScore => 23
     )
-   ep = ''
-   #   student.create_ext_arbitrary(:content => ep)
 
   end
 

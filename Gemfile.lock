@@ -129,10 +129,10 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    factory_girl (2.6.4)
-      activesupport (>= 2.3.9)
-    factory_girl_rails (1.7.0)
-      factory_girl (~> 2.6.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     faraday (0.8.4)
       multipart-post (~> 1.1)
@@ -209,7 +209,7 @@ GEM
       metric_fu (~> 2.1.1)
       rcov (~> 0.9)
     mime-types (1.21)
-    multi_json (1.7.0)
+    multi_json (1.7.1)
     multipart-post (1.1.5)
     mysql2 (0.3.12b4)
     net-scp (1.1.0)
@@ -401,7 +401,7 @@ DEPENDENCIES
   devise (~> 1.5.0)
   dynamic_form
   email_spec (= 1.2.1)
-  factory_girl_rails (~> 1.7.0)
+  factory_girl_rails
   googlecharts (= 1.6.3)
   guard
   guard-cucumber

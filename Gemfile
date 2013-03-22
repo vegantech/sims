@@ -31,7 +31,7 @@ gem 'rails', '3.2.13'
 # end
 
 
-gem 'factory_girl_rails', '~> 1.7.0'
+gem 'factory_girl_rails'
 gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'

@@ -66,6 +66,10 @@ module Sims
     # # config.assets.prefix = "/assets"
     config.action_mailer.raise_delivery_errors = false
 
+    config.generators do |g|
+      g.fixture_replacement :factory_girl
+    end
+
 
 
     config.to_prepare do
