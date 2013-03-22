@@ -50,7 +50,7 @@ describe Student do
   describe 'extended_profile=' do
     it 'should set the extended profile for the student on save' do
       pending
-      student = Factory.build(:student)
+      student = FactoryGirl.build(:student)
       @extended_profile = File.open(__FILE__)
       student.extended_profile = @extended_profile
       student.save
@@ -80,7 +80,7 @@ describe Student do
   describe 'id_state' do
     it 'should be unique' do
       district_in_same_state=Factory(:district)
-      student_in_same_state = Factory.build(:student, :district => district_in_same_state, :id_state => 1234)
+      student_in_same_state = FactoryGirl.build(:student, :district => district_in_same_state, :id_state => 1234)
       student_in_same_state.should_not be_valid
       student_in_same_state.errors_on(:id_state).should == ["Student with #{@student.id_state} already exists in #{@student.district}"]
     end
@@ -171,7 +171,7 @@ describe Student do
   end
 
   describe 'birthdate' do
-    let(:student) {Factory.build(:student)}
+    let(:student) {FactoryGirl.build(:student)}
     
     it 'should allow a blank birthdate' do
       student.birthdate = ''

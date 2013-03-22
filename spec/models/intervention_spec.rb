@@ -191,7 +191,7 @@ describe Intervention do
     before :all do
       @student1 = Factory(:student)
       @student2 = Factory(:student, :district => @student1.district)
-      @intervention = Factory.build(:intervention, :student => @student1)
+      @intervention = FactoryGirl.build(:intervention, :student => @student1)
     end
     describe 'with apply_to_all = 1' do
       before :all do
@@ -240,7 +240,7 @@ describe Intervention do
       @student2 = Factory(:student, :district => @student1.district)
       @user1 = Factory(:user, :district => @student1.district)
       @user2 = Factory(:user, :district => @student1.district)
-      @intervention = Factory.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
+      @intervention = FactoryGirl.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
                                     :selected_ids => [@student1.id.to_s, @student2.id.to_s],
                                    :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
       Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(:deliver=>true))
@@ -266,7 +266,7 @@ describe Intervention do
   end
 
   describe 'participant_user_ids=' do
-    let(:intervention) {Factory.build(:intervention)}
+    let(:intervention) {FactoryGirl.build(:intervention)}
     let(:user) {Factory(:user)}
 
     it 'should support new users' do

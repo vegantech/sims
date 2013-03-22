@@ -31,7 +31,7 @@ describe District do
     @state_district = District.admin.first ||  Factory(:district, :admin=>true)
   end
   it 'should be valid' do
-    Factory.build(:district).should be_valid
+    FactoryGirl.build(:district).should be_valid
   end
 
   describe 'active_checklist_definition method' do

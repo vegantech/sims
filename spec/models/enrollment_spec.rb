@@ -46,7 +46,7 @@ describe Enrollment do
 
   describe 'search class method' do
     it 'should contain and maintain scope' do
-      school=Factory.create(:school)
+      school=FactoryGirl.create(:school)
       Enrollment.create!(:student_id=>999,:school_id=>999,:grade=>"XX")
       school.enrollments.create!(:student_id=>999,:grade=>"XX")
       school.enrollments.size.should ==(1)

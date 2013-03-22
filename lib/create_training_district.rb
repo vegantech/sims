@@ -298,7 +298,7 @@ class CreateTrainingDistrict
       special_ed = rand(3) == 1
       first_name = first_names[(i%50) -1 + 50*(i %2)].strip
       last_name = last_names[i-1].capitalize.strip
-      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_name, :last_name => last_name,
+      s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_name, :last_name => last_name,
         :number => (i-1).to_s, :esl => esl, :special_ed => special_ed)
       s.enrollments.create!(:school => school, :grade => grades[i%6])
       s.groups << group
@@ -323,7 +323,7 @@ class CreateTrainingDistrict
     last_names = IO.readlines('db/training/common_last_names.txt')
 
     1.upto(30) do |i|
-      s=Factory(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",
+      s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",
         :number => (i-1).to_s)
       s.enrollments.create!(:school => school, :grade => 5)
       s.groups << group
@@ -342,130 +342,26 @@ class CreateTrainingDistrict
     FactoryGirl.create :ext_adult_contact, student: student
     FactoryGirl.create :ext_sibling, student: student
 
-    student.ext_test_scores.create!(
-    :name => "PMA 1 Total",
-    :date => "2001-10-06",
-    :result => 3
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PMA 2 Total",
-    :date => "2002-10-06",
-    :result => 2
-    )
-
-
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 4 Language Arts",
-    :date => "2004-10-06",
-    :result => 3
-    )
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 4 Math",
-    :date => "2004-10-06",
-    :result => 2
-    )
-
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 4 Science",
-    :date => "2004-10-06",
-    :result => 3
-    )
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 4 Social Studies",
-    :date => "2004-10-06",
-    :result => 4
-    )
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 4 Reading",
-    :date => "2004-10-06",
-    :result => 3
-    )
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 3 Math",
-    :date => "2003-10-06",
-    :result => 3
-    )
-
-
-    student.ext_test_scores.create!(
-    :name => "WKCE 3 Reading",
-    :date => "2004-10-06",
-    :result => 3
-    )
-
-
-
-
-
-
-
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Phonemic Awareness",
-    :date => "2002-09-01",
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Text Reading Level",
-    :date => "2002-09-01",
-    :result => 2,
-    :scaleScore => 1
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Concepts About Print",
-    :date => "2003-04-01",
-    :result => 3
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Hearing Sounds in Words",
-    :date => "2003-04-01",
-    :result => 1
-    )
-
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Lower Case Letters",
-    :date => "2003-04-01",
-    :result => 2
-    )
-
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Phonemic Awareness",
-    :date => "2003-04-01",
-    :result => 3
-    )
-
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Sound Word",
-    :date => "2003-04-01",
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Text Reading Level",
-    :date => "2003-04-01",
-    :result => 1,
-    :scaleScore => 1
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA K Upper Case Letters",
-    :date => "2003-04-01",
-    :result => 2
-    )
-
+    student.ext_test_scores.create!( [
+      {:name => "PMA 1 Total", :date => "2001-10-06", :result => 3},
+      {:name => "PMA 2 Total", :date => "2002-10-06", :result => 2},
+      {:name => "WKCE 4 Language Arts", :date => "2004-10-06", :result => 3},
+      {:name => "WKCE 4 Math", :date => "2004-10-06", :result => 2},
+      {:name => "WKCE 4 Science", :date => "2004-10-06", :result => 3},
+      {:name => "WKCE 4 Social Studies", :date => "2004-10-06", :result => 4},
+      {:name => "WKCE 4 Reading", :date => "2004-10-06", :result => 3},
+      {:name => "WKCE 3 Math", :date => "2003-10-06", :result => 3},
+      {:name => "WKCE 3 Reading", :date => "2004-10-06", :result => 3},
+      {:name => "PLAA K Phonemic Awareness", :date => "2002-09-01", :result => 2},
+      {:name => "PLAA K Text Reading Level", :date => "2002-09-01", :result => 2, :scaleScore => 1},
+      {:name => "PLAA K Concepts About Print", :date => "2003-04-01", :result => 3},
+      {:name => "PLAA K Hearing Sounds in Words", :date => "2003-04-01", :result => 1},
+      {:name => "PLAA K Lower Case Letters", :date => "2003-04-01", :result => 2},
+      {:name => "PLAA K Phonemic Awareness", :date => "2003-04-01", :result => 3},
+      {:name => "PLAA K Sound Word", :date => "2003-04-01", :result => 2},
+      {:name => "PLAA K Text Reading Level", :date => "2003-04-01", :result => 1, :scaleScore => 1},
+      {:name => "PLAA K Upper Case Letters", :date => "2003-04-01", :result => 2}
+    ])
 
     date="2003-09-26"
     grade = 1
