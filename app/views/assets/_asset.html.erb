@@ -13,6 +13,7 @@
 
       <%= asset_form.label :url %>
       <%= asset_form.text_field :url %>
+      <%= asset_form.hidden_field(:user_id, :value => current_user.id) if asset.new_record?%>
       <%= link_to "remove", "#", :class => "cancel_link", :data => {:remove_up => ".hidden_asset"} %>
       </p>
     <% end -%>

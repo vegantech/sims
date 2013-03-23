@@ -1,6 +1,6 @@
 <% suffix="" unless defined? suffix %>
 <div id = "assets<%=suffix%>" >
-  <%= hidden_field_tag "#{parent}[existing_asset_attributes][qqq]" ,'' %> 
+  <%= hidden_field_tag "#{parent}[existing_asset_attributes][qqq]" ,'' %>
   <%= render :partial => 'assets/asset', :collection => form.object.assets, :locals => {:parent => parent} %>
 </div>
 
