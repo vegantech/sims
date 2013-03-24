@@ -5,14 +5,10 @@ describe LinksAndAttachmentsHelper do
 
   describe 'add_asset_link' do
     it 'add_asset_link should call link_to_function with name' do
-      helper.add_asset_link('fake_name', 'fake_parent').should == "<div class=\"hidden_asset\" style=\"display:none\"><div class=\"asset \">\n      <p>\n       <br />\n\n      <label for=\"fake_parent_new_asset_attributes__document\">File:</label>\n      <input id=\"fake_parent_new_asset_attributes__document\" name=\"fake_parent[new_asset_attributes][][document]\" type=\"file\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__name\">Name for url</label>\n      <input id=\"fake_parent_new_asset_attributes__name\" name=\"fake_parent[new_asset_attributes][][name]\" size=\"30\" type=\"text\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__url\">Url</label>\n      <input id=\"fake_parent_new_asset_attributes__url\" name=\"fake_parent[new_asset_attributes][][url]\" size=\"30\" type=\"text\" />\n      <a href=\"#\" class=\"cancel_link\" data-remove-up=\".hidden_asset\">remove</a>\n      </p>\n</div>\n</div><a href=\"\" class=\"new_asset_link\" data-parent=\"fake_parent\" data-suffix=\"\">fake_name</a>"
-    end
-  end
+      helper.should_receive(:current_user).and_return(mock_user)
+      helper.add_asset_link('fake_name', 'fake_parent').should ==
+        "<div class=\"hidden_asset\" style=\"display:none\"><div class=\"asset \">\n      <p>\n       <br />\n\n      <label for=\"fake_parent_new_asset_attributes__document\">File:</label>\n      <input id=\"fake_parent_new_asset_attributes__document\" name=\"fake_parent[new_asset_attributes][][document]\" type=\"file\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__name\">Name for url</label>\n      <input id=\"fake_parent_new_asset_attributes__name\" name=\"fake_parent[new_asset_attributes][][name]\" size=\"30\" type=\"text\" /> <br />\n\n      <label for=\"fake_parent_new_asset_attributes__url\">Url</label>\n      <input id=\"fake_parent_new_asset_attributes__url\" name=\"fake_parent[new_asset_attributes][][url]\" size=\"30\" type=\"text\" />\n      <input id=\"fake_parent_new_asset_attributes__user_id\" name=\"fake_parent[new_asset_attributes][][user_id]\" type=\"hidden\" value=\"1001\" />\n      <a href=\"#\" class=\"cancel_link\" data-remove-up=\".hidden_asset\">remove</a>\n      </p>\n</div>\n</div><a href=\"\" class=\"new_asset_link\" data-parent=\"fake_parent\" data-suffix=\"\">fake_name</a>"
 
-  def fake_update_page(method,*args)
-    helper.update_page do |page|
-#     page!(:page=>page)
-      page.send(method, *args)
     end
   end
 

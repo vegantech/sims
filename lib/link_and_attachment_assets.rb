@@ -16,6 +16,7 @@ module LinkAndAttachmentAssets
 
   def existing_asset_attributes=(asset_attributes)
     @touch_me=false
+    claim_assets(asset_attributes.keys) if new_record?
     assets.reject(&:new_record?).each do |asset|
       attributes = asset_attributes[asset.id.to_s]
       if attributes
@@ -42,6 +43,10 @@ module LinkAndAttachmentAssets
       self.class.update_all(["updated_at = ?", Time.now], "id = #{self.id}") if attributes["updated_at"] && persisted?
       errors[:base] = "The attachments have been saved, but the other changes have not."
     end
+  end
+
+  def claim_assets keys
+    self.assets |= Asset.where(attachable_id: nil, id: keys)
   end
 
 end
