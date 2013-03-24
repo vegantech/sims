@@ -35,6 +35,12 @@ class Asset < ActiveRecord::Base
       (url.present? && !url_exists)
   end
 
+  def preserve_file_after_parent_validation_failure!
+    if document? && changes["document_updated_at"]
+      save!
+    end
+  end
+
   private
   def url_exists
     case url

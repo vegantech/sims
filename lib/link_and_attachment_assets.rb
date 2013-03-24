@@ -1,6 +1,7 @@
 module LinkAndAttachmentAssets
   def self.included(klass)
     klass.send :after_update, :save_assets
+    klass.send :after_rollback, :preserve_uploads, unless: "errors.empty?"
     klass.send :has_many, :assets, :as => :attachable, :dependent => :destroy
   end
 
@@ -33,6 +34,13 @@ module LinkAndAttachmentAssets
     end
     if attributes["updated_at"] && @touch_me
       self.class.update_all(["updated_at = ?", Time.now], "id = #{self.id}")
+    end
+  end
+
+  def preserve_uploads
+    if assets.any?(&:preserve_file_after_parent_validation_failure!)
+      self.class.update_all(["updated_at = ?", Time.now], "id = #{self.id}") if attributes["updated_at"] && persisted?
+      errors[:base] = "The attachments have been saved, but the other changes have not."
     end
   end
 
