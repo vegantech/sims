@@ -1,0 +1,5 @@
+<% prefix = "#{parent}[existing_asset_attributes][]" %>
+<% asset=other_asset %>
+<%= fields_for prefix, asset do |asset_form| -%>
+  <%= asset_form.hidden_field :name %> <br />
+<% end -%>

@@ -18,6 +18,7 @@ module LinksAndAttachmentsHelper
           str += content_tag(tag_type, link_to_with_icon(asset.document.original_filename, asset.document.url)) if asset.document?
         end
       end
+      str += "#{asset.user} on #{asset.updated_at}" if obj.show_asset_info?
       str.html_safe
     end
   end

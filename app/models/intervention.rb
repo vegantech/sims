@@ -226,6 +226,16 @@ class Intervention < ActiveRecord::Base
     ids=ids.reject(&:blank?).uniq
     self.participant_users=User.where(:id =>(ids))
   end
+
+
+  def assets_for_user u
+    assets.for_user(u)
+  end
+
+  def show_asset_info?
+    true
+  end
+
   protected
 
   def create_other_students

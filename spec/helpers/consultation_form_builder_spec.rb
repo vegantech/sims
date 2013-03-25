@@ -3,7 +3,7 @@ describe 'ConsultationFormBuilder', :type => :helper do
 
   before do
     #elper = Object.new.extend ActionView::Helpers::FormHelper
-    @object = mock_consultation_form
+    @object = mock_consultation_form :show_asset_info? => false
     @template =  helper
     @builder = ConsultationFormBuilder.new(:consultation_form, @object, self, {}, nil)
     @builder.instance_variable_set("@template", helper)

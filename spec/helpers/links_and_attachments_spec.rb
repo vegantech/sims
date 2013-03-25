@@ -30,7 +30,7 @@ describe LinksAndAttachmentsHelper do
       link_asset=mock_asset('document?' =>false, :name=> 'link_asset', :url => 'www.link_asset.ant')
       attach_asset=mock_asset(:url=>nil, :document => document, 'document?'=>true)
       both_asset=mock_asset(:name=>'both_asset', :url =>'www.both_asset.mil',:document => document, 'document?' => true)
-      object=mock(:assets=>[link_asset,both_asset,empty_asset,attach_asset])
+      object=mock(:assets=>[link_asset,both_asset,empty_asset,attach_asset], :show_asset_info? => false)
 
       helper.links_and_attachments(object, :dict).should == "<dict>link_asset -- www.link_asset.ant</dict><dict>both_asset -- www.both_asset.mil</dict><dict>original_filename -- new_doc_url</dict><dict>original_filename -- new_doc_url</dict>"
     end
