@@ -44,21 +44,6 @@ module ApplicationHelper
     link_to(name,path) if File.exist?("#{Rails.root}/public/#{path}")
   end
 
-
-  def breadcrumbs
-    s = [link_to('Home', root_path)]
-    s << link_to_if_current_or_condition('School Selection', schools_path, session[:school_id])
-    s << link_to_if_current_or_condition('Student Search', [current_school,:student_search], session[:search])
-    s << link_to_if_current_or_condition('Student Selection', students_path, current_student_id)
-    #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
-    s << link_to_if_current_or_condition(current_student, student_path(current_student), current_student_id) if current_student_id && !current_student.new_record?
-    s.compact.join(' -> ').html_safe
-  end
-
-  def link_to_if_current_or_condition(title, path,conditions=nil)
-    link_to_unless_current(title,path) if conditions || path == request.path
-  end
-
   def if_student_selected
     if current_student
       yield
