@@ -183,8 +183,6 @@ class ReportsController < ApplicationController
         flash.now[:notice] = 'Invalid date chosen.  Used today instead.'
         Date.today
       end
-    else
-      nil
     end
   end
 

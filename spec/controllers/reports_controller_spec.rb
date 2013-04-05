@@ -5,7 +5,7 @@ describe ReportsController do
   include_context "authorized"
   include_context "authenticated"
 
-  let(:user) {Factory(:user, :roles => "regular_user")}
+  let(:user) {FactoryGirl.create(:user, :roles => "regular_user")}
   describe 'statewide' do
     it 'should have specs for the intervention definitions and progress monitors, along with unit specs and features'
   end
@@ -17,8 +17,8 @@ describe ReportsController do
 
     before do
       pending
-      @school = Factory(:school)
-      @district = Factory(:district)
+      @school = FactoryGirl.create(:school)
+      @district = FactoryGirl.create(:district)
       @from_url = request.env["HTTP_REFERER"] = 'http://one_step_back.org'
     end
 
@@ -122,8 +122,8 @@ describe ReportsController do
     render_views
 
     before do
-      @district = Factory(:district)
-      @student = Factory(:student)
+      @district = FactoryGirl.create(:district)
+      @student = FactoryGirl.create(:student)
       controller.stub!(:current_user => user)
       @student.should_receive(:belongs_to_user?).and_return(true)
       Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
@@ -150,8 +150,8 @@ describe ReportsController do
     render_views
 
     before do
-      @district = Factory(:district)
-      @student = Factory(:student)
+      @district = FactoryGirl.create(:district)
+      @student = FactoryGirl.create(:student)
       controller.stub!(:current_user => user)
       @student.should_receive(:belongs_to_user?).and_return(true)
       Student.should_receive(:find_by_id).with(@student.id.to_s).and_return(@student)
@@ -213,7 +213,7 @@ describe ReportsController do
     end
 
     it 'should show student interventions when selected' do
-      intervention = Factory(:intervention, :student_id => @student.id.to_s)
+      intervention = FactoryGirl.create(:intervention, :student_id => @student.id.to_s)
       @student.interventions << intervention
       @student.interventions.should_not be_empty
 
@@ -401,6 +401,19 @@ describe ReportsController do
           response.body.should ==(m)
         end
       end
+    end
+  end
+
+  describe 'build_date' do
+    it 'should parse a valid date' do
+      subject.send(:build_date, {year:2012, month:01,day:31}).should == Date.new(2012,01,31)
+    end
+    it 'should revert to today when the date is invalid' do
+      subject.send(:build_date, {year:2012, month:02,day:31}).should == Date.today
+      flash[:notice].should == "Invalid date chosen.  Used today instead."
+    end
+    it 'should return nil if the date hash is nil' do
+      subject.send(:build_date, nil).should be_nil
     end
   end
 end
