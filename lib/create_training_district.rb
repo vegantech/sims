@@ -281,11 +281,6 @@ class CreateTrainingDistrict
       newcd= AnswerDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
     end
 
-
-
-
-
-
   end
 
   def self.generate_other_students(district,school,group)
@@ -366,111 +361,44 @@ class CreateTrainingDistrict
     date="2003-09-26"
     grade = 1
 
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Editing Skills",
-    :date => date,
-    :result => 1
-    )
+    student.ext_test_scores.create!( [
+      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 1},
+      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 1},
+      {:name => "PLAA #{grade} Spelling", :date => date, :result => 1},
+      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 3}
+    ])
 
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Sounds Rep",
-    :date => date,
-    :result => 1
-    )
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Spelling",
-    :date => date,
-    :result => 1
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Text Reading Lvl",
-    :date => date,
-    :scaleScore => 3
-    )
 
     date="2004-05-26"
     grade = 1
 
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Editing Skills",
-    :date => date,
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Sounds Rep",
-    :date => date,
-    :result => 3
-    )
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Spelling",
-    :date => date,
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Text Reading Lvl",
-    :date => date,
-    :scaleScore => 14
-    )
+    student.ext_test_scores.create!( [
+      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 3},
+      {:name => "PLAA #{grade} Spelling", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 14},
+    ])
 
 
-     date="2004-10-18"
+    date="2004-10-18"
     grade = 2
 
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Editing Skills",
-    :date => date,
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Sounds Rep",
-    :date => date,
-    :result => 2
-    )
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Spelling",
-    :date => date,
-    :result => 2
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Text Reading Lvl",
-    :date => date,
-    :scaleScore => 14
-    )
-
+    student.ext_test_scores.create!([
+      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Spelling", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 14}
+    ])
 
 
    date="2005-05-24"
     grade = 2
 
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Editing Skills",
-    :date => date,
-    :result => 1
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Sounds Rep",
-    :date => date,
-    :result => 2
-    )
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Spelling",
-    :date => date,
-    :result => 1
-    )
-
-    student.ext_test_scores.create!(
-    :name => "PLAA #{grade} Text Reading Lvl",
-    :date => date,
-    :scaleScore => 23
-    )
-
+    student.ext_test_scores.create!([
+      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 1},
+      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 2},
+      {:name => "PLAA #{grade} Spelling", :date => date, :result => 1},
+      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 23}
+    ])
   end
-
-
 end

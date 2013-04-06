@@ -143,18 +143,12 @@ class Checklist < ActiveRecord::Base
     case from_tier
     when 0,1
       nil
-    when 2
-        #All question 9 completed (done above),  Questions 1-8 needs an answer of 2 or better
-        answers.each do |answer|
-          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
-            "Need to score 2 or better." if answer.answer_definition.value <"2" and answer.answer_definition.element_definition.kind=="scale"
-        end #do
-    when 3
-        #All question 9 completed (done above),  Questions 1-8 needs an answer of 3 or better
-        answers.each do |answer|
-          @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
-            "Need to score 3 or better" if answer.answer_definition.value < "3" and answer.answer_definition.element_definition.kind=="scale"
-        end #do
+    when 2,3
+      #All question 9 completed (done above),  Questions 1-8 needs an answer of [2,3] or better
+      answers.each do |answer|
+        @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
+          "Need to score #{from_tier} or better." if answer.answer_definition.value <"#{from_tier}" and answer.answer_definition.element_definition.kind=="scale"
+      end #do
     end # case
 
     inapplicable_questions.each do |iq|
