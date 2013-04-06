@@ -19,11 +19,8 @@ end
 
 Sims::Application.config.session_store :cookie_store, sessionhash
 if Object.const_defined?('SIMS_DOMAIN')
-
-  SIMS_DOMAIN_LENGTH = (SIMS_DOMAIN.split(".").length() -1)
+  ActionDispatch::Http::URL.tld_length = (SIMS_DOMAIN.split(".").length() -1)  #defaults to 1
   host="www.#{Object.const_get("SIMS_DOMAIN")}"
-else
-  SIMS_DOMAIN_LENGTH = 1
 end
 ActionMailer::Base.default_url_options = {
   :only_path => false,

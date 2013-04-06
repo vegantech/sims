@@ -5,13 +5,11 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
     :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :index_url_with_page, :root_url_without_subdomain, :readonly?
+    :index_url_with_page, :readonly?
 
   #protect_from_forgery  TODO enable this
 
   before_filter :authenticate_user!,:check_domain, :authorize
-
-  SUBDOMAIN_MATCH=/(^sims$)|(^sims-open$)/
   private
 
   def student_id_cache_key
@@ -151,32 +149,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_subdomain
-    #base this on tld somehow
-    request.subdomain(SIMS_DOMAIN_LENGTH).gsub(/^www(.)?/,'')
-  end
-
-  def root_url_with_subdomain
-    opts = {}
-    opts[:port] = request.port unless [80,443].include? request.port.to_i
-
-    if request.domain && ENABLE_SUBDOMAINS
-      opts[:host] =  "#{current_district.try(:abbrev) || 'www' }.#{request.domain(SIMS_DOMAIN_LENGTH)}"
-    else
-      opts[:host] = request.host
-    end
-    root_url(opts)
-  end
-
-  def root_url_without_subdomain
-    opts = {}
-    opts[:port] = request.port unless [80,443].include? request.port.to_i
-
-    if request.domain
-      opts[:host] =  "www.#{request.domain(SIMS_DOMAIN_LENGTH)}"
-    else
-      opts[:host] = request.host
-    end
-    root_url(opts)
+    request.subdomain.gsub(/^www(.)?/,'')
   end
 
   def session_domain
@@ -187,17 +160,6 @@ class ApplicationController < ActionController::Base
     false
   end
 
-  def disable_gc
-    GC.disable
-    begin
-      yield
-    ensure
-      GC.enable
-      GC.start
-    end
-  end
-
-
   def check_domain
     return true if devise_controller?
     if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
@@ -205,5 +167,4 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
-
 end

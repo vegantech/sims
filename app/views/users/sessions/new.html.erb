@@ -41,7 +41,7 @@
     </fieldset>
 
     <% if current_district.persisted? %>
-      <%= link_to "Switch districts", root_url_without_subdomain if defined? ENABLE_SUBDOMAINS  %>
+      <%= link_to "Switch districts", root_url(subdomain:"www") if defined? ENABLE_SUBDOMAINS  %>
       <br />
     <% end  %>
 
