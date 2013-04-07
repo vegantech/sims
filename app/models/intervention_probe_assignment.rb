@@ -77,7 +77,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def graph(graph_type=nil)
-    ProbeGraph.new(:graph_type => graph_type,
+    ProbeGraph::Base.build(:graph_type => graph_type,
                    :probes => probes.to_a,
                    :probe_definition => probe_definition,
                    :district => student.district,

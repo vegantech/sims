@@ -10,7 +10,7 @@ describe ProbesHelper do
   describe 'probe_graph' do
     it 'should have better specs!'
     it 'should show a graph when the intervention_probe_assignment has probes' do
-      ipa = Factory(:intervention_probe_assignment)
+      ipa = FactoryGirl.create(:intervention_probe_assignment)
       helper.probe_graph(ipa,1).should match(/style/)
     end
 
