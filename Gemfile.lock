@@ -244,6 +244,8 @@ GEM
       multi_json (>= 1.0.3)
       omniauth-oauth2 (~> 1.0)
     orm_adapter (0.0.7)
+    overlib-rails (0.0.1)
+      railties (~> 3.1)
     paperclip (2.7.0)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -418,6 +420,7 @@ DEPENDENCIES
   nokogiri (= 1.4.4)
   omniauth-google-apps
   omniauth-windowslive
+  overlib-rails
   paperclip (~> 2.7.0)
   pdfkit
   rack-test
