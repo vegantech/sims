@@ -85,8 +85,10 @@ group :development do
   gem "capistrano", :require => false
   gem "capistrano-ext", :require => false
   gem "thin"
-  gem "metrical", :platforms => :ruby_19
+#  gem "metrical", :platforms => :ruby_19
   #gem "ripper", :platforms => :ruby_19
+  gem 'flog'
+  gem 'flay'
   gem 'rspec-rails','~>2.6', :require => false
   gem 'spork'
   gem 'guard'
