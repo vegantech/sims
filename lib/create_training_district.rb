@@ -102,13 +102,22 @@ class CreateTrainingDistrict
 
   end
 
+  def self.populate_from_csv_file(parent,model_name,parent_id_sym, district, path,parenthash ={})
+    reshash={}
+    CSV.table("#{path}/#{model_name.pluralize}.csv").each do |ck|
+      next if ck.to_hash[:deleted_at].to_i !=0
+      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
+      ckhash[:disabled] = false if ckhash[:disabled].nil?
+      ckhash[parent_id_sym]= parenthash[ck[parent_id_sym]] unless parenthash.empty?
+      newcd= parent.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
+      reshash[ck[:id]]=newcd.id
+    end
+    reshash
+  end
+
   def self.generate_interventions(district,path="db/training")
-    goalhash = {}
-    objectivehash = {}
-    clusterhash = {}
     definitionhash = {}
     probe_hash = {}
-
     if File.exist?(File.join(path,"tiers.csv"))
       tier_csv=CSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
       oldtiers=tier_csv.collect{|t| t[:id]}
@@ -117,7 +126,6 @@ class CreateTrainingDistrict
         ckhash = ck.to_hash.delete_if{|k,v| v == 0}
         tiers <<  district.tiers.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
       end
-
     else
       oldtiers=[781074649, 781074650, 781074651]
       tier = district.tiers.create!(:title=>'First tier')
@@ -125,33 +133,9 @@ class CreateTrainingDistrict
       third_tier = district.tiers.create!(:title=>'Third tier')
       tiers = [tier,second_tier,third_tier]
     end
-
-
-    CSV.table("#{path}/goal_definitions.csv").each do |ck|
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash[:disabled] = false if ckhash[:disabled].nil?
-      newcd= district.goal_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
-      goalhash[ck[:id]]=newcd.id
-    end
-
-    CSV.table("#{path}/objective_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:goal_definition_id]= goalhash[ck[:goal_definition_id]]
-      ckhash[:disabled] = false if ckhash[:disabled].nil?
-      newcd= ObjectiveDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
-      objectivehash[ck[:id]]=newcd.id
-    end
-
-    CSV.table("#{path}/intervention_clusters.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:objective_definition_id]= objectivehash[ck[:objective_definition_id]]
-      ckhash[:disabled] = false if ckhash[:disabled].nil?
-      newcd= InterventionCluster.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
-      clusterhash[ck[:id]]=newcd.id
-    end
+    goalhash=populate_from_csv_file(district.goal_definitions,"goal_definition",nil,district,path)
+    objectivehash=populate_from_csv_file(ObjectiveDefinition,"objective_definition",:goal_definition_id,district,path,goalhash)
+    clusterhash=populate_from_csv_file(InterventionCluster,"intervention_cluster", :objective_definition_id, district,path,objectivehash)
 
     CSV.table("#{path}/intervention_definitions.csv").each do |ck|
       next if ck.to_hash[:deleted_at].to_i !=0
@@ -242,6 +226,7 @@ class CreateTrainingDistrict
     filename = row[:document_file_name]
     Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => "/file/#{filename}", :name => filename)
   end
+
 
   def self.generate_checklist_definition(district, path="db/training")
     checklisthash = {}
@@ -336,7 +321,6 @@ class CreateTrainingDistrict
     FactoryGirl.create :ext_summary, student: student
     FactoryGirl.create :ext_adult_contact, student: student
     FactoryGirl.create :ext_sibling, student: student
-
     student.ext_test_scores.create!( [
       {:name => "PMA 1 Total", :date => "2001-10-06", :result => 3},
       {:name => "PMA 2 Total", :date => "2002-10-06", :result => 2},
@@ -355,50 +339,23 @@ class CreateTrainingDistrict
       {:name => "PLAA K Phonemic Awareness", :date => "2003-04-01", :result => 3},
       {:name => "PLAA K Sound Word", :date => "2003-04-01", :result => 2},
       {:name => "PLAA K Text Reading Level", :date => "2003-04-01", :result => 1, :scaleScore => 1},
-      {:name => "PLAA K Upper Case Letters", :date => "2003-04-01", :result => 2}
-    ])
-
-    date="2003-09-26"
-    grade = 1
-
-    student.ext_test_scores.create!( [
-      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 1},
-      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 1},
-      {:name => "PLAA #{grade} Spelling", :date => date, :result => 1},
-      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 3}
-    ])
-
-
-    date="2004-05-26"
-    grade = 1
-
-    student.ext_test_scores.create!( [
-      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 3},
-      {:name => "PLAA #{grade} Spelling", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 14},
-    ])
-
-
-    date="2004-10-18"
-    grade = 2
-
-    student.ext_test_scores.create!([
-      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Spelling", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 14}
-    ])
-
-
-   date="2005-05-24"
-    grade = 2
-
-    student.ext_test_scores.create!([
-      {:name => "PLAA #{grade} Editing Skills", :date => date, :result => 1},
-      {:name => "PLAA #{grade} Sounds Rep", :date => date, :result => 2},
-      {:name => "PLAA #{grade} Spelling", :date => date, :result => 1},
-      {:name => "PLAA #{grade} Text Reading Lvl", :date => date, :scaleScore => 23}
+      {:name => "PLAA K Upper Case Letters", :date => "2003-04-01", :result => 2},
+      {:name => "PLAA 1 Editing Skills", :date => "2003-09-26", :result => 1},
+      {:name => "PLAA 1 Sounds Rep", :date => "2003-09-26", :result => 1},
+      {:name => "PLAA 1 Spelling", :date => "2003-09-26", :result => 1},
+      {:name => "PLAA 1 Text Reading Lvl", :date => "2003-09-26", :scaleScore => 3},
+      {:name => "PLAA 1 Editing Skills", :date => "2004-05-26", :result => 2},
+      {:name => "PLAA 1 Sounds Rep", :date => "2004-05-26", :result => 3},
+      {:name => "PLAA 1 Spelling", :date => "2004-05-26", :result => 2},
+      {:name => "PLAA 1 Text Reading Lvl", :date => "2004-05-26", :scaleScore => 14},
+      {:name => "PLAA 2 Editing Skills", :date => "2004-10-18", :result => 2},
+      {:name => "PLAA 2 Sounds Rep", :date => "2004-10-18", :result => 2},
+      {:name => "PLAA 2 Spelling", :date => "2004-10-18", :result => 2},
+      {:name => "PLAA 2 Text Reading Lvl", :date => "2004-10-18", :scaleScore => 14},
+      {:name => "PLAA 2 Editing Skills", :date => "2005-05-24", :result => 1},
+      {:name => "PLAA 2 Sounds Rep", :date => "2005-05-24", :result => 2},
+      {:name => "PLAA 2 Spelling", :date => "2005-05-24", :result => 1},
+      {:name => "PLAA 2 Text Reading Lvl", :date => "2005-05-24", :scaleScore => 23}
     ])
   end
 end
