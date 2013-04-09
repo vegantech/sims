@@ -4,7 +4,7 @@ module UseOldFixturesKey
   STATIC_IDENTIFY_VALUES = {
     :alpha_first_attendance => 184330814,
     :wi_mmsd => 647352205,
-    :day => 85852977,
+    :day => 858529777,
     :week => 782065165,
     :month => 785548667,
     :quarter => 601648301,

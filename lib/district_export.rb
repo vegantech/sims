@@ -60,6 +60,8 @@ class DistrictExport
       district.goal_definitions.collect(&:objective_definitions).flatten.collect(&:intervention_clusters).flatten.collect(&:intervention_definitions).flatten.collect(&:assets).flatten.compact
 
     self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
+    self.generate_csv(dir,district,'time_lengths', TimeLength.column_names.join(","),'')
+    self.generate_csv(dir,district,'frequencies', Frequency.column_names.join(","),'')
 
     curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
 
