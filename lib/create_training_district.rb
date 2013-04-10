@@ -15,8 +15,8 @@ class CreateTrainingDistrict
     name = "z #{abbrev} Content"
     destroy_district abbrev
     td = create_with_schools_and_users(abbrev,name)
-    self.generate_interventions(td, district_dir)
-    self.generate_checklist_definition(td)
+    TrainingDistrict::Content.generate_interventions(td, district_dir)
+    TrainingDistrict::Content.generate_checklist_definition(td)
     td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
   end
 
@@ -77,8 +77,8 @@ class CreateTrainingDistrict
     Role.add_users "school_admin", alphaprin
     Role.add_users "content_admin",  content_admin
 
-    self.generate_students(td, alpha_elem, training_homeroom)
-    self.generate_other_students(td,alpha_elem, other_homeroom)
+    TrainingDistrict::Student.generate_students(td, alpha_elem, training_homeroom)
+    TrainingDistrict::Student.generate_other_students(td,alpha_elem, other_homeroom)
     end
 
     td
@@ -92,270 +92,11 @@ class CreateTrainingDistrict
     td=create_with_schools_and_users(abbrev,name)
 
     ActiveRecord::Base.transaction do
-
-      self.generate_interventions(td)
-      self.generate_checklist_definition(td)
+      TrainingDistrict::Content.generate_interventions(td)
+      TrainingDistrict::Content.generate_checklist_definition(td)
     end
     td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
-
    td
-
   end
 
-  def self.populate_from_csv_file(parent,model_name,parent_id_sym, district, path,parenthash ={})
-    reshash={}
-    CSV.table("#{path}/#{model_name.pluralize}.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:disabled] = false if ckhash[:disabled].nil?
-      ckhash[parent_id_sym]= parenthash[ck[parent_id_sym]] unless parenthash.empty?
-      newcd= parent.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
-      reshash[ck[:id]]=newcd.id
-    end
-    reshash
-  end
-
-  def self.generate_interventions(district,path="db/training")
-    definitionhash = {}
-    probe_hash = {}
-    if File.exist?(File.join(path,"tiers.csv"))
-      tier_csv=CSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
-      oldtiers=tier_csv.collect{|t| t[:id]}
-      tiers=[]
-      tier_csv.each do |ck|
-        ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-        tiers <<  district.tiers.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
-      end
-    else
-      oldtiers=[781074649, 781074650, 781074651]
-      tier = district.tiers.create!(:title=>'First tier')
-      second_tier = district.tiers.create!(:title=>'Second tier')
-      third_tier = district.tiers.create!(:title=>'Third tier')
-      tiers = [tier,second_tier,third_tier]
-    end
-    goalhash=populate_from_csv_file(district.goal_definitions,"goal_definition",nil,district,path)
-    objectivehash=populate_from_csv_file(ObjectiveDefinition,"objective_definition",:goal_definition_id,district,path,goalhash)
-    clusterhash=populate_from_csv_file(InterventionCluster,"intervention_cluster", :objective_definition_id, district,path,objectivehash)
-
-    CSV.table("#{path}/intervention_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
-      mytier = tiers.collect(&:id)[oldtiers.index(ck[:tier_id].to_i)] || tier
-      ckhash[:disabled] = false if ckhash[:disabled].nil?
-      unless ckhash[:disabled] or ckhash[:custom]
-        ckhash[:notify_email] = nil
-        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => mytier).except(:deleted_at,:copied_at,:copied_from))
-        definitionhash[ck[:id]]=newcd.id
-      end
-    end
-
-
-
-    if File.exist?("#{path}/probe_definitions_monitors.csv")
-      pdf="#{path}/probe_definitions_monitors.csv"
-    else
-      pdf = "#{path}/probe_definitions.csv"
-    end
-
-    CSV.table(pdf).each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      if ckhash[:active] and !ckhash[:custom]
-        newcd= district.probe_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id))
-        probe_hash[ck[:id]]=newcd.id
-      end
-    end
-
-    CSV.table("#{path}/recommended_monitors.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:intervention_definition_id]= definitionhash[ck[:intervention_definition_id]]
-      ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-      newcd= RecommendedMonitor.new(ckhash.except(:deleted_at,:copied_at,:copied_from))
-      newcd.save! if newcd.probe_definition && newcd.intervention_definition
-    end
-
-    CSV.table("#{path}/probe_definition_benchmarks.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0 || k.to_s == "deleted_at"}
-      ckhash[:probe_definition_id]= probe_hash[ck[:probe_definition_id]]
-
-      newcd= ProbeDefinitionBenchmark.new(ckhash.except(:deleted_at,:copied_at,:copied_from))
-
-      newcd.save! if newcd.valid?
-    end
-
-
-
-    CSV.table("#{path}/assets.csv").each do |ck|
-
-      old_id = ck[:attachable_id]
-      case ck[:attachable_type]
-      when 'ProbeDefinition'
-        newid=probe_hash[old_id]
-      when 'InterventionDefinition'
-        newid = definitionhash[old_id]
-      else
-        newid = nil
-      end
-
-      generate_assets_from_row(newid, ck) if newid.present?
-
-
-    end
-  end
-
-  def self.generate_assets_from_row(attachable_id, row)
-    generate_asset_from_name_and_url(attachable_id, row) if row[:url].present? && row[:url].to_s !="0"
-    generate_asset_from_file(attachable_id,row) if row[:document_file_name].present? && row[:document_file_name].to_s != "0"
-  end
-
-  def self.generate_asset_from_name_and_url(attachable_id, row)
-    if row[:url].to_s.include?("/")
-      url = row[:url]
-    else
-      url = "/file/#{row[:url]}"
-    end
-
-    raise row.inspect if url == "/file/0"
-    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => url, :name => row[:name])
-  end
-
-  def self.generate_asset_from_file(attachable_id, row)
-    filename = row[:document_file_name]
-    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => "/file/#{filename}", :name => filename)
-  end
-
-
-  def self.generate_checklist_definition(district, path="db/training")
-    checklisthash = {}
-    questionhash = {}
-    elementhash = {}
-
-    CSV.table("#{path}/checklist_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:active]=!!district.abbrev.match(/^training/) || district.abbrev =='madison'
-
-      newcd= district.checklist_definitions.create!(ckhash.except(:deleted_at,:copied_at,:copied_from,:district_id,:id))
-      checklisthash[ck[:id]]=newcd.id
-    end
-
-    CSV.table("#{path}/question_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:checklist_definition_id]= checklisthash[ck[:checklist_definition_id]]
-      newcd= QuestionDefinition.create!(ckhash.except(:deleted_at, :copied_at,:copied_from))
-      questionhash[ck[:id]]=newcd.id
-    end
-
-    CSV.table("#{path}/element_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:question_definition_id]= questionhash[ck[:question_definition_id]]
-      newcd= ElementDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
-      elementhash[ck[:id]]=newcd.id
-    end
-
-    CSV.table("#{path}/answer_definitions.csv").each do |ck|
-      next if ck.to_hash[:deleted_at].to_i !=0
-      ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-      ckhash[:value] ||=0
-      ckhash[:element_definition_id]= elementhash[ck[:element_definition_id]]
-      newcd= AnswerDefinition.create!(ckhash.except(:deleted_at,:copied_at,:copied_from))
-    end
-
-  end
-
-  def self.generate_other_students(district,school,group)
-    first_names = IO.readlines('db/training/common_first_names.txt')
-    last_names = IO.readlines('db/training/common_last_names.txt')
-    grades= ['K', '1', '2', '3', '4', '5']
-
-    31.upto(60) do |i|
-      esl=rand(3) == 1
-      special_ed = rand(3) == 1
-      first_name = first_names[(i%50) -1 + 50*(i %2)].strip
-      last_name = last_names[i-1].capitalize.strip
-      s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_name, :last_name => last_name,
-        :number => (i-1).to_s, :esl => esl, :special_ed => special_ed)
-      s.enrollments.create!(:school => school, :grade => grades[i%6])
-      s.groups << group
-      s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
-        comprehension strategies to independent reading") if rand(10) == 1
-      s.system_flags.create!(:category=>"math", :reason => "1- word problem assessment ") if i.odd?
-      s.system_flags.create!(:category=>"suspension", :reason => "2 office referrals") if rand(10) == 1
-      s.system_flags.create!(:category=>"attendance", :reason => "3 times tardy ") if rand(10) == 1
-    end
-
-
-  end
-
-
-
-
-
-
-
-  def self.generate_students(district,school,group)
-    first_names = IO.readlines('db/training/common_first_names.txt')
-    last_names = IO.readlines('db/training/common_last_names.txt')
-
-    1.upto(30) do |i|
-      s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",
-        :number => (i-1).to_s)
-      s.enrollments.create!(:school => school, :grade => 5)
-      s.groups << group
-      s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
-        comprehension strategies to independent reading")
-      s.system_flags.create!(:category=>"math", :reason => "1- word problem assessment ") if rand(10) == 1
-      s.system_flags.create!(:category=>"suspension", :reason => "2 office referrals") if rand(10) == 1
-      s.system_flags.create!(:category=>"attendance", :reason => "3 times tardy ") if rand(10) == 1
-      add_extended_profile(s)
-
-    end
-  end
-
-  def self.add_extended_profile(student)
-    FactoryGirl.create :ext_summary, student: student
-    FactoryGirl.create :ext_adult_contact, student: student
-    FactoryGirl.create :ext_sibling, student: student
-    student.ext_test_scores.create!( [
-      {:name => "PMA 1 Total", :date => "2001-10-06", :result => 3},
-      {:name => "PMA 2 Total", :date => "2002-10-06", :result => 2},
-      {:name => "WKCE 4 Language Arts", :date => "2004-10-06", :result => 3},
-      {:name => "WKCE 4 Math", :date => "2004-10-06", :result => 2},
-      {:name => "WKCE 4 Science", :date => "2004-10-06", :result => 3},
-      {:name => "WKCE 4 Social Studies", :date => "2004-10-06", :result => 4},
-      {:name => "WKCE 4 Reading", :date => "2004-10-06", :result => 3},
-      {:name => "WKCE 3 Math", :date => "2003-10-06", :result => 3},
-      {:name => "WKCE 3 Reading", :date => "2004-10-06", :result => 3},
-      {:name => "PLAA K Phonemic Awareness", :date => "2002-09-01", :result => 2},
-      {:name => "PLAA K Text Reading Level", :date => "2002-09-01", :result => 2, :scaleScore => 1},
-      {:name => "PLAA K Concepts About Print", :date => "2003-04-01", :result => 3},
-      {:name => "PLAA K Hearing Sounds in Words", :date => "2003-04-01", :result => 1},
-      {:name => "PLAA K Lower Case Letters", :date => "2003-04-01", :result => 2},
-      {:name => "PLAA K Phonemic Awareness", :date => "2003-04-01", :result => 3},
-      {:name => "PLAA K Sound Word", :date => "2003-04-01", :result => 2},
-      {:name => "PLAA K Text Reading Level", :date => "2003-04-01", :result => 1, :scaleScore => 1},
-      {:name => "PLAA K Upper Case Letters", :date => "2003-04-01", :result => 2},
-      {:name => "PLAA 1 Editing Skills", :date => "2003-09-26", :result => 1},
-      {:name => "PLAA 1 Sounds Rep", :date => "2003-09-26", :result => 1},
-      {:name => "PLAA 1 Spelling", :date => "2003-09-26", :result => 1},
-      {:name => "PLAA 1 Text Reading Lvl", :date => "2003-09-26", :scaleScore => 3},
-      {:name => "PLAA 1 Editing Skills", :date => "2004-05-26", :result => 2},
-      {:name => "PLAA 1 Sounds Rep", :date => "2004-05-26", :result => 3},
-      {:name => "PLAA 1 Spelling", :date => "2004-05-26", :result => 2},
-      {:name => "PLAA 1 Text Reading Lvl", :date => "2004-05-26", :scaleScore => 14},
-      {:name => "PLAA 2 Editing Skills", :date => "2004-10-18", :result => 2},
-      {:name => "PLAA 2 Sounds Rep", :date => "2004-10-18", :result => 2},
-      {:name => "PLAA 2 Spelling", :date => "2004-10-18", :result => 2},
-      {:name => "PLAA 2 Text Reading Lvl", :date => "2004-10-18", :scaleScore => 14},
-      {:name => "PLAA 2 Editing Skills", :date => "2005-05-24", :result => 1},
-      {:name => "PLAA 2 Sounds Rep", :date => "2005-05-24", :result => 2},
-      {:name => "PLAA 2 Spelling", :date => "2005-05-24", :result => 1},
-      {:name => "PLAA 2 Text Reading Lvl", :date => "2005-05-24", :scaleScore => 23}
-    ])
-  end
 end
