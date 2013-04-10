@@ -24,7 +24,7 @@ class DistrictExport
     FileUtils.rm(Dir.glob(dir +"*"))
 
     self.generate_csv(dir,district,'students', 'id,district_student_id')
-    self.generate_csv(dir,district,'users', 'id,district_user_id')
+    self.generate_csv(dir,district,'users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
     self.generate_csv(dir,district,'schools', 'id,district_school_id')
     self.generate_csv(dir,district,'interventions', Intervention.column_names.join(","), "inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
     self.generate_csv(dir,district,'intervention_probe_assignments', InterventionProbeAssignment.column_names.join(","), "inner join interventions on intervention_probe_assignments.intervention_id = interventions.id inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
