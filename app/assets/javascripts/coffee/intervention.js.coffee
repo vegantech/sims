@@ -73,7 +73,7 @@ jQuery ->
       type: 'POST',
       url: @href,
       success: (data) ->
-        $("a.preview_graph").nextAll('div').html(data)
+        $("a.preview_graph").nextAll('div.probe_graph').html(data)
       data:
         $(@).parents('#intervention_probe_assignment').find('input,select').serialize()
   $('a#end_intervention_link').click ->
