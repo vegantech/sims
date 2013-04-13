@@ -112,10 +112,8 @@ class Enrollment < ActiveRecord::Base
     when 'active_intervention'
        scope=scope.scoped :conditions=> ["exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true],:joins =>{:student=>:interventions}
       unless search_hash[:intervention_group_types].blank?
-        table=search_hash[:intervention_group].tableize
-        
         scope=scope.scoped :joins => {:student=>{:interventions=>{:intervention_definition=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}}}},
-        :conditions => ["#{table}.id in (?)", search_hash[:intervention_group_types]]
+        :conditions => ["objective_definitions.id in (?)", search_hash[:intervention_group_types]]
 
       end
 

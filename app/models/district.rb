@@ -97,20 +97,6 @@ class District < ActiveRecord::Base
     checklist_definitions.find_by_active(true)
   end
 
-
-
-
-  def find_intervention_definition_by_id(id)
-    InterventionDefinition.find(id,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}}, :conditions=>{'goal_definitions.district_id'=>self.id})
-  end
-
-  def search_intervention_by
-    #FIXME some districts may not use goals or objectives
-    #so they should be able to choose which to search by on the
-    #student search screen
-    objective_definitions
-  end
-
   def administers
     if system_admin?
       System
@@ -205,17 +191,10 @@ class District < ActiveRecord::Base
 
   def claim(student)
     res=false
-    msg = nil
-    if VerifyStudentInDistrictExternally.enabled?
-      begin
-        res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
-      rescue StudentVerificationError => e
-        logger.info "Student verification error #{e.inspect}"
-        msg='Error verifiying student location'
-      end
-    else
-      res = student.district.blank?
-    end
+    msg = {}
+    res=can_claim?(student,msg)
+
+    msg=msg[:msg]
 
     if res
       student.update_attribute(:district_id,id)
@@ -226,13 +205,13 @@ class District < ActiveRecord::Base
     return res,msg
   end
 
-  def can_claim?(student)
+  def can_claim?(student,opts= {})
     if VerifyStudentInDistrictExternally.enabled?
       begin
         res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
       rescue StudentVerificationError => e
         logger.info "Student verification error #{e.inspect}"
-        msg='Error verifiying student location'
+        opts[:msg]='Error verifiying student location'
       end
     else
       res = student.district.blank?
@@ -352,9 +331,4 @@ private
     dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
     FileUtils.rm_rf(dir) if File.exists?dir
   end
-
-
-
-
 end
-

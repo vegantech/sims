@@ -26,9 +26,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe District do
 
   before(:all) do
-    @local_district = District.find_by_name("GD_TEST") || Factory(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
-    @district2 = District.find_by_name("district_2") || Factory(:district, :name=>"district_2", :abbrev=>"DIST2")
-    @state_district = District.admin.first ||  Factory(:district, :admin=>true)
+    @local_district = District.find_by_name("GD_TEST") || FactoryGirl.create(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
+    @district2 = District.find_by_name("district_2") || FactoryGirl.create(:district, :name=>"district_2", :abbrev=>"DIST2")
+    @state_district = District.admin.first ||  FactoryGirl.create(:district, :admin=>true)
   end
   it 'should be valid' do
     FactoryGirl.build(:district).should be_valid
@@ -37,7 +37,7 @@ describe District do
   describe 'active_checklist_definition method' do
     before(:all) do
       ChecklistDefinition.delete_all
-      @ld_cd = Factory(:checklist_definition, :district => @local_district)
+      @ld_cd = FactoryGirl.create(:checklist_definition, :district => @local_district)
     end
 
     describe 'with active district definition' do
@@ -56,20 +56,6 @@ describe District do
 
   it "grades should return GRADES constant" do
     District.new.grades.should == District::GRADES
-  end
-
-  it 'should find intervention defintiion by id' do
-    district=District.new
-    district.should_receive(:id).and_return(5)
-    InterventionDefinition.should_receive(:find).with(3,:include=>{:intervention_cluster=>{:objective_definition=>:goal_definition}},
-                                                       :conditions=>{'goal_definitions.district_id'=>5}).and_return(true)
-    district.find_intervention_definition_by_id(3).should == true
-  end
-
-  it 'should search intervention_by' do
-    district=District.new
-    district.should_receive(:objective_definitions).and_return([])
-    district.search_intervention_by.should == []
   end
 
  describe 'admin district' do
@@ -133,7 +119,7 @@ describe District do
   end
 
   describe 'find_by_subdomain' do
-    let!(:district) {District.delete_all;Factory(:district, :abbrev => 'rspec123')}
+    let!(:district) {District.delete_all;FactoryGirl.create(:district, :abbrev => 'rspec123')}
     describe 'with matching subdomain' do
       specify{ District.find_by_subdomain('rspec123').should == district }
       specify{ District.find_by_subdomain('rspec123-wi-us').should == district }
@@ -151,8 +137,8 @@ describe District do
     end
 
     it 'should not return the first admin district when there are multiple normal' do
-      other_district2 = Factory(:district)
-      other_district1 = Factory(:district)
+      other_district2 = FactoryGirl.create(:district)
+      other_district1 = FactoryGirl.create(:district)
       new_district = District.find_by_subdomain('nothere')
       new_district.should be_new_record
       new_district.name.should == "Please Select a District"
@@ -160,7 +146,7 @@ describe District do
 
 
     it 'should create a new district when not found' do
-      other_district = Factory(:district)
+      other_district = FactoryGirl.create(:district)
       new_district= District.find_by_subdomain('nothere')
       new_district.should be_new_record
       new_district.name.should == "Please Select a District"

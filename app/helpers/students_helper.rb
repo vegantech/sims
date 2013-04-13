@@ -28,10 +28,10 @@ module StudentsHelper
   end
 
   def active_intervention_size
-    current_district.search_intervention_by.size
+    current_district.objective_definitions.size
   end
   def active_intervention_select
-    current_district.search_intervention_by.inject(''){|result, grp| result += intervention_group_checkbox(grp)}.html_safe
+    current_district.objective_definitions.inject(''){|result, grp| result += intervention_group_checkbox(grp)}.html_safe
   end
 
   def id_district_desc(obj)

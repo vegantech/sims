@@ -3,7 +3,7 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
   cache_sweeper :intervention_builder_sweeper
   def assign_probes_to_intervention
 
-    @intervention_definition=current_district.find_intervention_definition_by_id(params[:id])
+    @intervention_definition=current_district.intervention_definitions.find(params[:id])
     @back_path =  intervention_builder_intervention_url(*@intervention_definition.ancestor_ids)
 
     if request.post? and params[:commit]

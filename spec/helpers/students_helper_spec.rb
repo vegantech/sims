@@ -3,15 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe StudentsHelper do
   #Delete this example and add some real ones or delete this file
   describe 'active_intervention_select' do
-    it 'should call intervention_group_checkbox for each intervention search by item' do
-      district=mock_district(:search_intervention_by=>['tree','tree'])
+    it 'should call intervention_group_checkbox for each objective definition' do
+      district=mock_district(:objective_definitions=>['tree','tree'])
       helper.should_receive(:current_district).and_return(district)
       helper.should_receive(:intervention_group_checkbox).with("tree").twice.and_return('test')
       helper.active_intervention_select.should == 'testtest'
     end
 
-    it 'should return an empty string when the district has no intervention search by' do
-      district=mock_district(:search_intervention_by=>{})
+    it 'should return an empty string when the district has no objective_definitions' do
+      district=mock_district(:objective_definitions=>{})
       helper.should_receive(:current_district).and_return(district)
       helper.active_intervention_select.should == ''
 
