@@ -1,8 +1,52 @@
 require 'fileutils'
 require 'csv'
 class DistrictExport
+  attr_reader :dir,:district
+
+  TO_EXPORT = [
+    :answers,
+    :answer_definitions,
+    :checklists,
+    :checklist_definitions,
+    :element_definitions,
+    :frequencies,
+    :goal_definitions,
+    :interventions,
+    :intervention_clusters,
+    :intervention_comments,
+    :intervention_definitions,
+    :intervention_probe_assignments,
+    :objective_definitions,
+    :probes,
+    :probe_definitions,
+    :probe_definition_benchmarks,
+    :question_definitions,
+    :recommendations,
+    :recommendation_answers,
+    :recommendation_answer_definitions,
+    :recommendation_definitions,
+    :recommended_monitors,
+    :schools,
+    :students,
+    :student_comments,
+    :tiers,
+    :time_lengths
+  ]
+  SPECIAL_COLS={
+    :students => "id,district_student_id",
+    :schools => "id,district_school_id",
+
+  }
+
   def self.generate(district)
-    self.new.generate(district)
+    self.new(district).generate
+  end
+
+  def initialize(district)
+    @district = district
+    @dir = Rails.root.join("tmp","district_export",district.id.to_s)
+    @files=Hash.new
+    @student_ids_in_use = []
   end
 
   def no_double_quotes field
@@ -16,68 +60,48 @@ class DistrictExport
         return (string.gsub /"/m, "''")
   end
 
-  def generate(district)
-    @files=Hash.new
-    dir = "#{Rails.root}/tmp/district_export/#{district.id}/"
-    
-    FileUtils.mkdir_p dir unless File.exists? dir
-    FileUtils.rm(Dir.glob(dir +"*"))
+  def setup_directory
+    dir.rmtree if dir.exist?
+    dir.mkpath
+  end
 
-    self.generate_csv(dir,district,'students', 'id,district_student_id')
-    self.generate_csv(dir,district,'users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
-    self.generate_csv(dir,district,'schools', 'id,district_school_id')
-    self.generate_csv(dir,district,'interventions', Intervention.column_names.join(","), "inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'intervention_probe_assignments', InterventionProbeAssignment.column_names.join(","), "inner join interventions on intervention_probe_assignments.intervention_id = interventions.id inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'probes', Probe.column_names.join(","), "inner join intervention_probe_assignments on intervention_probe_assignments.id = probes.intervention_probe_assignment_id inner join interventions on intervention_probe_assignments.intervention_id = interventions.id inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'intervention_comments', InterventionComment.column_names.join(","), "inner join interventions on intervention_comments.intervention_id = interventions.id inner join users on interventions.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'student_comments', StudentComment.column_names.join(","), "inner join users on student_comments.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'recommendations', Recommendation.column_names.join(","), "inner join users on recommendations.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'recommendation_answers', RecommendationAnswer.column_names.join(","), "inner join recommendations on recommendations.id = recommendation_answers.recommendation_id inner join users on recommendations.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'checklists', Checklist.column_names.join(","), "inner join users on checklists.user_id = users.id and users.district_id = #{district.id}")
-    self.generate_csv(dir,district,'answers', Answer.column_names.join(","), "inner join checklists on answers.checklist_id = checklists.id inner join users on checklists.user_id = users.id and users.district_id = #{district.id}")
+  def csv_tsv
+    TO_EXPORT.each do |t|
+      cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
+      cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
+      self.generate_csv(t.to_s,cols,
+                       district.send(t).select(cols_with_table_name).to_sql)
+    end
+  end
 
-
-    self.generate_csv(dir,district,'checklist_definitions', ChecklistDefinition.column_names.join(","))
-    self.generate_csv(dir,district,'question_definitions', QuestionDefinition.column_names.join(","), "inner join checklist_definitions on checklist_definitions.id = question_definitions.checklist_definition_id and checklist_definitions.district_id = #{district.id}")
-    self.generate_csv(dir,district,'element_definitions', ElementDefinition.column_names.join(","), "inner join question_definitions on question_definitions.id = element_definitions.question_definition_id inner join checklist_definitions on checklist_definitions.id = question_definitions.checklist_definition_id and checklist_definitions.district_id = #{district.id}")
-    self.generate_csv(dir,district,'answer_definitions', AnswerDefinition.column_names.join(","), "inner join element_definitions on element_definitions.id = answer_definitions.element_definition_id inner join question_definitions on question_definitions.id = element_definitions.question_definition_id inner join checklist_definitions on checklist_definitions.id = question_definitions.checklist_definition_id and checklist_definitions.district_id = #{district.id}")
-    
-
-    self.generate_csv(dir,district,'tiers', Tier.column_names.join(","))
-    self.generate_csv(dir,district,'goal_definitions', GoalDefinition.column_names.join(","))
-    self.generate_csv(dir,district,'objective_definitions', ObjectiveDefinition.column_names.join(","), "inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
-    self.generate_csv(dir,district,'intervention_clusters', InterventionCluster.column_names.join(","), "inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
-    self.generate_csv(dir,district,'intervention_definitions', InterventionDefinition.column_names.join(","), "inner join intervention_clusters on intervention_clusters.id = intervention_definitions.intervention_cluster_id inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id where goal_definitions.district_id = #{district.id}")
-
-    self.generate_csv(dir,district,'probe_definitions', ProbeDefinition.column_names.join(","))
-    self.generate_csv(dir,district,'probe_definition_benchmarks', ProbeDefinitionBenchmark.column_names.join(","), 
-                      "inner join probe_definitions on probe_definitions.id = probe_definition_benchmarks.probe_definition_id and probe_definitions.district_id = #{district.id}")
-    self.generate_csv(dir,district,'recommended_monitors', RecommendedMonitor.column_names.join(","), "inner join probe_definitions on probe_definitions.id = recommended_monitors.probe_definition_id and probe_definitions.district_id = #{district.id}")
-
-    self.generate_csv(dir,district,'recommendation_definitions', RecommendationDefinition.column_names.join(","),'')
-    self.generate_csv(dir,district,'recommendation_answer_definitions', RecommendationAnswerDefinition.column_names.join(","),'inner join recommendation_definitions on recommendation_answer_definitions.recommendation_definition_id = recommendation_definitions.id')
-    assets = district.probe_definitions.collect(&:assets).flatten.compact | 
-      district.goal_definitions.collect(&:objective_definitions).flatten.collect(&:intervention_clusters).flatten.collect(&:intervention_definitions).flatten.collect(&:assets).flatten.compact
-
-    self.generate_csv(dir,district,'assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
-    self.generate_csv(dir,district,'time_lengths', TimeLength.column_names.join(","),'')
-    self.generate_csv(dir,district,'frequencies', Frequency.column_names.join(","),'')
-
-    curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
-
-    File.open("#{dir}sims_export.bat", 'w') {|f| f.write(curl_string)}
-    File.open("#{dir}sims_export.sh", 'w') {|f| f.write(curl_string)}
-
+  def generate
+    setup_directory
+    csv_tsv
+    self.generate_csv('users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
+    export_assets
+    #puts @student_ids_in_use.inspect
+    #self.generate_csv('students_outside_district', 'id,id_state',)
+    export_bat_and_sh
     self.generate_schema dir
-    system "zip -j -qq #{dir}sims_export.zip #{dir}*"
-   
-    "#{dir}sims_export.zip"
+    system "zip -j -qq " + dir.join("sims_export.zip").to_s + ' ' + dir.join("*").to_s
+    dir.join("sims_export.zip").to_s
     #zip files
   end
 
+  def export_assets
+    assets = district.probe_definitions.collect(&:assets).flatten.compact |
+      district.intervention_definitions.flatten.collect(&:assets).flatten.compact
+    self.generate_csv('assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
+  end
+
+  def export_bat_and_sh
+    curl_string = "curl -o sims_export.zip --user district_upload:PASSWORD #{district.url 'scripted/district_export'} -k"
+    File.open(dir.join("sims_export.bat"), 'w') {|f| f.write(curl_string)}
+    File.open(dir.join("sims_export.sh"), 'w') {|f| f.write(curl_string)}
+  end
 
   def generate_schema dir
-     File.open("#{dir}schema.txt","a+") do |f| 
+     File.open(dir.join("schema.txt"),"a+") do |f|
        @files.keys.sort.each do |table|
          f.write("#{table}\r\n")
          @files[table].split(',').each do |header|
@@ -91,14 +115,17 @@ class DistrictExport
 
   end
 
-  def generate_csv(dir,district, table, headers, conditions="where district_id = #{district.id}")
-    @files[table]=headers
-    CSV.open("#{dir}#{table}.tsv", "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
-    CSV.open("#{dir}#{table}.csv", "w",:row_sep=>"\r\n") do |csv|
+  def generate_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
+    @files[filename]=headers
+    sql = "select #{headers} from #{table} #{sql}" unless sql.match(/^select/i)
+    CSV.open(dir.join(filename + ".tsv"), "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
+    CSV.open(dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
       csv << headers.split(',')
       tsv << headers.split(',')
+      student_id_index = headers.split(',').index("student_id")
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
-      Student.connection.select_rows("select #{select} from #{table} #{conditions}").each do |row|
+      Student.connection.select_rows(sql).each do |row|
+        @student_ids_in_use << row[student_id_index] if student_id_index
         csv << row
         tsv << row.collect{|c| no_double_quotes(c)}
       end
@@ -130,7 +157,7 @@ class DistrictExport
 
     @files.keys.sort.each do |table|
       puts "truncate table #{table}"
-      puts "bulk insert #{table} from \"#{dir}#{table}.tsv\""
+      puts "bulk insert #{table} from \"#{dir.join(table+'.tsv')}\""
       puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR ='\\t', FIRSTROW=2)"
     end
   end

@@ -30,11 +30,11 @@ class District < ActiveRecord::Base
   SETTINGS.push *BOOLEAN_SETTINGS
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
+  include District::ScopedAssociations
   has_many :users, :order => :username
   has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
   has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
-  has_many :recommendation_definitions
   has_many :goal_definitions, :order=>'position'
   has_many :objective_definitions, :through => :goal_definitions, :order => 'title'
   has_many :probe_definitions
@@ -156,21 +156,10 @@ class District < ActiveRecord::Base
     @state2||=admin_district
   end
 
-  def intervention_clusters
-    @intervention_clusters ||= InterventionCluster.scoped :joins => {:objective_definition=>:goal_definition},
-      :conditions => {:goal_definitions =>{:district_id => self.id}}
-  end
-
-  def intervention_definitions
-    @intervention_definitions ||= InterventionDefinition.scoped :joins => {:intervention_cluster => {:objective_definition=>:goal_definition}},
-      :conditions => {:goal_definitions =>{:district_id => self.id}}
-  end
-
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
   end
-
 
   def admin_district
     District.admin.first
