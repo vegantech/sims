@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :district_id_for_login
   attr_accessor :district_id_for_login
-  include FullName, Devise::LegacyPassword
+  include FullName, Devise::LegacyPassword, Pageable, StatsInUse
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
 #  define_statistic :districts_with_users_with_content
 
 
-  validates_presence_of :username, :last_name, :first_name
+  validates_presence_of :username
   validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
 #  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
@@ -210,13 +210,7 @@ class User < ActiveRecord::Base
 
   end
 
-  def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page,
-      :conditions=> ['last_name like ?', "%#{last_name}%"],
-      :order => 'last_name'
-  end
-
-  def self.remove_from_district(user_ids = [])
+ def self.remove_from_district(user_ids = [])
     user_ids = Array(user_ids).flatten.collect(&:to_i)
     return nil if user_ids.blank?
     User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL where id in (#{user_ids.join(",")})")
@@ -252,11 +246,6 @@ class User < ActiveRecord::Base
 
   def last_login
     @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
-  end
-
-  def self.find_by_fullname(fullname)
-    #this fails if the middle name is excluded from the search
-    find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
   end
 
   def all_students_in_school?(school)
@@ -365,19 +354,4 @@ protected
   def duplicate_user_school_assignment?(attributes)
      staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
   end
-
-  def self.stats_in_use(filters={})
-    calc_start_date = filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = filters[:created_before] || "2100-01-01".to_date
-    date_conditions = {:created_at => calc_start_date..calc_end_date}
-    union = [TeamConsultation.select("requestor_id as user_id").where(date_conditions).to_sql,
-      Intervention.select("user_id").where(date_conditions).to_sql,
-      StudentComment.select("user_id").where(date_conditions).to_sql].join(" UNION ")
-    k=joins("inner join (#{union}) e on users.id=e.user_id")
-
-    k=k.where(["district_id != ?", filters[:without]]) if filters[:without]
-    k
-
-  end
-
 end

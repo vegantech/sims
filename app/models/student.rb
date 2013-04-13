@@ -22,7 +22,7 @@
 
 class Student < ActiveRecord::Base
 
-  include FullName
+  include FullName, Pageable, LighterTouch, StatsInUse
   include LinkAndAttachmentAssets
 
   CUSTOM_CONTENT = %w{ custom_flags comments team_consultations interventions checklists recommendations principal_overrides consultation_forms consultation_form_requests ignore_flags }
@@ -107,7 +107,7 @@ class Student < ActiveRecord::Base
 
 
 
-  validates_presence_of :first_name, :last_name, :district_id
+  validates_presence_of :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
   validate :unique_id_state
 
@@ -185,12 +185,6 @@ class Student < ActiveRecord::Base
     principals.flatten.compact.uniq
   end
 
-  def self.paged_by_last_name(last_name="", page="1")
-    paginate :per_page => 25, :page => page,
-      :conditions=> ['last_name like ?', "%#{last_name}%"],
-      :order => 'last_name'
-  end
-
   def special_group_principals
     grades = enrollments.collect(&:grade)
     schools = enrollments.collect(&:school).compact
@@ -250,50 +244,18 @@ class Student < ActiveRecord::Base
     ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id, :draft => false}})
   end
 
-  def touch
-    #I don't want validations to run, but I need to fix locking here!!!
-    begin
-    self.class.update_all( "updated_at = '#{Time.now.utc.to_s(:db)}'", "id = #{self.id}")
-    rescue ActiveRecord::StatementInvalid
-      logger.warn "Unable to get lock for touch in student!"
-    end
-  end
-
   def safe_destroy
     destroy unless reload.has_content?
   end
 
   protected
-
   def save_extended_profile
-
    if @extended_profile == ''
        ext_arbitrary.destroy if ext_arbitrary
-
    end
-
-
-
-    if @extended_profile.present?
-      create_ext_arbitrary(:content =>@extended_profile)
+   if @extended_profile.present?
+     create_ext_arbitrary(:content =>@extended_profile)
      @extended_profile=nil
-    end
-
+   end
   end
-
-  def self.stats_in_use(filters={})
-    calc_start_date = filters[:created_after] || "2000-01-01".to_date
-    calc_end_date = filters[:created_before] || "2100-01-01".to_date
-    date_conditions = {:created_at => calc_start_date..calc_end_date}
-    union = [TeamConsultation.select("student_id").where(date_conditions).to_sql,
-      Intervention.select("student_id").where(date_conditions).to_sql,
-      StudentComment.select("student_id").where(date_conditions).to_sql].join(" UNION ")
-    k=joins("inner join (#{union}) e on students.id=e.student_id")
-
-    k=k.where(["district_id != ?", filters[:without]]) if filters[:without]
-    k
-
-  end
-
-
 end

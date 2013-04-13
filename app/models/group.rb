@@ -17,6 +17,7 @@ class Group < ActiveRecord::Base
   The most common group is sections of classes which are assigned by the school administrator or uploaded by the local systems administrator.
   The other common group is a group of students that have the same interventions and progress monitors
   which allows staff to enter progress monitoring data for all the students in the group on one screen."
+  include Pageable
   belongs_to :school
   has_and_belongs_to_many :students
   has_many :user_group_assignments
@@ -37,12 +38,6 @@ class Group < ActiveRecord::Base
 
   def principals
    users.where(:user_group_assignments=>{:is_principal =>true})
-  end
-
-  def self.paged_by_title(title="", page="1")
-    paginate :per_page => 25, :page => page,
-      :conditions=> ['title like ?', "%#{title}%"],
-      :order => 'title'
   end
 
   def to_s

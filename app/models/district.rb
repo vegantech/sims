@@ -30,7 +30,7 @@ class District < ActiveRecord::Base
   SETTINGS.push *BOOLEAN_SETTINGS
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
-  include District::ScopedAssociations
+  include District::ScopedAssociations, ::LighterTouch
   has_many :users, :order => :username
   has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
@@ -166,26 +166,24 @@ class District < ActiveRecord::Base
 
   end
 
-  def touch
-    #I don't want validations to run, but I need to fix locking here!!!
-    begin
-    self.class.update_all( "updated_at = '#{Time.now.utc.to_s(:db)}'", "id = #{self.id}")
-    rescue ActiveRecord::StatementInvalid
-      logger.warn "Unable to get lock for touch in district!"
-    end
-  end
-
   def show_aim_line?
-    Rails.env.wip? || Rails.env.development?  || ['madison'].include?(self.abbrev)
+    pilot_env?
   end
 
   def show_personal_groups?
-    Rails.env.wip? || Rails.env.development? || ['madison','mmsd','ripon','maps','rhinelander'].include?(self.abbrev)
+    pilot2_env?
   end
 
   def show_team_consultation_attachments?
-    #Remove all references to this when put into production
-    Rails.env.wip? || Rails.env.development?  ||  ['grafton','madison','mmsd', 'rhinelander','ripon'].include?(self.abbrev)
+    pilot2_env?
+  end
+
+  def pilot_env?
+    Rails.env.wip? || Rails.env.development?  || ['madison'].include?(self.abbrev)
+  end
+
+  def pilot2_env?
+    pilot_env? || ['mmsd','ripon','maps','rhinelander','grafton'].include?(self.abbrev)
   end
 
 

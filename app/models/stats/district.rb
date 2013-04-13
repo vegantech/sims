@@ -1,0 +1,3 @@
+module Stats::District
+
+end
