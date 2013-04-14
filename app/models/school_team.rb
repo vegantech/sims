@@ -24,6 +24,7 @@ class SchoolTeam < ActiveRecord::Base
   DESCRIPTION="Used to set up teams to be used to identify the potential team recipients of the Team Consultation Form."
 
   scope :named, where(:anonymous => false).order('name')
+  scope :district, joins(:school).merge(School.district)
   validates_presence_of :name, :unless => :anonymous?
   validates_presence_of :contact_ids, :unless => :anonymous?, :message =>'There must be at least one contact'
   after_save :update_contacts

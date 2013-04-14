@@ -8,16 +8,26 @@ class DistrictExport
     :answer_definitions,
     :checklists,
     :checklist_definitions,
+    :consultation_forms,
+    :consultation_form_concerns,
+    :consultation_form_requests,
+  #  :custom_flags,
+  #  :district_logs,
     :element_definitions,
+    :flag_categories,
+    :flag_descriptions,
     :frequencies,
     :goal_definitions,
+   # :ignore_flags,
     :interventions,
     :intervention_clusters,
     :intervention_comments,
     :intervention_definitions,
     :intervention_probe_assignments,
+    :news_items,
     :objective_definitions,
     :probes,
+    :principal_overrides,
     :probe_definitions,
     :probe_definition_benchmarks,
     :question_definitions,
@@ -27,15 +37,17 @@ class DistrictExport
     :recommendation_definitions,
     :recommended_monitors,
     :schools,
+    :school_teams,
+    :school_team_memberships,
     :students,
     :student_comments,
+    :team_consultations,
     :tiers,
     :time_lengths
   ]
   SPECIAL_COLS={
     :students => "id,district_student_id",
     :schools => "id,district_school_id",
-
   }
 
   def self.generate(district)
@@ -78,6 +90,9 @@ class DistrictExport
     setup_directory
     csv_tsv
     self.generate_csv('users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
+    self.generate_csv('students', 'id,id_state',
+                      Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(:id => @student_ids_in_use).to_sql,
+                     "students_outside_district_with_content")
     export_assets
     #puts @student_ids_in_use.inspect
     #self.generate_csv('students_outside_district', 'id,id_state',)
@@ -105,7 +120,11 @@ class DistrictExport
        @files.keys.sort.each do |table|
          f.write("#{table}\r\n")
          @files[table].split(',').each do |header|
-           obj=table.classify.constantize
+           if table == "students_outside_district_with_content"
+             obj = Student
+           else
+             obj=table.classify.constantize
+           end
            col=obj.columns.find{|col| col.name == header}
            f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
          end

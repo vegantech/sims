@@ -46,6 +46,8 @@ class School < ActiveRecord::Base
       user_school_assignments, [:user_id, :admin], 'Duplicate User.')
   end
 
+  scope :district, joins("inner join districts on districts.id = schools.district_id")
+
   def grades_by_user(user)
     if user.all_students_in_school?(self)
       grades = enrollments.grades

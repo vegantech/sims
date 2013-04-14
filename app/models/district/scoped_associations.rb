@@ -88,6 +88,59 @@ module District::ScopedAssociations
     RecommendedMonitor.joins(:probe_definition).merge(ProbeDefinition.where district_id: self.id)
   end
 
+  def consultation_forms
+    ConsultationForm.joins(:team_consultation => {:school_team=>:school}).merge(School.where district_id: self.id)
+  end
+
+  def consultation_form_concerns
+    ConsultationFormConcern.joins(:consultation_form => {:team_consultation => {:school_team=>:school}}).merge(School.where district_id: self.id)
+  end
+
+  def consultation_form_requests
+    ConsultationFormRequest.joins(:school_team=>:school).merge(School.where district_id: self.id)
+  end
+
+  def custom_flags
+    CustomFlag.joins(:user).merge(User.where district_id: self.id)
+  end
+
+  def ignore_flags
+    IgnoreFlag.joins(:user).merge(User.where district_id: self.id)
+  end
+
+  def news_items
+    news
+  end
+
+  def principal_overrides
+    PrincipalOverride.joins(:teacher).merge(User.where district_id: self.id)
+  end
+
+  def school_team_memberships
+    SchoolTeamMembership.joins(:school_team => :school).merge(School.where district_id: self.id)
+  end
+
+  def team_consultations
+    TeamConsultation.joins(:school_team => :school).merge(School.where district_id: self.id)
+  end
+
+  #If I have defined a district scope in that class, then I can use that to preserve encapsulation
+  def method_missing(method_name,*args,&block)
+    if klass=get_class_for_method_missing(method_name)
+      klass.send(:district).merge(District.where id: self.id)
+    else
+      super
+    end
+  end
+
+  def get_class_for_method_missing(method_name)
+    begin
+      klass = method_name.to_s.classify.constantize
+      return klass if klass.respond_to?:district
+    rescue NameError
+    end
+  end
+
 
 
 end
