@@ -13,6 +13,7 @@
 #
 
 class RecommendedMonitor < ActiveRecord::Base
+  DISTRICT_PARENT = :probe_definition
   belongs_to :intervention_definition
   belongs_to :probe_definition
 

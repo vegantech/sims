@@ -17,6 +17,7 @@
 #
 
 class InterventionProbeAssignment < ActiveRecord::Base
+  DISTRICT_PARENT = :intervention
   include ActionView::Helpers::TextHelper
   belongs_to :intervention
   belongs_to :probe_definition

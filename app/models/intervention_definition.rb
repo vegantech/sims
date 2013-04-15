@@ -23,6 +23,7 @@
 #
 
 class InterventionDefinition < ActiveRecord::Base
+  DISTRICT_PARENT = :intervention_cluster
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4

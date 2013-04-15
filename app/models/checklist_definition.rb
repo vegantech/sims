@@ -18,6 +18,7 @@
 #
 
 class ChecklistDefinition < ActiveRecord::Base
+  DISTRICT_PARENT = :district
   belongs_to :district, :touch => true, :inverse_of => :checklist_definitions
   belongs_to :recommendation_definition
   has_many :question_definitions, :dependent => :destroy, :order => "position ASC"

@@ -22,6 +22,7 @@
 #
 
 class Intervention < ActiveRecord::Base
+  DISTRICT_PARENT = :intervention_definition
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
 

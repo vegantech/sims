@@ -16,6 +16,7 @@
 #
 
 class Checklist < ActiveRecord::Base
+  DISTRICT_PARENT = :checklist_definition
   has_many :answers, :dependent => :destroy
   belongs_to :checklist_definition, :include => {:question_definitions => {:element_definitions => :answer_definitions}}
   belongs_to :student

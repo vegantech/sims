@@ -21,6 +21,7 @@
 #
 
 class Recommendation < ActiveRecord::Base
+  DISTRICT_PARENT = :user
   belongs_to :checklist
   belongs_to :recommendation_definition
   belongs_to :user
