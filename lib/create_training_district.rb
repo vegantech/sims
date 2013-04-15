@@ -15,8 +15,8 @@ class CreateTrainingDistrict
     name = "z #{abbrev} Content"
     destroy_district abbrev
     td = create_with_schools_and_users(abbrev,name)
-    TrainingDistrict::Content.generate_interventions(td, district_dir)
-    TrainingDistrict::Content.generate_checklist_definition(td)
+    TrainingDistrict::Content.new(td,district_dir).generate_interventions
+    TrainingDistrict::Content.new(td).generate_checklist_definition
     td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
   end
 
@@ -92,8 +92,10 @@ class CreateTrainingDistrict
     td=create_with_schools_and_users(abbrev,name)
 
     ActiveRecord::Base.transaction do
-      TrainingDistrict::Content.generate_interventions(td)
-      TrainingDistrict::Content.generate_checklist_definition(td)
+      TrainingDistrict::Content.new(td).tap do |content|
+        content.generate_interventions
+        content.generate_checklist_definition
+      end
     end
     td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
    td
