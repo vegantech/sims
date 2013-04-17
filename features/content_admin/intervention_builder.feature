@@ -103,7 +103,7 @@ Feature: Intervention Builder
     Then I should see "Enabled Custom"
     Then I should not see "Disabled System"
     Then I should see "Disabled Custom"
-  
+
   Scenario: Disable Selected Interventions
     Given I log in as content_builder
     And there is an intervention_definition that is "enabled" and "system"
