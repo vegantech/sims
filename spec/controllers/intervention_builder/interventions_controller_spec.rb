@@ -24,6 +24,7 @@ describe InterventionBuilder::InterventionsController do
   describe "responding to GET index" do
 
     it "should expose all intervention_builder_interventions as @intervention_builder_interventions" do
+      @intervention_definition.stub!(:filter => @intervention_definition)
       get :index, :commit => 'true'
       assigns(:intervention_definitions).should == @intervention_definition
     end
