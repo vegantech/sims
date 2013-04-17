@@ -77,36 +77,62 @@ class DistrictExport
     dir.mkpath
   end
 
+  def cols_with_table_name(cols,table)
+    cols.split(",").collect{|c| "#{table}.#{c}"}.join(",")
+  end
+
+  def csv_cols(assoc)
+    SPECIAL_COLS[assoc] || assoc.to_s.classify.constantize.column_names.join(",")
+  end
+
   def csv_tsv
     TO_EXPORT.each do |t|
-      cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
-      cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
+      cols=csv_cols(t)
       self.generate_csv(t.to_s,cols,
-                       district.send(t).select(cols_with_table_name).to_sql)
+                       district.send(t).select(cols_with_table_name(cols,t)).to_sql)
     end
+  end
+
+  def generate_users
+    self.generate_csv('users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
+  end
+
+  def generate_students
+    self.generate_csv('students', 'id,id_state',
+                      Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(:id => @student_ids_in_use).to_sql,
+    "students_outside_district_with_content")
+  end
+
+  def zip
+    system "zip -j -qq " + dir.join("sims_export.zip").to_s + ' ' + dir.join("*").to_s
+    dir.join("sims_export.zip").to_s
   end
 
   def generate
     setup_directory
     csv_tsv
-    self.generate_csv('users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
-    self.generate_csv('students', 'id,id_state',
-                      Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(:id => @student_ids_in_use).to_sql,
-                     "students_outside_district_with_content")
+    generate_users
+    generate_students
     export_assets
-    #puts @student_ids_in_use.inspect
-    #self.generate_csv('students_outside_district', 'id,id_state',)
     export_bat_and_sh
-    self.generate_schema dir
-    system "zip -j -qq " + dir.join("sims_export.zip").to_s + ' ' + dir.join("*").to_s
-    dir.join("sims_export.zip").to_s
-    #zip files
+    generate_schema
+    zip
+  end
+
+  def district_asset_ids
+    ( probe_definition_assets | intervention_definition_assets).flatten.compact.collect(&:id)
+  end
+
+  def probe_definition_assets
+    district.probe_definitions.collect(&:assets)
+  end
+
+  def intervention_definition_assets
+    district.intervention_definitions.collect(&:assets)
   end
 
   def export_assets
-    assets = district.probe_definitions.collect(&:assets).flatten.compact |
-      district.intervention_definitions.flatten.collect(&:assets).flatten.compact
-    self.generate_csv('assets',Asset.column_names.join(","),"where id in (#{assets.collect(&:id).join(",")})") unless assets.blank?
+    generate_csv('assets',Asset.column_names.join(","),Asset.where(:id => district_asset_ids).to_sql)
   end
 
   def export_bat_and_sh
@@ -115,69 +141,48 @@ class DistrictExport
     File.open(dir.join("sims_export.sh"), 'w') {|f| f.write(curl_string)}
   end
 
-  def generate_schema dir
-     File.open(dir.join("schema.txt"),"a+") do |f|
-       @files.keys.sort.each do |table|
-         f.write("#{table}\r\n")
-         @files[table].split(',').each do |header|
-           if table == "students_outside_district_with_content"
-             obj = Student
-           else
-             obj=table.classify.constantize
-           end
-           col=obj.columns.find{|col| col.name == header}
-           f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
-         end
-         f.write("\r\n")
-       end
-     end
 
+  def schema_obj(table)
+    if table == "students_outside_district_with_content"
+      obj = Student
+    else
+      obj=table.classify.constantize
+    end
+  end
+
+  def schema_table(table,f)
+    f.write("#{table}\r\n")
+    @files[table].split(',').each do |header|
+      col=schema_obj(table).columns.find{|col| col.name == header}
+      f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
+    end
+    f.write("\r\n")
+  end
+
+  def generate_schema
+     File.open(dir.join("schema.txt"),"a+") do |f|
+       @files.keys.sort.each {|table| schema_table table,f}
+     end
+  end
+
+  def generate_csv_rows(csv,tsv,sql,student_id_index)
+    Student.connection.select_rows(sql).each do |row|
+      @student_ids_in_use << row[student_id_index] if student_id_index
+      csv << row
+      tsv << row.collect{|c| no_double_quotes(c)}
+    end
   end
 
   def generate_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
     @files[filename]=headers
     sql = "select #{headers} from #{table} #{sql}" unless sql.match(/^select/i)
+    split_headers = headers.split(',')
+    student_id_index = split_headers.index("student_id")
     CSV.open(dir.join(filename + ".tsv"), "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
-    CSV.open(dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
-      csv << headers.split(',')
-      tsv << headers.split(',')
-      student_id_index = headers.split(',').index("student_id")
-      select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
-      Student.connection.select_rows(sql).each do |row|
-        @student_ids_in_use << row[student_id_index] if student_id_index
-        csv << row
-        tsv << row.collect{|c| no_double_quotes(c)}
-      end
-    end;end
-    
-  end
-
-  def create_tables
-    @files.keys.sort.each do |table|
-      puts "CREATE TABLE #{table} ("
-      cols= @files[table].split(',').collect do |header|
-        obj=table.classify.constantize
-        col=obj.columns.find{|col| col.name == header}
-        sql_type=col.sql_type
-        sql_type=sql_type.split("(").first if sql_type.include?("int")
-        sql_type="datetime" if sql_type == "date"
-        sql_type="int" if sql_type == "tinyint"
-        "#{header} #{sql_type}" 
-      end.join(", ")
-      puts cols
-      puts ");"
-
-    end
-  end
-
-  def sqlserver_bulk_import db,dir
-    puts "use #{db}"
-    puts "set nocount on"
-
-    @files.keys.sort.each do |table|
-      puts "truncate table #{table}"
-      puts "bulk insert #{table} from \"#{dir.join(table+'.tsv')}\""
-      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR ='\\t', FIRSTROW=2)"
-    end
+      CSV.open(dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
+        csv << split_headers
+        tsv << split_headers
+        generate_csv_rows(csv,tsv,sql,student_id_index)
+      end;end
   end
 end
