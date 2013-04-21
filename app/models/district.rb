@@ -24,13 +24,9 @@
 class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-  SETTINGS = [:key, :previous_key, :google_apps_domain, :custom_interventions ]
-  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps, :email_on_team_consultation_response, :show_team_consultations_if_pending]
-  BOOLEAN_SETTINGS <<  :windows_live  if defined? ::WINDOWS_LIVE_CONFIG
-  SETTINGS.push *BOOLEAN_SETTINGS
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
-  include District::ScopedAssociations, ::LighterTouch
+  include District::ScopedAssociations, ::LighterTouch, District::Settings
   has_many :users, :order => :username
   has_many :checklist_definitions, :inverse_of => :district
   has_many :flag_categories
@@ -231,35 +227,6 @@ class District < ActiveRecord::Base
     state_dpi_num == 3269
   end
 
-  begin
-    after_initialize :default_settings_to_hash
-    #raise "Remove this block" if Rails.version > "3.2"
-    serialize :settings, Hash
-    SETTINGS.each do |s|
-      define_method("#{s}=") do |value|
-        self.settings ||= {}
-        @old_key = settings[:key] if s==:key
-
-        self.settings[s] = value
-        self.settings_will_change!
-      end
-
-      define_method(s) {(settings || Hash.new)[s]}
-      define_method("#{s}?") {!!send(s)}
-    end
-
-
-    private
-    def default_settings_to_hash
-      self[:settings] ||= {}
-      self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
-    end
-  end
-
-  public
-  BOOLEAN_SETTINGS.each do |setting|
-    define_method("#{setting}?") {self.settings[setting].present? && self.settings[setting] != "0"}
-  end
 
 private
 
@@ -279,18 +246,22 @@ private
 
   def make_sure_there_are_no_schools
     if schools.blank?
-      schools.destroy_all
-      users.destroy_all
-      checklist_definitions.destroy_all
-      goal_definitions.destroy_all
-      probe_definitions.destroy_all
-      tiers.destroy_all
-      students.destroy_all
-      news.destroy_all
-    else
+      destroy_associated!
+        else
       errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
+  end
+
+  def destroy_associated!
+    schools.destroy_all
+    users.destroy_all
+    checklist_definitions.destroy_all
+    goal_definitions.destroy_all
+    probe_definitions.destroy_all
+    tiers.destroy_all
+    students.destroy_all
+    news.destroy_all
   end
 
 
