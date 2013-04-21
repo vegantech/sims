@@ -60,27 +60,21 @@ class ProbeDefinition < ActiveRecord::Base
     intervention_probe_assignments
   end
 
+  def self.filter(opts ={})
+    disabled = !!opts[:disabled]
+    enabled = !!opts[:enabled]
+    custom = !!opts[:custom]
+    system = !!opts[:system]
+    where(["custom = ? or custom = ?",custom,!system]).
+      where(["active = ? or active = ?", !disabled, !(!enabled & disabled)])
+  end
+
   def self.group_by_cluster_and_objective(params ={})
     #This will work better
 
     #refactor this to use recommended monitors?
-    probes = find(:all, :order =>"active desc, custom, position", :include => [{:intervention_definitions=>{:intervention_cluster=>:objective_definition}},:intervention_probe_assignments, :recommended_monitors])
-
-
-    if params[:commit]
-      if params[:enabled] || params[:disabled]
-        probes.reject!(&:active) unless params[:enabled]
-        probes = probes.select(&:active) unless params[:disabled]
-      end
-
-      if params[:custom] || params[:system]
-        probes.reject!(&:custom) unless params[:custom]
-        probes = probes.select(&:custom) unless params[:system]
-      end
-    end
-
-
-
+    probes = filter(params).order("active desc, custom, position").
+      includes([{:intervention_definitions=>{:intervention_cluster=>:objective_definition}},:intervention_probe_assignments, :recommended_monitors])
 
     my_hash = ActiveSupport::OrderedHash.new()
 
