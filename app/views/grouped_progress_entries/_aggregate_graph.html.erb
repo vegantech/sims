@@ -3,7 +3,7 @@
 <div style="display:none" id ='aggregate_graph'>
   <h3>Combined Graph</h3>
 
-  <% (@grouped_progress_entry.students_with_scores_count.to_f/GroupedProgressEntry::NUMBER_OF_STUDENTS_ON_GRAPH).ceil.times do |t| %>
+  <% @grouped_progress_entry.page_nums.each do |t| %>
     <%=image_tag(aggregate_grouped_progress_entry_path(@grouped_progress_entry,:page=>t)) %> <br />
  <% end %>
 </div>
