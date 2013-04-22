@@ -48,7 +48,6 @@ class InterventionsController < ApplicationController
     params[:intervention][:comment_author] = current_user.id
 
     @intervention = build_from_session_and_params
-    @tiers=current_district.tiers
 
     if @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
@@ -57,6 +56,7 @@ class InterventionsController < ApplicationController
       # This is to make validation work
       i = @intervention
       @intervention_comment = @intervention.comments.first
+      @tiers=current_district.tiers
 
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition

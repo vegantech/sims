@@ -1,8 +1,6 @@
-$('#intervention').remove();
+$('#goals').nextAll().remove();
+$('#goals').after(<%=ejsr "interventions/objectives/select"%>);
 datePickerController.cleanUp();
-$('#definitions').remove();
-$('#categories').remove();
-$('#objectives').replaceWith(<%=ejsr "interventions/objectives/select"%>);
 datePickerController.create();
 $('#spinnergoals').hide();
 <% if @objective_definitions %>
