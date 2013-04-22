@@ -23,11 +23,13 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Please select a student."
       redirect_to students_url and return
     end
+    populate_goals
 
     @tiers=current_district.tiers
 
     respond_to do |format|
-      format.html { populate_goals }# new.html.erb
+      format.html # new.html.erb
+      format.js {render "interventions/goals/create"}
     end
   end
 

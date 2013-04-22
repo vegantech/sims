@@ -216,19 +216,10 @@ Sims::Application.routes.draw do
 
   namespace :interventions, :only => [:index, :create] do
     resources :quicklists
-     resources :goals
-    scope "/goals/:goal_id" do
-      resources :objectives
-      scope "/objectives/:objective_id" do
-        resources :categories
-        scope "/categories/:category_id" do
-          resources :definitions
-        end
-      end
-    end
   end
   resources :interventions do
     member do
+      post :new
       put :undo_end
       put :end
     end

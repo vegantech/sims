@@ -1,6 +1,6 @@
 <div id="categories" class ="form_row">
 <% if categories %>
-  <%= form_tag interventions_categories_path(@goal_definition, @objective_definition,
+  <%= form_tag new_intervention_path(:goal_id=>@goal_definition, :objective_id => @objective_definition,
       :custom_intervention => custom_intervention?),
       :remote => true do %>
       <%= label_tag :category_id, 'Assign Category' %>
