@@ -38,19 +38,11 @@ class Checklist < ActiveRecord::Base
   attr_protected :district_id
 
 
-
-
-
   STATUS = {
           :unknown => "UNKNOWN_STATUS",
           :draft => "Draft, make changes and submit",
           :missing_rec => "Submitted, but missing recommendation",
-          :can_refer => "Referred to Special Ed",
-          :cannot_refer => "Criteria not met (need 3 or above on all questions) for referral.",
-          :ineligable_to_refer=> "Impairment Suspected, but eligibility not met.",
           :nonadvancing => "Checklist submitted, continue working at same tier",
-          :passed =>  "Checklist submitted, met criteria to move to next tier",
-          :failing_score => "Checklist submitted, did not meet criteria to move to next tier.",
           :optional_checklist => "Optional Checklist Completed"
         }
 
