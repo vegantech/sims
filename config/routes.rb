@@ -170,7 +170,6 @@ Sims::Application.routes.draw do
       end
       collection do
         post :disable
-        get :add_benchmark
       end
     end
     resources :goals do
@@ -225,7 +224,6 @@ Sims::Application.routes.draw do
     end
     collection do
       get :ajax_probe_assignment
-      get :add_benchmark
     end
     scope :module => "interventions" do
       resources :comments

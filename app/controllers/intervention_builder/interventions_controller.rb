@@ -1,6 +1,6 @@
 class InterventionBuilder::InterventionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :disable
-  before_filter(:get_intervention_cluster, :except=>:suggestions)
+  before_filter :get_intervention_cluster
   helper_method :move_path
   cache_sweeper :intervention_builder_sweeper
   # GET /intervention_definitions

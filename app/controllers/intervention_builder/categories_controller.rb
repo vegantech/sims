@@ -3,7 +3,7 @@ class InterventionBuilder::CategoriesController < ApplicationController
   cache_sweeper :intervention_builder_sweeper
 
   # GET /intervention_clusters
-  before_filter(:get_objective_definition, :except=>:suggestions)
+  before_filter :get_objective_definition
   def index
     @intervention_clusters = @objective_definition.intervention_clusters.find(:all)
 

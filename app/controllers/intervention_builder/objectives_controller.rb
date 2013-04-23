@@ -2,7 +2,7 @@ class InterventionBuilder::ObjectivesController < ApplicationController
 
 
   helper_method :move_path
-  before_filter :get_goal_definition, :except => :suggestions
+  before_filter :get_goal_definition
   cache_sweeper :intervention_builder_sweeper
 
   # GET /objective_definitions

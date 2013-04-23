@@ -14,9 +14,9 @@
 </p>
 
  <% @probe_definition.probe_definition_benchmarks.each do | probe_definition_benchmark | %>
-  <p>  
-  <b>Benchmark:</b> <%= probe_definition_benchmark.benchmark %> 
-   
+  <p>
+  <b>Benchmark:</b> <%= probe_definition_benchmark.benchmark %>
+
    <b>at grade level:</b> <%= probe_definition_benchmark.grade_level %>
    </p>
   <% end %>
@@ -25,12 +25,12 @@
   <% @probe_definition.intervention_definitions.each do | intervention_definition | %>
   <li> 
   <%= content_tag :b, intervention_definition.title %> <br />
-  <%=intervention_definition.intervention_cluster.objective_definition.title%> -> 
+  <%=intervention_definition.intervention_cluster.objective_definition.title%> ->
   <%=intervention_definition.intervention_cluster.title%>  <br />
   <%=intervention_definition.tier.title%>   <br />
-  <%=intervention_definition.description %>  
+  <%=intervention_definition.description %>
 </li>
-  
+
   <% end %>
   </ul>
 

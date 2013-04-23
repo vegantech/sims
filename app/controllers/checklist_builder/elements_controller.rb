@@ -1,5 +1,5 @@
 class ChecklistBuilder::ElementsController < ChecklistBuilder::Base
-  before_filter :load_checklist_definition, :load_question_definition, :except => :suggestions
+  before_filter :load_checklist_definition, :load_question_definition
 
   def index
     @element_definitions = @question_definition.element_definitions

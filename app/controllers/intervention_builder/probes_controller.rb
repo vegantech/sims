@@ -1,5 +1,4 @@
 class InterventionBuilder::ProbesController < ApplicationController
-  skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   skip_before_filter :verify_authenticity_token, :only => :disable
   cache_sweeper :intervention_builder_sweeper
 
@@ -80,9 +79,4 @@ class InterventionBuilder::ProbesController < ApplicationController
     redirect_to intervention_builder_probes_url
 
   end
-
-  def add_benchmark
-    @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-  end
-
 end

@@ -1,6 +1,5 @@
 class InterventionsController < ApplicationController
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
-  skip_before_filter :authorize, :only => [:add_benchmark]
   skip_before_filter :verify_authenticity_token
 
   include PopulateInterventionDropdowns
@@ -135,11 +134,6 @@ class InterventionsController < ApplicationController
       format.html {render :layout => false}
       format.js
     end
-  end
-
-  def add_benchmark
-    @probe_definition_benchmark = ProbeDefinitionBenchmark.new
-    render :action => 'probe_assignments/add_benchmark'
   end
 
   private

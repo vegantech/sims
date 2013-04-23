@@ -1,5 +1,5 @@
 class ChecklistBuilder::AnswersController < ApplicationController
-  before_filter :load_checklist_definition, :load_question_definition, :load_element_definition, :except => :suggestions
+  before_filter :load_checklist_definition, :load_question_definition, :load_element_definition
 
   def index
     @answer_definitions = @element_definition.answer_definitions
