@@ -1,6 +1,6 @@
 class InterventionBuilder::InterventionsController < InterventionBuilder::BaseController
   skip_before_filter :verify_authenticity_token, :only => :disable
-  before_filter(:get_intervention_cluster, :except=>:suggestions)
+  before_filter :get_intervention_cluster
   # GET /intervention_definitions
   def index
     @intervention_definitions = @intervention_cluster.intervention_definitions.filter(params)

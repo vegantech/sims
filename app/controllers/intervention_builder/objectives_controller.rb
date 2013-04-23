@@ -1,5 +1,5 @@
 class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseController
-  before_filter :get_goal_definition, :except => :suggestions
+  before_filter :get_goal_definition
 
   # GET /objective_definitions
   def index

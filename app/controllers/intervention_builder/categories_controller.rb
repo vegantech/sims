@@ -1,5 +1,5 @@
 class InterventionBuilder::CategoriesController < InterventionBuilder::BaseController
-  before_filter(:get_objective_definition, :except=>:suggestions)
+  before_filter :get_objective_definition
   # GET /intervention_clusters
 
   def index
