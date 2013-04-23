@@ -42,7 +42,7 @@ module InterventionsHelper
   end
 
   def custom_intervention?
-    (params[:custom_intervention] == "true") &&  custom_intervention_enabled?
+    controller_name == "custom_interventions"
   end
 
   def custom_intervention_enabled?

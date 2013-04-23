@@ -26,13 +26,8 @@ protected
 
   def populate_definitions
     find_intervention_definition
-    if params[:custom_intervention] == "true"
-      @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
-      @tiers=current_district.tiers
-    else
-      @intervention_definitions = @intervention_cluster.intervention_definitions.for_dropdown(
-        current_student.max_tier, current_district, current_school_id, current_user) if @intervention_cluster
-    end
+    @intervention_definitions = @intervention_cluster.intervention_definitions.for_dropdown(
+      current_student.max_tier, current_district, current_school_id, current_user) if @intervention_cluster
     populate_intervention if @intervention_definition
   end
 

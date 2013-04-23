@@ -3,7 +3,7 @@
   Interventions are not available, no goals defined.
   <%= link_to :back, :back %>
 <%else%>
-  <%= form_tag new_intervention_path(:custom_intervention => custom_intervention?), :remote => true do%>
+  <%= form_tag new_path, :remote => true do%>
     <%= label_tag(:goal_id,'Assign Goal') %>
     <%= goal_select %>
 <%= spinner("goals") %>

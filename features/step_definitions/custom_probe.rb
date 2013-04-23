@@ -14,7 +14,7 @@ Given /^Create Custom Probe$/ do
       "time_length_id"=>"503752779", "user_id"=>193973844, "frequency_id"=>"284292352", "selected_ids"=>["310913251", "22766020"],
        "end_date(1i)"=>"2009", "time_length_number"=>"1", "school_id"=>296151536,
       "end_date(2i)"=>"7", "student_id" => student.id}
-  @i=Intervention.build_and_initialize(@o)
+  @i=CustomIntervention.build_and_initialize(@o)
 
 end
 

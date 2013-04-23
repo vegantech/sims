@@ -1,7 +1,6 @@
 <div id="objectives" class="form_row">
 <% if objectives %>
-  <%= form_tag new_intervention_path(:goal_id => @goal_definition.id,
-    :custom_intervention => custom_intervention?),
+  <%= form_tag new_path(:goal_id => @goal_definition.id),
     :remote => true do %>
       <%= label_tag(:objective_id, 'Assign Objective') %>
       <%= objective_select %>

@@ -167,4 +167,11 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+
+  def setup_session_from_user_and_student(user,student)
+    session[:school_id] = (student.schools & user.schools).first.id
+    self.current_student_id = student.id
+    self.selected_student_ids = [student.id]
+  end
+
 end

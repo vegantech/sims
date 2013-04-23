@@ -130,6 +130,7 @@ describe Intervention do
 
     describe 'without an intervention definition' do
       it 'should have the frequency set to 2 times weekly' do
+        pending "This should be moved to custom"
         Frequency.create!(:title=>'Daily')
         Frequency.create!(:title=>'Weekly')
         Frequency.create!(:title=>'Monthly')
@@ -139,6 +140,7 @@ describe Intervention do
       end
 
       it 'should have the time length set to 4 weeks' do
+        pending "This should be moved to custom"
         TimeLength.create!(:days=>1, :title => 'Day')
         TimeLength.create!(:days=>7, :title => 'Week')
         TimeLength.create!(:days=>30, :title => 'Month')

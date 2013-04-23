@@ -3,7 +3,7 @@
 <h3 class="intervention_summary"><span>Assign New Intervention and Progress Monitor</span></h3>
 
   <%=content_tag :div, link_to("Select New Intervention and Progress Monitor from Menu", new_intervention_path)%>
-  <%=content_tag :div, link_to("Create New Custom Intervention and Progress Monitor", new_intervention_path(:custom_intervention=>true)) if custom_intervention_enabled?%>
+  <%=content_tag :div, link_to("Create New Custom Intervention and Progress Monitor", new_custom_intervention_path) if custom_intervention_enabled?%>
   <%=link_to("Select from Intervention Quicklist", interventions_quicklists_path, :method => :get, :remote => true) %> <br />
     <span id="quicklist"> </span>
 

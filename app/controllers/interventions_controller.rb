@@ -2,6 +2,8 @@ class InterventionsController < ApplicationController
   before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :verify_authenticity_token
 
+  helper_method :new_path, :create_path
+
   include PopulateInterventionDropdowns
 
   def index
@@ -24,8 +26,6 @@ class InterventionsController < ApplicationController
     end
     populate_goals
 
-    @tiers=current_district.tiers
-
     respond_to do |format|
       format.html # new.html.erb
       format.js {render "interventions/goals/create"}
@@ -38,7 +38,6 @@ class InterventionsController < ApplicationController
     @intervention_probe_assignment = @intervention.intervention_probe_assignment
     @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
     @intervention_comment = @intervention.comments.detect(&:new_record?) || InterventionComment.new
-    @tiers = current_district.tiers
   end
 
   # POST /interventions
@@ -55,8 +54,6 @@ class InterventionsController < ApplicationController
       # This is to make validation work
       i = @intervention
       @intervention_comment = @intervention.comments.first
-      @tiers=current_district.tiers
-
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition
       @intervention_cluster = @intervention.intervention_cluster
@@ -76,7 +73,6 @@ class InterventionsController < ApplicationController
       params[:intervention][:intervention_probe_assignment] ||= {}
       params[:intervention][:comment_author] = current_user.id
     end
-    @tiers = current_district.tiers
 
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
@@ -111,7 +107,6 @@ class InterventionsController < ApplicationController
   end
 
   def undo_end
-
     @intervention.undo_end
     redirect_to current_student
   end
@@ -141,13 +136,9 @@ class InterventionsController < ApplicationController
   def find_intervention
     if current_student.blank?
      # alternate entry point
-      intervention = Intervention.find(params[:id])
-      if intervention && intervention.student && intervention.student.belongs_to_user?(current_user)
-        student = intervention.student
-        session[:school_id] = (student.schools & current_user.schools).first.id
-        self.current_student_id = student.id
-        self.selected_student_ids = [student.id]
-        @intervention = intervention
+      @intervention = Intervention.find(params[:id])
+      if @intervention.try(:student).try(:belongs_to_user?,current_user)
+        setup_session_from_user_and_student(current_user,@intervention.student)
       else
         flash[:notice] = 'Intervention not available'
         redirect_to logout_url and return false
@@ -155,14 +146,17 @@ class InterventionsController < ApplicationController
     else
       @intervention = current_student.interventions.find(params[:id])
     end
-
-    unless @intervention
-      flash[:notice] = "Intervention could not be found"
-      redirect_to current_student and return false
-    end
   end
 
   def readonly?
     params[:action] == "show"
+  end
+
+  def new_path(*args)
+    new_intervention_path(*args)
+  end
+
+  def create_path(*args)
+    interventions_path(*args)
   end
 end

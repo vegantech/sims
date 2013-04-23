@@ -109,6 +109,7 @@ describe "Populate Intervention Dropdowns Module" do
       @intervention_definitions.should == []
     end
     it 'should populate @intervention_definition if custom' do
+      pending "this should be moved to custom interventions controller"
       params[:custom_intervention] = "true"
       self.should_receive(:find_intervention_definition)
       @intervention_cluster=mock_intervention_cluster(:intervention_definitions => InterventionDefinition)

@@ -53,7 +53,6 @@ class Intervention < ActiveRecord::Base
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
-  accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
   accepts_nested_attributes_for :comments, :reject_if =>proc{|e| e["comment"].blank?}
 
   after_initialize :set_defaults_from_definition
@@ -94,10 +93,9 @@ class Intervention < ActiveRecord::Base
     #end
 
     int = self.new(args)
-    int.intervention_definition.set_values_from_intervention(int) if int.intervention_definition && int.intervention_definition.new_record?
     int.auto_implementer=true if int.auto_implementer.nil?
 
-    int.selected_ids = nil if Array(int.selected_ids).size == 1
+    int.selected_ids = nil if Array(int.selected_ids).one?
 
     int
   end
@@ -186,22 +184,6 @@ class Intervention < ActiveRecord::Base
     end
   end
 
-  def date_user_student_school_grade
-    arr=[created_at.to_date, user.to_s]
-    if student.present?
-      arr += [student.to_s]
-      if student.enrollments.present?
-        arr += [student.enrollments.first.grade, student.enrollments.first.school.to_s]
-      else
-        arr += [nil,nil]
-      end
-    else
-      arr +=["No longer in sims",nil, nil]
-    end
-
-    arr
-
-  end
 
   def orphaned?
     active? &&
@@ -331,17 +313,7 @@ class Intervention < ActiveRecord::Base
   def set_defaults_from_definition
     return unless new_record?
     self.start_date ||= Date.today
-
-    if intervention_definition.blank? || intervention_definition.new_record?
-      self.frequency ||= Frequency.find_by_title('Weekly')
-      self.frequency_multiplier ||= 2
-      self.time_length_number ||= 4
-      self.time_length ||= TimeLength.find_by_title('Week')
-      #  intervention_definition.set_values_from_intervention(self) if intervention_definition
-    else
-      set_missing_values_from_intervention_definition
-    end
-
+    set_missing_values_from_intervention_definition
     self.end_date ||= default_end_date
   end
 

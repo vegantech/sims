@@ -216,6 +216,11 @@ Sims::Application.routes.draw do
   namespace :interventions, :only => [:index, :create] do
     resources :quicklists
   end
+  resources :custom_interventions, :only => [:new,:create] do
+    member do
+      post :new
+    end
+  end
   resources :interventions do
     member do
       post :new

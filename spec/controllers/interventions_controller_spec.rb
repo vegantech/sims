@@ -35,10 +35,10 @@ describe InterventionsController do
 
   describe 'find_intervention' do
     it 'should redirect to current_student if the intervention cannot be found' do
-      @interventions.stub!(:find=>nil)
+      @student.stub!(:interventions => Intervention)
       get :edit, :id=>'no'
-      flash[:notice].should == 'Intervention could not be found'
-      response.should redirect_to(student_url(@student))
+      flash[:notice].should == 'Record not found'
+      response.should redirect_to(root_url)
     end
 
     describe 'alternate entry' do

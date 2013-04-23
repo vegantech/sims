@@ -1,6 +1,6 @@
 <div id="intervention">
   <% if @intervention %>
-    <%= form_for(@intervention, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
+    <%= form_for(@intervention, :url => create_path, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
     <%=hidden_field_tag :custom_intervention, custom_intervention? %>
       <%= render :partial => 'interventions/custom', :locals => {:form => f} if custom_intervention? %>
       <%= render :partial => 'interventions/form', :locals => {:form => f} %>

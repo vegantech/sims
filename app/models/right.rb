@@ -17,6 +17,7 @@ RIGHTS={
     "principal_overrides",
     "interventions/goals",
     "reports",
+    "custom_interventions",
     "interventions/definitions",
     "interventions/probe_assignments",
     "schools",

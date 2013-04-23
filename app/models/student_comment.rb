@@ -27,15 +27,4 @@ class StudentComment < ActiveRecord::Base
   define_statistic :users_with_team_notes, :count => :all, :column_name => 'distinct user_id', :joins => :user
 
 
-  def date_user_student_school_grade
-    arr=[created_at.to_date, user.to_s]
-    if student.present?
-      arr |= [student.to_s, student.enrollments.first.grade, student.enrollments.first.school.to_s]
-    else
-      arr |=["No longer in sims",nil, nil]
-    end
-
-    arr
-
-  end
 end
