@@ -34,7 +34,7 @@ class Recommendation < ActiveRecord::Base
 
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id,
-  validates_presence_of :other, :if => lambda{|r|!r.draft? && r.recommendation && RECOMMENDATION[r.recommendation][:require_other]}
+  validates_presence_of :other, :if => lambda{|r| r.validate_other?}
   attr_accessor :request_referral, :school
 
   define_statistic :count, :count => :all,:joins => :student
@@ -66,7 +66,9 @@ class Recommendation < ActiveRecord::Base
           :nonadvancing => "Recommendation submitted, continue working at same tier",
           :passed =>  "Recommendation submitted, next tier is available.",
           :failing_score => "Submitted, did not meet criteria to move to next tier.",
-          :optional_checklist => "Optional Checklist Completed."
+          :optional_checklist => "Optional Checklist Completed.",
+          :other => "Other Status",
+          :disabled => "Recommendations are disabled"
         }
 
   def should_promote?
@@ -78,22 +80,21 @@ class Recommendation < ActiveRecord::Base
   end
 
   def status
-    if draft?
+    case
+    when draft?
       STATUS[:draft]
-    elsif promoted? and RECOMMENDATION[recommendation][:show_elig]
+    when can_refer?
       STATUS[:can_refer]
-    elsif promoted?
+    when promoted?
       STATUS[:passed]
-    elsif !promoted? and RECOMMENDATION[recommendation][:show_elig]
-      checklist.fake_edit= checklist == student.checklists.last
-      (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer]
-    elsif !promoted? and should_promote?
-      checklist.fake_edit = checklist == student.checklists.last if checklist
-      STATUS[:failing_score]
-    elsif !promoted? and !should_promote?
+    when cannot_refer?
+      ineligable_or_cannot_refer
+    when failing_score?
+      failing_score
+    when nonadvancing?
       STATUS[:nonadvancing]
     else
-      return STATUS[:unknown]
+      STATUS[:unknown]
     end
   end
 
@@ -116,7 +117,6 @@ class Recommendation < ActiveRecord::Base
         a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
           recommendation_answers.build(h)
         a.text=h[:text]
-        a.draft=self.draft
       end
     end
   end
@@ -184,4 +184,33 @@ class Recommendation < ActiveRecord::Base
     checklist.promoted
   end
 
+  def validate_other?
+    !draft? && recommendation && RECOMMENDATION[recommendation][:require_other]
+  end
+
+  def can_refer?
+    promoted? && RECOMMENDATION[recommendation][:show_elig]
+  end
+
+  def cannot_refer?
+    !promoted? && RECOMMENDATION[recommendation][:show_elig]
+  end
+
+  def ineligable_or_cannot_refer
+    checklist.fake_edit= checklist == student.checklists.last
+    (checklist.blank? || checklist.promoted?) ? STATUS[:ineligable_to_refer] : STATUS[:cannot_refer]
+  end
+
+  def failing_score?
+    !promoted? && should_promote?
+  end
+
+  def failing_score
+    checklist.fake_edit = checklist == student.checklists.last if checklist
+    STATUS[:failing_score]
+  end
+
+  def nonadvancing?
+    !promoted? && !should_promote?
+  end
 end
