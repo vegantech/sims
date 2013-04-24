@@ -1,27 +1,22 @@
 <%= error_messages_for :recommendation %>
 
-
 <p>
-
-<%  recommendation.answers.each do |answer| %>
-
-  <%= fields_for "recommendation[answers][]",answer do |af| %>
-
-    <%=content_tag :b, af.label(:text, answer.recommendation_answer_definition.text, :for=> answer.recommendation_answer_definition) %>
-
-    <div> <%= af.text_area  :text, :size => "60x4" , :style=>"margin-left:1em;", :id=>answer.recommendation_answer_definition, :class => 'spell_check'%> </div><br />
-    <%=af.hidden_field :recommendation_answer_definition_id %>
-
+<% recommendation.answers.each do |answer| %>
+  <%= form.fields_for :recommendation_answers, answer do |ra| %>
+    <%=ra.label :text, content_tag(:b,answer.recommendation_answer_definition.text) %>
+    <div> <%= ra.text_area  :text, :size => "60x4" , :style=>"margin-left:1em;", :class => 'spell_check'%> </div><br />
+    <%=ra.hidden_field :recommendation_answer_definition_id %>
     <%Array(recommendation.previous_answers[answer.recommendation_answer_definition_id]).each do |prev| %>
-      <%=content_tag :p, "#{prev.text} by #{prev.recommendation.user} on #{prev.updated_at} " if defined?show_previous%>
-
+      <%=content_tag :p, "#{prev.text} by #{prev.recommendation.user} on #{prev.updated_at} " if (defined?show_previous && show_previous)%>
     <% end %>
 
 
   <% end %>
+
 <% end %>
 
-  </p>
+
+</p>
 
  <p>
     Please indicate conclusions and recommendations by selecting from the following statements: <br />

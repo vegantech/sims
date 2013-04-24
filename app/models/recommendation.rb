@@ -28,19 +28,21 @@ class Recommendation < ActiveRecord::Base
   belongs_to :student
   belongs_to :tier
   belongs_to :district
-  has_many :recommendation_answers, :dependent => :destroy
+  has_many :recommendation_answers, :dependent => :destroy, :inverse_of => :recommendation
   attr_protected :district_id
 
 
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id,
   validates_presence_of :other, :if => lambda{|r| r.validate_other?}
+  validates_associated :recommendation_answers
   attr_accessor :request_referral, :school
 
   define_statistic :count, :count => :all,:joins => :student
   define_statistic :count_of_districts, :count => :all, :column_name => 'distinct students.district_id', :joins => :student
   before_save :mark_promoted_if_needed
   after_initialize :setup_from_checklist_or_definition
+  accepts_nested_attributes_for :recommendation_answers
 
 
    #there's a custom sort for this in the checklist helper
@@ -107,18 +109,6 @@ class Recommendation < ActiveRecord::Base
       self.recommendation_answers.build(:recommendation_answer_definition => ad) unless recommendation_answers.any?{|a| a.recommendation_answer_definition == ad}
     end
     self.recommendation_answers
-  end
-
-  def answers=(hsh={})
-    hsh.each do |h|
-      h=h.last if h.is_a?Array and h.size==2
-      h=h.symbolize_keys
-      if h[:recommendation_answer_definition_id]
-        a=self.recommendation_answers.detect{|r| r.recommendation_answer_definition_id == h[:recommendation_answer_definition_id].to_i } ||
-          recommendation_answers.build(h)
-        a.text=h[:text]
-      end
-    end
   end
 
   def show_button?(k)
