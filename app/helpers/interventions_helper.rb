@@ -50,7 +50,7 @@ module InterventionsHelper
   end
 
   def goal_select
-    intervention_dropdown_select(:goal_id, goals,@goal_definition)
+    intervention_dropdown_select(:goal_id, goals,@picker)
   end
 
   def intervention_dropdown_select(obj_id,collection,selected_obj)
@@ -74,7 +74,7 @@ module InterventionsHelper
   end
 
   def goals
-    @goal_definitions
+    @picker.goals
   end
 
   def objectives

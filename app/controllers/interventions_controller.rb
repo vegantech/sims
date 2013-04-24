@@ -25,6 +25,7 @@ class InterventionsController < ApplicationController
       redirect_to students_url and return
     end
     populate_goals
+    @picker = Interventions::Goals.new(current_district)
 
     respond_to do |format|
       format.html # new.html.erb
