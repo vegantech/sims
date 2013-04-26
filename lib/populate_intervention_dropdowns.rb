@@ -9,7 +9,7 @@ protected
 
   def build_from_session_and_params
     params[:intervention] ||= {}
-    @intervention = current_student.interventions.build_and_initialize(params[:intervention].merge(values_from_session))
+    @intervention = current_student.interventions.build(params[:intervention].merge(values_from_session))
     @intervention_probe_assignment = @intervention.intervention_probe_assignment if @intervention.intervention_probe_assignment
     @intervention
   end

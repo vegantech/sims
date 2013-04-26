@@ -54,7 +54,7 @@ class ReportsController < ApplicationController
       @start_date = build_date(params[:start_date])
       @end_date   = build_date(params[:end_date])
       @filter = params[:report_params][:filter]
-      @interventions = Intervention.for_user_interventions_report(current_user,@filter,@start_date,@end_date) if request.post?
+      @interventions = UserInterventionsReport.for_user_interventions_report(current_user,@filter,@start_date,@end_date) if request.post?
     else
       @start_date = 3.years.ago
         @end_date = @today

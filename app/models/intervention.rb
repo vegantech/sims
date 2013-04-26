@@ -25,6 +25,7 @@ class Intervention < ActiveRecord::Base
   DISTRICT_PARENT = :intervention_definition
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
+  include Stats::Intervention
 
   END_REASONS = [
     "Sufficient progress made",
@@ -63,8 +64,6 @@ class Intervention < ActiveRecord::Base
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
 
-
-
   delegate :title, :tier, :description, :intervention_cluster,:tier_summary, :to => :intervention_definition
   delegate :objective_definition, :to => :intervention_cluster
   delegate :goal_definition, :to => :objective_definition
@@ -72,43 +71,6 @@ class Intervention < ActiveRecord::Base
   scope :active, where(:active => true).desc
   scope :inactive, where(:active => false).desc
   scope :for_report
-
-  scope :author_or_participant, lambda { |user_id|
-    includes([:intervention_participants, :user,:frequency, :time_length, :intervention_definition]).where(
-      ["interventions.user_id = :user_id or intervention_participants.user_id = :user_id", {:user_id => user_id}])
-  }
-
-
-
-  define_statistic :interventions , :count => :all, :joins => :student
-  define_statistic :students_with_interventions , :count => :all,  :column_name => 'distinct student_id', :joins => :student
-  define_statistic :districts_with_interventions, :count => :all, :column_name => 'distinct district_id', :joins => {:intervention_definition => {:intervention_cluster => {:objective_definition => :goal_definition}}}
-  define_statistic :users_with_interventions, :count => :all, :column_name => 'distinct user_id', :joins => :user
-
-  def self.build_and_initialize(args)
-    # TODO Refactor
-
-    # if k = args["intervention_definition"] and !k.is_a?(InterventionDefinition)
-    #  int_def_args = (args.delete("intervention_definition"))
-    #end
-
-    int = self.new(args)
-    int.auto_implementer=true if int.auto_implementer.nil?
-
-    int.selected_ids = nil if Array(int.selected_ids).one?
-
-    int
-  end
-
-  def self.for_user_interventions_report(user_id, filter,start_date = 5.years.ago,end_date = Date.today)
-    ints = author_or_participant(user_id).where(:updated_at => start_date..(end_date+2))
-    if filter == "Current"
-      ints = ints.where(["active = ?",true])
-    elsif filter == "Ended"
-      ints = ints.where(["active = ?",false])
-    end
-    ints
-  end
 
 
   def end(ended_by,reason='', fidelity = nil)
@@ -231,13 +193,20 @@ class Intervention < ActiveRecord::Base
       student_ids = Array(self.selected_ids)
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
-      @interventions = student_ids.collect do |student_id|
-        Intervention.create!(self.attributes.merge(:student_id => student_id, :apply_to_all => false, :comment_author => self.comment_author,
-          :auto_implementer => self.auto_implementer, :called_internally => true, :participant_user_ids => self.participant_user_ids,
-                                                  :comments_attributes => {"0" => comment} ,:intervention_probe_assignment => ipa))
-      end
+      @interventions = student_ids.collect{|student_id| create_other_student(student_id,comment, ipa)}
     end
     true
+  end
+
+  def create_other_student(other_student_id, comment, ipa_attrs)
+    Intervention.create!(
+      self.attributes.merge(:student_id => other_student_id, :apply_to_all => false,
+                            :comment_author => self.comment_author,
+                            :auto_implementer => self.auto_implementer,
+                            :called_internally => true,
+                            :participant_user_ids => self.participant_user_ids,
+                            :comments_attributes => {"0" => comment},
+                            :intervention_probe_assignment => ipa_attrs))
   end
 
   def assign_implementer
@@ -312,8 +281,14 @@ class Intervention < ActiveRecord::Base
 
   def set_defaults_from_definition
     return unless new_record?
-    self.start_date ||= Date.today
     set_missing_values_from_intervention_definition
+    set_defaults
+  end
+
+  def set_defaults
+    self.auto_implementer=true if auto_implementer.nil?
+    self.selected_ids = nil if Array(selected_ids).one?
+    self.start_date ||= Date.today
     self.end_date ||= default_end_date
   end
 

@@ -25,7 +25,7 @@ class CustomInterventionsController < InterventionsController
 
   def build_from_session_and_params
     params[:intervention] ||= {}
-    @intervention = CustomIntervention.build_and_initialize(params[:intervention].merge(values_from_session).merge(:student_id => current_student.id))
+    @intervention = CustomIntervention.new(params[:intervention].merge(values_from_session).merge(:student_id => current_student.id))
     @intervention_probe_assignment = @intervention.intervention_probe_assignment if @intervention.intervention_probe_assignment
     @intervention
   end
