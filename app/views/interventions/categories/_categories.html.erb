@@ -1,0 +1,13 @@
+<div id="categories" class ="form_row">
+<% unless categories.blank? %>
+  <%= form_tag new_path, :remote => true do %>
+      <%= label_tag :category_id, 'Assign Category' %>
+      <%= intervention_picker_select(categories) %>
+    <%= spinner("categories") %>
+    <%= content_tag :noscript, submit_tag("Choose Category") %><br />
+    <div id="category_description"><%=description(categories.object) %></div>
+  <% end %>
+<% end %>
+</div>
+<br class="brclear" />
+<%#@= render :partial => categories.definitions %>

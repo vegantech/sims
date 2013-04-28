@@ -3,10 +3,10 @@
   <%= form_tag new_path,
     :remote => true do %>
       <%= label_tag(:objective_id, 'Assign Objective') %>
-      <%= objective_select(objectives) %>
+      <%= intervention_picker_select(objectives) %>
     <%= spinner("objectives") %>
     <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>
 <% end %>
 </div>
-<%#= render objectives.categories %>
+<%= render objectives.categories %>

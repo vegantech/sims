@@ -5,7 +5,7 @@
 <%else%>
   <%= form_tag new_path, :remote => true do%>
     <%= label_tag(:goal_id,'Assign Goal') %>
-    <%= goal_select(goals) %>
+    <%= intervention_picker_select(goals) %>
 <%= spinner("goals") %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>

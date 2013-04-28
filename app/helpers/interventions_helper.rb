@@ -53,6 +53,16 @@ module InterventionsHelper
     intervention_dropdown_select(:goal_id, goal_picker.goals,goal_picker)
   end
 
+  def intervention_picker_select(picker)
+    select_tag(picker.object_id_field,
+               options_from_collection_for_select(
+                 picker.dropdowns,:id,:title,picker.try(:id)),
+                 {:prompt => "", :class => "fixed_width sim_submit"}
+              )
+
+
+  end
+
   def intervention_dropdown_select(obj_id,collection,selected_obj)
     select_tag(obj_id,
                options_from_collection_for_select(
@@ -61,20 +71,8 @@ module InterventionsHelper
               )
   end
 
-  def objective_select(objective_picker)
-    intervention_dropdown_select(:objective_id, objective_picker.objectives,objective_picker)
-  end
-
-  def category_select
-    intervention_dropdown_select(:category_id, categories,@intervention_cluster)
-  end
-
   def definition_select
     intervention_dropdown_select(:definition_id, definitions,@intervention_definition)
-  end
-
-  def categories
-    @intervention_clusters
   end
 
   def definitions
