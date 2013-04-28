@@ -1,12 +1,12 @@
 <div id="objectives" class="form_row">
-<% if objectives %>
-  <%= form_tag new_path(:goal_id => @goal_definition.id),
+<% unless objectives.blank? %>
+  <%= form_tag new_path,
     :remote => true do %>
       <%= label_tag(:objective_id, 'Assign Objective') %>
-      <%= objective_select %>
+      <%= objective_select(objectives) %>
     <%= spinner("objectives") %>
     <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>
 <% end %>
 </div>
-<%= render :partial=>"interventions/categories/select" %>
+<%#= render objectives.categories %>

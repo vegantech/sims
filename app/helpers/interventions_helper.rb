@@ -49,8 +49,8 @@ module InterventionsHelper
     current_user.custom_interventions_enabled?
   end
 
-  def goal_select
-    intervention_dropdown_select(:goal_id, goals,@picker)
+  def goal_select(goal_picker)
+    intervention_dropdown_select(:goal_id, goal_picker.goals,goal_picker)
   end
 
   def intervention_dropdown_select(obj_id,collection,selected_obj)
@@ -61,8 +61,8 @@ module InterventionsHelper
               )
   end
 
-  def objective_select
-    intervention_dropdown_select(:objective_id, objectives,@objective_definition)
+  def objective_select(objective_picker)
+    intervention_dropdown_select(:objective_id, objective_picker.objectives,objective_picker)
   end
 
   def category_select
@@ -71,14 +71,6 @@ module InterventionsHelper
 
   def definition_select
     intervention_dropdown_select(:definition_id, definitions,@intervention_definition)
-  end
-
-  def goals
-    @picker.goals
-  end
-
-  def objectives
-    @objective_definitions
   end
 
   def categories

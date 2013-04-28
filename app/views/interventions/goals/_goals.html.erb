@@ -5,10 +5,10 @@
 <%else%>
   <%= form_tag new_path, :remote => true do%>
     <%= label_tag(:goal_id,'Assign Goal') %>
-    <%= goal_select %>
+    <%= goal_select(goals) %>
 <%= spinner("goals") %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>
 <% end %>
 </div>
-<%= render :partial => 'interventions/objectives/select' %>
+<%= render goals.objectives %>

@@ -1,8 +1,8 @@
 $('#goals').nextAll().remove();
-$('#goals').after(<%=ejsr "interventions/objectives/select"%>);
+$('#goals').after(<%=ejsr @picker.objectives%>);
 datePickerController.cleanUp();
 datePickerController.create();
 $('#spinnergoals').hide();
-<% if @objective_definitions %>
+<% if @picker.objectives %>
   $('#objective_definition_id').focus();
 <% end %>
