@@ -2,7 +2,7 @@ class Interventions::Picker
 
   def initialize(parent, opts)
     @parent = parent
-    @opts = opts
+    @opts = opts.symbolize_keys
     @object_id = @opts[object_id_field]
   end
 
@@ -15,14 +15,18 @@ class Interventions::Picker
   end
 
   def find_or_only(arr,arr_id)
-    arr.detect{|a| a.id == arr_id.to_i} || first_if_only(arr)
+    Array(arr).detect{|a| a.id == arr_id.to_i} || first_if_only(arr)
   end
 
   def first_if_only(arr)
-    arr.first if arr.one?
+    arr.first if Array(arr).one?
   end
 
   def blank?
     dropdowns.blank?
+  end
+
+  def to_partial_path
+    self.class.name.underscore + "/" + self.class.name.demodulize.underscore
   end
 end

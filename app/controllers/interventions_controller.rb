@@ -24,7 +24,7 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Please select a student."
       redirect_to students_url and return
     end
-    populate_goals
+#    populate_goals
     @picker = Interventions::Goals.new(current_district,params)
 
     respond_to do |format|
