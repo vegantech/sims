@@ -3,6 +3,3 @@ $('#goals').after(<%=ejsr @picker.objectives%>);
 datePickerController.cleanUp();
 datePickerController.create();
 $('#spinnergoals').hide();
-<% if @picker.objectives %>
-  $('#objective_definition_id').focus();
-<% end %>

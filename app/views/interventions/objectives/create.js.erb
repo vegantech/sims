@@ -1,9 +1,5 @@
-$('#intervention').remove();
+$('#objectives').nextAll().remove();
+$('#objectives').after(<%=ejsr @picker.categories%>);
 datePickerController.cleanUp();
-$('#definitions').remove();
-$('#categories').replaceWith(<%=ejsr "interventions/categories/select"%>);
 datePickerController.create();
 $('#spinnerobjectives').hide();
-<% if @objective_definition %>
-  $('#intervention_cluster_id').focus();
-<% end %>

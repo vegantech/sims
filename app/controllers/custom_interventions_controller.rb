@@ -1,6 +1,7 @@
 class CustomInterventionsController < InterventionsController
   def new
     @tiers = current_district.tiers
+    params[:custom]=true
     super
   end
 

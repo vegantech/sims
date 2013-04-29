@@ -29,4 +29,8 @@ class Interventions::Picker
   def to_partial_path
     self.class.name.underscore + "/" + self.class.name.demodulize.underscore
   end
+
+  def js_create
+    self.class.name.underscore + "/" "create"
+  end
 end

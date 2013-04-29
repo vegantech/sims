@@ -1,12 +1,6 @@
-$('#intervention').remove();
+$('#categories').nextAll().remove();
+$('#category_description').html("<%=escape_javascript description(@picker.object)%>");
+$('#categories').after(<%=ejsr @picker.definitions%>);
 datePickerController.cleanUp();
-$('#definitions').replaceWith(<%=ejsr "interventions/definitions/select"%>);
-$('#category_description').html("<%=escape_javascript description(@intervention_cluster)%>");
 datePickerController.create();
 $('#spinnercategories').hide();
-<% if @intervention_definition and custom_intervention? %>
-  $('#intervention_intervention_attributions_title_id').focus();
-<% end %>
-<% if @intervention_defintiions %>
-  $('#intervention_definition_id').focus();
-<% end %>

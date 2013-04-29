@@ -31,4 +31,18 @@ class Interventions::Goals < Interventions::Picker
     @object_id ||= @opts[:goal_id]
   end
 
+  def for_js
+    case
+    when @opts[:definition_id] && @opts[:custom].blank?
+      objectives.categories.definitions
+    when @opts[:category_id]
+      objectives.categories
+    when @opts[:objective_id]
+      objectives
+    else
+      self
+    end
+  end
+
+
 end

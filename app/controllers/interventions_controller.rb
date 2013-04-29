@@ -29,7 +29,7 @@ class InterventionsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.js {render "interventions/goals/create"}
+      format.js {@picker = @picker.for_js; render @picker.js_create}
     end
   end
 
