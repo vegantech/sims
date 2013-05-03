@@ -62,7 +62,7 @@ GEM
       rails (>= 3.0.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
-    capistrano (2.14.2)
+    capistrano (2.15.4)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -190,7 +190,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.5)
+    net-ssh (2.6.7)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.6.1.87)
