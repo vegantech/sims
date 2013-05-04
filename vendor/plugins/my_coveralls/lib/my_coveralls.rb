@@ -1,4 +1,4 @@
-class Coveralls
+class MyCoveralls
   # Method to require all ruby classes when calculating code coverage.
   # Call this to not leave untested files out of the code coverage percentages.
   def self.require_all_ruby_files(target_dirs=["lib", "app"])

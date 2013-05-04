@@ -14,6 +14,8 @@ before_script:
   - "cp config/windows_live.yml.sample config/windows_live.yml"
   - "bundle exec rake db:create db:schema:load"
 # drop:all db:create:all db:schema:load;"
+script:
+  - bundle exec rake test_with_coveralls
 branches:
   only:
   - master

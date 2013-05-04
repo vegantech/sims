@@ -21,11 +21,16 @@ Spork.prefork do
   # need to restart spork for it take effect.
   require 'simplecov'
 
-  unless ENV['DRB']
-    SimpleCov.start 'rails' do
-      coverage_dir 'spec/coverage/unit_functional'
-      add_filter "/vendor/"
-      merge_timeout 1200
+  if ENV['TRAVIS']
+    require 'coveralls'
+    Coveralls.wear_merged!
+  else
+    unless ENV['DRB']
+      SimpleCov.start 'rails' do
+        coverage_dir 'spec/coverage/unit_functional'
+        add_filter "/vendor/"
+        merge_timeout 1200
+      end
     end
   end
 
