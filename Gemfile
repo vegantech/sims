@@ -61,6 +61,7 @@ gem 'awesome_nested_fields'
 gem 'overlib-rails'
 
 gem 'silence_rails_3_2_plugin_deprecations'
+gem 'coveralls'
 
 
 group :test do
