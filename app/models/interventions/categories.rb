@@ -17,6 +17,15 @@ class Interventions::Categories < Interventions::Picker
     Interventions::Definitions.new(object, @opts)
   end
 
+  def next
+    @opts[:custom] ? custom_intervention : definitions
+  end
+
+  def custom_intervention
+#    self
+#    CustomIntervention.new
+  end
+
   def self.find_by_id(id)
     if id
       o= InterventionCluster.enabled.find_by_id(id)

@@ -20,7 +20,6 @@ class CustomInterventionsController < InterventionsController
   def populate_definitions
     find_intervention_definition
     @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
-    @tiers=current_district.tiers
     populate_intervention if @intervention_definition
   end
 
