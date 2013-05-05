@@ -2,11 +2,11 @@
   <% unless definitions.blank? %>
     <%= form_tag new_path, :remote => true do %>
       <%= label_tag :definition_id, 'Assign Intervention' %>
-      <%#= tiered_intervention_definition_select(@intervention_definitions, true, @intervention_definition) %>
+      <%= tiered_intervention_definition_select(definitions, true) %>
       <%= spinner("definitions") %>
       <%= content_tag :noscript, submit_tag("Choose Intervention") %>
       <br class="brclear" />
-      <div id="intervention_description"><%= description(@intervention_definition) %></div>
+      <div id="intervention_description"><%= description(definitions.object) %></div>
     <% end %>
   <% end %>
 </div>

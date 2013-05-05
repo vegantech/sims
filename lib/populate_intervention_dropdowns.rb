@@ -41,4 +41,8 @@ protected
         @intervention_cluster.intervention_definitions.first
       end
   end
+
+  def find_intervention_cluster
+    @intervention_cluster = @picker.try(:objectives).try(:categories).object
+  end
 end
