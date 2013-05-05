@@ -4,8 +4,6 @@ class InterventionsController < ApplicationController
 
   helper_method :new_path, :create_path
 
-  include PopulateInterventionDropdowns
-
   def index
     redirect_to root_url
   end
@@ -24,7 +22,7 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Please select a student."
       redirect_to students_url and return
     end
-    @picker = Interventions::Goals.new(current_district,params)
+    @picker = Interventions::Goals.new(current_district,merged_params_and_values_from_session)
     #populate_definitions
 
     respond_to do |format|
@@ -159,5 +157,33 @@ class InterventionsController < ApplicationController
 
   def create_path(*args)
     interventions_path(*args)
+  end
+
+  def merged_params_and_values_from_session
+    params.merge(
+      :user_id => current_user.id,
+      :selected_ids => selected_student_ids,
+      :school_id => current_school_id,
+      :current_student => current_student,
+      :current_district => current_district,
+      :current_user => current_user
+    )
+  end
+
+  def build_from_session_and_params
+    params[:intervention] ||= {}
+    @intervention = current_student.interventions.build(params[:intervention].merge(values_from_session))
+    @intervention_probe_assignment = @intervention.intervention_probe_assignment if @intervention.intervention_probe_assignment
+    @intervention
+  end
+
+  def populate_intervention
+    return if params[:intervention_definition] and params[:intervention_definition][:id].blank?
+    find_intervention_definition
+    @recommended_monitors = @intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
+    params[:intervention] ||= {}
+    params[:intervention].merge!(:intervention_definition => @intervention_definition)
+    build_from_session_and_params
+    @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
   end
 end

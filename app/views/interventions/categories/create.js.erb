@@ -1,6 +1,6 @@
 $('#categories').nextAll().remove();
 $('#category_description').html("<%=escape_javascript description(@picker.object)%>");
-$('#categories').after(<%=ejsr @picker.definitions%>);
+$('#categories').after(<%=ejsr @picker.next%>);
 datePickerController.cleanUp();
 datePickerController.create();
 $('#spinnercategories').hide();

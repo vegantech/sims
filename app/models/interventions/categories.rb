@@ -22,8 +22,7 @@ class Interventions::Categories < Interventions::Picker
   end
 
   def custom_intervention
-#    self
-#    CustomIntervention.new
+    CustomIntervention.new :category => object
   end
 
   def self.find_by_id(id)

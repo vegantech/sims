@@ -1,3 +1,10 @@
+<% unless intervention.blank? %>
+  <%@intervention = intervention %>
+  <%@users = ([nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}) %>
+  <%@recommended_monitors=[] %>
+<% end %>
+
+
 <div id="intervention">
   <% if @intervention %>
     <%= form_for(@intervention, :url => create_path, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
@@ -46,7 +53,7 @@
       </div>
     <% end %>
     <div class="center_submit">
-      <%= link_to 'Back', student_path(@intervention.student) %>
+      <%#= link_to 'Back', student_path(@intervention.student) %>
     </div>
   <% end %>
 </div>

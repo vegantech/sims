@@ -6,11 +6,11 @@ class Interventions::Definitions < Interventions::Picker
   end
 
   def dropdowns
-    @definitions ||= @parent.intervention_definitions.merge(for_dropdown) if @parent && @opts[:custom].blank?
+    @definitions ||= @parent.intervention_definitions.for_dropdown(*for_dropdown) if @parent && @opts[:custom].blank?
   end
 
   def for_dropdown
-    InterventionDefinition.enabled
+    [@opts[:current_student].max_tier, @opts[:current_district], @opts[:school_id], @opts[:current_user]]
   end
 
   def self.find_by_id(id)
