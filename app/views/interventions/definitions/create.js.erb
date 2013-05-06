@@ -1,9 +1,6 @@
-$('#intervention').empty();
+$('#definitions').nextAll().remove();
+$('#intervention_description').html("<%=escape_javascript description(@picker.object)%>");
+$('#definitions').after(<%=ejsr @picker.intervention%>);
 datePickerController.cleanUp();
-$('#intervention').replaceWith(<%=ejsr "interventions/intervention"%>);
-$('#intervention_description').html("<%=escape_javascript description(@intervention_definition)%>");
 datePickerController.create();
 $('#spinnerdefinitions').hide();
-<% if @intervention_definition %>
-  $('#intervention_frequency_multiplier').focus();
-<% end %>

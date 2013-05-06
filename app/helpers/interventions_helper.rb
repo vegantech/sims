@@ -12,8 +12,7 @@ module InterventionsHelper
         options_from_collection_for_select(  c[group], :id, :title, :selected => intervention_definitions.id) if c[group]
       end
     end
-   select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width sim_submit",
-              :name => "intervention_definition[id]")
+   select_tag("definition_id", opts.html_safe, :class => "fixed_width sim_submit")
   end
 
 
@@ -22,8 +21,8 @@ module InterventionsHelper
     if quicklist_items.blank?
       "Quicklist is empty."
     else
-      form_tag "/interventions/quicklists" do
-        concat(label_tag(:intervention_definition_id, "Intervention Quicklist "))
+      form_tag "/interventions/new" do
+        concat(label_tag(:definition_id, "Intervention Quicklist "))
         options = ""
         options << content_tag( :option,"",:value => "")
         gqi=quicklist_items.sort_by(&:tier).group_by{|q| "#{q.objective_definition} : #{q.tier}"}
@@ -32,7 +31,7 @@ module InterventionsHelper
             options_from_collection_for_select(col, :id, :title)
           end
         end
-        concat(select_tag("intervention_definition_id",options.html_safe))
+        concat(select_tag("definition_id",options.html_safe))
         concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
     end

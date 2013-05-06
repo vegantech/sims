@@ -13,6 +13,14 @@ class Interventions::Definitions < Interventions::Picker
     [@opts[:current_student].max_tier, @opts[:current_district], @opts[:school_id], @opts[:current_user]]
   end
 
+  def intervention
+    if object
+      object.interventions.build
+    else
+      Intervention.new
+    end
+  end
+
   def self.find_by_id(id)
     if id
       o= InterventionDefinition.enabled.find_by_id(id)

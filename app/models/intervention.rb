@@ -179,6 +179,10 @@ class Intervention < ActiveRecord::Base
     true
   end
 
+  def blank?
+    intervention_definition.blank?
+  end
+
   protected
 
   def create_other_students
@@ -277,4 +281,5 @@ class Intervention < ActiveRecord::Base
   def notify_new_participant(participant)
     participant.send_email = true unless new_record? or @creation_email or called_internally
   end
+
 end

@@ -4,7 +4,6 @@
   <%@recommended_monitors=[] %>
 <% end %>
 
-
 <div id="intervention">
   <% if @intervention %>
     <%= form_for(@intervention, :url => create_path, :html => {:name => "StudentInterventionForm", :multipart => true}) do |f| %>
