@@ -4,6 +4,7 @@ class Interventions::Picker
     @parent = parent
     @opts = opts.symbolize_keys
     @object_id = @opts[object_id_field]
+    @opts[:intervention] ||= {}
   end
 
   def id
@@ -33,4 +34,14 @@ class Interventions::Picker
   def js_create
     self.class.name.underscore + "/" "create"
   end
+
+  def intervention_params
+    @opts[:intervention].merge(
+      :student_id => @opts[:current_student].id,
+      :selected_ids => @opts[:selected_student_ids],
+      :school_id => @opts[:schol_id]
+    )
+  end
+
+
 end

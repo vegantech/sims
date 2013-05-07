@@ -12,7 +12,7 @@ class CustomIntervention < Intervention
 
   def set_defaults_from_definition
     return unless new_record?
-    build_intervention_definition
+    build_intervention_definition :intervention_cluster => category if intervention_definition.blank?
     intervention_definition.set_values_from_intervention(self)
     set_defaults
     self.frequency ||= Frequency.find_by_title('Weekly')
@@ -24,4 +24,5 @@ class CustomIntervention < Intervention
   def blank?
     category.blank?
   end
+
 end

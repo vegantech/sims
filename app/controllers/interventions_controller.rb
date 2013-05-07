@@ -50,8 +50,11 @@ class InterventionsController < ApplicationController
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
+      puts @intervention.inspect
+      #raise @intervention.errors.inspect
+      @picker = Interventions::Goals.new(current_district,merged_params_and_values_from_session)
       # This is to make validation work
-      i = @intervention
+=begin      i = @intervention
       @intervention_comment = @intervention.comments.first
       @goal_definition = @intervention.goal_definition
       @objective_definition=@intervention.objective_definition
@@ -61,6 +64,7 @@ class InterventionsController < ApplicationController
       @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
       # end code to make validation work
+=end
       render :action => "new"
     end
   end
@@ -168,6 +172,14 @@ class InterventionsController < ApplicationController
       :current_district => current_district,
       :current_user => current_user
     )
+  end
+
+  def values_from_session
+    {:user_id => current_user.id,
+      :selected_ids => selected_student_ids,
+      :school_id => current_school_id
+    }
+
   end
 
   def build_from_session_and_params

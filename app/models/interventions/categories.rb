@@ -22,7 +22,7 @@ class Interventions::Categories < Interventions::Picker
   end
 
   def custom_intervention
-    CustomIntervention.new :category => object
+    CustomIntervention.new intervention_params.merge(:category => object)
   end
 
   def self.find_by_id(id)

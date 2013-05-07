@@ -15,7 +15,7 @@ class Interventions::Definitions < Interventions::Picker
 
   def intervention
     if object
-      object.interventions.build
+      object.interventions.build intervention_params
     else
       Intervention.new
     end

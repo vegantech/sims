@@ -183,6 +183,10 @@ class Intervention < ActiveRecord::Base
     intervention_definition.blank?
   end
 
+  def recommended_monitors
+    intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
+  end
+
   protected
 
   def create_other_students
@@ -236,6 +240,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def save_assigned_monitor
+    puts 'did I fail here?'
     return true unless defined?(@ipa)
     if @ipa.probe_definition.intervention_definitions.blank?
       pd=@ipa.probe_definition
@@ -246,6 +251,7 @@ class Intervention < ActiveRecord::Base
       pd.custom = true
 
     end
+    puts 'about to save ipa?'
     @ipa.save
 
   end
