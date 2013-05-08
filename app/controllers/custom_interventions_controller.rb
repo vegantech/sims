@@ -16,14 +16,9 @@ class CustomInterventionsController < InterventionsController
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
-      raise @intervention.intervention_participants.collect(&:errors).inspect
-      raise "intervention invalid #{@intervention.errors.inspect}" unless @intervention.valid?
-      raise "intervention definition invalid" unless @intervention.intervention_definition.valid?
-
       @tiers = current_district.tiers
       @users = ([nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]})
       @recommended_monitors=@intervention.try(:recommended_monitors) || []
-      puts @intervention.inspect
       #raise @intervention.errors.inspect
       @picker = Interventions::Goals.new(current_district,merged_params_and_values_from_session)
       # This is to make validation work

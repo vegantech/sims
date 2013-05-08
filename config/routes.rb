@@ -220,6 +220,9 @@ Sims::Application.routes.draw do
     member do
       post :new
     end
+    collection do
+      get :ajax_probe_assignment
+    end
   end
   resources :interventions do
     member do

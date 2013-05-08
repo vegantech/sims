@@ -51,11 +51,16 @@ jQuery ->
   $(document).on "change","select.change_date", ->
     adjust_end_date()
   $(document).on "change","select#intervention_intervention_probe_assignment_probe_definition_id", ->
+    if $(@).data().custom
+      url = "/custom_interventions/ajax_probe_assignment"
+    else
+      url = "/interventions/ajax_probe_assignment"
+    alert url
     $('#spinnerassign_progress').show()
     $.ajax
       dataType: 'script',
       type: 'GET',
-      url: '/interventions/ajax_probe_assignment',
+      url: url,
       data:
         id: @value
         intervention_id: $(@).data().interventionId
