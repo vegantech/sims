@@ -1,7 +1,7 @@
 <% unless intervention.blank? %>
-  <%@intervention = intervention %>
+  <%@intervention ||= intervention %>
   <%@users = ([nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}) %>
-  <%@recommended_monitors=intervention.try(:recommended_monitors) || [] %>
+  <%@recommended_monitors=@intervention.try(:recommended_monitors) || [] %>
 <% end %>
 
 <div id="intervention">

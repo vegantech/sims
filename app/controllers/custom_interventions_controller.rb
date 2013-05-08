@@ -7,34 +7,10 @@ class CustomInterventionsController < InterventionsController
 
 
   def create
-    params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
-    params[:intervention][:comment_author] = current_user.id
-
-    @intervention = build_from_session_and_params
-
-    if @intervention.save
-      flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
-      redirect_to(student_url(current_student, :tn=>0, :ep=>0))
-    else
-      @tiers = current_district.tiers
-      @users = ([nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]})
-      @recommended_monitors=@intervention.try(:recommended_monitors) || []
-      #raise @intervention.errors.inspect
-      @picker = Interventions::Goals.new(current_district,merged_params_and_values_from_session)
-      # This is to make validation work
-=begin      i = @intervention
-      @intervention_comment = @intervention.comments.first
-      @goal_definition = @intervention.goal_definition
-      @objective_definition=@intervention.objective_definition
-      @intervention_cluster = @intervention.intervention_cluster
-      @intervention_definition = @intervention.intervention_definition
-      populate_goals
-      @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
-      @intervention = i
-      # end code to make validation work
-=end
-      render :action => "new"
-    end
+    @tiers = current_district.tiers
+    params[:custom]=true
+    params[:category_id] = params[:intervention][:intervention_definition_attributes][:intervention_cluster_id]
+    super
   end
 
   private

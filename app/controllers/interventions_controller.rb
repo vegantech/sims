@@ -41,30 +41,15 @@ class InterventionsController < ApplicationController
 
   # POST /interventions
   def create
-    params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
-    params[:intervention][:comment_author] = current_user.id
-
+    adjust_create_params
     @intervention = build_from_session_and_params
 
     if @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
       redirect_to(student_url(current_student, :tn=>0, :ep=>0))
     else
-      puts @intervention.inspect
-      #raise @intervention.errors.inspect
       @picker = Interventions::Goals.new(current_district,merged_params_and_values_from_session)
-      # This is to make validation work
-=begin      i = @intervention
       @intervention_comment = @intervention.comments.first
-      @goal_definition = @intervention.goal_definition
-      @objective_definition=@intervention.objective_definition
-      @intervention_cluster = @intervention.intervention_cluster
-      @intervention_definition = @intervention.intervention_definition
-      populate_goals
-      @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
-      @intervention = i
-      # end code to make validation work
-=end
       render :action => "new"
     end
   end
@@ -189,13 +174,9 @@ class InterventionsController < ApplicationController
     @intervention
   end
 
-  def populate_intervention
-    return if params[:intervention_definition] and params[:intervention_definition][:id].blank?
-    find_intervention_definition
-    @recommended_monitors = @intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
-    params[:intervention] ||= {}
-    params[:intervention].merge!(:intervention_definition => @intervention_definition)
-    build_from_session_and_params
-    @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
+  def adjust_create_params
+    params["intervention"]["intervention_probe_assignment"]["probe_definition_attributes"].merge! params["probe_definition"] if params["probe_definition"]
+    params[:intervention][:comment_author] = current_user.id
+    params[:definition_id] ||= params[:intervention][:intervention_definition_id]
   end
 end
