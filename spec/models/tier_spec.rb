@@ -31,7 +31,7 @@ describe Tier do
       Checklist.destroy_all
       Recommendation.destroy_all
       PrincipalOverride.destroy_all
-      @tier = Factory(:tier)
+      @tier = FactoryGirl.create(:tier)
     end
 
     it 'should return false when the tier is not in use' do
@@ -67,23 +67,23 @@ describe Tier do
     describe 'when there are no more tiers' do
       it 'should return nil' do
         Tier.delete_all
-        tier = Factory(:tier).delete_successor.should be_nil
+        tier = FactoryGirl.create(:tier).delete_successor.should be_nil
       end
     end
 
     describe 'when there exists a greater tier' do
       it 'should return the next greater tier' do
-        t0 = Factory(:tier)
-        t1 = Factory(:tier)
-        t2 = Factory(:tier)
+        t0 = FactoryGirl.create(:tier)
+        t1 = FactoryGirl.create(:tier)
+        t2 = FactoryGirl.create(:tier)
         t1.delete_successor.should == t2
       end
     end
 
     describe 'when there only exists a lesser tier' do
       it 'should return the lesser tier' do
-        t0 = Factory(:tier)
-        t1 = Factory(:tier)
+        t0 = FactoryGirl.create(:tier)
+        t1 = FactoryGirl.create(:tier)
         t1.delete_successor.should == t0
       end
     end
@@ -92,15 +92,15 @@ describe Tier do
   describe 'move_children_to_delete_successor' do
     it 'should be called before destroy' do
       Tier.delete_all
-      t0 = Factory(:tier)
+      t0 = FactoryGirl.create(:tier)
       p1 = create_without_callbacks(Checklist, :tier => t0)
       t0.should_receive(:move_children_to_delete_successor)
       t0.destroy
     end
 
     it 'should move a child checklist and recommendation to the appropriate tier' do
-      t0 = Factory(:tier)
-      t1 = Factory(:tier)
+      t0 = FactoryGirl.create(:tier)
+      t1 = FactoryGirl.create(:tier)
       p1 = create_without_callbacks(Checklist, :tier => t0)
       p2 = create_without_callbacks(Recommendation, :tier => t0)
       t0.send(:move_children_to_delete_successor)
@@ -109,23 +109,22 @@ describe Tier do
     end
 
     it 'should move a child intervention_definition to the appropriate tier' do
-      t0 = Factory(:tier)
-      t1 = Factory(:tier)
+      t0 = FactoryGirl.create(:tier)
+      t1 = FactoryGirl.create(:tier)
       intervention_def = create_without_callbacks(InterventionDefinition, :tier => t1)
       t1.send(:move_children_to_delete_successor)
       intervention_def.reload.tier.should == t0
     end
 
-    it 'should not be called when the tier is destroued and not used' do
-      t0 = Factory(:tier)
-      t0[:id]=-1
+    it 'should not be called when the tier is destroyed and not used' do
+      t0 = FactoryGirl.create(:tier)
       t0.should_not_receive(:move_children_to_delete_successor)
       t0.destroy
     end
 
     it 'should move child principal overrides to the appropriate tier' do
-      t0 = Factory(:tier)
-      t1 = Factory(:tier)
+      t0 = FactoryGirl.create(:tier)
+      t1 = FactoryGirl.create(:tier)
       pos = create_without_callbacks(PrincipalOverride,:start_tier => t0)
       poe = create_without_callbacks(PrincipalOverride,:end_tier => t0)
       t0.send(:move_children_to_delete_successor)
