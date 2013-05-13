@@ -1,4 +1,7 @@
 SIMS-  Student Intervention Monitoring System
+
+<pre>Woo dog@cat.com</pre>
+
 ====
 [![Build Status](https://travis-ci.org/vegantech/sims.png?branch=master)](https://travis-ci.org/vegantech/sims)
 [![Dependency Status](https://gemnasium.com/vegantech/sims.png)](https://gemnasium.com/vegantech/sims)
