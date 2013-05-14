@@ -1,6 +1,8 @@
+This is basically turbolinks in rails 4.
+
 Identify parts that need to change, track using a session variable
 
-Do I care if the district logo changes?   Not really.  
+Do I care if the district logo changes?   Not really.
 
 header
 change the district on login
