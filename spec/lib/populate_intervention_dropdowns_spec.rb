@@ -1,7 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-include PopulateInterventionDropdowns
 describe "Populate Intervention Dropdowns Module" do
+  before do
+
+    pending "This all needs to be moved"
+
+  end
   def session
     {}
   end

@@ -55,7 +55,6 @@ jQuery ->
       url = "/custom_interventions/ajax_probe_assignment"
     else
       url = "/interventions/ajax_probe_assignment"
-    alert url
     $('#spinnerassign_progress').show()
     $.ajax
       dataType: 'script',

@@ -1,5 +1,6 @@
 $('#categories').nextAll().remove();
-$('#category_description').html("<%=escape_javascript description(@picker.object)%>");
+
+$('#category_description').html("<%=escape_javascript description(@picker.object)%><br class='brclear' />");
 $('#categories').after(<%=ejsr @picker.next%>);
 datePickerController.cleanUp();
 datePickerController.create();
