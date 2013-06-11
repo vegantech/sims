@@ -135,10 +135,6 @@ module ApplicationHelper
     end
   end
 
-  def windows_live?(district = current_district)
-    defined?(::WINDOWS_LIVE_CONFIG) && district.windows_live?
-  end
-
   def sanitize_and_js_escape_double_quotes(text)
     sanitize(text.gsub(/"/,"&quot"))
   end
