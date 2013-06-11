@@ -11,13 +11,9 @@
           <%= hidden_field_tag "user[district_id_for_login]"  , current_district.to_param %>
         <% end %>
       </div>
-      <div style="float:right">
-      <% if windows_live? %>
-        <%= link_to image_tag("WindowsLive-128.png", :alt => "Windows Live"), omniauth_authorize_path(resource_name, "windowslive") %>
-      <% end %>
-      <% if current_district.google_apps? %>
-        <%= link_to image_tag("Gmail-128.png",:alt => "Sign in with Gmail/Google Apps"), omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %>
-      <% end %>
+      <div style="float:right" id="omniauth_icons">
+        <%= windows_live_icon %>
+        <%= google_apps_icon %>
     </div>
 
 

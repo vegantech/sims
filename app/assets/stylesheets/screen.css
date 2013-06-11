@@ -121,3 +121,7 @@ tr .handle {
   background: #A2E5A2;
 }
 
+#omniauth_icons a:hover{
+  background: inherit;
+  text-decoration:none;
+}
