@@ -10,7 +10,8 @@ before_install:
   - ". gc_env.sh"
   - "sudo apt-get install -yqq unzip"
 before_script:
-  - "cp config/database.yml.mysql config/database.yml;"
+  - "cp config/database.yml.mysql config/database.yml"
+  - "cp config/windows_live.yml.sample config/windows_live.yml"
   - "bundle exec rake db:create db:schema:load"
 # drop:all db:create:all db:schema:load;"
 script:
