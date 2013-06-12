@@ -14,7 +14,7 @@
   <%= link_to 'Delete', intervention_builder_intervention_path(@goal_definition,@objective_definition,@intervention_cluster,intervention_definition), :confirm => 'Are you sure?', :method => :delete %><br />
   <%= link_to 'Recommend Progress Monitors', url_for(:controller=>'intervention_builder/recommended_monitors',:action=>"assign_probes_to_intervention",:id=>intervention_definition) %>
 </td>
-
+  <td><%=h intervention_definition.title %> </td>
   <td><%=h intervention_definition.description %></td>
   <td><%=h intervention_definition.tier.title  if intervention_definition.tier%></td>
   <td><%=h pluralize(intervention_definition.time_length_num, intervention_definition.time_length.title) if intervention_definition.time_length %></td>
