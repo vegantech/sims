@@ -5,20 +5,7 @@ class InterventionBuilder::InterventionsController < ApplicationController
   cache_sweeper :intervention_builder_sweeper
   # GET /intervention_definitions
   def index
-    params[:enabled]=true and params[:commit]=true unless params[:commit]
-    @intervention_definitions = @intervention_cluster.intervention_definitions
-
-    #TODO Refactor filter and put in model
-    if params[:commit]
-      if params[:enabled] || params[:disabled]
-        @intervention_definitions.reject!(&:disabled) unless params[:disabled]
-        @intervention_definitions = @intervention_definitions.select(&:disabled) unless params[:enabled]
-      end
-      if params[:custom] || params[:system]
-        @intervention_definitions.reject!(&:custom) unless params[:custom]
-        @intervention_definitions = @intervention_definitions.select(&:custom) unless params[:system]
-      end
-    end
+    @intervention_definitions = @intervention_cluster.intervention_definitions.filter(params)
 
     respond_to do |format|
       format.html # index.rhtml
@@ -109,11 +96,8 @@ class InterventionBuilder::InterventionsController < ApplicationController
 
   def move
     @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id])
-
-    if params[:direction]
-      @intervention_definition.move_higher if params[:direction].to_s == "up"
-      @intervention_definition.move_lower if params[:direction].to_s == "down"
-    end
+    @intervention_definition.move_higher if params[:direction].to_s == "up"
+    @intervention_definition.move_lower if params[:direction].to_s == "down"
     respond_to do |format|
       format.html {redirect_to :action => :index}
       format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}

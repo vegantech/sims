@@ -82,10 +82,6 @@ class InterventionDefinition < ActiveRecord::Base
       end
   }
 
-
-
-
-
   delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
 
   def title
@@ -102,14 +98,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   def district
     goal_definition.district
-  end
-
-  def district_quicklist
-    !!quicklist_items.find_by_district_id(district.id)
-  end
-
-  def district_quicklist=(arg)
-    @district_quicklist_arg=(arg =='1')
   end
 
   def goal_definition
@@ -174,5 +162,12 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-
+  def self.filter(opts ={})
+    disabled = !!opts[:disabled]
+    enabled = opts[:enabled]
+    custom = !!opts[:custom]
+    system = !!opts[:system]
+    where(["custom = ? or custom = ?",custom,!system]).
+      where(["disabled = ? or disabled = ?", disabled, (!enabled & disabled)])
+  end
 end
