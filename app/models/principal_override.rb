@@ -17,6 +17,7 @@
 #
 
 class PrincipalOverride < ActiveRecord::Base
+  DISTRICT_PARENT = :teacher
   belongs_to :teacher, :class_name => 'User'
   belongs_to :principal, :class_name =>'User'
   belongs_to :start_tier, :class_name => 'Tier'

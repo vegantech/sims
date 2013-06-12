@@ -12,6 +12,7 @@
 #
 
 class InterventionComment < ActiveRecord::Base
+  DISTRICT_PARENT = :user
   belongs_to :user
   belongs_to :intervention, :inverse_of => :comments
   validates_presence_of :comment

@@ -14,6 +14,7 @@
 
 #Also known as team_note
 class StudentComment < ActiveRecord::Base
+  DISTRICT_PARENT=:user
   include LinkAndAttachmentAssets
   belongs_to :student, :touch => true
   belongs_to :user

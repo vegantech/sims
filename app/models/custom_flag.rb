@@ -14,6 +14,7 @@
 #
 
 class CustomFlag < Flag
+  DISTRICT_PARENT = :user
   validate :either_custom_or_ignore
 
   define_statistic :flags , :count => :all,:joins =>:student

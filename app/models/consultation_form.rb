@@ -17,6 +17,7 @@
 #
 
 class ConsultationForm < ActiveRecord::Base
+  DISTRICT_PARENT = :team_consultation
   include LinkAndAttachmentAssets
   belongs_to :user
   belongs_to :team_consultation

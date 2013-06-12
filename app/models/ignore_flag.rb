@@ -14,6 +14,7 @@
 #
 
 class IgnoreFlag < Flag
+  DISTRICT_PARENT = :user
   validates_uniqueness_of :category, :scope => :student_id
   validate :either_custom_or_ignore
 
