@@ -11,13 +11,13 @@ Feature: Create Custom Intervention
     And I follow "New Custom Intervention"
 
     # same as intervention
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
     And I fill in "Title" with "Custom Intervention Name"
@@ -32,13 +32,13 @@ Feature: Create Custom Intervention
     # And I go Back to student profile screen
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
     Then I should see "Custom Intervention Name"
@@ -51,13 +51,13 @@ Feature: Create Custom Intervention
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
     # same as intervention
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
     And I select "2008" from "intervention_end_date"
@@ -77,13 +77,13 @@ Feature: Create Custom Intervention
     And I follow "New Custom Intervention"
 
     # same as intervention
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
     And I select "2" from "Frequency"

@@ -14,7 +14,7 @@ describe Interventions::GoalsController do
 
   describe "POST 'create'" do
     it "should redirect to objective createion" do
-      post 'create',:goal_definition=>{:id=>1}
+      post 'create',:goal_id=>1
       response.should redirect_to(interventions_objectives_url(1))
     end
   end
@@ -22,7 +22,7 @@ describe Interventions::GoalsController do
   describe "xhr POST 'create'" do
     it "should display the objective createion dropdown" do
       controller.should_receive(:populate_objectives)
-      xhr :post, 'create',:goal_definition=>{:id=>1}
+      xhr :post, 'create',:goal_id=>1
       response.should be_success
     end
   end

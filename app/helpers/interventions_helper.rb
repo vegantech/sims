@@ -48,4 +48,44 @@ module InterventionsHelper
   def custom_intervention_enabled?
     current_user.custom_interventions_enabled?
   end
+
+  def goal_select
+    intervention_dropdown_select(:goal_id, goals,@goal_definition)
+  end
+
+  def intervention_dropdown_select(obj_id,collection,selected_obj)
+    select_tag(obj_id,
+               options_from_collection_for_select(
+                 collection,:id,:title,selected_obj.try(:id)),
+                 {:prompt => "", :class => "fixed_width sim_submit"}
+              )
+  end
+
+  def objective_select
+    intervention_dropdown_select(:objective_id, objectives,@objective_definition)
+  end
+
+  def category_select
+    intervention_dropdown_select(:category_id, categories,@intervention_cluster)
+  end
+
+  def definition_select
+    intervention_dropdown_select(:definition_id, definitions,@intervention_definition)
+  end
+
+  def goals
+    @goal_definitions
+  end
+
+  def objectives
+    @objective_definitions
+  end
+
+  def categories
+    @intervention_clusters
+  end
+
+  def definitions
+    @intervention_definitions
+  end
 end

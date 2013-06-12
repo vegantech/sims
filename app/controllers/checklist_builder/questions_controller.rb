@@ -1,4 +1,4 @@
-class ChecklistBuilder::QuestionsController < ApplicationController
+class ChecklistBuilder::QuestionsController < ChecklistBuilder::Base
   before_filter :load_checklist_definition, :except => :suggestions
 
   def index
@@ -71,12 +71,7 @@ class ChecklistBuilder::QuestionsController < ApplicationController
 
   def destroy
     @question_definition = @checklist_definition.question_definitions.find(params[:id])
-     if @question_definition.has_answers?
-      flash[:notice]= "Question definition is in use, please copy the checklist instead"
-    else
-      flash[:notice] = ""
-      @question_definition.destroy
-    end
+    destroy_unless_content(@question_definition)
 
     respond_to do |format|
       format.html { redirect_to checklist_builder_checklist_url(@checklist_definition) }
@@ -86,19 +81,11 @@ class ChecklistBuilder::QuestionsController < ApplicationController
 
   def move
     @question_definition = @checklist_definition.question_definitions.find(params[:id])
-
-    if params[:direction]
-      @question_definition.move_higher if params[:direction] == "up"
-      @question_definition.move_lower if params[:direction] == "down"
-    end
-
-    respond_to do |format|
-      format.js
-    end
+    super
   end
 
   protected
-  def load_checklist_definition
-    @checklist_definition = current_district.checklist_definitions.find(params[:checklist_id])
+  def my_object
+    @question_definition
   end
 end
