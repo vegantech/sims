@@ -134,7 +134,7 @@ class ImportCSV
       update_memcache
 
       @messages << "Problem with zipfile #{originalname}" unless
-        system "unzip  -qq -o #{filename} -d #{@f_path}"
+        system "unzip -j -qq -o #{filename} -d #{@f_path}"
       @filenames = Dir.glob(File.join(@f_path, "*.csv"))
     else
       false
