@@ -7,7 +7,7 @@ describe CSVImporter::Students do
     it 'should upload properly' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
+      d=FactoryGirl.create(:district)
       i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students.csv",d
       i.import
       expected=  {997 => [false,true], 992 => [false,false], 993 => [false, false],
@@ -34,7 +34,7 @@ describe CSVImporter::Students do
     it 'should remove the students from the district and clear out the enrollments' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
+      d=FactoryGirl.create(:district)
       s1=d.students.create!(:id_state=>1, :first_name => 'keep', :last_name => 'student', :district_student_id => 's1')
       s1.enrollments.create(:school_id=>1, :grade =>'01')
       s2=d.students.create!(:id_state=>2, :first_name => 'destroy', :last_name => 'student', :district_student_id => 's2')
@@ -70,7 +70,7 @@ describe CSVImporter::Students do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
+      d=FactoryGirl.create(:district)
       d.students.create!(:id_state => 99, :first_name => "MISMATCHED", :last_name => "NAME_BUT_MATCHED_BIRTHDATE", :birthdate => "2006-01-01")
       d.students.create!(:id_state => 98, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MATCHING_NAME", :birthdate => nil)
       d.students.create!(:id_state => 97, :first_name => "NONMATCHING_BIRTHDATE_IN_DB", :last_name => "MATCHED_NAME", :birthdate => '2006-01-02')
@@ -115,13 +115,44 @@ describe CSVImporter::Students do
     it 'should zero out or reject an invalid birthdate' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
+      d=FactoryGirl.create(:district)
       i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/invalid_birthdate/students.csv",d
       i.import
       d.students.first.birthdate.should be_nil
       d.students.last.birthdate.should be_nil
     end
 
+  end
+
+  describe 'district_student_id change' do
+    let(:d) {FactoryGirl.create :district}
+    before do
+      District.delete_all
+      Student.delete_all
+      #import original students
+      i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/mismatched_district_student_id/original/students.csv",d
+      i.import
+    end
+    context 'no mismatched district_student_ids' do
+      it 'should not indicate that there are mismatched district_student_ids' do
+        i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/mismatched_district_student_id/original/students.csv",d
+        i.import
+        i.messages.should_not =~ ['Potential change in district_student_id, this must be consistent between each upload.  Aborting import']
+      end
+    end
+
+    context 'high percentage of mismatched district_student_ids' do
+      it 'should abort processing of all files' do
+        i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/mismatched_district_student_id/changed/students_and_enrollments.zip",d
+        i.import
+        puts i.messages
+      end
+      it 'should provide a message' do
+        i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/mismatched_district_student_id/changed/students.csv",d
+        i.import
+        i.messages.should =~ ['Potential change in district_student_id, this must be consistent between each upload.  Aborting import']
+      end
+    end
   end
 
 end

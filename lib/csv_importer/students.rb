@@ -147,6 +147,8 @@ module CSVImporter
 
       ActiveRecord::Base.connection.execute("update #{temporary_table_name} set id_state = null where id_state = ''")
 
+      verify_district_student_id_has_not_changed or return false
+
       try_to_claim_students_in_other_districts
       reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
       claim_students_with_nil_district
@@ -277,7 +279,21 @@ module CSVImporter
       end
     end
 
+   def verify_district_student_id_has_not_changed
+     #temporary_table_name
+     #[:id_state, :district_student_id, :number, :first_name, :middle_name, :last_name, :suffix, :birthdate,  :esl, :special_ed]
 
+     query= "SELECT count(*) FROM students s, #{temporary_table_name} ts WHERE s.district_student_id != ts.district_student_id and s.first_name = ts.first_name and s.last_name = ts.last_name and s.id_state = ts.id_state and s.number = ts.number and s.middle_name = ts.middle_name and s.suffix = ts.suffix and s.birthdate = ts.birthdate and s.esl = ts.esl and s.special_ed = ts.special_ed and s.district_id = #{@district.id} "
+
+     result = ActiveRecord::Base.connection.select_value(query).to_f
+
+     if result/@line_count > 0.1
+       @messages << 'Potential change in district_student_id, this must be consistent between each upload.  Aborting import'
+       return false
+     else
+       return true
+     end
+   end
 
   end
 end

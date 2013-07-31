@@ -1,0 +1,7 @@
+id_state,district_student_id,number,first_name,middle_name,last_name,suffix,birthdate,esl,special_ed
+991,UP1,UP1,Uploaded,Mid,Student1,,2003-01-31,false,Y
+992,UP2,UP1,Uploaded2,Mid,Student2,,2003-01-31,false,Y
+993,UP3,UP1,Uploaded3,Mid,Student3,,2003-01-31,false,Y
+994,UP4,UP1,Uploaded4,Mid,Student4,,2003-01-31,false,Y
+995,UP5,UP1,Uploaded5,Mid,Student5,,2003-01-31,false,Y
+996,UP6,UP1,Uploaded6,Mid,Student6,,2003-01-31,false,Y
