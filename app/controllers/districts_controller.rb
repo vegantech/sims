@@ -105,7 +105,7 @@ class DistrictsController < ApplicationController
   end
 
   def logs
-    @logs = current_district.logs.includes(:user)
+    @logs = current_district.logs.includes(:user).paginate(:page => params[:page], :per_page => 50)
   end
 
 private
