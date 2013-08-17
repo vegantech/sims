@@ -24,7 +24,7 @@ describe FlagsHelper do
     end
 
     it 'should return an image when there is  concern' do
-      student=Factory(:student)
+      student=FactoryGirl.create(:student)
       student.team_consultations.create!
       helper.team_concerns(student).should ==
         "<img alt=\"Comments\" class=\"popup\" data-help=\"Open Team Consultations\" src=\"/assets/comments.png\" /> "
@@ -57,7 +57,7 @@ describe FlagsHelper do
     end
 
     it 'should return an image when there are comments' do
-      student=Factory(:student)
+      student=FactoryGirl.create(:student)
       student.comments.create!(:body=>'This si comment 1')
       student.comments.create!(:body=>'This si comment 2')
       helper.team_notes(student).should == helper.image_with_popup("note.png", "2 team notes")
@@ -150,6 +150,30 @@ describe FlagsHelper do
             " src=\"/assets/fubar.png\" type=\"image\" /></form>"
         end
       end
+    end
+  end
+
+  describe 'intervention_status' do
+    let(:student) {mock_student(:active_interventions => "active_interventions", :inactive_interventions => "inactive_interventions")}
+    it 'should display them separated by a space' do
+      helper.should_receive(:intervention_dot).with("active_interventions","green-dot.gif").and_return("green int")
+      helper.should_receive(:intervention_dot).with("inactive_interventions","gray-dot.gif").and_return("gray in int")
+      helper.intervention_status(student).should == "green int gray in int"
+    end
+  end
+
+  describe 'intervention_dot' do
+    it 'should return nil if there are no interventions' do
+      helper.intervention_dot([],"e").should == nil
+    end
+
+    it 'should escape the intervention titles and join them with a br' do
+      interventions = [
+        mock_intervention(:title => 'Quote"Inside'),
+        mock_intervention(:title => 'Normal')
+      ]
+      helper.intervention_dot(interventions,"e").should == "<img alt=\"E\" class=\"popup\" data-help=\"Quote&quot;Inside<br />Normal\" src=\"/assets/e\" /> "
+
     end
   end
 end
