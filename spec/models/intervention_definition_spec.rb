@@ -26,12 +26,12 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InterventionDefinition do
   it "should create a new instance given valid attributes" do
-    Factory(:intervention_definition)
+    FactoryGirl.create(:intervention_definition)
   end
 
   describe 'district_quicklist' do
     it 'should return true and false if not if it is a member of the quicklist' do
-      k=Factory(:intervention_definition)
+      k=FactoryGirl.create(:intervention_definition)
       ql=QuicklistItem.create!(:district=>k.district, :intervention_definition => k)
       k.district_quicklist.should == true
 
@@ -41,7 +41,7 @@ describe InterventionDefinition do
 
     it 'should assign itself to the quicklist if = "1"' do
       pending
-      k=Factory(:intervention_definition)
+      k=FactoryGirl.create(:intervention_definition)
       k.district_quicklist.should == false
       k.district_quicklist = "1"
       k.save
@@ -56,7 +56,7 @@ describe InterventionDefinition do
     end
 
     it 'should remove itself from the quicklist if = false' do
-      k=Factory(:intervention_definition)
+      k=FactoryGirl.create(:intervention_definition)
       k.district_quicklist ="1"
       k.save
       k.district_quicklist ="0"
@@ -75,10 +75,10 @@ describe InterventionDefinition do
     before do
       Tier.delete_all
       InterventionDefinition.delete_all
-      @id1=Factory(:intervention_definition)
+      @id1=FactoryGirl.create(:intervention_definition)
       @ic1 = @id1.intervention_cluster
-      @id2=Factory(:intervention_definition, :intervention_cluster => @ic1)
-      @id3=Factory(:intervention_definition, :intervention_cluster => @ic1, :disabled=>true)
+      @id2=FactoryGirl.create(:intervention_definition, :intervention_cluster => @ic1)
+      @id3=FactoryGirl.create(:intervention_definition, :intervention_cluster => @ic1, :disabled=>true)
       @district = @id1.district
       @tier1=@district.tiers.create!(:title => 'tier 1')
       @tier2=@district.tiers.create!(:title => 'tier 2')
@@ -136,23 +136,23 @@ describe InterventionDefinition do
   describe 'for_dropdown' do
     before :all do
       InterventionDefinition.delete_all
-      @cucumber_user = Factory(:user)
+      @cucumber_user = FactoryGirl.create(:user)
       @cucumber_district = @cucumber_user.district
-      @cucumber_school = Factory(:school, :district => @cucumber_district)
-      gd=Factory(:goal_definition, :district => @cucumber_district)
-      od=Factory(:objective_definition, :goal_definition => gd)
-      @category = Factory(:intervention_cluster, :objective_definition => od)
-      @suss = Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
+      @cucumber_school = FactoryGirl.create(:school, :district => @cucumber_district)
+      gd=FactoryGirl.create(:goal_definition, :district => @cucumber_district)
+      od=FactoryGirl.create(:objective_definition, :goal_definition => gd)
+      @category = FactoryGirl.create(:intervention_cluster, :objective_definition => od)
+      @suss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
               :user_id => @cucumber_user.id, :school_id => @cucumber_school.id, :custom => true)
-      @suds = Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
+      @suds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
               :user_id => @cucumber_user.id, :school_id => -1, :custom => true)
-      @duss = Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
+      @duss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
               :user_id => -1, :school_id => @cucumber_school.id, :custom => true)
-      @duds = Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
+      @duds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
               :user_id => -1, :school_id => -1, :custom => true)
-      @dis = Factory(:intervention_definition, :intervention_cluster => @category, :title => "disabled",
+      @dis = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "disabled",
               :disabled => true)
-      @sys = Factory(:intervention_definition, :intervention_cluster => @category, :title => "system")
+      @sys = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "system")
     end
 
     it 'district custom interventions disabled' do
@@ -183,6 +183,26 @@ describe InterventionDefinition do
       @cucumber_district.custom_interventions = "one_off"
       InterventionDefinition.for_dropdown(nil,@cucumber_district, @cucumber_school.id, @cucumber_user).should =~
         [@sys]
+    end
+  end
+
+  describe 'active_progress_monitors' do
+    subject {FactoryGirl.create InterventionDefinition, :custom => custom}
+    let! (:other_definition) {FactoryGirl.create InterventionDefinition, :intervention_cluster_id => subject.intervention_cluster_id}
+
+    let! (:matching_active) {FactoryGirl.create ProbeDefinition, intervention_definitions:  [subject]}
+    let! (:matching_inactive) {FactoryGirl.create ProbeDefinition, :active => false, intervention_definitions: [subject]}
+    let! (:nonmatching_active) {FactoryGirl.create ProbeDefinition}
+    let! (:same_cluster) {FactoryGirl.create ProbeDefinition, intervention_definitions: [other_definition]}
+
+    describe 'for custom intervention definition' do
+      let(:custom) {true}
+      its(:active_progress_monitors) {should =~ [matching_active,same_cluster] }
+    end
+
+    describe 'for standard intervention definition' do
+      let(:custom) {false}
+      its(:active_progress_monitors) {should =~ [matching_active] }
     end
   end
 end
