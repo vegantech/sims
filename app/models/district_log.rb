@@ -11,6 +11,7 @@
 #
 
 class DistrictLog < ActiveRecord::Base
+  include Pageable
   belongs_to :district
   belongs_to :user
   SUCCESS =0
