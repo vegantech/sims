@@ -136,17 +136,12 @@ class InterventionDefinition < ActiveRecord::Base
     tier.to_s
   end
 
-  def recommended_monitors_with_custom
+  def active_progress_monitors
     if custom
-      all_rec=RecommendedMonitor.all(:joins => :intervention_definition, :conditions => {:intervention_definitions => {:intervention_cluster_id=>self.intervention_cluster_id}})
-      res=all_rec.inject([]) do |result, i|
-        result << i unless !result.blank? && result.detect{|s| s.probe_definition_id == i.probe_definition_id}
-        result
-      end  #this should remove duplicate reccommended monitors
+      active_progress_monitors_with_custom
     else
-      recommended_monitors
+      active_progress_monitors_without_custom
     end
-
   end
 
   def set_values_from_intervention(int)
@@ -160,6 +155,21 @@ class InterventionDefinition < ActiveRecord::Base
       self.frequency = int.frequency
       self.frequency_multiplier = int.frequency_multiplier
     end
+  end
+
+private
+  def active_progress_monitors_without_custom
+    active_progress_monitors_base.merge recommended_monitors.scoped
+  end
+
+  def active_progress_monitors_with_custom
+    active_progress_monitors_base.joins(:intervention_definitions).where(
+      "intervention_definitions.intervention_cluster_id" => self.intervention_cluster_id)
+      .where("recommended_monitors.intervention_definition_id = intervention_definitions.id").uniq
+  end
+
+  def active_progress_monitors_base
+    ProbeDefinition.active.joins(:recommended_monitors).order("recommended_monitors.position")
   end
 
   def self.filter(opts ={})

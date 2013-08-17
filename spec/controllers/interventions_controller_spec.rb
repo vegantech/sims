@@ -115,7 +115,7 @@ describe InterventionsController do
   describe "responding to GET edit" do
     it "should expose the requested intervention as @intervention" do
 
-      @intervention_definition.stub_association!(:recommended_monitors_with_custom, :select=> [1,3,2])
+      @intervention_definition.stub!(:active_progress_monitors => [1,3,2])
       @intervention.stub!(:intervention_probe_assignment =>1)
       get :edit, :id => @intervention.id.to_s
       assigns(:intervention).should equal(@intervention)

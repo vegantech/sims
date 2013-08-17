@@ -53,7 +53,7 @@
 <caption>Recommended Progress Monitors
 </caption>
 <tbody id="recommended_monitors_list">
-<%= render :partial => 'intervention_builder/recommended_monitors/recommended_monitor', :collection => @intervention_definition.recommended_monitors %>
+<%= render :partial => 'intervention_builder/recommended_monitors/recommended_monitor', :collection => @intervention_definition.recommended_monitors.active %>
 </tbody>
 </table>
 

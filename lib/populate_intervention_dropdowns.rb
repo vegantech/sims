@@ -17,7 +17,7 @@ protected
   def populate_intervention
     return if params[:intervention_definition] and params[:intervention_definition][:id].blank?
     find_intervention_definition
-    @recommended_monitors = @intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
+    @recommended_monitors = @intervention_definition.active_progress_monitors
     params[:intervention] ||= {}
     params[:intervention].merge!(:intervention_definition => @intervention_definition)
     build_from_session_and_params
