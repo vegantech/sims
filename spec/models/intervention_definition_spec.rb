@@ -143,4 +143,24 @@ describe InterventionDefinition do
         [@sys]
     end
   end
+
+  describe 'active_progress_monitors' do
+    subject {FactoryGirl.create InterventionDefinition, :custom => custom}
+    let! (:other_definition) {FactoryGirl.create InterventionDefinition, :intervention_cluster_id => subject.intervention_cluster_id}
+
+    let! (:matching_active) {FactoryGirl.create ProbeDefinition, intervention_definitions:  [subject]}
+    let! (:matching_inactive) {FactoryGirl.create ProbeDefinition, :active => false, intervention_definitions: [subject]}
+    let! (:nonmatching_active) {FactoryGirl.create ProbeDefinition}
+    let! (:same_cluster) {FactoryGirl.create ProbeDefinition, intervention_definitions: [other_definition]}
+
+    describe 'for custom intervention definition' do
+      let(:custom) {true}
+      its(:active_progress_monitors) {should =~ [matching_active,same_cluster] }
+    end
+
+    describe 'for standard intervention definition' do
+      let(:custom) {false}
+      its(:active_progress_monitors) {should =~ [matching_active] }
+    end
+  end
 end

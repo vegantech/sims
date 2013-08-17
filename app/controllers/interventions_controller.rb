@@ -34,7 +34,7 @@ class InterventionsController < ApplicationController
 
   # GET /interventions/1/edit
   def edit
-    @recommended_monitors = @intervention.intervention_definition.recommended_monitors_with_custom.select(&:probe_definition)
+    @recommended_monitors = @intervention.intervention_definition.active_progress_monitors
     @intervention_probe_assignment = @intervention.intervention_probe_assignment
     @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
     @intervention_comment = @intervention.comments.detect(&:new_record?) || InterventionComment.new

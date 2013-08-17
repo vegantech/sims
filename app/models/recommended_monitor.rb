@@ -19,6 +19,7 @@ class RecommendedMonitor < ActiveRecord::Base
 
   delegate :title, :to=>:probe_definition
   acts_as_list :scope=>:intervention_definition_id
+  scope :active, joins(:probe_definition).merge(ProbeDefinition.active)
 
   def recommended_frequency_mult
     InterventionProbeAssignment::RECOMMENDED_FREQUENCY
