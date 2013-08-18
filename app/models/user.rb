@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :district_id_for_login
   attr_accessor :district_id_for_login
-  include FullName, Devise::LegacyPassword, Pageable, StatsInUse
+  include FullName, Devise::LegacyPassword, Pageable, StatsInUse, Stats::User
 
   belongs_to :district
   has_many :user_school_assignments, :dependent => :destroy
@@ -62,42 +62,8 @@ class User < ActiveRecord::Base
 
   attr_protected :district_id
 
-  scope :non_admin, where("username not in ('tbiever', 'district_admin')")
-
-  scope :with_sims_content, joins("left outer join interventions on interventions.user_id = users.id
-  left outer join student_comments on users.id = student_comments.user_id
-  left outer join team_consultations on team_consultations.requestor_id = users.id
-  left outer join consultation_form_requests on consultation_form_requests.requestor_id = users.id"
-  ).where("interventions.id is not null or student_comments.id is not null or
-                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
-
   accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
   accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
-
-  FILTER_HASH_FOR_IN_USE_DATE_RANGE=
-  {
-  :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
-    or consultation_form_requests.created_at >=?)",
-  :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
-    or consultation_form_requests.created_at <=?)"
-  }
-
-
-
-
-  define_calculated_statistic :users_in_use  do
-    stats_in_use(@filters).count
-  end
-
-  define_calculated_statistic :districts_with_users_in_use  do
-    stats_in_use(@filters).count("distinct district_id")
-  end
-
-  define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
-
-
-
-
 
 #  define_statistic :users_with_content
 #  define_statistic :districts_with_users_with_content

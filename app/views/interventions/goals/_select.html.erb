@@ -1,11 +1,11 @@
 <div class="form_row">
-<% if @goal_definitions.blank? %>
+<% if goals.blank? %>
   Interventions are not available, no goals defined.
   <%= link_to :back, :back %>
 <%else%>
-  <%= form_for :goal_definition, :url => interventions_goals_path(:custom_intervention => custom_intervention?), :remote => true do |f| %>
-      <%= f.label(:id,'Assign Goal') %>
-      <%= f.collection_select(:id, @goal_definitions, :id, :title, {:prompt => ""}, {:class => "fixed_width sim_submit"}) %>
+  <%= form_tag interventions_goals_path(:custom_intervention => custom_intervention?), :remote => true do%>
+    <%= label_tag(:goal_id,'Assign Goal') %>
+    <%= goal_select %>
 <%= spinner("goals") %>
       <noscript><%= submit_tag("Choose Goal") %></noscript>
   <% end %>

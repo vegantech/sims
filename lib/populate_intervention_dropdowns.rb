@@ -54,11 +54,10 @@ protected
     populate_objectives if @goal_definition
   end
 
-
   def find_goal_definition
     @goal_definition ||=
-      if params[:goal_id] || (params[:goal_definition] && params[:goal_definition][:id])
-        current_district.goal_definitions.find_by_id(params[:goal_id] || params[:goal_definition][:id])
+      if params[:goal_id]
+        current_district.goal_definitions.find_by_id(params[:goal_id])
       elsif current_district.goal_definitions.enabled.one?
         current_district.goal_definitions.first
       else
@@ -69,9 +68,9 @@ protected
 
   def find_objective_definition
     find_goal_definition or return
-    @objective_definition ||= 
-      if params[:objective_id] || (params[:objective_definition] && params[:objective_definition][:id])
-        @goal_definition.objective_definitions.find_by_id(params[:objective_id] || params[:objective_definition][:id])
+    @objective_definition ||=
+      if params[:objective_id]
+        @goal_definition.objective_definitions.find_by_id(params[:objective_id])
       elsif @goal_definition.objective_definitions.enabled.one?
         @goal_definition.objective_definitions.first
       end
@@ -79,9 +78,9 @@ protected
 
   def find_intervention_cluster
     find_objective_definition or return
-    @intervention_cluster ||= 
-      if params[:category_id] || (params[:intervention_cluster] && params[:intervention_cluster][:id])
-        @objective_definition.intervention_clusters.find_by_id(params[:category_id] || params[:intervention_cluster][:id])
+    @intervention_cluster ||=
+      if params[:category_id]
+        @objective_definition.intervention_clusters.find_by_id(params[:category_id])
       elsif @objective_definition.intervention_clusters.enabled.one?
         @objective_definition.intervention_clusters.first
       end

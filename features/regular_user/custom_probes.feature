@@ -9,13 +9,13 @@ Feature: Create Custom Probes
 
     And I start at the student profile page
     Then I follow "Create New Custom Intervention and Progress Monitor"
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
     And I fill in "Title" with "Custom Intervention Name"
@@ -46,13 +46,13 @@ Feature: Create Custom Probes
     # And I go Back to student profile screen
     And I follow "Select New Intervention and Progress Monitor from Menu"
 
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
 
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
 
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
     
     And I select "(c) Custom Intervention Name" from "intervention_definition_id"

@@ -47,11 +47,11 @@ Feature: Sims Demo Walkthrough
     #also 211 for verifying score date.
 
     Then I follow "Select New Intervention and Progress Monitor from Menu"
-    Then I select "Learning" from "goal_definition_id"
+    Then I select "Learning" from "goal_id"
     Then I press "Choose Goal"
-    Then I select "Language Arts" from "objective_definition_id"
+    Then I select "Language Arts" from "objective_id"
     Then I press "Choose Objective"
-    Then I select "Reading problems" from "intervention_cluster_id"
+    Then I select "Reading problems" from "category_id"
     Then I press "Choose Category"
     Given PENDING intervention definitions is empty
     Then I select "Reading one" from "intervention_definition_id"
@@ -101,11 +101,11 @@ Feature: Sims Demo Walkthrough
 
     # intervention ticket #185
     Then I follow "Select New Intervention and Progress Monitor from Menu"
-    Then I select "Learning" from "goal_definition_id"
+    Then I select "Learning" from "goal_id"
     Then I press "Choose Goal"
-    Then I select "Math" from "objective_definition_id"
+    Then I select "Math" from "objective_id"
     Then I press "Choose Objective"
-    Then I select "Arithmetic problems" from "intervention_cluster_id"
+    Then I select "Arithmetic problems" from "category_id"
     Then I press "Choose Category"
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"
@@ -123,11 +123,11 @@ Feature: Sims Demo Walkthrough
 
 
     Then I follow "Select New Intervention and Progress Monitor from Menu"
-    Then I select "Learning" from "goal_definition_id"
+    Then I select "Learning" from "goal_id"
     Then I press "Choose Goal"
-    Then I select "Math" from "objective_definition_id"
+    Then I select "Math" from "objective_id"
     Then I press "Choose Objective"
-    Then I select "Arithmetic problems" from "intervention_cluster_id"
+    Then I select "Arithmetic problems" from "category_id"
     Then I press "Choose Category"
     Then I select "Arithmetic one" from "intervention_definition_id"
     Then I press "Choose Intervention"

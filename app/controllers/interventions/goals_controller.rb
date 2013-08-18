@@ -5,8 +5,8 @@ class Interventions::GoalsController < ApplicationController
   def create
     respond_to do |format|
       format.html do
-        if params[:goal_definition][:id].present?
-          redirect_to interventions_objectives_url(params[:goal_definition][:id], :custom_intervention => params[:custom_intervention])
+        if params[:goal_id].present?
+          redirect_to interventions_objectives_url(params[:goal_id], :custom_intervention => params[:custom_intervention])
         else
           redirect_to :back
         end

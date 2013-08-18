@@ -1,10 +1,10 @@
 <div id="objectives" class="form_row">
-<% if @objective_definitions %>
-  <%= form_for :objective_definition, :remote => true,
-    :url => interventions_objectives_path(@goal_definition,
-                                                 :custom_intervention => custom_intervention?) do |f| %>
-                                                   <%= f.label(:id, 'Assign Objective') %>
-    <%= f.collection_select(:id, @objective_definitions,:id,:title,{:prompt=>''},{:class=>"fixed_width sim_submit"}) %>
+<% if objectives %>
+  <%= form_tag interventions_objectives_path(@goal_definition,
+    :custom_intervention => custom_intervention?),
+    :remote => true do %>
+      <%= label_tag(:objective_id, 'Assign Objective') %>
+      <%= objective_select %>
     <%= spinner("objectives") %>
     <%= content_tag :noscript,  submit_tag("Choose Objective") %>
   <% end %>

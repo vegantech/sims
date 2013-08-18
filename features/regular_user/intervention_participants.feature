@@ -33,11 +33,11 @@ Feature: Assign Participants to Intervention
     And there are "0" emails
     And I start at the student profile page
     When I follow "Select New Intervention and Progress Monitor from Menu"
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
     When I follow "Add Participant"
     And I select "Firstcucumber_another Last_Name" from "intervention_participant_user_ids_"
@@ -56,11 +56,11 @@ Feature: Assign Participants to Intervention
     And there are "0" emails
     And I start at the student profile page
     When I follow "Select New Intervention and Progress Monitor from Menu"
-    And I select "Some Goal" from "goal_definition_id"
+    And I select "Some Goal" from "goal_id"
     And I press "Choose Goal"
-    And I select "Some Objective" from "objective_definition_id"
+    And I select "Some Objective" from "objective_id"
     And I press "Choose Objective"
-    And I select "Some Category" from "intervention_cluster_id"
+    And I select "Some Category" from "category_id"
     And I press "Choose Category"
     And I check "Assign yourself to this intervention"
     And I check "Apply to all selected students"
