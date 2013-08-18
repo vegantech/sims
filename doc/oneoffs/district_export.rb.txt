@@ -1,0 +1,29 @@
+  def create_tables
+    @files.keys.sort.each do |table|
+      puts "CREATE TABLE #{table} ("
+      cols= @files[table].split(',').collect do |header|
+        obj=table.classify.constantize
+        col=obj.columns.find{|col| col.name == header}
+        sql_type=col.sql_type
+        sql_type=sql_type.split("(").first if sql_type.include?("int")
+        sql_type="datetime" if sql_type == "date"
+        sql_type="int" if sql_type == "tinyint"
+        "#{header} #{sql_type}" 
+      end.join(", ")
+      puts cols
+      puts ");"
+
+    end
+  end
+
+  def sqlserver_bulk_import db,dir
+    puts "use #{db}"
+    puts "set nocount on"
+
+    @files.keys.sort.each do |table|
+      puts "truncate table #{table}"
+      puts "bulk insert #{table} from \"#{dir.join(table+'.tsv')}\""
+      puts "with ( ROWTERMINATOR = '\\n', FIELDTERMINATOR ='\\t', FIRSTROW=2)"
+    end
+  end
+
