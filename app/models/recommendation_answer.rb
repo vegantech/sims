@@ -12,6 +12,7 @@
 #
 
 class RecommendationAnswer < ActiveRecord::Base
+  DISTRICT_PARENT = :recommendation
   belongs_to :recommendation_answer_definition
   belongs_to :recommendation
   attr_accessor :draft

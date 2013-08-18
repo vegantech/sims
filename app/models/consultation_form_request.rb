@@ -13,6 +13,7 @@
 #
 
 class ConsultationFormRequest < ActiveRecord::Base
+  DISTRICT_PARENT = :school_team
   belongs_to :student, :touch => true
   belongs_to :requestor, :class_name => 'User'
   belongs_to :school_team, :foreign_key => 'team_id'

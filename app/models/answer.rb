@@ -12,6 +12,7 @@
 #
 
 class Answer < ActiveRecord::Base
+  DISTRICT_PARENT = :checklist
   belongs_to :checklist
   belongs_to :answer_definition
   has_many :previous_answers, :class_name => 'Answer',

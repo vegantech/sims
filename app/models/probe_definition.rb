@@ -20,6 +20,7 @@
 
 # Also referred to as "Progress Monitors"
 class ProbeDefinition < ActiveRecord::Base
+  DISTRICT_PARENT = :district
   include LinkAndAttachmentAssets
   belongs_to :district
   belongs_to :user

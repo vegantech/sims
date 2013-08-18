@@ -12,6 +12,7 @@
 #
 
 class SchoolTeamMembership < ActiveRecord::Base
+  DISTRICT_PARENT = :school_team
   belongs_to :school_team
   belongs_to :user
 
