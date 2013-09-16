@@ -19,6 +19,7 @@ class ObjectiveDefinition < ActiveRecord::Base
   has_many :intervention_clusters, :order =>:position, :dependent=> :destroy
   has_many :intervention_definitions, :through => :intervention_clusters
   scope :enabled, where(:disabled => false)
+  scope :content_export, enabled
 
   validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]

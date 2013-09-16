@@ -25,6 +25,7 @@ class ChecklistDefinition < ActiveRecord::Base
   has_many :checklists
 
   has_attached_file  :document
+  scope :content_export, order
 
   before_validation :clear_document
   validates_presence_of :directions, :text
