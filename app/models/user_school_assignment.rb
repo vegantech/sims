@@ -30,10 +30,11 @@ class UserSchoolAssignment < ActiveRecord::Base
   end
 
   def all_students=(val)
-    if val =="true" or val =="1"
+    id_will_change!
+    if [true, "true", 1, "1"].include? val
       @all_students=true
 
-    elsif val == "false" or val == "0"
+    elsif [false,"false",0,"0"].include? val
       @all_students=false
     end
 
@@ -46,9 +47,9 @@ private
 
   def create_all_students
     if @all_students
-      d=user.special_user_groups.find_or_create_by_school_id_and_grade(school_id,nil)
+      user.special_user_groups.find_or_create_by_school_id_and_grade(school_id,nil)
     elsif @all_students ==false
-     user.special_user_groups.find_all_by_school_id_and_grade(school_id, nil).each(&:destroy)
+      user.special_user_groups.find_all_by_school_id_and_grade(school_id, nil).each(&:destroy)
     end
   end
 
