@@ -9,13 +9,13 @@ module Devise
           self.sneaky_save
           return true
         else
-          return false
+          super(password)
         end
       else
         if reset_on_district_key?(password)
           self.send_reset_password_instructions(true) and raise Devise::ChangingPasswordInsteadOfFailedLogin
         else
-          super
+          super(password)
         end
       end
     end

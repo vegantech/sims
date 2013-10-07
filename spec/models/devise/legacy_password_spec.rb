@@ -4,7 +4,8 @@ describe Devise::LegacyPassword do
   describe 'legacy password is present' do
     let(:user) { fg=FactoryGirl.build(:user, :password => 'rspec123');fg.salt = 'salt';fg.passwordhash = Devise::LegacyPassword.legacy_encrypted_password('other123', 'salt');fg}
 
-    specify {user.valid_password?('rspec123').should_not be}
+    specify {user.valid_password?('rspec123').should be}
+    specify {user.valid_password?('incorrect_password').should_not be}
     describe 'matches' do
       specify {user.valid_password?('other123').should be}
       it 'should reset the salt and hash' do
