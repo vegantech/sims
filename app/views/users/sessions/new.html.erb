@@ -13,7 +13,7 @@
       </div>
       <div style="float:right" id="omniauth_icons">
         <%= windows_live_icon %>
-        <%= google_apps_icon %>
+        <%= google_apps_link icon: true %>
     </div>
 
 
@@ -42,7 +42,7 @@
     <% end  %>
 
     <% if current_district.google_apps? %>
-      <%= link_to "Sign in with Gmail/Google Apps", omniauth_authorize_path(resource_name, "google_apps",:domain => current_district.google_apps_domain) %>
+      <%= google_apps_link %>
       <%= help_popup "You can login with your district email and password.  You will be prompted to authorize SIMS.   This just lets you use that to login." %><br />
     <% end %>
     <% if windows_live? %>
