@@ -59,18 +59,27 @@ describe LoginHelper do
     end
   end
 
-  describe "google_apps_icon" do
-    it 'should display if google_apps? is true' do
-      helper.should_receive(:current_district).and_return(District.new)
-      helper.should_receive(:google_apps?).and_return(true)
-      helper.should_receive(:resource_name).and_return(:user)
-      helper.google_apps_icon.should == "<a href=\"/users/auth/google_apps?domain=\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
-    end
+  describe "google_apps_link" do
+    describe 'when google_apps is enabled' do
+      before do
+        helper.should_receive(:current_district).and_return(District.new)
+        helper.should_receive(:google_apps?).and_return(true)
+        helper.should_receive(:resource_name).and_return(:user)
+      end
 
-    it 'should not display if google_apps? is false' do
-      helper.should_receive(:google_apps?).and_return(false)
-      helper.google_apps_icon.should == nil
-    end
+      it 'should display with icon' do
+        helper.google_apps_link(:icon => true).should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
+      end
 
+      it 'should display with link' do
+        helper.google_apps_link.should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\">Sign in with Gmail/Google Apps</a>"
+      end
+    end
+    describe 'when google_apps is disabled' do
+      it 'should not display' do
+        helper.should_receive(:google_apps?).and_return(false)
+        helper.google_apps_link.should == nil
+      end
+    end
   end
 end
