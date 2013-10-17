@@ -25,6 +25,7 @@ class GoalDefinition < ActiveRecord::Base
   end
 
   scope :enabled, where(:disabled => false)
+  scope :content_export, order
   validates_uniqueness_of :description, :scope=>[:district_id,:title]
 
   validates_presence_of :title, :description
