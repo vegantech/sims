@@ -6,7 +6,7 @@ server "vegantech.com", :app, :web, :db, :primary => true
 <br /> The data in this demo gets reset weekly. Training districts are reset daily.  Training20 has additional features setup like SCI'
   set :application, "sims-wip"
   set :domain, 'sims-wip.vegantech.com'
-#  set :branch, 'wip'
+  set :branch, 'wip-open'
   set :default_url, 'http://sims-wip.vegantech.com'
 
 #  set :branch, 'aug-11-formatting-changes'
