@@ -19,6 +19,7 @@ class QuestionDefinition < ActiveRecord::Base
   acts_as_list :scope => :checklist_definition
 
   validates_presence_of :text
+  scope :content_export, order
 
   def sibling_definitions
     checklist_definition.question_definitions

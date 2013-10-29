@@ -28,6 +28,7 @@ class ElementDefinition < ActiveRecord::Base
   delegate :checklist_definition, :to => :question_definition
 
   acts_as_list :scope => :question_definition
+  scope :content_export, order
 
 
   validates_presence_of :question_definition_id,  :kind

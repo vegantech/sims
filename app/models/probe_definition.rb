@@ -40,6 +40,9 @@ class ProbeDefinition < ActiveRecord::Base
   attr_protected :district_id
   acts_as_list :scope => :district_id
 
+  scope :active, where(:active=> true)
+  scope :content_export, order
+
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :column_name => 'distinct title'
   define_calculated_statistic :districts_with_changes do

@@ -1,4 +1,4 @@
-
-<%@logs.each do |log|%>
+<%= will_paginate @logs %>
+<% @logs.each do |log|%>
   <%=log.to_s%> <br />
 <% end %>

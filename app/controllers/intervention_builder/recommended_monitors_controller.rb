@@ -11,7 +11,7 @@ class InterventionBuilder::RecommendedMonitorsController < ApplicationController
       redirect_to @back_path and return
     end
     @recommended_monitors = @intervention_definition.recommended_monitors.collect(&:probe_definition_id)
-    @probe_definitions_in_groups =  current_district.probe_definitions.group_by_cluster_and_objective
+    @probe_definitions_in_groups =  current_district.probe_definitions.active.group_by_cluster_and_objective
 
   end
 

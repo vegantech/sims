@@ -113,19 +113,15 @@ module FlagsHelper
   end
 
   def intervention_status(student)
-    str = []
+    [
+      intervention_dot(student.active_interventions, "green-dot.gif"),
+      intervention_dot(student.inactive_interventions, "gray-dot.gif")
+    ].join(" ")
+  end
 
-    ai = student.active_interventions
-    unless ai.blank?
-      popup =  ai.collect(&:title).join('<br />')
-      str << image_with_popup("green-dot.gif",popup)
-    end
 
-    ii = student.inactive_interventions
-    unless ii.blank?
-      popup =  ii.collect(&:title).join('<br />')
-      str << image_with_popup("gray-dot.gif",popup)
-    end
-    str.join(" ")
+  def intervention_dot(interventions, filename)
+    popup =  interventions.collect{|i| h i.title}.join('<br />')
+    image_with_popup(filename, popup) if popup.present?
   end
 end

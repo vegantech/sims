@@ -7,7 +7,6 @@ class Users::SessionsController < Devise::SessionsController
       reset_password and return
     else
       super
-      cookies[:user_id]={:value =>current_user.id, :domain => session_domain}
     end
   end
 
@@ -24,13 +23,6 @@ class Users::SessionsController < Devise::SessionsController
     end
     super
   end
-
-  def destroy
-    super
-    cookies[:user_id]={:value =>nil, :domain => session_domain}
-    cookies[:selected_student]={:value =>nil, :domain => session_domain}
-  end
-
 
   private
 
