@@ -167,7 +167,7 @@ describe StudentsController do
 
 
   it 'has student search should call Enrollment.search' do
-    Enrollment.should_receive(:search).and_return([1,2,3])
+    StudentSearch.should_receive(:search).and_return([1,2,3])
     session = {:search => {}}
     controller.stub!(:session => session)
     #    controller.should_receive(:session).and_return({:search=>{}})
