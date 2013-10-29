@@ -50,13 +50,36 @@ class DistrictExport
     :schools => "id,district_school_id",
   }
 
+  CONTENT_ONLY = [
+    :assets,
+    :answer_definitions,
+    :checklist_definitions,
+    :element_definitions,
+    :goal_definitions,
+    :intervention_clusters,
+    :intervention_definitions,
+    :objective_definitions,
+    :probe_definitions,
+    :probe_definition_benchmarks,
+    :question_definitions,
+    :recommendation_answer_definitions,
+    :recommendation_definitions,
+    :recommended_monitors,
+    :tiers
+  ]
+
   def self.generate(district)
     self.new(district).generate
+  end
+
+  def self.export_content(district)
+    self.new(district).export_content
   end
 
   def initialize(district)
     @district = district
     @dir = Rails.root.join("tmp","district_export",district.id.to_s)
+    @content_dir = Rails.root.join("tmp","content_export",district.id.to_s)
     @files=Hash.new
     @student_ids_in_use = []
   end
@@ -72,7 +95,7 @@ class DistrictExport
         return (string.gsub /"/m, "''")
   end
 
-  def setup_directory
+  def setup_directory(dir = dir)
     dir.rmtree if dir.exist?
     dir.mkpath
   end
@@ -95,6 +118,25 @@ class DistrictExport
 
   def generate_users
     self.generate_csv('users', 'id,district_user_id', "where (district_id = #{district.id}) or (district_id is null and username like '#{district.id}-%')")
+  end
+
+  def export_content_csv
+    CONTENT_ONLY.each do |t|
+        cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
+        cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
+        self.generate_content_csv(t.to_s,cols,
+                         district.send(t).content_export.select(cols_with_table_name).to_sql)
+    end
+  end
+
+  def export_content
+    setup_directory(@content_dir)
+    export_content_csv
+  end
+
+  def generate
+    setup_directory
+    csv_tsv
   end
 
   def generate_students
@@ -172,6 +214,21 @@ class DistrictExport
       tsv << row.collect{|c| no_double_quotes(c)}
     end
   end
+
+  def generate_content_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
+    @files[filename]=headers
+    sql = "select #{headers} from #{table} #{sql}" unless sql.match(/^select/i)
+    CSV.open(@content_dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
+      csv << headers.split(',')
+      select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
+      Student.connection.select_rows(sql).each do |row|
+        puts row
+        csv << row
+      end
+    end
+  end
+
+
 
   def generate_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
     @files[filename]=headers

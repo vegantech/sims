@@ -21,6 +21,7 @@ class Asset < ActiveRecord::Base
   belongs_to :user
 
   scope :for_user, lambda { |u| where(user_id: u) }
+  scope :content_export, order
 
   has_attached_file :document
 

@@ -64,6 +64,7 @@ class InterventionDefinition < ActiveRecord::Base
 
 
   scope :general, where(["intervention_definitions.custom is null or intervention_definitions.custom = ?",false])
+  scope :content_export, general
   scope :enabled, where(:disabled => false)
   scope :for_report, general.enabled.includes(
   [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
