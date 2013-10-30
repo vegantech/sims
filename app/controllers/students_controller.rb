@@ -92,7 +92,7 @@ class StudentsController < ApplicationController
 
   def student_search(index_includes=false)
     session[:search] ||= {}
-    Enrollment.search(session[:search].merge(
+    StudentSearch.search(session[:search].merge(
       :school_id => current_school_id,
       :user => current_user,
       :index_includes =>index_includes))
