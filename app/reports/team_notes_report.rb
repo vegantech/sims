@@ -17,7 +17,7 @@ class TeamNotesReport
       base_order = ["body","student_comments.created_at","students.last_name, students.first_name"]
     end
 
-    student_ids = Enrollment.search({:search_type =>'list_all',
+    student_ids = StudentSearch.search({:search_type =>'list_all',
                  :school_id => @school.id, :user => @user}).collect(&:student_id)
     StudentComment.includes([:student,:user]).where(
     ["body like ?", "%#{@content}%"]).where(

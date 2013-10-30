@@ -1,7 +1,7 @@
 class StudentFlagReport
   def current_flagged_students
     @search[:search_type]='flagged_intervention'
-    students = Enrollment.search(@search).collect(&:student).compact.uniq
+    students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
   def current_flags
@@ -24,12 +24,12 @@ class StudentFlagReport
 
   def custom_flags
     @search[:flagged_intervention_types]=['custom']
-    students = Enrollment.search(@search).collect(&:student).compact.uniq
+    students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
   def ignore_flags
     @search[:flagged_intervention_types]=['ignored']
-    students = Enrollment.search(@search).collect(&:student).compact.uniq
+    students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
   def initialize(options = {})

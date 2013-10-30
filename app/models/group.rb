@@ -24,6 +24,7 @@ class Group < ActiveRecord::Base
   has_many :users, :through=>:user_group_assignments
   validates_presence_of :title, :school_id
   validates_uniqueness_of :title, :scope=>:school_id
+  validates_format_of :title, :without => PersonalGroup::TITLE_MATCH
 
   scope :by_school, lambda { |school| where(:school_id => school)}
   #doing the joins for by_grade was 3x slower, so we're using exists in a subquery
