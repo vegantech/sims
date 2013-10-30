@@ -19,4 +19,5 @@ script:
 branches:
   only:
   - master
-  - wip
+  - rm_production
+  - wip-open

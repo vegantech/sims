@@ -1,7 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentSearch do
+  def def_hash(args = {})
+    {
+      :search_type => 'list_all',
+      :school => school
+    }.merge(args)
+  end
+
+  def search_def_hash(opts={})
+    StudentSearch.search def_hash(opts)
+  end
+
   let(:school) {FactoryGirl.create :school }
+
   describe 'year_search' do
     before do
       Enrollment.delete_all
@@ -9,17 +21,6 @@ describe StudentSearch do
       @e2=school.enrollments.create!(:grade => 2, :end_year => 2)
       @e3=school.enrollments.create!(:grade => 2, :end_year => 2)
       @e4=school.enrollments.create!(:grade => 2, :end_year => 3)
-    end
-
-    def def_hash(args = {})
-      {
-        :search_type => 'list_all',
-        :school => school
-      }.merge(args)
-    end
-
-    def search_def_hash(opts={})
-      StudentSearch.search def_hash(opts)
     end
 
 
@@ -260,6 +261,17 @@ describe StudentSearch do
           search_results = StudentSearch.search( :search_type => 'flagged_intervention', :flagged_intervention_types => [])
           search_results.should == [@e1,@e2,@e3]
         end
+      end
+    end
+
+    describe 'personal_group' do
+      let(:pg) {PersonalGroup.create :name => 'test'}
+      let! (:in_group) {FactoryGirl.create(:student, :district => school.district, :personal_groups => [pg])}
+      let! (:out_group) {FactoryGirl.create(:student, :district => school.district)}
+      it 'should return no students' do
+        e1 = school.enrollments.create!(:student => in_group, :grade => '1')
+        e2 = school.enrollments.create!(:student => out_group, :grade => '1')
+        search_def_hash(:group_id => "pg#{pg.id}}").should =~ [e1]
       end
     end
   end
