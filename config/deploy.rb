@@ -132,3 +132,10 @@ Dir[File.join(File.dirname(__FILE__), '..', 'vendor', 'gems', 'airbrake-*')].eac
 end
 
 require 'airbrake/capistrano'
+
+set :default_environment, self[:default_environment].merge(
+'RUBY_GC_MALLOC_LIMIT'=>1000000000,
+'RUBY_FREE_MIN'=>500000,
+'RUBY_HEAP_MIN_SLOTS'=>800000,
+'RUBY_HEAP_SLOTS_INCREMENT'=>300000,
+'RUBY_HEAP_SLOTS_GROWTH_FACTOR'=>1)
