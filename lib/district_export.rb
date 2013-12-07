@@ -51,7 +51,6 @@ class DistrictExport
   }
 
   CONTENT_ONLY = [
-    :assets,
     :answer_definitions,
     :checklist_definitions,
     :element_definitions,
@@ -86,13 +85,13 @@ class DistrictExport
 
   def no_double_quotes field
     return if field.blank?
-        string=field.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
-        string.gsub! /\342\200\230/m, "'"
-        string.gsub! /\342\200\231/m, "'"
-        string.gsub! /\342\200\234/m, '"'
-        string.gsub! /\342\200\235/m, '"'
-        string.gsub! /\t/m, '   '
-        return (string.gsub /"/m, "''")
+    string=field.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
+    string.gsub! /\342\200\230/m, "'"
+    string.gsub! /\342\200\231/m, "'"
+    string.gsub! /\342\200\234/m, '"'
+    string.gsub! /\342\200\235/m, '"'
+    string.gsub! /\t/m, '   '
+    return (string.gsub /"/m, "''")
   end
 
   def setup_directory(dir = dir)
@@ -132,6 +131,7 @@ class DistrictExport
   def export_content
     setup_directory(@content_dir)
     export_content_csv
+    export_assets
   end
 
   def generate
