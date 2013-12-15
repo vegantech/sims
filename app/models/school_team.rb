@@ -41,6 +41,9 @@ class SchoolTeam < ActiveRecord::Base
     name
   end
 
+  def user_membership=(member_hash = {})
+  end
+
   private
   def update_contacts
     if @contact_ids

@@ -21,9 +21,19 @@ Members
       <tr>
         <%user_row.each do |user| %>
           <td>
-            <%= check_box_tag 'school_team[user_ids][]',user.id, @school_team.users.include?(user), :id => dom_id(user,"team_school") %>
+            <%="contact or member icon" if @school_team.users.include?(user) %>
+            <%#= check_box_tag 'school_team[user_ids][]',user.id, @school_team.users.include?(user), :id => dom_id(user,"team_school") %>
             <%= label_tag dom_id(user, "team_school"), user.to_s %>
-            <%#= %>
+            <span class="member_or_contact">
+              <%= image_tag 'arrow-down.gif' %>
+              <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'nonmember', true %>
+
+              <%= image_tag 'arrow-up.gif' %>
+              <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'member' %>
+              <%= image_tag 'green-dot.gif' %>
+              <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'contact' %>
+              <%#= %>
+            </span>
           </td>
         <% end %>
       </tr>
