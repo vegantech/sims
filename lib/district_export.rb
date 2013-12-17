@@ -120,6 +120,7 @@ class DistrictExport
   end
 
   def export_content_csv
+   @assets= Hash.new{|h, k| h[k] = []}
     CONTENT_ONLY.each do |t|
         cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
         cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
@@ -131,7 +132,7 @@ class DistrictExport
   def export_content
     setup_directory(@content_dir)
     export_content_csv
-    export_assets
+    export_content_assets
   end
 
   def generate
@@ -175,6 +176,14 @@ class DistrictExport
 
   def export_assets
     generate_csv('assets',Asset.column_names.join(","),Asset.where(:id => district_asset_ids).to_sql)
+  end
+
+  def export_content_assets
+    #union of ids from @assets
+    asset_sql = @assets.collect{|c,ids| Asset.where(:attachable_type => c, :attachable_id => ids).to_sql}.join(" union ")
+    generate_content_csv('assets',Asset.column_names.join(","),asset_sql)
+    Asset.find_by_sql(asset_sql).collect{|a| a.document.try(:path)}.compact
+
   end
 
   def export_bat_and_sh
@@ -222,7 +231,7 @@ class DistrictExport
       csv << headers.split(',')
       select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows(sql).each do |row|
-        puts row
+        @assets[table.classify] << row[0]
         csv << row
       end
     end
