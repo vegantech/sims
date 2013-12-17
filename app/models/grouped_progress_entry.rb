@@ -9,7 +9,7 @@ class GroupedProgressEntry
   end
 
   def self.all(user, search)
-    student_ids=StudentSearch.search(search).collect(&:student_id)
+    student_ids=StudentSearch.search(search).pluck(:student_id)
     interventions2(user.id,student_ids).map { |c| new(c,user,student_ids, search) }
   end
 
