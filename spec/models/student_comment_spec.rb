@@ -14,13 +14,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentComment do
-  before(:each) do
-    @valid_attributes = {
-      :body => "value for body"
-    }
+  subject { StudentComment.new }
+  it { should have(1).error_on(:body) }
+
+  describe 'with an asset' do
+    subject { StudentComment.new.tap{ |sc| sc.assets.build } }
+    it { should have(:no).errors_on(:body) }
   end
 
-  it "should create a new instance given valid attributes" do
-    StudentComment.create!(@valid_attributes)
-  end
 end
