@@ -7,7 +7,7 @@ Feature: Team Notes
   Given I am at the student profile page
   And I follow "Add Note"
   And I press "Save"
-  Then I should see "Body can't be blank"
+  Then I should see "Body or attachment is required"
 
   Scenario: Try to edit blank comment for a student
   Given there is a comment by me
@@ -15,7 +15,7 @@ Feature: Team Notes
   And I follow "Add Note"
   And I fill in "Note" with ""
   And I press "Save"
-  Then I should see "Body can't be blank"
+  Then I should see "Body or attachment is required"
 
 
 
