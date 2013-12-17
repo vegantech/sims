@@ -40,7 +40,7 @@ class StudentSearch
   private
 
  def personal_group_search
-    if PersonalGroup::TITLE_MATCH.match search_hash[:group_id]
+    if PersonalGroup::ID_MATCH.match search_hash[:group_id]
       pg=search_hash.delete(:group_id)[2..-1]
       @enrollments = @enrollments.joins("inner join personal_groups_students on
                                         personal_groups_students.student_id = enrollments.student_id"
