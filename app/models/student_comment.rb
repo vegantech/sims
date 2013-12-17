@@ -18,7 +18,7 @@ class StudentComment < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :student, :touch => true
   belongs_to :user
-  validates_presence_of :body
+  validates :body, presence: {if: -> sc { sc.assets.blank? }, message: "or attachment is required"}
   attr_accessible :body, :existing_asset_attributes, :new_asset_attributes, :created_at
 
   define_statistic :team_notes , :count => :all, :joins => :student
