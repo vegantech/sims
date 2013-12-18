@@ -34,11 +34,11 @@ datePicker.languageinfo = datePicker.languageinfo ? datePicker.languageinfo.toLo
 
 // Load the appropriate language file
 var scriptFiles = document.getElementsByTagName('head')[0].getElementsByTagName('script');
-var loc = scriptFiles[scriptFiles.length - 1].src.substr(0, scriptFiles[scriptFiles.length - 1].src.lastIndexOf("/")) + "/lang/" + datePicker.languageinfo + ".js";
+//var loc = scriptFiles[scriptFiles.length - 1].src.substr(0, scriptFiles[scriptFiles.length - 1].src.lastIndexOf("/")) + "/lang/" + datePicker.languageinfo + ".js";
 
 var script  = document.createElement('script');
 script.type = "text/javascript";
-script.src  = loc;
+script.src  = "/assets/lang/en.js";
 script.setAttribute("charset", "utf-8");
 /*@cc_on
 /*@if(@_win32)
