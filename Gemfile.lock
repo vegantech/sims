@@ -14,11 +14,10 @@ GIT
 
 GIT
   remote: git://github.com/vegantech/railmail.git
-  revision: 12e19f9a4bc21142f0691f5b2fe7091008e244cb
-  branch: skip_authorize_and_authenticate
+  revision: 4d4739ca135faff550820a183d03134abbe0c0c6
   specs:
     railmail (3.0.0)
-      rails (~> 3.0)
+      rails (>= 3.0, < 4.1)
       will_paginate (~> 3.0.pre2)
 
 GEM
