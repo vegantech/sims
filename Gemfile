@@ -64,6 +64,7 @@ gem 'overlib-rails'
 gem 'silence_rails_3_2_plugin_deprecations'
 
 
+gem 'jasmine-rails', :group => [:development, :test]
 group :test do
   gem 'simplecov', :require => false
   gem 'capybara', :require => false
