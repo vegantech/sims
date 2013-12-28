@@ -3,12 +3,12 @@
   <%#= check_box_tag 'school_team[user_ids][]',user.id, @school_team.users.include?(user), :id => dom_id(user,"team_school") %>
   <%= label_tag dom_id(user, "team_school"), user.to_s %>
   <span class="member_or_contact">
-    <%= image_tag 'arrow-down.gif' %>
+    <%= image_tag 'delete.png' %>
     <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'nonmember', true %>
 
-    <%= image_tag 'arrow-up.gif' %>
+    <%= image_tag 'group.png' %>
     <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'member' %>
-    <%= image_tag 'green-dot.gif' %>
+    <%= image_tag 'user_comment.png' %>
     <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'contact' %>
     <%#= %>
   </span>
