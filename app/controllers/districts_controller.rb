@@ -76,7 +76,7 @@ class DistrictsController < ApplicationController
   end
 
   def export
-    send_file(DistrictExport.generate(current_district), :type => 'applciation/zip', :x_sendfile => true)
+    send_file(DistrictExport.generate(current_district), :type => 'application/zip', :x_sendfile => true)
 
   end
 

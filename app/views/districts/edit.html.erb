@@ -34,7 +34,7 @@
         <%= f.check_box :google_apps %><br />
         <%= f.label :google_apps_domain %>
         <%= f.text_field :google_apps_domain %>
-        <%= help_popup "If you use gmail or google apps, users can login using their email and password.   You must  also enter your domain by entering it here Checking this will provide a google mail link/image on the login page.  <p>Your google apps admin may need to: <ul> <li> go to google apps</li> <li>Manage this domain</li><li>Click on Advanced tools in the blue bar</li><li>go to Federated Login in the Authentication section and click</li><li> Check the box to allow users to sign into 3rd party websites and save.</li></ul></p>".html_safe %>
+        <%= help_popup "If you use gmail or google apps, users can login using their email and password.   You must  also enter your domain by entering it here.  Checking this will provide a google mail link/image on the login page.  <p>Your google apps admin may need to: <ul> <li> Go to google apps</li> <li>Manage this domain</li><li>Click on Advanced tools in the blue bar</li><li>Go to Federated Login in the Authentication section and click</li><li> Check the box to allow users to sign into 3rd party websites and save.</li></ul></p>".html_safe %>
       </div>
 
     <% if defined? ::WINDOWS_LIVE_CONFIG %>
@@ -76,7 +76,7 @@
         <dt>Content Admins</dt>
         <dd>new custom interventions will only be available for content administrators, but they will be shared with the selected school.</dd>
         <dt>One Off</dt>
-        <dd>Everyone will  be able to create a custom intervention, but they will not be available for reuse.</dd>
+        <dd>Everyone will be able to create a custom intervention, but they will not be available for reuse.</dd>
         <dt>Disabled</dt>
         <dd>no one will be able to create a custom intervention, but existing ones will be available for reuse by the author.</dd>
         </dl>" %>
