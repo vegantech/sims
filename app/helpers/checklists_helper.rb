@@ -98,7 +98,7 @@ module ChecklistsHelper
   end
 
   def markdown_note
-      link_to "You can use markdown","http://www.deveiate.org/projects/BlueCloth/wiki/AboutMarkdown",:target=>"_blank"
+      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",:target=>"_blank"
   end
 
   def markdown_with_span(text)
