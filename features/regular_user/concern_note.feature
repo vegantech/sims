@@ -8,7 +8,7 @@ Feature: Concern Note
 
   Scenario: Create Team Consultation Form without any teams
     When I follow "Create Team Consultation Form"
-    Then I should see "A form cannot be assigned for this schol until a school admin assigns teams."
+    Then I should see "A form cannot be assigned for this school until a school admin assigns teams."
 
 
   Scenario: Create Team Consultation Form

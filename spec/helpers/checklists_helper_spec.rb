@@ -60,7 +60,7 @@ describe ChecklistsHelper do
 
   describe 'with bluecloth defined' do
     it 'should show markdown note' do
-      markdown_note.should match(/AboutMarkdown/)
+      markdown_note.should match(/markdown/)
     end
 
   end
