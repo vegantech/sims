@@ -20,6 +20,12 @@ GIT
       rails (>= 3.0, < 4.1)
       will_paginate (~> 3.0.pre2)
 
+GIT
+  remote: git@github.com:brianmario/mysql2.git
+  revision: ba0068c37a284eb2700fa3c0b15fd74d0275a976
+  specs:
+    mysql2 (0.3.14)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -190,7 +196,6 @@ GEM
     mime-types (1.25.1)
     multi_json (1.8.2)
     multipart-post (1.2.0)
-    mysql2 (0.3.12b4)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -381,7 +386,7 @@ DEPENDENCIES
   jquery-ui-rails
   launchy
   libnotify
-  mysql2 (>= 0.3.12b4)
+  mysql2!
   newrelic_rpm
   nokogiri
   omniauth-google-apps
