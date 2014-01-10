@@ -1,10 +1,8 @@
 GIT
-  remote: git://github.com/JohnColvin/jquery-scrollto-rails.git
-  revision: f02c38528a5ae86aba41811984c9b32e93171c55
-  ref: f02c38528a5ae86aba41811984c9b32e93171c55
+  remote: git://github.com/brianmario/mysql2.git
+  revision: ba0068c37a284eb2700fa3c0b15fd74d0275a976
   specs:
-    jquery-scrollto-rails (1.4.2)
-      railties (~> 3.1)
+    mysql2 (0.3.14)
 
 GIT
   remote: git://github.com/rfc2822/spawn
@@ -19,12 +17,6 @@ GIT
     railmail (3.0.0)
       rails (>= 3.0, < 4.1)
       will_paginate (~> 3.0.pre2)
-
-GIT
-  remote: git@github.com:brianmario/mysql2.git
-  revision: ba0068c37a284eb2700fa3c0b15fd74d0275a976
-  specs:
-    mysql2 (0.3.14)
 
 GEM
   remote: https://rubygems.org/
@@ -169,6 +161,8 @@ GEM
     jquery-rails (2.2.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-scrollto-rails (1.4.3)
+      railties (> 3.1, < 5.0)
     jquery-ui-rails (3.0.1)
       jquery-rails
       railties (>= 3.1.0)
@@ -188,7 +182,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.25.1)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     multipart-post (1.2.0)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
@@ -261,7 +255,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.1.0)
+    rake (10.1.1)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
     rdoc (3.12.2)
@@ -370,7 +364,7 @@ DEPENDENCIES
   guard-spork
   jasmine-rails
   jquery-rails
-  jquery-scrollto-rails!
+  jquery-scrollto-rails
   jquery-ui-rails
   launchy
   libnotify

@@ -36,7 +36,7 @@ gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'mysql2', :git => "git@github.com:brianmario/mysql2.git"
+gem 'mysql2', :git => "git://github.com/brianmario/mysql2.git"
 gem 'nokogiri','1.4.4', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'dalli'
@@ -56,7 +56,7 @@ gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:w
 gem 'rinku', :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache], :require => "rails_rinku"
 gem 'sneaky-save'
 gem 'jquery-rails'
-gem "jquery-scrollto-rails", :git => "git://github.com/JohnColvin/jquery-scrollto-rails.git", :ref => "f02c38528a5ae86aba41811984c9b32e93171c55"
+gem "jquery-scrollto-rails"
 gem 'jquery-ui-rails'
 gem 'awesome_nested_fields'
 gem 'overlib-rails'
