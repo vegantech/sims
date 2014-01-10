@@ -60,8 +60,8 @@ Feature: Create Custom Intervention
     And I select "Some Category" from "category_id"
     And I press "Choose Category"
 
-    And I select "2008" from "intervention_end_date"
-    And I select "2010" from "intervention_start_date"
+    And I select <<2 years ago>> from "intervention_end_date"
+    And I select <<1 year ago>> from "intervention_start_date"
 
     When I press "Save"
     And I should see "Must be after start date"

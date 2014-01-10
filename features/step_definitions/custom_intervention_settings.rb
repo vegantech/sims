@@ -56,3 +56,8 @@ Then /^I start a new intervention based on the following table:$/ do |table|
     end
   end
 end
+
+Given /^I select <<(\d+) years? ago>> from "(.*?)"$/ do |year,field|
+  step "select \"#{Date.today.year - year.to_i}\" from \"#{field}\""
+end
+
