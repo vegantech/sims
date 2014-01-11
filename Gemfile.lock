@@ -370,7 +370,7 @@ DEPENDENCIES
   libnotify
   mysql2!
   newrelic_rpm
-  nokogiri (= 1.4.4)
+  nokogiri
   omniauth-google-apps
   omniauth-windowslive
   overlib-rails
