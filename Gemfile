@@ -42,7 +42,7 @@ gem 'rdoc', '>2.4.2', :require => false
 gem 'dalli'
 gem 'cells'
 gem 'paperclip', '~> 2.7.0'
-gem "spawn", :git => 'git://github.com/rfc2822/spawn'
+gem 'spawnling', :git => 'git://github.com/vegantech/spawnling'
 gem 'dynamic_form'
 gem 'acts_as_list'
 gem 'will_paginate'

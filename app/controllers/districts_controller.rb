@@ -127,7 +127,7 @@ private
   end
 
   def bulk_import_post_spawn
-    spawn_block do
+    Spawnling.new do
       begin
         importer= ImportCSV.new params[:import_file], current_district
         x=Benchmark.measure{importer.import}

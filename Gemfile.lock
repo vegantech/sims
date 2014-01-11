@@ -5,18 +5,18 @@ GIT
     mysql2 (0.3.14)
 
 GIT
-  remote: git://github.com/rfc2822/spawn
-  revision: ca0cf371ad02f0679ad26ce5bc9c7a9337569982
-  specs:
-    spawn (1.0.1)
-
-GIT
   remote: git://github.com/vegantech/railmail.git
   revision: 4d4739ca135faff550820a183d03134abbe0c0c6
   specs:
     railmail (3.0.0)
       rails (>= 3.0, < 4.1)
       will_paginate (~> 3.0.pre2)
+
+GIT
+  remote: git://github.com/vegantech/spawnling
+  revision: 259e988fa7eb1e3e90d999a404501089d54cd299
+  specs:
+    spawnling (2.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -391,7 +391,7 @@ DEPENDENCIES
   silence_rails_3_2_plugin_deprecations
   simplecov
   sneaky-save
-  spawn!
+  spawnling!
   spork
   statistics
   thin

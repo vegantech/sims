@@ -1,2 +1,6 @@
-<h1>Scripted#district_upload</h1>
-<p>Find me in app/views/scripted/district_upload.html.erb</p>
+You need to post a form.
+<%=link_to "Upload Instructions", "/doc/district_upload" %>
+
+
+If you are using curl the command should looks something like this: <br />
+curl --user district_upload:password -Fupload_file=@sims_upload.zip https://<%=@u.district.abbrev%>.simspilot.org/scripted/district_upload -k
