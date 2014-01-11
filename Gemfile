@@ -36,12 +36,8 @@ gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
-gem 'nokogiri', :require => false
 gem 'mysql2', :git => "git://github.com/brianmario/mysql2.git"
-<<<<<<< HEAD
-=======
 gem 'nokogiri', :require => false
->>>>>>> rm_production
 gem 'rdoc', '>2.4.2', :require => false
 gem 'dalli'
 gem 'cells'
