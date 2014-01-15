@@ -16,22 +16,15 @@ class ScriptedController < ApplicationController
 
   def district_upload
     if request.post?
-      #curl --user foo:bar -Fupload_file=@x.c http://localhost:3333/scripted/district_upload?district_abbrev=mmsd
-      #      render :text => "#{params.inspect} #{current_district.to_s}"
-      spawn_block do
-        importer = ImportCSV.new params[:upload_file], current_district
-        importer.import
-        Notifications.district_upload_results(importer.messages, @u.email || 'sbalestracci@madison.k12.wi.us').deliver
-      end
+      DistrictUploadJob.new.async_perform params[:upload_file], current_district, @u.email
       render :text=> ''
-    else
-      raise 'error'
     end
+      render :layout=>false
   end
 
   def automated_intervention
     if request.post?
-      spawn_block(:method => :yield) do
+      Spawnling.new(:method => :yield) do
         importer=AutomatedIntervention.new params[:upload_file], @u
         @messages=importer.import
         Notifications.district_upload_results( @messages, @u.email || 'sbalestracci@madison.k12.wi.us').deliver
@@ -57,7 +50,7 @@ protected
   def bulk_import
 
     if request.post?
-      spawn_block do
+      Spawnling.new do
         importer= ImportCSV.new params[:import_file], current_district
         x=Benchmark.measure{importer.import}
 

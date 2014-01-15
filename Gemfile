@@ -36,13 +36,13 @@ gem 'redcarpet'
 gem 'googlecharts','1.6.3'
 gem 'airbrake'
 gem 'rails_responds_to_parent'#,'0.0.0', :git => 'git://github.com/itkin/respond_to_parent.git'
+gem 'nokogiri', '>=1.4.4',  :require => false
 gem 'mysql2', :git => "git://github.com/brianmario/mysql2.git"
-gem 'nokogiri', :require => false
 gem 'rdoc', '>2.4.2', :require => false
 gem 'dalli'
 gem 'cells'
 gem 'paperclip', '~> 2.7.0'
-gem "spawn", :git => 'git://github.com/rfc2822/spawn'
+gem 'spawnling', :git => 'git://github.com/vegantech/spawnling'
 gem 'dynamic_form'
 gem 'acts_as_list'
 gem 'will_paginate'
