@@ -88,10 +88,11 @@ class DistrictsController < ApplicationController
   def bulk_import
    # TODO REFACTOR THIS
     if request.post?
-      @results = ''
+      @results = 'Starting to process'
       Rails.cache.write("#{current_district.id}_import",'')
-      bulk_import_post_spawn
+      DistrictUploadJob.new.async_perform params[:import_file], current_district
       ActiveRecord::Base.connection.reconnect!
+      @results = Rails.cache.read("#{current_district.id}_import")
       append_reload_js_to_results
       render #:layout => 'bulk_import'
     else
@@ -126,26 +127,4 @@ private
 
   end
 
-  def bulk_import_post_spawn
-    Spawnling.new do
-      begin
-        importer= ImportCSV.new params[:import_file], current_district
-        x=Benchmark.measure{importer.import}
-
-        @results = "#{importer.messages.join(", ")} #{x}"
-        #request redirect_to root_url
-      rescue => e
-        Rails.logger.error "Spawn Exception #{Time.now} #{e.message} #{e.backtrace}"
-        Airbrake.notify(
-          :backtrace => e.backtrace,
-          :error_class => "Spawn Error",
-          :error_message => "Spawn Error: #{e.message}"
-        )
-        Rails.cache.write("#{current_district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{ImportCSV::EOF}")
-        raise e
-      end
-
-    end
-
-  end
 end

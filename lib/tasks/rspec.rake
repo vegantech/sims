@@ -15,7 +15,7 @@ desc "Run all specs in spec directory (excluding plugin specs)"
 RSpec::Core::RakeTask.new(:spec => spec_prereq)
 
 namespace :spec do
-  [:requests, :models, :controllers, :views, :helpers, :mailers, :lib, :routing].each do |sub|
+  [:requests, :models, :controllers, :views, :helpers, :mailers, :lib, :routing, :jobs].each do |sub|
     desc "Run the code examples in spec/#{sub}"
     RSpec::Core::RakeTask.new(sub => spec_prereq) do |t|
       t.pattern = "./spec/#{sub}/**/*_spec.rb"
@@ -39,6 +39,7 @@ namespace :spec do
     ::STATS_DIRECTORIES << %w(Mailer\ specs spec/mailers) if File.exist?('spec/mailers')
     ::STATS_DIRECTORIES << %w(Routing\ specs spec/routing) if File.exist?('spec/routing')
     ::STATS_DIRECTORIES << %w(Request\ specs spec/requests) if File.exist?('spec/requests')
+    ::STATS_DIRECTORIES << %w(Job\ specs spec/jobs) if File.exist?('spec/jobs')
     ::CodeStatistics::TEST_TYPES << "Model specs" if File.exist?('spec/models')
     ::CodeStatistics::TEST_TYPES << "View specs" if File.exist?('spec/views')
     ::CodeStatistics::TEST_TYPES << "Controller specs" if File.exist?('spec/controllers')
@@ -47,6 +48,7 @@ namespace :spec do
     ::CodeStatistics::TEST_TYPES << "Mailer specs" if File.exist?('spec/mailers')
     ::CodeStatistics::TEST_TYPES << "Routing specs" if File.exist?('spec/routing')
     ::CodeStatistics::TEST_TYPES << "Request specs" if File.exist?('spec/requests')
+    ::CodeStatistics::TEST_TYPES << "Job specs" if File.exist?('spec/jobs')
   end
 end
 rescue LoadError
