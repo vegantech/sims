@@ -64,22 +64,26 @@ gem 'coveralls'
 
 
 gem 'jasmine-rails', :group => [:development, :test]
-group :test do
+
+group :test, :cucumber do
   gem 'simplecov', :require => false
   gem 'capybara', :require => false
+end
+
+group :test, :cucumber, :development do
   gem 'rspec-rails','~>2.6', :require => false
+end
+
+group :test do
   gem 'rspec-html-matchers'
 end
 
 group :cucumber do
-  gem 'simplecov',  :require => false
-  gem 'capybara', :require => false
   gem 'cucumber-rails', :require => false
   gem 'rack-test', :require => 'rack/test'
   gem 'database_cleaner','>=0.5.0', :require => false
   gem 'email_spec','=1.2.1', :require => false
   gem 'launchy'
-  gem 'rspec-rails','~>2.6', :require => false
 end
 
 group :development do
@@ -90,7 +94,6 @@ group :development do
   #gem "ripper", :platforms => :ruby_19
   gem 'flog'
   gem 'flay'
-  gem 'rspec-rails','~>2.6', :require => false
   gem 'spork'
   gem 'guard'
   gem 'guard-spork'
