@@ -18,8 +18,9 @@ class ScriptedController < ApplicationController
     if request.post?
       DistrictUploadJob.new.async_perform params[:upload_file], current_district, @u.email
       render :text=> ''
-    end
+    else
       render :layout=>false
+    end
   end
 
   def automated_intervention
