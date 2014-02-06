@@ -1,7 +1,7 @@
 <%= plus_minus_li  "Intervention and Progress Monitors" do   %>
   <% %w{ html pdf }.each do |format| %>
     <% current_district.objective_definitions.each do |obj| %>
-      <%= content_tag :li, link_to_with_icon("#{obj.filename}.#{format}", "/system/district_generated_docs/#{current_district.id}/#{obj.filename}.#{format}") %>
+      <%= content_tag :li, link_to_with_icon("#{obj.filename}.#{format}", "/system/district_generated_docs/#{current_district.id}/#{obj.filename}.#{format}?d=#{obj.updated_at.to_i}") %>
     <% end %>
   <% end %>
 <% end %>
