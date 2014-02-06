@@ -13,9 +13,8 @@ gem 'rails', '3.2.16'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-# gem 'ruby-debug'
-# gem 'ruby-debug19', :require => 'ruby-debug'
+# Uncomment next line to use debugger
+# gem "debugger", "~> 1.6.5"
 
 # Bundle the extra gems:
 # gem 'bj'
