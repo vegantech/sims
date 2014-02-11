@@ -1,9 +1,7 @@
-class InterventionBuilder::CategoriesController < ApplicationController
-  helper_method :move_path
-  cache_sweeper :intervention_builder_sweeper
-
-  # GET /intervention_clusters
+class InterventionBuilder::CategoriesController < InterventionBuilder::BaseController
   before_filter :get_objective_definition
+  # GET /intervention_clusters
+
   def index
     @intervention_clusters = @objective_definition.intervention_clusters.find(:all)
 

@@ -28,10 +28,10 @@
     <%= plus_minus_li "Reports" do %>
       <%= li_link_to_if_authorized('School Team Notes by Date', '/reports/team_notes') unless current_school.blank? %>
       <%= li_link_to_if_authorized "Regenerate Intervention documents in menu",
-        regenerate_intervention_pdfs_intervention_builder_goals_path, :method => :put %>
+        intervention_builder_regenerate_intervention_pdfs_path, :method => :put %>
 
         <%= li_link_to_if_authorized "Interventions Without Recommended Monitors",
-          interventions_without_recommended_monitors_intervention_builder_goals_path, :method => :get %>
+          intervention_builder_interventions_without_recommended_monitors_path, :method => :get %>
           <% if current_student  %>
             <%= li_link_to_if_authorized "<b>Student Report</b>".html_safe, {:controller => 'reports', :action => 'student_overall_options', :student_id => current_student.id } %>
             <%= li_link_to_if_authorized "Student Interventions", {:controller => 'reports', :action => 'student_interventions', :student_id => current_student.id } %>
