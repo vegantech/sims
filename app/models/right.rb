@@ -30,6 +30,7 @@ RIGHTS={
     "personal_groups",
     "ignore_flags",],
   "content_admin"=>["intervention_builder/recommended_monitors",
+      "intervention_builder/base",
       "intervention_builder/goals",
       "checklist_builder/elements",
       "intervention_builder/probes",

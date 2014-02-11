@@ -163,6 +163,9 @@ Sims::Application.routes.draw do
 
 
   namespace :intervention_builder do
+    put "regenerate_intervention_pdfs", :controller => :base
+    get "interventions_without_recommended_monitors",   :controller => :base
+
     match "recommended_montors/:action", :controller => :recommended_monitors
     resources :probes do
       member do
@@ -177,10 +180,6 @@ Sims::Application.routes.draw do
       member do
         put :move
         put :disable
-      end
-      collection do
-        put :regenerate_intervention_pdfs
-        get :interventions_without_recommended_monitors
       end
     end
     scope "/goals/:goal_id" do

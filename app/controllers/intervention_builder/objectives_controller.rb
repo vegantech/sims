@@ -1,9 +1,5 @@
-class InterventionBuilder::ObjectivesController < ApplicationController
-
-
-  helper_method :move_path
+class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseController
   before_filter :get_goal_definition, :except => :suggestions
-  cache_sweeper :intervention_builder_sweeper
 
   # GET /objective_definitions
   def index

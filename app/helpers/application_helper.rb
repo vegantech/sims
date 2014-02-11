@@ -23,8 +23,9 @@ module ApplicationHelper
    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
     if options.is_a?String
       url = options
+      method = html_options.fetch(:method, :get)
       url = "/"+url.split("/")[3..-1].join("/").split('?').first unless url=~ /^\//
-      hsh = ::Rails.application.routes.recognize_path url, :method => :get
+      hsh = ::Rails.application.routes.recognize_path url, :method => method
     else
       if options[:controller].present?
         #Without a leading / url_for will assume it is in the current namespace

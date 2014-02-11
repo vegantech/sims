@@ -1,7 +1,6 @@
-class InterventionBuilder::ProbesController < ApplicationController
+class InterventionBuilder::ProbesController < InterventionBuilder::BaseController
   skip_before_filter :authorize, :only => [:add_benchmark, :suggestions]
   skip_before_filter :verify_authenticity_token, :only => :disable
-  cache_sweeper :intervention_builder_sweeper
 
   def index
     params[:enabled]=true and params[:commit]=true unless params[:commit]
