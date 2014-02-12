@@ -51,10 +51,9 @@ GEM
       multi_json (~> 1.0)
     acts_as_list (0.1.8)
     addressable (2.3.2)
-    airbrake (3.1.8)
-      activesupport
+    airbrake (3.1.15)
       builder
-      json
+      multi_json
     arel (3.0.3)
     awesome_nested_fields (0.6.1)
       rails (>= 3.0.0)
