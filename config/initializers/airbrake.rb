@@ -3,6 +3,7 @@ Airbrake.configure do |config|
   config.host    = 'vegantech-errbit.herokuapp.com'
   config.port    = 443
   config.secure  = config.port == 443
+  config.use_system_ssl_cert_chain = true
 
   #config.api_key = '7fed52e49c9cf366087d9071db425f1c'
   config.ignore_only  = []
