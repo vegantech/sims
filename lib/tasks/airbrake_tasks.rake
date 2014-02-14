@@ -7,7 +7,6 @@ unless ARGV.any? {|a| a =~ /^gems/}
     $: << File.join(vendored_notifier, 'lib')
   end
 
-  require_relative '../../config/initializers/fix_ssl'
   begin
     require 'airbrake/tasks'
   rescue LoadError => exception
