@@ -3,12 +3,12 @@
   <%= label_tag dom_id(user, "team_school"), user.to_s %>
   <span class="member_or_contact">
     <%= image_tag 'delete.png' %>
-    <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'nonmember', !@school_team.users.include?(user) %>
+    <%= radio_button_tag "school_team[users][#{user.id}]", 'nonmember', !@school_team.users.include?(user) %>
 
     <%= image_tag 'group.png' %>
-    <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'member', @school_team.users.include?(user) && !@school_team.team_contacts.include?(user) %>
+    <%= radio_button_tag "school_team[users][#{user.id}]", 'member', @school_team.users.include?(user) && !@school_team.team_contacts.include?(user) %>
     <%= image_tag 'user_comment.png' %>
-    <%= radio_button_tag "school_team[user_membership][#{user.id}]", 'contact', @school_team.users.include?(user) && @school_team.team_contacts.include?(user) %>
+    <%= radio_button_tag "school_team[users][#{user.id}]", 'contact', @school_team.users.include?(user) && @school_team.team_contacts.include?(user) %>
     <%#= %>
   </span>
 </td>

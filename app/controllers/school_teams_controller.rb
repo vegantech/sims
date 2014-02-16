@@ -54,11 +54,14 @@ class SchoolTeamsController < SchoolAdminController
   # PUT /school_teams/1
   # PUT /school_teams/1.xml
   def update
-    params[:school_team][:user_ids] ||=[] if params[:school_team]
     @school_team = current_school.school_teams.find(params[:id])
-
+    @contact_ids = params[:school_team][:users].select{|k,v| v =="contact"}.keys if params[:school_team]
+    @noncontact_member_ids = params[:school_team][:users].select{|k,v| v == "member"}.keys if params[:school_team]
+    params[:school_team][:user_ids] = @contact_ids | @noncontact_member_ids
+    params[:school_team][:contact_ids] = @contact_ids
+    debugger
     respond_to do |format|
-      if @school_team.update_attributes(params[:school_team])
+      if @school_team.update_attributes(params[:school_team].slice(:user_ids, :contact_ids, :name))
         flash[:notice] = "#{edit_obj_link(@school_team)} was successfully updated.".html_safe
         format.html { redirect_to(school_teams_url) }
       else

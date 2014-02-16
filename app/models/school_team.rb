@@ -30,7 +30,7 @@ class SchoolTeam < ActiveRecord::Base
   after_save :update_contacts
 
   def contact_ids=(ids)
-    @contact_ids=ids.select(&:present?).collect(&:to_i)
+    @contact_ids=ids.collect(&:to_i)
   end
 
   def contact_ids
@@ -47,9 +47,10 @@ class SchoolTeam < ActiveRecord::Base
   private
   def update_contacts
     if @contact_ids
-      self.user_ids |=@contact_ids
-      SchoolTeamMembership.delete_all("contact=true and user_id not in (#{@contact_ids.join(",")}) and school_team_id = #{self.id}")
+      self.user_ids |= @contact_ids
+      debugger
       school_team_memberships.update_all('contact=true', "user_id in (#{@contact_ids.join(",")})")
+      school_team_memberships.update_all('contact=false', "user_id in (#{(self.user_ids-@contact_ids).join(",")})")
     end
   end
 
