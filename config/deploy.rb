@@ -25,7 +25,7 @@ after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note,
   "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :seed, :create_intervention_pdfs, :create_file_directory, :create_secret
-before "deploy", :prime_errbit
+before "deploy", "deploy:prime_errbit"
 
 
 namespace :deploy do
