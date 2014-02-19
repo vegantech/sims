@@ -18,12 +18,14 @@ set :bundle_without, [:development, :test, :cucumber]
 set :login_note, 'This is the demo.   You use names like oneschool (look to the menu at the left for more.)
  <br /> The data in this demo gets reset daily.'
 
+set :errbit_url, "vegantech-errbit.herokuapp.com"
 
 
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret,
   "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :seed, :create_intervention_pdfs, :create_file_directory, :create_secret
+before "deploy", :prime_errbit
 
 
 namespace :deploy do
@@ -43,6 +45,11 @@ namespace :deploy do
 
   task :kickstart, :roles => "app" do
     kickstart_url = fetch(:default_url) || fetch(:domain)
+    system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
+  end
+
+  task :prime_errbit, :roles => "app" do
+    kickstart_url = fetch(:errbit_url) || "vegantech-errbit.herokuapp.com"
     system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
   end
 
