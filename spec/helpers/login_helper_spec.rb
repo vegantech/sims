@@ -48,6 +48,7 @@ describe LoginHelper do
 
   describe "windows_live_icon" do
     it 'should display if windows_live? is true' do
+      pending "windows_live omniauth provider not available" unless Devise.omniauth_providers.include? :windowslive
       helper.should_receive(:windows_live?).and_return(true)
       helper.should_receive(:resource_name).and_return(:user)
       helper.windows_live_icon.should == "<a href=\"/users/auth/windowslive\"><img alt=\"Windows Live\" src=\"/assets/WindowsLive-128.png\" title=\"Windows Live\" /></a>"

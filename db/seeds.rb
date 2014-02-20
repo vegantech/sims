@@ -12,4 +12,4 @@ ActiveRecord::Fixtures.create_fixtures(Rails.root.join("db","training"),f)
 end
 System.bootstrap
 
-puts 'to create a training district, run rails runner CreateTrainingDistrict.generate_one'
+puts 'to create a training district, run bundle exec rails runner CreateTrainingDistrict.generate_one'
