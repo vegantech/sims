@@ -1,0 +1,28 @@
+Ubuntu 13.10 server
+
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison ruby ncurses-term ruby-dev curl autoconf make automake ssh git-core git-doc vim vim-rails mysql-server mysql-client libmysqlclient-dev unzip nodejs  libgdbm-dev pkg-config libffi-dev memcache zip
+
+\curl -sSL https://get.rvm.io | bash -s stable --ruby=1.9.3
+
+source /home/ubuntu/.rvm/scripts/rvm
+
+git clone https://github.com/vegantech/sims.git
+
+cd sims
+bundle
+cp config/database.yml.mysql config/database.yml
+bundle exec rake db:setup
+
+
+bundle exec rails runner CreateTrainingDistrict.generate_one
+
+If you see warnings about gtk, you can ignore these.
+
+
+To run tests:
+run bundle exec rake
+
+
+If you get an error about a missing test database you can create it:
+bundle exec rake db:test:prepare
+
