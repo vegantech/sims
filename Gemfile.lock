@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/vegantech/railmail.git
-  revision: ef294237cf5a367064db8beea463c8188e164683
+  revision: d83cc4bae62e4b1344c45f1b50f98219d3881c55
   specs:
     railmail (3.0.0)
       rails (>= 3.0, < 4.1)
