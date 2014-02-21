@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TeamReferrals do
   describe "concern_note_created" do
    it 'should send the email' do
-      user=Factory(:user, :email => 'bob@e.fg')
-      student = Factory(:student, :district => user.district)
+      user=FactoryGirl.create(:user, :email => 'bob@e.fg')
+      student = FactoryGirl.create(:student, :district => user.district)
       team = SchoolTeam.create!(:name => 'Testing', :contact_ids => [user.id])
 
       note = TeamConsultation.new(:student=>student,:requestor => user, :school_team => team )
@@ -22,9 +22,9 @@ describe TeamReferrals do
     it 'should send the email' do
 
       oldurl_opts = TeamReferrals.default_url_options
-      user=Factory(:user, :email => 'one@bob.com')
-      user2=Factory(:user, :district => user.district, :email => 'two@bob.com')
-      student = Factory(:student, :district => user.district)
+      user=FactoryGirl.create(:user, :email => 'one@bob.com')
+      user2=FactoryGirl.create(:user, :district => user.district, :email => 'two@bob.com')
+      student = FactoryGirl.create(:student, :district => user.district)
       users=[user,user2]
       requestor = user
       sims_domain = "sims_test_host"

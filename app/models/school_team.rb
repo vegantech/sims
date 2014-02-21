@@ -37,6 +37,12 @@ class SchoolTeam < ActiveRecord::Base
     @contact_ids || self.team_contact_ids
   end
 
+  def user_ids=(ids)
+    super(ids)
+    @member_ids = ids
+
+  end
+
   def to_s
     name
   end
@@ -44,9 +50,15 @@ class SchoolTeam < ActiveRecord::Base
   private
   def update_contacts
     if @contact_ids
-      self.user_ids |=@contact_ids
-      SchoolTeamMembership.delete_all("contact=true and user_id not in (#{@contact_ids.join(",")}) and school_team_id = #{self.id}")
-      school_team_memberships.update_all('contact=true', "user_id in (#{@contact_ids.join(",")})")
+      @member_ids ||= []
+      @member_ids |= @contact_ids
+      self.user_ids = @member_ids
+      #demote former contacts that are now members
+      school_team_memberships.where(["user_id not in (?)", @contact_ids]).update_all(:contact => false)
+      #remove contacts that are no longer members
+      school_team_memberships.where(:contact => true).where(["user_id not in (?)", @member_ids]).delete_all
+      #promote new contacts
+      school_team_memberships.where(:user_id => @contact_ids).update_all(:contact => true)
     end
   end
 
