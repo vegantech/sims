@@ -29,6 +29,8 @@ class SchoolTeam < ActiveRecord::Base
   validates_presence_of :contact_ids, :unless => :anonymous?, :message =>'There must be at least one contact'
   after_save :update_contacts
 
+  alias_method  :original_user_ids=, :user_ids=
+
   def contact_ids=(ids)
     @contact_ids=ids.select(&:present?).collect(&:to_i)
   end
@@ -38,9 +40,7 @@ class SchoolTeam < ActiveRecord::Base
   end
 
   def user_ids=(ids)
-    super(ids)
     @member_ids = ids
-
   end
 
   def to_s
@@ -49,10 +49,10 @@ class SchoolTeam < ActiveRecord::Base
 
   private
   def update_contacts
+    @member_ids ||= user_ids
+    @member_ids |= @contact_ids if @contact_ids
+    self.original_user_ids = @member_ids
     if @contact_ids
-      @member_ids ||= []
-      @member_ids |= @contact_ids
-      self.user_ids = @member_ids
       #demote former contacts that are now members
       school_team_memberships.where(["user_id not in (?)", @contact_ids]).update_all(:contact => false)
       #remove contacts that are no longer members
