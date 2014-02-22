@@ -54,18 +54,18 @@ describe SchoolTeam do
       end
     end
     describe 'no contact.id' do
-      xit 'should not make any membership changes' do
-        subject.update_attributes :contact_ids => [], :user_ids => [bob.id,cara.id]
-        subject.users.should =~ [contact,alice]
-        subject.team_contacts.should =~ [bob,contact,alice]
+      it 'should not make any membership changes' do
+        subject.update_attributes :contact_ids => [], :user_ids => [bob.id,cara.id], :anonymous => false
+        subject.users.should =~ [bob,contact,alice]
+        subject.team_contacts.should =~ [contact,alice]
       end
     end
 
     describe 'no name and not anonymous' do
-      xit 'should not make any membership changes' do
-        subject.update_attributes :contact_ids => [cara.id], :user_ids => [bob.id,cara.id], :anonymous => true
-        subject.users.should =~ [contact,alice]
-        subject.team_contacts.should =~ [bob,contact,alice]
+      it 'should not make any membership changes' do
+        subject.update_attributes :contact_ids => [cara.id], :user_ids => [bob.id,cara.id], :anonymous => false
+        subject.users.should =~ [bob,contact,alice]
+        subject.team_contacts.should =~ [contact,alice]
       end
     end
 
