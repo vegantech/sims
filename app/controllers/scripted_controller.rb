@@ -28,7 +28,7 @@ class ScriptedController < ApplicationController
       Spawnling.new(:method => :yield) do
         importer=AutomatedIntervention.new params[:upload_file], @u
         @messages=importer.import
-        Notifications.district_upload_results( @messages, @u.email || 'sbalestracci@madison.k12.wi.us').deliver
+        Notifications.district_upload_results( @messages, @u.email || ::UNASSIGNED_EMAIL).deliver
       end
         render :text=>"response will be emailed to #{@u.email}" and return
     end
