@@ -209,7 +209,7 @@ class District < ActiveRecord::Base
         res=VerifyStudentInDistrictExternally.verify(student.id_state,state_dpi_num)
       rescue StudentVerificationError => e
         logger.info "Student verification error #{e.inspect}"
-        opts[:msg]='Error verifiying student location'
+        opts[:msg]='Error verifying student location'
       end
     else
       res = student.district.blank?
