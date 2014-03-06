@@ -54,6 +54,14 @@ class GroupedProgressEntriesController < ApplicationController
     send_data res.body, :type =>'image/png', :disposition => 'inline'
   end
 
+  def end
+    @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
+    @grouped_progress_entry.end_interventions!(params[:end_intervention], params[:end_reason], params[:fidelity])
+    flash[:notice] = 'Interventions have been ended'
+    redirect_to(grouped_progress_entries_url)
+  end
+
+
   private
   def search_criteria
     session[:search].merge(

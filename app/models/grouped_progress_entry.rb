@@ -54,6 +54,12 @@ class GroupedProgressEntry
     raise param.inspect
   end
 
+  def end_interventions!(end_ids, reason, fidelity)
+    student_interventions.each do |i|
+      i.end(@user, reason, fidelity) if Array(end_ids).include?(i.id.to_s)
+    end
+  end
+
   def update_attributes(param)
     participants = param.delete("participant_user_ids") || []
     param.each do |int_id, int_attr|
@@ -165,6 +171,7 @@ class GroupedProgressEntry
 
   class ScoreComment
     attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator
+    delegate :end, :to => :intervention
     def initialize(intervention,user)
       @intervention = intervention
       @id = intervention.id

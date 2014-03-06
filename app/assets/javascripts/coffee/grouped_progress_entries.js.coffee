@@ -11,6 +11,10 @@ jQuery ->
     $('#participants_list div').show()
     $('#participants_list select').removeAttr('disabled')
 
+  $('#grouped_end_reasons').submit ->
+    $('#grouped_end_reasons form input[name=end_intervention\\[\\]]').remove()
+    $('input[name=end_intervention\\[\\]]').clone().hide().appendTo('#grouped_end_reasons form')
+
 calculate_percentage = (field) ->
   score_field = field.parent().children('.score')
   numerator = field.parent().children('.numerator').val()
