@@ -94,4 +94,25 @@ describe GroupedProgressEntriesController do
 
   end
 
+  describe 'put end' do
+    it 'redirects to the grouped_progress_entry index page' do
+      GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry("end_interventions!" => nil))
+      put :end, {:id => "1"}, {:search => true}
+      response.should redirect_to(grouped_progress_entries_url)
+    end
+
+    it 'sets the flash message' do
+      GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry("end_interventions!" => nil))
+      put :end, {:id => "1"}, {:search => true}
+      flash[:notice].should == "Interventions have been ended"
+    end
+
+    it 'calls end_interventions! with params' do
+      GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry)
+      mock_grouped_progress_entry.should_receive("end_interventions!").with(['1','2','3'], 'End Reason', 'Fidelity')
+      put :end, {:id => "1", :end_intervention => [1,2,3],
+        :end_reason => 'End Reason', :fidelity => 'Fidelity', }, {:search => true}
+    end
+  end
+
 end
