@@ -12,8 +12,7 @@ jQuery ->
     $('#participants_list select').removeAttr('disabled')
 
   $('#grouped_end_reasons').submit ->
-    $('#grouped_end_reasons form input[name=end_intervention\\[\\]]').remove()
-    $('input[name=end_intervention\\[\\]]').clone().hide().appendTo('#grouped_end_reasons form')
+    GroupedProgressEntry.grabIdsToEnd()
 
 calculate_percentage = (field) ->
   score_field = field.parent().children('.score')
@@ -22,3 +21,12 @@ calculate_percentage = (field) ->
   score = parseInt(100*numerator/denominator)
   if !isNaN(score)
     score_field.val score
+
+@GroupedProgressEntry =
+  grabIdsToEnd: ->
+    $('#grouped_end_reasons form input[name=end_intervention\\[\\]]').remove()
+    $('input[name=end_intervention\\[\\]]')
+      .clone()
+      .attr('id',null)
+      .hide()
+      .appendTo('#grouped_end_reasons form')
