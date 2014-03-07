@@ -22,6 +22,7 @@ Sims::Application.routes.draw do
   resources :grouped_progress_entries do
     member do
       get :aggregate
+      put :end
     end
   end
   resources :flag_descriptions

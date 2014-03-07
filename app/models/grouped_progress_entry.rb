@@ -102,7 +102,6 @@ class GroupedProgressEntry
 
 
 
-
   def students_with_scores_count
     ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
       @probe_definition.id,
@@ -123,6 +122,14 @@ class GroupedProgressEntry
   def persisted?
     true
   end
+
+  def end_interventions!(end_ids, reason, fidelity)
+    student_interventions.each do |i|
+      i.end(@user, reason, fidelity) if Array(end_ids).include?(i.id.to_s)
+    end
+  end
+
+
 
 private
   def self.interventions(id)
