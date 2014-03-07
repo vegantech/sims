@@ -19,9 +19,15 @@ Intervention-<%=@grouped_progress_entry %>
 <%= @probe_definition.probe_definition_benchmarks.join('<br />') %>
 
 <%= form_for(@grouped_progress_entry) do |f| %>
-  <span id="global_date">
-    <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}%>
-  </span>
+  <div>
+    <span class="check_all">
+      <%=label_tag "check_all", "Check All" %>
+      <%=check_box_tag 'check_all'%>
+    </span>
+    <span id="global_date">
+      <%=f.unobtrusive_date_picker :global_date , {:order => [:month, :day, :year]}%>
+    </span>
+  </div>
 
 
   <%#= f.error_messages %>
@@ -29,6 +35,7 @@ Intervention-<%=@grouped_progress_entry %>
     <thead>
       <tr>
         <th>&nbsp;</th>
+        <th>End <%=help_popup "This allows you to end multiple interventions at once.   Click the End link at the bottom to view the End Intervention Form." %></th>
         <th>Student</th>
         <th>Score <%=help_popup("You may enter a score in the left field, or a ratio using the right two fields which will populate the score field for you.")%></th>
         <th>Date</th>
@@ -40,7 +47,8 @@ Intervention-<%=@grouped_progress_entry %>
         <tr>
           <%= fields_for "student_intervention[]" do |field| %>
             <td><div style="color: red"><%=@student_intervention.errors%></div></td>
-            <td><%= @student_intervention.student %></td>
+            <td><%=check_box_tag 'end_intervention[]', @student_intervention.id, false, :id => "end_intervention_#{@student_intervention.id}" %></td>
+            <td><%= label_tag "end_intervention_#{@student_intervention.id}", @student_intervention.student %></td>
             <td><%= field.text_field :score, :size=>4, :maxlength=>4, :class => 'score'%> or
               <%=field.text_field :numerator, :size => 4,:class => "numerator"%>:<%=field.text_field :denominator, :size =>4,:class => "demoninator"%> </td>
             <td class="date"><%@student_intervention.date%><%= field.unobtrusive_date_picker :date, :order => [:month, :day, :year] %></td>
@@ -61,6 +69,12 @@ Intervention-<%=@grouped_progress_entry %>
   <p>
   <%= f.submit 'Add Scores' %> <%=spell_check_button%>
   </p>
-<% end %>
+  <p>
+    <%= render :partial => 'interventions/end/link' %>
+  </p>
 
+<% end %>
+<div id="grouped_end_reasons">
+<%= render 'interventions/end/reasons', :intervention => @grouped_progress_entry %>
+</div>
 <%= link_to 'Back', grouped_progress_entries_path %>
