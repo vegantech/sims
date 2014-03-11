@@ -182,23 +182,6 @@ class Intervention < ActiveRecord::Base
     end
   end
 
-  def date_user_student_school_grade
-    arr=[created_at.to_date, user.to_s]
-    if student.present?
-      arr += [student.to_s]
-      if student.enrollments.present?
-        arr += [student.enrollments.first.grade, student.enrollments.first.school.to_s]
-      else
-        arr += [nil,nil]
-      end
-    else
-      arr +=["No longer in sims",nil, nil]
-    end
-
-    arr
-
-  end
-
   def orphaned?
     active? &&
       (end_date < Date.today ||
