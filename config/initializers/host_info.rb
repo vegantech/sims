@@ -3,7 +3,7 @@ SIMS_PROTO="http"  #change to https when we're using that.
 #DEFAULT_URL = #'http://www.simspilot2.org:3000'
 
 sessionhash= {
-    :key         => '_sims-open4_session',
+    :key         => '_sims-open5_session',
     :secure => (Rails.env.production? || Rails.env.staging? )
     }
 
