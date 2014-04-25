@@ -13,10 +13,10 @@ class StatewideInterventionDefinitionSummary
   def to_table
 
     #group concat works well!
-    eee= InterventionDefinition.connection.send(:select,
+    eee = InterventionDefinition.connection.send(:select,
     InterventionDefinition.send( :construct_finder_sql,{
-     :group=>"intervention_definitions.title, intervention_clusters.title, objective_definitions.title, goal_definitions.title",
-     :select => "intervention_definitions.title as Title, intervention_definitions.description as Description, intervention_clusters.title as Category,
+     group: "intervention_definitions.title, intervention_clusters.title, objective_definitions.title, goal_definitions.title",
+     select: "intervention_definitions.title as Title, intervention_definitions.description as Description, intervention_clusters.title as Category,
      concat(intervention_definitions.frequency_multiplier, ' - ',frequencies.title) as Frequency,
      concat(intervention_definitions.time_length_num,' - ',time_lengths.title) as Duration,
      count(distinct goal_definitions.district_id) as 'Districts', count(distinct interventions.id) as 'In Use',
@@ -25,7 +25,7 @@ class StatewideInterventionDefinitionSummary
      concat(goal_definitions.title, ' / ', objective_definitions.title) as 'Goal / Objective'
 
      ",
-     :joins => "inner join intervention_clusters on intervention_clusters.id = intervention_definitions.intervention_cluster_id
+     joins: "inner join intervention_clusters on intervention_clusters.id = intervention_definitions.intervention_cluster_id
     inner join objective_definitions on objective_definitions.id = intervention_clusters.objective_definition_id
     inner join goal_definitions on goal_definitions.id = objective_definitions.goal_definition_id
     inner join frequencies on frequencies.id = intervention_definitions.frequency_id
@@ -35,10 +35,10 @@ class StatewideInterventionDefinitionSummary
     left outer join recommended_monitors on recommended_monitors.intervention_definition_id = intervention_definitions.id
     left join probe_definitions on recommended_monitors.probe_definition_id = probe_definitions.id
 
-    ", :order => "'Goal / Objective', Category, Tier, Title",
-    :conditions => "intervention_definitions.custom=false and intervention_definitions.disabled=false"
+    ", order: "'Goal / Objective', Category, Tier, Title",
+     conditions: "intervention_definitions.custom=false and intervention_definitions.disabled=false"
                                                           }))
-    t=Table :data => eee, :column_names => eee.first.keys
+    t = Table data: eee, column_names: eee.first.keys
     t.reorder 'Goal / Objective','Category','Tier','Title','Description', 'Frequency', 'Duration', 'Progress Monitors','Districts', 'In Use'
   end
 

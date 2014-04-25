@@ -18,8 +18,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe IgnoreFlag do
   before(:each) do
     @valid_attributes = {
-      :category => "attendance",
-      :reason => "value for reason",
+      category: "attendance",
+      reason: "value for reason",
     }
   end
 
@@ -35,18 +35,18 @@ describe IgnoreFlag do
 
   it 'should only allow one ingore flag for a given category(/student)' do
     IgnoreFlag.create!(@valid_attributes)
-    a=IgnoreFlag.create(@valid_attributes)
+    a = IgnoreFlag.create(@valid_attributes)
     a.errors_on(:category).should_not be_nil
-    a.category="suspension"
+    a.category = "suspension"
     a.should be_valid
   end
 
   it 'should not allow ignore flag when custom exists' do
-    a=CustomFlag.new(@valid_attributes)
-    a.category="suspension"
-    a.user_id=55
+    a = CustomFlag.new(@valid_attributes)
+    a.category = "suspension"
+    a.user_id = 55
     a.save
-    b=IgnoreFlag.new(a.attributes.except("id","type"))
+    b = IgnoreFlag.new(a.attributes.except("id","type"))
     a.should be_valid
     b.should_not be_valid
   end

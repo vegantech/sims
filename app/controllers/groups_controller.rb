@@ -1,8 +1,8 @@
 class GroupsController < SchoolAdminController
   # GET /groups
   def index
-    @groups=current_school.groups.paged_by_title(params[:title],params[:page])
-    redirect_to(index_url_with_page(:title => params[:title], :page => @groups.total_pages)) and return if wp_out_of_bounds?(@groups)
+    @groups = current_school.groups.paged_by_title(params[:title],params[:page])
+    redirect_to(index_url_with_page(title: params[:title], page: @groups.total_pages)) and return if wp_out_of_bounds?(@groups)
     capture_paged_controller_params
 
     respond_to do |format|
@@ -42,7 +42,7 @@ class GroupsController < SchoolAdminController
         flash[:notice] = "#{edit_obj_link(@group)} was successfully created.".html_safe
         format.html { redirect_to(@group) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -56,7 +56,7 @@ class GroupsController < SchoolAdminController
         flash[:notice] = "#{edit_obj_link(@group)} was successfully updated.".html_safe
         format.html { redirect_to(@group) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -84,7 +84,7 @@ class GroupsController < SchoolAdminController
   def add_student_form
     @group = current_school.groups.find(params[:id])
     @student = Student.new
-    @students=current_school.students.order('last_name, first_name') - @group.students
+    @students = current_school.students.order('last_name, first_name') - @group.students
     respond_to do |format|
       format.js {}
     end
@@ -122,7 +122,7 @@ class GroupsController < SchoolAdminController
        format.js {}
      else
        @users = current_school.assigned_users
-       format.js {render :action=>"add_user_form"}
+       format.js {render action: "add_user_form"}
      end
    end
 end

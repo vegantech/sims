@@ -15,7 +15,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ExtArbitrary do
   before(:each) do
     @valid_attributes = {
-      :content => "value for content"
+      content: "value for content"
     }
   end
 

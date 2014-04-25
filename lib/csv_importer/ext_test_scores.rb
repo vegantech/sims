@@ -2,12 +2,12 @@ module CSVImporter
   class ExtTestScores < CSVImporter::Base
 
     FIELD_DESCRIPTIONS = {
-        :district_student_id =>"Key for student",
-        :name =>"Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
-        :date =>"Date of exam",
-        :scale_score =>"Scaled Score",
-        :result =>"Interpreted result",
-        :end_date =>"Not used"
+        district_student_id: "Key for student",
+        name: "Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
+        date: "Date of exam",
+        scale_score: "Scaled Score",
+        result: "Interpreted result",
+        end_date: "Not used"
     }
     class << self
       def description
@@ -64,7 +64,7 @@ module CSVImporter
 
     end
 
-  private
+    private
 
     def index_options
       [:district_student_id]
@@ -77,7 +77,7 @@ module CSVImporter
 
     def migration t
 
-      t.column :district_student_id, :string, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :name, :string
       t.column :date, :date
       t.column :scale_score, :float
@@ -92,7 +92,7 @@ module CSVImporter
     def delete
       return 0 if @append
 
-      query ="
+      query = "
        delete from ea using  ext_test_scores ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where
@@ -103,7 +103,7 @@ module CSVImporter
 
     def insert
       return 0 if fail_if_matches_and_appending?
-      query=("insert into ext_test_scores
+      query = ("insert into ext_test_scores
       (student_id, name, date, scaleScore, result, enddate, created_at, updated_at)
       select stu.id,
       te.name, te.date, te.scale_score, te.result, te.end_date,

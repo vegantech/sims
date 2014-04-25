@@ -11,8 +11,8 @@ describe SpellCheckController do
   describe "GET 'field with spellign mistakes'" do
     it "should be successful" do
       pending
-      incorrect="<?xml version=\"1.0\" encoding=\"utf-8\" ?><spellrequest textalreadyclipped=\"0\" ignoredups=\"0\" ignoredigits=\"1\" ignoreallcaps=\"1\"><text>wrng wrongid</text></spellrequest>"
-      request.stub!(:raw_post => incorrect)
+      incorrect = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><spellrequest textalreadyclipped=\"0\" ignoredups=\"0\" ignoredigits=\"1\" ignoreallcaps=\"1\"><text>wrng wrongid</text></spellrequest>"
+      request.stub!(raw_post: incorrect)
       post 'index'
       #      response.body.should match(/?xml version=\"1.0\"?>\n<spellresult error=\"1\"><c o=\"0\" l=\"4\" s=\"1\">wrong/)
       #      response.body.should match(/wronged/)
@@ -23,8 +23,8 @@ describe SpellCheckController do
   describe "GET 'field without any spelling errors'" do
     it "should be successful" do
       pending
-      correct="<?xml version=\"1.0\" encoding=\"utf-8\" ?><spellrequest textalreadyclipped=\"0\" ignoredups=\"0\" ignoredigits=\"1\" ignoreallcaps=\"1\"><text>wrong</text></spellrequest>"
-      request.stub!(:raw_post => correct)
+      correct = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><spellrequest textalreadyclipped=\"0\" ignoredups=\"0\" ignoredigits=\"1\" ignoreallcaps=\"1\"><text>wrong</text></spellrequest>"
+      request.stub!(raw_post: correct)
       post 'index'
       response.body.should == "<?xml version=\"1.0\"?>\n<spellresult error=\"0\"></spellresult>"
     end

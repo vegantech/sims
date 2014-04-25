@@ -35,7 +35,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
         flash[:notice] = 'Goal was successfully created.'
         format.html { redirect_to intervention_builder_goals_url }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -43,7 +43,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
   # PUT /goal_definitions/1
   def update
     @goal_definition = current_district.goal_definitions.find(params[:id])
-    @goal_definition.attributes=params[:goal_definition]
+    @goal_definition.attributes = params[:goal_definition]
 
     respond_to do |format|
       if @goal_definition.save
@@ -51,7 +51,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
         flash[:notice] = 'Goal was successfully updated.'
         format.html { redirect_to intervention_builder_goals_url }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -60,7 +60,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
   def destroy
     @goal_definition = current_district.goal_definitions.find(params[:id])
     if @goal_definition.objective_definitions.any?
-      flash[:notice]="Objective Assigned, please remove them first"
+      flash[:notice] = "Objective Assigned, please remove them first"
     else
       @goal_definition.destroy
     end
@@ -93,13 +93,13 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
     end
     respond_to do |format|
       format.html {redirect_to intervention_builder_goals_url}
-      format.js {@goal_definitions=current_district.goal_definitions}
+      format.js {@goal_definitions = current_district.goal_definitions}
     end
   end
 
   protected
     def move_path(obj,direction)
-      move_intervention_builder_goal_path(obj,:direction=>direction)
+      move_intervention_builder_goal_path(obj,direction: direction)
     end
 
 end

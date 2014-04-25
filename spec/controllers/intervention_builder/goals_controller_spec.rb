@@ -6,14 +6,14 @@ describe InterventionBuilder::GoalsController do
   include_context "authenticated"
 
 
-  def mock_goal(stubs={})
+  def mock_goal(stubs = {})
     @mock_goal ||= mock_model(GoalDefinition, stubs)
   end
 
   before do
-    @district=mock_district
-    controller.stub!(:current_district=>@district)
-    @district.stub!(:goal_definitions=>GoalDefinition)
+    @district = mock_district
+    controller.stub!(current_district: @district)
+    @district.stub!(goal_definitions: GoalDefinition)
   end
 
   describe "responding to GET index" do
@@ -33,7 +33,7 @@ describe InterventionBuilder::GoalsController do
 
     it "should expose the requested goal as @goal_definition" do
       GoalDefinition.should_receive(:find).with("37").and_return(mock_goal)
-      get :show, :id => "37"
+      get :show, id: "37"
       assigns(:goal_definition).should equal(mock_goal)
     end
 
@@ -43,7 +43,7 @@ describe InterventionBuilder::GoalsController do
   describe "responding to GET new" do
 
     it "should expose a new goal as @goal_definition" do
-      @district.stub_association!(:goal_definitions,{:build=>mock_goal})
+      @district.stub_association!(:goal_definitions,{build: mock_goal})
       get :new
       assigns(:goal_definition).should equal(mock_goal)
     end
@@ -54,7 +54,7 @@ describe InterventionBuilder::GoalsController do
 
     it "should expose the requested goal as @goal_definition" do
       GoalDefinition.should_receive(:find).with("37").and_return(mock_goal)
-      get :edit, :id => "37"
+      get :edit, id: "37"
       assigns(:goal_definition).should equal(mock_goal)
     end
 
@@ -69,14 +69,14 @@ describe InterventionBuilder::GoalsController do
     describe "with valid params" do
 
       it "should expose a newly created goal as @goal_definition" do
-        GoalDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mock_goal(:save => true))
-        post :create, :goal_definition => {:these => 'params'}
+        GoalDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mock_goal(save: true))
+        post :create, goal_definition: {these: 'params'}
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should redirect to the created goal_definition" do
-        GoalDefinition.stub!(:build).and_return(mock_goal(:save => true))
-        post :create, :goal => {}
+        GoalDefinition.stub!(:build).and_return(mock_goal(save: true))
+        post :create, goal: {}
         response.should redirect_to(intervention_builder_goals_url)
       end
 
@@ -85,14 +85,14 @@ describe InterventionBuilder::GoalsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved goal as @goal_definition" do
-        GoalDefinition.stub!(:build).with({'these' => 'params'}).and_return(mock_goal(:save => false))
-        post :create, :goal_definition => {:these => 'params'}
+        GoalDefinition.stub!(:build).with({'these' => 'params'}).and_return(mock_goal(save: false))
+        post :create, goal_definition: {these: 'params'}
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should re-render the 'new' template" do
-        GoalDefinition.stub!(:build).and_return(mock_goal(:save => false))
-        post :create, :goal_definition => {}
+        GoalDefinition.stub!(:build).and_return(mock_goal(save: false))
+        post :create, goal_definition: {}
         response.should render_template('new')
       end
 
@@ -105,20 +105,20 @@ describe InterventionBuilder::GoalsController do
     describe "with valid params" do
 
       it "should update the requested goal_definition" do
-        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>true))
+        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(save: true))
         mock_goal.should_receive(:attributes=).with({'these' => 'params'})
-        put :update, :id => "37", :goal_definition => {:these => 'params'}
+        put :update, id: "37", goal_definition: {these: 'params'}
       end
 
       it "should expose the requested goal as @goal_definition" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:save => true, :attributes= =>true))
-        put :update, :id => "1"
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save => true, :attributes= => true))
+        put :update, id: "1"
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should redirect to the goal" do
         GoalDefinition.stub!(:find).and_return(mock_goal(:save => true, :attributes= => true))
-        put :update, :id => "1"
+        put :update, id: "1"
         response.should redirect_to(intervention_builder_goals_url)
       end
 
@@ -127,20 +127,20 @@ describe InterventionBuilder::GoalsController do
     describe "with invalid params" do
 
       it "should update the requested goal" do
-        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>false))
+        GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(save: false))
         mock_goal.should_receive(:attributes=).with({'these' => 'params'})
-        put :update, :id => "37", :goal_definition => {:these => 'params'}
+        put :update, id: "37", goal_definition: {these: 'params'}
       end
 
       it "should expose the goal as @goal_definition" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:save =>false,:attributes= => false))
-        put :update, :id => "1"
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save => false,:attributes= => false))
+        put :update, id: "1"
         assigns(:goal_definition).should equal(mock_goal)
       end
 
       it "should re-render the 'edit' template" do
-        GoalDefinition.stub!(:find).and_return(mock_goal(:save =>false,:attributes= => false))
-        put :update, :id => "1"
+        GoalDefinition.stub!(:find).and_return(mock_goal(:save => false,:attributes= => false))
+        put :update, id: "1"
         response.should render_template('edit')
       end
 
@@ -158,7 +158,7 @@ describe InterventionBuilder::GoalsController do
         GoalDefinition.should_receive(:find).with("37").and_return(mock_goal)
 
         mock_goal.should_receive(:destroy)
-        delete :destroy, :id => "37"
+        delete :destroy, id: "37"
         response.should redirect_to(intervention_builder_goals_url)
       end
 

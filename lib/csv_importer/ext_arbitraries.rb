@@ -1,8 +1,8 @@
 module CSVImporter
   class ExtArbitraries < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_student_id =>"Key for student",
-        :arbitrary =>"Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag."      
+        district_student_id: "Key for student",
+        arbitrary: "Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag."      
     }
     class << self
       def description
@@ -49,7 +49,7 @@ module CSVImporter
 
     end
 
-  private
+    private
 
     def index_options
       [:district_student_id]
@@ -62,7 +62,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :arbitrary, :text
       
     end
@@ -72,7 +72,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from ea using  ext_arbitraries ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
@@ -82,7 +82,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into ext_arbitraries
+      query = ("insert into ext_arbitraries
       (student_id, content, created_at, updated_at)
       select stu.id, te.arbitrary, curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id

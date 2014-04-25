@@ -15,8 +15,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TimeLength do
   before(:each) do
     @valid_attributes = {
-      :title => "value for title",
-      :days => "1"
+      title: "value for title",
+      days: "1"
     }
   end
 

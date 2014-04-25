@@ -44,7 +44,7 @@ class ChecklistBuilder::AnswersController < ApplicationController
         format.html { redirect_to checklist_builder_answer_url(@checklist_definition, @question_definition, @element_definition, @answer_definition) }
         format.js
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js
       end
     end
@@ -60,7 +60,7 @@ class ChecklistBuilder::AnswersController < ApplicationController
         format.html { redirect_to checklist_builder_answer_url(@checklist_definition, @question_definition, @element_definition, @answer_definition) }
         format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
         format.js
       end
     end
@@ -68,16 +68,16 @@ class ChecklistBuilder::AnswersController < ApplicationController
 
   def destroy
     @answer_definition = AnswerDefinition.find(params[:id])
-    if @answer_definition.sibling_definitions.count >1
+    if @answer_definition.sibling_definitions.count > 1
 
       if @answer_definition.has_answers?
-        flash[:notice]= "Answer definition is in use, please copy the checklist instead"
+        flash[:notice] = "Answer definition is in use, please copy the checklist instead"
       else
         flash[:notice] = ""
         @answer_definition.destroy
       end
     else
-      flash[:notice]= 'Every Element requires at least one answer definition'
+      flash[:notice] = 'Every Element requires at least one answer definition'
     end
 
     respond_to do |format|

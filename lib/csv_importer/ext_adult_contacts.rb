@@ -2,18 +2,18 @@ module CSVImporter
   class ExtAdultContacts < CSVImporter::Base
 
     FIELD_DESCRIPTIONS = { 
-        :district_student_id =>"Key for student",
-        :relationship =>"String describing relationship.  Something like Parent or Emergency Contact",
-        :guardian =>"true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)",
-        :first_name =>"First Name",
-        :last_name =>"Last Name",
-        :home_phone =>"Home Phone #",
-        :work_phone =>"Work Phone #",
-        :cell_phone =>"Cell Phone #",
-        :pager =>"Pager #",
-        :email =>"Email Address",
-        :street_address =>"First line of address",
-        :city_state_zip =>"City, State, Zip"
+        district_student_id: "Key for student",
+        relationship: "String describing relationship.  Something like Parent or Emergency Contact",
+        guardian: "true if contact is a parent/guardian and entitled to records,   blank otherwise (Y/N also works)",
+        first_name: "First Name",
+        last_name: "Last Name",
+        home_phone: "Home Phone #",
+        work_phone: "Work Phone #",
+        cell_phone: "Cell Phone #",
+        pager: "Pager #",
+        email: "Email Address",
+        street_address: "First line of address",
+        city_state_zip: "City, State, Zip"
     }
     class << self
       def description
@@ -53,10 +53,10 @@ module CSVImporter
 
     end
 
-  private
+    private
     def load_data_infile
-      headers=csv_headers
-      headers[2]="@guardian"
+      headers = csv_headers
+      headers[2] = "@guardian"
       <<-EOF
           LOAD DATA LOCAL INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
@@ -87,7 +87,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :guardian, :boolean
       t.column :relationship, :string
       t.column :first_name, :string
@@ -106,7 +106,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from ea using  ext_adult_contacts ea
        inner join students stu on stu.id=ea.student_id and stu.district_id = #{@district.id}
        where 
@@ -116,7 +116,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into ext_adult_contacts
+      query = ("insert into ext_adult_contacts
       (student_id, relationship, guardian, firstName, lastName, homePhone, workPhone, cellPhone, pager, email, streetAddress, cityStateZip, created_at, updated_at)
       select stu.id, 
        te.relationship, te.guardian, te.first_name, te.last_name, te.home_phone, te.work_phone, te.cell_phone, te.pager, te.email, te.street_address, te.city_state_zip, 

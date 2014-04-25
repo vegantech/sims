@@ -16,7 +16,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe InterventionComment do
   before(:each) do
     @valid_attributes = {
-      :comment => "value for comment",
+      comment: "value for comment",
     }
   end
 

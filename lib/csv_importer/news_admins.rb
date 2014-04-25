@@ -1,7 +1,7 @@
 module CSVImporter
   class NewsAdmins < CSVImporter::BaseRoles
     FIELD_DESCRIPTIONS = { 
-      :district_user_id =>"Key for user"
+      district_user_id: "Key for user"
     }
     class << self
       def csv_headers

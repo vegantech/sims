@@ -16,8 +16,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe SchoolTeam do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name",
-      :anonymous => true,
+      name: "value for name",
+      anonymous: true,
 #      :contact_ids => [2]
 
     }

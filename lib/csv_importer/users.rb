@@ -1,18 +1,18 @@
 module CSVImporter
   class Users < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_user_id =>"Key for user (30 char limit)",
-        :username =>"Used at login (30 char limit)",
-        :first_name =>"First Name",
-        :middle_name =>"Middle Name",
-        :last_name =>"Last Name",
-        :suffix =>"Suffix",
-        :email =>"Email address (must be valid)",
-        :passwordhash =>'The encoded password.   Encode the password using the following:  
+        district_user_id: "Key for user (30 char limit)",
+        username: "Used at login (30 char limit)",
+        first_name: "First Name",
+        middle_name: "Middle Name",
+        last_name: "Last Name",
+        suffix: "Suffix",
+        email: "Email address (must be valid)",
+        passwordhash: 'The encoded password.   Encode the password using the following:  
 SHA1.encode("#{system_hash}#{password.downcase}#{district_key}#{salt}")
   replacing the #{} with the appropriate values.  system_hash is currently blank.   
 password is the user\'s password in lowercase, district_key is set by the district admin, and the salt is the next field',
-        :salt =>"A random value used in the password hash"
+        salt: "A random value used in the password hash"
     }
     class << self
       def description
@@ -62,7 +62,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
 
 
-  private
+    private
     def index_options
       [:district_user_id ]
     end
@@ -74,14 +74,14 @@ password is the user\'s password in lowercase, district_key is set by the distri
     def migration t
       @cols = User.columns_hash
       csv_headers.each do |col|
-        c=col.to_s
-        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
+        c = col.to_s
+        t.column col, @cols[c].type, limit: @cols[c].limit, null: @cols[c].null
       end
     end
 
 
     def update
-    updates=csv_headers[0..-3].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
+    updates = csv_headers[0..-3].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
     query = ("update users u
       inner join #{temporary_table_name} tu
       on u.district_user_id = tu.district_user_id and u.district_user_id is not null
@@ -95,9 +95,9 @@ password is the user\'s password in lowercase, district_key is set by the distri
     end
 
     def insert_update_delete
-      @deleted=delete
-      @updated=update
-      @created=insert
+      @deleted = delete
+      @updated = update
+      @created = insert
       @other_messages << "#{update_passwords} passwords updated"
     end
 
@@ -108,13 +108,13 @@ password is the user\'s password in lowercase, district_key is set by the distri
         on u.district_user_id = tu.district_user_id
         where u.district_user_id !='' and u.district_id = #{@district.id}
         and tu.district_user_id is null"
-      user_ids_to_remove=User.connection.select_rows(query)
+      user_ids_to_remove = User.connection.select_rows(query)
       User.remove_from_district(user_ids_to_remove)
       user_ids_to_remove.length
     end
 
     def update_passwords
-    updates=csv_headers[-3..-1].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
+    updates = csv_headers[-3..-1].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
     query = ("update users u
       inner join #{temporary_table_name} tu
       on u.district_user_id = tu.district_user_id and u.district_user_id !=''
@@ -129,7 +129,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
     def insert
       inserts = csv_headers.join(", ")
-      query=("insert into users 
+      query = ("insert into users 
       (#{inserts}, created_at, updated_at, district_id)
       select tu.* , CURDATE(), CURDATE(), #{@district.id} from #{temporary_table_name} tu left outer join users u  
       on tu.district_user_id = u.district_user_id
@@ -145,7 +145,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
     def confirm_count?
       model_name = "user"
-      model_count = @district.send(model_name.tableize).count(:conditions=>'district_user_id is not null and district_user_id !=""')
+      model_count = @district.send(model_name.tableize).count(conditions: 'district_user_id is not null and district_user_id !=""')
         if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
           @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
           false

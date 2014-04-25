@@ -5,7 +5,7 @@ class CreateProbeDefinitions < ActiveRecord::Migration
       t.text :description
       t.belongs_to :user
       t.belongs_to :district
-      t.boolean :active, :default=>true
+      t.boolean :active, default: true
       t.integer :maximum_score
       t.integer :minimum_score
       t.belongs_to :school

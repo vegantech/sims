@@ -24,7 +24,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Student do
   before do
-    @student = Factory(:student, :id_state => 1234)
+    @student = Factory(:student, id_state: 1234)
   end
 
   it "should be valid"
@@ -66,7 +66,7 @@ describe Student do
     describe 'when file exists' do
       it 'should return file contents' do
         pending
-        File.open(@path, 'w'){|f| f<< 'some content'}
+        File.open(@path, 'w'){|f| f << 'some content'}
         @student.extended_profile.should == 'some content'
       end
     end
@@ -79,8 +79,8 @@ describe Student do
 
   describe 'id_state' do
     it 'should be unique' do
-      district_in_same_state=Factory(:district)
-      student_in_same_state = FactoryGirl.build(:student, :district => district_in_same_state, :id_state => 1234)
+      district_in_same_state = Factory(:district)
+      student_in_same_state = FactoryGirl.build(:student, district: district_in_same_state, id_state: 1234)
       student_in_same_state.should_not be_valid
       student_in_same_state.errors_on(:id_state).should == ["Student with #{@student.id_state} already exists in #{@student.district}"]
     end
@@ -104,8 +104,8 @@ describe Student do
 
     it 'should return true if the grade contains a student belonging to that user' do
     pending
-      school = School.create!(:name => 'My School', :district => mock_district)
-      e = Enrollment.create!(:grade=>'1',:school=>school, :student=>mock_student)
+      school = School.create!(name: 'My School', district: mock_district)
+      e = Enrollment.create!(grade: '1',school: school, student: mock_student)
       user = User.new
       user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([e])
 
@@ -114,9 +114,9 @@ describe Student do
 
     it 'should return false if the grade does not contain a student belonging to that user' do
       pending
-      school=School.new
-      e=Enrollment.create!(:grade=>'1',:school_id=>-1,:student=>mock_student)
-      user=User.new
+      school = School.new
+      e = Enrollment.create!(grade: '1',school_id: -1,student: mock_student)
+      user = User.new
       user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([])
       Enrollment.student_belonging_to_user?(user).should == false
     end
@@ -131,34 +131,34 @@ describe Student do
 
   describe 'fullname' do
     it 'should include middle initial' do
-      Student.new(:first_name => 'John', :middle_name => 'Alfred', :last_name => 'Martin').fullname.should == 'John A. Martin'
+      Student.new(first_name: 'John', middle_name: 'Alfred', last_name: 'Martin').fullname.should == 'John A. Martin'
     end
   end
 
   describe 'full_name_last_first' do
-    Student.new(:first_name=>"0First.", :last_name=>"noschools").fullname_last_first.should == ("noschools, 0First.")
+    Student.new(first_name: "0First.", last_name: "noschools").fullname_last_first.should == ("noschools, 0First.")
   end
 
   describe 'max_tier' do
     before do
-      @district=@student.district
+      @district = @student.district
     end
 
     it 'should return null if there are no tiers in the district' do
-      Tier.create(:title=>'ok')
+      Tier.create(title: 'ok')
       @student.max_tier.should be_nil
     end
 
     it 'should return the lowest tier in the district if there are no checklists, recommendations, or principal overrides' do
-      low_tier=@district.tiers.create!(:title=>'Low')
-      middle_tier=@district.tiers.create!(:title=>'Middle')
+      low_tier = @district.tiers.create!(title: 'Low')
+      middle_tier = @district.tiers.create!(title: 'Middle')
       @student.max_tier.should == low_tier
     end
 
     it 'should return highest tier from checklists, recommendations, or principal overrides' do
-      low_tier=@district.tiers.create!(:title=>'Low')
-      middle_tier=@district.tiers.create!(:title=>'Middle')
-      high_tier=@district.tiers.create!(:title=>'High')
+      low_tier = @district.tiers.create!(title: 'Low')
+      middle_tier = @district.tiers.create!(title: 'Middle')
+      high_tier = @district.tiers.create!(title: 'High')
       Recommendation.should_receive(:max_tier).twice.and_return(middle_tier)
       PrincipalOverride.should_receive(:max_tier).twice.and_return(low_tier)
       @student.max_tier.should == middle_tier
@@ -207,7 +207,7 @@ describe Student do
     end
 
     it 'should not destroy a student with custom content in the db' do
-      Factory(:custom_flag, :student => student)
+      Factory(:custom_flag, student: student)
       student.safe_destroy
       student.should_not be_destroyed
     end

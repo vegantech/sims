@@ -15,7 +15,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe DistrictLog do
   before(:each) do
     @valid_attributes = {
-      :body => "value for body"
+      body: "value for body"
     }
   end
 

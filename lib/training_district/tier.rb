@@ -8,9 +8,9 @@ module TrainingDistrict::Tier
   end
 
   def generate_tiers_from_file
-    tier_csv=CSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
-    @oldtiers=tier_csv.collect{|t| t[:id]}
-    @tiers=[]
+    tier_csv = CSV.table("#{path}/tiers.csv").sort_by{|e| e[:position]}
+    @oldtiers = tier_csv.collect{|t| t[:id]}
+    @tiers = []
     tier_csv.each do |ck|
       ckhash = prephash(ck)
       @tiers <<  district.tiers.create!(ckhash)
@@ -18,10 +18,10 @@ module TrainingDistrict::Tier
   end
 
   def generate_tiers_without_file
-    @oldtiers=[781074649, 781074650, 781074651]
-    @tier = district.tiers.create!(:title=>'First tier')
-    second_tier = district.tiers.create!(:title=>'Second tier')
-    third_tier = district.tiers.create!(:title=>'Third tier')
+    @oldtiers = [781074649, 781074650, 781074651]
+    @tier = district.tiers.create!(title: 'First tier')
+    second_tier = district.tiers.create!(title: 'Second tier')
+    third_tier = district.tiers.create!(title: 'Third tier')
     @tiers = [@tier,second_tier,third_tier]
   end
 

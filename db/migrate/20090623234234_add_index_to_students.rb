@@ -5,7 +5,7 @@ class AddIndexToStudents < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :students, :column => :id_state
-    remove_index :students, :column => :id_district
+    remove_index :students, column: :id_state
+    remove_index :students, column: :id_district
   end
 end

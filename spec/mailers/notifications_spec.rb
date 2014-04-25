@@ -77,9 +77,9 @@ describe Notifications do
 
   describe 'setup_ending_intervention_reninder' do
     it 'should deliver emails in interventions_ending_this week'  do
-      m=mock_intervention(:participants_with_author => [mock(:user=>mu=mock_user)],:student => mock_student(:belongs_to_user? => true))
+      m = mock_intervention(participants_with_author: [mock(user: mu = mock_user)],student: mock_student(:belongs_to_user? => true))
       Notifications.should_receive(:interventions_ending_this_week).and_return([m])
-      Notifications.should_receive(:intervention_ending_reminder).with(mu,[m]).and_return(mock(:deliver =>false))
+      Notifications.should_receive(:intervention_ending_reminder).with(mu,[m]).and_return(mock(deliver: false))
       Notifications.setup_ending_reminders
     end
   end
@@ -90,24 +90,24 @@ describe Notifications do
     end
 
     it 'should return array containing due_this_week' do
-      past=create_without_callbacks(Intervention,:end_date => 2.days.ago)
-      future_already_ended=create_without_callbacks(Intervention,:end_date => 2.days.from_now, :active => false)
-      due_this_week_with_student = create_without_callbacks(Intervention,:end_date => 2.days.from_now, :student => Factory(:student))
-      due_next_week = create_without_callbacks(Intervention, :end_date => 9.days.from_now)
+      past = create_without_callbacks(Intervention,end_date: 2.days.ago)
+      future_already_ended = create_without_callbacks(Intervention,end_date: 2.days.from_now, active: false)
+      due_this_week_with_student = create_without_callbacks(Intervention,end_date: 2.days.from_now, student: Factory(:student))
+      due_next_week = create_without_callbacks(Intervention, end_date: 9.days.from_now)
 
       Notifications.interventions_ending_this_week.should == [due_this_week_with_student]
     end
 
     it 'should eliminate interventions without students' do
-      due_this_week_without_student = create_without_callbacks(Intervention,:end_date => 2.days.from_now)
+      due_this_week_without_student = create_without_callbacks(Intervention,end_date: 2.days.from_now)
       Notifications.interventions_ending_this_week.should == []
 
     end
 
   end
 
-  def create_without_callbacks(o, opts={:tier=>@tier})
-   obj=o.new(opts)
+  def create_without_callbacks(o, opts = {tier: @tier})
+   obj = o.new(opts)
    obj.sneaky_save
    obj
   end

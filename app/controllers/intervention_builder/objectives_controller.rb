@@ -37,21 +37,21 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
         flash[:notice] = 'Objective was successfully created.'
         format.html { redirect_to intervention_builder_objectives_url }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
 
   # PUT /objective_definitions/1
   def update
-    @objective_definition.attributes=params[:objective_definition]
+    @objective_definition.attributes = params[:objective_definition]
 
     respond_to do |format|
       if @objective_definition.save
         flash[:notice] = 'Objective was successfully updated.'
         format.html { redirect_to intervention_builder_objectives_url }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -60,7 +60,7 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
   def destroy
 
     if @objective_definition.intervention_clusters.any?
-      flash[:notice]= "Intervention Categories, please remove them first"
+      flash[:notice] = "Intervention Categories, please remove them first"
     else
       @objective_definition.destroy
     end
@@ -89,8 +89,8 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
       @objective_definition.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to :action => :index}
-      format.js {@objective_definitions=@goal_definition.objective_definitions}
+      format.html {redirect_to action: :index}
+      format.js {@objective_definitions = @goal_definition.objective_definitions}
     end
   end
 
@@ -102,7 +102,7 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
   end
 
   def move_path(item, direction)
-    move_intervention_builder_objective_path(:id=>item,:direction=>direction)
+    move_intervention_builder_objective_path(id: item,direction: direction)
   end
 
 end

@@ -1,6 +1,6 @@
 class StudentFlagReport
   def current_flagged_students
-    @search[:search_type]='flagged_intervention'
+    @search[:search_type] = 'flagged_intervention'
     students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
@@ -14,7 +14,7 @@ class StudentFlagReport
 
     current_flagged_students.each do |stu|
       stu.flags.current.each do |category, flags|
-        f=flags.first
+        f = flags.first
         f.reason = flags.collect(&:summary).join("; ")
         cur_flags[category] = cur_flags[category] + [f]
       end
@@ -23,18 +23,18 @@ class StudentFlagReport
   end
 
   def custom_flags
-    @search[:flagged_intervention_types]=['custom']
+    @search[:flagged_intervention_types] = ['custom']
     students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
   def ignore_flags
-    @search[:flagged_intervention_types]=['ignored']
+    @search[:flagged_intervention_types] = ['ignored']
     students = StudentSearch.search(@search).collect(&:student).compact.uniq
   end
 
   def initialize(options = {})
-    @search=options
-    @search[:flagged_intervention_types]=[]
+    @search = options
+    @search[:flagged_intervention_types] = []
   end
 
 end

@@ -5,7 +5,7 @@ class AddUserIdToDistrictLogs < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :district_logs, :column => [:district_id,:user_id]
+    remove_index :district_logs, column: [:district_id,:user_id]
     remove_column :district_logs, :user_id
   end
 end

@@ -4,7 +4,7 @@ describe ImportCSV do
 
   describe 'doc' do
     before :all do
-        @files=ImportCSV.importers.collect(&:file_name)
+        @files = ImportCSV.importers.collect(&:file_name)
         @append_files = ImportCSV.importers.select(&:supports_append?).collect(&:file_name_with_append)
         @all_files = @files + @append_files
     end
@@ -25,18 +25,18 @@ describe ImportCSV do
       end
 
       it 'should have zip file containing all the empty csvs' do
-        zip_files =`unzip -Z1 public/district_upload/empty/empty.zip`.split("\n")
+        zip_files = `unzip -Z1 public/district_upload/empty/empty.zip`.split("\n")
         (@all_files - zip_files).should == []
       end
       it 'should have zip file containing all the sample csvs' do
-        zip_files =`unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
+        zip_files = `unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
         (zip_files & ['ext_test_scores_append.csv', 'ext_test_scores_appends.csv']).should_not be_empty
         (@all_files - zip_files).should == []
       end
   end
   describe 'invalid file' do
     it 'should return messages' do
-      i= ImportCSV.new('invalid', District.new)
+      i = ImportCSV.new('invalid', District.new)
       i.import
       i.messages.should include('Unknown file invalid')
     end
@@ -44,8 +44,8 @@ describe ImportCSV do
 
   describe "sorted_filenames" do
     before(:all) do
-      @files =["users.csv","other_append.csv","ext_test_scores_appends.csv","students.csv", "schools.csv", "other.csv",
-        "ext_test_scores.csv", "groups.csv", "system_flags.csv", "user_school_assignments.csv"]
+      @files = ["users.csv","other_append.csv","ext_test_scores_appends.csv","students.csv", "schools.csv", "other.csv",
+               "ext_test_scores.csv", "groups.csv", "system_flags.csv", "user_school_assignments.csv"]
       end
 
     it 'should pick out the initial files and put them in order' do
@@ -100,16 +100,16 @@ describe ImportCSV do
 
   describe "csv_importer" do
     it "should call the csv importer when the filename does not contain _appends"  do
-      i = ImportCSV.new("users.csv", d=District.new)
-      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock(:import => nil))
+      i = ImportCSV.new("users.csv", d = District.new)
+      CSVImporter::Users.should_receive(:new).with("users.csv",d).and_return(mock(import: nil))
       i.send :csv_importer, "users.csv"
     end
 
     it "should call the csv importer when the filename does contain _appends" do
-      i = ImportCSV.new("ext_test_scores_appends.csv", d=District.new)
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock(:import => nil))
+      i = ImportCSV.new("ext_test_scores_appends.csv", d = District.new)
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_appends.csv",d).and_return(mock(import: nil))
       i.send :csv_importer, "ext_test_scores_appends.csv"
-      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock(:import => nil))
+      CSVImporter::ExtTestScores.should_receive(:new).with("ext_test_scores_append.csv",d).and_return(mock(import: nil))
       i.send :csv_importer, "ext_test_scores_append.csv"
 
     end
@@ -120,7 +120,7 @@ describe ImportCSV do
   describe 'sort_files' do
     # ['schools.csv', 'students.csv', 'users.csv']
     it 'should sort with the required files first' do
-      i=ImportCSV.new '', District.new
+      i = ImportCSV.new '', District.new
       i.send(:sorted_filenames, ['dog.csv', 'users.csv','schools.csv']).should == ['schools.csv', 'users.csv', 'dog.csv']
       i.send(:sorted_filenames, ['/tmp/Dog.csv', '/a/users.csv','/b/SChOOls.csv']).should == ['/b/SChOOls.csv', '/a/users.csv', '/tmp/Dog.csv']
     end

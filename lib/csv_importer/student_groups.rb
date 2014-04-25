@@ -4,8 +4,8 @@ module CSVImporter
    #<Benchmark::Tms:0x41da63f8 @real=1328.59576916695, @utime=0.0200000000000005, @cstime=0.77, @cutime=20.16, @label="", @total=20.97, @stime=0.02>
    #884 SECONDS NOW.. (there wasn't anything to delete)  delete took 937..   1792 total with delete...    630 seconds after initial load now
   FIELD_DESCRIPTIONS = { 
-      :district_student_id => 'Key for student',
-      :district_group_id => 'Key for group (the one you created for the SIMS group.)'
+      district_student_id: 'Key for student',
+      district_group_id: 'Key for group (the one you created for the SIMS group.)'
     }
 
     
@@ -47,7 +47,7 @@ module CSVImporter
 
   
 
-  private
+    private
     def index_options
       [[:district_student_id, :district_group_id]]
     end
@@ -58,8 +58,8 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_student_id, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
-      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
+      t.string :district_student_id, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
+      t.string :district_group_id, limit: Group.columns_hash["district_group_id"].limit, null: Group.columns_hash["district_group_id"].null
     end
 
     def delete
@@ -78,7 +78,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into groups_students
+      query = ("insert into groups_students
       (student_id,group_id)
       select u.id , g.id from #{temporary_table_name} tug inner join 
       students u on u.district_student_id = tug.district_student_id
@@ -98,8 +98,8 @@ module CSVImporter
 
 
     def insert_update_delete
-      @deleted=delete
-      @created=insert
+      @deleted = delete
+      @created = insert
     end
 
 

@@ -29,8 +29,8 @@ class TeamConsultationsController < ApplicationController
     @team_consultation = TeamConsultation.find(params[:id])
     @teams = current_school.school_teams
     respond_to do |format|
-      format.html {render :action => 'new'} # new.html.erb
-      format.js { render :action => 'new'}
+      format.html {render action: 'new'} # new.html.erb
+      format.js { render action: 'new'}
     end
   end
 
@@ -38,22 +38,22 @@ class TeamConsultationsController < ApplicationController
   # POST /team_consultations.xml
   def create
     params[:team_consultation] ||= {}
-    params[:team_consultation].merge!(:student_id => current_student_id, :requestor_id => current_user.id)
+    params[:team_consultation].merge!(student_id: current_student_id, requestor_id: current_user.id)
     params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 
     respond_to do |format|
       if @team_consultation.save
         unless @team_consultation.draft?
-          msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+          msg = "<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
         else
           msg = 'The Team Consultation Draft was saved.'
         end
-        format.html { flash[:notice]=msg; redirect_to(current_student) }
+        format.html { flash[:notice] = msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
         @recipients = current_school.school_teams
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js {  responds_to_parent {render}  }
       end
     end
@@ -68,15 +68,15 @@ class TeamConsultationsController < ApplicationController
     respond_to do |format|
       if @team_consultation.update_attributes(params[:team_consultation])
         if @team_consultation.draft?
-          msg="<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
+          msg = "<p>The concern note has been sent to #{@team_consultation.school_team}.</p>  <p>A discussion about this student will occur at an upcoming team meeting.</p>"
         else
           msg = 'TeamConsultation was successfully updated.'
         end
         format.html { redirect_to(@team_consultation.student) }
-        format.js { flash.now[:notice] = msg; responds_to_parent{render :action => 'create'} }
+        format.js { flash.now[:notice] = msg; responds_to_parent{render action: 'create'} }
       else
-        format.html { render :action => "new" }
-        format.js { responds_to_parent{render :action => 'new'} }
+        format.html { render action: "new" }
+        format.js { responds_to_parent{render action: 'new'} }
       end
     end
   end

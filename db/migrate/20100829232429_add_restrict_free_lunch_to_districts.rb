@@ -1,6 +1,6 @@
 class AddRestrictFreeLunchToDistricts < ActiveRecord::Migration
   def self.up
-    add_column :districts, :restrict_free_lunch, :boolean, :default => true
+    add_column :districts, :restrict_free_lunch, :boolean, default: true
   end
 
   def self.down

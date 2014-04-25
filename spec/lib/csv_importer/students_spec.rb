@@ -7,13 +7,13 @@ describe CSVImporter::Students do
     it 'should upload properly' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
-      i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students.csv",d
+      d = Factory(:district)
+      i = CSVImporter::Students.new "#{Rails.root}/spec/csv/students.csv",d
       i.import
-      expected=  {997 => [false,true], 992 => [false,false], 993 => [false, false],
-          994 => [false,false], 995 => [false,false], 996 => [false,false],
-          998 => [true, true], 999 => [true,true],
-          1000 => [false, false], 1001 =>[true,false], 1002 => [true,false]
+      expected = {997 => [false,true], 992 => [false,false], 993 => [false, false],
+                  994 => [false,false], 995 => [false,false], 996 => [false,false],
+                  998 => [true, true], 999 => [true,true],
+                  1000 => [false, false], 1001 => [true,false], 1002 => [true,false]
         }
 
 
@@ -34,16 +34,16 @@ describe CSVImporter::Students do
     it 'should remove the students from the district and clear out the enrollments' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
-      s1=d.students.create!(:id_state=>1, :first_name => 'keep', :last_name => 'student', :district_student_id => 's1')
-      s1.enrollments.create(:school_id=>1, :grade =>'01')
-      s2=d.students.create!(:id_state=>2, :first_name => 'destroy', :last_name => 'student', :district_student_id => 's2')
-      s2.enrollments.create!(:school_id=>1, :grade =>'02')
-      e3=Enrollment.create!(:student_id=>-1,:grade=>-1,:school_id=>-1)
-      s3=d.students.create!(:id_state=>nil, :first_name => 'blank_district_student_id', :last_name => 'student', :district_student_id => '')
+      d = Factory(:district)
+      s1 = d.students.create!(id_state: 1, first_name: 'keep', last_name: 'student', district_student_id: 's1')
+      s1.enrollments.create(school_id: 1, grade: '01')
+      s2 = d.students.create!(id_state: 2, first_name: 'destroy', last_name: 'student', district_student_id: 's2')
+      s2.enrollments.create!(school_id: 1, grade: '02')
+      e3 = Enrollment.create!(student_id: -1,grade: -1,school_id: -1)
+      s3 = d.students.create!(id_state: nil, first_name: 'blank_district_student_id', last_name: 'student', district_student_id: '')
 
       file_name = ''
-      i=CSVImporter::Students.new file_name,d
+      i = CSVImporter::Students.new file_name,d
       i.send(:create_temporary_table)
       ActiveRecord::Base.connection.execute("Insert into #{i.send(:temporary_table_name)}
                                             (#{i.send(:csv_headers).collect(&:to_s).join(",")})
@@ -70,19 +70,19 @@ describe CSVImporter::Students do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
-      d.students.create!(:id_state => 99, :first_name => "MISMATCHED", :last_name => "NAME_BUT_MATCHED_BIRTHDATE", :birthdate => "2006-01-01")
-      d.students.create!(:id_state => 98, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MATCHING_NAME", :birthdate => nil)
-      d.students.create!(:id_state => 97, :first_name => "NONMATCHING_BIRTHDATE_IN_DB", :last_name => "MATCHED_NAME", :birthdate => '2006-01-02')
-      d.students.create!(:id_state => 96, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MISMATCHED_NAME", :birthdate =>nil )
-      d.students.create!(:id_state => 95, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "MATCHED_NAME", :birthdate =>'2006-01-04' )
-      d.students.create!(:id_state => 94, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>nil )
-      d.students.create!(:id_state => 93, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "mismatched_case", :birthdate =>'2006-01-05' )
-      d.students.create!(:id_state => 92, :first_name => "ZERO_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>'0000-00-00' )
+      d = Factory(:district)
+      d.students.create!(id_state: 99, first_name: "MISMATCHED", last_name: "NAME_BUT_MATCHED_BIRTHDATE", birthdate: "2006-01-01")
+      d.students.create!(id_state: 98, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "MATCHING_NAME", birthdate: nil)
+      d.students.create!(id_state: 97, first_name: "NONMATCHING_BIRTHDATE_IN_DB", last_name: "MATCHED_NAME", birthdate: '2006-01-02')
+      d.students.create!(id_state: 96, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "MISMATCHED_NAME", birthdate: nil )
+      d.students.create!(id_state: 95, first_name: "NULL_BIRTHDATE_IN_CSV", last_name: "MATCHED_NAME", birthdate: '2006-01-04' )
+      d.students.create!(id_state: 94, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "mismatched_case", birthdate: nil )
+      d.students.create!(id_state: 93, first_name: "NULL_BIRTHDATE_IN_CSV", last_name: "mismatched_case", birthdate: '2006-01-05' )
+      d.students.create!(id_state: 92, first_name: "ZERO_BIRTHDATE_IN_DB", last_name: "mismatched_case", birthdate: '0000-00-00' )
       Student.update_all("birthdate = 0", "id_state = 92")
       Student.update_all("district_id = null")
       file_name = ''
-      i=CSVImporter::Students.new file_name,d
+      i = CSVImporter::Students.new file_name,d
       i.send(:create_temporary_table)
       ActiveRecord::Base.connection.execute("Insert into #{i.send(:temporary_table_name)}
                                             (#{i.send(:csv_headers).collect(&:to_s).join(",")})
@@ -103,7 +103,7 @@ describe CSVImporter::Students do
 
       i.messages.sort.should ==
         ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.",
-        "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
+         "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       ]
 
 
@@ -115,8 +115,8 @@ describe CSVImporter::Students do
     it 'should zero out or reject an invalid birthdate' do
       District.delete_all
       Student.delete_all
-      d=Factory(:district)
-      i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students/invalid_birthdate/students.csv",d
+      d = Factory(:district)
+      i = CSVImporter::Students.new "#{Rails.root}/spec/csv/students/invalid_birthdate/students.csv",d
       i.import
       d.students.first.birthdate.should be_nil
       d.students.last.birthdate.should be_nil

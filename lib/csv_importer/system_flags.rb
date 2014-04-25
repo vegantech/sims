@@ -1,9 +1,9 @@
 module CSVImporter
   class SystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_student_id =>"Key for student",
-        :category =>"Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}  It must match one of these exactly, no spaces, all lowercase",
-        :reason =>"A description of the reason the student was flagged.",
+        district_student_id: "Key for student",
+        category: "Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}  It must match one of these exactly, no spaces, all lowercase",
+        reason: "A description of the reason the student was flagged.",
     }
     class << self
       def description
@@ -36,9 +36,9 @@ module CSVImporter
       end
 
       def alternate
-        h={}
+        h = {}
         ImportCSV::VALID_FILES.select{|e| e =~ /_system_flags.csv/}.collect{|e| e.split(".csv").first.to_sym}.each do |f|
-          h[f]="Student Flags for category #{Flag::FLAGTYPES[f.to_s.split("_system").first][:humanize]}"
+          h[f] = "Student Flags for category #{Flag::FLAGTYPES[f.to_s.split("_system").first][:humanize]}"
         end
         h
       end
@@ -65,8 +65,8 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
-      t.column :category,  :string, :limit => Flag.columns_hash["category"].limit, :null => false
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
+      t.column :category,  :string, limit: Flag.columns_hash["category"].limit, null: false
       t.column :reason, :text
       
     end
@@ -76,7 +76,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from sf using flags sf
        inner join students stu on stu.id=sf.student_id and stu.district_id = #{@district.id}
        where 
@@ -86,7 +86,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into flags 
+      query = ("insert into flags 
       (student_id, category,reason,type, created_at, updated_at)
       select stu.id,te.category,te.reason,'SystemFlag', curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id
@@ -102,17 +102,17 @@ module CSVImporter
    end
 
    def valid_categories
-     keys=Flag::FLAGTYPES.keys.collect{|e| "'" + e + "'"}.join(",")
+     keys = Flag::FLAGTYPES.keys.collect{|e| "'" + e + "'"}.join(",")
 
    end
 
 
    def before_import
-     keys=valid_categories
-     query ="select * from #{temporary_table_name}
+     keys = valid_categories
+     query = "select * from #{temporary_table_name}
              where category not in (#{keys})"
 
-     res=ActiveRecord::Base.connection.select_rows query
+     res = ActiveRecord::Base.connection.select_rows query
      unless res.blank?
        msg = res.collect{|e| e.join(",")}.join("; ")
        @other_messages << "Unknown Categories for #{msg}"

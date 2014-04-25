@@ -1,6 +1,6 @@
 class Notifications < MailerWithSubdomains
   layout 'email'
-  default :from => DEFAULT_EMAIL
+  default from: DEFAULT_EMAIL
   #  alias_method_chain @url_for, @subdomain
 #  def url_for_with_subdomain(opts ={})
 #    raise 'missing district' if @district.blank?
@@ -12,9 +12,9 @@ class Notifications < MailerWithSubdomains
     subject  =  '[SIMS] Email Registration/ Change Password'
     recipients = user.email
 
-    @user=user
+    @user = user
+    mail(subject: subject, to: recipients)
 
-    mail(:subject => subject, :to => recipients)
   end
 
 
@@ -23,8 +23,8 @@ class Notifications < MailerWithSubdomains
     recipients = override.student.principals.collect(&:email).join(',')
     @district = override.student.district
 
-    @override =override
-    mail(:subject => subject, :to => recipients)
+    @override = override
+    mail(subject: subject, to: recipients)
   end
 
   def principal_override_response(override)
@@ -33,12 +33,12 @@ class Notifications < MailerWithSubdomains
     @district = override.student.district
 
     @override = override
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
   end
 
   def intervention_starting(interventions)
-    interventions= Array(interventions)
-    participants= interventions.first.participants_with_author
+    interventions = Array(interventions)
+    participants = interventions.first.participants_with_author
     watcher = interventions.first.try(:intervention_definition).try(:notify_email)
     watcher = nil unless watcher.to_s.include?("@")
 
@@ -48,7 +48,7 @@ class Notifications < MailerWithSubdomains
 
     @participants = participants
     @interventions = interventions
-    mail(:subject => subject, :to => recipients, :cc => watcher)
+    mail(subject: subject, to: recipients, cc: watcher)
   end
 
   def intervention_ending_reminder(user,interventions, sent_at = Time.now)
@@ -58,49 +58,49 @@ class Notifications < MailerWithSubdomains
 
     @user = user
     @interventions = interventions
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
   end
 
   def intervention_reminder(sent_at = Time.now)
     subject  =  'Notifications#intervention_reminder'
     recipients =  ''
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
 
   end
 
-  def intervention_participant_added(intervention_person,intervention=nil)
+  def intervention_participant_added(intervention_person,intervention = nil)
     subject =    '[SIMS]  Student Intervention New Participant'
     intervention_person = Array(intervention_person)
     @intervention_person = intervention_person.first
     @intervention = Array(intervention || @intervention_person.intervention).first
-    recipients =@intervention_person.email
+    recipients = @intervention_person.email
     @district = @intervention_person.user.district
     @participants = @intervention.participants_with_author
     @interventions = Array(intervention)
    # intervention_person.collect(&:intervention)
     @participant = @intervention_person
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
   end
 
 
   def special_ed_referral rec, user_name, user_email, student
     subject = 'SIMS- Checklist Completed'
     @recommendation = rec  unless rec.blank?
-    @student=student
+    @student = student
     @headers = {}
 
-    @user_name= user_name
+    @user_name = user_name
     recipients = user_email
     @district = student.district
 
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
   end
 
   def district_upload_results msg, admin_email
     subject = 'SIMS Upload Results'
     recipients = admin_email
     @msg = msg
-    mail(:subject => subject, :to => recipients)
+    mail(subject: subject, to: recipients)
   end
 
   def self.setup_ending_reminders(district = nil)
@@ -122,7 +122,7 @@ class Notifications < MailerWithSubdomains
   end
 
   def self.interventions_ending_this_week
-    interventions = Intervention.active.find(:all, :conditions=>{"end_date" =>(Date.today..7.day.from_now.to_date)})
+    interventions = Intervention.active.find(:all, conditions: {"end_date" => (Date.today..7.day.from_now.to_date)})
     interventions.reject{|i| i.student.blank?}
   end
 

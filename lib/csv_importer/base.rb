@@ -8,7 +8,7 @@ module CSVImporter
       @file_name = file_name
       @messages = []
       @clean_file = nil
-      @deleted,@updated,@created=nil
+      @deleted,@updated,@created = nil
       @other_messages = ""
     end
 
@@ -37,11 +37,11 @@ module CSVImporter
 
     class << self
       def file_name
-        name.tableize.split("/").last+".csv"
+        name.tableize.split("/").last + ".csv"
       end
 
       def file_name_with_append
-        supports_append? ? name.tableize.split("/").last+"_append.csv" : ''
+        supports_append? ? name.tableize.split("/").last + "_append.csv" : ''
       end
 
       def description
@@ -93,7 +93,7 @@ module CSVImporter
       end
     end
 
-  protected
+    protected
 
   def temporary_table_name
     "#{self.class.name.demodulize.tableize}_#{@district.id}_importer"
@@ -117,7 +117,7 @@ module CSVImporter
       system "sed -i -e 's/\r[^\\n]/\\n/g' #{@file_name}"
 
       #pop off header
-      head= `head -n 1 #{@file_name}`
+      head = `head -n 1 #{@file_name}`
       return false unless confirm_header head
 
       system "tail -n +2 #{@file_name} > #{@clean_file}"
@@ -135,8 +135,8 @@ module CSVImporter
 
 
     def confirm_header row
-      h= row.split(",").collect(&:strip)
-      h=h.delete_if(&:blank?).collect(&:to_sym)
+      h = row.split(",").collect(&:strip)
+      h = h.delete_if(&:blank?).collect(&:to_sym)
       if (h - optional_headers).join(",")  == (csv_headers - optional_headers).join(",")
         return h
       else
@@ -172,9 +172,9 @@ module CSVImporter
     def insert_update_delete
       before_import
       #override this for a different order
-      @deleted=delete
-      @updated=update
-      @created=insert
+      @deleted = delete
+      @updated = update
+      @created = insert
       after_import
     end
 
@@ -199,7 +199,7 @@ module CSVImporter
 
     def add_indexes
       index_options.each_with_index do |e,idx|
-        ActiveRecord::Migration.add_index temporary_table_name, e, :name=>"temporary_index_#{idx}"
+        ActiveRecord::Migration.add_index temporary_table_name, e, name: "temporary_index_#{idx}"
       end
     end
 
@@ -211,7 +211,7 @@ module CSVImporter
 
     def create_temporary_table
       ActiveRecord::Migration.suppress_messages do
-        ActiveRecord::Migration.create_table temporary_table_name, :id => false, :temporary => temporary_table? do |t|
+        ActiveRecord::Migration.create_table temporary_table_name, id: false, temporary: temporary_table? do |t|
           migration t
         end
         add_indexes

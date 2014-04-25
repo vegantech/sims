@@ -3,9 +3,9 @@ module CSVImporter
     #    77.6728281974792
     #
     FIELD_DESCRIPTIONS = {
-      :district_group_id =>"Key for group, this could be a string.  I recommend using a prefix, so sect314 would represent a section with a primary key of 314, then nei445 could be a neighborhood with id 445.   Keys must be unique so this is necessary if you're going to be combining data from different tables from your student information system (20 char limit)",
-      :district_school_id =>"Key for school",
-      :name =>"The name of the group that will appear in SIMS."
+      district_group_id: "Key for group, this could be a string.  I recommend using a prefix, so sect314 would represent a section with a primary key of 314, then nei445 could be a neighborhood with id 445.   Keys must be unique so this is necessary if you're going to be combining data from different tables from your student information system (20 char limit)",
+      district_school_id: "Key for school",
+      name: "The name of the group that will appear in SIMS."
     }
     class << self
       def description
@@ -45,7 +45,7 @@ module CSVImporter
     end
 
 
-  private
+    private
     def index_options
       [[:district_group_id, :district_school_id] ]
     end
@@ -58,8 +58,8 @@ module CSVImporter
       @cols = sims_model.columns_hash.merge(School.columns_hash)
 
       csv_headers.each do |col|
-        c=col.to_s
-        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
+        c = col.to_s
+        t.column col, @cols[c].type, limit: @cols[c].limit, null: @cols[c].null
       end
     end
 
@@ -73,14 +73,14 @@ module CSVImporter
     end
 
     def remove_duplicates
-      v=Group.connection.select_values "select concat('duplicate groups for ' ,district_group_id,' and ', district_school_id , ' using one titled ' , max(name))
+      v = Group.connection.select_values "select concat('duplicate groups for ' ,district_group_id,' and ', district_school_id , ' using one titled ' , max(name))
       from #{temporary_table_name} group by district_group_id,district_school_id having count(name) > 1"
       @other_messages << v.join("; ") unless v.blank?
     end
 
 
     def update
-      query=("update groups
+      query = ("update groups
         inner join  #{temporary_table_name} tg on tg.district_group_id = groups.district_group_id
         inner join schools sch on sch.district_school_id = tg.district_school_id and groups.school_id = sch.id
         set groups.school_id = sch.id, groups.district_group_id = tg.district_group_id, groups.title = tg.name,  groups.updated_at = curdate()
@@ -91,7 +91,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from g using  groups g
        left outer join #{temporary_table_name} tg
        on tg.district_group_id = g.district_group_id
@@ -102,7 +102,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into groups
+      query = ("insert into groups
       (school_id, district_group_id, title, created_at, updated_at)
       select sch.id, tg.district_group_id, max(tg.name) as name, curdate(), curdate() from #{temporary_table_name} tg
       inner join schools sch on sch.district_school_id = tg.district_school_id

@@ -2,7 +2,7 @@ module CSVImporter
   class AllSchools < CSVImporter::Base
 
     FIELD_DESCRIPTIONS = {
-      :district_user_id => 'Key for user'
+      district_user_id: 'Key for user'
     }
 
     class << self
@@ -49,7 +49,7 @@ module CSVImporter
 
 
 
-  private
+    private
     def index_options
       [[:district_user_id]]
     end
@@ -59,7 +59,7 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.string :district_user_id, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
     end
 
     def delete

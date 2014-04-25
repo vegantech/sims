@@ -1,7 +1,7 @@
 class ChecklistsController < ApplicationController
   # GET /checklists/1
   def show
-    @checklist=current_student.checklists.find_and_score(params[:id])
+    @checklist = current_student.checklists.find_and_score(params[:id])
     flash[:notice] = "Checklist no longer exists." and redirect_to :back and return if @checklist.blank?
     respond_to do |format|
       format.html # show.html.erb
@@ -27,18 +27,18 @@ class ChecklistsController < ApplicationController
   end
 
   def update
-    @checklist=current_student.checklists.find(params[:id])
+    @checklist = current_student.checklists.find(params[:id])
     @checklist.teacher = current_user
     if @checklist.update_attributes(params.slice("commit","save_draft","element_definition"))
       flash[:notice] = "Checklist has been updated"
       if @checklist.needs_recommendation?
-          redirect_to new_recommendation_url(:checklist_id=>@checklist.id) and return
+          redirect_to new_recommendation_url(checklist_id: @checklist.id) and return
       else
           redirect_to(current_student) and return
       end
     else
       flash.now[:notice] = "There was a problem with updating the checklist"
-      render :action => 'edit' and return
+      render action: 'edit' and return
     end
  end
 
@@ -55,12 +55,12 @@ class ChecklistsController < ApplicationController
       if @checklist.save
         flash[:notice] = 'Checklist was successfully created.'
         if @checklist.needs_recommendation?
-          format.html {redirect_to new_recommendation_url(:checklist_id=>@checklist.id)}
+          format.html {redirect_to new_recommendation_url(checklist_id: @checklist.id)}
         else
           format.html { redirect_to(current_student) }
         end
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end

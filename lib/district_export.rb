@@ -45,9 +45,9 @@ class DistrictExport
     :tiers,
     :time_lengths
   ]
-  SPECIAL_COLS={
-    :students => "id,district_student_id",
-    :schools => "id,district_school_id",
+  SPECIAL_COLS = {
+    students: "id,district_student_id",
+    schools: "id,district_school_id",
   }
 
   CONTENT_ONLY = [
@@ -79,13 +79,13 @@ class DistrictExport
     @district = district
     @dir = Rails.root.join("tmp","district_export",district.id.to_s)
     @content_dir = Rails.root.join("tmp","content_export",district.id.to_s)
-    @files=Hash.new
+    @files = Hash.new
     @student_ids_in_use = []
   end
 
   def no_double_quotes field
     return if field.blank?
-    string=field.to_s.encode('utf-8','binary', :invalid => :replace, :undef => :replace, :replace => '')
+    string = field.to_s.encode('utf-8','binary', invalid: :replace, undef: :replace, replace: '')
     string.gsub! /\342\200\230/m, "'"
     string.gsub! /\342\200\231/m, "'"
     string.gsub! /\342\200\234/m, '"'
@@ -109,7 +109,7 @@ class DistrictExport
 
   def csv_tsv
     TO_EXPORT.each do |t|
-      cols=csv_cols(t)
+      cols = csv_cols(t)
       self.generate_csv(t.to_s,cols,
                        district.send(t).select(cols_with_table_name(cols,t)).to_sql)
     end
@@ -120,7 +120,7 @@ class DistrictExport
   end
 
   def export_content_csv
-   @assets= Hash.new{|h, k| h[k] = []}
+   @assets = Hash.new{|h, k| h[k] = []}
     CONTENT_ONLY.each do |t|
         cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
         cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
@@ -142,7 +142,7 @@ class DistrictExport
 
   def generate_students
     self.generate_csv('students', 'id,id_state',
-                      Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(:id => @student_ids_in_use).to_sql,
+                      Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(id: @student_ids_in_use).to_sql,
     "students_outside_district_with_content")
   end
 
@@ -175,12 +175,12 @@ class DistrictExport
   end
 
   def export_assets
-    generate_csv('assets',Asset.column_names.join(","),Asset.where(:id => district_asset_ids).to_sql)
+    generate_csv('assets',Asset.column_names.join(","),Asset.where(id: district_asset_ids).to_sql)
   end
 
   def export_content_assets
     #union of ids from @assets
-    asset_sql = @assets.collect{|c,ids| Asset.where(:attachable_type => c, :attachable_id => ids).to_sql}.join(" union ")
+    asset_sql = @assets.collect{|c,ids| Asset.where(attachable_type: c, attachable_id: ids).to_sql}.join(" union ")
     generate_content_csv('assets',Asset.column_names.join(","),asset_sql)
     Asset.find_by_sql(asset_sql).collect{|a| a.document.try(:path)}.compact
 
@@ -197,14 +197,14 @@ class DistrictExport
     if table == "students_outside_district_with_content"
       obj = Student
     else
-      obj=table.classify.constantize
+      obj = table.classify.constantize
     end
   end
 
   def schema_table(table,f)
     f.write("#{table}\r\n")
     @files[table].split(',').each do |header|
-      col=schema_obj(table).columns.find{|col| col.name == header}
+      col = schema_obj(table).columns.find{|col| col.name == header}
       f.write("#{header} - #{col.type} - #{col.sql_type}\r\n" )
     end
     f.write("\r\n")
@@ -224,12 +224,12 @@ class DistrictExport
     end
   end
 
-  def generate_content_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
-    @files[filename]=headers
+  def generate_content_csv( table, headers, sql = "where district_id = #{district.id}", filename = table)
+    @files[filename] = headers
     sql = "select #{headers} from #{table} #{sql}" unless sql.match(/^select/i)
-    CSV.open(@content_dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
+    CSV.open(@content_dir.join(filename + ".csv"), "w",row_sep: "\r\n") do |csv|
       csv << headers.split(',')
-      select= headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
+      select = headers.split(',').collect{|h| "#{table}.#{h}"}.join(",")
       Student.connection.select_rows(sql).each do |row|
         @assets[table.classify] << row[0]
         csv << row
@@ -239,13 +239,13 @@ class DistrictExport
 
 
 
-  def generate_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
-    @files[filename]=headers
+  def generate_csv( table, headers, sql = "where district_id = #{district.id}", filename = table)
+    @files[filename] = headers
     sql = "select #{headers} from #{table} #{sql}" unless sql.match(/^select/i)
     split_headers = headers.split(',')
     student_id_index = split_headers.index("student_id")
-    CSV.open(dir.join(filename + ".tsv"), "w",:row_sep=>" |\r\n",:col_sep =>"\t" ) do |tsv|
-      CSV.open(dir.join(filename + ".csv"), "w",:row_sep=>"\r\n") do |csv|
+    CSV.open(dir.join(filename + ".tsv"), "w",row_sep: " |\r\n",col_sep: "\t" ) do |tsv|
+      CSV.open(dir.join(filename + ".csv"), "w",row_sep: "\r\n") do |csv|
         csv << split_headers
         tsv << split_headers
         generate_csv_rows(csv,tsv,sql,student_id_index)

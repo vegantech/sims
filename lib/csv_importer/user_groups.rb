@@ -5,9 +5,9 @@ module CSVImporter
     #
     #
     FIELD_DESCRIPTIONS = { 
-    :district_user_id => 'Key for user',
-    :district_group_id => "Key for group (the one you created for the SIMS group.)",
-    :principal => "true if the user is the principal for that group, blank otherwise.   
+    district_user_id: 'Key for user',
+    district_group_id: "Key for group (the one you created for the SIMS group.)",
+    principal: "true if the user is the principal for that group, blank otherwise.   
 The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  
 Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv  (Y/N also works)"
 }
@@ -49,11 +49,11 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
     end
 
 
-  private
+    private
 
     def load_data_infile
-      headers=csv_headers
-      headers[-1]="@principal"
+      headers = csv_headers
+      headers[-1] = "@principal"
       <<-EOF
           LOAD DATA LOCAL INFILE "#{@clean_file}" 
             INTO TABLE #{temporary_table_name}
@@ -78,8 +78,8 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
 
 
     def migration t
-      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
-      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
+      t.string :district_user_id, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
+      t.string :district_group_id, limit: Group.columns_hash["district_group_id"].limit, null: Group.columns_hash["district_group_id"].null
       t.boolean :principal
     end
 
@@ -91,7 +91,7 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !='' and users.district_user_id !=''
       "
 
-extra ="      where not exists (
+extra = "      where not exists (
         select 1 from #{temporary_table_name} tug
         where tug.district_user_id = users.district_user_id and tug.district_group_id = groups.district_group_id)
       )"
@@ -99,7 +99,7 @@ extra ="      where not exists (
     end
 
     def insert
-      query=("insert into user_group_assignments
+      query = ("insert into user_group_assignments
       (user_id,group_id, is_principal, created_at, updated_at)
       select u.id , g.id, principal, CURDATE(), CURDATE() from #{temporary_table_name} tug inner join 
       users u on u.district_user_id = tug.district_user_id

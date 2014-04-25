@@ -13,27 +13,27 @@ describe CSVImporter::AllStudentsInSchools do
 
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
-      @school_no_link = Factory(:school, :district_id => @district.id)
-      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
+      @school_no_link = Factory(:school, district_id: @district.id)
+      @school_with_link = Factory(:school, district_id: @district.id, district_school_id: 2)
       
-      @no_role_or_district_user_id.staff_assignments.create!(:school_id => @school_no_link.id)
+      @no_role_or_district_user_id.staff_assignments.create!(school_id: @school_no_link.id)
       
       
-      @role_no_district_user_id = Factory(:user,:district_id => @district.id)
-      @should_lose_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_lose_role')
-      @should_keep_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_keep_role')
-      @should_keep_no_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_keep_no_role')
-      @should_gain_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_gain_role')
-      @dup_person_id = Factory(:user,:district_id => @district.id, :district_user_id => @should_gain_role.district_user_id)
-      @dup_person_id.staff_assignments.create!(:school_id => @school_no_link.id)
+      @role_no_district_user_id = Factory(:user,district_id: @district.id)
+      @should_lose_role = Factory(:user,district_id: @district.id,  district_user_id: 'should_lose_role')
+      @should_keep_role = Factory(:user,district_id: @district.id,  district_user_id: 'should_keep_role')
+      @should_keep_no_role = Factory(:user,district_id: @district.id, district_user_id: 'should_keep_no_role')
+      @should_gain_role = Factory(:user,district_id: @district.id, district_user_id: 'should_gain_role')
+      @dup_person_id = Factory(:user,district_id: @district.id, district_user_id: @should_gain_role.district_user_id)
+      @dup_person_id.staff_assignments.create!(school_id: @school_no_link.id)
       [@role_no_district_user_id, @should_lose_role, @should_keep_role].each do |u|
-        u.staff_assignments.create!(:school_id => @school_with_link.id)
+        u.staff_assignments.create!(school_id: @school_with_link.id)
       end
 
 
-      @role_no_district_user_id.staff_assignments.create!(:school_id => @school_no_link.id)
+      @role_no_district_user_id.staff_assignments.create!(school_id: @school_no_link.id)
       @district.users.update_all("updated_at = '2000-01-01'")
-      @i=CSVImporter::StaffAssignments.new "#{Rails.root}/spec/csv/staff_assignments.csv",@district
+      @i = CSVImporter::StaffAssignments.new "#{Rails.root}/spec/csv/staff_assignments.csv",@district
       @i.import
 
 

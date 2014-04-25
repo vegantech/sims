@@ -33,13 +33,13 @@ describe InterventionDefinition do
     before do
       Tier.delete_all
       InterventionDefinition.delete_all
-      @id1=FactoryGirl.create(:intervention_definition)
+      @id1 = FactoryGirl.create(:intervention_definition)
       @ic1 = @id1.intervention_cluster
-      @id2=FactoryGirl.create(:intervention_definition, :intervention_cluster => @ic1)
-      @id3=FactoryGirl.create(:intervention_definition, :intervention_cluster => @ic1, :disabled=>true)
+      @id2 = FactoryGirl.create(:intervention_definition, intervention_cluster: @ic1)
+      @id3 = FactoryGirl.create(:intervention_definition, intervention_cluster: @ic1, disabled: true)
       @district = @id1.district
-      @tier1=@district.tiers.create!(:title => 'tier 1')
-      @tier2=@district.tiers.create!(:title => 'tier 2')
+      @tier1 = @district.tiers.create!(title: 'tier 1')
+      @tier2 = @district.tiers.create!(title: 'tier 2')
       @id1.update_attribute(:tier_id, @tier1.id)
       @id2.update_attribute(:tier_id, @tier2.id)
     end
@@ -96,21 +96,21 @@ describe InterventionDefinition do
       InterventionDefinition.delete_all
       @cucumber_user = FactoryGirl.create(:user)
       @cucumber_district = @cucumber_user.district
-      @cucumber_school = FactoryGirl.create(:school, :district => @cucumber_district)
-      gd=FactoryGirl.create(:goal_definition, :district => @cucumber_district)
-      od=FactoryGirl.create(:objective_definition, :goal_definition => gd)
-      @category = FactoryGirl.create(:intervention_cluster, :objective_definition => od)
-      @suss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
-              :user_id => @cucumber_user.id, :school_id => @cucumber_school.id, :custom => true)
-      @suds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
-              :user_id => @cucumber_user.id, :school_id => -1, :custom => true)
-      @duss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
-              :user_id => -1, :school_id => @cucumber_school.id, :custom => true)
-      @duds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
-              :user_id => -1, :school_id => -1, :custom => true)
-      @dis = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "disabled",
-              :disabled => true)
-      @sys = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "system")
+      @cucumber_school = FactoryGirl.create(:school, district: @cucumber_district)
+      gd = FactoryGirl.create(:goal_definition, district: @cucumber_district)
+      od = FactoryGirl.create(:objective_definition, goal_definition: gd)
+      @category = FactoryGirl.create(:intervention_cluster, objective_definition: od)
+      @suss = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "same_user_same_school",
+                                                           user_id: @cucumber_user.id, school_id: @cucumber_school.id, custom: true)
+      @suds = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "same_user_different_school",
+                                                           user_id: @cucumber_user.id, school_id: -1, custom: true)
+      @duss = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "different_user_same_school",
+                                                           user_id: -1, school_id: @cucumber_school.id, custom: true)
+      @duds = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "different_user_different_school",
+                                                           user_id: -1, school_id: -1, custom: true)
+      @dis = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "disabled",
+                                                          disabled: true)
+      @sys = FactoryGirl.create(:intervention_definition, intervention_cluster: @category, title: "system")
     end
 
     it 'district custom interventions disabled' do
@@ -145,11 +145,11 @@ describe InterventionDefinition do
   end
 
   describe 'active_progress_monitors' do
-    subject {FactoryGirl.create InterventionDefinition, :custom => custom}
-    let! (:other_definition) {FactoryGirl.create InterventionDefinition, :intervention_cluster_id => subject.intervention_cluster_id}
+    subject {FactoryGirl.create InterventionDefinition, custom: custom}
+    let! (:other_definition) {FactoryGirl.create InterventionDefinition, intervention_cluster_id: subject.intervention_cluster_id}
 
     let! (:matching_active) {FactoryGirl.create ProbeDefinition, intervention_definitions:  [subject]}
-    let! (:matching_inactive) {FactoryGirl.create ProbeDefinition, :active => false, intervention_definitions: [subject]}
+    let! (:matching_inactive) {FactoryGirl.create ProbeDefinition, active: false, intervention_definitions: [subject]}
     let! (:nonmatching_active) {FactoryGirl.create ProbeDefinition}
     let! (:same_cluster) {FactoryGirl.create ProbeDefinition, intervention_definitions: [other_definition]}
 

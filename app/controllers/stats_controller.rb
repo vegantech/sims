@@ -3,9 +3,9 @@ class StatsController < ApplicationController
 
   def index
     #TODO test and refactor
-    flash[:notice]=nil
+    flash[:notice] = nil
 
-    @without=params[:without]
+    @without = params[:without]
 
     begin
       @start_date = Date.parse(params[:start]).to_date
@@ -20,9 +20,9 @@ class StatsController < ApplicationController
     end
 
 
-    @stats=ActiveSupport::OrderedHash.new
+    @stats = ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation,
-      ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition
+     ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition
     ].each do |klass|
       klass.filter_all_stats_on(:created_after, "DATE(#{klass.table_name}.created_at) >= DATE(?)")
       klass.filter_all_stats_on(:created_before, "DATE(#{klass.table_name}.created_at) <= DATE(?)")
@@ -41,12 +41,12 @@ class StatsController < ApplicationController
           else
            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end
-        @stats[klass.name] = klass.statistics(:exclude_district_id => @without.to_i, :created_after=> @start_date, :created_before => @end_date)
+        @stats[klass.name] = klass.statistics(exclude_district_id: @without.to_i, created_after: @start_date, created_before: @end_date)
       else
-        @stats[klass.name] = klass.statistics(:created_after=> @start_date, :created_before => @end_date)
+        @stats[klass.name] = klass.statistics(created_after: @start_date, created_before: @end_date)
       end
     end
-    flash.now[:notice]="Excluding district with id #{@without.to_i}" if @without
+    flash.now[:notice] = "Excluding district with id #{@without.to_i}" if @without
   end
 
 end

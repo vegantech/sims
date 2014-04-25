@@ -20,7 +20,7 @@ class ChecklistBuilder::Base < ApplicationController
 
   def destroy_unless_content(object)
     if object.has_answers?
-      flash[:notice]= "#{human_class_name(object)} is in use, please copy the checklist instead"
+      flash[:notice] = "#{human_class_name(object)} is in use, please copy the checklist instead"
     else
       flash[:notice] = ""
       object.destroy

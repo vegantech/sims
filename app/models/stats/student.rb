@@ -14,19 +14,18 @@ module Stats::Student
 
 
 #FIXDATES on first two
-  FILTER_HASH_FOR_IN_USE_DATE_RANGE=
-  {
-  :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
+  FILTER_HASH_FOR_IN_USE_DATE_RANGE =   {
+  created_after: "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
     or consultation_form_requests.created_at >=?)",
-  :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+  created_before: "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
     or consultation_form_requests.created_at <=?)"
   }
 
-  define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct students.id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
-  define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :column_name => 'distinct students.district_id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
-  define_statistic :districts_with_students, :count => :all, :column_name => 'distinct district_id'
+  define_statistic :students_with_enrollments , count: :all, joins: :enrollments, column_name: 'distinct students.id',
+                                                filter_on: {created_after: "enrollments.created_at >= ?", created_before: "enrollments.created_at <= ?"}
+  define_statistic :districts_with_enrolled_students , count: :all, joins: :enrollments, column_name: 'distinct students.district_id',
+                                                       filter_on: {created_after: "enrollments.created_at >= ?", created_before: "enrollments.created_at <= ?"}
+  define_statistic :districts_with_students, count: :all, column_name: 'distinct district_id'
 
   #TODO DRY THESE
   define_calculated_statistic :students_in_use  do

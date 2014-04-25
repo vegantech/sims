@@ -21,15 +21,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe FlagDescription do
   before(:each) do
     @valid_attributes = {
-      :languagearts => "value for languagearts",
-      :math => "value for math",
-      :suspension => "value for suspension",
-      :attendance => "value for attendance"
+      languagearts: "value for languagearts",
+      math: "value for math",
+      suspension: "value for suspension",
+      attendance: "value for attendance"
     }
   end
 
   it "should create a new instance given valid attributes" do
-    fd=FlagDescription.new(@valid_attributes)
+    fd = FlagDescription.new(@valid_attributes)
     fd.district_id = 1
     fd.save!
   end

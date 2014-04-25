@@ -46,7 +46,7 @@ class ChecklistBuilder::QuestionsController < ChecklistBuilder::Base
         format.html { redirect_to checklist_builder_question_url(@checklist_definition, @question_definition) }
         format.js
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js
       end
     end
@@ -63,7 +63,7 @@ class ChecklistBuilder::QuestionsController < ChecklistBuilder::Base
         format.html { redirect_to checklist_builder_question_url(@checklist_definition, @question_definition) }
         format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
         format.js
       end
     end

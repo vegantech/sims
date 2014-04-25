@@ -18,11 +18,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe AnswerDefinition do
   before(:each) do
     @valid_attributes = {
-      :element_definition_id =>1 ,
-      :text => "value for text",
-      :value => "value for kind",
-      :position => "1",
-      :autoset_others => false,
+      element_definition_id: 1 ,
+      text: "value for text",
+      value: "value for kind",
+      position: "1",
+      autoset_others: false,
     }
   end
 
@@ -33,7 +33,7 @@ describe AnswerDefinition do
 
 
   it 'should require value' do
-    AnswerDefinition.new(@valid_attributes.merge(:value=>nil)).should_not be_valid
+    AnswerDefinition.new(@valid_attributes.merge(value: nil)).should_not be_valid
   end
 
 

@@ -18,10 +18,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe GoalDefinition do
   before do
     @valid_attributes = {
-      :title => "value for title",
-      :description => "value for description",
-      :position => "1",
-      :disabled => false
+      title: "value for title",
+      description: "value for description",
+      position: "1",
+      disabled: false
     }
   end
 
@@ -31,11 +31,11 @@ describe GoalDefinition do
 
   describe 'objective_definitions' do
     it 'should build_with_new_asset' do
-      gd=Factory(:goal_definition)
-      od1=gd.objective_definitions.build
+      gd = Factory(:goal_definition)
+      od1 = gd.objective_definitions.build
       od1.assets.build
 
-      od2=gd.objective_definitions.build_with_new_asset
+      od2 = gd.objective_definitions.build_with_new_asset
       od2.attributes.should == od1.attributes
       od1.assets.size.should == od2.assets.size
       od2.assets.first.attributes.should == od2.assets.first.attributes

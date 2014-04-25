@@ -1,1 +1,1 @@
-Paperclip.options[:log]=false
+Paperclip.options[:log] = false

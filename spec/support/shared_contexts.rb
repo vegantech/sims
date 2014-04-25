@@ -6,9 +6,9 @@ end
 
 shared_context "authenticated" do
   before(:each) do
-    controller.stub!(:check_domain=> true)
+    controller.stub!(check_domain: true)
     controller.should_receive(:authenticate_user!).any_number_of_times.and_return(true)
-    controller.stub!(:current_user => mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"]))
+    controller.stub!(current_user: mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"]))
   end
 end
 

@@ -1,9 +1,9 @@
 Given /^student exists with id_state of (.*)$/ do |id_state|
-  Factory(:student, :district => @user.district, :id_state => id_state.to_i)
+  Factory(:student, district: @user.district, id_state: id_state.to_i)
 end
 
 Then /^I call ajax check_id_state with "(.*)"$/ do |id_state|
-  visit check_id_state_district_students_url(:student=>{:id_state=>id_state}, :format => 'js')
+  visit check_id_state_district_students_url(student: {id_state: id_state}, format: 'js')
 end
 
 Then /^I should see an alert$/ do
@@ -15,7 +15,7 @@ Then /^I should not see an alert$/ do
 end
 
 Given /^student exists with no district and id_state of (.*)$/ do |id_state|
-  s=Factory(:student, :district_id => 1, :id_state => id_state.to_i)
+  s = Factory(:student, district_id: 1, id_state: id_state.to_i)
   s.update_attribute(:district_id, nil)
 end
 
@@ -38,18 +38,18 @@ end
 When /^I magically visit "([^\"]*)"$/ do |url|
   #'  Element.update("claim_student", "<a href=\"/district/students/claim/996332878?method=put\">Claim First Last for your district</a>"); '
   page.source.match  /\"\/(dis.*)\?/
-  xhr  "put", "#{$1}", {:user_id => @user.id.to_s, :district_id => @user.district_id.to_s}
+  xhr  "put", "#{$1}", {user_id: @user.id.to_s, district_id: @user.district_id.to_s}
   step 'I follow "redirected"' if page.has_content? 'redirected'
 end
 
 
 Given /^a school in my district named "([^\"]*)"$/ do |name|
-  @default_user.district.schools.find_by_name(name) or Factory(:school,:name => name, :district_id => @default_user.district_id)
+  @default_user.district.schools.find_by_name(name) or Factory(:school,name: name, district_id: @default_user.district_id)
 end
 
 Given /^I am assigned to "([^"]*)"$/ do |name|
-    s=Factory(:school, :district_id => @user.district_id)
-    @user.staff_assignments.create!(:school=> s)
+    s = Factory(:school, district_id: @user.district_id)
+    @user.staff_assignments.create!(school: s)
 end
 
 Given /^the other district admin is gone$/ do

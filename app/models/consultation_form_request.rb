@@ -14,12 +14,12 @@
 
 class ConsultationFormRequest < ActiveRecord::Base
   DISTRICT_PARENT = :school_team
-  belongs_to :student, :touch => true
-  belongs_to :requestor, :class_name => 'User'
-  belongs_to :school_team, :foreign_key => 'team_id'
+  belongs_to :student, touch: true
+  belongs_to :requestor, class_name: 'User'
+  belongs_to :school_team, foreign_key: 'team_id'
 
 
-  validates_presence_of :user_ids, :if => proc{|e| e.whom.include?'other' or e.whom.blank?}
+  validates_presence_of :user_ids, if: proc{|e| e.whom.include?'other' or e.whom.blank?}
   after_create :email_requests
   before_create :assign_team
 
@@ -38,7 +38,7 @@ class ConsultationFormRequest < ActiveRecord::Base
   end
 
   def whom=(target)
-    @whom=target
+    @whom = target
   end
 
 
@@ -64,8 +64,8 @@ class ConsultationFormRequest < ActiveRecord::Base
 
     if @whom.include?('other') && @user_ids.present?
         @user_ids |= school_team.user_ids if school_team
-        self.team_id=nil
-        create_school_team(:anonymous=>true,:user_ids=>@user_ids)
+        self.team_id = nil
+        create_school_team(anonymous: true,user_ids: @user_ids)
     end
   end
 end

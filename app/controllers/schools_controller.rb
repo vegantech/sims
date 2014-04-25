@@ -4,7 +4,7 @@ class SchoolsController < ApplicationController
   layout 'main'
   def index
     @schools = current_user.schools
-    flash[:notice]="No schools available" and redirect_to not_authorized_url if @schools.blank?
+    flash[:notice] = "No schools available" and redirect_to not_authorized_url if @schools.blank?
     if @schools.size == 1
       session[:school_id] = @schools.first.id
       flash[:notice] = "#{flash[:notice]} #{@schools.first.name} has been automatically selected."
@@ -13,7 +13,7 @@ class SchoolsController < ApplicationController
   end
 
   def show
-    redirect_to :action => 'index' and return
+    redirect_to action: 'index' and return
   end
 
   def create

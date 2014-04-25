@@ -199,10 +199,10 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   require 'openid/store/filesystem'
 
-  config.omniauth :google_apps, :store => OpenID::Store::Filesystem.new('/tmp')
+  config.omniauth :google_apps, store: OpenID::Store::Filesystem.new('/tmp')
   begin
     WINDOWS_LIVE_CONFIG =  YAML.load_file(Rails.root.join("config","windows_live.yml"))
-    config.omniauth :windowslive, WINDOWS_LIVE_CONFIG['app_id'], WINDOWS_LIVE_CONFIG['secret'], :scope => 'wl.emails'
+    config.omniauth :windowslive, WINDOWS_LIVE_CONFIG['app_id'], WINDOWS_LIVE_CONFIG['secret'], scope: 'wl.emails'
   rescue
     nil
   end
@@ -217,7 +217,7 @@ Devise.setup do |config|
   # end
 
   Warden::Manager.after_authentication do |user,auth,opts|
-    auth.cookies[:user_id] = {:value => user.id , :domain => Sims::Application.config.session_options[:domain]}
+    auth.cookies[:user_id] = {value: user.id , domain: Sims::Application.config.session_options[:domain]}
     DistrictLog.record_success(user)
   end
 
@@ -229,12 +229,12 @@ Devise.setup do |config|
   end
 
   Warden::Manager.before_logout do |user,auth,options|
-    auth.cookies.delete :user_id, :domain => Sims::Application.config.session_options[:domain]
-    auth.cookies.delete :selected_student, :domain => Sims::Application.config.session_options[:domain]
+    auth.cookies.delete :user_id, domain: Sims::Application.config.session_options[:domain]
+    auth.cookies.delete :selected_student, domain: Sims::Application.config.session_options[:domain]
   end
 
 end
 module Devise
-  class Devise::ChangingPasswordInsteadOfFailedLogin< StandardError; end
+  class Devise::ChangingPasswordInsteadOfFailedLogin < StandardError; end
 end
 

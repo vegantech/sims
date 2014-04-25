@@ -26,9 +26,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe District do
 
   before(:all) do
-    @local_district = District.find_by_name("GD_TEST") || FactoryGirl.create(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
-    @district2 = District.find_by_name("district_2") || FactoryGirl.create(:district, :name=>"district_2", :abbrev=>"DIST2")
-    @state_district = District.admin.first ||  FactoryGirl.create(:district, :admin=>true)
+    @local_district = District.find_by_name("GD_TEST") || FactoryGirl.create(:district, name: "GD_TEST", abbrev: "CKAZZ2")
+    @district2 = District.find_by_name("district_2") || FactoryGirl.create(:district, name: "district_2", abbrev: "DIST2")
+    @state_district = District.admin.first ||  FactoryGirl.create(:district, admin: true)
   end
   it 'should be valid' do
     FactoryGirl.build(:district).should be_valid
@@ -37,7 +37,7 @@ describe District do
   describe 'active_checklist_definition method' do
     before(:all) do
       ChecklistDefinition.delete_all
-      @ld_cd = FactoryGirl.create(:checklist_definition, :district => @local_district)
+      @ld_cd = FactoryGirl.create(:checklist_definition, district: @local_district)
     end
 
     describe 'with active district definition' do
@@ -77,7 +77,7 @@ describe District do
       @local_district.should be_valid
 
       @local_district.save
-      @local_district.key= 'cat'
+      @local_district.key = 'cat'
       @local_district.save
 
       @local_district.previous_key.should == 'notdog'
@@ -91,14 +91,14 @@ describe District do
 
   describe 'claim student' do
     it 'should not call external verification if it is not setup' do
-      district=District.new
+      district = District.new
       VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(false)
       VerifyStudentInDistrictExternally.should_not_receive(:verify)
       district.claim(Student.new)
     end
 
     it 'should call external verification if it is setup' do
-      district=District.new
+      district = District.new
       VerifyStudentInDistrictExternally.should_receive(:enabled?).and_return(true)
       VerifyStudentInDistrictExternally.should_receive(:verify)
       district.claim(Student.new)
@@ -119,7 +119,7 @@ describe District do
   end
 
   describe 'find_by_subdomain' do
-    let!(:district) {District.delete_all;FactoryGirl.create(:district, :abbrev => 'rspec123')}
+    let!(:district) {District.delete_all;FactoryGirl.create(:district, abbrev: 'rspec123')}
     describe 'with matching subdomain' do
       specify{ District.find_by_subdomain('rspec123').should == district }
       specify{ District.find_by_subdomain('rspec123-wi-us').should == district }
@@ -147,7 +147,7 @@ describe District do
 
     it 'should create a new district when not found' do
       other_district = FactoryGirl.create(:district)
-      new_district= District.find_by_subdomain('nothere')
+      new_district = District.find_by_subdomain('nothere')
       new_district.should be_new_record
       new_district.name.should == "Please Select a District"
     end

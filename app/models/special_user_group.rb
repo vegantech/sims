@@ -17,15 +17,15 @@ class SpecialUserGroup < ActiveRecord::Base
   belongs_to :school
 
   validates_presence_of :user_id,:school_id
-  validates_uniqueness_of :user_id, :scope=>[:grade,:school_id] , :message => "-- Remove the user first."
+  validates_uniqueness_of :user_id, scope: [:grade,:school_id] , message: "-- Remove the user first."
 
 
-  scope :principal,where(:is_principal=>true)
+  scope :principal,where(is_principal: true)
   scope :all_students_in_school ,lambda { |*args| where(["grade is null and school_id = ?", args.first])}
   scope :school_id, select("school_id")
   scope :student_id, select("student_id")
   scope :for_school, lambda{ |school|
-                             where(:school_id => school
+                             where(school_id: school
                               ).where(
                               "grade is null or grade = enrollments.grade")}
 
@@ -40,7 +40,7 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def self.grades_for_school(school)
-    sql= select('distinct grade').where(["grade is not null and school_id = ?", school]).to_sql
+    sql = select('distinct grade').where(["grade is not null and school_id = ?", school]).to_sql
     connection.select_values(sql)
   end
 
@@ -50,7 +50,7 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def title
-    "All Students in #{grade ? 'Grade: '+grade.to_s : 'School'}"
+    "All Students in #{grade ? 'Grade: ' + grade.to_s : 'School'}"
   end
 
   def to_param
@@ -62,7 +62,7 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def self.virtual_groups(grades)
-    ([nil] | Array(grades)).collect{|g| new(:grade => g)}
+    ([nil] | Array(grades)).collect{|g| new(grade: g)}
   end
 end
 

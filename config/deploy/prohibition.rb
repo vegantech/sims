@@ -1,5 +1,5 @@
 default_run_options[:pty] = true
-default_environment["PATH"]="/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
+default_environment["PATH"] = "/opt/bin/:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/shawn/bin"
 set :use_sudo, false
 
 set (:deploy_to){ "/www/#{application}"}
@@ -13,7 +13,7 @@ after "deploy:update_code", :copy_database_yml
 
 namespace :deploy do
  desc "Restart Application"
- task :restart, :roles => :app do
+ task :restart, roles: :app do
     run "touch #{current_path}/tmp/restart.txt"
  end
 end

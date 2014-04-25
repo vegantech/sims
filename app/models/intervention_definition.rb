@@ -35,19 +35,19 @@ class InterventionDefinition < ActiveRecord::Base
   belongs_to :tier
   belongs_to :user
   belongs_to :school
-  has_many :recommended_monitors, :order => :position, :dependent => :delete_all
-  has_many :probe_definitions, :through => :recommended_monitors
-  has_many :quicklist_items, :dependent => :destroy
+  has_many :recommended_monitors, order: :position, dependent: :delete_all
+  has_many :probe_definitions, through: :recommended_monitors
+  has_many :quicklist_items, dependent: :destroy
   has_many :interventions
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
-  validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
+  validates_uniqueness_of :description, scope: [:intervention_cluster_id, :school_id, :title], unless: :custom
   validates_numericality_of :frequency_multiplier, :time_length_num
 
-  acts_as_list :scope => :intervention_cluster_id
-  define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
-  define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct intervention_definitions.title', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
+  acts_as_list scope: :intervention_cluster_id
+  define_statistic :count , count: :all, joins: {intervention_cluster: {objective_definition: :goal_definition}}
+  define_statistic :distinct_titles , count: :all,  column_name: 'distinct intervention_definitions.title', joins: {intervention_cluster: {objective_definition: :goal_definition}}
   define_calculated_statistic :districts_with_changes do
-    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}).length
+    find(:all,group: "#{self.name.tableize}.title", having: "count(#{self.name.tableize}.title)=1",select: 'distinct district_id', joins: {intervention_cluster: {objective_definition: :goal_definition}}).length
   end
 
   scope :restrict_tiers_and_disabled, lambda {|student_tier, district|
@@ -59,19 +59,19 @@ class InterventionDefinition < ActiveRecord::Base
   }
   scope :restrict_tiers, lambda{ |student_tier|
     where("goal_definitions.exempt_tier or objective_definitions.exempt_tier or intervention_clusters.exempt_tier or intervention_definitions.exempt_tier or
-          tiers.position <= #{student_tier.position}").joins([:tier, {:intervention_cluster => {:objective_definition => :goal_definition }}])
+          tiers.position <= #{student_tier.position}").joins([:tier, {intervention_cluster: {objective_definition: :goal_definition }}])
   }
 
 
   scope :general, where(["intervention_definitions.custom is null or intervention_definitions.custom = ?",false])
   scope :content_export, general
-  scope :enabled, where(:disabled => false)
+  scope :enabled, where(disabled: false)
   scope :for_report, general.enabled.includes(
-  [:tier,:frequency,:time_length,:probe_definitions,:assets,{:intervention_cluster => {:objective_definition => :goal_definition}}]
+  [:tier,:frequency,:time_length,:probe_definitions,:assets,{intervention_cluster: {objective_definition: :goal_definition}}]
   ).order("tiers.position,intervention_clusters.position,intervention_definitions.position")
 
   scope :for_dropdown, lambda {|student_tier, district, school_id, user|
-    res=restrict_tiers_and_disabled(student_tier, district)
+    res = restrict_tiers_and_disabled(student_tier, district)
       if ["disabled","only_author"].include? district.custom_interventions
         #shared only with author
         return res.where(["custom = ? or user_id = ?", false, user.id])
@@ -83,7 +83,7 @@ class InterventionDefinition < ActiveRecord::Base
       end
   }
 
-  delegate :goal_definition_id, :objective_definition_id, :to => :intervention_cluster
+  delegate :goal_definition_id, :objective_definition_id, to: :intervention_cluster
 
   def title
     if custom and self[:title].present?
@@ -158,7 +158,7 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-private
+  private
   def active_progress_monitors_without_custom
     active_progress_monitors_base.merge recommended_monitors.scoped
   end
@@ -173,7 +173,7 @@ private
     ProbeDefinition.active.joins(:recommended_monitors).order("recommended_monitors.position")
   end
 
-  def self.filter(opts ={})
+  def self.filter(opts = {})
     disabled = !!opts[:disabled]
     enabled = opts[:enabled]
     custom = !!opts[:custom]

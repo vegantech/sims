@@ -10,12 +10,12 @@ class AddMoreForeignKeyIndices < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :quicklist_items, :column => [:district_id, :school_id]
-    remove_index :news_items, :column => :system
-    remove_index :staff_assignments, :column => [:school_id, :user_id]
-    remove_index :consultation_forms, :column => :team_consultation_id
-    remove_index :team_consultations, :column => :student_id
-    remove_index :countries, :column => :abbrev
-    remove_index :flag_descriptions, :column => :district_id
+    remove_index :quicklist_items, column: [:district_id, :school_id]
+    remove_index :news_items, column: :system
+    remove_index :staff_assignments, column: [:school_id, :user_id]
+    remove_index :consultation_forms, column: :team_consultation_id
+    remove_index :team_consultations, column: :student_id
+    remove_index :countries, column: :abbrev
+    remove_index :flag_descriptions, column: :district_id
   end
 end

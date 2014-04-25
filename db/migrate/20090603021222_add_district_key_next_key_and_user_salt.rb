@@ -1,8 +1,8 @@
 class AddDistrictKeyNextKeyAndUserSalt < ActiveRecord::Migration
   def self.up
-    add_column :districts, :key, :string, :default => ''
-    add_column :districts, :next_key, :string, :default => ''
-    add_column :users, :salt, :string, :default => ''
+    add_column :districts, :key, :string, default: ''
+    add_column :districts, :next_key, :string, default: ''
+    add_column :users, :salt, :string, default: ''
   end
 
   def self.down

@@ -1,8 +1,8 @@
 class ChecklistBuilder::ChecklistsController < ApplicationController
   def preview
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
-    @checklist=@checklist_definition.checklists.build
-    @checklist.skip_cache=true
+    @checklist = @checklist_definition.checklists.build
+    @checklist.skip_cache = true
 
     respond_to do |format|
       format.html
@@ -53,7 +53,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         end
 #        format.js
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
 #        format.js
       end
     end
@@ -73,7 +73,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         end
 #        format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
 #        format.js
       end
     end
@@ -84,7 +84,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
     if @checklist_definition.checklists.blank?
       @checklist_definition.destroy
     else
-      flash[:notice]= "Checklist definition is in use, please disable it instead"
+      flash[:notice] = "Checklist definition is in use, please disable it instead"
     end
 
     @checklist_definitions = current_district.checklist_definitions
@@ -97,7 +97,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   def new_from_this
 
     @old_checklist_definition = ChecklistDefinition.find(params[:id])
-    districts=[current_district, current_district.admin_district].compact
+    districts = [current_district, current_district.admin_district].compact
     if districts.include?(@old_checklist_definition.district)
       @new_checklist_definition = @old_checklist_definition.deep_clone
       @new_checklist_definition.district = current_district

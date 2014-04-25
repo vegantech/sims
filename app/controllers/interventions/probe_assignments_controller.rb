@@ -8,7 +8,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
 
     respond_to do |format|
       format.js
-      format.html {redirect_to edit_intervention_url(@intervention, :enter_score => true)} # index.html.erb
+      format.html {redirect_to edit_intervention_url(@intervention, enter_score: true)} # index.html.erb
     end
   end
 
@@ -26,16 +26,16 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     @ipa = InterventionProbeAssignment.find_by_id(params[:id]) || @intervention.intervention_probe_assignments.build
     @ipa.attributes = params[:intervention][:intervention_probe_assignment]
     @count = params[:count].to_i
-    render :layout => false
+    render layout: false
   end
 
   protected
   def load_intervention
-    @intervention ||=current_student.interventions.find(params[:intervention_id])
+    @intervention ||= current_student.interventions.find(params[:intervention_id])
   end
 
-  def set_date(obj, field,p=params)
-    ary=[params["#{field}(1i)"],params["#{field}(2i)"],params["#{field}(3i)"]]
+  def set_date(obj, field,p = params)
+    ary = [params["#{field}(1i)"],params["#{field}(2i)"],params["#{field}(3i)"]]
     ary.collect!(&:to_i)
     if Date.valid_civil?(*ary)
       obj.send "#{field}=", Date.civil(*ary)

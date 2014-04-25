@@ -7,13 +7,13 @@ describe FileController do
 
   describe "GET 'download'" do
     it "should call sendfile with filename" do
-      controller.should_receive(:send_file).with(Rails.root.join("file","shawn").to_s, :x_sendfile=>true)
-      get 'download', :filename=>'shawn'
+      controller.should_receive(:send_file).with(Rails.root.join("file","shawn").to_s, x_sendfile: true)
+      get 'download', filename: 'shawn'
       response.should be_success
     end
 
     it 'should not show the README in rails root' do
-      get 'download', :filename =>'../README.md'
+      get 'download', filename: '../README.md'
     end
 
   end

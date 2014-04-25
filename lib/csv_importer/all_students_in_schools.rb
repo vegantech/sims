@@ -2,10 +2,10 @@ module CSVImporter
   class AllStudentsInSchools < CSVImporter::Base
 
     FIELD_DESCRIPTIONS = {
-      :district_user_id => 'Key for user',
-      :district_school_id =>"Key for school",
-      :principal =>"True if the user is the principal of this group (or school)  otherwise blank",
-      :grade =>"Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade"
+      district_user_id: 'Key for user',
+      district_school_id: "Key for school",
+      principal: "True if the user is the principal of this group (or school)  otherwise blank",
+      grade: "Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade"
     }
 
     class << self
@@ -53,11 +53,11 @@ module CSVImporter
 
     end
 
-  private
+    private
 
     def load_data_infile
-      headers=csv_headers
-      headers[-2]="@principal"
+      headers = csv_headers
+      headers[-2] = "@principal"
       <<-EOF
           LOAD DATA LOCAL INFILE "#{@clean_file}"
             INTO TABLE #{temporary_table_name}
@@ -82,8 +82,8 @@ module CSVImporter
 
 
     def migration t
-      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
-      t.integer :district_school_id, :limit => School.columns_hash["district_school_id"].limit, :null => School.columns_hash["district_school_id"].null
+      t.string :district_user_id, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
+      t.integer :district_school_id, limit: School.columns_hash["district_school_id"].limit, null: School.columns_hash["district_school_id"].null
       t.boolean :principal
       t.string :grade
     end
@@ -105,7 +105,7 @@ module CSVImporter
 
     def insert
 
-      query=("insert into special_user_groups
+      query = ("insert into special_user_groups
       (user_id,school_id,is_principal,grade, created_at, updated_at)
       select u.id ,schools.id, tug.principal, nullif(tug.grade,''), CURDATE(), CURDATE() from #{temporary_table_name} tug inner join
       users u on u.district_user_id = tug.district_user_id
@@ -122,13 +122,13 @@ module CSVImporter
       "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = special_user_groups.school_id
       inner join users on special_user_groups.user_id = users.id ").group(
       "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
-     query= "insert into user_school_assignments (school_id,user_id) select uug.school_id,uug.user_id from(#{finder_sql}) uug"
+     query = "insert into user_school_assignments (school_id,user_id) select uug.school_id,uug.user_id from(#{finder_sql}) uug"
      SpecialUserGroup.connection.update query
   end
 
 
     def after_import
-     sum=autoassign_user_school_assignments
+     sum = autoassign_user_school_assignments
      @other_messages << "#{sum} Users automatically assigned to a school" if sum > 0
     end
 
@@ -139,7 +139,7 @@ module CSVImporter
         and uga.school_id = special_user_groups.school_id").select(
         "special_user_groups.school_id, special_user_groups.user_id").group(
         "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
-        query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
+        query = "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
         SpecialUserGroup.connection.update query
     end
   end

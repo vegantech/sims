@@ -10,9 +10,9 @@ describe MoveUpDownButtonsHelper do
 
   it 'should generate a move button' do
     helper.should_receive(:move_path).with('',:up).and_return("UP MOVE PATH")
-    button_html =helper.move_button(:up, '').should have_form("UP MOVE PATH", 'post') do
-      with_tag("input", :with => {:type => :image, 'src*' => "arrow-up.gif"})
-      with_tag("input", :with => {:type => :hidden, 'value' => "put"})
+    button_html = helper.move_button(:up, '').should have_form("UP MOVE PATH", 'post') do
+      with_tag("input", with: {:type => :image, 'src*' => "arrow-up.gif"})
+      with_tag("input", with: {:type => :hidden, 'value' => "put"})
     end
  end
 

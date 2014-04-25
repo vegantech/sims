@@ -13,7 +13,7 @@ class ProbeGraph::Base
     end
   end
 
-  def initialize(opts ={})
+  def initialize(opts = {})
     @probe_definition = opts[:probe_definition]
     @title = @probe_definition.title
     @benchmarks = opts[:probe_definition].probe_definition_benchmarks
@@ -43,11 +43,11 @@ class ProbeGraph::Base
   end
 
   def benchmarks_with_goal
-    (@benchmarks |[goal_benchmark]).compact
+    (@benchmarks | [goal_benchmark]).compact
   end
 
   def goal_benchmark
-    ProbeDefinitionBenchmark.new(:benchmark=>@goal, :grade_level => '   Goal') if @goal.present?
+    ProbeDefinitionBenchmark.new(benchmark: @goal, grade_level: '   Goal') if @goal.present?
   end
 
 
@@ -57,27 +57,27 @@ class ProbeGraph::Base
 
   def gchart(probes_for_this_graph, chm)
     Gchart.send self.class::CHART,{
-      :data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-      :axis_labels => axis_labels(probes_for_this_graph),
-      :bar_width_and_spacing => '30,25',
-      :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
-      :format=>'image_tag',
-      :min_value=>min, :max_value=>max,
-      :encoding => 'text',
-      :custom => custom_string(chm),
-      :size => '600x250'}
+      data: probes_for_this_graph.collect(&:score), axis_with_labels: 'x,x,y,r',
+      axis_labels: axis_labels(probes_for_this_graph),
+      bar_width_and_spacing: '30,25',
+      bar_colors: probes_for_this_graph.collect{|e| (e.score < 0) ? '8DACD0' : '5A799D'}.join("|"),
+      format: 'image_tag',
+      min_value: min, max_value: max,
+      encoding: 'text',
+      custom: custom_string(chm),
+      size: '600x250'}
   end
 
   def y_axis_labels
     if max == min
       vals = [max]
     else
-      diff = max-min
-      step = (diff/10.0).ceil
+      diff = max - min
+      step = (diff / 10.0).ceil
       vals = ((min..max).step(step).to_a | [min,0,max]).sort.uniq
     end
     unless @y_in_chxp
-      to_chxp = "2,#{vals.collect{|v| scale_value(v)*100}.join(",")}"
+      to_chxp = "2,#{vals.collect{|v| scale_value(v) * 100}.join(",")}"
       @chxp << to_chxp
       @y_in_chxp = true
     end
@@ -113,13 +113,13 @@ class ProbeGraph::Base
 
   def benchmark_lines
     if benchmarks_with_goal.present?
-      @chxp <<  "3,#{benchmarks_with_goal.collect{|b| scale_value(b.benchmark)*100}.join(",")}"
-      "#{benchmarks_with_goal.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) -0.003},#{scale_value(b.benchmark) +0.003}"}.join("|")}"
+      @chxp <<  "3,#{benchmarks_with_goal.collect{|b| scale_value(b.benchmark) * 100}.join(",")}"
+      "#{benchmarks_with_goal.collect{|b| "r,#{b.color},0,#{scale_value(b.benchmark) - 0.003},#{scale_value(b.benchmark) + 0.003}"}.join("|")}"
     end
   end
 
   def scale_value(value)
-    (value-min).to_f/(max-min).to_f
+    (value - min).to_f / (max - min).to_f
   end
 
   def scores
@@ -127,13 +127,13 @@ class ProbeGraph::Base
   end
 
   def scores_with_goal
-    s=scores
+    s = scores
     s << @goal.to_i if @goal
     s
   end
 
   def min
-    @min ||= @probe_definition.minimum_score || (scores_with_goal.min >=0 ? 0 : scores_with_goal.min)
+    @min ||= @probe_definition.minimum_score || (scores_with_goal.min >= 0 ? 0 : scores_with_goal.min)
   end
 
   def max
@@ -142,7 +142,7 @@ class ProbeGraph::Base
 
   def chds
     #min am nax for data series
-    a=[0,line_graph_date_denom,min,max]
+    a = [0,line_graph_date_denom,min,max]
     a *= 2 if @goal #aim line and data have same range
     a.join(",")
   end

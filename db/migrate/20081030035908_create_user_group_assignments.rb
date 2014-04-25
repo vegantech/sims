@@ -3,7 +3,7 @@ class CreateUserGroupAssignments < ActiveRecord::Migration
     create_table :user_group_assignments do |t|
       t.integer :user_id
       t.integer :group_id
-      t.boolean :is_principal, :default=>false
+      t.boolean :is_principal, default: false
 
       t.timestamps
     end

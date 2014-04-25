@@ -1,6 +1,6 @@
 Given /^a district "([^\"]*)"$/ do |district_name|
    @district = District.find_by_name(district_name) 
-   @district ||= Factory(:district,:name => district_name)
+   @district ||= Factory(:district,name: district_name)
 end
 
 When /^I import_extended_profiles_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
@@ -30,7 +30,7 @@ end
 
 When /^I import_users_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
   @district = District.find_by_name(district_name)
-  i=ImportCSV.new(filename, @district)
+  i = ImportCSV.new(filename, @district)
   i.import
   @command_return_val = i.messages.join(", ")
 end
@@ -61,12 +61,12 @@ Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |us
   district = District.find_by_name(district_name)
   user = district.users.find_by_username(username)
   user = nil unless user.try(:valid_password?, password)
-  dui=username == 'no_password'? 3 : rand(50000)
-  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => dui)
+  dui = username == 'no_password' ? 3 : rand(50000)
+  user ||= Factory(:user, district: district, password: password, username: username, district_user_id: dui)
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
-   u=District.find_by_name(district_name).users.find_by_username(username)
+   u = District.find_by_name(district_name).users.find_by_username(username)
    u.valid_password?(password).should be_true
 end
 
@@ -81,12 +81,12 @@ end
 
 Given /^a student "([^\"]*)"$/ do |fullname|
   first,last = fullname.split(' ')
-  @student = Factory(:student,:district => @district, :district_student_id => 31337, :id_state => 33, :first_name => first, :last_name => last)
+  @student = Factory(:student,district: @district, district_student_id: 31337, id_state: 33, first_name: first, last_name: last)
 end
 
 Given /^a school "([^\"]*)"$/ do |name|
   @school = School.find_by_name(name)
-  @school ||=  Factory(:school,:district=> @district, :district_school_id => 42, :name => name)
+  @school ||=  Factory(:school,district: @district, district_school_id: 42, name: name)
 end
 
 Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |group_title, school_name, group_id_district|
@@ -97,11 +97,11 @@ Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |grou
 end
 
 Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |arg1, arg2, grade|
-  @student.enrollments.create(:school=>@school, :grade=>grade, :end_year => 2009)
+  @student.enrollments.create(school: @school, grade: grade, end_year: 2009)
 end
 
 When /^I import_enrollments_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district|
-  i=ImportCSV.new(filename, @district)
+  i = ImportCSV.new(filename, @district)
   i.import
   @command_return_val = i.messages.join(", ")
 end
@@ -115,14 +115,14 @@ Then /^"([^\"]*)" has \[(.*)\] for grades$/ do |arg1, grades|
 end
 
 When /^I import_csv with "([^\"]*)"$/ do |filename|
-  i=ImportCSV.new(filename, @district)
+  i = ImportCSV.new(filename, @district)
   i.import
   @command_return_val = i.messages.join(", ")
 end
 
 
 Then /^there should be "([^\"]*)" students*$/ do |count|
-  @district.students(reload=true).count.should == count.to_i
+  @district.students(reload = true).count.should == count.to_i
 end
 
 Then /^the system should have "([^\"]*)" students not assigned to districts$/ do |count|
@@ -163,8 +163,8 @@ When /^I remove the student and state_id$/ do
 end
 
 Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, bool|
-  all=Student.find_all_by_last_name(name)
-    wrong=all.select{|s| s.esl !=eval(bool) || s.special_ed !=eval(bool)}
+  all = Student.find_all_by_last_name(name)
+    wrong = all.select{|s| s.esl != eval(bool) || s.special_ed != eval(bool)}
     wrong.should == []
 end
 

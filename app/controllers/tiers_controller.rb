@@ -36,7 +36,7 @@ class TiersController < ApplicationController
         flash[:notice] = 'Tier was successfully created.'
         format.html { redirect_to tiers_url }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -45,14 +45,14 @@ class TiersController < ApplicationController
   # PUT /tiers/1.xml
   def update
     @tier = current_district.tiers.find(params[:id])
-    @tier.attributes=params[:tier]
+    @tier.attributes = params[:tier]
 
     respond_to do |format|
       if @tier.save
         flash[:notice] = 'Tier was successfully updated.'
         format.html { redirect_to tiers_url }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -76,7 +76,7 @@ class TiersController < ApplicationController
         format.html { redirect_to(tiers_url) }
       end
     else
-      flash[:notice]='Tier in use'
+      flash[:notice] = 'Tier in use'
     end
   end
 
@@ -89,13 +89,13 @@ class TiersController < ApplicationController
     end
     respond_to do |format|
       format.html {redirect_to tiers_url}
-      format.js {@tiers=current_district.tiers}
+      format.js {@tiers = current_district.tiers}
     end
   end
 
- protected
+  protected
   def move_path(obj,direction)
-    move_tier_path(obj,:direction=>direction)
+    move_tier_path(obj,direction: direction)
   end
 
 end

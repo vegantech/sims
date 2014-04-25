@@ -1,8 +1,8 @@
 module CSVImporter
   class AdminsOfSchools < CSVImporter::Base
      FIELD_DESCRIPTIONS = {
-      :district_user_id => 'Key for user',
-      :district_school_id => 'Key for school'
+      district_user_id: 'Key for user',
+      district_school_id: 'Key for school'
     }
     class << self
       def description
@@ -23,7 +23,7 @@ module CSVImporter
       end
 
       def related
-        {:user_school_assignments => "Non-admin user school assignments."}
+        {user_school_assignments: "Non-admin user school assignments."}
       end
 
       def how_often
@@ -58,11 +58,11 @@ module CSVImporter
 
     def migration t
       t.column :district_school_id, :integer
-      t.column :district_user_id, :string, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.column :district_user_id, :string, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
     end
 
     def delete
-      query ="
+      query = "
        delete from usa using  user_school_assignments usa
        inner join schools sch on usa.school_id = sch.id and sch.district_id= #{@district.id}
        inner join users u on usa.user_id = u.id and u.district_id = #{@district.id}
@@ -77,7 +77,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into user_school_assignments
+      query = ("insert into user_school_assignments
       (school_id, user_id , created_at, updated_at,admin)
       select sch.id, u.id,  curdate(), curdate(), true from #{temporary_table_name} tusa
       inner join schools sch on sch.district_school_id = tusa.district_school_id

@@ -13,23 +13,23 @@
 
 class InterventionParticipant < ActiveRecord::Base
   belongs_to :user
-  belongs_to :intervention, :inverse_of => :intervention_participants
+  belongs_to :intervention, inverse_of: :intervention_participants
 
-  delegate :email, :fullname, :to => '(user or return nil)'
+  delegate :email, :fullname, to: '(user or return nil)'
 
 
 #  validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
   validates_presence_of :user_id, :intervention
-  after_create :notify_new_participant, :if => :send_email
+  after_create :notify_new_participant, if: :send_email
 
   AUTHOR = -1
   IMPLEMENTER = 0
   PARTICIPANT = 1
 
   ROLES = %w{Implementer Participant Author}
-  scope :implementer, where(:role => IMPLEMENTER)
-  define_statistic :participants , :count => :all, :joins => :user
-  define_statistic :users_as_participant , :count => :all,:column_name => 'distinct user_id', :joins => :user
+  scope :implementer, where(role: IMPLEMENTER)
+  define_statistic :participants , count: :all, joins: :user
+  define_statistic :users_as_participant , count: :all,column_name: 'distinct user_id', joins: :user
   attr_accessor :send_email
 
   RoleStruct = Struct.new(:id, :name)

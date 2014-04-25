@@ -20,7 +20,7 @@ module District::ScopedAssociations
   end
 
   def method_missing(method_name,*args,&block)
-    if klass=get_class_for_method_missing(method_name) and joins=district_joins(klass)
+    if klass = get_class_for_method_missing(method_name) and joins = district_joins(klass)
       klass.joins(joins).where("districts.id" => self.id)
     else
       super

@@ -18,10 +18,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ObjectiveDefinition do
   before(:each) do
     @valid_attributes = {
-      :title => "value for title",
-      :description => "value for description",
-      :position => "1",
-      :disabled => false
+      title: "value for title",
+      description: "value for description",
+      position: "1",
+      disabled: false
     }
   end
 
@@ -31,8 +31,8 @@ describe ObjectiveDefinition do
 
   it 'should test destroy with a file attached LH 234' do
     #TODO this is really an issue with the links_and_attachments_lib, move (copy) this test there
-    o=Factory(:objective_definition)
-    o.assets.create!(:document=>File.open(Rails.root.join("README.md")))
+    o = Factory(:objective_definition)
+    o.assets.create!(document: File.open(Rails.root.join("README.md")))
     lambda { o.destroy}.should_not raise_error
   end
 end

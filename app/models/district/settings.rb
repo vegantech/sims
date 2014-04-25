@@ -13,7 +13,7 @@ module District::Settings
       SETTINGS.each do |s|
         define_method("#{s}=") do |value|
           self.settings ||= {}
-          @old_key = settings[:key] if s==:key
+          @old_key = settings[:key] if s == :key
 
           self.settings[s] = value
           self.settings_will_change!
@@ -32,7 +32,7 @@ module District::Settings
     end
   end
 
-    private
+  private
     def default_settings_to_hash
       self[:settings] ||= {}
       self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)

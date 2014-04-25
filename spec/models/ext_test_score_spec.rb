@@ -19,11 +19,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ExtTestScore do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name",
-      :date => Date.today,
-      :scaleScore => 1.5,
-      :result => "value for result",
-      :enddate => Date.today
+      name: "value for name",
+      date: Date.today,
+      scaleScore: 1.5,
+      result: "value for result",
+      enddate: Date.today
     }
   end
 
@@ -34,9 +34,9 @@ describe ExtTestScore do
   describe '<=> and sorting' do
     it 'should sort on dates when present' do
       days_ago = [4,1,3]
-      scores=[]
+      scores = []
       to_sort = days_ago.collect{
-        |d| scores << ExtTestScore.create!(:date=>d.days.ago)
+        |d| scores << ExtTestScore.create!(date: d.days.ago)
       }
    
       scores.sort.should == [scores[0],scores[2],scores[1]]
@@ -44,11 +44,11 @@ describe ExtTestScore do
 
     it 'should sort on names when dates are nil' do
       days_ago = [4,1,3]
-      scores=[]
+      scores = []
       days_ago.collect{
-        |d| scores << ExtTestScore.create!(:date=>d.days.ago, :name =>d.to_s)
+        |d| scores << ExtTestScore.create!(date: d.days.ago, name: d.to_s)
       }
-      scores << ExtTestScore.create!(:name=>"ZZ LAST")
+      scores << ExtTestScore.create!(name: "ZZ LAST")
    
       scores.sort.should == [scores[0],scores[2],scores[1],scores[3]]
     end

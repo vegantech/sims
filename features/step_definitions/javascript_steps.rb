@@ -1,7 +1,7 @@
 Given /^TestOnSimsOpen$/ do
   visit "http://training20.sims-open.vegantech.com"
-  fill_in "Login", :with => "oneschool"
-  fill_in "Password", :with => "oneschool"
+  fill_in "Login", with: "oneschool"
+  fill_in "Password", with: "oneschool"
   click_button 'Login'
   click_button 'Search for Students'
   check 'select_all'

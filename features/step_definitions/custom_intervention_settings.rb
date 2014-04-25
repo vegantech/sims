@@ -9,7 +9,7 @@ When /^I reload based on the following table:$/ do |table|
     end
     cucumber_user.save
     visit current_path
-    text= "Create New Custom Intervention and Progress Monitor"
+    text = "Create New Custom Intervention and Progress Monitor"
     if row["display?"] == "true"
       page.should have_content(text), row.inspect
     else
@@ -20,27 +20,27 @@ end
 
 
 Then /^the custom intervention should have the school and user set$/ do
-  ci= InterventionDefinition.last
+  ci = InterventionDefinition.last
   ci.user_id.should == @default_user.id
   ci.school_id.should == @school.id
 end
 
 
 Given /^a single intervention category$/ do
-  gd=Factory(:goal_definition, :district => cucumber_district)
-  od=Factory(:objective_definition, :goal_definition => gd)
-  @category = Factory(:intervention_cluster, :objective_definition => od)
+  gd = Factory(:goal_definition, district: cucumber_district)
+  od = Factory(:objective_definition, goal_definition: gd)
+  @category = Factory(:intervention_cluster, objective_definition: od)
 end
 
 Given /^an assortment of custom interventions$/ do
-  Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
-          :user_id => cucumber_user.id, :school_id => cucumber_school.id, :custom => true)
-  Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
-          :user_id => cucumber_user.id, :school_id => -1, :custom => true)
-  Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
-          :user_id => -1, :school_id => cucumber_school.id, :custom => true)
-  Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
-          :user_id => -1, :school_id => -1, :custom => true)
+  Factory(:intervention_definition, intervention_cluster: @category, title: "same_user_same_school",
+                                    user_id: cucumber_user.id, school_id: cucumber_school.id, custom: true)
+  Factory(:intervention_definition, intervention_cluster: @category, title: "same_user_different_school",
+                                    user_id: cucumber_user.id, school_id: -1, custom: true)
+  Factory(:intervention_definition, intervention_cluster: @category, title: "different_user_same_school",
+                                    user_id: -1, school_id: cucumber_school.id, custom: true)
+  Factory(:intervention_definition, intervention_cluster: @category, title: "different_user_different_school",
+                                    user_id: -1, school_id: -1, custom: true)
 end
 
 Then /^I start a new intervention based on the following table:$/ do |table|

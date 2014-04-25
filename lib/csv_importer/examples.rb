@@ -1,8 +1,8 @@
 module CSVImporter
   class Examples < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-      :district_example_id => 'the primary key used in the student information system by the district',
-      :example_text => 'some other field'
+      district_example_id: 'the primary key used in the student information system by the district',
+      example_text: 'some other field'
     }
     class << self
       def description
@@ -26,7 +26,7 @@ module CSVImporter
       end
 
       def related
-        {:examples=>"links to related files with explanations."}
+        {examples: "links to related files with explanations."}
       end
 
       def how_often
@@ -34,7 +34,7 @@ module CSVImporter
       end
 
       def alternate
-        {:examples => "links to files that can be used instead of this one, with explanation."}
+        {examples: "links to files that can be used instead of this one, with explanation."}
       end
 
       def upload_responses

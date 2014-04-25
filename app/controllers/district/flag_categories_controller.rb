@@ -34,7 +34,7 @@ class District::FlagCategoriesController < ApplicationController
         flash[:notice] = 'FlagCategory was successfully created.'
         format.html { redirect_to(flag_categories_url) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -50,7 +50,7 @@ class District::FlagCategoriesController < ApplicationController
         flash[:notice] = 'FlagCategory was successfully updated.'
         format.html { redirect_to(flag_categories_url) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

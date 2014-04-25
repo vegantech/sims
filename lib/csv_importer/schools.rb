@@ -2,8 +2,8 @@ module CSVImporter
   class Schools < CSVImporter::Base
 #
     FIELD_DESCRIPTIONS = { 
-        :district_school_id =>"Key for school",
-        :name =>"Name of school"
+        district_school_id: "Key for school",
+        name: "Name of school"
     }
     class << self
       def description
@@ -50,7 +50,7 @@ module CSVImporter
 
 
 
-  private
+    private
     def index_options
       [:district_school_id]
     end
@@ -75,9 +75,9 @@ module CSVImporter
     end
 
     def insert_update_delete
-      @updated=update
-      @created=insert
-      @deleted=delete
+      @updated = update
+      @created = insert
+      @deleted = delete
     end
 
 
@@ -91,7 +91,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into schools
+      query = ("insert into schools
       (district_school_id, name, created_at, updated_at, district_id)
       select ts.district_school_id, ts.name,  CURDATE(), CURDATE(), #{@district.id} from #{temporary_table_name} ts 
       left outer join schools s  

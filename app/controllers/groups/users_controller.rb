@@ -15,7 +15,7 @@ class Groups::UsersController < Groups::AssignmentsController
         format.js {}
       else
         @users = current_school.assigned_users
-        format.js {render :action=>"new"}
+        format.js {render action: "new"}
       end
     end
   end

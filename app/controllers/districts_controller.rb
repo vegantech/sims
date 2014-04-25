@@ -1,5 +1,5 @@
 class DistrictsController < ApplicationController
-  before_filter :state_admin?, :only => [:index, :new, :create, :reset_password, :recreate_admin ]
+  before_filter :state_admin?, only: [:index, :new, :create, :reset_password, :recreate_admin ]
 
   # GET /districts
   def index
@@ -33,7 +33,7 @@ class DistrictsController < ApplicationController
         flash[:notice] = 'District was successfully created.'
         format.html { redirect_to(districts_url)}
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -47,7 +47,7 @@ class DistrictsController < ApplicationController
         flash[:notice] = 'District was successfully updated.'
         format.html { redirect_to(root_url) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -64,19 +64,19 @@ class DistrictsController < ApplicationController
   end
 
   def reset_password
-    @district=District.find(params[:id])
-    flash[:notice]= @district.reset_admin_password!
+    @district = District.find(params[:id])
+    flash[:notice] = @district.reset_admin_password!
     redirect_to(districts_url)
   end
 
   def recreate_admin
-    @district=District.find(params[:id])
-    flash[:notice]= @district.recreate_admin!
+    @district = District.find(params[:id])
+    flash[:notice] = @district.recreate_admin!
     redirect_to(districts_url)
   end
 
   def export
-    send_file(DistrictExport.generate(current_district), :type => 'application/zip', :x_sendfile => true)
+    send_file(DistrictExport.generate(current_district), type: 'application/zip', x_sendfile: true)
 
   end
 
@@ -100,16 +100,16 @@ class DistrictsController < ApplicationController
         Rails.cache.read("#{current_district.id}_import")
       append_reload_js_to_results
       if request.xhr?
-        render :text => @results + Time.now.to_s and return
+        render text: @results + Time.now.to_s and return
       end
     end
   end
 
   def logs
-    @logs = current_district.logs.includes(:user).paginate(:page => params[:page], :per_page => 50)
+    @logs = current_district.logs.includes(:user).paginate(page: params[:page], per_page: 50)
   end
 
-private
+  private
   def state_admin?
     unless current_district.admin?
       flash[:notice] = 'You do not have access to this action'
@@ -120,7 +120,7 @@ private
   def append_reload_js_to_results
     @results = '' if @results.nil?
     unless @results.match(/#{ImportCSV::EOF}/)
-      @results <<"<script>setTimeout(function(){
+      @results << "<script>setTimeout(function(){
                                    $('#import_results').load('/districts/bulk_import');
                                        }, 5000);</script>"
     end

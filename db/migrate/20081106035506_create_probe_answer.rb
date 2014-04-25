@@ -1,6 +1,6 @@
 class CreateProbeAnswer < ActiveRecord::Migration
   def self.up
-    create_table :probe_questions_probes, :id => false do |t|
+    create_table :probe_questions_probes, id: false do |t|
       t.column :probe_id, :integer
       t.column :probe_question_id, :integer
     end

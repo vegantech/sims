@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Sims::BestStandardsSupport, :type => :request do
+describe Sims::BestStandardsSupport, type: :request do
   it 'should have p3p header' do
     get "/"
     response.headers["p3p"].should == 'CP = "CAO PSA OUR"'

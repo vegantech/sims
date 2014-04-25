@@ -7,7 +7,7 @@ describe UnattachedInterventionsController do
 
 
   before do
-    controller.stub!(:current_user=>current_user)
+    controller.stub!(current_user: current_user)
   end
 
   it 'is pending'

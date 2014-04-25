@@ -18,14 +18,14 @@ class CustomInterventionsController < InterventionsController
 
   def populate_definitions
     find_intervention_definition
-    @intervention_definition = @intervention_cluster.intervention_definitions.build(:custom=>true) if @intervention_cluster
-    @tiers=current_district.tiers
+    @intervention_definition = @intervention_cluster.intervention_definitions.build(custom: true) if @intervention_cluster
+    @tiers = current_district.tiers
     populate_intervention if @intervention_definition
   end
 
   def build_from_session_and_params
     params[:intervention] ||= {}
-    @intervention = CustomIntervention.new(params[:intervention].merge(values_from_session).merge(:student_id => current_student.id))
+    @intervention = CustomIntervention.new(params[:intervention].merge(values_from_session).merge(student_id: current_student.id))
     @intervention_probe_assignment = @intervention.intervention_probe_assignment if @intervention.intervention_probe_assignment
     @intervention
   end

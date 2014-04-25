@@ -7,7 +7,7 @@ class CreateSpecialUserGroups < ActiveRecord::Migration
       t.integer :grouptype
       t.string :grade
       t.string :integer
-      t.boolean :is_principal, :default=>false
+      t.boolean :is_principal, default: false
 
       t.timestamps
     end

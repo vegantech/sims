@@ -17,10 +17,10 @@
 class ExtTestScore < ActiveRecord::Base
   belongs_to :student
 
-  PROFICIENCIES=[nil,"1-minimal", "2-basic", "3-proficient", "4-advanced"]
-  TEST_GROUPS=Hash.new {|h,k| h[k] = "#{k}: Results given as scaled score / result"}
-  TEST_GROUPS.merge!("PMA"=> "Primary Math Assessment", "PLAA"=>"Primary Language Arts Assessment",
-  "DWS"=>"District Writing Sample: Results given as scaled score", "WKCE"=>"WKCE")
+  PROFICIENCIES = [nil,"1-minimal", "2-basic", "3-proficient", "4-advanced"]
+  TEST_GROUPS = Hash.new {|h,k| h[k] = "#{k}: Results given as scaled score / result"}
+  TEST_GROUPS.merge!("PMA" => "Primary Math Assessment", "PLAA" => "Primary Language Arts Assessment",
+                     "DWS" => "District Writing Sample: Results given as scaled score", "WKCE" => "WKCE")
 
   def test_group
     if name and name.split[0].upcase == name.split[0]
@@ -31,16 +31,16 @@ class ExtTestScore < ActiveRecord::Base
   end
 
   def grade
-    g=name.split[1] if name
-    g=name.split[2] if g=="Fall" or g=="Spr"
-    g="" unless g=="K" or (1..12).include?(g.to_i)
+    g = name.split[1] if name
+    g = name.split[2] if g == "Fall" or g == "Spr"
+    g = "" unless g == "K" or (1..12).include?(g.to_i)
 
     g
   end
 
   def description
-    d=name.split[1..-1] if name.split[0].upcase == name.split[0]
-    d=name.split unless d
+    d = name.split[1..-1] if name.split[0].upcase == name.split[0]
+    d = name.split unless d
     d.delete grade
     d.delete "Fall"
     d.delete "Spr"
@@ -48,7 +48,7 @@ class ExtTestScore < ActiveRecord::Base
 
   end
   def score
-    s= case test_group
+    s = case test_group
     when "PMA","PLAA", "WKCE"
       PROFICIENCIES[result.to_i]
     when "DWS"
@@ -56,7 +56,7 @@ class ExtTestScore < ActiveRecord::Base
     else
       "#{scaleScore.to_f}/#{result.to_f}"
     end
-    s="#{scaleScore.to_i}" if name.include?("Text Reading Lvl")
+    s = "#{scaleScore.to_i}" if name.include?("Text Reading Lvl")
     s
   end
 

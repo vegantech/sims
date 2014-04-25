@@ -1,4 +1,4 @@
-server "sims.widpi.managedmachine.com", :app, :web, :db, :primary => true
+server "sims.widpi.managedmachine.com", :app, :web, :db, primary: true
 set :branch, 'rm_production'
 
 set :domain, 'simspilot.org'

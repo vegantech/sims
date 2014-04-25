@@ -1,7 +1,7 @@
 Given /^There is an IC Jump Student$/ do
   minimum_for_profile
-  @school ||= Factory(:school, :district => cucumber_district)
-  @enrollment ||= Factory(:enrollment, :school => @school, :student => @student)
+  @school ||= Factory(:school, district: cucumber_district)
+  @enrollment ||= Factory(:enrollment, school: @school, student: @student)
   cucumber_student.update_attribute(:district_student_id, "cucumber_student")
 end
 
@@ -10,8 +10,8 @@ When /^I enter the ic jump to that student$/ do
 end
 
 When /^I login$/ do
-  fill_in "Login", :with =>cucumber_user.username
-  fill_in 'Password', :with => cucumber_user.username
+  fill_in "Login", with: cucumber_user.username
+  fill_in 'Password', with: cucumber_user.username
   click_button 'Login'
 end
 

@@ -3,7 +3,7 @@ class FlagDescriptionsController < ApplicationController
   # GET /flag_descriptions.xml
   def index
     @flag_description = FlagDescription.find_or_initialize_by_district_id(current_district.id)
-    render :action => 'edit' and return
+    render action: 'edit' and return
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +24,7 @@ class FlagDescriptionsController < ApplicationController
         flash[:notice] = 'FlagDescription was successfully updated.'
         format.html { redirect_to(root_url) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

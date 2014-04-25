@@ -29,35 +29,35 @@ class Student < ActiveRecord::Base
 
   belongs_to :district
   has_and_belongs_to_many :groups
-  has_many :checklists, :dependent => :destroy
-  has_many :recommendations, :dependent => :destroy
-  has_many :enrollments, :dependent => :destroy
-  has_many :schools, :through => :enrollments
-  has_many :comments, :dependent => :delete_all ,  :class_name => "StudentComment", :order => 'created_at desc'
-  has_many :principal_overrides, :dependent => :delete_all
-  has_many :interventions, :dependent => :delete_all
+  has_many :checklists, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
+  has_many :enrollments, dependent: :destroy
+  has_many :schools, through: :enrollments
+  has_many :comments, dependent: :delete_all ,  class_name: "StudentComment", order: 'created_at desc'
+  has_many :principal_overrides, dependent: :delete_all
+  has_many :interventions, dependent: :delete_all
   has_many :system_flags
   has_many :custom_flags
   has_many :ignore_flags
-  has_many :flags, :dependent => :delete_all
-  has_many :team_consultations, :dependent => :destroy
-  has_many :team_consultations_pending, :conditions => {:complete => false, :draft => false}, :class_name => "TeamConsultation"
-  has_many :consultation_form_requests, :dependent => :destroy
+  has_many :flags, dependent: :delete_all
+  has_many :team_consultations, dependent: :destroy
+  has_many :team_consultations_pending, conditions: {complete: false, draft: false}, class_name: "TeamConsultation"
+  has_many :consultation_form_requests, dependent: :destroy
   has_many :consultation_forms
-  has_one :ext_arbitrary, :dependent => :delete
-  has_many :ext_siblings,:dependent => :delete_all
-  has_many :ext_adult_contacts, :order => "guardian desc", :dependent => :delete_all
-  has_many :ext_test_scores, :order => "date", :dependent => :delete_all
-  has_one :ext_summary, :dependent => :delete
+  has_one :ext_arbitrary, dependent: :delete
+  has_many :ext_siblings,dependent: :delete_all
+  has_many :ext_adult_contacts, order: "guardian desc", dependent: :delete_all
+  has_many :ext_test_scores, order: "date", dependent: :delete_all
+  has_one :ext_summary, dependent: :delete
   has_and_belongs_to_many :personal_groups
   attr_protected :district_id
-  accepts_nested_attributes_for :enrollments, :allow_destroy => true
-  accepts_nested_attributes_for :system_flags, :allow_destroy => true
+  accepts_nested_attributes_for :enrollments, allow_destroy: true
+  accepts_nested_attributes_for :system_flags, allow_destroy: true
 
 
 
   scope :by_state_id_and_id_state, lambda { |state_id, id_state|
-    joins(:district).where({:districts=>{:state_id => state_id}, :id_state => id_state}).limit(1)}
+    joins(:district).where({districts: {state_id: state_id}, id_state: id_state}).limit(1)}
 
 
 
@@ -65,10 +65,10 @@ class Student < ActiveRecord::Base
 
 
   validates_presence_of :district_id
-  validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
+  validates_uniqueness_of :district_student_id, scope: :district_id, allow_blank: true
   validate :unique_id_state
 
-  delegate :recommendation_definition, :to => '(checklist_definition or return nil)'
+  delegate :recommendation_definition, to: '(checklist_definition or return nil)'
 
   after_save :save_extended_profile
   #  before_validation :clear_extended_profile
@@ -88,7 +88,7 @@ class Student < ActiveRecord::Base
   end
 
   def latest_checklist
-    checklists.find(:first ,:order => "created_at DESC")
+    checklists.find(:first ,order: "created_at DESC")
   end
 
   def checklist_definition
@@ -104,7 +104,7 @@ class Student < ActiveRecord::Base
   def max_tier
     # Return the student's highest unlocked tier, defaults to lowest tier in district
     # this will be the highest permitted intervention tier for this student.
-    district_tier= district.present? ? district.tiers.first : nil
+    district_tier = district.present? ? district.tiers.first : nil
 
     [
       district_tier,
@@ -114,10 +114,10 @@ class Student < ActiveRecord::Base
     ].compact.max
   end
 
-  def self.find_flagged_students(flagtypes=[])
+  def self.find_flagged_students(flagtypes = [])
     flagtype = Array(flagtypes)
     stitypes = []
-    custom = flagtype.reject!{|v| v =="custom"}
+    custom = flagtype.reject!{|v| v == "custom"}
     ignore = flagtype.reject!{|v| v == "ignored"}
     flagtype.reject!{|v| !Flag::TYPES.keys.include?(v)}
 
@@ -127,9 +127,9 @@ class Student < ActiveRecord::Base
     stitypes << "IgnoreFlag" if ignore
 
     if stitypes.any?
-      find(:all,:include=>:flags,:conditions=>["type in (?) and flagtype in (?)",stitypes,flagtype])
+      find(:all,include: :flags,conditions: ["type in (?) and flagtype in (?)",stitypes,flagtype])
     else
-      find(:all,:include=>:flags,:joins=>"left outer join flags as ig on ig.flagtype=flags.flagtype and ig.type='IgnoreFlag' and ig.person_id=flags.person_id",:conditions=>["ig.flagtype is null and flags.flagtype in (?)",flagtype])
+      find(:all,include: :flags,joins: "left outer join flags as ig on ig.flagtype=flags.flagtype and ig.type='IgnoreFlag' and ig.person_id=flags.person_id",conditions: ["ig.flagtype is null and flags.flagtype in (?)",flagtype])
     end
   end
 
@@ -190,7 +190,7 @@ class Student < ActiveRecord::Base
 
   def unique_id_state
     if id_state.present?
-      other_student = Student.find_by_id_state(id_state, :conditions => ["district_id != ?",self.district_id])
+      other_student = Student.find_by_id_state(id_state, conditions: ["district_id != ?",self.district_id])
       if other_student
         errors.add(:id_state, "Student with #{self.id_state} already exists in #{other_student.district}")
       end
@@ -198,7 +198,7 @@ class Student < ActiveRecord::Base
   end
 
   def pending_consultation_forms
-    ConsultationForm.all(:joins => :team_consultation, :conditions => {:team_consultations => {:complete => false, :student_id => self.id, :draft => false}})
+    ConsultationForm.all(joins: :team_consultation, conditions: {team_consultations: {complete: false, student_id: self.id, draft: false}})
   end
 
   def safe_destroy
@@ -211,8 +211,8 @@ class Student < ActiveRecord::Base
        ext_arbitrary.destroy if ext_arbitrary
    end
    if @extended_profile.present?
-     create_ext_arbitrary(:content =>@extended_profile)
-     @extended_profile=nil
+     create_ext_arbitrary(content: @extended_profile)
+     @extended_profile = nil
    end
   end
 end

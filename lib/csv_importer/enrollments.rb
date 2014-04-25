@@ -1,10 +1,10 @@
 module CSVImporter
   class Enrollments < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-      :grade =>"Grade of student, whatever is here will be displayed on the screen.",
-      :district_school_id =>"Key for school",
-      :district_student_id =>"Key for student",
-      :end_year =>"Calendar year when school year ends.  the 2010-2011 school year would be 2011"
+      grade: "Grade of student, whatever is here will be displayed on the screen.",
+      district_school_id: "Key for school",
+      district_student_id: "Key for student",
+      end_year: "Calendar year when school year ends.  the 2010-2011 school year would be 2011"
     }
     class << self
       def description
@@ -79,7 +79,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from e using  enrollments e 
        inner join schools sch on e.school_id = sch.id and sch.district_id= #{@district.id}
        inner join students stu on stu.id=e.student_id and stu.district_id = #{@district.id}
@@ -94,7 +94,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into enrollments
+      query = ("insert into enrollments
       (school_id, student_id, grade, end_year , created_at, updated_at)
       select sch.id, stu.id, te.grade, te.end_year, curdate(), curdate() from #{temporary_table_name} te
       inner join schools sch on sch.district_school_id = te.district_school_id
@@ -110,9 +110,9 @@ module CSVImporter
     def confirm_count?
       return true
       model_name = sims_model.name
-      model_count = Enrollment.count(:joins=>:school,:conditions => ["district_id = ?",@district.id])
+      model_count = Enrollment.count(joins: :school,conditions: ["district_id = ?",@district.id])
       if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
-        @messages << "Probable bad CSV file.  We are refusing to delete over #{ImportCSV::DELETE_PERCENT_THRESHOLD*100}% of your #{model_name.pluralize} records."
+        @messages << "Probable bad CSV file.  We are refusing to delete over #{ImportCSV::DELETE_PERCENT_THRESHOLD * 100}% of your #{model_name.pluralize} records."
         false
       else
         true

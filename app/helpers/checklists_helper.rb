@@ -1,11 +1,11 @@
 module ChecklistsHelper
-  def mmsd_eligibility_criteria menu=false
+  def mmsd_eligibility_criteria menu = false
     if current_district.try(:madison?)
-    elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
-     "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
-       "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
-       f=elig_crit.collect do |elig_file|
-        content_tag(:li,(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria"))
+    elig_crit = ["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
+               "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
+               "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
+       f = elig_crit.collect do |elig_file|
+        content_tag(:li,(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix = " criteria"))
        end
 
      if menu
@@ -35,7 +35,7 @@ module ChecklistsHelper
       #      answer = checklist.previous_answer_for(element_definition)
       element_definition.answer_definitions.each do |answer_definition|
         #        if answer and answer.answer_definition_id == answer_definition.answer_definition_id
-        checked= checklist.answers.collect(&:answer_definition_id).include?(answer_definition.id)
+        checked = checklist.answers.collect(&:answer_definition_id).include?(answer_definition.id)
         concat(capture(answer_definition,checked,&block))
       end
     end
@@ -73,18 +73,18 @@ module ChecklistsHelper
   end
 
   def autoset_message(answer_definition)
-    ('&nbsp;'* 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />').html_safe if answer_definition.autoset_others?
+    ('&nbsp;' * 5 + content_tag( :b,"This answer will be applied to the other elements") + '<br />').html_safe if answer_definition.autoset_others?
   end
 
   def recommendation_buttons(form)
-  b=Recommendation::RECOMMENDATION.sort
+  b = Recommendation::RECOMMENDATION.sort
   b[1],b[2] = b[2],b[1]   #No progress at current level should be the second element
-   a=b.collect do |k,v|
-     opts={}
+   a = b.collect do |k,v|
+     opts = {}
      next  if  v[:show_elig] && !show_referral_option?
-     opts={:class => 'show_elig'} if v[:show_elig]
+     opts = {class: 'show_elig'} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +
-       form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
+       form.label("recommendation_#{k}",v[:text], radio_button_value: k) + (v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
    a.compact.join("<br />\n").html_safe
 
@@ -92,17 +92,17 @@ module ChecklistsHelper
   end
 
   def recommendation_other_extras(form)
-    form.text_field(:other,:size=>"90", :class =>'spell_check')   +
+    form.text_field(:other,size: "90", class: 'spell_check')   +
     form.check_box(:advance_tier) + form.label(:advance_tier) + ' ' +
     help_popup("Choose to advance the tier or not, only applies if you are choosing 'Other'")
   end
 
   def markdown_note
-      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",:target=>"_blank"
+      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",target: "_blank"
   end
 
   def markdown_with_span(text)
-    content_tag :span, markdown(text.to_s.gsub(/\r\n\*/,"\n\n*")),:class=>'markdown'
+    content_tag :span, markdown(text.to_s.gsub(/\r\n\*/,"\n\n*")),class: 'markdown'
   end
 
   def markdown(t)

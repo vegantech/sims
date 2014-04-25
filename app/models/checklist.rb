@@ -17,33 +17,33 @@
 
 class Checklist < ActiveRecord::Base
   DISTRICT_PARENT = :checklist_definition
-  has_many :answers, :dependent => :destroy
-  belongs_to :checklist_definition, :include => {:question_definitions => {:element_definitions => :answer_definitions}}
+  has_many :answers, dependent: :destroy
+  belongs_to :checklist_definition, include: {question_definitions: {element_definitions: :answer_definitions}}
   belongs_to :student
-  belongs_to :teacher, :class_name => "User", :foreign_key => :user_id  #e xplicitly needed for validation
+  belongs_to :teacher, class_name: "User", foreign_key: :user_id  #e xplicitly needed for validation
   belongs_to :district
-  belongs_to :tier, :foreign_key => :from_tier
-  has_one :recommendation,:dependent => :destroy
+  belongs_to :tier, foreign_key: :from_tier
+  has_one :recommendation,dependent: :destroy
   validate :cannot_pass_if_draft
   validates_presence_of :student_id, :user_id, :from_tier
 
-  delegate :recommendation_definition, :to => :checklist_definition
-  delegate :recommendation_definition_id, :to => :checklist_definition
+  delegate :recommendation_definition, to: :checklist_definition
+  delegate :recommendation_definition_id, to: :checklist_definition
   attr_accessor :skip_cache
   attr_reader :build_errors
-  define_statistic :count , :count => :all
-  define_statistic :count_of_districts, :count => :all, :column_name => 'distinct district_id'
+  define_statistic :count , count: :all
+  define_statistic :count_of_districts, count: :all, column_name: 'distinct district_id'
   after_update :remove_deleted_answers
-  before_validation :assign_associated_from_student, :on => :create
+  before_validation :assign_associated_from_student, on: :create
   attr_protected :district_id
 
 
   STATUS = {
-          :unknown => "UNKNOWN_STATUS",
-          :draft => "Draft, make changes and submit",
-          :missing_rec => "Submitted, but missing recommendation",
-          :nonadvancing => "Checklist submitted, continue working at same tier",
-          :optional_checklist => "Optional Checklist Completed"
+          unknown: "UNKNOWN_STATUS",
+          draft: "Draft, make changes and submit",
+          missing_rec: "Submitted, but missing recommendation",
+          nonadvancing: "Checklist submitted, continue working at same tier",
+          optional_checklist: "Optional Checklist Completed"
         }
 
   #  has_many :answers_with_includes, :class_name => "Answer",
@@ -61,16 +61,16 @@ class Checklist < ActiveRecord::Base
   end
 
    def status
-     @deletable=true
+     @deletable = true
      if is_draft? then
        STATUS[:draft]
      elsif needs_recommendation?
-       @needs_recommendation=true
+       @needs_recommendation = true
        STATUS[:missing_rec]
      elsif recommendation_definition_id.blank?
        STATUS[:optional_checklist]
      else
-       @deletable=false
+       @deletable = false
        recommendation.status
      end
    end
@@ -89,13 +89,13 @@ class Checklist < ActiveRecord::Base
 
   def self.new_from_teacher(teacher)
     #this builds a new checklist and scores it by copying the old values?
-    checklist = Checklist.new(:teacher => teacher)
+    checklist = Checklist.new(teacher: teacher)
     return nil unless checklist.student
     checklist.checklist_definition = checklist.student.checklist_definition
     checklist.tier = checklist.student.max_tier
     checklist.district_id = checklist.student.district_id
 
-    c = checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id, :order => "created_at DESC")
+    c = checklist.student.checklists.find_by_checklist_definition_id(checklist.checklist_definition_id, order: "created_at DESC")
 
     if c
       c.answers.each {|e| checklist.answers.build e.attributes.except("checklist_id")}
@@ -106,15 +106,15 @@ class Checklist < ActiveRecord::Base
   end
 
   def self.find_and_score(checklist_id)
-    c=find_by_id(checklist_id,:include=>{:answers=>:answer_definition})
+    c = find_by_id(checklist_id,include: {answers: :answer_definition})
     c.score_checklist if c && c.show_score?
     c
   end
 
   def score_checklist
     #for demo purpose, answering the second question will pass the checklist
-    if student and student.last_name=="Flag" and student.first_name="Every" and answers.find_by_answer_definition_id(6) then
-      self.promoted=true
+    if student and student.last_name == "Flag" and student.first_name = "Every" and answers.find_by_answer_definition_id(6) then
+      self.promoted = true
       return true
     end
 
@@ -123,7 +123,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def element_definitions_for_answers
-    @edfa||= answers.collect(&:answer_definition).collect(&:element_definition)
+    @edfa ||= answers.collect(&:answer_definition).collect(&:element_definition)
   end
 
   def text
@@ -142,14 +142,14 @@ class Checklist < ActiveRecord::Base
 #    student.checklist_answers_for_student.find_all_by_answer_definition_id(answer_definition.answer_definition_id,:conditions=>["checklists.created_at < ?", created_at], :order=> 'created_at ASC')
 
     Answer.find(:all,
-                :conditions => ['answer_definition_id = ? and checklist_id IN(?) and created_at < ? ',
-                                answer_definition.id,
-                                student.checklists, created_at ||Time.now],
-                :order => 'created_at ASC')
+                conditions: ['answer_definition_id = ? and checklist_id IN(?) and created_at < ? ',
+                             answer_definition.id,
+                             student.checklists, created_at || Time.now],
+                order: 'created_at ASC')
   end
 
   def previous_answer_for(element_definition)
-    recent_checklist = student.checklists.find(:first,:order=>"created_at DESC, id DESC")
+    recent_checklist = student.checklists.find(:first,order: "created_at DESC, id DESC")
     recent_checklist.answers.find_all_by_element_definition(element_definition)[0]  unless recent_checklist.blank?
 
 #   student.checklists.collect(&:answers).flatten.select{|answer| answer.answer_definition.element_definition == element_definition}.sort{|answer| answer.created_at}[0]
@@ -159,20 +159,20 @@ class Checklist < ActiveRecord::Base
     @editable ||= self.is_draft? || self.recommendation.blank? || student.checklists.last == self
   end
 
-  def show_score?(check_previous=true)
-    @show_score=false
+  def show_score?(check_previous = true)
+    @show_score = false
     if !promoted and recommendation and recommendation.should_advance
-      @show_score=true
+      @show_score = true
     elsif check_previous
-      prev_chk=previous_checklist
-      @show_sore= prev_chk and prev_chk.show_score?
+      prev_chk = previous_checklist
+      @show_sore = prev_chk and prev_chk.show_score?
     end
     @show_score
 #   @show_score = !promoted and recommendation and recommendation.should_advance? or (check_previous and previous_checklist.show_score?(false) )
   end
 
   def previous_checklist
-    @previous_checklist ||= Checklist.find_by_user_id(self.student_id, :order=>"created_at DESC",:conditions=>["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now])
+    @previous_checklist ||= Checklist.find_by_user_id(self.student_id, order: "created_at DESC",conditions: ["id <> ? and created_at < ?",self.id || -1, self.created_at || Time.now])
   end
 
   def needs_recommendation?
@@ -184,9 +184,9 @@ class Checklist < ActiveRecord::Base
   #
   def can_build?
     @build_errors = []
-    @build_errors <<("No tiers available.  Using the checklist requires at least one tier.") unless  district.tiers.any?
+    @build_errors << ("No tiers available.  Using the checklist requires at least one tier.") unless  district.tiers.any?
     @build_errors << ("No checklist available.  Have the content builder create one.") unless district.checklist_definitions.any?
-    @build_errors <<("Please submit/edit or delete the already started checklist first") if pending?
+    @build_errors << ("Please submit/edit or delete the already started checklist first") if pending?
     @build_errors.blank?
   end
   def commit=(ignore)
@@ -202,14 +202,14 @@ class Checklist < ActiveRecord::Base
     element_definition_hash.each do |element_definition_id, answer|
       element_definition = ElementDefinition.find(element_definition_id)
       if ['scale','applicable'].include?(element_definition.kind)
-        answer_hash = {:answer_definition_id => answer.to_i}
+        answer_hash = {answer_definition_id: answer.to_i}
       elsif ['comment','sa'].include?(element_definition.kind) && answer['text'].present?
-          answer_hash = { :answer_definition_id => answer['id'].to_i,
-                                  :text => answer['text']}
+          answer_hash = { answer_definition_id: answer['id'].to_i,
+                          text: answer['text']}
       else
         next  #text is empty
       end
-      (answers.find_by_answer_definition_id(answer_hash[:answer_definition_id]) || answers.build).attributes=answer_hash
+      (answers.find_by_answer_definition_id(answer_hash[:answer_definition_id]) || answers.build).attributes = answer_hash
       @answer_definition_ids << answer_hash[:answer_definition_id]
     end
 

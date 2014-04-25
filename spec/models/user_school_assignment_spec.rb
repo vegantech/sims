@@ -16,9 +16,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe UserSchoolAssignment do
   before(:each) do
     @valid_attributes = {
-      :school => nil,
-      :user => nil,
-      :admin => false
+      school: nil,
+      user: nil,
+      admin: false
     }
   end
 
@@ -30,8 +30,8 @@ describe UserSchoolAssignment do
   it "should remove special user groups when it is removed" do
     UserSchoolAssignment.delete_all
     SpecialUserGroup.delete_all
-    usa=UserSchoolAssignment.create!(:user_id => 1, :school_id => 1)
-    sug= SpecialUserGroup.new(:school_id => 1, :user_id => 1)
+    usa = UserSchoolAssignment.create!(user_id: 1, school_id: 1)
+    sug = SpecialUserGroup.new(school_id: 1, user_id: 1)
     sug.save!
     SpecialUserGroup.count.should == 1
     usa.destroy

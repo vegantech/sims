@@ -9,8 +9,8 @@ describe DistrictExport do
       end
       it 'should include users that have left the district' do
         d = FactoryGirl.create :district
-        in_district = FactoryGirl.create :user, :district => d
-        removed_from_this_district = FactoryGirl.create :user, :district => d
+        in_district = FactoryGirl.create :user, district: d
+        removed_from_this_district = FactoryGirl.create :user, district: d
         other_removed = FactoryGirl.create :user
         removed_from_this_district.remove_from_district
         other_removed.remove_from_district

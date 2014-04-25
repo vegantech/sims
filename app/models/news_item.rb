@@ -13,15 +13,15 @@
 #
 
 class NewsItem < ActiveRecord::Base
-  belongs_to :district, :touch => true
-  belongs_to :school, :touch => true
+  belongs_to :district, touch: true
+  belongs_to :school, touch: true
   attr_protected :district_id
   include LinkAndAttachmentAssets
   validates_presence_of :text
-  scope :system, where(:system=>true)
+  scope :system, where(system: true)
 
 
-  def self.build(args={})
-    new(args.merge(:system=>true))
+  def self.build(args = {})
+    new(args.merge(system: true))
   end
 end

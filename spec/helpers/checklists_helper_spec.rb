@@ -9,27 +9,27 @@ describe ChecklistsHelper do
   end
 
   it "should display autoset message if answer_definition has it present" do
-    answer_definition=mock_model(AnswerDefinition,"autoset_others?"=>true)
+    answer_definition = mock_model(AnswerDefinition,"autoset_others?" => true)
     autoset_message(answer_definition).should match(/answer/)
   end
 
   it "should not display autoset message if answer_definition has it present" do
-    answer_definition=mock_model(AnswerDefinition,"autoset_others?" =>false)
-    autoset_message(answer_definition). should ==(nil)
+    answer_definition = mock_model(AnswerDefinition,"autoset_others?" => false)
+    autoset_message(answer_definition). should == (nil)
   end
 
   it "should set the class for incorrect answer" do
-    incorrect_answer_highlight.should ==('class="incorrectAnswer"')
+    incorrect_answer_highlight.should == ('class="incorrectAnswer"')
   end
 
   it "should highlight only if wrong element" do
     self.should_receive("correct_question?").and_return(false)
-    highlight_if_wrong_question("c","qd").should ==(incorrect_answer_highlight)
+    highlight_if_wrong_question("c","qd").should == (incorrect_answer_highlight)
   end
 
   it "should not highlight if correct element" do
     self.should_receive("correct_question?").and_return(true)
-    highlight_if_wrong_question("c","qd").should ==(nil)
+    highlight_if_wrong_question("c","qd").should == (nil)
   end
 
   it 'should return true for correct_question? on a unscored checklist' do

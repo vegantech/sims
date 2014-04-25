@@ -11,18 +11,18 @@ class CreateTrainingDistrict
   end
 
   def self.generate_named_district district_dir
-    abbrev=File.basename(district_dir)
+    abbrev = File.basename(district_dir)
     name = "z #{abbrev} Content"
     destroy_district abbrev
     td = create_with_schools_and_users(abbrev,name)
     TrainingDistrict::Content.new(td,district_dir).generate_interventions
     TrainingDistrict::Content.new(td).generate_checklist_definition
-    td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
+    td.news.create(text: "Content as of %s" % File.mtime(district_dir).to_s(:short))
   end
 
 
   def self.destroy_district abbrev
-    d=District.find_by_abbrev(abbrev)
+    d = District.find_by_abbrev(abbrev)
      if d.present?
       d.schools.destroy_all
       d.tiers.delete_all
@@ -33,45 +33,45 @@ class CreateTrainingDistrict
   end
 
   def self.create_with_schools_and_users(abbrev,name)
-    td=District.create!(:abbrev=>abbrev, :name =>name, :forgot_password => true)
+    td = District.create!(abbrev: abbrev, name: name, forgot_password: true)
     ActiveRecord::Base.transaction do
     td.send :create_admin_user
     #alpha elementary
-    alpha_elem=td.schools.create!(:name => 'Alpha Elementary')
+    alpha_elem = td.schools.create!(name: 'Alpha Elementary')
 
-    oneschool = td.users.create!(:username => 'oneschool', :password => 'oneschool', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'User')
+    oneschool = td.users.create!(username: 'oneschool', password: 'oneschool', email: 'shawn@simspilot.org', first_name: 'Training', last_name: 'User')
 
-    melody = td.users.create!(:username => 'melody', :password => 'melody', :email => 'shawn@simspilot.org', :first_name => 'Melody', :last_name => 'TrebleCleff')
+    melody = td.users.create!(username: 'melody', password: 'melody', email: 'shawn@simspilot.org', first_name: 'Melody', last_name: 'TrebleCleff')
 
-    training_homeroom = alpha_elem.groups.create!(:title => "Training Homeroom")
-    other_homeroom = alpha_elem.groups.create!(:title => 'Other Group')
+    training_homeroom = alpha_elem.groups.create!(title: "Training Homeroom")
+    other_homeroom = alpha_elem.groups.create!(title: 'Other Group')
     oneschool.groups << training_homeroom
     oneschool.groups << other_homeroom
 
     melody.groups << other_homeroom
-    melody.user_school_assignments.create!(:school => alpha_elem)
-    oneschool.user_school_assignments.create!(:school => alpha_elem)
+    melody.user_school_assignments.create!(school: alpha_elem)
+    oneschool.user_school_assignments.create!(school: alpha_elem)
 
 
 
     oneschool.save!
     melody.save!
-    training_team = alpha_elem.school_teams.create!(:name => "Training", :contact_ids => [oneschool.id])
+    training_team = alpha_elem.school_teams.create!(name: "Training", contact_ids: [oneschool.id])
 
     #oneschool
     #alphaprin
     #students
 
-    alphaprin = td.users.create!(:username => 'alphaprin', :password => 'alphaprin', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Principal')
-    alphaprin.user_school_assignments.create!(:admin => true, :school => alpha_elem)
-    alphaprin.special_user_groups.create!(:school=>alpha_elem, :is_principal => true)
+    alphaprin = td.users.create!(username: 'alphaprin', password: 'alphaprin', email: 'shawn@simspilot.org', first_name: 'Training', last_name: 'Principal')
+    alphaprin.user_school_assignments.create!(admin: true, school: alpha_elem)
+    alphaprin.special_user_groups.create!(school: alpha_elem, is_principal: true)
 
-    training_team.school_team_memberships.create!(:user => alphaprin, :contact => false)
+    training_team.school_team_memberships.create!(user: alphaprin, contact: false)
 
-    content_admin = td.users.create!(:username => 'content_builder', :password => 'content_builder', :email => 'shawn@simspilot.org', :first_name => 'Training', :last_name => 'Content Admin')
+    content_admin = td.users.create!(username: 'content_builder', password: 'content_builder', email: 'shawn@simspilot.org', first_name: 'Training', last_name: 'Content Admin')
 
-    other_team = alpha_elem.school_teams.create!(:name => "Other Team", :contact_ids => [alphaprin.id])
-    td.flag_categories.create!({"category"=>"math", "threshold"=>"30", "existing_asset_attributes"=>{"qqq"=>""}, "new_asset_attributes"=>[{"name"=>"Math Core Practices (Madison)", "url"=>"/file/Mathematics_Core_Practices.pdf"}]})
+    other_team = alpha_elem.school_teams.create!(name: "Other Team", contact_ids: [alphaprin.id])
+    td.flag_categories.create!({"category" => "math", "threshold" => "30", "existing_asset_attributes" => {"qqq" => ""}, "new_asset_attributes" => [{"name" => "Math Core Practices (Madison)", "url" => "/file/Mathematics_Core_Practices.pdf"}]})
 
     Role.add_users "regular_user", [alphaprin,oneschool]
     Role.add_users "school_admin", alphaprin
@@ -89,7 +89,7 @@ class CreateTrainingDistrict
     abbrev = "training#{num}"
     name = abbrev.capitalize
     destroy_district abbrev
-    td=create_with_schools_and_users(abbrev,name)
+    td = create_with_schools_and_users(abbrev,name)
 
     ActiveRecord::Base.transaction do
       TrainingDistrict::Content.new(td).tap do |content|
@@ -97,7 +97,7 @@ class CreateTrainingDistrict
         content.generate_checklist_definition
       end
     end
-    td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
+    td.news.create(text: "District Reset %s" % Time.now.to_s(:short))
    td
   end
 

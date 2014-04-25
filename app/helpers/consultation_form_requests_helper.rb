@@ -9,7 +9,7 @@ module ConsultationFormRequestsHelper
 
   def show_consultation_form?(f)
     return true unless current_district.show_team_consultation_attachments?
-    team=f.object.school_team
+    team = f.object.school_team
     if team.nil? && defined?(@teams)
       team = @teams.first
     end
@@ -17,16 +17,16 @@ module ConsultationFormRequestsHelper
   end
 
   def team_consultation_form(team_consultation)
-    html_options = {:multipart => true, :target =>"upload_frame"}
+    html_options = {multipart: true, target: "upload_frame"}
 
     unless team_consultation.new_record?
       html_options[:method]  = :put
-      url = team_consultation_path(team_consultation,:format =>:js)
+      url = team_consultation_path(team_consultation,format: :js)
     else
-      url = team_consultations_path(:format =>:js)
+      url = team_consultations_path(format: :js)
     end
 
-    form_for(team_consultation, :url => url, :html => html_options) do |f|
+    form_for(team_consultation, url: url, html: html_options) do |f|
       yield f
     end
   end

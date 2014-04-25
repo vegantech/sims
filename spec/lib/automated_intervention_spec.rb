@@ -2,25 +2,25 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AutomatedIntervention do
   it 'should report a file with incorrect headers' do
-    importer=AutomatedIntervention.new File.new('README.md'),User.new
+    importer = AutomatedIntervention.new File.new('README.md'),User.new
     importer.import.join.should =~ /Invalid headers: They must be #{AutomatedIntervention::FORMAT}/
   end
 
   describe 'successful upload' do
     before(:all) do
-      @user=Factory(:user)
-      stu=Factory(:student,:district_id => @user.district_id).update_attribute(:district_student_id,'cuke123')
+      @user = Factory(:user)
+      stu = Factory(:student,district_id: @user.district_id).update_attribute(:district_student_id,'cuke123')
       InterventionDefinition.delete_all
       Intervention.delete_all
       InterventionComment.delete_all
       ProbeDefinition.delete_all
-      pd=Factory(:probe_definition, :minimum_score=>0,:district_id => @user.district_id)
+      pd = Factory(:probe_definition, minimum_score: 0,district_id: @user.district_id)
       ProbeDefinition.update_all("id = 99876", "id = #{pd.id}")
 
-      int_def = Factory(:intervention_definition, :title => 'cuke1', :description => 'cuke1' )
+      int_def = Factory(:intervention_definition, title: 'cuke1', description: 'cuke1' )
       InterventionDefinition.update_all("id = 99876", "id = #{int_def.id}")
       GoalDefinition.update_all("district_id = #{@user.district_id}")
-      @importer=AutomatedIntervention.new File.new('test/csv/automated_intervention/sample.csv'), @user
+      @importer = AutomatedIntervention.new File.new('test/csv/automated_intervention/sample.csv'), @user
       @importer.import
 
     end
@@ -42,27 +42,27 @@ describe AutomatedIntervention do
     end
 
     it 'should have created the first intervention in the file'  do
-      intervention=InterventionComment.find_by_comment("This is a comment").intervention
+      intervention = InterventionComment.find_by_comment("This is a comment").intervention
       intervention.start_date.to_s.should == '2008-01-01'
       intervention.should be_active
     end
 
     it 'should have created the second intervention in the file' do
-      intervention=InterventionComment.find_by_comment("This is another intervention on a different date").intervention
+      intervention = InterventionComment.find_by_comment("This is another intervention on a different date").intervention
       intervention.start_date.to_s.should == '2008-01-02'
       intervention.end_date.to_s.should == '2008-01-03'
       intervention.should_not be_active
     end
 
     it 'should have created the intervention with the blank score' do
-      intervention=InterventionComment.find_by_comment("This is an intervention with an valid probe assignment and blank score").intervention
+      intervention = InterventionComment.find_by_comment("This is an intervention with an valid probe assignment and blank score").intervention
       intervention.start_date.to_s.should == '2008-01-04'
       intervention.should be_active
 
     end
 
     it 'should have created the intervention with the valid score' do
-      intervention=InterventionComment.find_by_comment("This is an intervention with an valid probe assignment and valid score").intervention
+      intervention = InterventionComment.find_by_comment("This is an intervention with an valid probe assignment and valid score").intervention
       intervention.start_date.to_s.should == '2008-01-05'
       intervention.should be_active
 

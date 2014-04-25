@@ -8,11 +8,11 @@ module MoveUpDownButtonsHelper
   end
 
   def move_link direction, obj
-    link_to image_tag("arrow-#{direction}.gif"),move_path(obj,direction), {:class => "move_link",:method => :put, :remote => true}
+    link_to image_tag("arrow-#{direction}.gif"),move_path(obj,direction), {class: "move_link",method: :put, remote: true}
   end
 
   def move_button direction,obj
-    form_tag(move_path(obj, direction), {:style => "display:inline",:method => :put, :remote => true}) do
+    form_tag(move_path(obj, direction), {style: "display:inline",method: :put, remote: true}) do
       image_submit_tag("arrow-#{direction}.gif")
     end
   end

@@ -32,24 +32,24 @@ class User < ActiveRecord::Base
   include FullName, Devise::LegacyPassword, Pageable, StatsInUse, Stats::User
 
   belongs_to :district
-  has_many :user_school_assignments, :dependent => :destroy
-  has_many :special_user_groups, :dependent => :destroy
-  has_many :special_schools, :through => :special_user_groups, :source=>:school
-  has_many :user_group_assignments, :dependent => :destroy, :inverse_of => :user
-  has_many :groups, :through => :user_group_assignments, :order => :title
-  has_many :principal_override_requests, :class_name => "PrincipalOverride", :foreign_key => :teacher_id
-  has_many :principal_override_responses, :class_name => "PrincipalOverride", :foreign_key => :principal_id
+  has_many :user_school_assignments, dependent: :destroy
+  has_many :special_user_groups, dependent: :destroy
+  has_many :special_schools, through: :special_user_groups, source: :school
+  has_many :user_group_assignments, dependent: :destroy, inverse_of: :user
+  has_many :groups, through: :user_group_assignments, order: :title
+  has_many :principal_override_requests, class_name: "PrincipalOverride", foreign_key: :teacher_id
+  has_many :principal_override_responses, class_name: "PrincipalOverride", foreign_key: :principal_id
   has_many :student_comments
-  has_many :intervention_participants, :dependent => :delete_all
-  has_many :interventions_as_participant, :through => :intervention_participants, :class_name => 'Intervention', :source => :intervention
+  has_many :intervention_participants, dependent: :delete_all
+  has_many :interventions_as_participant, through: :intervention_participants, class_name: 'Intervention', source: :intervention
   has_many :school_team_memberships
-  has_many :school_teams, :through => :school_team_memberships
-  has_many :team_consultations,:foreign_key => :requestor_id
+  has_many :school_teams, through: :school_team_memberships
+  has_many :team_consultations,foreign_key: :requestor_id
   has_many :personal_groups
   has_many :staff_assignments
   has_many :checklists
   has_many :consultation_forms
-  has_many :consultation_form_requests, :foreign_key =>:requestor_id
+  has_many :consultation_form_requests, foreign_key: :requestor_id
   has_many :custom_flags
   has_many :ignore_flags
   has_many :intervention_comments
@@ -57,28 +57,28 @@ class User < ActiveRecord::Base
   has_many :interventions
   has_many :probe_definitions
   has_many :recommendations
-  has_many :logs, :class_name => 'DistrictLog'
+  has_many :logs, class_name: 'DistrictLog'
 
 
   attr_protected :district_id
 
-  accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
-  accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
+  accepts_nested_attributes_for :staff_assignments, allow_destroy: true, reject_if: :duplicate_staff_assignment?
+  accepts_nested_attributes_for :user_school_assignments, allow_destroy: true
 
 #  define_statistic :users_with_content
 #  define_statistic :districts_with_users_with_content
 
 
   validates_presence_of :username
-  validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
+  validates_presence_of :password, on: :create, unless: :blank_password_ok?
 #  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
-  validates_uniqueness_of :username, :scope => :district_id
+  validates_uniqueness_of :username, scope: :district_id
   validates_confirmation_of :password
   validate :validate_unique_user_school_assignments
 
 
 
-  def authorized_groups_for_school(school,grade=nil)
+  def authorized_groups_for_school(school,grade = nil)
     if all_students_in_school?(school)
       if grade
         school.groups.by_grade(grade)
@@ -94,12 +94,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def cached_authorized_groups_for_school(school, grade=nil)
+  def cached_authorized_groups_for_school(school, grade = nil)
     @cached_groups_for_school ||= Hash.new
     @cached_groups_for_school[[school.id,grade]] ||= authorized_groups_for_school(school,grade).only_title_and_id
   end
 
-  def filtered_groups_by_school(school,opts={})
+  def filtered_groups_by_school(school,opts = {})
     #opts can be grade and prompt and user?
     #default prompt is "*-Filter by Group"
     #the - separates id and prompt
@@ -112,19 +112,19 @@ class User < ActiveRecord::Base
       u_grp_ids = connection.select_values "select group_id from user_group_assignments where user_id = #{opts['user'].to_i}"
       grps = grps.select{ |u_group| u_grp_ids.include? u_group.id}
     end
-    personal_groups.by_school_and_grade(school,grade) |grps
+    personal_groups.by_school_and_grade(school,grade) | grps
   end
 
-  def filtered_members_by_school(school,opts={})
+  def filtered_members_by_school(school,opts = {})
   #opts can be grade, user_id
   #blank grade defaults to *
   #blank user defaults to *
     opts.stringify_keys!
-    opts.reverse_merge!( "grade"=>"*")
+    opts.reverse_merge!( "grade" => "*")
     grade = opts['grade']
     grade = nil if grade == "*"
     g_ids = cached_authorized_groups_for_school(school,grade).collect(&:id)
-    User.find(:all,:select => 'distinct users.*',:joins => :groups ,:conditions=> {:groups=>{:id=>g_ids}}, :order => 'last_name, first_name')
+    User.find(:all,select: 'distinct users.*',joins: :groups ,conditions: {groups: {id: g_ids}}, order: 'last_name, first_name')
   end
 
   def authorized_for?(controller)
@@ -132,11 +132,11 @@ class User < ActiveRecord::Base
   end
 
   def grouped_principal_overrides
-    overrides={}
-    overrides[:user_requests]=principal_override_requests
+    overrides = {}
+    overrides[:user_requests] = principal_override_requests
     if principal?
       overrides[:principal_responses] = principal_override_responses
-      overrides[:pending_requests]=PrincipalOverride.pending_for_principal(self)
+      overrides[:pending_requests] = PrincipalOverride.pending_for_principal(self)
     end
 
     overrides
@@ -148,8 +148,8 @@ class User < ActiveRecord::Base
 
   def orphaned_interventions_where_principal(school)
     return [] if school.blank?
-    Intervention.find_all_by_active(true,:select => "distinct interventions.*",
-                                    :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
+    Intervention.find_all_by_active(true,select: "distinct interventions.*",
+                                         joins: "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
         left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true
         left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
         ip.intervention_id = interventions.id
 
         ",
-           :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
+                                         conditions: "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
            or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  ((iu.all_students = 1 )
            or ( sug.school_id = enrollments.school_id
            and ( sug.grade is null or sug.grade = enrollments.grade ) ))
@@ -205,13 +205,13 @@ class User < ActiveRecord::Base
   end
 
   def self.find_all_by_role(role,options = {})
-    with_scope :find => options do
-      find(:all,:conditions => ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
+    with_scope find: options do
+      find(:all,conditions: ["roles_mask & ? ",1 << Role::ROLES.index(role)]) unless Role::ROLES.index(role).nil?
     end
   end
 
   def last_login
-    @last_login ||=logs.success.order("updated_at desc").first.try(:updated_at)
+    @last_login ||= logs.success.order("updated_at desc").first.try(:updated_at)
   end
 
   def all_students_in_school?(school)
@@ -219,11 +219,11 @@ class User < ActiveRecord::Base
   end
 
   def admin_of_school?(school)
-    user_school_assignments.admin.exists?(:school_id => school.id)
+    user_school_assignments.admin.exists?(school_id: school.id)
   end
 
    def schools
-    s=School.where(:district_id => district_id).order("schools.name")
+    s = School.where(district_id: district_id).order("schools.name")
     if all_schools_in_district?
       s
     else
@@ -238,7 +238,7 @@ class User < ActiveRecord::Base
   end
 
   def students_for_school(school)
-    s=Student.includes(:enrollments).where(:enrollments=>{:school_id => school}, :district_id=> district_id)
+    s = Student.includes(:enrollments).where(enrollments: {school_id: school}, district_id: district_id)
     if all_students?
       s
     else
@@ -253,10 +253,10 @@ class User < ActiveRecord::Base
     super conditions
   end
 
-  def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
+  def self.find_for_googleapps_oauth(access_token, signed_in_resource = nil)
     data = access_token['info']
 
-    if user = User.where(:email => data['email']).first
+    if user = User.where(email: data['email']).first
       return user
     end
   end
@@ -286,19 +286,18 @@ class User < ActiveRecord::Base
       (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
   end
 
-protected
+  protected
 
   def student_ids_where_principal(school_id)
     #TODO TEST THIS
     ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
- Student.send(:construct_finder_sql, :select => "students.id",
-                  :joins =>
-"left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
+ Student.send(:construct_finder_sql, select: "students.id",
+                                     joins: "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
          left outer join enrollments on enrollments.student_id = students.id
          left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
            and user_group_assignments.user_id = #{self.id})
           on groups_students.student_id = students.id",
-                  :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
+                                     conditions: "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
 
 
 

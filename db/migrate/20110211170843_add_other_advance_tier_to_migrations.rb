@@ -1,6 +1,6 @@
 class AddOtherAdvanceTierToMigrations < ActiveRecord::Migration
   def self.up
-    add_column :recommendations, :advance_tier, :boolean, :default => true
+    add_column :recommendations, :advance_tier, :boolean, default: true
   end
 
   def self.down

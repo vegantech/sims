@@ -4,17 +4,17 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 describe CSVImporter::Base do
   describe 'append_failure?' do
     it 'should fail with a message when it does not support append' do
-      c=CSVImporter::Base.new("test_appends.csv",District.new)
+      c = CSVImporter::Base.new("test_appends.csv",District.new)
       c.send(:append_failure?).should be_true
       c.messages.should include("Append is not supported for bases.csv")
     end
     it 'should not fail with a message when it does not support append and the file doesnt include it' do
-      c=CSVImporter::Base.new("test.csv",District.new)
+      c = CSVImporter::Base.new("test.csv",District.new)
       c.send(:append_failure?).should be_false
     end
     it 'should return false with no message when it does support append and the filename has it' do
-      c=CSVImporter::Base.new("test_appends.csv",District.new)
-      klass=c.class
+      c = CSVImporter::Base.new("test_appends.csv",District.new)
+      klass = c.class
       def klass.supports_append?
         true
       end
@@ -25,7 +25,7 @@ describe CSVImporter::Base do
       end
     end
     it 'should return false when append is supported but not requested' do
-      c=CSVImporter::Base.new("test",District.new)
+      c = CSVImporter::Base.new("test",District.new)
       c.send(:append_failure?).should be_false
     end
   end

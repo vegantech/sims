@@ -25,7 +25,7 @@ module Duration
 
   def default_end_date
    if time_length_number and time_length
-      (start_date + (time_length_number*time_length.days).days)
+      (start_date + (time_length_number * time_length.days).days)
    else
       start_date
    end

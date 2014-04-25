@@ -10,7 +10,7 @@ class CreateInterventions < ActiveRecord::Migration
       t.integer :frequency_multiplier
       t.belongs_to :time_length
       t.integer :time_length_number
-      t.boolean :active,:default=>true
+      t.boolean :active,default: true
       t.belongs_to :ended_by
       t.date :ended_at
 

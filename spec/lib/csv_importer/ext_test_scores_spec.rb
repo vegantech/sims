@@ -9,15 +9,15 @@ describe CSVImporter::ExtTestScores do
     ExtTestScore.delete_all
     @district = Factory(:district)
     @district2 = Factory(:district)
-    @d2s2=@district2.students.create!(:id_state=>3, :first_name => 'second', :last_name => 'student', :district_student_id => 's2')
-    @s1=@district.students.create!(:id_state=>1, :first_name => 'first', :last_name => 'student', :district_student_id => 's1')
-    @s2=@district.students.create!(:id_state=>2, :first_name => 'second', :last_name => 'student', :district_student_id => 's2')
-    @s1.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Update 2' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Update 3' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Not in csv' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s2.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
-    @d2s2.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
+    @d2s2 = @district2.students.create!(id_state: 3, first_name: 'second', last_name: 'student', district_student_id: 's2')
+    @s1 = @district.students.create!(id_state: 1, first_name: 'first', last_name: 'student', district_student_id: 's1')
+    @s2 = @district.students.create!(id_state: 2, first_name: 'second', last_name: 'student', district_student_id: 's2')
+    @s1.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Update 2' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Update 3' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Not in csv' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s2.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
+    @d2s2.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
     @ext_test_scores = ExtTestScore.all
 
   end
@@ -33,7 +33,7 @@ describe CSVImporter::ExtTestScores do
 
   describe "without append" do
     it 'should clear everything out and replace ext test scores with what is in the file' do
-      @i=CSVImporter::ExtTestScores.new file,@district
+      @i = CSVImporter::ExtTestScores.new file,@district
       @i.import
       @s2.reload.should have(0).ext_test_scores
       @s1.reload.should have(4).ext_test_scores
@@ -43,7 +43,7 @@ describe CSVImporter::ExtTestScores do
 
     it 'should not affect anything in other districts' do
       old_d2s2_ext_test_scores = @d2s2.ext_test_scores.collect(&:attributes)
-      @i=CSVImporter::ExtTestScores.new file,@district
+      @i = CSVImporter::ExtTestScores.new file,@district
       @i.import
       old_d2s2_ext_test_scores.should == @d2s2.reload.ext_test_scores.collect(&:attributes)
     end
@@ -56,7 +56,7 @@ describe CSVImporter::ExtTestScores do
 
     end
     it 'should fail with a message when there are duplicates' do
-        @i=CSVImporter::ExtTestScores.new append_file,@district
+        @i = CSVImporter::ExtTestScores.new append_file,@district
         @i.import
       #pending do
         @s2.reload.should have(1).ext_test_scores
@@ -68,7 +68,7 @@ describe CSVImporter::ExtTestScores do
 
     it 'should append all scores when there are no duplicates' do
       ExtTestScore.update_all("name = concat(name,'1')")
-      @i=CSVImporter::ExtTestScores.new append_file,@district
+      @i = CSVImporter::ExtTestScores.new append_file,@district
       @i.import
       @s1.reload.should have(8).ext_test_scores
     end

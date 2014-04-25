@@ -2,13 +2,13 @@ module Sims
   class BestStandardsSupport
     def initialize(app, type = true)
       @app = app
-      @header= "IE=Edge,chrome=IE7"
+      @header = "IE=Edge,chrome=IE7"
     end
 
     def call(env)
       status, headers, body = @app.call(env)
       headers["X-UA-Compatible"] = @header
-      headers['P3P']= 'CP = "CAO PSA OUR"'
+      headers['P3P'] = 'CP = "CAO PSA OUR"'
       [status, headers, body]
     end
   end

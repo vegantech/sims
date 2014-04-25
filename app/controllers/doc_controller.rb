@@ -12,10 +12,10 @@ class DocController < ActionController::Base
 
   def district_upload
     if params[:id]
-      doc=params[:id].gsub(/[^a-zA-Z0-9_]/,"")
+      doc = params[:id].gsub(/[^a-zA-Z0-9_]/,"")
       if doc
         @importer = "CSVImporter/#{doc}".classify.pluralize.constantize
-        render :template => "doc/district_upload/file_api" and return
+        render template: "doc/district_upload/file_api" and return
       end
     end
   end

@@ -37,12 +37,12 @@ class ConsultationFormsController < ApplicationController
 
     respond_to do |format|
       if @consultation_form.update_attributes(params[:consultation_form])
-        msg= 'ConsultationForm was updated.'
-        format.html { flash[:notice]=msg; redirect_to(current_student) }
+        msg = 'ConsultationForm was updated.'
+        format.html { flash[:notice] = msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
         format.js  {responds_to_parent {render}}
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
 
       format.html # show.html.erb
@@ -62,11 +62,11 @@ class ConsultationFormsController < ApplicationController
 
     respond_to do |format|
       if @consultation_form.save
-        msg= 'ConsultationForm was successfully created.'
-        format.html { flash[:notice]=msg; redirect_to(current_student) }
+        msg = 'ConsultationForm was successfully created.'
+        format.html { flash[:notice] = msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js { responds_to_parent{render} }
       end
     end

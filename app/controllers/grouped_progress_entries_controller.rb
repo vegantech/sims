@@ -8,7 +8,7 @@ class GroupedProgressEntriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @grouped_progress_entries }
+      format.xml  { render xml: @grouped_progress_entries }
     end
   end
 
@@ -20,7 +20,7 @@ class GroupedProgressEntriesController < ApplicationController
   end
 
   def show
-    params[:graph]='line'
+    params[:graph] = 'line'
     @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
     @intervention = @grouped_progress_entry.intervention
     @probe_definition = @grouped_progress_entry.probe_definition
@@ -38,7 +38,7 @@ class GroupedProgressEntriesController < ApplicationController
         flash[:notice] = 'Scores and Comments were successfully entered.'
         format.html { redirect_to(grouped_progress_entries_url) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -47,22 +47,22 @@ class GroupedProgressEntriesController < ApplicationController
     require 'net/http'
     require 'uri'
     @grouped_progress_entry = GroupedProgressEntry.find(current_user,params[:id],search_criteria)
-    google_params= @grouped_progress_entry.aggregate_chart(params[:page])
+    google_params = @grouped_progress_entry.aggregate_chart(params[:page])
     logger.info(google_params)
 
     res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'),google_params)
-    send_data res.body, :type =>'image/png', :disposition => 'inline'
+    send_data res.body, type: 'image/png', disposition: 'inline'
   end
 
   private
   def search_criteria
     session[:search].merge(
-      :school_id => current_school_id,
-      :user => current_user)
+      school_id: current_school_id,
+      user: current_user)
   end
 
   def confirm_search
-    flash[:notice]="You must complete a search first" and redirect_to root_url and return false  if session[:search].blank?
+    flash[:notice] = "You must complete a search first" and redirect_to root_url and return false  if session[:search].blank?
     true
   end
 
@@ -70,10 +70,10 @@ class GroupedProgressEntriesController < ApplicationController
   rescue_from(ActiveRecord::RecordNotFound) do
     respond_to do |format|
       format.html do
-        flash[:notice]='Record not found. Try redoing the search'
+        flash[:notice] = 'Record not found. Try redoing the search'
           redirect_to root_url
       end
-      format.js {render :nothing => true}
+      format.js {render nothing: true}
     end
   end
 

@@ -97,9 +97,9 @@ class AddIndicesForForeignKeys < ActiveRecord::Migration
     add_index :quicklist_items, :district_id
     add_index :quicklist_items, :intervention_definition_id
 
-    add_index :recommendation_answer_definitions, :recommendation_definition_id, :name => 'rec_def_id'
+    add_index :recommendation_answer_definitions, :recommendation_definition_id, name: 'rec_def_id'
     add_index :recommendation_answers, :recommendation_id
-    add_index :recommendation_answers, :recommendation_answer_definition_id, :name => 'rec_ans_def_id'
+    add_index :recommendation_answers, :recommendation_answer_definition_id, name: 'rec_ans_def_id'
 
     add_index :recommendation_definitions, :district_id
     add_index :recommendation_definitions, :checklist_definition_id
@@ -146,148 +146,148 @@ class AddIndicesForForeignKeys < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :users, :column => :district_id
+    remove_index :users, column: :district_id
 
-    remove_index :user_school_assignments, :column => :user_id
-    remove_index :user_school_assignments, :column => :school_id
+    remove_index :user_school_assignments, column: :user_id
+    remove_index :user_school_assignments, column: :school_id
 
-    remove_index :user_group_assignments, :column => :group_id
-    remove_index :user_group_assignments, :column => :user_id
+    remove_index :user_group_assignments, column: :group_id
+    remove_index :user_group_assignments, column: :user_id
 
-    remove_index :tiers, :column => :district_id
+    remove_index :tiers, column: :district_id
 
-    remove_index :students, :column => :district_id
+    remove_index :students, column: :district_id
 
-    remove_index :student_comments, :column => :user_id
-    remove_index :student_comments, :column => :student_id
+    remove_index :student_comments, column: :user_id
+    remove_index :student_comments, column: :student_id
 
-    remove_index :states, :column => :country_id
+    remove_index :states, column: :country_id
 
-    remove_index :special_user_groups, :column => :school_id
-    remove_index :special_user_groups, :column => :district_id
-    remove_index :special_user_groups, :column => :user_id
+    remove_index :special_user_groups, column: :school_id
+    remove_index :special_user_groups, column: :district_id
+    remove_index :special_user_groups, column: :user_id
 
-    remove_index :schools, :column => :district_id
+    remove_index :schools, column: :district_id
 
-    remove_index :roles_users, :column => :user_id
-    remove_index :roles_users, :column => :role_id
+    remove_index :roles_users, column: :user_id
+    remove_index :roles_users, column: :role_id
 
-    remove_index :roles, :column => :district_id
+    remove_index :roles, column: :district_id
 
-    remove_index :rights, :column => :role_id
+    remove_index :rights, column: :role_id
 
-    remove_index :recommended_monitors, :column => :probe_definition_id
-    remove_index :recommended_monitors, :column => :intervention_definition_id
+    remove_index :recommended_monitors, column: :probe_definition_id
+    remove_index :recommended_monitors, column: :intervention_definition_id
 
-    remove_index :recommendations, :column => :student_id
-    remove_index :recommendations, :column => :tier_id
-    remove_index :recommendations, :column => :district_id
-    remove_index :recommendations, :column => :recommendation_definition_id
-    remove_index :recommendations, :column => :user_id
-    remove_index :recommendations, :column => :checklist_id
+    remove_index :recommendations, column: :student_id
+    remove_index :recommendations, column: :tier_id
+    remove_index :recommendations, column: :district_id
+    remove_index :recommendations, column: :recommendation_definition_id
+    remove_index :recommendations, column: :user_id
+    remove_index :recommendations, column: :checklist_id
 
-    remove_index :recommendation_definitions, :column => :checklist_definition_id
-    remove_index :recommendation_definitions, :column => :district_id
+    remove_index :recommendation_definitions, column: :checklist_definition_id
+    remove_index :recommendation_definitions, column: :district_id
 
-    remove_index :recommendation_answers, :column => :recommendation_answer_definition_id
-    remove_index :recommendation_answers, :column => :recommendation_id
-    remove_index :recommendation_answer_definitions, :column => :recommendation_definition_id
+    remove_index :recommendation_answers, column: :recommendation_answer_definition_id
+    remove_index :recommendation_answers, column: :recommendation_id
+    remove_index :recommendation_answer_definitions, column: :recommendation_definition_id
 
-    remove_index :quicklist_items, :column => :intervention_definition_id
-    remove_index :quicklist_items, :column => :district_id
-    remove_index :quicklist_items, :column => :school_id
+    remove_index :quicklist_items, column: :intervention_definition_id
+    remove_index :quicklist_items, column: :district_id
+    remove_index :quicklist_items, column: :school_id
 
-    remove_index :question_definitions, :column => :checklist_definition_id
+    remove_index :question_definitions, column: :checklist_definition_id
 
-    remove_index :probes, :column => :intervention_probe_assignment_id
-    remove_index :probes, :column => :district_id
+    remove_index :probes, column: :intervention_probe_assignment_id
+    remove_index :probes, column: :district_id
 
-    remove_index :probe_questions_probes, :column => :probe_question_id
-    remove_index :probe_questions_probes, :column => :probe_id
-    remove_index :probe_questions, :column => :probe_definition_id
+    remove_index :probe_questions_probes, column: :probe_question_id
+    remove_index :probe_questions_probes, column: :probe_id
+    remove_index :probe_questions, column: :probe_definition_id
 
-    remove_index :probe_definitions, :column => :school_id
-    remove_index :probe_definitions, :column => :minimum_score
-    remove_index :probe_definitions, :column => :maximum_score
-    remove_index :probe_definitions, :column => :district_id
-    remove_index :probe_definitions, :column => :user_id
+    remove_index :probe_definitions, column: :school_id
+    remove_index :probe_definitions, column: :minimum_score
+    remove_index :probe_definitions, column: :maximum_score
+    remove_index :probe_definitions, column: :district_id
+    remove_index :probe_definitions, column: :user_id
 
-    remove_index :probe_definition_benchmarks, :column => :benchmark
-    remove_index :probe_definition_benchmarks, :column => :probe_definition_id
+    remove_index :probe_definition_benchmarks, column: :benchmark
+    remove_index :probe_definition_benchmarks, column: :probe_definition_id
 
-    remove_index :principal_overrides, :column => :end_tier_id
-    remove_index :principal_overrides, :column => :start_tier_id
-    remove_index :principal_overrides, :column => :principal_id
-    remove_index :principal_overrides, :column => :student_id
-    remove_index :principal_overrides, :column => :teacher_id
+    remove_index :principal_overrides, column: :end_tier_id
+    remove_index :principal_overrides, column: :start_tier_id
+    remove_index :principal_overrides, column: :principal_id
+    remove_index :principal_overrides, column: :student_id
+    remove_index :principal_overrides, column: :teacher_id
 
-    remove_index :objective_definitions, :column => :goal_definition_id
+    remove_index :objective_definitions, column: :goal_definition_id
 
-    remove_index :news_items, :column => :country_id
-    remove_index :news_items, :column => :state_id
-    remove_index :news_items, :column => :school_id
-    remove_index :news_items, :column => :district_id
+    remove_index :news_items, column: :country_id
+    remove_index :news_items, column: :state_id
+    remove_index :news_items, column: :school_id
+    remove_index :news_items, column: :district_id
 
-    remove_index :interventions, :column => :ended_by_id
-    remove_index :interventions, :column => :time_length_number
-    remove_index :interventions, :column => :time_length_id
-    remove_index :interventions, :column => :frequency_multiplier
-    remove_index :interventions, :column => :frequency_id
-    remove_index :interventions, :column => :intervention_definition_id
-    remove_index :interventions, :column => :student_id
-    remove_index :interventions, :column => :user_id
+    remove_index :interventions, column: :ended_by_id
+    remove_index :interventions, column: :time_length_number
+    remove_index :interventions, column: :time_length_id
+    remove_index :interventions, column: :frequency_multiplier
+    remove_index :interventions, column: :frequency_id
+    remove_index :interventions, column: :intervention_definition_id
+    remove_index :interventions, column: :student_id
+    remove_index :interventions, column: :user_id
 
-    remove_index :intervention_probe_assignments, :column => :frequency_id
-    remove_index :intervention_probe_assignments, :column => :frequency_multiplier
-    remove_index :intervention_probe_assignments, :column => :probe_definition_id
-    remove_index :intervention_probe_assignments, :column => :intervention_id
+    remove_index :intervention_probe_assignments, column: :frequency_id
+    remove_index :intervention_probe_assignments, column: :frequency_multiplier
+    remove_index :intervention_probe_assignments, column: :probe_definition_id
+    remove_index :intervention_probe_assignments, column: :intervention_id
 
-    remove_index :intervention_participants, :column => :user_id
-    remove_index :intervention_participants, :column => :intervention_id
+    remove_index :intervention_participants, column: :user_id
+    remove_index :intervention_participants, column: :intervention_id
 
-    remove_index :intervention_definitions, :column => :school_id
-    remove_index :intervention_definitions, :column => :user_id
-    remove_index :intervention_definitions, :column => :frequency_id
-    remove_index :intervention_definitions, :column => :time_length_id
-    remove_index :intervention_definitions, :column => :tier_id
-    remove_index :intervention_definitions, :column => :intervention_cluster_id
+    remove_index :intervention_definitions, column: :school_id
+    remove_index :intervention_definitions, column: :user_id
+    remove_index :intervention_definitions, column: :frequency_id
+    remove_index :intervention_definitions, column: :time_length_id
+    remove_index :intervention_definitions, column: :tier_id
+    remove_index :intervention_definitions, column: :intervention_cluster_id
 
-    remove_index :intervention_comments, :column => :user_id
-    remove_index :intervention_comments, :column => :intervention_id
+    remove_index :intervention_comments, column: :user_id
+    remove_index :intervention_comments, column: :intervention_id
 
-    remove_index :intervention_clusters, :column => :objective_definition_id
+    remove_index :intervention_clusters, column: :objective_definition_id
 
-    remove_index :groups_students, :column => :group_id
-    remove_index :groups_students, :column => :student_id
+    remove_index :groups_students, column: :group_id
+    remove_index :groups_students, column: :student_id
 
-    remove_index :groups, :column => :school_id
+    remove_index :groups, column: :school_id
 
-    remove_index :goal_definitions, :column => :district_id
+    remove_index :goal_definitions, column: :district_id
 
-    remove_index :flags, :column => :student_id
-    remove_index :flags, :column => :district_id
-    remove_index :flags, :column => :user_id
+    remove_index :flags, column: :student_id
+    remove_index :flags, column: :district_id
+    remove_index :flags, column: :user_id
 
-    remove_index :flag_categories, :column => :district_id
+    remove_index :flag_categories, column: :district_id
 
-    remove_index :enrollments, :column => :student_id
-    remove_index :enrollments, :column => :school_id
+    remove_index :enrollments, column: :student_id
+    remove_index :enrollments, column: :school_id
 
-    remove_index :element_definitions, :column => :question_definition_id
+    remove_index :element_definitions, column: :question_definition_id
 
-    remove_index :districts, :column => :state_id
+    remove_index :districts, column: :state_id
 
-    remove_index :checklists, :column => :district_id
-    remove_index :checklists, :column => :user_id
-    remove_index :checklists, :column => :student_id
-    remove_index :checklists, :column => :checklist_definition_id
+    remove_index :checklists, column: :district_id
+    remove_index :checklists, column: :user_id
+    remove_index :checklists, column: :student_id
+    remove_index :checklists, column: :checklist_definition_id
 
-    remove_index :checklist_definitions, :column => :recommendation_definition_id
-    remove_index :checklist_definitions, :column => :district_id
+    remove_index :checklist_definitions, column: :recommendation_definition_id
+    remove_index :checklist_definitions, column: :district_id
 
-    remove_index :answers, :column => :answer_definition_id
-    remove_index :answers, :column => :checklist_id
+    remove_index :answers, column: :answer_definition_id
+    remove_index :answers, column: :checklist_id
 
-    remove_index :answer_definitions, :column => :element_definition_id
+    remove_index :answer_definitions, column: :element_definition_id
   end
 end

@@ -8,7 +8,7 @@ class SpellCheckController < ApplicationController
   def check_spelling
     require 'cgi'
     require 'fckeditor_spell_check'
-    @words=[]
+    @words = []
 
     @original_texts = params[:textinputs] || []
 
@@ -18,6 +18,6 @@ class SpellCheckController < ApplicationController
       @words[idx] = FckeditorSpellCheck.check_spelling(plain_text)
     end
 
-    render :layout => false
+    render layout: false
   end
 end

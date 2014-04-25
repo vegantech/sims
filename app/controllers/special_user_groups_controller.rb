@@ -1,9 +1,9 @@
 class SpecialUserGroupsController < SchoolAdminController
   def show
     #TODO push group search to model
-    @group=params[:id]
+    @group = params[:id]
     grade = @group.split("-").last.downcase
-    grade= nil if grade == "school"
+    grade = nil if grade == "school"
     @special_user_groups = current_school.special_user_groups.find_all_by_grade(grade)
 
     respond_to do |format|
@@ -13,10 +13,10 @@ class SpecialUserGroupsController < SchoolAdminController
 
   # GET /groups/1/edit
   def edit
-    @group=params[:id]
+    @group = params[:id]
     grade = @group.split("-").last.downcase
-    grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(:grade=>grade)
+    grade = nil if grade == "school"
+    @special_user_group = current_school.special_user_groups.build(grade: grade)
     @users = current_school.assigned_users
   end
 
@@ -26,8 +26,8 @@ class SpecialUserGroupsController < SchoolAdminController
     @group = @special_user_group.title.parameterize
     if @special_user_group.save
     else
-      @users=current_school.assigned_users
-      render :action=>:edit
+      @users = current_school.assigned_users
+      render action: :edit
     end
   end
 

@@ -6,15 +6,15 @@ describe ChecklistBuilder::AnswersController do
   include_context "authenticated"
 
   before do
-    district=mock_district
-    @checklist_definition=mock_checklist_definition
-    @question_definition=mock_question_definition
-    @element_definition=mock_element_definition
-    controller.stub!(:current_district=>district)
-    district.stub_association!(:checklist_definitions,:find=>@checklist_definition)
-    @checklist_definition.stub_association!(:question_definitions,:find=>@question_definition)
-    @question_definition.stub_association!(:element_definitions,:find=>@element_definition)
-    @element_definition.stub!(:answer_definitions=>AnswerDefinition)
+    district = mock_district
+    @checklist_definition = mock_checklist_definition
+    @question_definition = mock_question_definition
+    @element_definition = mock_element_definition
+    controller.stub!(current_district: district)
+    district.stub_association!(:checklist_definitions,find: @checklist_definition)
+    @checklist_definition.stub_association!(:question_definitions,find: @question_definition)
+    @question_definition.stub_association!(:element_definitions,find: @element_definition)
+    @element_definition.stub!(answer_definitions: AnswerDefinition)
 
   end
 
@@ -29,7 +29,7 @@ describe ChecklistBuilder::AnswersController do
   describe "GET 'show'" do
     it "should be successful" do
       AnswerDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'show', :id=>'37'
+      get 'show', id: '37'
       assigns(:answer_definition).should == 'yes'
     end
   end
@@ -44,7 +44,7 @@ describe ChecklistBuilder::AnswersController do
   describe "GET 'edit'" do
     it "should be successful" do
       AnswerDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'edit', :id=>'37'
+      get 'edit', id: '37'
       assigns(:answer_definition).should == 'yes'
     end
   end

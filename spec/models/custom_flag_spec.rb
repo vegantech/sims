@@ -18,8 +18,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe CustomFlag do
   before(:each) do
     @valid_attributes = {
-      :category => "attendance",
-      :reason => "value for reason",
+      category: "attendance",
+      reason: "value for reason",
     }
   end
 
@@ -28,11 +28,11 @@ describe CustomFlag do
   end
 
   def test_do_not_allow_ignore_flag_when_ignore_exists
-    a=IgnoreFlag.new(@valid_attributes)
-    a.category="suspension"
-    a.user_id=55
+    a = IgnoreFlag.new(@valid_attributes)
+    a.category = "suspension"
+    a.user_id = 55
     a.save
-    b=CustomFlag.new(a.attributes)
+    b = CustomFlag.new(a.attributes)
     a.should be_valid
     b.should_not be_valid
   end

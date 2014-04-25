@@ -1,8 +1,8 @@
 module CSVImporter
   class BaseSystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = {
-        :district_student_id =>"Key for student",
-        :reason =>"A description of the reason the student was flagged.",
+        district_student_id: "Key for student",
+        reason: "A description of the reason the student was flagged.",
     }
     class << self
       def flag_category
@@ -36,7 +36,7 @@ module CSVImporter
       end
 
       def alternate
-        {:system_flags => "You can put all categories together in one file instead.  It's possible to do some categories combined in the system flags file and
+        {system_flags: "You can put all categories together in one file instead.  It's possible to do some categories combined in the system flags file and
           do the rest individually as long as you load the system flags first." }
       end
 
@@ -60,7 +60,7 @@ module CSVImporter
     end
 
     def migration t
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :reason, :text
     end
 
@@ -69,7 +69,7 @@ module CSVImporter
     end
 
     def delete
-      query ="
+      query = "
        delete from sf using flags sf
        inner join students stu on stu.id=sf.student_id and stu.district_id = #{@district.id}
        where
@@ -79,7 +79,7 @@ module CSVImporter
     end
 
     def insert
-      query=("insert into flags
+      query = ("insert into flags
       (student_id, category,reason,type, created_at, updated_at)
       select stu.id,'#{self.class.flag_category}',te.reason,'SystemFlag', curdate(), curdate() from #{temporary_table_name} te
       inner join students stu on stu.district_student_id = te.district_student_id

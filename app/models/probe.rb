@@ -15,7 +15,7 @@ class Probe < ActiveRecord::Base
   belongs_to :intervention_probe_assignment
 
   #delegate :something, :to=>'(something_else or return nil)' when optional
-  delegate :probe_definition, :to => '(intervention_probe_assignment or return nil)'
+  delegate :probe_definition, to: '(intervention_probe_assignment or return nil)'
 
 
   validates_presence_of :score
@@ -27,9 +27,9 @@ class Probe < ActiveRecord::Base
 
   before_save :set_administered_at
 
-  define_statistic :entered_scores , :count => :all,:joins =>{:intervention_probe_assignment=>{:intervention=>:student}}
-  define_statistic :students_with_entered_scores , :count => :all,  :column_name => 'distinct student_id', :joins => {:intervention_probe_assignment=>{:intervention=>:student}}
-  define_statistic :districts_with_entered_scores, :count => :all, :column_name => 'distinct students.district_id', :joins => {:intervention_probe_assignment=>{:intervention=>:student}}
+  define_statistic :entered_scores , count: :all,joins: {intervention_probe_assignment: {intervention: :student}}
+  define_statistic :students_with_entered_scores , count: :all,  column_name: 'distinct student_id', joins: {intervention_probe_assignment: {intervention: :student}}
+  define_statistic :districts_with_entered_scores, count: :all, column_name: 'distinct students.district_id', joins: {intervention_probe_assignment: {intervention: :student}}
 
   protected
   def set_administered_at

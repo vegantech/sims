@@ -5,33 +5,33 @@ class StudentSearchesController < ApplicationController
   # GET /students.xml
   def show
     check_school_and_set_grades or return false
-    @groups=current_user.filtered_groups_by_school(current_school)
-    @users=current_user.filtered_members_by_school(current_school)
+    @groups = current_user.filtered_groups_by_school(current_school)
+    @users = current_user.filtered_members_by_school(current_school)
     @years = current_school.enrollment_years
   end
 
 
   def create
     if params['search_criteria']
-      session[:search] = params['search_criteria'] ||{}
+      session[:search] = params['search_criteria'] || {}
       session[:search]['flagged_intervention_types'] = params['flagged_intervention_types']
       session[:search]['intervention_group_types'] = params['intervention_group_types']
       redirect_to students_url
     else
       flash[:notice] = 'Missing search criteria'
-      redirect_to :action => :show
+      redirect_to action: :show
     end
   end
 
   # RJS methods for search page
 
   def grade
-    @users=current_user.filtered_members_by_school(current_school,sliced_params)
-    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
+    @users = current_user.filtered_members_by_school(current_school,sliced_params)
+    @groups = current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   def member
-    @groups=current_user.filtered_groups_by_school(current_school,sliced_params)
+    @groups = current_user.filtered_groups_by_school(current_school,sliced_params)
   end
 
   private

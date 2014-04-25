@@ -36,20 +36,20 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
         flash[:notice] = 'Category was successfully created.'
         format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
 
   # PUT /intervention_clusters/1
   def update
-    @intervention_cluster.attributes= params[:intervention_cluster]
+    @intervention_cluster.attributes = params[:intervention_cluster]
     respond_to do |format|
       if @intervention_cluster.save
         flash[:notice] = 'Category was successfully updated.'
         format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -57,7 +57,7 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
   # DELETE /intervention_clusters/1
   def destroy
     if @intervention_cluster.intervention_definitions.any?
-      flash[:notice]= "Please remove intervention definitions first."
+      flash[:notice] = "Please remove intervention definitions first."
     else
       @intervention_cluster.destroy
     end
@@ -81,25 +81,25 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
 
   def move
     @intervention_cluster = @objective_definition.intervention_clusters.find(params[:id])
-    oldpos=@intervention_cluster.position
+    oldpos = @intervention_cluster.position
     if params[:direction]
       @intervention_cluster.move_higher if params[:direction].to_s == "up"
       @intervention_cluster.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to :action => :index}
-      format.js {@intervention_clusters=@objective_definition.intervention_clusters}
+      format.html {redirect_to action: :index}
+      format.js {@intervention_clusters = @objective_definition.intervention_clusters}
     end
   end
 
   private
   def get_objective_definition
     @goal_definition = current_district.goal_definitions.find(params[:goal_id])
-    @objective_definition=@goal_definition.objective_definitions.find(params[:objective_id])
+    @objective_definition = @goal_definition.objective_definitions.find(params[:objective_id])
     @intervention_cluster = @objective_definition.intervention_clusters.find(params[:id]) if params[:id]
   end
 
   def move_path(item, direction)
-    move_intervention_builder_category_path(:id=>item,:direction=>direction)
+    move_intervention_builder_category_path(id: item,direction: direction)
   end
 end

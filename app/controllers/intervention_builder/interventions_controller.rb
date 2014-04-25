@@ -1,5 +1,5 @@
 class InterventionBuilder::InterventionsController < InterventionBuilder::BaseController
-  skip_before_filter :verify_authenticity_token, :only => :disable
+  skip_before_filter :verify_authenticity_token, only: :disable
   before_filter :get_intervention_cluster
   # GET /intervention_definitions
   def index
@@ -38,14 +38,14 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
         flash[:notice] = 'Intervention was successfully created.'
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
-        format.html {@tiers=current_district.tiers; render :action => "new" }
+        format.html {@tiers = current_district.tiers; render action: "new" }
       end
     end
   end
 
   # PUT /intervention_definitions/1
   def update
-    @intervention_definition.attributes=params[:intervention_definition]
+    @intervention_definition.attributes = params[:intervention_definition]
     respond_to do |format|
       if @intervention_definition.save
         flash[:notice] = 'Intervention was successfully updated.'
@@ -53,7 +53,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
 
-        format.html { edit;render :action => "edit" }
+        format.html { edit;render action: "edit" }
       end
     end
   end
@@ -61,7 +61,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
   # DELETE /intervention_definitions/1
   def destroy
     if @intervention_definition.interventions.any?
-      flash[:notice]= "Interventions exist for this intervention definition"
+      flash[:notice] = "Interventions exist for this intervention definition"
     else
       @intervention_definition.destroy
     end
@@ -78,10 +78,10 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
       @intervention_definitions = []
     end
     if params[:enable]
-      a='enabled'
+      a = 'enabled'
       @intervention_definitions.each{|i| i.update_attribute(:disabled, false)}
     else
-      a='disabled'
+      a = 'disabled'
       @intervention_definitions.each(&:disable!)
     end
 
@@ -97,14 +97,14 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
     @intervention_definition.move_higher if params[:direction].to_s == "up"
     @intervention_definition.move_lower if params[:direction].to_s == "down"
     respond_to do |format|
-      format.html {redirect_to :action => :index}
-      format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}
+      format.html {redirect_to action: :index}
+      format.js {@intervention_definitions = @intervention_cluster.intervention_definitions}
     end
   end
 
   def sort
     params[:intervention_definition_list].split(",").each_with_index do |id, index|
-      @intervention_cluster.intervention_definitions.update_all(['position=?', index+1], ['id=?', id])
+      @intervention_cluster.intervention_definitions.update_all(['position=?', index + 1], ['id=?', id])
     end
   end
 
@@ -112,22 +112,22 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
 
   def get_intervention_cluster
     @goal_definition = current_district.goal_definitions.find(params[:goal_id])
-    @objective_definition=@goal_definition.objective_definitions.find(params[:objective_id])
+    @objective_definition = @goal_definition.objective_definitions.find(params[:objective_id])
     @intervention_cluster = @objective_definition.intervention_clusters.find(params[:category_id])
-    @intervention_definition=@intervention_cluster.intervention_definitions.find(params[:id]) if params[:id]
+    @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id]) if params[:id]
   end
 
   def move_path(item, direction)
-    unless action_name=="show"
-      move_intervention_builder_intervention_path(:id=>item,:direction=>direction)
+    unless action_name == "show"
+      move_intervention_builder_intervention_path(id: item,direction: direction)
     else
-      url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
+      url_for(controller: "recommended_monitors",action: :move,direction: direction,id: item)
     end
   end
 
   def setup_parent_instance_variables
         @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
-        @tiers=current_district.tiers
+        @tiers = current_district.tiers
         true #meeded for spellcheck call
   end
 end

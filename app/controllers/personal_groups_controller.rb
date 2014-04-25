@@ -8,14 +8,14 @@ class PersonalGroupsController < ApplicationController
   # GET /personal_groups/new
   # GET /personal_groups/new.xml
   def new
-    flash[:notice]="You must select students before you can create a new personal group" and redirect_to students_url and return if selected_student_ids.blank?
+    flash[:notice] = "You must select students before you can create a new personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = PersonalGroup.new
     @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
   end
 
   # GET /personal_groups/1/edit
   def edit
-    flash[:notice]="You must select students before you can edit a personal group" and redirect_to students_url and return if selected_student_ids.blank?
+    flash[:notice] = "You must select students before you can edit a personal group" and redirect_to students_url and return if selected_student_ids.blank?
     @personal_group = current_user.personal_groups.find(params[:id])
     @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
   end
@@ -32,7 +32,7 @@ class PersonalGroupsController < ApplicationController
         format.html { redirect_to(personal_groups_url) }
       else
         @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i))
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -49,7 +49,7 @@ class PersonalGroupsController < ApplicationController
         format.html { redirect_to(personal_groups_url) }
       else
         @students = Student.find_all_by_id(selected_student_ids.collect(&:to_i) | @personal_group.student_ids)
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

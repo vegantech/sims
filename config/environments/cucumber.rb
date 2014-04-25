@@ -34,7 +34,7 @@ Sims::Application.configure do
   config.active_support.deprecation = :stderr
   config.active_record.mass_assignment_sanitizer = :strict
 end
-SIMS_DOMAIN='example.com'
+SIMS_DOMAIN = 'example.com'
 Bundler.require :test
-Spawnling.default_options({:method => :yield})
+Spawnling.default_options({method: :yield})
 

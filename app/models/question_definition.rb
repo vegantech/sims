@@ -14,9 +14,9 @@
 class QuestionDefinition < ActiveRecord::Base
   belongs_to :checklist_definition
 
-  has_many :element_definitions, :dependent => :destroy, :order => "position ASC"
-  has_many :answer_definitions, :through=> :element_definitions
-  acts_as_list :scope => :checklist_definition
+  has_many :element_definitions, dependent: :destroy, order: "position ASC"
+  has_many :answer_definitions, through: :element_definitions
+  acts_as_list scope: :checklist_definition
 
   validates_presence_of :text
   scope :content_export, order
@@ -26,12 +26,12 @@ class QuestionDefinition < ActiveRecord::Base
   end
 
   def deep_clone
-    k=clone
+    k = clone
     k.element_definitions = element_definitions.collect{|o| o.deep_clone(k)}
     k
   end
 
   def has_answers?
-    Answer.count(:include => {:answer_definition=>:element_definition}, :conditions => "element_definitions.id = #{id}" ) > 0
+    Answer.count(include: {answer_definition: :element_definition}, conditions: "element_definitions.id = #{id}" ) > 0
   end
 end

@@ -8,8 +8,8 @@ class QuicklistItemsController < SchoolAdminController
   # POST /quicklist_items
   # POST /quicklist_items.xml
   def create
-    current_school.quicklist_intervention_ids=params[:intervention_definition_ids]
-    flash[:notice]= "Quicklist Updated"
+    current_school.quicklist_intervention_ids = params[:intervention_definition_ids]
+    flash[:notice] = "Quicklist Updated"
     redirect_to schools_url
  end
 end

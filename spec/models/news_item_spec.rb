@@ -17,8 +17,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe NewsItem do
   before(:each) do
     @valid_attributes = {
-      :text => "value for text",
-      :system => true,
+      text: "value for text",
+      system: true,
     }
   end
 

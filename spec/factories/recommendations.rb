@@ -8,7 +8,7 @@ FactoryGirl.define do
     rad.text "Question"
   end
 
-  factory :basic_recommendation_definition , :parent => :recommendation_definition do |brd|
+  factory :basic_recommendation_definition , parent: :recommendation_definition do |brd|
     brd.text "Basic Recommendation"
     brd.score_options true
 #    brd.after_create do |brdac|
