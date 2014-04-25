@@ -49,8 +49,8 @@ class SchoolTeam < ActiveRecord::Base
     if @contact_ids
       self.user_ids |= @contact_ids
       debugger
-      school_team_memberships.update_all('contact=true', "user_id in (#{@contact_ids.join(",")})")
-      school_team_memberships.update_all('contact=false', "user_id in (#{(self.user_ids-@contact_ids).join(",")})")
+      school_team_memberships.update_all('contact=true', "user_id in (#{([-1] | @contact_ids).join(',')})")
+      school_team_memberships.update_all('contact=false', "user_id in (#{([-1] | (self.user_ids-@contact_ids)).join(',')})")
     end
   end
 

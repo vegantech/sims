@@ -1,10 +1,18 @@
 <h1>Editing School Team</h1>
 
 <%= form_for(@school_team, :html=> {:multipart => true}) do |f| %>
-  <%= render :partial => 'form', :object=>f %>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
+  <fieldset>
+    <span class="legend">
+      <b>Legend</b><br>
+      <%=image_tag('delete.png', alt: "Not in group")%> = User is not in group / remove user from group <br>
+      <%=image_tag('group.png', alt: "Group member")%> = User is a noncontact group member / change user to noncontact group member <br>
+      <%=image_tag('user_comment.png', alt: "Group contact")%> = User is group contact / appoint user as group contact <br>
+    </span>
+    <%= render :partial => 'form', :object=>f %>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  </fieldset>
 <% end %>
 
 <%= link_to 'Back', school_teams_path %>
