@@ -12,7 +12,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 # end
 describe LoginHelper do
   describe 'windows_live?' do
+    def copy_sample_file
+      unless Rails.root.join('config','windows_live.yml').exist?
+        FileUtils.cp Rails.root.join('config','windows_live.yml.sample'),
+          Rails.root.join('config','windows_live.yml')
+      end
+    end
+
     it 'should work' do
+      copy_sample_file
       old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE_CONFIG
       no_live = District.new
       no_live.stub!(:windows_live? => false)
