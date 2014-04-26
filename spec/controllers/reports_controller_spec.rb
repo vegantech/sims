@@ -6,10 +6,6 @@ describe ReportsController do
   include_context "authenticated"
 
   let(:user) {FactoryGirl.create(:user, :roles => "regular_user")}
-  describe 'statewide' do
-    it 'should have specs for the intervention definitions and progress monitors, along with unit specs and features'
-  end
-
 
 
   describe 'student_flag_summary' do
