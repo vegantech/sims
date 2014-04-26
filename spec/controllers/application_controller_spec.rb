@@ -87,16 +87,27 @@ describe ApplicationController do
   end
 
   describe "selected_student_ids" do
+    def check_memcache
+      #I don't know another way to check if a server is running
+      Rails.cache.stats.values.compact.present?
+    end
+
     before do
       @session = {:session_id => 'tree'}
       controller.stub!(:session => @session, :current_user => mock_user)
     end
+
+    it 'memcache is required' do
+      check_memcache.should be, "Memcache is not installed"
+    end
+
     it 'should work normally with under <50 ids' do
       controller.send :selected_student_ids=, [1,2,3]
       controller.send(:selected_student_ids).should == [1,2,3]
     end
 
     it 'should cache when there are more than 50 ids' do
+      pending "Test depends on memcache" unless check_memcache
       values = (1...1000).to_a
       controller.send :selected_student_ids=, values
       @session[:selected_students].should == "memcache"
