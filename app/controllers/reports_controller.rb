@@ -1,6 +1,6 @@
 require 'csv'
 class ReportsController < ApplicationController
-  skip_before_filter :authorize, :authenticate_user!, :only => [:statewide_interventions, :statewide_progress_monitors, :intervention_definition_summary_report]
+  skip_before_filter :authorize, :authenticate_user!, :only => [:intervention_definition_summary_report]
   skip_before_filter :verify_authenticity_token
 
   before_filter :check_student, :only => [:student_interventions, :student_overall_options, :student_overall]
@@ -17,19 +17,6 @@ class ReportsController < ApplicationController
     @reporter = StudentFlagReport.new(search_criteria)
     handle_report_postback "student_flag_summary", 'student_flag_summary'
   end
-
-  def statewide_interventions
-    request.env['HTTP_REFERER'] ||= '/'
-    handle_report_postback StatewideInterventionDefinitionSummaryReport,
-      'statewide_interventions', :search=>{}
-  end
-
-  def statewide_progress_monitors
-    request.env['HTTP_REFERER'] ||= '/'
-    handle_report_postback StatewideProgressMonitorSummaryReport, "statewide_progress_monitors", :search=>{}
-  end
-
-
 
   def grouped_progress_entry
     flash[:notice]="You must complete a search first" and redirect_to root_url and return  if session[:search].blank?
