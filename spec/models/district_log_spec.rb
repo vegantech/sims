@@ -22,4 +22,8 @@ describe DistrictLog do
   it "should create a new instance given valid attributes" do
     DistrictLog.create!(@valid_attributes)
   end
+
+  describe 'for_display' do
+    it 'should have tests'
+  end
 end

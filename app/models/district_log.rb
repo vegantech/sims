@@ -14,8 +14,9 @@ class DistrictLog < ActiveRecord::Base
   include Pageable
   belongs_to :district
   belongs_to :user
-  SUCCESS =0
-  FAILURE =1
+  SUCCESS = 0
+  FAILURE = 1
+  PER_PAGE = 50
 
 #  attr_protected :district_id
 
@@ -52,6 +53,10 @@ class DistrictLog < ActiveRecord::Base
   def self.record_success(user)
     logger.info "Successful login of #{user.fullname} at #{user.district.name}"
     success.create!(:district_id => user.district_id, :user => user)
+  end
+
+  def self.for_display(params)
+    includes(:user).paginate(:page => params[:page], :per_page => PER_PAGE)
   end
 
 end
