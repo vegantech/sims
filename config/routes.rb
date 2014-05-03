@@ -66,6 +66,7 @@ Sims::Application.routes.draw do
         put :claim
       end
     end
+    resources :logs, :only => [:index]
   end
   scope "district" do
     resources :flag_categories, :as => "flag_categories", :module => "district"
@@ -121,7 +122,6 @@ Sims::Application.routes.draw do
     member do
       put :reset_password
       put :recreate_admin
-      get :logs
     end
     collection do
       get :bulk_import_form

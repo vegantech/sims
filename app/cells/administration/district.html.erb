@@ -5,7 +5,7 @@
   <%=content_tag(:li,link_to('Add/Remove Users', district_users_path)) if @show_users%>
   <%=content_tag(:li,link_to('Add/Remove Students', district_students_path)) if @show_students%>
   <%=content_tag(:li,link_to('Edit your district', edit_district_path(@current_district))) if @show_district%>
-  <%=content_tag(:li,link_to('District Logs', logs_district_path(@current_district))) if @show_district%>
+  <%=content_tag(:li,link_to('District Logs', district_logs_path)) if @show_district%>
   <%=content_tag(:li,link_to('Edit Flag Descriptions', flag_descriptions_path)) if @show_district%>
   <%=content_tag(:li,link_to('Import from CSV', bulk_import_form_districts_path)) if @show_district %>
   <%=content_tag(:li,link_to('Export to CSV', export_districts_path)) if @show_district %>

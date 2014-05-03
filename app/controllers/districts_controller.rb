@@ -105,10 +105,6 @@ class DistrictsController < ApplicationController
     end
   end
 
-  def logs
-    @logs = current_district.logs.includes(:user).paginate(:page => params[:page], :per_page => 50)
-  end
-
 private
   def state_admin?
     unless current_district.admin?
