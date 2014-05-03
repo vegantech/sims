@@ -1,3 +1,10 @@
+<div>
+  <form>
+    <%= label_tag :filter, "Filter" %>
+    <%= text_field_tag :filter %>
+    <%= submit_tag 'Filter Results'%>
+  </form>
+</div>
 <%= will_paginate @logs %>
 <% @logs.each do |log|%>
   <%=log.to_s%> <br />

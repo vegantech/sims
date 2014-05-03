@@ -47,7 +47,7 @@ class District < ActiveRecord::Base
   has_many :students
   has_many :news,:class_name=>"NewsItem"
   has_many :principal_override_reasons
-  has_many :logs, :class_name => "DistrictLog", :order => "created_at DESC"
+  has_many :logs, :class_name => "DistrictLog", :order => "district_logs.created_at DESC"
   has_many :flag_descriptions
   has_many :staff_assignments,:through => :schools
   has_many :special_user_groups, :through => :schools
