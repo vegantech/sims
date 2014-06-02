@@ -83,10 +83,10 @@ class VerifyStudentInDistrictExternally
    Rails.cache.write("ext_verify_cookie", @response.response['set-cookie'], :ttl=>25.minutes.to_i)
    parsed_response=Nokogiri.parse(@response.body)
 
-   if parsed_response.css('error').first.content == "false"
-     return parsed_response.css('found').first.content == "true"
+   if parsed_response.css('error').first.try(:content) == "false"
+     return parsed_response.css('found').first.try(:content) == "true"
    else
-     raise StudentVerificationError, parsed_response.css('errorString').first.content
+     raise StudentVerificationError, parsed_response.css('errorString').first.try(:content)
    end
   end
 end
