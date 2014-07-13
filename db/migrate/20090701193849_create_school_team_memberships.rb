@@ -7,7 +7,7 @@ class CreateSchoolTeamMemberships < ActiveRecord::Migration
 
       t.timestamps
     end
-    if ActiveRecord::Base.connection.tables.include?'school_teams_users'
+    if ActiveRecord::Base.connection.tables.include? 'school_teams_users'
       drop_table :school_teams_users
     end
   end

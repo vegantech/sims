@@ -21,7 +21,7 @@ module ApplicationHelper
   def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
     #TODO Test then Refactor!!!     This is a spike.
    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
-    if options.is_a?String
+    if options.is_a? String
       url = options
       method = html_options.fetch(:method, :get)
       url = "/"+url.split("/")[3..-1].join("/").split('?').first unless url=~ /^\//

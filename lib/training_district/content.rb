@@ -12,7 +12,7 @@ class TrainingDistrict::Content
   def prephash(ck)
     return nil if ck.to_hash[:deleted_at].to_i !=0
     ckhash = ck.to_hash.delete_if{|k,v| v == 0}
-    ckhash[:disabled] = false if ckhash[:disabled].nil? and ckhash.keys.include?:disabled
+    ckhash[:disabled] = false if ckhash[:disabled].nil? and ckhash.keys.include? :disabled
     ckhash.except(:deleted_at,:copied_at,:copied_from,:id,:district_id, :notify_email)
   end
 

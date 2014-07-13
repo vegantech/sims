@@ -230,7 +230,7 @@ Given /^load demo data$/ do
   fixtures_dir = Rails.root.join("test","fixtures")
 
   ActiveRecord::Fixtures.reset_cache
-  Dir.entries(fixtures_dir).select{|e| e.include?"yml"}.each do |f|
+  Dir.entries(fixtures_dir).select{|e| e.include? "yml"}.each do |f|
     ActiveRecord::Fixtures.create_fixtures(fixtures_dir, File.basename("#{f}", '.*'))
   end
 end

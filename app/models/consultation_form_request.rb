@@ -19,7 +19,7 @@ class ConsultationFormRequest < ActiveRecord::Base
   belongs_to :school_team, :foreign_key => 'team_id'
 
 
-  validates_presence_of :user_ids, :if => proc{|e| e.whom.include?'other' or e.whom.blank?}
+  validates_presence_of :user_ids, :if => proc{|e| e.whom.include? 'other' or e.whom.blank?}
   after_create :email_requests
   before_create :assign_team
 

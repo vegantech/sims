@@ -298,6 +298,6 @@ private
 
   def destroy_intervention_menu_reports
     dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
-    FileUtils.rm_rf(dir) if File.exist?dir
+    FileUtils.rm_rf(dir) if File.exist? dir
   end
 end
