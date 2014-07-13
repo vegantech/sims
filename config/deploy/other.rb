@@ -1,6 +1,6 @@
 load "#{File.dirname(__FILE__)}/prohibition.rb"
 set :application, "sims-open"
-set :email = 'SIMS <change_this@simspilot.org>'
+set :email, 'SIMS <change_this@simspilot.org>'
 
 
 server "vegantech.com", :app, :web, :db, :primary => true

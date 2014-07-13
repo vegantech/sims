@@ -4,6 +4,6 @@ module JqueryHelper
   end
 
   def ejsr *args
-    raw '"' + escape_javascript(render *args) + '"'
+    raw '"' + escape_javascript(render(*args)) + '"'
   end
 end

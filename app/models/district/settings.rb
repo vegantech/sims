@@ -2,7 +2,7 @@ module District::Settings
   SETTINGS = [:key, :previous_key, :google_apps_domain, :custom_interventions ]
   BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps, :email_on_team_consultation_response, :show_team_consultations_if_pending]
   BOOLEAN_SETTINGS <<  :windows_live  if defined? ::WINDOWS_LIVE_CONFIG
-  SETTINGS.push *BOOLEAN_SETTINGS
+  SETTINGS.push(*BOOLEAN_SETTINGS)
   extend ActiveSupport::Concern
 
   included do
