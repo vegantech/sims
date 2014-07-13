@@ -36,7 +36,7 @@ class DistrictLog < ActiveRecord::Base
   def to_s
     if status == SUCCESS
       if user
-        "#{created_at}- Successful login of #{user.to_s}"
+        "#{created_at}- Successful login of #{user}"
       else
         "#{created_at}- #{body}"
       end

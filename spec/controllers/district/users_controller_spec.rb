@@ -128,7 +128,7 @@ describe District::UsersController do
         end
 
         def user_string
-          "<a href=\"#{edit_district_user_path(user)}\">#{user.to_s}</a>"
+          "<a href=\"#{edit_district_user_path(user)}\">#{user}</a>"
         end
 
         it 'should set the flash when complete when there have been no staff assignment changes' do

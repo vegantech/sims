@@ -48,7 +48,7 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
     if field == "Assign Progress Monitor"
       field_element = find_field(field).value
       pd = ProbeDefinition.find_by_id(field_element) || ProbeDefinition.find_by_title(field_element) || ProbeDefinition.new
-      page.visit "/interventions/ajax_probe_assignment/?intervention_id=#{@student.interventions.first.id.to_s}&id=#{pd[:id]}"
+      page.visit "/interventions/ajax_probe_assignment/?intervention_id=#{@student.interventions.first.id}&id=#{pd[:id]}"
     else
       fail
     end

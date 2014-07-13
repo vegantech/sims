@@ -63,7 +63,7 @@ class AutomatedIntervention
 
 
     unless intervention.send(:end_date_after_start_date?)
-      @messages << "#{intervention.errors.full_messages.join} #{line.to_s}" and return false
+      @messages << "#{intervention.errors.full_messages.join} #{line}" and return false
     end
     if line[:end_date].present?
       intervention.active=false
@@ -73,7 +73,7 @@ class AutomatedIntervention
     if line[:probe_definition_id].present?
       pd = @district.probe_definitions.find_by_id(line[:probe_definition_id])
       pd or
-      (@messages << "Invalid Probe Definition ID #{line.to_s}" and return false)
+      (@messages << "Invalid Probe Definition ID #{line}" and return false)
 
       intervention.intervention_probe_assignment={:probe_definition_id => line[:probe_definition_id],
         :first_date => line[:start_date], :end_date => line[:start_date]}
@@ -84,7 +84,7 @@ class AutomatedIntervention
         min = pd.minimum_score || (-1.0/0) #-infinity
 
         unless probe.score.between?(max,min)
-          @messages << "Score is not between #{min} and #{max} #{line.to_s}" and return false
+          @messages << "Score is not between #{min} and #{max} #{line}" and return false
         end
       end
 
@@ -121,7 +121,7 @@ class AutomatedIntervention
 
   def check_for_duplicate i,line
     i.student.interventions.find_by_intervention_definition_id_and_user_id_and_start_date(i.intervention_definition_id,i.user_id,i.start_date) and
-    @messages << "Duplicate entry for #{line.to_s}"
+    @messages << "Duplicate entry for #{line}"
   end
 
 

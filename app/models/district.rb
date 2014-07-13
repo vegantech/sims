@@ -192,9 +192,9 @@ class District < ActiveRecord::Base
 
     if res
       student.update_attribute(:district_id,id)
-      msg= "Student #{student.to_s} has been added to your district"
+      msg= "Student #{student} has been added to your district"
     else
-      msg ||= "Student #{student.to_s} could not be claimed, student may belong to another district"
+      msg ||= "Student #{student} could not be claimed, student may belong to another district"
     end
     return res,msg
   end
