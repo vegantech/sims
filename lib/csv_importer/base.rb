@@ -127,7 +127,7 @@ module CSVImporter
 
       a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
-      @messages << 'File could not be found' and return false unless File.exists?(@file_name)
+      @messages << 'File could not be found' and return false unless File.exist?(@file_name)
 
       @line_count = `wc -l #{@clean_file}`.to_i
 

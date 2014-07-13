@@ -34,7 +34,7 @@ class Asset < ActiveRecord::Base
   end
 
   def broken?
-    (document_file_name.present?  && !File.exists?(document.path)) ||
+    (document_file_name.present?  && !File.exist?(document.path)) ||
       (url.present? && !url_exists)
   end
 
@@ -48,9 +48,9 @@ class Asset < ActiveRecord::Base
   def url_exists
     case url
      when /^\/file/
-       File.exists?(File.join(Rails.root,url))
+       File.exist?(File.join(Rails.root,url))
      when /^\/help/
-      File.exists?(File.join(Rails.root,'app/views/help',"_#{url.split('/').last}.html.erb"))
+      File.exist?(File.join(Rails.root,'app/views/help',"_#{url.split('/').last}.html.erb"))
      else
        false #go to it yourself
      end
