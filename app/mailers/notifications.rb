@@ -114,7 +114,7 @@ class Notifications < MailerWithSubdomains
       users_with_interventions.each do |user,interventions|
         begin
         self.intervention_ending_reminder(user,interventions).deliver
-        rescue Exception => e
+        rescue => e
           errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
         end
       end
