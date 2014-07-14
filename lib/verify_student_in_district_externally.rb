@@ -73,7 +73,6 @@ class VerifyStudentInDistrictExternally
        retry
      else
        raise StudentVerificationError, 'Connection Timeout'
-       puts 'Connection timeout'
      end
    rescue => err
      raise StudentVerificationError, 'Connection Timeout'
