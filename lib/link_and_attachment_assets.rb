@@ -49,7 +49,7 @@ module LinkAndAttachmentAssets
     self.assets |= Asset.where(attachable_id: nil, id: keys)
   end
 
-  def assets_for_user u
+  def assets_for_user _u
     assets
   end
 

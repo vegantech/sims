@@ -18,7 +18,7 @@ module ApplicationHelper
      content_tag :li,((r + rest.join(" ").html_safe).html_safe) if r.present?
   end
 
-  def link_to_if_authorized(name, options = {}, html_options = {}, *rest)
+  def link_to_if_authorized(name, options = {}, html_options = {}, *_rest)
     #TODO Test then Refactor!!!     This is a spike.
    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
     if options.is_a? String

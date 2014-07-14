@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 class Person
   attr_accessor :first_name, :last_name, :middle_name, :suffix
-  def self.validates(*args);end
+  def self.validates(*_args);end
   include FullName
   def initialize(opts)
     @first_name = opts[:first_name]
@@ -14,7 +14,7 @@ end
 
 class ShortNamedPerson
   attr_accessor :first_name, :last_name
-  def self.validates(*args);end
+  def self.validates(*_args);end
   include FullName
   def initialize(opts)
     @first_name = opts[:first_name]

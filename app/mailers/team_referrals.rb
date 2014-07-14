@@ -2,7 +2,7 @@ class TeamReferrals < MailerWithSubdomains
   layout 'email'
   default :from => DEFAULT_EMAIL
 
-  def concern_note_created(note, sent_at = Time.now)
+  def concern_note_created(note, _sent_at = Time.now)
     subject =    "Team Consultation Form Created -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")
     @district = note.student.district
@@ -13,7 +13,7 @@ class TeamReferrals < MailerWithSubdomains
     mail(:subject => subject, :to => recipients)
   end
 
-  def concern_note_response(response, sent_at = Time.now)
+  def concern_note_response(response, _sent_at = Time.now)
     note = response.team_consultation
     subject =    "Team Consultation Form Response -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")
@@ -25,7 +25,7 @@ class TeamReferrals < MailerWithSubdomains
     mail(:subject => subject, :to => recipients)
   end
 
-  def gather_information_request(users, student, requestor,sent_at = Time.now)
+  def gather_information_request(users, student, requestor,_sent_at = Time.now)
     subject=    'Consultation Form Request'
     recipients= users.collect(&:email).uniq.compact.join(",")
     @district = student.district
@@ -36,7 +36,7 @@ class TeamReferrals < MailerWithSubdomains
   end
 
 
-  def concern_note_withdrawn(note, sent_at = Time.now)
+  def concern_note_withdrawn(note, _sent_at = Time.now)
     subject=    "Team Consultation Form Withdrawn -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")
     @district = note.student.district

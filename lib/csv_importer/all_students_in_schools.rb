@@ -117,7 +117,7 @@ module CSVImporter
       SpecialUserGroup.connection.update query
     end
 
-  def self.autoassign_user_school_assignments(district)
+  def self.autoassign_user_school_assignments(_district)
     finder_sql = select( 'special_user_groups.school_id, special_user_groups.user_id').joins(
       "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = special_user_groups.school_id
       inner join users on special_user_groups.user_id = users.id ").group(

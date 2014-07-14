@@ -51,7 +51,7 @@ class Notifications < MailerWithSubdomains
     mail(:subject => subject, :to => recipients, :cc => watcher)
   end
 
-  def intervention_ending_reminder(user,interventions, sent_at = Time.now)
+  def intervention_ending_reminder(user,interventions, _sent_at = Time.now)
     subject =   '[SIMS] Student Intervention(s) Ending This Week'
     recipients = user.email
     @district = user.district
@@ -61,7 +61,7 @@ class Notifications < MailerWithSubdomains
     mail(:subject => subject, :to => recipients)
   end
 
-  def intervention_reminder(sent_at = Time.now)
+  def intervention_reminder(_sent_at = Time.now)
     subject  =  'Notifications#intervention_reminder'
     recipients =  ''
     mail(:subject => subject, :to => recipients)

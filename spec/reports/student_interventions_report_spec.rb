@@ -52,7 +52,7 @@ describe "StudentInterventionsReport" do
     end
   end
 
-  def verify_probe_definition n
+  def verify_probe_definition _n
     # @report.should match(/Probe Def Title #{n}/)
     # @report.should match(/PD Descr #{n}/)
     # @report.should match(/1#{n}/) # minimum_score

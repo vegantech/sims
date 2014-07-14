@@ -1,6 +1,6 @@
 module Sims
   class BestStandardsSupport
-    def initialize(app, type = true)
+    def initialize(app, _type = true)
       @app = app
       @header= "IE=Edge,chrome=IE7"
     end

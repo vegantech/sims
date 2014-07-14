@@ -102,7 +102,7 @@ module FlagsHelper
     content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), {'for' => "flag_#{flagtype}"})
   end
 
-  def display_flag_legend?(&block)
+  def display_flag_legend?(&_block)
     flag_legend_controllers = ["students","flag_descriptions", "flag_categories"]
     if flag_legend_controllers.include?(controller.controller_name)
       cache ["flag_legend2",current_district] do

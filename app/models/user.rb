@@ -253,7 +253,7 @@ class User < ActiveRecord::Base
     super conditions
   end
 
-  def self.find_for_googleapps_oauth(access_token, signed_in_resource=nil)
+  def self.find_for_googleapps_oauth(access_token, _signed_in_resource=nil)
     data = access_token['info']
 
     if user = User.where(:email => data['email']).first

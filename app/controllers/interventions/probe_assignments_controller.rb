@@ -34,7 +34,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     @intervention ||=current_student.interventions.find(params[:intervention_id])
   end
 
-  def set_date(obj, field,p=params)
+  def set_date(obj, field,_p=params)
     ary=[params["#{field}(1i)"],params["#{field}(2i)"],params["#{field}(3i)"]]
     ary.collect!(&:to_i)
     if Date.valid_civil?(*ary)
