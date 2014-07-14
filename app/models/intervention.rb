@@ -171,9 +171,7 @@ class Intervention < ActiveRecord::Base
   end
 
 
-  def assets_for_user u
-    assets.for_user(u)
-  end
+  delegate :for_user, to: :assets, prefix: true
 
   def show_asset_info?
     true

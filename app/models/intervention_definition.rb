@@ -97,17 +97,11 @@ class InterventionDefinition < ActiveRecord::Base
     "#{tier.position if tier}-#{goal_definition.position}-#{objective_definition.position}-#{intervention_cluster.position}-#{position}"
   end
 
-  def district
-    goal_definition.district
-  end
+  delegate :district, to: :goal_definition
 
-  def goal_definition
-    objective_definition.goal_definition
-  end
+  delegate :goal_definition, to: :objective_definition
 
-  def objective_definition
-    intervention_cluster.objective_definition
-  end
+  delegate :objective_definition, to: :intervention_cluster
 
   def disable!
     update_attribute(:disabled, true)

@@ -126,17 +126,11 @@ class Checklist < ActiveRecord::Base
     @edfa||= answers.collect(&:answer_definition).collect(&:element_definition)
   end
 
-  def text
-    checklist_definition_cache.text
-  end
+  delegate :text, to: :checklist_definition_cache
 
-  def directions
-    checklist_definition_cache.directions
-  end
+  delegate :directions, to: :checklist_definition_cache
 
-  def question_definitions
-    checklist_definition_cache.question_definitions
-  end
+  delegate :question_definitions, to: :checklist_definition_cache
 
   def previous_answers_for(answer_definition)
 #    student.checklist_answers_for_student.find_all_by_answer_definition_id(answer_definition.answer_definition_id,:conditions=>["checklists.created_at < ?", created_at], :order=> 'created_at ASC')

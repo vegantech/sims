@@ -21,9 +21,7 @@ describe "Populate Intervention Dropdowns Module" do
    @current_school ||= mock_school(:quicklist => [])
   end
 
-  def current_school_id
-    current_school.id
-  end
+  delegate :id, to: :current_school, prefix: true
 
   def current_user
     @current_user ||= mock_user()
