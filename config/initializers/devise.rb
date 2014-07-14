@@ -216,7 +216,7 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 
-  Warden::Manager.after_authentication do |user,auth,opts|
+  Warden::Manager.after_authentication do |user,auth,_opts|
     auth.cookies[:user_id] = {:value => user.id , :domain => Sims::Application.config.session_options[:domain]}
     DistrictLog.record_success(user)
   end
@@ -228,7 +228,7 @@ Devise.setup do |config|
     end
   end
 
-  Warden::Manager.before_logout do |user,auth,options|
+  Warden::Manager.before_logout do |_user,auth,_options|
     auth.cookies.delete :user_id, :domain => Sims::Application.config.session_options[:domain]
     auth.cookies.delete :selected_student, :domain => Sims::Application.config.session_options[:domain]
   end

@@ -51,7 +51,7 @@ class StudentSearch
   def group_search
     personal_group_search
     group_user = search_hash.slice(:user_id, :group_id)
-    group_user.delete_if{|k,v| v=='*' || v==''}
+    group_user.delete_if{|_k,v| v=='*' || v==''}
     @enrollments = @enrollments.joins "inner join groups_students on groups_students.student_id = enrollments.student_id" if group_user.present?
     @enrollments = @enrollments.where({"groups_students.group_id" => group_user[:group_id]}) if group_user[:group_id]
     @enrollments = @enrollments.joins("inner join user_group_assignments on 
@@ -151,7 +151,7 @@ class StudentSearch
   def grade_and_year
     gy = search_hash.slice(:grade,:year)
     gy[:end_year] = gy.delete(:year) if gy.has_key?(:year)
-    gy.delete_if{|k,v| v=='*'}
+    gy.delete_if{|_k,v| v=='*'}
     gy[:end_year] = nil if gy[:end_year] == ''
     @enrollments = @enrollments.where({enrollments: gy}) unless gy.blank?
   end

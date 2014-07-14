@@ -244,7 +244,7 @@ When /^I should click js "all"$/ do
 end
 
 # Given /^I should see javascript code that will do xhr for "search_criteria_grade" that updates ["search_criteria_user_id", "search_criteria_group_id"]$/ do
-Given /^I should see javascript code that will do xhr for "(.*)" that updates (.*)$/ do |observed_field, target_fields|
+Given /^I should see javascript code that will do xhr for "(.*)" that updates (.*)$/ do |observed_field, _target_fields|
   page.source.should match(/Form.Element.EventObserver\('#{observed_field}'/)
 end
 
@@ -288,7 +288,7 @@ Given /^there are "(\d+)" emails$/ do |num_emails|
 # assert_emails num_emails.to_i
 end
 
-Given /^there is not an email containing "(.*)"$/ do |target_text|
+Given /^there is not an email containing "(.*)"$/ do |_target_text|
   ActionMailer::Base.deliveries.size.should == 0
 #  assert_no_emails
 end

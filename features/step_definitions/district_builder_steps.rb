@@ -35,7 +35,7 @@ When /^I follow Claim First Last for your district$/ do
   page.driver.put claim_district_student_url(Student.last)
 end
 
-When /^I magically visit "([^\"]*)"$/ do |url|
+When /^I magically visit "([^\"]*)"$/ do |_url|
   #'  Element.update("claim_student", "<a href=\"/district/students/claim/996332878?method=put\">Claim First Last for your district</a>"); '
   page.source.match  /\"\/(dis.*)\?/
   xhr  "put", "#{$1}", {:user_id => @user.id.to_s, :district_id => @user.district_id.to_s}
@@ -47,7 +47,7 @@ Given /^a school in my district named "([^\"]*)"$/ do |name|
   @default_user.district.schools.find_by_name(name) or Factory(:school,:name => name, :district_id => @default_user.district_id)
 end
 
-Given /^I am assigned to "([^"]*)"$/ do |name|
+Given /^I am assigned to "([^"]*)"$/ do |_name|
     s=Factory(:school, :district_id => @user.district_id)
     @user.staff_assignments.create!(:school=> s)
 end

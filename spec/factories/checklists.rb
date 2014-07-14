@@ -42,7 +42,7 @@ FactoryGirl.define do
   factory :basic_question_definition, :parent => :question_definition  do |q|
     q.text "Question with 1 of each element"
     q.after_create do |qd|
-      ElementDefinition.kinds_of_elements.each {|kind, desc| FactoryGirl "#{kind}_element_definition",  :question_definition => qd}
+      ElementDefinition.kinds_of_elements.each {|kind, _desc| FactoryGirl "#{kind}_element_definition",  :question_definition => qd}
     end
   end
 

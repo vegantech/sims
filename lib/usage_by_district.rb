@@ -18,7 +18,7 @@ class UsageByDistrict
     i4= DistrictLog.joins(:district).successful_login_non_admin.select('districts.name, count(distinct user_id) as users_who_have_logged_in, count(district_logs.id) as successful_logins').where("district_logs.created_at" => start..end_date).group("districts.name")
 
     [i1,i2,i3,i4].flatten.each {|i| dhash[i["name"]].merge!(i.attributes)}
-    dhash.sort.each do |k,v|
+    dhash.sort.each do |_k,v|
       puts "#{v["name"]}: #{v.to_a[1..-1].collect{|k,v| "#{k} - #{v}"}.join(", ")}"
     end
 

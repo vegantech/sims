@@ -14,13 +14,13 @@ FactoryGirl.define do
   sequence :title do |a|
     "#{a}#{Time.now.to_i} Title"
   end
-  factory :team_consultation do |tc|
+  factory :team_consultation do |_tc|
   end
 
-  factory :consultation_form do |cf|
+  factory :consultation_form do |_cf|
   end
 
-  factory :consultation_form_concern do |cfc|
+  factory :consultation_form_concern do |_cfc|
   end
 
   factory :user do

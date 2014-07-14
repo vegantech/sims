@@ -162,7 +162,7 @@ describe Checklist do
     Checklist.destroy_all
     Answer.destroy_all
     @teacher=User.find(:first)
-    @checklist = new_from_student_and_teacher_permutation{|checklist,ig1,ig2| return checklist}
+    @checklist = new_from_student_and_teacher_permutation{|checklist,_ig1,_ig2| return checklist}
     @checklist.answers.create!(:answer_definition=>@answer_definition_one)
     @checklist.save!
     @checklist.recommendations.create!(:should_advance=>true, :progress=>1,:recommendation=>4)

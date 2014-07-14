@@ -88,7 +88,7 @@ class GroupedProgressEntry
           end.join("|")
 
 
-          students.each_with_index{|s,idx| chm << "o,#{COLORS[idx]},#{idx},,4"}
+          students.each_with_index{|_s,idx| chm << "o,#{COLORS[idx]},#{idx},,4"}
 
           #    student_names
           #   probe_defintion

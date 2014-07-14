@@ -174,7 +174,7 @@ describe StudentSearch do
     describe 'with or without interventions' do
       before do
         Enrollment.delete_all
-        @e1,@e2,@e3 =(1..3).collect do |i|
+        @e1,@e2,@e3 =(1..3).collect do |_i|
           s=FactoryGirl.create(:student)
           s.enrollments.create!(:grade=>"1",:school_id=>999)
         end
@@ -220,7 +220,7 @@ describe StudentSearch do
     describe 'passed flagged_intervention' do
       before do
         Enrollment.delete_all
-        @e1,@e2,@e3,@e4,@e5,@e6 =(1..6).collect do |i|
+        @e1,@e2,@e3,@e4,@e5,@e6 =(1..6).collect do |_i|
           s = FactoryGirl.create(:student)
           s.enrollments.create!(:grade=>"1",:school_id=>999)
         end

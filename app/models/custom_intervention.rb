@@ -1,5 +1,5 @@
 class CustomIntervention < Intervention
-  accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
+  accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|_e| false}
 
   def self.model_name
     Intervention.model_name
