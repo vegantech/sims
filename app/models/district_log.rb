@@ -65,8 +65,6 @@ class DistrictLog < ActiveRecord::Base
       paginate(:page => params[:page], :per_page => PER_PAGE)
   end
 
-  private
-
   def self.filter(q)
     if q[:filter]
       fil = '%' + q[:filter].gsub(/ /,'%') + '%'

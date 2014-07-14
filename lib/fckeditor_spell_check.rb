@@ -21,7 +21,6 @@ class FckeditorSpellCheck
     output.split("\n").collect {|line| parse_aspell_line(line) }.compact
   end
 
- private
   # return a 2-D array of results, where each element in the array has a pair
   # of values: [ escaped word, comma separted list of escaped suggestions ]
   def self.parse_aspell_line(line)
