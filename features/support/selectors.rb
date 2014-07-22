@@ -34,7 +34,7 @@ module HtmlSelectorsHelpers
       ".profile_page #checklists"
 
     else
-      raise "Can't find mapping from \"#{locator}\" to a selector.\n" +
+      raise "Can't find mapping from \"#{locator}\" to a selector.\n" \
         "Now, go and add a mapping in #{__FILE__}"
     end
   end

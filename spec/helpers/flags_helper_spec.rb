@@ -142,11 +142,11 @@ describe FlagsHelper do
 
           student = mock_student(ignore_flags: [flag])
           pending "Testing on rcr"
-          helper.ignore_flags(student, true).should == "<form action=\"/custom_flags/unignore_flag/#{flag.id}\" class=\"flag_button\" method=\"post\"" +
-            " onsubmit=\"new Ajax.Request('/custom_flags/unignore_flag/#{flag.id}'," +
-            " {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"" +
-            " style=\"display:inline\"><input onmouseout=\"return nd();\"" +
-            " onmouseover=\"return overlib('Somecategory - Just because  by Mock User on Mon Jan 12 00:00:00 -0600 2009');\"" +
+          helper.ignore_flags(student, true).should == "<form action=\"/custom_flags/unignore_flag/#{flag.id}\" class=\"flag_button\" method=\"post\"" \
+            " onsubmit=\"new Ajax.Request('/custom_flags/unignore_flag/#{flag.id}'," \
+            " {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"" \
+            " style=\"display:inline\"><input onmouseout=\"return nd();\"" \
+            " onmouseover=\"return overlib('Somecategory - Just because  by Mock User on Mon Jan 12 00:00:00 -0600 2009');\"" \
             " src=\"/assets/fubar.png\" type=\"image\" /></form>"
         end
       end
