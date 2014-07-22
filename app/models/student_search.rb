@@ -150,7 +150,7 @@ class StudentSearch
 
   def grade_and_year
     gy = search_hash.slice(:grade,:year)
-    gy[:end_year] = gy.delete(:year) if gy.has_key?(:year)
+    gy[:end_year] = gy.delete(:year) if gy.key?(:year)
     gy.delete_if{|_k,v| v=='*'}
     gy[:end_year] = nil if gy[:end_year] == ''
     @enrollments = @enrollments.where(enrollments: gy) unless gy.blank?
