@@ -144,7 +144,7 @@ Then /^all attachments should not be blank$/ do
 end
 
 Then /^show me a list of email attachments$/ do
-  EmailSpec::EmailViewer::save_and_open_email_attachments_list(current_email)
+  EmailSpec::EmailViewer.save_and_open_email_attachments_list(current_email)
 end
 
 #
@@ -166,17 +166,17 @@ end
 #
 
 Then /^save and open current email$/ do
-  EmailSpec::EmailViewer::save_and_open_email(current_email)
+  EmailSpec::EmailViewer.save_and_open_email(current_email)
 end
 
 Then /^save and open all text emails$/ do
-  EmailSpec::EmailViewer::save_and_open_all_text_emails
+  EmailSpec::EmailViewer.save_and_open_all_text_emails
 end
 
 Then /^save and open all html emails$/ do
-  EmailSpec::EmailViewer::save_and_open_all_html_emails
+  EmailSpec::EmailViewer.save_and_open_all_html_emails
 end
 
 Then /^save and open all raw emails$/ do
-  EmailSpec::EmailViewer::save_and_open_all_raw_emails
+  EmailSpec::EmailViewer.save_and_open_all_raw_emails
 end

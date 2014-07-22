@@ -22,7 +22,7 @@ class VerifyStudentInDistrictExternally
   def self.setup
     file = File.join(Rails.root,"config","external_student_location_verify.yml")
     if File.exist?(file)
-      @@config = YAML::load_file(file)
+      @@config = YAML.load_file(file)
     else
       @@enabled = false
     end

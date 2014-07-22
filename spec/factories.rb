@@ -80,8 +80,8 @@ FactoryGirl.define do
     i.time_length_number 1
     i.association :time_length
     i.association :intervention_definition
-    i.start_date Date::civil(2008, 11, 1)
-    i.end_date Date::civil(2008, 12, 1)
+    i.start_date Date.civil(2008, 11, 1)
+    i.end_date Date.civil(2008, 12, 1)
   end
 
   factory :intervention_definition do |id|
