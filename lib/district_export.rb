@@ -79,7 +79,7 @@ class DistrictExport
     @district = district
     @dir = Rails.root.join("tmp","district_export",district.id.to_s)
     @content_dir = Rails.root.join("tmp","content_export",district.id.to_s)
-    @files=Hash.new
+    @files={}
     @student_ids_in_use = []
   end
 

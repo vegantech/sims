@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
   end
 
   def cached_authorized_groups_for_school(school, grade=nil)
-    @cached_groups_for_school ||= Hash.new
+    @cached_groups_for_school ||= {}
     @cached_groups_for_school[[school.id,grade]] ||= authorized_groups_for_school(school,grade).only_title_and_id
   end
 
