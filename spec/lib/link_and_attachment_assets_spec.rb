@@ -34,15 +34,15 @@ describe LinkAndAttachmentAssets do
       u.reload.updated_at.should be > t
     end
 
-     it 'should  change the timestamp when assets are removed' do
-      u=Factory(:user)
-      u.new_asset_attributes=([url: 'http://www.example.com', name: 'Test Url2'])
-      u.save
-      t=set_date_back_2_days(u)
-      u.existing_asset_attributes=({})
-      u.save
-      u.reload.updated_at.should be > t
-    end
+    it 'should  change the timestamp when assets are removed' do
+     u=Factory(:user)
+     u.new_asset_attributes=([url: 'http://www.example.com', name: 'Test Url2'])
+     u.save
+     t=set_date_back_2_days(u)
+     u.existing_asset_attributes=({})
+     u.save
+     u.reload.updated_at.should be > t
+   end
   end
 
   describe 'attachments' do

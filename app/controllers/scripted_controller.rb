@@ -30,7 +30,7 @@ class ScriptedController < ApplicationController
         @messages=importer.import
         Notifications.district_upload_results( @messages, @u.email || ::UNASSIGNED_EMAIL).deliver
       end
-        render text: "response will be emailed to #{@u.email}" and return
+      render text: "response will be emailed to #{@u.email}" and return
     end
     render layout: false
   end

@@ -46,7 +46,7 @@ When /^I reload the team consultation based on the following table:$/ do |table|
     else
       raise "unknown #{row['consultation?']}"
     end
-      visit pg
+    visit pg
     css_sel= "#consultations_group"
     if row["display?"] == "true"
       page.should have_selector(css_sel,visible: true), row.inspect

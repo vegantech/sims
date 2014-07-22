@@ -22,24 +22,24 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
   def create
     @probe_definition = current_district.probe_definitions.build(params[:probe_definition])
 
-     if @probe_definition.save
-       flash[:notice]= 'Progress Monitor Definition was successfully created'
-       redirect_to intervention_builder_probe_url(@probe_definition)
-     else
-       render action: "new"
-     end
+    if @probe_definition.save
+      flash[:notice]= 'Progress Monitor Definition was successfully created'
+      redirect_to intervention_builder_probe_url(@probe_definition)
+    else
+      render action: "new"
+    end
   end
 
   def update
     @probe_definition = current_district.probe_definitions.find(params[:id])
     @probe_definition.attributes = params[:probe_definition]
 
-     if @probe_definition.save
-       flash[:notice]= 'Progress Monitor Definition was successfully updated'
-       redirect_to intervention_builder_probe_url(@probe_definition)
-     else
-       render action: "edit"
-     end
+    if @probe_definition.save
+      flash[:notice]= 'Progress Monitor Definition was successfully updated'
+      redirect_to intervention_builder_probe_url(@probe_definition)
+    else
+      render action: "edit"
+    end
   end
 
   def disable

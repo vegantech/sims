@@ -89,7 +89,7 @@ module CSVImporter
         )
         and sch.district_school_id is not null and stu.district_student_id != ''
        "
-       ActiveRecord::Base.connection.update query
+      ActiveRecord::Base.connection.update query
     end
 
     def insert
@@ -104,7 +104,7 @@ module CSVImporter
       and e.school_id is null and stu.district_student_id != ''  and sch.district_school_id is not null
       "
             )
-            ActiveRecord::Base.connection.update query
+      ActiveRecord::Base.connection.update query
     end
 
     def confirm_count?

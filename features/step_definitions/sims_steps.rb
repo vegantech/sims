@@ -150,21 +150,21 @@ end
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" in (\d+)$/ do |first, last, student_grade, school_name, year|
 	school = School.find_by_name(school_name)
 	s= create_student first, last, student_grade, school
-  s.enrollments.first.update_attribute(:end_year,year)
+ s.enrollments.first.update_attribute(:end_year,year)
 end
 
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with ignore_flag for "(.*)" with reason "(.*)"$/ do
   |first, last, student_grade, school_name, ignore_type, reason|
 	school = School.find_by_name(school_name)
 	s=create_student first, last, student_grade, school
-  s.ignore_flags.create!(category: ignore_type, reason: reason)
+ s.ignore_flags.create!(category: ignore_type, reason: reason)
 end
 
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with custom_flag for "(.*)" with reason "(.*)"$/ do
   |first, last, student_grade, school_name, custom_type, reason|
 	school = School.find_by_name(school_name)
 	s=create_student first, last, student_grade, school
-  s.custom_flags.create!(category: custom_type, reason: reason)
+ s.custom_flags.create!(category: custom_type, reason: reason)
 end
 
 # # use this if you want the default user to belong to a group for the school

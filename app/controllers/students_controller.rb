@@ -73,16 +73,16 @@ class StudentsController < ApplicationController
       return true
     else
      return ic_entry if params[:id] == "ic_jump"
-      student=Student.find(params[:id])
-      if student.belongs_to_user?(current_user)
-        session[:school_id] = (student.schools & current_user.schools).first.id
-        self.current_student_id=params[:id]
-        self.selected_student_ids=[params[:id]]
-        return true
-      end
+     student=Student.find(params[:id])
+     if student.belongs_to_user?(current_user)
+       session[:school_id] = (student.schools & current_user.schools).first.id
+       self.current_student_id=params[:id]
+       self.selected_student_ids=[params[:id]]
+       return true
+     end
 
-      flash[:notice]='You do not have access to that student'
-      redirect_to students_url and return false
+     flash[:notice]='You do not have access to that student'
+     redirect_to students_url and return false
     end
   end
 

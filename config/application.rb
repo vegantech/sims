@@ -35,7 +35,7 @@ module Sims
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
-    config.i18n.enforce_available_locales = false
+     config.i18n.enforce_available_locales = false
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -45,38 +45,38 @@ module Sims
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+     config.encoding = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
+     config.filter_parameters += [:password]
 
-    config.middleware.swap ActionDispatch::BestStandardsSupport, Sims::BestStandardsSupport
+     config.middleware.swap ActionDispatch::BestStandardsSupport, Sims::BestStandardsSupport
 
 #    config.action_mailer.delivery_method = :railmail
-    config.time_zone = 'Central Time (US & Canada)'
-    config.cache_store = :dalli_store
-    config.paths['app/manifests'] = "app/manifests"
-    config.paths['app/manifests'].skip_eager_load!
+     config.time_zone = 'Central Time (US & Canada)'
+     config.cache_store = :dalli_store
+     config.paths['app/manifests'] = "app/manifests"
+     config.paths['app/manifests'].skip_eager_load!
 
     # Enable the asset pipeline
-    config.assets.enabled = true
+     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+     config.assets.version = '1.0'
 
-    config.assets.precompile += %w( tablesort.js print.css screen.css pdf.css googiespell.css spellerStyle.css jquery.js jquery.uploadProgress.js )
-    config.assets.precompile += ["*lang/*", "*spellerpages/*"]
+     config.assets.precompile += %w( tablesort.js print.css screen.css pdf.css googiespell.css spellerStyle.css jquery.js jquery.uploadProgress.js )
+     config.assets.precompile += ["*lang/*", "*spellerpages/*"]
     # Change the path that assets are served from
     # # config.assets.prefix = "/assets"
-    config.action_mailer.raise_delivery_errors = false
+     config.action_mailer.raise_delivery_errors = false
 
-    config.generators do |g|
-      g.fixture_replacement :factory_girl
-    end
+     config.generators do |g|
+       g.fixture_replacement :factory_girl
+     end
 
-    config.to_prepare do
-      Devise::Mailer.layout "email"
-    end
+     config.to_prepare do
+       Devise::Mailer.layout "email"
+     end
   end
 end
 

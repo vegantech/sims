@@ -170,16 +170,16 @@ class User < ActiveRecord::Base
     ")#.select(&:orphaned?)
   end
 
- def self.remove_from_district(user_ids = [])
-    user_ids = Array(user_ids).flatten.collect(&:to_i)
-    return nil if user_ids.blank?
-    User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL,encrypted_password='' where id in (#{user_ids.join(",")})")
-    UserSchoolAssignment.delete_all(["user_id in (?)",user_ids])
-    SpecialUserGroup.delete_all(["user_id in (?)",user_ids])
-    UserGroupAssignment.delete_all(["user_id in (?)",user_ids])
-    StaffAssignment.delete_all(["user_id in (?)",user_ids])
-    SchoolTeamMembership.delete_all(["user_id in (?)",user_ids])
-  end
+  def self.remove_from_district(user_ids = [])
+     user_ids = Array(user_ids).flatten.collect(&:to_i)
+     return nil if user_ids.blank?
+     User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL,encrypted_password='' where id in (#{user_ids.join(",")})")
+     UserSchoolAssignment.delete_all(["user_id in (?)",user_ids])
+     SpecialUserGroup.delete_all(["user_id in (?)",user_ids])
+     UserGroupAssignment.delete_all(["user_id in (?)",user_ids])
+     StaffAssignment.delete_all(["user_id in (?)",user_ids])
+     SchoolTeamMembership.delete_all(["user_id in (?)",user_ids])
+   end
   def remove_from_district
     User.remove_from_district(self[:id])
   end
@@ -215,16 +215,16 @@ class User < ActiveRecord::Base
     user_school_assignments.admin.exists?(school_id: school.id)
   end
 
-   def schools
-    s=School.where(district_id: district_id).order("schools.name")
-    if all_schools_in_district?
-      s
-    else
-      s.where("schools.id in (#{user_school_assignments.school_id.to_sql})
-        or
-        schools.id in (#{special_user_groups.school_id.to_sql})")
-    end
-  end
+  def schools
+   s=School.where(district_id: district_id).order("schools.name")
+   if all_schools_in_district?
+     s
+   else
+     s.where("schools.id in (#{user_school_assignments.school_id.to_sql})
+       or
+       schools.id in (#{special_user_groups.school_id.to_sql})")
+   end
+ end
 
   def all_schools_in_district?
     all_students? || all_schools?

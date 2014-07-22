@@ -29,22 +29,22 @@ describe Student do
 
   it "should be valid"
 
- describe 'extended_profile?' do
+  describe 'extended_profile?' do
 
-    describe 'when file exists' do
-      it 'should return true' do
-        pending
+     describe 'when file exists' do
+       it 'should return true' do
+         pending
 
-        @student.extended_profile?.should be_true
-      end
-    end
-    describe 'when file does not exist' do
-      it 'should return false' do
-        pending
-        @student.extended_profile?.should be_false
-      end
-    end
-  end
+         @student.extended_profile?.should be_true
+       end
+     end
+     describe 'when file does not exist' do
+       it 'should return false' do
+         pending
+         @student.extended_profile?.should be_false
+       end
+     end
+   end
 
   describe 'extended_profile=' do
     it 'should set the extended profile for the student on save' do
@@ -102,12 +102,12 @@ describe Student do
 
     it 'should return true if the grade contains a student belonging to that user' do
     pending
-      school = School.create!(name: 'My School', district: mock_district)
-      e = Enrollment.create!(grade: '1',school: school, student: mock_student)
-      user = User.new
-      user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([e])
+    school = School.create!(name: 'My School', district: mock_district)
+    e = Enrollment.create!(grade: '1',school: school, student: mock_student)
+    user = User.new
+    user.should_receive(:authorized_enrollments_for_school).any_number_of_times.and_return([e])
 
-      Enrollment.student_belonging_to_user?(user).should == true
+    Enrollment.student_belonging_to_user?(user).should == true
     end
 
     it 'should return false if the grade does not contain a student belonging to that user' do

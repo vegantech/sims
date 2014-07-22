@@ -22,13 +22,13 @@ module MysqlSet
         end
       end
       private
-     def extract_limit(sql_type)
-      if sql_type =~ /^set/i
-        sql_type[4..-2]
-      else
-        super
-      end
-      end
+      def extract_limit(sql_type)
+       if sql_type =~ /^set/i
+         sql_type[4..-2]
+       else
+         super
+       end
+       end
    end
 
     module  Mysql2Adapter

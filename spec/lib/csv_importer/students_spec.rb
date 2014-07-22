@@ -48,15 +48,15 @@ describe CSVImporter::Students do
                                             (1, 's1',-1, 'keep',NULL, 'student', NULL, '2006-01-01', FALSE, FALSE)
                                             ")
 
-     del_count =  i.send :delete
-     i.send(:drop_temporary_table)
+      del_count =  i.send :delete
+      i.send(:drop_temporary_table)
 
-     i.instance_variable_get('@other_messages').should == "1 students removed from district; "
-     s2.reload.district.should == nil
-     s1.reload.district.should == d
-     s1.enrollments.size.should == 1
-     e3.reload.grade.should == '-1'
-     s2.enrollments.should be_empty
+      i.instance_variable_get('@other_messages').should == "1 students removed from district; "
+      s2.reload.district.should == nil
+      s1.reload.district.should == d
+      s1.enrollments.size.should == 1
+      e3.reload.grade.should == '-1'
+      s2.enrollments.should be_empty
 
     end
   end
@@ -93,7 +93,7 @@ describe CSVImporter::Students do
                                             ")
 
       i.send :reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
-     i.send(:drop_temporary_table)
+      i.send(:drop_temporary_table)
 
       i.messages.sort.should ==
         ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.",

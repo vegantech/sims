@@ -58,11 +58,11 @@ describe District do
     District.new.grades.should == District::GRADES
   end
 
- describe 'admin district' do
-    it 'should return the state admin district for a leaf (normal) district' do
-      @local_district.admin_district.should == @state_district
-    end
-  end
+  describe 'admin district' do
+     it 'should return the state admin district for a leaf (normal) district' do
+       @local_district.admin_district.should == @state_district
+     end
+   end
 
   describe 'key validation' do
     it 'should fail validation if there is a previous key and the key is changed' do

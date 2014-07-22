@@ -18,13 +18,13 @@ describe PersonalGroupsController do
       route_for(controller: "personal_groups", action: "edit", id: "1").should == "/personal_groups/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "personal_groups", action: "create").should == {path: "/personal_groups", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "personal_groups", action: "create").should == {path: "/personal_groups", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "personal_groups", action: "update", id: "1").should == {path: "/personal_groups/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "personal_groups", action: "update", id: "1").should == {path: "/personal_groups/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "personal_groups", action: "destroy", id: "1").should == {path: "/personal_groups/1", method: :delete}

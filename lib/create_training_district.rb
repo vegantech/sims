@@ -22,13 +22,13 @@ class CreateTrainingDistrict
 
   def self.destroy_district abbrev
     d=District.find_by_abbrev(abbrev)
-     if d.present?
-      d.schools.destroy_all
-      d.tiers.delete_all
-      d.flag_categories.destroy_all
-      FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",d.id.to_s,"*")))
-      d.destroy
-    end
+    if d.present?
+     d.schools.destroy_all
+     d.tiers.delete_all
+     d.flag_categories.destroy_all
+     FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",d.id.to_s,"*")))
+     d.destroy
+   end
   end
 
   def self.create_with_schools_and_users(abbrev,name)
@@ -94,6 +94,6 @@ class CreateTrainingDistrict
       end
     end
     td.news.create(text: "District Reset %s" % Time.now.to_s(:short))
-   td
+    td
   end
 end

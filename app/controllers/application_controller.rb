@@ -112,7 +112,7 @@ class ApplicationController < ActionController::Base
         format.js { render template: "/main/inaccessible_student.js"}
         format.html  {redirect_to :back }
       end
-     return false
+      return false
     end
   end
 

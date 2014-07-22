@@ -241,9 +241,9 @@ class Intervention < ActiveRecord::Base
   def send_creation_emails
     # PENDING
     @interventions = Array(self) | Array(@interventions)
-     unless self.called_internally
-      Notifications.intervention_starting(@interventions).deliver
-    end
+    unless self.called_internally
+     Notifications.intervention_starting(@interventions).deliver
+   end
 
     true
   end

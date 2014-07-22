@@ -37,7 +37,7 @@ module StudentsHelper
 
   def id_district_desc(obj)
     obj_text=obj.class.name.downcase
-  "District identifier for this #{obj_text} (the #{obj_text}_id or primary_key in your SIS)"
+    "District identifier for this #{obj_text} (the #{obj_text}_id or primary_key in your SIS)"
   end
 
   def id_state_desc(obj)

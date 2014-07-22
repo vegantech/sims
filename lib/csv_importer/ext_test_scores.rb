@@ -124,9 +124,9 @@ module CSVImporter
       end
     end
 
-   def confirm_count?
-     return true
-   end
+    def confirm_count?
+      return true
+    end
   end
 end
 

@@ -18,13 +18,13 @@ describe GroupedProgressEntriesController do
       route_for(controller: "grouped_progress_entries", action: "edit", id: "1").should == "/grouped_progress_entries/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "grouped_progress_entries", action: "create").should == {path: "/grouped_progress_entries", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "grouped_progress_entries", action: "create").should == {path: "/grouped_progress_entries", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "grouped_progress_entries", action: "update", id: "1").should == {path: "/grouped_progress_entries/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "grouped_progress_entries", action: "update", id: "1").should == {path: "/grouped_progress_entries/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "grouped_progress_entries", action: "destroy", id: "1").should == {path: "/grouped_progress_entries/1", method: :delete}

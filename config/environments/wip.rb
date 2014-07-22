@@ -23,19 +23,19 @@ config.active_support.deprecation = :log
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
- config.action_mailer.delivery_method = :test
+config.action_mailer.delivery_method = :test
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+config.assets.debug = true
 
 # Compress JavaScripts and CSS
-  config.assets.compress = false
+config.assets.compress = false
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+config.assets.compile = false
 
   # Generate digests for assets URLs
-  config.assets.digest = true
+config.assets.digest = true
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH

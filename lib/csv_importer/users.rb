@@ -101,9 +101,9 @@ password is the user\'s password in lowercase, district_key is set by the distri
         on u.district_user_id = tu.district_user_id
         where u.district_user_id !='' and u.district_id = #{@district.id}
         and tu.district_user_id is null"
-      user_ids_to_remove=User.connection.select_rows(query)
-      User.remove_from_district(user_ids_to_remove)
-      user_ids_to_remove.length
+     user_ids_to_remove=User.connection.select_rows(query)
+     User.remove_from_district(user_ids_to_remove)
+     user_ids_to_remove.length
     end
 
     def update_passwords
@@ -116,7 +116,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
     where district_id = #{@district.id} and tu.passwordhash is not null and tu.salt is not null and tu.passwordhash <> '' and tu.salt <> ''"
     )
 
-      User.connection.update query
+    User.connection.update query
     end
 
     def insert
@@ -137,12 +137,12 @@ password is the user\'s password in lowercase, district_key is set by the distri
     def confirm_count?
       model_name = "user"
       model_count = @district.send(model_name.tableize).count(conditions: 'district_user_id is not null and district_user_id !=""')
-        if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
-          @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
-          false
-        else
-          true
-        end
+      if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
+        @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
+        false
+      else
+        true
+      end
     end
   end
 end

@@ -105,7 +105,7 @@ class GroupedProgressEntry
       include: [:probes,{intervention: :student}], conditions: ["probes.score is not null and interventions.intervention_definition_id = ?",
                                                                        @intervention.intervention_definition_id])
 
-        ipa.size
+    ipa.size
   end
 
   def page_nums

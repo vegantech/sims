@@ -17,20 +17,20 @@ class CustomFlagsController < ApplicationController
     end
   end
 
- def create
-    @custom_flag = CustomFlag.new(params[:custom_flag])
+  def create
+     @custom_flag = CustomFlag.new(params[:custom_flag])
 
-    respond_to do |format|
-      if @custom_flag.save
-        flash[:notice] = 'Custom Flag was successfully created.'
-        format.html { redirect_to(current_student) }
-        format.js   {  }
-      else
-        format.html { render action: "new" }
-        format.js { render action: "new" }
-      end
-    end
-  end
+     respond_to do |format|
+       if @custom_flag.save
+         flash[:notice] = 'Custom Flag was successfully created.'
+         format.html { redirect_to(current_student) }
+         format.js   {  }
+       else
+         format.html { render action: "new" }
+         format.js { render action: "new" }
+       end
+     end
+   end
 
   # DELETE /custom_flags/1
   # DELETE /custom_flags/1.xml

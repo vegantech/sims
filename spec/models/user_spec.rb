@@ -264,195 +264,195 @@ describe User do
 
   end
 
-   describe 'setting user_school_assignments' do
-     before :each do
-       @user=FactoryGirl.create(:user)
-       @e1=@user.user_school_assignments.create!(school_id: '1',admin: false)
-       @e2=@user.user_school_assignments.create!(school_id: '2',admin: true)
-     end
+  describe 'setting user_school_assignments' do
+    before :each do
+      @user=FactoryGirl.create(:user)
+      @e1=@user.user_school_assignments.create!(school_id: '1',admin: false)
+      @e2=@user.user_school_assignments.create!(school_id: '2',admin: true)
+    end
 
-     it 'should not change existing ones when there are none' do
-       @user.update_attribute('user_school_assignments_attributes',[])
-       @user.user_school_assignments.should == [@e1,@e2]
-     end
+    it 'should not change existing ones when there are none' do
+      @user.update_attribute('user_school_assignments_attributes',[])
+      @user.user_school_assignments.should == [@e1,@e2]
+    end
 
-     it 'should not removeexisting ones' do
-       @user.update_attribute('user_school_assignments_attributes',[{id: @e1.id, _destroy: 1},{id: @e2.id, _destroy: '1'} ])
-       @user.user_school_assignments.should be_empty
-     end
+    it 'should not removeexisting ones' do
+      @user.update_attribute('user_school_assignments_attributes',[{id: @e1.id, _destroy: 1},{id: @e2.id, _destroy: '1'} ])
+      @user.user_school_assignments.should be_empty
+    end
 
-     it 'should change existing ones when there are none' do
-       @user.update_attributes('user_school_assignments_attributes'=>{id: @e1.id.to_s,school_id: '3'})
-       @e1.reload.school_id.should == 3
-       @user.user_school_assignments.should ==[@e1,@e2]
-     end
+    it 'should change existing ones when there are none' do
+      @user.update_attributes('user_school_assignments_attributes'=>{id: @e1.id.to_s,school_id: '3'})
+      @e1.reload.school_id.should == 3
+      @user.user_school_assignments.should ==[@e1,@e2]
+    end
 
-     it 'should not validate when changing existing to match' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '2',admin: true}, {id: @e2.id.to_s,school_id: '2'}])
-       @user.should_not be_valid
-       @user.user_school_assignments.first.errors_on(:admin).should_not be_nil
-       @user.user_school_assignments.first.errors_on(:school_id).should_not be_nil
-       @user.user_school_assignments.last.errors_on(:admin).should_not be_nil
-       @user.user_school_assignments.last.errors_on(:school_id).should_not be_nil
-     end
+    it 'should not validate when changing existing to match' do
+      @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '2',admin: true}, {id: @e2.id.to_s,school_id: '2'}])
+      @user.should_not be_valid
+      @user.user_school_assignments.first.errors_on(:admin).should_not be_nil
+      @user.user_school_assignments.first.errors_on(:school_id).should_not be_nil
+      @user.user_school_assignments.last.errors_on(:admin).should_not be_nil
+      @user.user_school_assignments.last.errors_on(:school_id).should_not be_nil
+    end
 
-     it 'should add new user_school_assignment' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true}]).should be_true
-       @user.user_school_assignments.find_by_school_id_and_admin(1,true).should_not be_nil
-       @user.user_school_assignments[0..1].should == [@e1,@e2]
-     end
+    it 'should add new user_school_assignment' do
+      @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true}]).should be_true
+      @user.user_school_assignments.find_by_school_id_and_admin(1,true).should_not be_nil
+      @user.user_school_assignments[0..1].should == [@e1,@e2]
+    end
 
-     it 'should not new user_school_assignment that matches existing ' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', admin: false}]).should be_false
-       @user.should_not be_valid
-     end
+    it 'should not new user_school_assignment that matches existing ' do
+      @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', admin: false}]).should be_false
+      @user.should_not be_valid
+    end
 
-     it 'should not new user_school_assignment that matches changed existing ' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true},
-                                                                       {id: @e1.id.to_s,admin: true}]
-                             ).should be_false
-       @user.should_not be_valid
-     end
+    it 'should not new user_school_assignment that matches changed existing ' do
+      @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true},
+                                                                      {id: @e1.id.to_s,admin: true}]
+                            ).should be_false
+      @user.should_not be_valid
+    end
 
-     it 'should not new user_school_assignment that matches itself' do
-       @user.update_attributes('user_school_assignments_attributes'=>
-                              [{school_id: '3', admin: false},{school_id: '3', admin: false}]).should be_false
-       @user.should_not be_valid
-     end
+    it 'should not new user_school_assignment that matches itself' do
+      @user.update_attributes('user_school_assignments_attributes'=>
+                             [{school_id: '3', admin: false},{school_id: '3', admin: false}]).should be_false
+      @user.should_not be_valid
+    end
 
-     it 'should set all_students on a matching user_school_assignment' do
-       #lh
-       @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '1', admin: false, all_students: "true"}])
-       @e1.reload.all_students.should be_true
-       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', id: @e1.id.to_s, admin: false, all_students: "false"}])
-       @e1.reload.all_students.should be_false
-     end
+    it 'should set all_students on a matching user_school_assignment' do
+      #lh
+      @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '1', admin: false, all_students: "true"}])
+      @e1.reload.all_students.should be_true
+      @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', id: @e1.id.to_s, admin: false, all_students: "false"}])
+      @e1.reload.all_students.should be_false
+    end
 
-   end
+  end
 
-   describe 'staff_assignment' do
-     before do
-       @u=FactoryGirl.create(:user)
-       @s1=FactoryGirl.create(:school, district_id: @u.district_id)
-       @s2=FactoryGirl.create(:school, district_id: @u.district_id)
-       @s3=FactoryGirl.create(:school, district_id: @u.district_id)
-     end
-     it 'should add a staff assignment' do
-       @u.staff_assignments_attributes = [{school_id: @s1.id}]
-       @u.save
-       @u.staff_assignments.count.should == 1
-       @u.staff_assignments.first.school_id.should == @s1.id
+  describe 'staff_assignment' do
+    before do
+      @u=FactoryGirl.create(:user)
+      @s1=FactoryGirl.create(:school, district_id: @u.district_id)
+      @s2=FactoryGirl.create(:school, district_id: @u.district_id)
+      @s3=FactoryGirl.create(:school, district_id: @u.district_id)
+    end
+    it 'should add a staff assignment' do
+      @u.staff_assignments_attributes = [{school_id: @s1.id}]
+      @u.save
+      @u.staff_assignments.count.should == 1
+      @u.staff_assignments.first.school_id.should == @s1.id
 
-     end
-     it 'should remove a staff assignment' do
-       sa=@u.staff_assignments.create!(school_id: @s1.id)
-       @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}]
-       @u.save
-       @u.staff_assignments.reload.should be_empty
-     end
-     it 'should add and delete the same staff_assignment' do
-       sa=@u.staff_assignments.create!(school_id: @s1.id)
-       @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}, {school_id: @s1.id}]
-       @u.save
-       @u.staff_assignments.count.should == 1
-       @u.staff_assignments.first.school_id.should == @s1.id
-     end
-     it 'should remove new assignments when they already exist' do
-       sa=@u.staff_assignments.create!(school_id: @s1.id)
-       @u.staff_assignments_attributes =[{school_id: @s1.id}]
-       @u.save
-       @u.staff_assignments.count.should == 1
-       @u.staff_assignments.first.school_id.should == @s1.id
-     end
+    end
+    it 'should remove a staff assignment' do
+      sa=@u.staff_assignments.create!(school_id: @s1.id)
+      @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}]
+      @u.save
+      @u.staff_assignments.reload.should be_empty
+    end
+    it 'should add and delete the same staff_assignment' do
+      sa=@u.staff_assignments.create!(school_id: @s1.id)
+      @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}, {school_id: @s1.id}]
+      @u.save
+      @u.staff_assignments.count.should == 1
+      @u.staff_assignments.first.school_id.should == @s1.id
+    end
+    it 'should remove new assignments when they already exist' do
+      sa=@u.staff_assignments.create!(school_id: @s1.id)
+      @u.staff_assignments_attributes =[{school_id: @s1.id}]
+      @u.save
+      @u.staff_assignments.count.should == 1
+      @u.staff_assignments.first.school_id.should == @s1.id
+    end
 
-     it 'should add only 1 new staff assignment when new ones are duplicated' do
-       @u.staff_assignments_attributes =[{school_id: @s1.id},{school_id: @s1.id}]
-       @u.save
-       @u.staff_assignments.count.should == 1
-       @u.staff_assignments.first.school_id.should == @s1.id
-     end
+    it 'should add only 1 new staff assignment when new ones are duplicated' do
+      @u.staff_assignments_attributes =[{school_id: @s1.id},{school_id: @s1.id}]
+      @u.save
+      @u.staff_assignments.count.should == 1
+      @u.staff_assignments.first.school_id.should == @s1.id
+    end
 
-   end
+  end
 
-   describe 'admin_of_school?' do
-     let(:school) {FactoryGirl.create(:school)}
-     let(:user) {FactoryGirl.create(:user)}
+  describe 'admin_of_school?' do
+    let(:school) {FactoryGirl.create(:school)}
+    let(:user) {FactoryGirl.create(:user)}
 
-     it 'should return true if the user is an admin of the school' do
-       user.user_school_assignments.create!(school: school, admin: true)
-       user.admin_of_school?(school).should be_true
-     end
+    it 'should return true if the user is an admin of the school' do
+      user.user_school_assignments.create!(school: school, admin: true)
+      user.admin_of_school?(school).should be_true
+    end
 
-     it 'should return false if the user is not an admin of the school' do
-       user.user_school_assignments.create!(school: school, admin: false)
-       user.admin_of_school?(school).should be_false
-     end
-   end
+    it 'should return false if the user is not an admin of the school' do
+      user.user_school_assignments.create!(school: school, admin: false)
+      user.admin_of_school?(school).should be_false
+    end
+  end
 
-   describe 'devise additions' do
-     describe 'find_first_by_auth_conditions' do
-       it 'should add the district key when not using the reset token'
-       it 'should not add the district key when using the reset token'
-     end
+  describe 'devise additions' do
+    describe 'find_first_by_auth_conditions' do
+      it 'should add the district key when not using the reset token'
+      it 'should not add the district key when using the reset token'
+    end
 
-     describe 'send_reset_password_isnstructions' do
-       it 'should add an error when the email is blank'
-       it 'should add an error when the district does not support password recovery'
-       it 'should test use_key?'
-       it 'should work normally'
-     end
+    describe 'send_reset_password_isnstructions' do
+      it 'should add an error when the email is blank'
+      it 'should add an error when the district does not support password recovery'
+      it 'should test use_key?'
+      it 'should work normally'
+    end
 
-     describe 'new_with_session' do
-       it 'it should get info from googleapps'
-     end
-   end
+    describe 'new_with_session' do
+      it 'it should get info from googleapps'
+    end
+  end
 
-   describe 'custom_interventions_enabled?' do
-     subject do
-       User.new(district: district, roles: [role])
-     end
-     let(:district){ District.new(custom_interventions: custom_intervention)}
-     let(:role) {}
-     let(:custom_intervention) {}
+  describe 'custom_interventions_enabled?' do
+    subject do
+      User.new(district: district, roles: [role])
+    end
+    let(:district){ District.new(custom_interventions: custom_intervention)}
+    let(:role) {}
+    let(:custom_intervention) {}
 
-     describe 'disabled' do
-       let(:custom_intervention){'disabled'}
-       its(:custom_interventions_enabled?) {should == false}
+    describe 'disabled' do
+      let(:custom_intervention){'disabled'}
+      its(:custom_interventions_enabled?) {should == false}
 
-       describe 'content_admin' do
-         let(:role) {"content_admin"}
-         its(:custom_interventions_enabled?) {should == false}
-       end
-     end
+      describe 'content_admin' do
+        let(:role) {"content_admin"}
+        its(:custom_interventions_enabled?) {should == false}
+      end
+    end
 
-     describe 'content_admins' do
-       let(:custom_intervention){'content_admins'}
-       its(:custom_interventions_enabled?) {should == false}
+    describe 'content_admins' do
+      let(:custom_intervention){'content_admins'}
+      its(:custom_interventions_enabled?) {should == false}
 
-       describe 'content_admin' do
-         let(:role) {"content_admin"}
-         its(:custom_interventions_enabled?) {should == true}
-       end
-     end
+      describe 'content_admin' do
+        let(:role) {"content_admin"}
+        its(:custom_interventions_enabled?) {should == true}
+      end
+    end
 
-     describe 'one_off' do
-       let(:custom_intervention){'one_off'}
-       its(:custom_interventions_enabled?) {should == true}
+    describe 'one_off' do
+      let(:custom_intervention){'one_off'}
+      its(:custom_interventions_enabled?) {should == true}
 
-       describe 'content_admin' do
-         let(:role) {"content_admin"}
-         its(:custom_interventions_enabled?) {should == true}
-       end
-     end
+      describe 'content_admin' do
+        let(:role) {"content_admin"}
+        its(:custom_interventions_enabled?) {should == true}
+      end
+    end
 
-     describe 'enabled' do
-       let(:custom_intervention){''}
-       its(:custom_interventions_enabled?) {should == true}
+    describe 'enabled' do
+      let(:custom_intervention){''}
+      its(:custom_interventions_enabled?) {should == true}
 
-       describe 'content_admin' do
-         let(:role) {"content_admin"}
-         its(:custom_interventions_enabled?) {should == true}
-       end
-     end
-   end
+      describe 'content_admin' do
+        let(:role) {"content_admin"}
+        its(:custom_interventions_enabled?) {should == true}
+      end
+    end
+  end
 end

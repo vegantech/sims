@@ -118,16 +118,16 @@ describe "Populate Intervention Dropdowns Module" do
     end
   end
 
-   describe 'populate_intervention' do
-     it 'should add intervention_definition to params[:intervention]' do
-       self.should_receive(:build_from_session_and_params)
-       self.should_receive(:find_intervention_definition)
-       params[:intervention][:intervention_definition].should be_nil
-       @intervention_definition = "test"
-       @intervention_definition.should_receive(:active_progress_monitors).and_return([])
-       current_school.should_receive(:assigned_users).and_return([])
-       populate_intervention
-       params[:intervention][:intervention_definition].should == "test"
-     end
-   end
+  describe 'populate_intervention' do
+    it 'should add intervention_definition to params[:intervention]' do
+      self.should_receive(:build_from_session_and_params)
+      self.should_receive(:find_intervention_definition)
+      params[:intervention][:intervention_definition].should be_nil
+      @intervention_definition = "test"
+      @intervention_definition.should_receive(:active_progress_monitors).and_return([])
+      current_school.should_receive(:assigned_users).and_return([])
+      populate_intervention
+      params[:intervention][:intervention_definition].should == "test"
+    end
+  end
 end

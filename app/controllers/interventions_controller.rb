@@ -101,9 +101,9 @@ class InterventionsController < ApplicationController
 
   def end
   @intervention.end(current_user.id, params[:end_reason], params[:fidelity])
-     respond_to do |format|
-      format.html { redirect_to(current_student) }
-    end
+  respond_to do |format|
+   format.html { redirect_to(current_student) }
+ end
   end
 
   def undo_end

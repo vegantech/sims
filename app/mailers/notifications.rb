@@ -107,14 +107,14 @@ class Notifications < MailerWithSubdomains
         intervention.participants_with_author.each{|p| users_with_interventions[p.user] |= [intervention] if p.user && intervention.student.belongs_to_user?(p.user)}
       end
     end
-      users_with_interventions.each do |user,interventions|
-        begin
-        self.intervention_ending_reminder(user,interventions).deliver
-        rescue => e
-          errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
-        end
+    users_with_interventions.each do |user,interventions|
+      begin
+      self.intervention_ending_reminder(user,interventions).deliver
+      rescue => e
+        errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
       end
-      puts errors.inspect unless errors.blank?
+    end
+    puts errors.inspect unless errors.blank?
   end
 
   def self.interventions_ending_this_week

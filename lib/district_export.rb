@@ -121,12 +121,12 @@ class DistrictExport
 
   def export_content_csv
    @assets= Hash.new{|h, k| h[k] = []}
-    CONTENT_ONLY.each do |t|
-        cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
-        cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
-        self.generate_content_csv(t.to_s,cols,
-                                  district.send(t).content_export.select(cols_with_table_name).to_sql)
-    end
+   CONTENT_ONLY.each do |t|
+       cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
+       cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
+       self.generate_content_csv(t.to_s,cols,
+                                 district.send(t).content_export.select(cols_with_table_name).to_sql)
+   end
   end
 
   def export_content

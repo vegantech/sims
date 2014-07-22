@@ -89,10 +89,10 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       where schools.district_id = #{@district.id} and users.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !='' and users.district_user_id !=''
       "
 
-extra ="      where not exists (
-        select 1 from #{temporary_table_name} tug
-        where tug.district_user_id = users.district_user_id and tug.district_group_id = groups.district_group_id)
-      )"
+      extra ="      where not exists (
+              select 1 from #{temporary_table_name} tug
+              where tug.district_user_id = users.district_user_id and tug.district_group_id = groups.district_group_id)
+            )"
       UserGroupAssignment.connection.update query
     end
 

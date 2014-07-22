@@ -77,7 +77,7 @@ class GroupedProgressEntriesController < ApplicationController
     respond_to do |format|
       format.html do
         flash[:notice]='Record not found. Try redoing the search'
-          redirect_to root_url
+        redirect_to root_url
       end
       format.js {render nothing: true}
     end

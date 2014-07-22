@@ -9,30 +9,30 @@ describe ImportCSV do
         @all_files = @files + @append_files
     end
 
-      it 'each should have a file_name assigned' do
-        @files.uniq.size.should == @files.size
-      end
+    it 'each should have a file_name assigned' do
+      @files.uniq.size.should == @files.size
+    end
 
-      it 'each should have a csv file in empty' do
-        files_present = Dir.glob("public/district_upload/empty/*.csv").collect{|e| e.split("/").last }
-        (@all_files - files_present).should == []
-      end
+    it 'each should have a csv file in empty' do
+      files_present = Dir.glob("public/district_upload/empty/*.csv").collect{|e| e.split("/").last }
+      (@all_files - files_present).should == []
+    end
 
-      it 'each should have a csv file in sample' do
-        files_present = Dir.glob("public/district_upload/sample/*.csv").collect{|e| e.split("/").last }
+    it 'each should have a csv file in sample' do
+      files_present = Dir.glob("public/district_upload/sample/*.csv").collect{|e| e.split("/").last }
 #        pending(" missing #{(@files - files_present).join(', ')}")
-        (@all_files - files_present).should == []
-      end
+      (@all_files - files_present).should == []
+    end
 
-      it 'should have zip file containing all the empty csvs' do
-        zip_files =`unzip -Z1 public/district_upload/empty/empty.zip`.split("\n")
-        (@all_files - zip_files).should == []
-      end
-      it 'should have zip file containing all the sample csvs' do
-        zip_files =`unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
-        (zip_files & ['ext_test_scores_append.csv', 'ext_test_scores_appends.csv']).should_not be_empty
-        (@all_files - zip_files).should == []
-      end
+    it 'should have zip file containing all the empty csvs' do
+      zip_files =`unzip -Z1 public/district_upload/empty/empty.zip`.split("\n")
+      (@all_files - zip_files).should == []
+    end
+    it 'should have zip file containing all the sample csvs' do
+      zip_files =`unzip -Z1 public/district_upload/sample/sample.zip`.split("\n")
+      (zip_files & ['ext_test_scores_append.csv', 'ext_test_scores_appends.csv']).should_not be_empty
+      (@all_files - zip_files).should == []
+    end
   end
   describe 'invalid file' do
     it 'should return messages' do

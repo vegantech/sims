@@ -51,7 +51,7 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
     if field == "enter_view_score_link"
       i_id =  @student.interventions.first.id.to_s
 
-     page.visit "/interventions/#{i_id}/probe_assignments?probe_definition_id=#{ ProbeDefinition.first.id}&format=js"
+      page.visit "/interventions/#{i_id}/probe_assignments?probe_definition_id=#{ ProbeDefinition.first.id}&format=js"
     else
       fail
     end

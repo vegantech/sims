@@ -18,14 +18,14 @@ module Stats::User
     or consultation_form_requests.created_at <=?)"
       }
 
-      define_calculated_statistic :users_in_use  do
-        stats_in_use(@filters).count
-      end
+    define_calculated_statistic :users_in_use  do
+      stats_in_use(@filters).count
+    end
 
-      define_calculated_statistic :districts_with_users_in_use  do
-        stats_in_use(@filters).count("distinct district_id")
-      end
+    define_calculated_statistic :districts_with_users_in_use  do
+      stats_in_use(@filters).count("distinct district_id")
+    end
 
-      define_statistic :user_accounts, count: :all, conditions: "username != 'district_admin'"
+    define_statistic :user_accounts, count: :all, conditions: "username != 'district_admin'"
   end
 end

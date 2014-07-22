@@ -32,9 +32,9 @@ module District::Settings
   end
 
   private
-    def default_settings_to_hash
-      self[:settings] ||= {}
-      self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
-    end
+  def default_settings_to_hash
+    self[:settings] ||= {}
+    self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
+  end
 end
 

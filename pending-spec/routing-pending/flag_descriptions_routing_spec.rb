@@ -18,13 +18,13 @@ describe FlagDescriptionsController do
       route_for(controller: "flag_descriptions", action: "edit", id: "1").should == "/flag_descriptions/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "flag_descriptions", action: "create").should == {path: "/flag_descriptions", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "flag_descriptions", action: "create").should == {path: "/flag_descriptions", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "flag_descriptions", action: "update", id: "1").should == {path: "/flag_descriptions/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "flag_descriptions", action: "update", id: "1").should == {path: "/flag_descriptions/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "flag_descriptions", action: "destroy", id: "1").should == {path: "/flag_descriptions/1", method: :delete}

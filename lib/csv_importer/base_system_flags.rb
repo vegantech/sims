@@ -89,9 +89,9 @@ module CSVImporter
       ActiveRecord::Base.connection.update query
     end
 
-   def confirm_count?
-     return true
-   end
+    def confirm_count?
+      return true
+    end
   end
 
   Flag::FLAGTYPES.keys.each do |key|

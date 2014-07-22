@@ -35,7 +35,7 @@ class AutomatedIntervention
     lines = CSV.read(@file, ImportCSV::DEFAULT_CSV_OPTS)
     lines.each do |line|
       next  if line[0] =~  /^-+|\(\d+ rows affected\)$/
-        process_row line
+      process_row line
     end
 
     @messages << "#{@count} interventions added"

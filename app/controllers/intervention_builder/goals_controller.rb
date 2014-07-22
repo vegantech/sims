@@ -96,7 +96,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
   end
 
   protected
-    def move_path(obj,direction)
-      move_intervention_builder_goal_path(obj,direction: direction)
-    end
+  def move_path(obj,direction)
+    move_intervention_builder_goal_path(obj,direction: direction)
+  end
 end

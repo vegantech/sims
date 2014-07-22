@@ -74,12 +74,12 @@ class District::StudentsController < ApplicationController
 
   def claim
     @student = Student.find(params[:id])
-     res,msg= current_district.claim(@student)
-       flash[:notice] = msg.html_safe
-     if res
-       redirect_to edit_district_student_url(@student)
-     else
-       redirect_to :back
-     end
+    res,msg= current_district.claim(@student)
+    flash[:notice] = msg.html_safe
+    if res
+      redirect_to edit_district_student_url(@student)
+    else
+      redirect_to :back
+    end
   end
 end

@@ -97,7 +97,7 @@ module CSVImporter
       and users.district_user_id != '' and schools.district_school_id is not null
       "
 
-     SpecialUserGroup.connection.update query
+      SpecialUserGroup.connection.update query
     end
 
     def insert
@@ -113,14 +113,14 @@ module CSVImporter
       SpecialUserGroup.connection.update query
     end
 
-  def self.autoassign_user_school_assignments(_district)
-    finder_sql = select( 'special_user_groups.school_id, special_user_groups.user_id').joins(
-      "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = special_user_groups.school_id
-      inner join users on special_user_groups.user_id = users.id ").group(
-      "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
-     query= "insert into user_school_assignments (school_id,user_id) select uug.school_id,uug.user_id from(#{finder_sql}) uug"
-     SpecialUserGroup.connection.update query
-  end
+    def self.autoassign_user_school_assignments(_district)
+      finder_sql = select( 'special_user_groups.school_id, special_user_groups.user_id').joins(
+        "left outer join user_school_assignments uga on uga.user_id = special_user_groups.user_id and uga.school_id = special_user_groups.school_id
+        inner join users on special_user_groups.user_id = users.id ").group(
+        "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
+      query= "insert into user_school_assignments (school_id,user_id) select uug.school_id,uug.user_id from(#{finder_sql}) uug"
+      SpecialUserGroup.connection.update query
+    end
 
     def after_import
      sum=autoassign_user_school_assignments
@@ -134,8 +134,8 @@ module CSVImporter
         and uga.school_id = special_user_groups.school_id").select(
         "special_user_groups.school_id, special_user_groups.user_id").group(
         "special_user_groups.school_id, special_user_groups.user_id").where('uga.id' => nil).to_sql
-        query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
-        SpecialUserGroup.connection.update query
+      query= "insert into user_school_assignments (school_id,user_id) #{finder_sql}"
+      SpecialUserGroup.connection.update query
     end
   end
 end

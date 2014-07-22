@@ -36,7 +36,7 @@ end
 
 Given /^"([^\"]*)" should have "([^\"]*)" users*$/ do |district_name, num_users|
   district =  District.find_by_name(district_name)
-   district.users.count.should == num_users.to_i
+  district.users.count.should == num_users.to_i
 end
 
 Then /^the command should have failed$/ do
@@ -159,8 +159,8 @@ end
 
 Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, bool|
   all=Student.find_all_by_last_name(name)
-    wrong=all.select{|s| s.esl !=eval(bool) || s.special_ed !=eval(bool)}
-    wrong.should == []
+  wrong=all.select{|s| s.esl !=eval(bool) || s.special_ed !=eval(bool)}
+  wrong.should == []
 end
 
 When /^I enter all csv urls$/ do

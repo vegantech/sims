@@ -18,13 +18,13 @@ describe SchoolTeamsController do
       route_for(controller: "school_teams", action: "edit", id: "1").should == "/school_teams/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "school_teams", action: "create").should == {path: "/school_teams", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "school_teams", action: "create").should == {path: "/school_teams", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "school_teams", action: "update", id: "1").should == {path: "/school_teams/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "school_teams", action: "update", id: "1").should == {path: "/school_teams/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "school_teams", action: "destroy", id: "1").should == {path: "/school_teams/1", method: :delete}

@@ -18,13 +18,13 @@ describe TiersController do
       route_for(controller: "tiers", action: "edit", id: "1").should == "/tiers/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "tiers", action: "create").should == {path: "/tiers", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "tiers", action: "create").should == {path: "/tiers", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "tiers", action: "update", id: "1").should == {path: "/tiers/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "tiers", action: "update", id: "1").should == {path: "/tiers/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "tiers", action: "destroy", id: "1").should == {path: "/tiers/1", method: :delete}

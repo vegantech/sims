@@ -18,13 +18,13 @@ describe TeamConsultationsController do
       route_for(controller: "team_consultations", action: "edit", id: "1").should == "/team_consultations/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "team_consultations", action: "create").should == {path: "/team_consultations", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "team_consultations", action: "create").should == {path: "/team_consultations", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "team_consultations", action: "update", id: "1").should == {path: "/team_consultations/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "team_consultations", action: "update", id: "1").should == {path: "/team_consultations/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "team_consultations", action: "destroy", id: "1").should == {path: "/team_consultations/1", method: :delete}

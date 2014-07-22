@@ -23,15 +23,15 @@ module CSVImporter
         end
       end
 
-      @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
-      status_count = []
-      status_count << "\nCreated- #{@created}" if @created
-      status_count << "Deleted- #{@deleted}" if @deleted
-      status_count << "Updated- #{@updated}" if @updated
+     @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?
+     status_count = []
+     status_count << "\nCreated- #{@created}" if @created
+     status_count << "Deleted- #{@deleted}" if @deleted
+     status_count << "Updated- #{@updated}" if @updated
 
-      @messages << status_count.compact.join("; ") unless status_count.compact.blank?
-      @messages << @other_messages unless @other_messages.blank?
-      @messages.compact.join(", ")
+     @messages << status_count.compact.join("; ") unless status_count.compact.blank?
+     @messages << @other_messages unless @other_messages.blank?
+     @messages.compact.join(", ")
     end
 
     class << self
@@ -96,18 +96,18 @@ module CSVImporter
 
     protected
 
-  def temporary_table_name
-    "#{self.class.name.demodulize.tableize}_#{@district.id}_importer"
-  end
-
-  def confirm_count?
-    if @line_count > 0
-      true
-    else
-      @messages << 'File size below threshold'
-      false
+    def temporary_table_name
+      "#{self.class.name.demodulize.tableize}_#{@district.id}_importer"
     end
-  end
+
+    def confirm_count?
+      if @line_count > 0
+        true
+      else
+        @messages << 'File size below threshold'
+        false
+      end
+    end
 
     def clean_file
       @line_count = 0

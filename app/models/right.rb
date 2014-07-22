@@ -50,7 +50,7 @@ RIGHTS={
                                 "districts",
                                 "district/students"]}
 
-  def self.cache_key
-    Digest::MD5.hexdigest(RIGHTS.inspect)
-  end
+def self.cache_key
+  Digest::MD5.hexdigest(RIGHTS.inspect)
+end
 end

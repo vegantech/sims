@@ -210,10 +210,10 @@ module CSVImporter
       # :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
       # end
        updates=csv_headers.collect{|e| "s.#{e} = ts.#{e}"}.join(", ")
-      q="update students s inner join #{temporary_table_name} ts on
-          ts.district_student_id = s.district_student_id set s.updated_at = CURDATE(), #{updates}
-          where s.district_id = #{@district.id} and s.district_student_id is not null"
-      @updated=ActiveRecord::Base.connection.update(q)
+       q="update students s inner join #{temporary_table_name} ts on
+           ts.district_student_id = s.district_student_id set s.updated_at = CURDATE(), #{updates}
+           where s.district_id = #{@district.id} and s.district_student_id is not null"
+       @updated=ActiveRecord::Base.connection.update(q)
     end
 
     def delete
@@ -228,8 +228,8 @@ module CSVImporter
           ts.district_student_id = s.district_student_id set s.district_id = null
           where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null and s.district_student_id != ''"
 
-      removed=ActiveRecord::Base.connection.update(q)
-      @other_messages << "#{removed} students removed from district; "
+       removed=ActiveRecord::Base.connection.update(q)
+       @other_messages << "#{removed} students removed from district; "
 
       #      @messages << 'Shawn still needs to prune the existing students that are not in districts'
 
@@ -247,7 +247,7 @@ module CSVImporter
       "
       )
 
-     @created = ActiveRecord::Base.connection.update(query)
+      @created = ActiveRecord::Base.connection.update(query)
     end
 
     def confirm_count?

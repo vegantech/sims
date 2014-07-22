@@ -18,13 +18,13 @@ describe ConsultationFormsController do
       route_for(controller: "consultation_forms", action: "edit", id: "1").should == "/consultation_forms/1/edit"
     end
 
-  it "maps #create" do
-    route_for(controller: "consultation_forms", action: "create").should == {path: "/consultation_forms", method: :post}
-  end
+    it "maps #create" do
+      route_for(controller: "consultation_forms", action: "create").should == {path: "/consultation_forms", method: :post}
+    end
 
-  it "maps #update" do
-    route_for(controller: "consultation_forms", action: "update", id: "1").should == {path: "/consultation_forms/1", method: :put}
-  end
+    it "maps #update" do
+      route_for(controller: "consultation_forms", action: "update", id: "1").should == {path: "/consultation_forms/1", method: :put}
+    end
   
     it "maps #destroy" do
       route_for(controller: "consultation_forms", action: "destroy", id: "1").should == {path: "/consultation_forms/1", method: :delete}

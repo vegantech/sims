@@ -46,7 +46,7 @@ end
 
 Then /^I should see the completed checklist$/ do
   URI.parse(current_url).path.should == checklist_path(@checklist)
-    pending # express the regexp above with the code you wish you had
+  pending # express the regexp above with the code you wish you had
 end
 
 When /^I edit the checklist$/ do

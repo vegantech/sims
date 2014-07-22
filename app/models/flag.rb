@@ -16,82 +16,82 @@
 class Flag < ActiveRecord::Base
 	ORDERED_TYPE_KEYS = %w{attendance suspension math languagearts science socialstudies gifted ignored custom}
 
-  TYPES = {
-      "attendance" => {icon: "A.gif", humanize: "Attendance",
-                       how_often_to_upload: "If using this flag, needs to be done daily or weekly to be effective."
-                      },
-      "suspension" => {icon: "B.gif", humanize: "Behavior",
-                       how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "math" => {icon: "M.gif", humanize: "Math",
-                 how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "languagearts" => {icon: "LA.gif", humanize: "Language Arts",
-                         how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "science" => {icon: "Beaker.png", humanize: "Science",
-                    how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "socialstudies" => {icon: "world_edit.png", humanize: "Social Studies",
-                          how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "gifted" => {icon: "lightbulb.png", humanize: "Gifted/Talented",
+ TYPES = {
+     "attendance" => {icon: "A.gif", humanize: "Attendance",
+                      how_often_to_upload: "If using this flag, needs to be done daily or weekly to be effective."
+                     },
+     "suspension" => {icon: "B.gif", humanize: "Behavior",
+                      how_often_to_upload:                       "As soon as possible after availability.
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "math" => {icon: "M.gif", humanize: "Math",
+                how_often_to_upload:                       "As soon as possible after availability.
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "languagearts" => {icon: "LA.gif", humanize: "Language Arts",
+                        how_often_to_upload:                       "As soon as possible after availability.
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "science" => {icon: "Beaker.png", humanize: "Science",
                    how_often_to_upload:                       "As soon as possible after availability.
-          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-                      },
-      "ignored" => {icon: "I.gif", humanize: "Ignored"},
-      "custom" => {icon: "C.gif", humanize: "Custom"}
-    }
-  ORDERED_HUMANIZED_ALL=ORDERED_TYPE_KEYS.collect{|e| TYPES[e][:humanize]}
-  ORDERED_HUMANIZED_TYPES=ORDERED_HUMANIZED_ALL[0..-3]
-  FLAGTYPES= TYPES.reject{|i,_j| i=="custom" || i=="ignored"}
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "socialstudies" => {icon: "world_edit.png", humanize: "Social Studies",
+                         how_often_to_upload:                       "As soon as possible after availability.
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "gifted" => {icon: "lightbulb.png", humanize: "Gifted/Talented",
+                  how_often_to_upload:                       "As soon as possible after availability.
+         (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
+                     },
+     "ignored" => {icon: "I.gif", humanize: "Ignored"},
+     "custom" => {icon: "C.gif", humanize: "Custom"}
+   }
+ ORDERED_HUMANIZED_ALL=ORDERED_TYPE_KEYS.collect{|e| TYPES[e][:humanize]}
+ ORDERED_HUMANIZED_TYPES=ORDERED_HUMANIZED_ALL[0..-3]
+ FLAGTYPES= TYPES.reject{|i,_j| i=="custom" || i=="ignored"}
 
-  belongs_to :student, touch: true
-  belongs_to :user
-  belongs_to :district
-  validates_presence_of :category, :reason, :type
-  validates_inclusion_of :category, in: FLAGTYPES.keys
+ belongs_to :student, touch: true
+ belongs_to :user
+ belongs_to :district
+ validates_presence_of :category, :reason, :type
+ validates_inclusion_of :category, in: FLAGTYPES.keys
 
-  scope :custom, where(type: 'CustomFlag')
-  scope :ignore, where(type: 'IgnoreFlag')
-  scope :system, where(type: 'SystemFlag')
-  scope :exclude_ignored, joins( "left outer join flags ig_flags on ig_flags.type = 'IgnoreFlag'
-    and ig_flags.student_id = flags.student_id and ig_flags.category = flags.category").where(
-    "ig_flags.id is null")
-  def summary
-    "#{reason}- by #{user} on #{created_at.to_s(:report)}"
-  end
+ scope :custom, where(type: 'CustomFlag')
+ scope :ignore, where(type: 'IgnoreFlag')
+ scope :system, where(type: 'SystemFlag')
+ scope :exclude_ignored, joins( "left outer join flags ig_flags on ig_flags.type = 'IgnoreFlag'
+   and ig_flags.student_id = flags.student_id and ig_flags.category = flags.category").where(
+   "ig_flags.id is null")
+ def summary
+   "#{reason}- by #{user} on #{created_at.to_s(:report)}"
+ end
 
-  def icon
-    TYPES[self.category][:icon]
-  end
+ def icon
+   TYPES[self.category][:icon]
+ end
 
-  def self.summary
-    all.collect(&:summary)
-  end
+ def self.summary
+   all.collect(&:summary)
+ end
 
-  def self.current
-    exclude_ignored.group_by(&:category)
-  end
+ def self.current
+   exclude_ignored.group_by(&:category)
+ end
 
-  def self.ordered_for_report
-    all.sort_by{|g| Flag::ORDERED_HUMANIZED_ALL.index(g.category) || 999 }
-  end
+ def self.ordered_for_report
+   all.sort_by{|g| Flag::ORDERED_HUMANIZED_ALL.index(g.category) || 999 }
+ end
 
-  def self.grouped_for_report
-    ordered_for_report.group_by{|f| f[:type]}.sort_by{|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g[0]) || 999 }
-  end
+ def self.grouped_for_report
+   ordered_for_report.group_by{|f| f[:type]}.sort_by{|g| ['SystemFlag', 'CustomFlag', 'IgnoreFlag'].index(g[0]) || 999 }
+ end
 
-  def humanized_category
-    Flag::TYPES[category][:humanize]
-  end
+ def humanized_category
+   Flag::TYPES[category][:humanize]
+ end
 
-  def self.humanized_categories
-    all.collect(&:humanized_category).join(", ")
-  end
+ def self.humanized_categories
+   all.collect(&:humanized_category).join(", ")
+ end
 end

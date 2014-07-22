@@ -22,7 +22,7 @@ Then /^I should have a student_id cookie$/ do
     .driver
     .request
     .cookies
-    my_cookies["selected_student"].should == cucumber_student.id.to_s
+  my_cookies["selected_student"].should == cucumber_student.id.to_s
 end
 
 

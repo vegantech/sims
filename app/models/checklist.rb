@@ -59,31 +59,31 @@ class Checklist < ActiveRecord::Base
     end
   end
 
-   def status
-     @deletable=true
-     if is_draft? then
-       STATUS[:draft]
-     elsif needs_recommendation?
-       @needs_recommendation=true
-       STATUS[:missing_rec]
-     elsif recommendation_definition_id.blank?
-       STATUS[:optional_checklist]
-     else
-       @deletable=false
-       recommendation.status
-     end
-   end
+  def status
+    @deletable=true
+    if is_draft? then
+      STATUS[:draft]
+    elsif needs_recommendation?
+      @needs_recommendation=true
+      STATUS[:missing_rec]
+    elsif recommendation_definition_id.blank?
+      STATUS[:optional_checklist]
+    else
+      @deletable=false
+      recommendation.status
+    end
+  end
 
-   def pending?
-     previous_checklist and (previous_checklist.is_draft? or previous_checklist.needs_recommendation?)
-   end
+  def pending?
+    previous_checklist and (previous_checklist.is_draft? or previous_checklist.needs_recommendation?)
+  end
 
-   def missing_checklist_definition?
-      checklist_definition.blank?
-   end
+  def missing_checklist_definition?
+     checklist_definition.blank?
+  end
 
-   def self.max_tier
-   end
+  def self.max_tier
+  end
 
   def self.new_from_teacher(teacher)
     #this builds a new checklist and scores it by copying the old values?

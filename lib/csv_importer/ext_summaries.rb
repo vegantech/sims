@@ -110,25 +110,25 @@ module CSVImporter
     def migration t
       t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :home_language, :string
-     t.column :street_address, :string
-     t.column :city_state_zip, :string
-     t.column :meal_status, :string
-     t.column :english_proficiency, :string
-     t.column :special_ed_status, :string
-     t.column :disability1, :string
-     t.column :disability2, :string
-     t.column :single_parent, :boolean
-     t.column :race_ethnicity, :string
-     t.column :suspensions_in, :integer
-     t.column :suspensions_out, :integer
-     t.column :years_in_district, :integer
-     t.column :school_changes, :integer
-     t.column :years_at_current_school, :integer
-     t.column :previous_school_name, :string
-     t.column :current_attendance_rate, :float
-     t.column :previous_attendance_rate, :float
-     t.column :esl, :boolean
-     t.column :tardies, :integer
+      t.column :street_address, :string
+      t.column :city_state_zip, :string
+      t.column :meal_status, :string
+      t.column :english_proficiency, :string
+      t.column :special_ed_status, :string
+      t.column :disability1, :string
+      t.column :disability2, :string
+      t.column :single_parent, :boolean
+      t.column :race_ethnicity, :string
+      t.column :suspensions_in, :integer
+      t.column :suspensions_out, :integer
+      t.column :years_in_district, :integer
+      t.column :school_changes, :integer
+      t.column :years_at_current_school, :integer
+      t.column :previous_school_name, :string
+      t.column :current_attendance_rate, :float
+      t.column :previous_attendance_rate, :float
+      t.column :esl, :boolean
+      t.column :tardies, :integer
      
   end
 
@@ -160,9 +160,9 @@ module CSVImporter
       ActiveRecord::Base.connection.update query
     end
 
-   def confirm_count?
-     return true
-   end
+    def confirm_count?
+      return true
+    end
  
   end
 end
