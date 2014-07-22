@@ -1,5 +1,5 @@
 module Duration
-  include ActionView::Helpers::TextHelper #for pluralize
+  include ActionView::Helpers::TextHelper # for pluralize
   extend ActiveSupport::Concern
 
   included do

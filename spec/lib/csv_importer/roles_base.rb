@@ -48,6 +48,6 @@ shared_context "role importer"  do
     @other_user3.reload.roles.sort.should == [role].sort
 
   end
-  #end
+  # end
 
 end

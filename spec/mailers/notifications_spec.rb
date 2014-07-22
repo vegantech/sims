@@ -6,7 +6,7 @@ describe Notifications do
 #  include ActionMailer::Quoting
 
   before do
-    #TODO REDO THE TESTS
+    # TODO REDO THE TESTS
 
         # You don't need these lines while you are using create_ instead of deliver_
     #     #ActionMailer::Base.delivery_method = :test
@@ -48,7 +48,7 @@ describe Notifications do
 
   it 'test_intervention_ending_reminder' do
     pending
-    #be sure to test conditions where the  author, or participant no longer exists
+    # be sure to test conditions where the  author, or participant no longer exists
     @expected.subject = 'Notifications#intervention_ending_reminder'
     @expected.body    = read_fixture('intervention_ending_reminder')
     @expected.date    = Time.now

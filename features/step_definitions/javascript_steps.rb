@@ -19,16 +19,16 @@ Given /^Go to the training20^/ do
 end
 
 When /^Check what's new^/ do
-  #what's new should not be visible
-  #click what's new
-  ##what's new should be visible
+  # what's new should not be visible
+  # click what's new
+  # #what's new should be visible
   #
 end
 
 When /^Check Help Popup^/ do
-  #mouse over help ?
-  #confirm text
-  #mouseoff help?
+  # mouse over help ?
+  # confirm text
+  # mouseoff help?
 end
 
 

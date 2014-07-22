@@ -43,7 +43,7 @@ class Recommendation < ActiveRecord::Base
   after_initialize :setup_from_checklist_or_definition
   accepts_nested_attributes_for :recommendation_answers
 
-   #there's a custom sort for this in the checklist helper
+   # there's a custom sort for this in the checklist helper
   RECOMMENDATION={
     0=>{text: "The student made progress and no longer requires intervention.", readonly: true},
     1 =>{text: "The student is making progress; choose new interventions from the next level; continue to monitor progress.",promote: true},

@@ -1,5 +1,5 @@
 def cucumber_district
-  #switch out default district with this
+  # switch out default district with this
   @cucumber_district ||= District.delete_all && Factory(:district, name: "Cucumber")
 end
 

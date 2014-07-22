@@ -22,7 +22,7 @@ describe InterventionsController do
   end
 
   describe 'index' do
-    #LH 464
+    # LH 464
     it 'should redirect to the root_url' do
       get :index
       response.should redirect_to(root_url)

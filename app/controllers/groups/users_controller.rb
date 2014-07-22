@@ -2,7 +2,7 @@ class Groups::UsersController < Groups::AssignmentsController
   def new
     @users = current_school.assigned_users
     @user_assignment = @group.user_group_assignments.build
-    #need to handle special user groups as well
+    # need to handle special user groups as well
     respond_to do |format|
       format.js {}
     end

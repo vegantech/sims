@@ -53,7 +53,7 @@ class ScriptedController < ApplicationController
         x=Benchmark.measure{importer.import}
 
         @results = "#{importer.messages.join(", ")} #{x}"
-        #request redirect_to root_url
+        # request redirect_to root_url
       end
       render layout: false
     else

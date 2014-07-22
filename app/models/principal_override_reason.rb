@@ -10,7 +10,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #
-#Used in proudction so far by MMSD
+# Used in proudction so far by MMSD
 
 class PrincipalOverrideReason < ActiveRecord::Base
   belongs_to :district

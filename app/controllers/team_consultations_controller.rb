@@ -39,7 +39,7 @@ class TeamConsultationsController < ApplicationController
   def create
     params[:team_consultation] ||= {}
     params[:team_consultation].merge!(student_id: current_student_id, requestor_id: current_user.id)
-    params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   #the js in the view stopped working?
+    params[:team_consultation][:draft] = true if params[:commit] == "Save as Draft"   # the js in the view stopped working?
     @team_consultation = TeamConsultation.new(params[:team_consultation])
 
     respond_to do |format|
@@ -63,7 +63,7 @@ class TeamConsultationsController < ApplicationController
   # PUT /team_consultations/1.xml
   def update
     @team_consultation = TeamConsultation.find(params[:id])
-    params[:team_consultation][:draft] = false if params[:commit] == "Save"   #the js in the view does not work in ff
+    params[:team_consultation][:draft] = false if params[:commit] == "Save"   # the js in the view does not work in ff
 
     respond_to do |format|
       if @team_consultation.update_attributes(params[:team_consultation])

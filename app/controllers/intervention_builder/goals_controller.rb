@@ -47,7 +47,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
 
     respond_to do |format|
       if @goal_definition.save
-        #update_attributes(params[:goal_definition])
+        # update_attributes(params[:goal_definition])
         flash[:notice] = 'Goal was successfully updated.'
         format.html { redirect_to intervention_builder_goals_url }
       else

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe 'ConsultationFormBuilder', type: :helper do
 
   before do
-    #elper = Object.new.extend ActionView::Helpers::FormHelper
+    # elper = Object.new.extend ActionView::Helpers::FormHelper
     @object = mock_consultation_form :show_asset_info? => false
     @template =  helper
     @builder = ConsultationFormBuilder.new(:consultation_form, @object, self, {}, nil)

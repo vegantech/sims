@@ -169,6 +169,6 @@ describe StudentsController do
 
   end
 
-  #controller.should_receive(:group_users).and_return([])
+  # controller.should_receive(:group_users).and_return([])
   #     controller.should_receive(:student_groups).and_return([])
 end

@@ -10,7 +10,7 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   render_views
-  #Delete this example and add some real ones
+  # Delete this example and add some real ones
   it "should use ChecklistBuilder::ChecklistsController" do
     controller.should be_an_instance_of(ChecklistBuilder::ChecklistsController)
   end

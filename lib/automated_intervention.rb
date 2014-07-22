@@ -72,7 +72,7 @@ class AutomatedIntervention
 
       if line[:score].present?
         probe=intervention.intervention_probe_assignment.probes.build(score: line[:score], administered_at: line[:start_date])
-        max = pd.maximum_score || (1.0/0) #infinity
+        max = pd.maximum_score || (1.0/0) # infinity
         min = pd.minimum_score || (-1.0/0) #-infinity
 
         unless probe.score.between?(max,min)

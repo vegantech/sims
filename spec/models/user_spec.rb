@@ -217,7 +217,7 @@ describe User do
   describe 'roles' do
     it 'should test roles'
     it 'should assign the role when added with +=' do
-      #also tests =
+      # also tests =
       u=User.new
       u.roles_mask.should == 0
       u.roles += [Role::ROLES.first]
@@ -321,7 +321,7 @@ describe User do
     end
 
     it 'should set all_students on a matching user_school_assignment' do
-      #lh
+      # lh
       @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '1', admin: false, all_students: "true"}])
       @e1.reload.all_students.should be_true
       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', id: @e1.id.to_s, admin: false, all_students: "false"}])

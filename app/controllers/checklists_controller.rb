@@ -10,7 +10,7 @@ class ChecklistsController < ApplicationController
 
   # GET /checklists/new
   def new
-    @checklist = current_student.checklists.new_from_teacher(current_user) #imports the latest checklist if available
+    @checklist = current_student.checklists.new_from_teacher(current_user) # imports the latest checklist if available
     if @checklist.can_build?
       respond_to do |format|
         format.html # new.html.erb
@@ -45,7 +45,7 @@ class ChecklistsController < ApplicationController
   # POST /checklists
   # POST /checklists.xml
   def create
-    #FIXME should be skinnier model
+    # FIXME should be skinnier model
     @checklist = current_student.checklists.build(params.slice("commit","save_draft","element_definition"))
     @checklist.teacher = current_user
 

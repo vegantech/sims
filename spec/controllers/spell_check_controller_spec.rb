@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SpellCheckController do
 
-  #Delete these examples and add some real ones
+  # Delete these examples and add some real ones
   it "should use ScriptedController" do
     controller.should be_an_instance_of(SpellCheckController)
   end
@@ -15,7 +15,7 @@ describe SpellCheckController do
       post 'index'
       #      response.body.should match(/?xml version=\"1.0\"?>\n<spellresult error=\"1\"><c o=\"0\" l=\"4\" s=\"1\">wrong/)
       #      response.body.should match(/wronged/)
-      #twrung\twring\tWang\tWong</c>\t<c o=\"5\" l=\"7\" s=\"1\">wrong id\twrong-id\twronged\twrongs\twrong\twronging\tranged\tpronged\twronger\twrongdoer\twrongly\trigid\tringgit\twrongest\tringed\ttonged\treneged\trinked\twrung\twrangled\trouged\tRonald\tbonged\tdonged\tgonged\tlonged\tponged\trancid\tranked\tthronged\tpranged</c></spellresult>"
+      # twrung\twring\tWang\tWong</c>\t<c o=\"5\" l=\"7\" s=\"1\">wrong id\twrong-id\twronged\twrongs\twrong\twronging\tranged\tpronged\twronger\twrongdoer\twrongly\trigid\tringgit\twrongest\tringed\ttonged\treneged\trinked\twrung\twrangled\trouged\tRonald\tbonged\tdonged\tgonged\tlonged\tponged\trancid\tranked\tthronged\tpranged</c></spellresult>"
     end
   end
 

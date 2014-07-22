@@ -157,7 +157,7 @@ describe Checklist do
   end
 
   it 'test_new_from_student_and_teacher' do
-    #Empty Checklists
+    # Empty Checklists
       pending
     Checklist.destroy_all
     Answer.destroy_all
@@ -182,10 +182,10 @@ describe Checklist do
     assert !@checklist.answers.blank?
     assert !@checklist.show_score?
 
-    #should test this with existing checklists
-    #1. most recent one is scorable  (has score and answers)
-    #2. most recent one passed (no score, should import answers)
-    #3. most one is not scorable (no score should import answers)
+    # should test this with existing checklists
+    # 1. most recent one is scorable  (has score and answers)
+    # 2. most recent one passed (no score, should import answers)
+    # 3. most one is not scorable (no score should import answers)
 
     end
 
@@ -196,7 +196,7 @@ describe Checklist do
         checklist=Checklist.new_from_student_and_teacher(@student,@teacher,import_previous_answers,score)
         assert_validity checklist, message: "invalid #{message}"
         assert (score or checklist.score_results.blank?) , message
-        #checkist should not have score results unless score is true
+        # checkist should not have score results unless score is true
         assert checklist.is_draft?,message
         assert !checklist.promoted ,message
         yield checklist,score,import_previous_answers if block
@@ -204,7 +204,7 @@ describe Checklist do
   
     end
 
-  #creating passing checklist (with recommendation and test more)
+  # creating passing checklist (with recommendation and test more)
 end
 
   it 'test_new_from_params_and_teacher' do
@@ -220,7 +220,7 @@ end
     }
     }
 
-    #@chk=Checklist.new_from_params_and_teacher(params,@teacher)
+    # @chk=Checklist.new_from_params_and_teacher(params,@teacher)
    # assert_equal 3,@chk.answers.count
 
    # @chk.save!

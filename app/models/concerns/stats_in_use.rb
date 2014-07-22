@@ -1,7 +1,7 @@
 module StatsInUse
   extend ActiveSupport::Concern
   module ClassMethods
-    #combined
+    # combined
     def stats_in_use(filters={})
       calc_start_date = filters[:created_after] || "2000-01-01".to_date
       calc_end_date = filters[:created_before] || "2100-01-01".to_date
@@ -14,7 +14,7 @@ module StatsInUse
     protected
     def stats_in_use_union(date_conditions)
       stats_in_use_classes.collect { |u|
-        #horrible hack, but it works for now as the Student Studnt Comments association is just comments
+        # horrible hack, but it works for now as the Student Studnt Comments association is just comments
         f_key=reflect_on_association(u.name.tableize.to_sym).try(:foreign_key) || "student_id"
         u.select("#{f_key} as f_key_id").where(date_conditions).to_sql
       }.join(" UNION ")

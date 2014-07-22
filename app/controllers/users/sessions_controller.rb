@@ -11,10 +11,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def new
-    #Users who are signed in, but go directly to the login page
-    #are prompted to log in, but stay as the previous user
+    # Users who are signed in, but go directly to the login page
+    # are prompted to log in, but stay as the previous user
     sign_out  && reset_session if user_signed_in?
-    #fix for above
+    # fix for above
     if session["user_return_to"]
       p=Rack::Utils.parse_nested_query(URI.parse(session["user_return_to"]).query)
       params["district_abbrev"] ||= (p["district_abbrev"].presence || current_subdomain.presence)

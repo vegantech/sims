@@ -102,9 +102,9 @@ class ReportsController < ApplicationController
   def intervention_definition_summary_report
     @district = District.find(params[:district_id])
     @objective_definition = @district.objective_definitions.find_by_filename(params[:filename])
-    #read cached html
-    #pdf
-    #html
+    # read cached html
+    # pdf
+    # html
     respond_to do |format|
       format.html { render layout: "pdf" }
      format.pdf { render text: PDFKit.new(intervention_definition_summary_report_html).to_pdf }

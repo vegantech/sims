@@ -55,7 +55,7 @@ FactoryGirl.define do
   end
 
   factory :applicable_element_definition, parent: :element_definition do |e|
-    #no text for this one
+    # no text for this one
     e.kind 'applicable'
     e.after_create do |ed|
       FactoryGirl :answer_definition, text: 'Not applicable',   value: 0, element_definition: ed

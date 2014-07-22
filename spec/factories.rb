@@ -116,7 +116,7 @@ FactoryGirl.define do
   factory :quicklist_item do |qi|
     qi.association :intervention_definition
     qi.association :school
-    #qi.association :district (it's one or the other)
+    # qi.association :district (it's one or the other)
   end
 
   # TODO: validate time length

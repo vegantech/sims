@@ -23,7 +23,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :omniauthable, :recoverable#, :registerable
+  devise :database_authenticatable, :omniauthable, :recoverable# , :registerable
 #        :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
@@ -96,9 +96,9 @@ class User < ActiveRecord::Base
   end
 
   def filtered_groups_by_school(school,opts={})
-    #opts can be grade and prompt and user?
-    #default prompt is "*-Filter by Group"
-    #the - separates id and prompt
+    # opts can be grade and prompt and user?
+    # default prompt is "*-Filter by Group"
+    # the - separates id and prompt
     opts.stringify_keys!
     grade = opts['grade']
     grade = nil if grade == "*"
@@ -112,9 +112,9 @@ class User < ActiveRecord::Base
   end
 
   def filtered_members_by_school(school,opts={})
-  #opts can be grade, user_id
-  #blank grade defaults to *
-  #blank user defaults to *
+  # opts can be grade, user_id
+  # blank grade defaults to *
+  # blank user defaults to *
     opts.stringify_keys!
     opts.reverse_merge!( "grade"=>"*")
     grade = opts['grade']
@@ -167,7 +167,7 @@ class User < ActiveRecord::Base
           (special_user_groups.school_id = enrollments.school_id
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
           ) or user_group_assignments.id is not null)
-    ")#.select(&:orphaned?)
+    ")# .select(&:orphaned?)
   end
 
   def self.remove_from_district(user_ids = [])
@@ -282,8 +282,8 @@ class User < ActiveRecord::Base
   protected
 
   def student_ids_where_principal(school_id)
-    #TODO TEST THIS
-    ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
+    # TODO TEST THIS
+    # #User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
     Student.send(:construct_finder_sql, select: "students.id",
                                         joins: "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
             left outer join enrollments on enrollments.student_id = students.id

@@ -57,11 +57,11 @@ describe CSVImporter::ExtTestScores do
     it 'should fail with a message when there are duplicates' do
       @i=CSVImporter::ExtTestScores.new append_file,@district
         @i.import
-      #pending do
+      # pending do
         @s2.reload.should have(1).ext_test_scores
         @s1.reload.should have(4).ext_test_scores
         @i.messages.should include("There were duplicates, remove them or upload all scores without appends")
-      #end
+      # end
 
     end
 

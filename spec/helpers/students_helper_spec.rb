@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe StudentsHelper do
-  #Delete this example and add some real ones or delete this file
+  # Delete this example and add some real ones or delete this file
   describe 'active_intervention_select' do
     it 'should call intervention_group_checkbox for each objective definition' do
       district=mock_district(objective_definitions: ['tree','tree'])

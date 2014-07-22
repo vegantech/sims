@@ -1,4 +1,4 @@
-#require 'mysql_set'
+# require 'mysql_set'
 =begin
 ActiveRecord::ConnectionAdapters::TableDefinition.send :include, MysqlSet::TableDefinition
 ActiveRecord::ConnectionAdapters::Mysql2Column.send :include, MysqlSet::MysqlColumn

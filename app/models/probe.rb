@@ -14,7 +14,7 @@
 class Probe < ActiveRecord::Base
   belongs_to :intervention_probe_assignment
 
-  #delegate :something, :to=>'(something_else or return nil)' when optional
+  # delegate :something, :to=>'(something_else or return nil)' when optional
   delegate :probe_definition, to: '(intervention_probe_assignment or return nil)'
 
   validates_presence_of :score

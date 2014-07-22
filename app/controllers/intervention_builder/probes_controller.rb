@@ -50,7 +50,7 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
       redirect_to intervention_builder_probes_url and return
     end
 
-    #disable/reenable
+    # disable/reenable
     probe_definition=current_district.find_probe_definition((params[:id]))
     if probe_definition
       probe_definition.toggle!(:active)

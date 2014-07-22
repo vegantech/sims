@@ -5,7 +5,7 @@ describe CSVImporter::UserGroups do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
-      #unlinked school, unlinked group, unlinked user
+      # unlinked school, unlinked group, unlinked user
       User.delete_all
       School.delete_all
       Group.delete_all
@@ -36,7 +36,7 @@ describe CSVImporter::UserGroups do
       @i=CSVImporter::UserGroups.new "#{Rails.root}/spec/csv/user_groups.csv",@district
       @i.import
 
-      #make sure unlinked data remains untouched
+      # make sure unlinked data remains untouched
       [@unlinked_group_at_linked_school,@linked_group_at_unlinked_school,@unlinked_group_at_unlinked_school].each do |g|
         g.user_ids.sort.should == [@unlinked_user.id, @linked_user.id].sort
       end

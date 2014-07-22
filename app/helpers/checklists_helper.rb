@@ -77,7 +77,7 @@ module ChecklistsHelper
 
   def recommendation_buttons(form)
     b=Recommendation::RECOMMENDATION.sort
-  b[1],b[2] = b[2],b[1]   #No progress at current level should be the second element
+  b[1],b[2] = b[2],b[1]   # No progress at current level should be the second element
   a=b.collect do |k,v|
     opts={}
     next  if  v[:show_elig] && !show_referral_option?

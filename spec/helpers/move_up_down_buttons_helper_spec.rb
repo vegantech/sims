@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe MoveUpDownButtonsHelper do
-  #Delete this example and add some real ones or delete this file
+  # Delete this example and add some real ones or delete this file
   it 'should make a button up and down when move_up_down_buttons is called' do
   helper.should_receive(:move_button).with(:up,'').and_return("up")
   helper.should_receive(:move_button).with(:down,'').and_return("up")

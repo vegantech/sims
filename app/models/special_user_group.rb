@@ -44,7 +44,7 @@ class SpecialUserGroup < ActiveRecord::Base
   end
 
   def to_i
-    #fixes ticket 152
+    # fixes ticket 152
     1
   end
 

@@ -4,6 +4,6 @@ class DailyJobs
   end
 
   def self.run_weekly
-    Notifications.setup_ending_reminders() #run for all districts
+    Notifications.setup_ending_reminders() # run for all districts
   end
 end

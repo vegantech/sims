@@ -5,7 +5,7 @@ describe CSVImporter::AllStudentsInSchools do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
-      #be sure to test with existing admin
+      # be sure to test with existing admin
       School.delete_all
       StaffAssignment.delete_all
       District.delete_all

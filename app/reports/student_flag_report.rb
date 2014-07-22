@@ -5,11 +5,11 @@ class StudentFlagReport
   end
 
   def current_flags
-    #TODO FIXME This needs to be refactored
-    #system flags and ignore flags &! custom flag
-    #combine the reasons
-    #group by category, student_id
-    #order by category, student
+    # TODO FIXME This needs to be refactored
+    # system flags and ignore flags &! custom flag
+    # combine the reasons
+    # group by category, student_id
+    # order by category, student
     cur_flags = Hash.new([])
 
     current_flagged_students.each do |stu|

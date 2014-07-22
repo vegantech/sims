@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
                 :current_student_id, :current_student, :current_district, :current_school, :current_user,
                 :index_url_with_page, :readonly?
 
-  #protect_from_forgery  TODO enable this
+  # protect_from_forgery  TODO enable this
 
   before_filter :authenticate_user!,:check_domain, :authorize
   private
@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_student
-    #TODO generalize this
+    # TODO generalize this
     student=Student.find_by_id(params[:student_id]) || Student.new
     if student.belongs_to_user?(current_user)
       @student=student
@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
   end
 
   def  handle_unverified_request
-    raise ActionController::InvalidAuthenticityToken #for now
+    raise ActionController::InvalidAuthenticityToken # for now
     super
   end
 

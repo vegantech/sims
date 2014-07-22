@@ -53,6 +53,6 @@ When /^I edit the checklist$/ do
   with_scope(".profile_page #checklists") do
     click_link "edit"
   end
-  #change a scale, leave one alone, pick a new one, edit a comment, clear out a comment, add a new comment
+  # change a scale, leave one alone, pick a new one, edit a comment, clear out a comment, add a new comment
   click_button "Submit"
 end

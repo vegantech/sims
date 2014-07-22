@@ -238,7 +238,7 @@ describe ReportsController do
     # end
 
     it 'should show up as html when pdf and htmldoc gem is not installed' do
-      #controller.should_receive(:defined?).and_return(false)
+      # controller.should_receive(:defined?).and_return(false)
       if defined? PDF::HTMLDoc
         OLD_HTMLDOC= PDF::HTMLDoc
         PDF.send(:remove_const, "HTMLDoc")
@@ -358,7 +358,7 @@ describe ReportsController do
       describe 'with HTML format choice'
       it 'should return output of UserInterventionsReport.render_html as report' do
         m = 'This is the User Interventions Report Content'
-        #UserInterventionsReport.stub!(:render_html => m)
+        # UserInterventionsReport.stub!(:render_html => m)
 
         post :user_interventions, "report_params" => {"format"=>"html"}, "generate" => "Generate Report"
 
@@ -386,7 +386,7 @@ describe ReportsController do
       describe 'and PDF format choice' do
         it 'returns output of UserInterventionsReport.render_pdf as report' do
           m = 'This is the PDF User Interventions Report Content'
-          #UserInterventionsReport.stub!(:render_pdf => m)
+          # UserInterventionsReport.stub!(:render_pdf => m)
 
           post :user_interventions, {generate: "Do the report", report_params: {format: 'pdf'}}, user_id: '1'
           assigns(:report).should equal(m)

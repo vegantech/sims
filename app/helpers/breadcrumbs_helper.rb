@@ -1,6 +1,6 @@
 module BreadcrumbsHelper
   def breadcrumbs
-    #357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
+    # 357 TODO add a test , if district admin had a student selected breadcrumb breaks when they do a new student
     [
       root_crumb,
       school_crumb,search_crumb,

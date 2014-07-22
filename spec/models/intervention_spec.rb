@@ -33,7 +33,7 @@ describe Intervention do
       id=i.intervention_definition
       id.valid?
       puts id.errors.inspect
-      i.save #should fail but won't yet
+      i.save # should fail but won't yet
       ProbeDefinition.count.should == c
 
       #-----Below is just reference
@@ -59,7 +59,7 @@ describe Intervention do
     describe 'with auto_implementer set to "1"' do
       it 'should create an implementer' do
         i = FactoryGirl.create(:intervention, auto_implementer: '1')
-        i.intervention_participants.size.should == 2 #Author and participant
+        i.intervention_participants.size.should == 2 # Author and participant
       end
     end
   end

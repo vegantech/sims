@@ -113,10 +113,10 @@ module CSVImporter
       @line_count = 0
 
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
-      #convert bare carriage returns to newlines
+      # convert bare carriage returns to newlines
       system "sed -i -e 's/\r[^\\n]/\\n/g' #{@file_name}"
 
-      #pop off header
+      # pop off header
       head= `head -n 1 #{@file_name}`
       return false unless confirm_header head
 
@@ -124,7 +124,7 @@ module CSVImporter
       remove_count = '/\([0-9] rows affected\)/d'
       hexify = 's/0[xX]\([a-fA-F0-9]\{40\}\)/\1/'
 
-      a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
+      a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  # trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exist?(@file_name)
 
@@ -168,7 +168,7 @@ module CSVImporter
 
     def insert_update_delete
       before_import
-      #override this for a different order
+      # override this for a different order
       @deleted=delete
       @updated=update
       @created=insert

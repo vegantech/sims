@@ -23,7 +23,7 @@ class PersonalGroup < ActiveRecord::Base
   end
 
   def self.by_school_and_grade(school, grade=nil)
-    #this needs to limit to grade
+    # this needs to limit to grade
     g=by_school(school)
     g=g.by_grade(grade) if grade
     g

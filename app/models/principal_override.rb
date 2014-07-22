@@ -59,7 +59,7 @@ class PrincipalOverride < ActiveRecord::Base
     approved.collect(&:end_tier).compact.max
   end
   def setup_response_for_edit(action)
-    #TODO Autoset to next or max tier
+    # TODO Autoset to next or max tier
 
     @action=action
     self.end_tier=self.start_tier
@@ -98,8 +98,8 @@ class PrincipalOverride < ActiveRecord::Base
   end
 
   def set_status
-    #TODO make sure the principal is actually a principal for this student
-    #Refactor this
+    # TODO make sure the principal is actually a principal for this student
+    # Refactor this
     @send_email=true unless @skip_email
     case self.action
     when 'accept' then

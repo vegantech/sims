@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def link_to_if_authorized(name, options = {}, html_options = {}, *_rest)
-    #TODO Test then Refactor!!!     This is a spike.
+    # TODO Test then Refactor!!!     This is a spike.
    # hsh = ::ActionController::Routing::Routes.recognize_path url.gsub(/\?.*$/,''), :method=> :get
     if options.is_a? String
       url = options
@@ -29,7 +29,7 @@ module ApplicationHelper
       hsh = ::Rails.application.routes.recognize_path url, method: method
     else
       if options[:controller].present?
-        #Without a leading / url_for will assume it is in the current namespace
+        # Without a leading / url_for will assume it is in the current namespace
         options[:controller]="/#{options[:controller]}" unless options[:controller][0] =='/'
         hsh=options
         url=hsh

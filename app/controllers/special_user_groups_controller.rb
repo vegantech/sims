@@ -1,6 +1,6 @@
 class SpecialUserGroupsController < SchoolAdminController
   def show
-    #TODO push group search to model
+    # TODO push group search to model
     @group=params[:id]
     grade = @group.split("-").last.downcase
     grade= nil if grade == "school"

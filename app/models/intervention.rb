@@ -28,7 +28,7 @@ class Intervention < ActiveRecord::Base
   include Stats::Intervention
 
   after_initialize :set_defaults_from_definition
-  #has after_iniitalize that needs to run last
+  # has after_iniitalize that needs to run last
   include Duration
 
   END_REASONS = [
@@ -55,7 +55,7 @@ class Intervention < ActiveRecord::Base
   has_many :intervention_probe_assignments, dependent: :destroy
   validates_numericality_of :frequency_multiplier
   validates_presence_of :intervention_definition
-  #validates_associated :intervention_probe_assignments
+  # validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment
   accepts_nested_attributes_for :comments, reject_if: proc{|e| e["comment"].blank?}
 
@@ -105,8 +105,8 @@ class Intervention < ActiveRecord::Base
   end
 
   def intervention_probe_assignment=(params)
-    intervention_probe_assignments.update_all(enabled: false) #disable all others
-    params.stringify_keys! unless params.blank? #fix for LH #392
+    intervention_probe_assignments.update_all(enabled: false) # disable all others
+    params.stringify_keys! unless params.blank? # fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
 
     if params['probe_definition_id'] == 'custom'
@@ -152,7 +152,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def self.orphaned
-    #an orphaned intervention is one that is unended past the expected end date or one where no participants can access the student  (be sure to check district_id of student as well)
+    # an orphaned intervention is one that is unended past the expected end date or one where no participants can access the student  (be sure to check district_id of student as well)
     find(:all).select(&:orphaned?)
   end
 
@@ -161,7 +161,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def participant_user_ids=(ids)
-    #remove duplicates and blanks
+    # remove duplicates and blanks
     ids=ids.reject(&:blank?).uniq
     self.participant_users=User.where(id: (ids))
   end
@@ -201,7 +201,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def assign_implementer
-    @creation_email = true if new_record?  #used for distingushing between new particioant and creation email
+    @creation_email = true if new_record?  # used for distingushing between new particioant and creation email
     if self.auto_implementer == "1"
       self.participant_user_ids |= [self.user_id]
       # intervention_participants.build(:user => self.user, :skip_email => true, :role => InterventionParticipant::IMPLEMENTER) unless participant_user_ids.include?(self.user_id)

@@ -11,7 +11,7 @@ describe Interventions::QuicklistsController do
   end
   describe 'index' do
     it 'should return an empty array when school is nil' do
-      #LH 462
+      # LH 462
       controller.stub!(current_school: nil)
       get :index
       assigns(:quicklist_intervention_definitions).should be_empty

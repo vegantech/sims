@@ -1,7 +1,7 @@
 module CSVImporter
   class Students < CSVImporter::Base
-    #13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
-    #19.3717708587646,
+    # 13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
+    # 19.3717708587646,
 =begin
     def import
      #use the existing temporary table
@@ -129,12 +129,12 @@ module CSVImporter
       s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')}  "
 
       ActiveRecord::Base.connection.execute(s)
-      #"
+      # "
     end
 
     def insert_update_delete
       postprocess_uploaded_csv
-      #update students s inner join students_546713874_importer ts on ts.id_state = s.id_state set district_id = 546713874 where s.district_id is null and ts.id_state is not null;
+      # update students s inner join students_546713874_importer ts on ts.id_state = s.id_state set district_id = 546713874 where s.district_id is null and ts.id_state is not null;
 
       ActiveRecord::Base.connection.execute("update #{temporary_table_name} set id_state = null where id_state = ''")
 
@@ -146,7 +146,7 @@ module CSVImporter
       delete
     end
 
-    #try to claim students in other_districts
+    # try to claim students in other_districts
 
     def try_to_claim_students_in_other_districts
       q = "select s.id from  #{temporary_table_name} ts inner join students s on
@@ -197,11 +197,11 @@ module CSVImporter
                                                                ts.last_name = s.last_name and ts.birthdate is not null    ")
       @other_messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
 
-      #do select and add to messages
+      # do select and add to messages
       # select * from students_546713874_importer ts inner join students s on ts.id_state = s.id_state
       # where s.district_id is null and ts.id_state is not null;
 
-      #update students s set district_id = ? where district_id is null
+      # update students s set district_id = ? where district_id is null
       #  and exists (select * from tt where s.id_state = tt.id_state and tt.id_state is not null)
     end
 
@@ -217,7 +217,7 @@ module CSVImporter
     end
 
     def delete
-      #unset the district of  all students that are not in the temporary table
+      # unset the district of  all students that are not in the temporary table
       q="delete e from enrollments e inner join students s on s.id = e.student_id
       left outer join #{temporary_table_name} ts on
          ts.district_student_id = s.district_student_id
@@ -233,8 +233,8 @@ module CSVImporter
 
       #      @messages << 'Shawn still needs to prune the existing students that are not in districts'
 
-      #remove_students_in_district_not_in_temporary_table #delete_or_disable?  or just disable
-      #Student.delete_all(:district_id => @district.id)
+      # remove_students_in_district_not_in_temporary_table #delete_or_disable?  or just disable
+      # Student.delete_all(:district_id => @district.id)
     end
 
     def insert

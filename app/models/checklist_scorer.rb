@@ -35,11 +35,11 @@ class ChecklistScorer
     when 0,1
       nil
     when 2,3
-      #All question 9 completed (done above),  Questions 1-8 needs an answer of [2,3] or better
+      # All question 9 completed (done above),  Questions 1-8 needs an answer of [2,3] or better
       answers.each do |answer|
         @score_results[answer.answer_definition.element_definition.question_definition][answer.answer_definition.element_definition] =
           "Need to score #{from_tier} or better." if answer.answer_definition.value <"#{from_tier}" and answer.answer_definition.element_definition.kind=="scale"
-      end #do
+      end # do
     end # case
   end
 

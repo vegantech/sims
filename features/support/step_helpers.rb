@@ -33,7 +33,7 @@ end
 
 def click_all_name_id_brackets
   all('input[name="id[]"]').each do |elem|
-    elem.set(true) #check
+    elem.set(true) # check
   end
 end
 
@@ -137,7 +137,7 @@ def create_default_intervention_pieces
 end
 
 def clear_login_dropdowns
-  #School.destroy_all
+  # School.destroy_all
   District.delete_all
   @default_district=nil
 end

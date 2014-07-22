@@ -5,9 +5,9 @@ class AddDeviseToUsers < ActiveRecord::Migration
       t.rename :token,:reset_password_token
       t.datetime :reset_password_sent_at
 
-      #t.recoverable
-      #t.rememberable
-      #t.trackable
+      # t.recoverable
+      # t.rememberable
+      # t.trackable
 
       # t.encryptable
       # t.confirmable

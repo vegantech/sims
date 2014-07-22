@@ -48,9 +48,9 @@ module CSVImporter
       end
     end
 
-    #12 seconds to preprocess the file and setup the temporary table
+    # 12 seconds to preprocess the file and setup the temporary table
     # @real=638.522989988327 with the delete outer join
-    #16.5350589752197 with the not exists call
+    # 16.5350589752197 with the not exists call
     private
 
     def index_options

@@ -39,7 +39,7 @@ describe InterventionsHelper do
 
       tq=helper.tiered_quicklist(arr)
       tq.should =~ /Objective 1 : 1-Basic.*Objective 1 : 2-Basic.*Objective 2 : 3-Basic.*Objective 3 : 2-Basic.*Objective 3 : 3-Basic/
-      tq.should =~ /<select .*><option value=""/  #tests LH647
+      tq.should =~ /<select .*><option value=""/  # tests LH647
       tq.should have_tag("select#intervention_definition_id") do
         with_tag("option", value: "")
       end

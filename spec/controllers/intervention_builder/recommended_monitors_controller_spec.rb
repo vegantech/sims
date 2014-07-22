@@ -5,7 +5,7 @@ describe InterventionBuilder::RecommendedMonitorsController do
   include_context "authorized"
   include_context "authenticated"
 
-  #Delete this example and add some real ones
+  # Delete this example and add some real ones
   it "should use InterventionBuilder::RecommendedMonitorsController" do
     controller.should be_an_instance_of(InterventionBuilder::RecommendedMonitorsController)
   end

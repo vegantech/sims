@@ -27,7 +27,7 @@ end
 When /^I reload the team consultation based on the following table:$/ do |table|
   pg = current_path
   table.hashes.each do |row|
-    #setting consultation? display?
+    # setting consultation? display?
     setting =  (row["setting"] == "false") ? false : true
     cucumber_district.update_attribute :show_team_consultations_if_pending, setting
     TeamConsultation.delete_all

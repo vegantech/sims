@@ -1,5 +1,5 @@
 class DistrictUploadJob
-  #include SuckerPunch::Job
+  # include SuckerPunch::Job
   require 'import_csv'
 
   def async_perform(upload_file, district, email = false)

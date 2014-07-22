@@ -103,7 +103,7 @@ describe District do
       district.claim(Student.new)
     end
 
-    #initially I just want to try to claim the student if STUDENT_LOCATION_VERIFICATION_URL is defined
+    # initially I just want to try to claim the student if STUDENT_LOCATION_VERIFICATION_URL is defined
     it 'should have specs'
 
     it 'should' do

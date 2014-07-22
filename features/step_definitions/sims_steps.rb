@@ -291,7 +291,7 @@ end
 
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  nondistrict_student = Factory(:student)  #will create another district
+  nondistrict_student = Factory(:student)  # will create another district
   nondistrict_student.comments.create!(body: content, created_at: date)
 end
 
@@ -302,13 +302,13 @@ end
 
 Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  non_selected_school_student = Factory(:student, district: @student.district) #will create student in an unselected school
+  non_selected_school_student = Factory(:student, district: @student.district) # will create student in an unselected school
   non_selected_school_student.comments.create!(body: content, created_at: date)
 end
 
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  unauthorized_student = Factory(:student, district: @student.district)  #will create a student in same district
+  unauthorized_student = Factory(:student, district: @student.district)  # will create a student in same district
   unauthorized_student.enrollments.create!(grade: "ZZ", school: @student.enrollments.first.school)
 
   # TODO: Change this, so it doesn't remain a trap for later?

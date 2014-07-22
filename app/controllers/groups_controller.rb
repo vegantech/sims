@@ -103,14 +103,14 @@ class GroupsController < SchoolAdminController
     @group = current_school.groups.find(params[:id])
     @users = current_school.assigned_users
     @user_assignment = @group.user_group_assignments.build
-    #need to handle special user groups as well
+    # need to handle special user groups as well
     respond_to do |format|
       format.js {}
     end
   end
 
   def add_user
-    #need to handle special user groups as well
+    # need to handle special user groups as well
     @group = current_school.groups.find(params[:id])
 
    @user_assignment = @group.user_group_assignments.build(params[:user_group_assignment])
@@ -125,7 +125,7 @@ class GroupsController < SchoolAdminController
 end
 
   def remove_user
-    #need to handle special user groups as well
+    # need to handle special user groups as well
     @group = current_school.groups.find(params[:id])
     @user_assignment = @group.user_group_assignments.find(params[:user_assignment_id])
     @user_assignment.destroy

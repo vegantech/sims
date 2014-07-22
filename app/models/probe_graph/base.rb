@@ -29,7 +29,7 @@ class ProbeGraph::Base
   def graph
     return 'no scores' if probes_for_graph.empty?
     build_graph
-    #put common stuff here
+    # put common stuff here
   end
 
   protected
@@ -101,12 +101,12 @@ class ProbeGraph::Base
   end
 
   def numbers_on_line
-    #show the value in black on the graph
+    # show the value in black on the graph
     'chm=N,000000,0,,12,,t'
   end
 
   def max_min_zero
-    #min, zero, max
+    # min, zero, max
     "r,000000,0,0.0,0.002|r,000000,0,#{scale_value(0) - 0.001},#{scale_value(0) + 0.001}|r,000000,0,0.998,1.0"
   end
 
@@ -140,9 +140,9 @@ class ProbeGraph::Base
   end
 
   def chds
-    #min am nax for data series
+    # min am nax for data series
     a=[0,line_graph_date_denom,min,max]
-    a *= 2 if @goal #aim line and data have same range
+    a *= 2 if @goal # aim line and data have same range
     a.join(",")
   end
 

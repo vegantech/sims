@@ -36,7 +36,7 @@ When /^I follow Claim First Last for your district$/ do
 end
 
 When /^I magically visit "([^\"]*)"$/ do |_url|
-  #'  Element.update("claim_student", "<a href=\"/district/students/claim/996332878?method=put\">Claim First Last for your district</a>"); '
+  # '  Element.update("claim_student", "<a href=\"/district/students/claim/996332878?method=put\">Claim First Last for your district</a>"); '
   page.source.match  /\"\/(dis.*)\?/
   xhr  "put", "#{$1}", user_id: @user.id.to_s, district_id: @user.district_id.to_s
   step 'I follow "redirected"' if page.has_content? 'redirected'

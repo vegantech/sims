@@ -7,7 +7,7 @@ set :scm, "git"
 set :branch, "master"
 set :deploy_via, :remote_cache
 set :user, 'shawn'
-#set :rails_env, 'production'
+# set :rails_env, 'production'
 after "deploy:update_code", :copy_database_yml
 
 namespace :deploy do

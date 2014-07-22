@@ -27,7 +27,7 @@ describe TeamConsultation do
 
   describe 'recipients' do
     it 'should return an empty array when there is no school team' do
-      #LH 463
+      # LH 463
       TeamConsultation.new.recipients.should be_empty
 
     end
@@ -42,7 +42,7 @@ describe TeamConsultation do
     tc.reload.complete.should be_true
   end
   it 'should test incomplete' do
-    #656
+    # 656
     tc = TeamConsultation.create(complete: true)
     tc.undo_complete!
     tc.reload.complete.should be_false

@@ -25,7 +25,7 @@ districts.each do |district|
   prev_logins = district.logs.find(:all, conditions: ["user_id in (?) and created_at < ?", new_user_ids,START_DATE], select: 'distinct user_id').collect(&:user_id)
   e[district.id]["new_users"] =  (new_user_ids - prev_logins).compact.size
   #  district.logs.successful_login_non_admin.count(:select => 'distinct user_id', :conditions => "user_id not in (select user_id from district_logs where created_at < '#{START_DATE}')")
- #first login on or after start_date? 
+ # first login on or after start_date? 
 end;nil
 
 puts e.values.compact.first.keys.to_csv;nil

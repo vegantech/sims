@@ -17,8 +17,8 @@ describe CSVImporter::AllStudentsInDistricts do
     let(:import_messages) { subject.import }
 
     it 'should import_properly' do
-      #I would have liked to split this up into multiple it blocks, but the lets would run each time
-      #I should rewrite it with before(:all) and instance variables
+      # I would have liked to split this up into multiple it blocks, but the lets would run each time
+      # I should rewrite it with before(:all) and instance variables
       import_messages
       user_to_add.reload.all_students.should be
       user_to_remove.reload.all_students.should_not be

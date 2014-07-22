@@ -45,7 +45,7 @@ describe BreadcrumbsHelper do
     end
 
     #
-    #test current student present, missing, and new record
+    # test current student present, missing, and new record
     describe 'current_student_crumb' do
       it 'with nil student' do
         helper.stub!(current_student: nil)

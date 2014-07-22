@@ -10,7 +10,7 @@ class PrincipalOverridesCell < Cell::Base
     user=opts[:user]# || User.find_by_id(session[:user_id])
     return '' unless user && user.principal?
     @show =true
-    #TODO THIS IS SLOW
+    # TODO THIS IS SLOW
     overrides=user.grouped_principal_overrides if @show
     @new_requests=overrides[:pending_requests].size
     @responses=overrides[:principal_responses].size

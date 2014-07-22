@@ -25,7 +25,7 @@ describe FlagDescriptionsController do
 
   describe "POST create" do
     it 'should call update' do
-      #controller.should_receive(:update).and_return(true)
+      # controller.should_receive(:update).and_return(true)
     end
 
   end

@@ -32,28 +32,28 @@ class VerifyStudentInDistrictExternally
     end
   end
 
-#true return true
-#false return false
-#error raise exception
+# true return true
+# false return false
+# error raise exception
 
   def verify_externally(student,district)
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 
-   #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
+   # uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
     uri = URI.parse(@@config['url'])
    http=Net::HTTP.new(uri.host, uri.port)
    http.use_ssl=true
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
    request = Net::HTTP::Post.new(uri.request_uri)
-   #request.basic_auth("xxx", "yyy")
+   # request.basic_auth("xxx", "yyy")
    request.set_form_data("district" => "#{district}", "wsn"=>"#{student}")
    request["Accept"]="text/xml"
    request["Auth-Token"]= @@config['token']
    request["Cookie"] = Rails.cache.read "ext_verify_cookie"
 
-   #set timeout here
+   # set timeout here
    retries =2
    begin
      timeout(5) do
@@ -70,7 +70,7 @@ class VerifyStudentInDistrictExternally
      raise StudentVerificationError, 'Connection Timeout'
    end
 
-   #raise if timeout
+   # raise if timeout
    Rails.cache.write("ext_verify_cookie", @response.response['set-cookie'], ttl: 25.minutes.to_i)
    parsed_response=Nokogiri.parse(@response.body)
 

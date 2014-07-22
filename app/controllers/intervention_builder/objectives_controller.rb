@@ -12,7 +12,7 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
 
   # GET /objective_definitions/1
   def show
-    #@objective_definition populated by before filter
+    # @objective_definition populated by before filter
     respond_to do |format|
       format.html # show.rhtml
     end
@@ -25,7 +25,7 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
 
   # GET /objective_definitions/1;edit
   def edit
-    #@objective_definition populated by before filter
+    # @objective_definition populated by before filter
   end
 
   # POST /objective_definitions

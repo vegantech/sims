@@ -1,6 +1,6 @@
-#SIMS_DOMAIN = #sims-open.vegantech.com
-SIMS_PROTO="http"  #change to https when we're using that.
-#DEFAULT_URL = #'http://www.simspilot2.org:3000'
+# SIMS_DOMAIN = #sims-open.vegantech.com
+SIMS_PROTO="http"  # change to https when we're using that.
+# DEFAULT_URL = #'http://www.simspilot2.org:3000'
 
 sessionhash= {
     key: '_sims-open5_session',
@@ -19,7 +19,7 @@ end
 
 Sims::Application.config.session_store :cookie_store, sessionhash
 if Object.const_defined?('SIMS_DOMAIN')
-  ActionDispatch::Http::URL.tld_length = (SIMS_DOMAIN.split(".").length() -1)  #defaults to 1
+  ActionDispatch::Http::URL.tld_length = (SIMS_DOMAIN.split(".").length() -1)  # defaults to 1
   host="www.#{Object.const_get("SIMS_DOMAIN")}"
 end
 ActionMailer::Base.default_url_options = {

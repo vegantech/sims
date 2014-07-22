@@ -48,8 +48,8 @@ class ImportCSV
       identify_and_unzip
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
-      @district.students.update_all(updated_at: Time.now) #expire any student related cache
-      @district.users.update_all(updated_at: Time.now) #expire any user related cache
+      @district.students.update_all(updated_at: Time.now) # expire any student related cache
+      @district.users.update_all(updated_at: Time.now) # expire any user related cache
       @messages << "No csv files uploaded" if sorted_filenames.blank?
     end
     @messages << b
@@ -108,7 +108,7 @@ class ImportCSV
     FileUtils.mkdir_p(@f_path)
     if @file.respond_to?(:original_filename)
       try_to_unzip(@file.path, @file.original_filename) or move_to_import_directory
-    else  #passed in a string
+    else  # passed in a string
       try_to_unzip(@file, @file) or @filenames =[@file]
     end
   end
@@ -120,10 +120,10 @@ class ImportCSV
     @filenames = [new_filename]
   end
 
-  #string nonzip
-  #string zip
-  #file nonzip
-  #file zip
+  # string nonzip
+  # string zip
+  # file nonzip
+  # file zip
 
   def try_to_unzip filename, originalname
     if originalname =~ /\.zip$/

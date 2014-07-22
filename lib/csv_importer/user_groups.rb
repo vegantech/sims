@@ -1,7 +1,7 @@
 module CSVImporter
   class UserGroups < CSVImporter::Base
-    #125.01763010025 seconds!
-    #135 with district constrained delete
+    # 125.01763010025 seconds!
+    # 135 with district constrained delete
     #
     #
     FIELD_DESCRIPTIONS = { 

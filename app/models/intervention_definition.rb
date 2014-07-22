@@ -72,12 +72,12 @@ class InterventionDefinition < ActiveRecord::Base
   scope :for_dropdown, lambda {|student_tier, district, school_id, user|
     res=restrict_tiers_and_disabled(student_tier, district)
     if ["disabled","only_author"].include? district.custom_interventions
-      #shared only with author
+      # shared only with author
       return res.where(["custom = ? or user_id = ?", false, user.id])
       elsif district.custom_interventions == 'one_off'
       return res.where(["custom = ?", false])
       else
-      #shared with author and school (enabled and content_admins)
+      # shared with author and school (enabled and content_admins)
         return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
     end
   }
@@ -139,7 +139,7 @@ class InterventionDefinition < ActiveRecord::Base
   end
 
   def set_values_from_intervention(int)
-    #Used only for custom interventions
+    # Used only for custom interventions
     if new_record?
       self.school_id = int.school_id
       self.custom = true

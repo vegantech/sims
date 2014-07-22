@@ -2,7 +2,7 @@ class StatsController < ApplicationController
   skip_before_filter :authenticate_user!, :authorize, :check_domain
 
   def index
-    #TODO test and refactor
+    # TODO test and refactor
     flash[:notice]=nil
 
     @without=params[:without]

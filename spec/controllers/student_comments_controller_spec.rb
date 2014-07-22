@@ -52,7 +52,7 @@ describe StudentCommentsController do
         it "should expose a newly created student_comment as @student_comment" do
           StudentComment.should_receive(:build).with('these' => 'params').and_return(mc=mock_student_comment(save: true))
           mc.should_receive(:user=)
-          #controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
+          # controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
           post :create, student_comment: {these: 'params'},student_id: "2"
           assigns(:student_comment).should equal(mock_student_comment)
         end

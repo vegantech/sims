@@ -1,6 +1,6 @@
 When /^I reload based on the following table:$/ do |table|
   table.hashes.each do |row|
-    #setting content_admin? display?
+    # setting content_admin? display?
     cucumber_district.update_attribute :custom_interventions, row["setting"]
     if row["content_admin?"] == "true"
       cucumber_user.roles = ["regular_user","content_admin"]

@@ -18,9 +18,9 @@ class Interventions::ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @intervention_participant.save
-        #TODO this makes more sense in the model if we move intervention participants to the intervention edit, we just would need some check to make sure we're
-        #not sending a duplicate email.   But it's easier to put it here for now.
-        #send email here
+        # TODO this makes more sense in the model if we move intervention participants to the intervention edit, we just would need some check to make sure we're
+        # not sending a duplicate email.   But it's easier to put it here for now.
+        # send email here
         flash[:notice] = "#{@intervention_participant.role_title} added."
         format.html { redirect_to(@intervention) }
       else
@@ -33,7 +33,7 @@ class Interventions::ParticipantsController < ApplicationController
   # PUT /intervention_participants/1
   # PUT /intervention_participants/1.xml
   def update
-    #change the role
+    # change the role
     @intervention_participant = @intervention.intervention_participants.find(params[:id])
 
     @intervention_participant.toggle_role!

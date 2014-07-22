@@ -1,4 +1,4 @@
-#support for the old Factory(:x) as an alias for Factory.create
+# support for the old Factory(:x) as an alias for Factory.create
 
 unless defined? Factory
   def Factory(*args)

@@ -5,7 +5,7 @@ class MergeDuplicateStudents
 
     dups= Student.group(:id_state).having("count(id) > 1").where("id_state is not null").pluck(:id_state)
     dups.each do |dup_id_state|
-      #make sure content is the same
+      # make sure content is the same
       if Student.where(id_state: dup_id_state).select("distinct district_id, first_name, last_name, district_student_id").one?
         ids = Student.where(id_state: dup_id_state).pluck(:id)
         merge_to_first(ids)
@@ -24,7 +24,7 @@ class MergeDuplicateStudents
   end
 
   def self.merge_to_first(ids)
-    #make all custom content belong to the first student
+    # make all custom content belong to the first student
     Student::CUSTOM_CONTENT.each do |a|
       puts a
       Student.reflect_on_association(a.to_sym).klass.update_all(["student_id =?", ids.first],student_id: ids)

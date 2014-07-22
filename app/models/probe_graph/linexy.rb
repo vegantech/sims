@@ -15,7 +15,7 @@ class ProbeGraph::Linexy < ProbeGraph::Base
                     custom: custom_string(custom_chm),
                     bar_width_and_spacing: nil,
                     size: '800x250',
-                    thickness: "2|1,4,2", #thickness of scores | aim line with dashing
+                    thickness: "2|1,4,2", # thickness of scores | aim line with dashing
                     chds: chds,
                     axis_range: [[0,line_graph_date_denom],[],[0,100],[0,100]]
     )
@@ -38,7 +38,7 @@ class ProbeGraph::Linexy < ProbeGraph::Base
     @admin_at_dates ||= (probes_for_graph.collect(&:administered_at) |[@first_date,@end_date])
   end
 
-  #TODO
+  # TODO
   def line_graph_left_date
     admin_at_dates.min
   end

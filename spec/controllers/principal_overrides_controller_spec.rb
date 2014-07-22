@@ -49,7 +49,7 @@ describe PrincipalOverridesController do
 
     describe 'with invalid id' do
       it 'should redirect to the index and set a flash' do
-        #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
+        # PrincipalOverride.should_receive(:find).with("37").and_return(nil)
         get :edit, id: "37"
         response.should redirect_to(root_url)
         flash[:notice].should == "Record not found"
@@ -166,7 +166,7 @@ describe PrincipalOverridesController do
     end
 
     it 'should not destroy if override is not found' do
-      #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
+      # PrincipalOverride.should_receive(:find).with("37").and_return(nil)
       delete :destroy, id: "37"
 
     end
@@ -183,7 +183,7 @@ describe PrincipalOverridesController do
     end
 
     it 'should not undo if the override is not found' do
-      #PrincipalOverride.should_receive(:find).with("37").and_return(nil)
+      # PrincipalOverride.should_receive(:find).with("37").and_return(nil)
       put :undo, id: "37", format: 'html'
       response.should redirect_to(root_url)
 

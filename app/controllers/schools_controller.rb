@@ -1,5 +1,5 @@
 class SchoolsController < ApplicationController
-  #School Selection Controller
+  # School Selection Controller
   skip_before_filter :verify_authenticity_token, :authorize
   layout 'main'
   def index

@@ -1,5 +1,5 @@
 class StudentSearch
-  #This allows me to use it in url_for as a singleton resource
+  # This allows me to use it in url_for as a singleton resource
   def self.model_name
     ActiveModel::Name.new(StudentSearch).tap{|s|
       def s.route_key
@@ -8,7 +8,7 @@ class StudentSearch
     }
   end
 
-  #singleton resource, no param
+  # singleton resource, no param
   def to_param
     nil
   end
@@ -71,7 +71,7 @@ class StudentSearch
         "students.id, grade, students.district_id, last_name, first_name, number, esl, special_ed, students.updated_at"
       ).where(id: ids).with_comments_count.with_pending_consultations_count.group("enrollments.id").where("enrollments.school_id" => sch_id)
 
-#this is worse.
+# this is worse.
 #      Enrollment.send(:preload_associations, res,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
 #                      {:flags => :user}, {:ignore_flags=>:user},:team_consultations_pending ]})
     end
@@ -99,7 +99,7 @@ class StudentSearch
 
     flag_types = Array(search_hash[:flagged_intervention_types])
 
-    #TODO rename this to just flag_types, also in controller and view
+    # TODO rename this to just flag_types, also in controller and view
     categories = flag_types - ['ignored','custom']
     conditions = {}
 
@@ -138,7 +138,7 @@ class StudentSearch
   def restrict_to_user
     unless @user.blank? || @user.all_students?
       grades = @school.special_user_groups.where(user_id: @user).uniq.pluck(:grade)
-      unless grades.include? nil  #special user group with nil grade = all students in school
+      unless grades.include? nil  # special user group with nil grade = all students in school
         explicit_group_assignment_sql = @user.groups.where(school_id: @school).joins(:students).select("students.id").reorder('').to_sql
         @enrollments = @enrollments.where ["grade in (?) or enrollments.student_id in (#{explicit_group_assignment_sql})", grades]
       end

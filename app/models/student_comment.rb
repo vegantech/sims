@@ -11,7 +11,7 @@
 #  updated_at :datetime
 #
 
-#Also known as team_note
+# Also known as team_note
 class StudentComment < ActiveRecord::Base
   DISTRICT_PARENT=:user
   include LinkAndAttachmentAssets

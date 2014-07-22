@@ -26,7 +26,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   delegate :title, to: :probe_definition
   delegate :student, to: :intervention
-  validates_associated :probes #,:probe_definition
+  validates_associated :probes # ,:probe_definition
   validate :last_date_must_be_after_first_date
   validate :goal_in_range
 
@@ -49,7 +49,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def student_grade
-    #TODO delegate this
+    # TODO delegate this
     student.enrollments.first.grade
   end
 

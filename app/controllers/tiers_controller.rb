@@ -60,7 +60,7 @@ class TiersController < ApplicationController
   # DELETE /tiers/1
   # DELETE /tiers/1.xml
   def destroy
-    #really_destroy if confirm is true or used_at_all?
+    # really_destroy if confirm is true or used_at_all?
     @tier = current_district.tiers.find(params[:id])
 
     if current_district.tiers.count < 2

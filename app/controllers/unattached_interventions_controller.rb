@@ -15,20 +15,20 @@ class UnattachedInterventionsController < ApplicationController
   end
 
   def new
-    #new participant
+    # new participant
   end
 
   def edit
-    #not used
+    # not used
   end
 
   def show
-    #not used
+    # not used
   end
 
   def update_end_date
     @intervention = Intervention.find_by_id(params[:id])
-    #TODO REFACTOR THIS, date stuff should be handled in update_attributes call in model
+    # TODO REFACTOR THIS, date stuff should be handled in update_attributes call in model
 
     if Date.valid_civil?(params[:year].to_i,params[:month].to_i,params[:day].to_i)
       @end_date = Date.civil(params[:year].to_i,params[:month].to_i,params[:day].to_i)
@@ -56,11 +56,11 @@ class UnattachedInterventionsController < ApplicationController
       format.html
       format.js
     end
-    #create participant
+    # create participant
   end
 
   def create
-    #bulk ending,  TODO add validation for end reason
+    # bulk ending,  TODO add validation for end reason
     Intervention.find_all_by_id(params[:id]).each do |intervention|
       if intervention.student.principals.include? current_user
         if intervention.valid?

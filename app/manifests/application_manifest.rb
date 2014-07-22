@@ -60,8 +60,8 @@ class ApplicationManifest < Moonshine::Manifest::Rails
     # :apt_gems in <tt>moonshine.yml</tt> you do not need to include it here.
     package 'aspell', ensure: :installed
     package 'zip', ensure: :installed
-    package 'libxml2-dev'#, :before => exec('bundle install')
-    package 'libxslt1-dev'#, :before => exec('bundle install')
+    package 'libxml2-dev'# , :before => exec('bundle install')
+    package 'libxslt1-dev'# , :before => exec('bundle install')
 
     daily_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
     cron 'daily_jobs', command: daily_jobs, user: configuration[:user], minute: 0, hour: 6

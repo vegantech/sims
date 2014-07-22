@@ -128,7 +128,7 @@ class GroupedProgressEntry
 
   private
   def self.interventions(id)
-    #TODO TESTS
+    # TODO TESTS
     Intervention.find(:all,include: :intervention_participants,
                            conditions: ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end

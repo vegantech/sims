@@ -22,7 +22,7 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
 
       help = options[:help]? ' '+@template.help_popup(options[:help]) : ''
       remove_link = ' ' + (options[:remove_link] || '')
-      @template.content_tag(wrap, (label.html_safe  + super(field,*args) + help.html_safe + remove_link.html_safe).html_safe, class: 'form_row')  #wrap with a div form_Row
+      @template.content_tag(wrap, (label.html_safe  + super(field,*args) + help.html_safe + remove_link.html_safe).html_safe, class: 'form_row')  # wrap with a div form_Row
     end
   end
 
@@ -31,6 +31,6 @@ class LabelFormBuilder < ActionView::Helpers::FormBuilder
     wrap = options[:wrap] || :div
     label = @template.content_tag(:b,label(field, options[:label], class: options[:label_class]))
     help = options[:help]? ' ' +@template.help_popup(options[:help]) : ''
-    @template.content_tag(:wrap, ('' +  label + help + super(field,*args)).html_safe, class: 'form_row')  #wrap with a div form_Row
+    @template.content_tag(:wrap, ('' +  label + help + super(field,*args)).html_safe, class: 'form_row')  # wrap with a div form_Row
   end
 end

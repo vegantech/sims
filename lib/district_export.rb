@@ -179,7 +179,7 @@ class DistrictExport
   end
 
   def export_content_assets
-    #union of ids from @assets
+    # union of ids from @assets
     asset_sql = @assets.collect{|c,ids| Asset.where(attachable_type: c, attachable_id: ids).to_sql}.join(" union ")
     generate_content_csv('assets',Asset.column_names.join(","),asset_sql)
     Asset.find_by_sql(asset_sql).collect{|a| a.document.try(:path)}.compact

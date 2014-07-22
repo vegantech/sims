@@ -9,4 +9,4 @@ set :domain, "sims-open.vegantech.com"
 set :branch, "master"
 after  :setup_domain_constant, :enable_subdomains
 
-#set :branch, 'jquery'
+# set :branch, 'jquery'

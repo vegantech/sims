@@ -5,7 +5,7 @@ describe CSVImporter::SystemFlags do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
-      #unlinked school, unlinked group, unlinked user
+      # unlinked school, unlinked group, unlinked user
       Student.delete_all
       SystemFlag.delete_all
       District.delete_all

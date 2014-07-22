@@ -31,7 +31,7 @@ describe SchoolTeam do
     end
     describe 'demote contact alice to memeber' do
       it 'should have alice as member' do
-        #787 lh
+        # 787 lh
         subject.update_attributes contact_ids: ["",contact.id], user_ids: [alice.id,bob.id]
         subject.reload.users.should =~ [bob,contact,alice]
         subject.team_contacts.should == [contact]

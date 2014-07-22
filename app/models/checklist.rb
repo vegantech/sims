@@ -20,7 +20,7 @@ class Checklist < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   belongs_to :checklist_definition, include: {question_definitions: {element_definitions: :answer_definitions}}
   belongs_to :student
-  belongs_to :teacher, class_name: "User", foreign_key: :user_id  #e xplicitly needed for validation
+  belongs_to :teacher, class_name: "User", foreign_key: :user_id  # e xplicitly needed for validation
   belongs_to :district
   belongs_to :tier, foreign_key: :from_tier
   has_one :recommendation,dependent: :destroy
@@ -86,7 +86,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def self.new_from_teacher(teacher)
-    #this builds a new checklist and scores it by copying the old values?
+    # this builds a new checklist and scores it by copying the old values?
     checklist = Checklist.new(teacher: teacher)
     return nil unless checklist.student
     checklist.checklist_definition = checklist.student.checklist_definition
@@ -110,7 +110,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def score_checklist
-    #for demo purpose, answering the second question will pass the checklist
+    # for demo purpose, answering the second question will pass the checklist
     if student and student.last_name=="Flag" and student.first_name="Every" and answers.find_by_answer_definition_id(6) then
       self.promoted=true
       return true
@@ -171,8 +171,8 @@ class Checklist < ActiveRecord::Base
     recommendation.blank?  && recommendation_definition_id && !is_draft?
   end
 
-#used to support actually editing a checklist instead of creating a new version and deleting! the old one!!!
-#TODO Clean this up when I finish up the view changes
+# used to support actually editing a checklist instead of creating a new version and deleting! the old one!!!
+# TODO Clean this up when I finish up the view changes
   #
   def can_build?
     @build_errors = []
@@ -200,7 +200,7 @@ class Checklist < ActiveRecord::Base
         answer_hash = { answer_definition_id: answer['id'].to_i,
                         text: answer['text']}
       else
-        next  #text is empty
+        next  # text is empty
       end
       (answers.find_by_answer_definition_id(answer_hash[:answer_definition_id]) || answers.build).attributes=answer_hash
       @answer_definition_ids << answer_hash[:answer_definition_id]
@@ -221,7 +221,7 @@ class Checklist < ActiveRecord::Base
     self.district_id = student.district_id if district.blank?
   end
 
-  #End of refactoring for edit/create  These might change when I refactor the view ^^^^^
+  # End of refactoring for edit/create  These might change when I refactor the view ^^^^^
 
   def cannot_pass_if_draft
     errors.add(:is_draft,"Checklist was not submitted") if promoted && is_draft?

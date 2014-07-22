@@ -87,7 +87,7 @@ describe Student do
 
   describe "principals" do
     it "should show principals from groups and special groups" do
-      #TODO This is missing test for #355 which didn't work for special groups without district assigned
+      # TODO This is missing test for #355 which didn't work for special groups without district assigned
       pending
     end
   end

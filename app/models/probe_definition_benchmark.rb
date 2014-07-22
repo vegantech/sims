@@ -26,7 +26,7 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   end
 
   def color
-    #used on graphs
+    # used on graphs
     if new_record?
       '00ff00'
     else

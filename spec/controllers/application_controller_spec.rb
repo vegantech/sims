@@ -87,7 +87,7 @@ describe ApplicationController do
 
   describe "selected_student_ids" do
     def check_memcache
-      #I don't know another way to check if a server is running
+      # I don't know another way to check if a server is running
       Rails.cache.stats.values.compact.present?
     end
 
@@ -113,11 +113,11 @@ describe ApplicationController do
       controller.send(:selected_student_ids).should == values
       controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "bush"
-      controller.send(:selected_student_ids).should_not == values  #if session_id changes
+      controller.send(:selected_student_ids).should_not == values  # if session_id changes
       controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "tree"
       controller.stub!(current_user: User.new)
-      controller.send(:selected_student_ids).should_not == values  #if user changes
+      controller.send(:selected_student_ids).should_not == values  # if user changes
     end
   end
 
@@ -126,7 +126,7 @@ describe ApplicationController do
       @c = ApplicationController.new
       @req = ActionDispatch::TestRequest.new
       @c.request =@req
-      #@c.set_current_view_context
+      # @c.set_current_view_context
     end
 
     it 'should return true for devise controller' do

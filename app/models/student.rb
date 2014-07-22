@@ -123,8 +123,8 @@ class Student < ActiveRecord::Base
   end
 
   def principals
-    #Find principals for student
-    #TODO combine groups and special groups and get their principals
+    # Find principals for student
+    # TODO combine groups and special groups and get their principals
     principals = groups.collect(&:principals)
 
     principals |= special_group_principals
@@ -158,7 +158,7 @@ class Student < ActiveRecord::Base
   end
 
   def current_flags
-    #FIXME doesn't handle ignores
+    # FIXME doesn't handle ignores
     # all.group_by(&:category)
     flags.reject do |f|
       (f[:type] == 'IgnoreFlag') or
@@ -171,7 +171,7 @@ class Student < ActiveRecord::Base
   end
 
   def remove_from_district
-    #TODO delete the student if they aren't in use anymore
+    # TODO delete the student if they aren't in use anymore
     enrollments.destroy_all
     groups.clear
     update_attribute(:district_id,nil)

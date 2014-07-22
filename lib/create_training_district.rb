@@ -35,7 +35,7 @@ class CreateTrainingDistrict
     td=District.create!(abbrev: abbrev, name: name, forgot_password: true)
     ActiveRecord::Base.transaction do
       td.send :create_admin_user
-    #alpha elementary
+    # alpha elementary
     alpha_elem=td.schools.create!(name: 'Alpha Elementary')
 
     oneschool = td.users.create!(username: 'oneschool', password: 'oneschool', email: 'shawn@simspilot.org', first_name: 'Training', last_name: 'User')
@@ -55,9 +55,9 @@ class CreateTrainingDistrict
     melody.save!
     training_team = alpha_elem.school_teams.create!(name: "Training", contact_ids: [oneschool.id])
 
-    #oneschool
-    #alphaprin
-    #students
+    # oneschool
+    # alphaprin
+    # students
 
     alphaprin = td.users.create!(username: 'alphaprin', password: 'alphaprin', email: 'shawn@simspilot.org', first_name: 'Training', last_name: 'Principal')
     alphaprin.user_school_assignments.create!(admin: true, school: alpha_elem)

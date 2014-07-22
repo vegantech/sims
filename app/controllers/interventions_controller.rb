@@ -59,7 +59,7 @@ class InterventionsController < ApplicationController
       @intervention_cluster = @intervention.intervention_cluster
       @intervention_definition = @intervention.intervention_definition
       populate_goals
-      @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
+      @intervention_probe_assignment.valid? if @intervention_probe_assignment # So errors show up on creation  TODO REFACTOR
       @intervention = i
       # end code to make validation work
       render action: "new"
@@ -82,7 +82,7 @@ class InterventionsController < ApplicationController
         format.html do
           edit
           params[:enter_score] = true
-          #@intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
+          # @intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
           render action: "edit"
         end
       end

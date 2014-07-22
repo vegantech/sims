@@ -23,7 +23,7 @@ class PrincipalOverridesController < ApplicationController
   def edit
     @principal_override = PrincipalOverride.find(params[:id])
     @tiers=current_district.tiers
-    @principal_override.setup_response_for_edit(params[:response]) #accept or reject
+    @principal_override.setup_response_for_edit(params[:response]) # accept or reject
   end
 
   # POST /principal_overrides

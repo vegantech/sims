@@ -11,7 +11,7 @@ describe "UserInterventionsReport" do
       ip.intervention.intervention_definition.title = 'Intervention Title'
       ip.intervention.intervention_definition.save!
 
-      report_body = UserInterventionsReport.render_text(user: ip.user) #, :start_date => start_date, :end_date => end_date, :school => school)
+      report_body = UserInterventionsReport.render_text(user: ip.user) # , :start_date => start_date, :end_date => end_date, :school => school)
 
       report_body.should == <<EOS
 Report Generated at December 12, 2008 00:00

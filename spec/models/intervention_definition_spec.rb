@@ -82,7 +82,7 @@ describe InterventionDefinition do
         InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
         @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]
         @id1.update_attribute(:exempt_tier,false)
-        #second intervention
+        # second intervention
         @id2.update_attribute(:exempt_tier,true)
         InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
         @ic1.reload.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]

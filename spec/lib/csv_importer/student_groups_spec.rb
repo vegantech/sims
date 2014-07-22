@@ -5,7 +5,7 @@ describe CSVImporter::StudentGroups do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
-      #unlinked school, unlinked group, unlinked user
+      # unlinked school, unlinked group, unlinked user
       Student.delete_all
       School.delete_all
       Group.delete_all
@@ -44,7 +44,7 @@ describe CSVImporter::StudentGroups do
       @i=CSVImporter::StudentGroups.new "#{Rails.root}/spec/csv/student_groups.csv",@district
       @i.import
 
-      #make sure unlinked data remains untouched
+      # make sure unlinked data remains untouched
       [@unlinked_group_at_linked_school,@linked_group_at_unlinked_school,@unlinked_group_at_unlinked_school].each do |g|
         g.student_ids.sort.should == [@unlinked_user.id, @linked_user.id].sort
       end

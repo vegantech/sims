@@ -124,7 +124,7 @@ Sims::Application.routes.draw do
     end
   end
 
-  #name prefix was _checklist_builder before
+  # name prefix was _checklist_builder before
   namespace :checklist_builder do
     resources :checklists do
       member do
@@ -239,7 +239,7 @@ Sims::Application.routes.draw do
     resources :probes
   end
 
-  #or just railmail_index controller railmail?
+  # or just railmail_index controller railmail?
   resources :railmail, only: %w(index) do
     get  'raw',    on: :member
     get  'part',   on: :member

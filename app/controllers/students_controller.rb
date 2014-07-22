@@ -49,7 +49,7 @@ class StudentsController < ApplicationController
       redirect_to action: :index and return
     end
 
-    current_student_id || self.current_student_id = @student.id.to_s  #537 hopefully this will fix it
+    current_student_id || self.current_student_id = @student.id.to_s  # 537 hopefully this will fix it
     respond_to do |format|
       format.html # show.html.erb
     end
@@ -95,7 +95,7 @@ class StudentsController < ApplicationController
   end
 
   def ic_entry
-    #TODO FIXME
+    # TODO FIXME
     session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
       student = current_district.students.find_by_district_student_id(params[:contextID])
       if student

@@ -5,7 +5,7 @@ describe CSVImporter::Enrollments do
   it_should_behave_like "csv importer"
   describe "importer"  do
     it 'should work properly' do
-      #be sure to test with existing admin
+      # be sure to test with existing admin
       School.delete_all
       Enrollment.delete_all
       District.delete_all
@@ -37,7 +37,7 @@ describe CSVImporter::Enrollments do
 
       @should_lose_enrollment.enrollments.count.should == 0
       
-      @should_gain_enrollment.enrollments.count.should == 2 #2 grades and years in csv
+      @should_gain_enrollment.enrollments.count.should == 2 # 2 grades and years in csv
 
       @should_keep_enrollment.enrollments.count.should == 1
     end

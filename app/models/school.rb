@@ -54,7 +54,7 @@ class School < ActiveRecord::Base
     else
       # all grades where user has 1 or more authorized enrollments
       grades = user.special_user_groups.grades_for_school(self)
-      group_ids = (self.group_ids & user.group_ids) #This needs to be limited to the school
+      group_ids = (self.group_ids & user.group_ids) # This needs to be limited to the school
       sql = enrollments.select('distinct grade')
       sql = sql.joins 'join groups_students on enrollments.student_id = groups_students.student_id'
       sql = sql.where  'groups_students.group_id' => group_ids
