@@ -105,7 +105,7 @@ class DistrictsController < ApplicationController
     end
   end
 
-private
+  private
   def state_admin?
     unless current_district.admin?
       flash[:notice] = 'You do not have access to this action'

@@ -64,7 +64,7 @@ module CSVImporter
 
     end
 
-  private
+    private
 
     def index_options
       [:district_student_id]

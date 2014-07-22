@@ -88,7 +88,7 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
 
-protected
+  protected
   def last_date_must_be_after_first_date
     errors.add(:end_date, "Last date must be after first date")     if self.first_date.blank? || self.end_date.blank? || self.end_date < self.first_date
   end

@@ -152,7 +152,7 @@ class InterventionDefinition < ActiveRecord::Base
     end
   end
 
-private
+  private
   def active_progress_monitors_without_custom
     active_progress_monitors_base.merge recommended_monitors.scoped
   end

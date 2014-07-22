@@ -53,7 +53,7 @@ module CSVImporter
 
     end
 
-  private
+    private
 
     def load_data_infile
       headers=csv_headers

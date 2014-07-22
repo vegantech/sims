@@ -49,7 +49,7 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
     end
 
 
-  private
+    private
 
     def load_data_infile
       headers=csv_headers

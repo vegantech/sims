@@ -93,7 +93,7 @@ class TiersController < ApplicationController
     end
   end
 
- protected
+  protected
   def move_path(obj,direction)
     move_tier_path(obj,:direction=>direction)
   end

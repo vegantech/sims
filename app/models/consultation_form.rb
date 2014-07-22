@@ -50,7 +50,7 @@ class ConsultationForm < ActiveRecord::Base
       desired_outcome.present? || race_culture.present? || consultation_form_concerns.any?(&:filled_in?)
   end
 
- private
+  private
   def set_team_consultation
     if @student.present? && @school.present?
       self.team_consultation = @student.team_consultations.pending(:joins=>:school_teams,:conditions=>{:school_teams=>{:school_id=>@school.id}}).first

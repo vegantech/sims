@@ -62,7 +62,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
 
 
-  private
+    private
     def index_options
       [:district_user_id ]
     end

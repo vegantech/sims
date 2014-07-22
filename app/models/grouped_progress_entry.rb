@@ -131,7 +131,7 @@ class GroupedProgressEntry
 
 
 
-private
+  private
   def self.interventions(id)
     #TODO TESTS
     Intervention.find(:all,:include => :intervention_participants,

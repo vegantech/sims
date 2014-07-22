@@ -228,7 +228,7 @@ class District < ActiveRecord::Base
   end
 
 
-private
+  private
 
   def self.only_district
     only_normal || only_admin

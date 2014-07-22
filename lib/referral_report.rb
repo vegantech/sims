@@ -42,7 +42,7 @@ class ReferralReport
     csv_string
   end
 
-protected
+  protected
 
   def dates_of_sims_data
 

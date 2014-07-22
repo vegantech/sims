@@ -93,7 +93,7 @@ module CSVImporter
       end
     end
 
-  protected
+    protected
 
   def temporary_table_name
     "#{self.class.name.demodulize.tableize}_#{@district.id}_importer"

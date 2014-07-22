@@ -49,7 +49,7 @@ module CSVImporter
 
 
 
-  private
+    private
     def index_options
       [[:district_user_id]]
     end

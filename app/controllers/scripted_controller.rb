@@ -36,7 +36,7 @@ class ScriptedController < ApplicationController
   end
 
 
-protected
+  protected
   def authenticate_user!
     authenticate_or_request_with_http_basic do |username, password|
       username == params[:action] && @u=current_district.users.find_by_username(username) and @u.try(:valid_password?,password)

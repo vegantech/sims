@@ -286,7 +286,7 @@ class User < ActiveRecord::Base
       (district.custom_interventions == 'content_admins' && roles.include?('content_admin') )
   end
 
-protected
+  protected
 
   def student_ids_where_principal(school_id)
     #TODO TEST THIS

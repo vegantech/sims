@@ -72,7 +72,7 @@ class Interventions::CommentsController < ApplicationController
     end
   end
 
-protected
+  protected
   def load_intervention
     if current_student.present?
       @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?

@@ -40,7 +40,7 @@ class UserSchoolAssignment < ActiveRecord::Base
 
   end
 
-private
+  private
   def remove_special_user_groups
     SpecialUserGroup.delete_all("user_id = #{user_id} and school_id = #{school_id}")
   end
