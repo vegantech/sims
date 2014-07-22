@@ -17,6 +17,7 @@ module CSVImporter
       def csv_headers
         [:district_student_id, :district_group_id]
       end
+
       def overwritten
       end
 
@@ -39,6 +40,7 @@ module CSVImporter
       def how_many_rows
         "One row per student per group.  A student will have multiple groups and a group will contain multiple students."
       end
+
       def upload_responses
         super
       end

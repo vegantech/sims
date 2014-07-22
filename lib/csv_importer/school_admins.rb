@@ -7,6 +7,7 @@ module CSVImporter
       def csv_headers
         [:district_user_id]
       end
+
       def description
         "This is no longer used.  See the admins_of_schools.csv instead."
       end

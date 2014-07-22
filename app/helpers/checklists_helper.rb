@@ -18,6 +18,7 @@ module ChecklistsHelper
    end
 
   end
+
   def previous_answers(checklist, answer_definition, &block)
     return if checklist.student.blank?
     if block_given?

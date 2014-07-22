@@ -85,9 +85,11 @@ module CSVImporter
       def supports_append?
         false
       end
+
       def append_info
         "Unsupported for this file"
       end
+
       def optional_headers
         []
       end

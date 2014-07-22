@@ -183,6 +183,7 @@ class Checklist < ActiveRecord::Base
     @build_errors <<("Please submit/edit or delete the already started checklist first") if pending?
     @build_errors.blank?
   end
+
   def commit=(_ignore)
     self.is_draft = false
   end

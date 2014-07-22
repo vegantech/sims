@@ -5,6 +5,7 @@ describe "Populate Intervention Dropdowns Module" do
   def session
     {}
   end
+
   def selected_student_ids
     [1, 2]
   end

@@ -19,6 +19,7 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       def csv_headers
         [:district_user_id, :district_group_id, :principal]
       end
+
       def overwritten
       end
 

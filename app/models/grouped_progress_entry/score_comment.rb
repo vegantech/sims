@@ -49,6 +49,7 @@ class GroupedProgressEntry
     def student
       @intervention.student
     end
+
     def to_param
       @id
     end

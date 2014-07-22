@@ -8,6 +8,7 @@ module CSVImporter
       def flag_category
         self.file_name.split("_system_flags").first
       end
+
       def description
         "Student Flags for category #{Flag::FLAGTYPES[flag_category][:humanize]}"
       end
@@ -89,6 +90,7 @@ module CSVImporter
       )
       ActiveRecord::Base.connection.update query
     end
+
    def confirm_count?
      return true
    end

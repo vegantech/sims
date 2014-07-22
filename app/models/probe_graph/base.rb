@@ -97,6 +97,7 @@ class ProbeGraph::Base
   def r_axis_labels
     benchmarks_with_goal.collect{|b| "#{b.benchmark}-  #{b.grade_level}"}
   end
+
   def dots_for_line_graph
     'o,000000,0,,3.0'
   end

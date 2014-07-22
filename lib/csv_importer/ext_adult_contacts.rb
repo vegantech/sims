@@ -23,6 +23,7 @@ module CSVImporter
       def csv_headers
         [:district_student_id, :relationship, :guardian, :first_name,:last_name, :home_phone, :work_phone, :cell_phone, :pager, :email, :street_address, :city_state_zip]
       end
+
       def overwritten
       end
 
@@ -128,6 +129,7 @@ module CSVImporter
       )
       ActiveRecord::Base.connection.update query
     end
+
    def confirm_count?
      return true
    end

@@ -54,6 +54,7 @@ module CSVImporter
     def remove_duplicates?
       true
     end
+
     def migration t
       t.column :district_user_id, :string, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
       t.column :district_school_id, :integer

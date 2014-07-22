@@ -7,6 +7,7 @@ module CSVImporter
       def csv_headers
         [:district_user_id]
       end
+
       def description
         "List of users with access to the core functionality of SIMS. Most users should have this role."
       end
@@ -48,6 +49,7 @@ module CSVImporter
     def role
       self.class.name.demodulize.tableize.singularize
     end
+
     def role_mask
       2**Role::ROLES.index(role)
     end

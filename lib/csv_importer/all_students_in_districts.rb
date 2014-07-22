@@ -10,6 +10,7 @@ module CSVImporter
       def file_name
         "all_students_in_district.csv"
       end
+
       def description
         "List of users with access to all students in the district. Be sure to also give them regular user access."
       end

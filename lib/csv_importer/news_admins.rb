@@ -7,6 +7,7 @@ module CSVImporter
       def csv_headers
         [:district_user_id]
       end
+
       def description
         "List of users with access to the edit and create news entries."
       end

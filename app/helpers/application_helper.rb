@@ -13,6 +13,7 @@ module ApplicationHelper
   def li_link_to(name, options = {}, html_options = {}, *rest)
     content_tag :li,(link_to(name,options,html_options) + rest.join(" "))
   end
+
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
      r= link_to_if_authorized(name, options, html_options, *rest)
      content_tag :li,((r + rest.join(" ").html_safe).html_safe) if r.present?

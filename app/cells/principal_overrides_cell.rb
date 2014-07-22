@@ -5,6 +5,7 @@ class PrincipalOverridesCell < Cell::Base
     @requests=user.principal_override_requests.count if user
     render
   end
+
   def principal_responses opts
     user=opts[:user]# || User.find_by_id(session[:user_id])
     return '' unless user && user.principal?

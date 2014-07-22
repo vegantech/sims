@@ -13,6 +13,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to new_user_session_url
     end
   end
+
   def google_apps
     @user = current_district.users.find_for_googleapps_oauth(request.env["omniauth.auth"], current_user)
 

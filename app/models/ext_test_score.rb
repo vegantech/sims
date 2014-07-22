@@ -47,6 +47,7 @@ class ExtTestScore < ActiveRecord::Base
     d.join " "
 
   end
+
   def score
     s= case test_group
     when "PMA","PLAA", "WKCE"

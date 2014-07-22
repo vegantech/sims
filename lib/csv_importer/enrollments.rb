@@ -10,6 +10,7 @@ module CSVImporter
       def description
         "Assigns students to schools"
       end
+
       def csv_headers
         [:grade, :district_school_id, :district_student_id, :end_year]
       end
@@ -107,6 +108,7 @@ module CSVImporter
             )
             ActiveRecord::Base.connection.update query
     end
+
     def confirm_count?
       return true
       model_name = sims_model.name

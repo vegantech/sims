@@ -12,6 +12,7 @@ module CSVImporter
       def csv_headers
         [:district_user_id, :district_school_id]
       end
+
       def overwritten
       end
 
