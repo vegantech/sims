@@ -33,7 +33,7 @@ describe InterventionProbeAssignment do
   end
 
   it 'should validate end_date after first_date' do
-    ipa = InterventionProbeAssignment.new(@valid_attributes.merge({:end_date => Date.today.yesterday}))
+    ipa = InterventionProbeAssignment.new(@valid_attributes.merge(:end_date => Date.today.yesterday))
     ipa.should_not be_valid
   end
 

@@ -44,7 +44,7 @@ class StudentSearch
       pg=search_hash.delete(:group_id)[2..-1]
       @enrollments = @enrollments.joins("inner join personal_groups_students on
                                         personal_groups_students.student_id = enrollments.student_id"
-                                       ).where({ "personal_groups_students.personal_group_id" => pg})
+                                       ).where( "personal_groups_students.personal_group_id" => pg)
     end
   end
 
@@ -53,7 +53,7 @@ class StudentSearch
     group_user = search_hash.slice(:user_id, :group_id)
     group_user.delete_if{|_k,v| v=='*' || v==''}
     @enrollments = @enrollments.joins "inner join groups_students on groups_students.student_id = enrollments.student_id" if group_user.present?
-    @enrollments = @enrollments.where({"groups_students.group_id" => group_user[:group_id]}) if group_user[:group_id]
+    @enrollments = @enrollments.where("groups_students.group_id" => group_user[:group_id]) if group_user[:group_id]
     @enrollments = @enrollments.joins("inner join user_group_assignments on 
                                       groups_students.group_id = user_group_assignments.group_id"
                                      ).where(
@@ -123,12 +123,12 @@ class StudentSearch
     scope=@enrollments.where(
       ["exists (select id from interventions where interventions.student_id = enrollments.student_id and
         interventions.active = ?)",true]).joins(
-        {:student=>:interventions})
+        :student=>:interventions)
 
     unless search_hash[:intervention_group_types].blank?
       scope=scope.joins(
-        {:student=>{:interventions=>{:intervention_definition=>
-          {:intervention_cluster=>{:objective_definition=>:goal_definition}}}}}).where(
+        :student=>{:interventions=>{:intervention_definition=>
+          {:intervention_cluster=>{:objective_definition=>:goal_definition}}}}).where(
         ["objective_definitions.id in (?)", search_hash[:intervention_group_types]])
     end
     scope
@@ -153,6 +153,6 @@ class StudentSearch
     gy[:end_year] = gy.delete(:year) if gy.has_key?(:year)
     gy.delete_if{|_k,v| v=='*'}
     gy[:end_year] = nil if gy[:end_year] == ''
-    @enrollments = @enrollments.where({enrollments: gy}) unless gy.blank?
+    @enrollments = @enrollments.where(enrollments: gy) unless gy.blank?
   end
 end

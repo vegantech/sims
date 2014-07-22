@@ -61,7 +61,7 @@ describe InterventionBuilder::ObjectivesController do
     describe "with valid params" do
 
       it "should expose a newly created objective as @objective_definition" do
-        ObjectiveDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mock_objective(:save => true))
+        ObjectiveDefinition.should_receive(:build).with('these' => 'params').and_return(mock_objective(:save => true))
         post :create, :objective_definition => {:these => 'params'}, :goal_id=>"44"
         assigns(:objective_definition).should equal(mock_objective)
       end
@@ -77,7 +77,7 @@ describe InterventionBuilder::ObjectivesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved objective as @objective_definition" do
-        ObjectiveDefinition.stub!(:build).with({'these' => 'params'}).and_return(mock_objective(:save => false))
+        ObjectiveDefinition.stub!(:build).with('these' => 'params').and_return(mock_objective(:save => false))
         post :create, :objective_definition => {:these => 'params'}, :goal_id=>"44"
         assigns(:objective_definition).should equal(mock_objective)
       end
@@ -99,7 +99,7 @@ describe InterventionBuilder::ObjectivesController do
 
       it "should update the requested objective_definition" do
         ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective(:save=>true))
-        mock_objective.should_receive(:attributes=).with({'these' => 'params'})
+        mock_objective.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :objective_definition => {:these => 'params'}, :goal_id=>"44"
       end
 
@@ -121,7 +121,7 @@ describe InterventionBuilder::ObjectivesController do
 
       it "should update the requested objective" do
         ObjectiveDefinition.should_receive(:find).with("37").and_return(mock_objective(:save=>false))
-        mock_objective.should_receive(:attributes=).with({'these' => 'params'})
+        mock_objective.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :objective_definition => {:these => 'params'}, :goal_id=>"44"
       end
 

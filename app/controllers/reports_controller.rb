@@ -79,7 +79,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html {}
-      format.pdf {send_data(render_to_pdf({ :action => 'student_overall', :layout => "pdf_report" }), :filename => "#{@student.number}.pdf" )}
+      format.pdf {send_data(render_to_pdf( :action => 'student_overall', :layout => "pdf_report" ), :filename => "#{@student.number}.pdf" )}
     end
   end
 

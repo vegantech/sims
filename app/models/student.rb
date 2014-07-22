@@ -57,7 +57,7 @@ class Student < ActiveRecord::Base
 
 
   scope :by_state_id_and_id_state, lambda { |state_id, id_state|
-    joins(:district).where({:districts=>{:state_id => state_id}, :id_state => id_state}).limit(1)}
+    joins(:district).where(:districts=>{:state_id => state_id}, :id_state => id_state).limit(1)}
 
 
 

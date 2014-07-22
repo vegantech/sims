@@ -14,7 +14,7 @@ describe StudentsController do
       controller.should_receive(:setup_students_for_index)
       controller.should_receive(:student_search).and_return([a,b,c])
       controller.should_receive(:current_school_id).and_return(['a','b','c'])
-      get :index, {},{:search=>{}}
+      get :index, {},:search=>{}
       response.should be_success
       assigns(:students).should == [a,b,c]
     end
@@ -33,7 +33,7 @@ describe StudentsController do
       it 'should put error in flash, and rerender students index' do
         controller.should_receive(:student_search).and_return([])
         controller.should_receive(:setup_students_for_index)
-        post :create,{}, {:search=>{}}
+        post :create,{}, :search=>{}
 
         session[:selected_students].should be_nil
         request.flash[:notice].should == 'No students selected'
@@ -48,7 +48,7 @@ describe StudentsController do
 
         controller.should_receive(:setup_students_for_index)
         controller.should_receive(:student_search).and_return([e1,e2])
-        post :create, {:id=>['1','5','6']}, {:search=>{}}
+        post :create, {:id=>['1','5','6']}, :search=>{}
 
 
       end
@@ -72,7 +72,7 @@ describe StudentsController do
         e1 = mock(:id=>'5')
         e2 = mock(:id => '16')
         controller.should_receive(:student_search).and_return([e1,e2])
-        post :create, {:id => ["5", "16"]},  {:search=>{}}
+        post :create, {:id => ["5", "16"]},  :search=>{}
 
       end
 
@@ -94,7 +94,7 @@ describe StudentsController do
         e3 = mock_enrollment(:id=>'37')
         controller.should_receive(:student_search).and_return([e1,e2,e3])
 
-        post :create, {:id => ["5", "16"]},  {:search=>{}}
+        post :create, {:id => ["5", "16"]},  :search=>{}
         flash[:notice].should_not == 'Unauthorized Student selected'
         session[:selected_students].should == ["5", "16"]
         session[:selected_student].should == "5"
@@ -158,7 +158,7 @@ describe StudentsController do
         student=mock_student
         student.should_receive("belongs_to_user?").and_return(false)
         Student.should_receive(:find).with("999").and_return(student)
-        get :show, {:id => '999'}
+        get :show, :id => '999'
         flash[:notice].should == 'You do not have access to that student'
         response.should redirect_to(students_url)
       end

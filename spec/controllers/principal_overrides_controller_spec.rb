@@ -19,7 +19,7 @@ describe PrincipalOverridesController do
   describe "responding to GET index" do
 
     it "should expose all principal_overrides as @principal_overrides" do
-      @user.should_receive(:grouped_principal_overrides).and_return({'r'=>[1,2,3]})
+      @user.should_receive(:grouped_principal_overrides).and_return('r'=>[1,2,3])
       get :index
       assigns(:principal_overrides).should == {'r'=>[1,2,3]}
     end
@@ -67,7 +67,7 @@ describe PrincipalOverridesController do
 
       it "should expose a newly created principal_override as @principal_override" do
         pending
-        PrincipalOverride.should_receive(:new).with({'these' => 'params'}).and_return(mock_principal_override(:save => true))
+        PrincipalOverride.should_receive(:new).with('these' => 'params').and_return(mock_principal_override(:save => true))
         post :create, :principal_override => {:these => 'params'}
         assigns(:principal_override).should equal(mock_principal_override)
       end
@@ -85,7 +85,7 @@ describe PrincipalOverridesController do
 
       it "should expose a newly created but unsaved principal_override as @principal_override" do
         pending
-        PrincipalOverride.stub!(:new).with({'these' => 'params'}).and_return(mock_principal_override(:save => false))
+        PrincipalOverride.stub!(:new).with('these' => 'params').and_return(mock_principal_override(:save => false))
         post :create, :principal_override => {:these => 'params'}
         assigns(:principal_override).should equal(mock_principal_override)
       end
@@ -108,7 +108,7 @@ describe PrincipalOverridesController do
       it "should update the requested principal_override" do
         pending
         PrincipalOverride.should_receive(:find).with("37").and_return(mock_principal_override)
-        mock_principal_override.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_principal_override.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :principal_override => {:these => 'params'}
       end
 
@@ -136,7 +136,7 @@ describe PrincipalOverridesController do
       it "should update the requested principal_override" do
         pending
         PrincipalOverride.should_receive(:find).with("37").and_return(mock_principal_override)
-        mock_principal_override.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_principal_override.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :principal_override => {:these => 'params'}
       end
 

@@ -56,7 +56,7 @@ class ProbeGraph::Base
   end
 
   def gchart(probes_for_this_graph, chm)
-    Gchart.send self.class::CHART,{
+    Gchart.send self.class::CHART,
       :data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
       :axis_labels => axis_labels(probes_for_this_graph),
       :bar_width_and_spacing => '30,25',
@@ -65,7 +65,7 @@ class ProbeGraph::Base
       :min_value=>min, :max_value=>max,
       :encoding => 'text',
       :custom => custom_string(chm),
-      :size => '600x250'}
+      :size => '600x250'
   end
 
   def y_axis_labels

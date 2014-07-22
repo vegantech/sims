@@ -63,7 +63,7 @@ describe GroupsController do
     describe "with valid params" do
 
       it "should expose a newly created group as @group" do
-        Group.should_receive(:build).with({'these' => 'params'}).and_return(mock_group(:save => true))
+        Group.should_receive(:build).with('these' => 'params').and_return(mock_group(:save => true))
         post :create, :group => {:these => 'params'}
         assigns(:group).should equal(mock_group)
       end
@@ -88,7 +88,7 @@ describe GroupsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved group as @group" do
-        Group.stub!(:build).with({'these' => 'params'}).and_return(mock_group(:save => false))
+        Group.stub!(:build).with('these' => 'params').and_return(mock_group(:save => false))
         post :create, :group => {:these => 'params'}
         assigns(:group).should equal(mock_group)
       end
@@ -109,7 +109,7 @@ describe GroupsController do
 
       it "should update the requested group" do
         Group.should_receive(:find).with("37").and_return(mock_group)
-        mock_group.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_group.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :group => {:these => 'params'}
       end
 
@@ -138,7 +138,7 @@ describe GroupsController do
 
       it "should update the requested group" do
         Group.should_receive(:find).with("37").and_return(mock_group)
-        mock_group.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_group.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :group => {:these => 'params'}
       end
 

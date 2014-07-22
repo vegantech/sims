@@ -44,7 +44,7 @@ describe District::SchoolsController do
   describe "responding to POST create" do
     describe "with valid params" do
       it "should expose a newly created schools as @schools" do
-        School.should_receive(:build).with({'these' => 'params'}).and_return(mock_schools(:save => true))
+        School.should_receive(:build).with('these' => 'params').and_return(mock_schools(:save => true))
         post :create, :school => {:these => 'params'}
         assigns(:school).should equal(mock_schools)
       end
@@ -65,7 +65,7 @@ describe District::SchoolsController do
     end
     describe "with invalid params" do
       it "should expose a newly created but unsaved schools as @schools" do
-        School.stub!(:build).with({'these' => 'params'}).and_return(mock_schools(:save => false))
+        School.stub!(:build).with('these' => 'params').and_return(mock_schools(:save => false))
         post :create, :school => {:these => 'params'}
         assigns(:school).should equal(mock_schools)
       end
@@ -82,7 +82,7 @@ describe District::SchoolsController do
     describe "with valid params" do
       it "should update the requested schools" do
         School.should_receive(:find).with("37").and_return(mock_schools)
-        mock_schools.should_receive(:update_attributes).with({"these"=>"params"})
+        mock_schools.should_receive(:update_attributes).with("these"=>"params")
         put :update, :id => "37", :school => {:these => 'params'}
       end
 
@@ -109,7 +109,7 @@ describe District::SchoolsController do
     describe "with invalid params" do
       it "should update the requested schools" do
         School.should_receive(:find).with("37").and_return(mock_schools)
-        mock_schools.should_receive(:update_attributes).with({"these"=>"params"})
+        mock_schools.should_receive(:update_attributes).with("these"=>"params")
         put :update, :id => "37", :school => {:these => 'params'}
       end
 

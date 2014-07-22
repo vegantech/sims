@@ -49,7 +49,7 @@ describe TeamConsultationsController do
 
     describe "with valid params" do
       it "assigns a newly created team_consultation as @team_consultation" do
-        TeamConsultation.should_receive(:new).with({'these' => 'params', 'student_id' => '2', 'requestor_id' => '3'}).and_return(mock_team_consultation(:save => true,  :school_team => 'A'))
+        TeamConsultation.should_receive(:new).with('these' => 'params', 'student_id' => '2', 'requestor_id' => '3').and_return(mock_team_consultation(:save => true,  :school_team => 'A'))
         post :create, :team_consultation => {:these => 'params'}
         assigns(:team_consultation).should equal(mock_team_consultation)
       end
@@ -63,7 +63,7 @@ describe TeamConsultationsController do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved team_consultation as @team_consultation" do
-        TeamConsultation.stub!(:new).with({'these' => 'params', 'student_id' => '2', 'requestor_id' => '3'}).and_return(mock_team_consultation(:save => false, :school_team => 'A'))
+        TeamConsultation.stub!(:new).with('these' => 'params', 'student_id' => '2', 'requestor_id' => '3').and_return(mock_team_consultation(:save => false, :school_team => 'A'))
         post :create, :team_consultation => {:these => 'params'}
         assigns(:team_consultation).should equal(mock_team_consultation)
       end
@@ -82,7 +82,7 @@ describe TeamConsultationsController do
     describe "with valid params" do
       it "updates the requested team_consultation" do
         TeamConsultation.should_receive(:find).with("37").and_return(mock_team_consultation)
-        mock_team_consultation.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_team_consultation.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :team_consultation => {:these => 'params'}
       end
 
@@ -103,7 +103,7 @@ describe TeamConsultationsController do
     describe "with invalid params" do
       it "updates the requested team_consultation" do
         TeamConsultation.should_receive(:find).with("37").and_return(mock_team_consultation)
-        mock_team_consultation.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_team_consultation.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :team_consultation => {:these => 'params'}
       end
 

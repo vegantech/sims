@@ -52,7 +52,7 @@ describe District::StudentsController do
     describe "with valid params" do
 
       it "should expose a newly created student as @student" do
-        Student.should_receive(:build).with({'these' => 'params'}).and_return(mock_student(:save => true))
+        Student.should_receive(:build).with('these' => 'params').and_return(mock_student(:save => true))
         post :create, :student => {:these => 'params'}
         assigns(:student).should equal(mock_student)
       end
@@ -73,7 +73,7 @@ describe District::StudentsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved student as @student" do
-        Student.stub!(:build).with({'these' => 'params'}).and_return(mock_student(:save => false))
+        Student.stub!(:build).with('these' => 'params').and_return(mock_student(:save => false))
         post :create, :student => {:these => 'params'}
         assigns(:student).should equal(mock_student)
       end
@@ -94,7 +94,7 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_student.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :student => {:these => 'params'}
       end
 
@@ -122,7 +122,7 @@ describe District::StudentsController do
 
       it "should update the requested student" do
         Student.should_receive(:find).with("37").and_return(mock_student)
-        mock_student.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_student.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :student => {:these => 'params'}
       end
 

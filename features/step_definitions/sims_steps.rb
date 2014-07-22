@@ -255,9 +255,9 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    page.driver.get  "/schools/#{school.id}/student_search/grade", {:grade=>3, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.get  "/schools/#{school.id}/student_search/grade", {:grade=>3, :format => 'js'}, :user_id => user.id.to_s, :school_id=>school.id.to_s
   elsif observed_field == "search_criteria_user_id"
-    page.driver.get "/schools/#{school.id}/student_search/member", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, {:user_id => user.id.to_s, :school_id=>school.id.to_s}
+    page.driver.get "/schools/#{school.id}/student_search/member", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, :user_id => user.id.to_s, :school_id=>school.id.to_s
   else
     flunk page.source
   end

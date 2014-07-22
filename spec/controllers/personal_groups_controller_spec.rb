@@ -52,7 +52,7 @@ describe PersonalGroupsController do
 
     describe "with valid params" do
       it "assigns a newly created personal_group as @personal_group" do
-        PersonalGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_personal_group('school=' =>'', :save => true))
+        PersonalGroup.should_receive(:new).with('these' => 'params').and_return(mock_personal_group('school=' =>'', :save => true))
         post :create, :personal_group => {:these => 'params'}
         assigns(:personal_group).should equal(mock_personal_group)
       end
@@ -70,7 +70,7 @@ describe PersonalGroupsController do
         Student.should_receive(:find_all_by_id)
       end
       it "assigns a newly created but unsaved personal_group as @personal_group" do
-        PersonalGroup.stub!(:new).with({'these' => 'params'}).and_return(mock_personal_group(:save => false, 'school=' =>''))
+        PersonalGroup.stub!(:new).with('these' => 'params').and_return(mock_personal_group(:save => false, 'school=' =>''))
         post :create, :personal_group => {:these => 'params'}
         assigns(:personal_group).should equal(mock_personal_group)
       end
@@ -89,7 +89,7 @@ describe PersonalGroupsController do
     describe "with valid params" do
       it "updates the requested personal_group" do
         PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group)
-        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params', "student_ids" => []}).and_return(true)
+        mock_personal_group.should_receive(:update_attributes).with('these' => 'params', "student_ids" => []).and_return(true)
         put :update, :id => "37", :personal_group => {:these => 'params'}
       end
 
@@ -113,7 +113,7 @@ describe PersonalGroupsController do
       end
       it "updates the requested personal_group" do
         PersonalGroup.should_receive(:find).with("37").and_return(mock_personal_group(:student_ids =>[]))
-        mock_personal_group.should_receive(:update_attributes).with({'these' => 'params', "student_ids" => []})
+        mock_personal_group.should_receive(:update_attributes).with('these' => 'params', "student_ids" => [])
         put :update, :id => "37", :personal_group => {:these => 'params'}
       end
 

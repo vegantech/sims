@@ -32,7 +32,7 @@ describe ConsultationFormRequestsController do
 
     describe "with valid params" do
       it "assigns a newly created consultation_form_request as @consultation_form_request" do
-        ConsultationFormRequest.should_receive(:new).with({'these' => 'params', 'requestor'=>@user, 'student' =>@student }).and_return(mock_consultation_form_request(:save => true))
+        ConsultationFormRequest.should_receive(:new).with('these' => 'params', 'requestor'=>@user, 'student' =>@student ).and_return(mock_consultation_form_request(:save => true))
         post :create, :consultation_form_request => {:these => 'params'}
         assigns(:consultation_form_request).should equal(mock_consultation_form_request)
       end
@@ -47,7 +47,7 @@ describe ConsultationFormRequestsController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved consultation_form_request as @consultation_form_request" do
         controller.stub_association!(:current_school, :assigned_users=>[1,2,3], :school_teams=>mock(:named=>['a','b']))
-        ConsultationFormRequest.stub!(:new).with({'these' => 'params',  'requestor'=>@user, 'student' =>@student }).and_return(mock_consultation_form_request(:save => false))
+        ConsultationFormRequest.stub!(:new).with('these' => 'params',  'requestor'=>@user, 'student' =>@student ).and_return(mock_consultation_form_request(:save => false))
         post :create, :consultation_form_request => {:these => 'params'}
         assigns(:consultation_form_request).should equal(mock_consultation_form_request)
         assigns(:users).should == [1,2,3]

@@ -6,7 +6,7 @@ class ProbeGraph::Linexy < ProbeGraph::Base
       custom_chm=[numbers_on_line,max_min_zero,dots_for_line_graph,benchmark_lines].compact.join("|")
     end
 
-    Gchart.line_xy({:data => line_graph_data(probes_for_graph),
+    Gchart.line_xy(:data => line_graph_data(probes_for_graph),
                     :axis_with_labels => 'x,x,y,r',
                     :axis_labels => line_axis_labels,
                     :bar_colors => "8DACD0,99DD99",
@@ -18,7 +18,7 @@ class ProbeGraph::Linexy < ProbeGraph::Base
                     :thickness => "2|1,4,2", #thickness of scores | aim line with dashing
                     :chds => chds,
                     :axis_range => [[0,line_graph_date_denom],[],[0,100],[0,100]]
-    })
+    )
   end
   protected
 

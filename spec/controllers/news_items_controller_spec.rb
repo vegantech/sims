@@ -40,7 +40,7 @@ describe NewsItemsController do
     describe "with valid params" do
 
       it "should expose a newly created news_item as @news_item" do
-        NewsItem.should_receive(:build).with({'these' => 'params'}).and_return(mock_news_item(:save => true))
+        NewsItem.should_receive(:build).with('these' => 'params').and_return(mock_news_item(:save => true))
         post :create, :news_item => {:these => 'params'}
         assigns(:news_item).should equal(mock_news_item)
       end
@@ -56,7 +56,7 @@ describe NewsItemsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved news_item as @news_item" do
-        NewsItem.stub!(:build).with({'these' => 'params'}).and_return(mock_news_item(:save => false))
+        NewsItem.stub!(:build).with('these' => 'params').and_return(mock_news_item(:save => false))
         post :create, :news_item => {:these => 'params'}
         assigns(:news_item).should equal(mock_news_item)
       end
@@ -77,7 +77,7 @@ describe NewsItemsController do
 
       it "should update the requested news_item" do
         NewsItem.should_receive(:find).with("37").and_return(mock_news_item(:save=>true))
-        mock_news_item.should_receive(:attributes=).with({'these' => 'params'})
+        mock_news_item.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 
@@ -99,7 +99,7 @@ describe NewsItemsController do
 
       it "should update the requested news_item" do
         NewsItem.should_receive(:find).with("37").and_return(mock_news_item(:save=>false))
-        mock_news_item.should_receive(:attributes=).with({'these' => 'params'})
+        mock_news_item.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :news_item => {:these => 'params'}
       end
 

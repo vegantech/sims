@@ -80,7 +80,7 @@ describe Interventions::ParticipantsController do
       it "should update the requested intervention_participant" do
         pending
         InterventionParticipant.should_receive(:find).with("37").and_return(mock_intervention_participant)
-        mock_intervention_participant.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_intervention_participant.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :intervention_participant => {:these => 'params'}, :intervention_id => @intervention.id
       end
 
@@ -105,7 +105,7 @@ describe Interventions::ParticipantsController do
       it "should update the requested intervention_participant" do
         pending
         InterventionParticipant.should_receive(:find).with("37").and_return(mock_intervention_participant)
-        mock_intervention_participant.should_receive(:update_attributes).with({'these' => 'params'})
+        mock_intervention_participant.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :intervention_participant => {:these => 'params'}, :intervention_id => @intervention.id
       end
 

@@ -42,7 +42,7 @@ describe SchoolTeamsController do
 
     describe "with valid params" do
       it "assigns a newly created school_team as @school_team" do
-        SchoolTeam.should_receive(:build).with({'these' => 'params'}).and_return(mock_school_team(:save => true))
+        SchoolTeam.should_receive(:build).with('these' => 'params').and_return(mock_school_team(:save => true))
         post :create, :school_team => {:these => 'params'}
         assigns(:school_team).should equal(mock_school_team)
       end
@@ -64,7 +64,7 @@ describe SchoolTeamsController do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved school_team as @school_team" do
-        SchoolTeam.stub!(:build).with({'these' => 'params'}).and_return(mock_school_team(:save => false))
+        SchoolTeam.stub!(:build).with('these' => 'params').and_return(mock_school_team(:save => false))
         post :create, :school_team => {:these => 'params'}
         assigns(:school_team).should equal(mock_school_team)
       end
@@ -83,7 +83,7 @@ describe SchoolTeamsController do
     describe "with valid params" do
       it "updates the requested school_team" do
         SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-        mock_school_team.should_receive(:update_attributes).with({'these' => 'params', "user_ids"=>[]})
+        mock_school_team.should_receive(:update_attributes).with('these' => 'params', "user_ids"=>[])
         put :update, :id => "37", :school_team => {:these => 'params'}
       end
 
@@ -110,7 +110,7 @@ describe SchoolTeamsController do
     describe "with invalid params" do
       it "updates the requested school_team" do
         SchoolTeam.should_receive(:find).with("37").and_return(mock_school_team)
-        mock_school_team.should_receive(:update_attributes).with({'these' => 'params', "user_ids"=>[]})
+        mock_school_team.should_receive(:update_attributes).with('these' => 'params', "user_ids"=>[])
         put :update, :id => "37", :school_team => {:these => 'params'}
       end
 

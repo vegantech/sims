@@ -60,7 +60,7 @@ describe ApplicationController do
 
         controller.should_receive(:current_school).and_return("")
         @req.should_receive(:xhr?).and_return(true)
-        controller.should_receive(:render).with({:js=>"$('#flash_notice').prepend('<br />Please reselect the school.');"})
+        controller.should_receive(:render).with(:js=>"$('#flash_notice').prepend('<br />Please reselect the school.');")
         controller.send(:require_current_school).should == false
       end
 

@@ -101,7 +101,7 @@ describe Interventions::ProbesController do
 
         it "should update the requested probe" do
           @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe)
-          mock_probe.should_receive(:update_attributes).with({'these' => 'params'})
+          mock_probe.should_receive(:update_attributes).with('these' => 'params')
           put :update, :id => "37", :probe => {:these => 'params'},:intervention_id => @intervention.id, :probe_assignment_id => @intervention_probe_assignment.id
         end
 
@@ -124,7 +124,7 @@ describe Interventions::ProbesController do
 
         it "should update the requested probe" do
           @intervention_probe_assignment.stub_association!(:probes,:find=>mock_probe)
-          mock_probe.should_receive(:update_attributes).with({'these' => 'params'})
+          mock_probe.should_receive(:update_attributes).with('these' => 'params')
           put :update, :id => "37", :probe => {:these => 'params'},:intervention_id => @intervention.id, :probe_assignment_id => @intervention_probe_assignment.id
         end
 

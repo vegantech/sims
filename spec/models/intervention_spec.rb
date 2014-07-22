@@ -181,7 +181,7 @@ describe Intervention do
       end
 
       it 'should leave auto_implementor alone if it is set to 0' do
-        Intervention.new({:auto_implementer => "0"}).auto_implementer.should == "0"
+        Intervention.new(:auto_implementer => "0").auto_implementer.should == "0"
       end
       it 'should also have proper specs for build and initialize'
     end

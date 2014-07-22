@@ -36,7 +36,7 @@ describe ConsultationFormsController do
 
     describe "with valid params" do
       it "assigns a newly created consultation_form as @consultation_form" do
-        ConsultationForm.should_receive(:new).with({'these' => 'params'}).and_return(mock_consultation_form(:save => true))
+        ConsultationForm.should_receive(:new).with('these' => 'params').and_return(mock_consultation_form(:save => true))
         mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         controller.should_receive(:current_student).twice.and_return(mock_student)
         post :create, :consultation_form => {:these => 'params'}
@@ -54,7 +54,7 @@ describe ConsultationFormsController do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved consultation_form as @consultation_form" do
-        ConsultationForm.stub!(:new).with({'these' => 'params'}).and_return(mock_consultation_form(:save => false))
+        ConsultationForm.stub!(:new).with('these' => 'params').and_return(mock_consultation_form(:save => false))
         mock_consultation_form.stub!(:user= => true, :student= =>true, :school= => true)
         post :create, :consultation_form => {:these => 'params'}
         assigns(:consultation_form).should equal(mock_consultation_form)

@@ -43,7 +43,7 @@ describe InterventionBuilder::GoalsController do
   describe "responding to GET new" do
 
     it "should expose a new goal as @goal_definition" do
-      @district.stub_association!(:goal_definitions,{:build=>mock_goal})
+      @district.stub_association!(:goal_definitions,:build=>mock_goal)
       get :new
       assigns(:goal_definition).should equal(mock_goal)
     end
@@ -69,7 +69,7 @@ describe InterventionBuilder::GoalsController do
     describe "with valid params" do
 
       it "should expose a newly created goal as @goal_definition" do
-        GoalDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mock_goal(:save => true))
+        GoalDefinition.should_receive(:build).with('these' => 'params').and_return(mock_goal(:save => true))
         post :create, :goal_definition => {:these => 'params'}
         assigns(:goal_definition).should equal(mock_goal)
       end
@@ -85,7 +85,7 @@ describe InterventionBuilder::GoalsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved goal as @goal_definition" do
-        GoalDefinition.stub!(:build).with({'these' => 'params'}).and_return(mock_goal(:save => false))
+        GoalDefinition.stub!(:build).with('these' => 'params').and_return(mock_goal(:save => false))
         post :create, :goal_definition => {:these => 'params'}
         assigns(:goal_definition).should equal(mock_goal)
       end
@@ -106,7 +106,7 @@ describe InterventionBuilder::GoalsController do
 
       it "should update the requested goal_definition" do
         GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>true))
-        mock_goal.should_receive(:attributes=).with({'these' => 'params'})
+        mock_goal.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :goal_definition => {:these => 'params'}
       end
 
@@ -128,7 +128,7 @@ describe InterventionBuilder::GoalsController do
 
       it "should update the requested goal" do
         GoalDefinition.should_receive(:find).with("37").and_return(mock_goal(:save=>false))
-        mock_goal.should_receive(:attributes=).with({'these' => 'params'})
+        mock_goal.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :goal_definition => {:these => 'params'}
       end
 

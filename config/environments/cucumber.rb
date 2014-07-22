@@ -36,5 +36,5 @@ Sims::Application.configure do
 end
 SIMS_DOMAIN='example.com'
 Bundler.require :test
-Spawnling.default_options({:method => :yield})
+Spawnling.default_options(:method => :yield)
 

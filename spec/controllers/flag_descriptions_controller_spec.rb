@@ -37,7 +37,7 @@ describe FlagDescriptionsController do
 
     describe "with valid params" do
       it "updates the requested flag_description" do
-        @fd.should_receive(:update_attributes).with({'these' => 'params'})
+        @fd.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :flag_description => {:these => 'params'}
       end
 

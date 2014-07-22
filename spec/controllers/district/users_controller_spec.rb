@@ -51,7 +51,7 @@ describe District::UsersController do
     describe "with valid params" do
       let(:user) {mock_model(User, :save => true)}
       it "should expose a newly created user as @user" do
-        User.should_receive(:build).with({'these' => 'params'}).and_return(user)
+        User.should_receive(:build).with('these' => 'params').and_return(user)
         post :create, :user => {:these => 'params'}
         assigns(:user).should equal(user)
       end
@@ -72,7 +72,7 @@ describe District::UsersController do
     describe "with invalid params" do
       let(:user) {mock_model(User, :save => false)}
       it "should expose a newly created but unsaved user as @user" do
-        User.stub!(:build).with({'these' => 'params'}).and_return(user)
+        User.stub!(:build).with('these' => 'params').and_return(user)
         post :create, :user => {:these => 'params'}
         assigns(:user).should equal(user)
       end
@@ -90,7 +90,7 @@ describe District::UsersController do
       let(:user) {mock_model(User, :update_attributes => true, :to_s => "udpate user")}
       it "should update the requested user" do
         User.should_receive(:find).with("37").and_return(user)
-        user.should_receive(:update_attributes).with({"these"=>"params"})
+        user.should_receive(:update_attributes).with("these"=>"params")
         put :update, :id => "37", :user => {:these => 'params'}
       end
 
@@ -156,7 +156,7 @@ describe District::UsersController do
       let(:user) {mock_model(User, :update_attributes => false, :to_s => "udpate user")}
       it "should update the requested user" do
         User.should_receive(:find).with("37").and_return(user)
-        user.should_receive(:update_attributes).with({"these"=>"params"})
+        user.should_receive(:update_attributes).with("these"=>"params")
         put :update, :id => "37", :user => {:these => 'params'}
       end
 

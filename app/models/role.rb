@@ -48,13 +48,13 @@ class Role
 
   def self.add_users(name, users)
     unless ROLES.index(name).nil?
-      User.update_all("roles_mask = roles_mask | #{1 << ROLES.index(name)}",{:id=>Array(users)})
+      User.update_all("roles_mask = roles_mask | #{1 << ROLES.index(name)}",:id=>Array(users))
     end
   end
 
   def self.remove_users(name,users)
     unless ROLES.index(name).nil?
-      User.update_all("roles_mask = roles_mask & ~#{1 << ROLES.index(name)}",{:id=>Array(users)})
+      User.update_all("roles_mask = roles_mask & ~#{1 << ROLES.index(name)}",:id=>Array(users))
 
     end
 

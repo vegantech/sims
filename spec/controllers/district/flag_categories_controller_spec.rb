@@ -47,7 +47,7 @@ describe District::FlagCategoriesController do
 
     describe "with valid params" do
       it "should expose a newly created flag_category as @flag_category" do
-        FlagCategory.should_receive(:build).with({'these' => 'params'}).and_return(mock_flag_category(:save => true))
+        FlagCategory.should_receive(:build).with('these' => 'params').and_return(mock_flag_category(:save => true))
         post :create, :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
@@ -62,7 +62,7 @@ describe District::FlagCategoriesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved flag_category as @flag_category" do
-        FlagCategory.stub!(:build).with({'these' => 'params'}).and_return(mock_flag_category(:save => false))
+        FlagCategory.stub!(:build).with('these' => 'params').and_return(mock_flag_category(:save => false))
         post :create, :flag_category => {:these => 'params'}
         assigns(:flag_category).should equal(mock_flag_category)
       end
@@ -83,7 +83,7 @@ describe District::FlagCategoriesController do
 
       it "should update the requested flag_category" do
         FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params', "existing_asset_attributes" => {}})
+        mock_flag_category.should_receive(:update_attributes).with('these' => 'params', "existing_asset_attributes" => {})
         put :update, :id => "37", :flag_category => {:these => 'params'}
       end
 
@@ -105,7 +105,7 @@ describe District::FlagCategoriesController do
 
       it "should update the requested flag_category" do
         FlagCategory.should_receive(:find).with("37").and_return(mock_flag_category)
-        mock_flag_category.should_receive(:update_attributes).with({'these' => 'params', "existing_asset_attributes" => {}})
+        mock_flag_category.should_receive(:update_attributes).with('these' => 'params', "existing_asset_attributes" => {})
         put :update, :id => "37", :flag_category => {:these => 'params'}
       end
 

@@ -43,7 +43,7 @@ describe TiersController do
 
     describe "with valid params" do
       it "assigns a newly created tier as @tier" do
-        Tier.should_receive(:build).with({'these' => 'params'}).and_return(mock_tier(:save => true))
+        Tier.should_receive(:build).with('these' => 'params').and_return(mock_tier(:save => true))
         post :create, :tier => {:these => 'params'}
         assigns(:tier).should equal(mock_tier)
       end
@@ -57,7 +57,7 @@ describe TiersController do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved tier as @tier" do
-        Tier.stub!(:build).with({'these' => 'params'}).and_return(mock_tier(:save => false))
+        Tier.stub!(:build).with('these' => 'params').and_return(mock_tier(:save => false))
         post :create, :tier => {:these => 'params'}
         assigns(:tier).should equal(mock_tier)
       end
@@ -76,7 +76,7 @@ describe TiersController do
     describe "with valid params" do
       it "updates the requested tier" do
         Tier.should_receive(:find).with("37").and_return(mock_tier(:save => true))
-        mock_tier.should_receive(:attributes=).with({'these' => 'params'})
+        mock_tier.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :tier => {:these => 'params'}
       end
 
@@ -96,7 +96,7 @@ describe TiersController do
     describe "with invalid params" do
       it "updates the requested tier" do
         Tier.should_receive(:find).with("37").and_return(mock_tier(:save => false))
-        mock_tier.should_receive(:attributes=).with({'these' => 'params'})
+        mock_tier.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :tier => {:these => 'params'}
       end
 

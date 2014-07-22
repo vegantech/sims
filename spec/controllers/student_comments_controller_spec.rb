@@ -50,7 +50,7 @@ describe StudentCommentsController do
       describe "with valid params" do
 
         it "should expose a newly created student_comment as @student_comment" do
-          StudentComment.should_receive(:build).with({'these' => 'params'}).and_return(mc=mock_student_comment(:save => true))
+          StudentComment.should_receive(:build).with('these' => 'params').and_return(mc=mock_student_comment(:save => true))
           mc.should_receive(:user=)
           #controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
           post :create, :student_comment => {:these => 'params'},:student_id => "2"
@@ -108,7 +108,7 @@ describe StudentCommentsController do
 
         it "should redirect to the student" do
           StudentComment.stub!(:find).and_return(mock_student_comment(:update_attributes => true))
-          put :update, {:id => "37", :student_comment => {},:student_id => "2"}, {:selected_students=>[1]}
+          put :update, {:id => "37", :student_comment => {},:student_id => "2"}, :selected_students=>[1]
           response.should redirect_to(student_url(@mock_student))
         end
 
@@ -141,13 +141,13 @@ describe StudentCommentsController do
         StudentComment.should_receive(:find).with("37").and_return(mock_student_comment)
         mock_student_comment.should_receive(:destroy)
         #      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-        delete :destroy, {:id => "37",:student_id => "2"}, {:selected_students=>[1]}
+        delete :destroy, {:id => "37",:student_id => "2"}, :selected_students=>[1]
       end
 
       it "should redirect to the student_comments list" do
         StudentComment.stub!(:find).and_return(mock_student_comment(:destroy => true))
         #      controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-        delete :destroy, {:id => "37",:student_id => "2"}, {:selected_students=>[1]}
+        delete :destroy, {:id => "37",:student_id => "2"}, :selected_students=>[1]
         response.should redirect_to(student_url(@mock_student))
       end
 

@@ -316,8 +316,8 @@ describe User do
      end
 
      it 'should not new user_school_assignment that matches changed existing ' do
-       @user.update_attributes({'user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true},
-                                                                       {:id => @e1.id.to_s,:admin=>true}]}
+       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true},
+                                                                       {:id => @e1.id.to_s,:admin=>true}]
                              ).should be_false
        @user.should_not be_valid
      end

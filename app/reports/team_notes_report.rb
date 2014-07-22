@@ -17,8 +17,8 @@ class TeamNotesReport
       base_order = ["body","student_comments.created_at","students.last_name, students.first_name"]
     end
 
-    student_ids = StudentSearch.search({:search_type =>'list_all',
-                                        :school_id => @school.id, :user => @user}).pluck(:student_id)
+    student_ids = StudentSearch.search(:search_type =>'list_all',
+                                        :school_id => @school.id, :user => @user).pluck(:student_id)
     StudentComment.includes([:student,:user]).where(
     ["body like ?", "%#{@content}%"]).where(
     :created_at => @start_date.beginning_of_day..@end_date.end_of_day,

@@ -56,7 +56,7 @@ class VerifyStudentInDistrictExternally
 
    request = Net::HTTP::Post.new(uri.request_uri)
    #request.basic_auth("xxx", "yyy")
-   request.set_form_data({"district" => "#{district}", "wsn"=>"#{student}"})
+   request.set_form_data("district" => "#{district}", "wsn"=>"#{student}")
    request["Accept"]="text/xml"
    request["Auth-Token"]= @@config['token']
    request["Cookie"] = Rails.cache.read "ext_verify_cookie"

@@ -19,7 +19,7 @@ describe InterventionBuilder::RecommendedMonitorsController do
       InterventionDefinition.should_receive(:find).with("22").and_return(intervention_definition)
       controller.stub!(:current_district => district, :reset_intervention_menu => true )
       intervention_definition.should_receive(:probe_definition_ids=).with(["1","3","2","4"])
-      post  :assign_probes_to_intervention, {:probes => ["1","1","3","1","1","2","1","4"], :id => "22", :commit => "yes"}
+      post  :assign_probes_to_intervention, :probes => ["1","1","3","1","1","2","1","4"], :id => "22", :commit => "yes"
     end
   end
 end

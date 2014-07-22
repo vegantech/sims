@@ -63,7 +63,7 @@ describe InterventionBuilder::ProbesController do
 
       it "should expose a newly created probe_definition as @probe_definition" do
         pending
-        ProbeDefinition.should_receive(:build).with({'these' => 'params'}).and_return(mpd=mock_probe_definition(:save => true))
+        ProbeDefinition.should_receive(:build).with('these' => 'params').and_return(mpd=mock_probe_definition(:save => true))
         post :create, :probe_definition => {:these => 'params'}
         assigns(:probe_definition).should equal(mpd)
       end
@@ -81,7 +81,7 @@ describe InterventionBuilder::ProbesController do
 
       it "should expose a newly created but unsaved probe_definition as @probe_definition" do
         pending
-        ProbeDefinition.stub!(:build).with({'these' => 'params'}).and_return(mpd=mock_probe_definition(:save => false))
+        ProbeDefinition.stub!(:build).with('these' => 'params').and_return(mpd=mock_probe_definition(:save => false))
         post :create, :probe_definition => {:these => 'params'}
         assigns(:probe_definition).should equal(mpd)
       end
@@ -104,7 +104,7 @@ describe InterventionBuilder::ProbesController do
       it "should update the requested probe_definition" do
         pending
         ProbeDefinition.should_receive(:find).with("37").and_return(@mock_probe_definition)
-        @mock_probe_definition.should_receive(:update_attributes).with({'these' => 'params'})
+        @mock_probe_definition.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :probe_definition => {:these => 'params'}
       end
 
@@ -129,7 +129,7 @@ describe InterventionBuilder::ProbesController do
       it "should update the requested probe_definition" do
         pending
         ProbeDefinition.should_receive(:find).with("37").and_return(@mock_probe_definition)
-        @mock_probe_definition.should_receive(:update_attributes).with({'these' => 'params'})
+        @mock_probe_definition.should_receive(:update_attributes).with('these' => 'params')
         put :update, :id => "37", :probe_definition => {:these => 'params'}
       end
 

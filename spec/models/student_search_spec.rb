@@ -48,7 +48,7 @@ describe StudentSearch do
       Enrollment.create!(:student_id=>999,:school_id=>999,:grade=>"XX")
       school.enrollments.create!(:student_id=>999,:grade=>"XX")
       school.enrollments.size.should ==(1)
-      StudentSearch.search({:school_id=>school.id,:search_type=>'list_all'}).size.should == 1
+      StudentSearch.search(:school_id=>school.id,:search_type=>'list_all').size.should == 1
     end
 
     describe 'with student group' do

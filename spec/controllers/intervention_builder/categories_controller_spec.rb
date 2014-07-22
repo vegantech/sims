@@ -66,7 +66,7 @@ describe InterventionBuilder::CategoriesController do
     describe "with valid params" do
 
       it "should expose a newly created category as @intervention_cluster" do
-        InterventionCluster.should_receive(:build).with({'these' => 'params'}).and_return(mock_category(:save => true))
+        InterventionCluster.should_receive(:build).with('these' => 'params').and_return(mock_category(:save => true))
         post :create, :intervention_cluster => {:these => 'params'}
         assigns(:intervention_cluster).should equal(mock_category)
       end
@@ -82,7 +82,7 @@ describe InterventionBuilder::CategoriesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved category as @intervention_cluster" do
-        InterventionCluster.stub!(:build).with({'these' => 'params'}).and_return(mock_category(:save => false))
+        InterventionCluster.stub!(:build).with('these' => 'params').and_return(mock_category(:save => false))
         post :create, :intervention_cluster => {:these => 'params'}
         assigns(:intervention_cluster).should equal(mock_category)
       end
@@ -103,7 +103,7 @@ describe InterventionBuilder::CategoriesController do
 
       it "should update the requested category" do
         InterventionCluster.should_receive(:find).with("37").and_return(mock_category(:save=>true))
-        mock_category.should_receive(:attributes=).with({'these' => 'params'})
+        mock_category.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :intervention_cluster => {:these => 'params'}
       end
 
@@ -125,7 +125,7 @@ describe InterventionBuilder::CategoriesController do
 
       it "should update the requested category" do
         InterventionCluster.should_receive(:find).with("37").and_return(mock_category(:save=>false))
-        mock_category.should_receive(:attributes=).with({'these' => 'params'})
+        mock_category.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :intervention_cluster => {:these => 'params'}
       end
 

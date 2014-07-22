@@ -71,8 +71,8 @@ describe DistrictLog do
                           username: 'test_user',
                           district: district) }
     it 'valid username' do
-      res = DistrictLog.record_failure( { "username" => 'test_user',
-                                          "district_id_for_login" => district.id }
+      res = DistrictLog.record_failure(  "username" => 'test_user',
+                                          "district_id_for_login" => district.id 
                                       )
       res.status.should == DistrictLog::FAILURE
       res.district_id.should == district.id
@@ -80,8 +80,8 @@ describe DistrictLog do
     end
 
     it 'invalid username' do
-      res = DistrictLog.record_failure( { "username" => 'not_test_user',
-                                          "district_id_for_login" => district.id }
+      res = DistrictLog.record_failure(  "username" => 'not_test_user',
+                                          "district_id_for_login" => district.id 
                                       )
       res.status.should == DistrictLog::FAILURE
       res.district_id.should == district.id
