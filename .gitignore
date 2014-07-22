@@ -27,3 +27,4 @@ db/*.sqlite3
 tmp/
 deploy_all.sh
 windows_live.yml
+.rubocop*
