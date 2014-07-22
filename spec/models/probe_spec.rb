@@ -67,11 +67,6 @@ describe Probe do
       p.should be_valid
     end
 
-
-
-
-
-
     
   end
 end

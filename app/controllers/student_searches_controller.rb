@@ -10,7 +10,6 @@ class StudentSearchesController < ApplicationController
     @years = current_school.enrollment_years
   end
 
-
   def create
     if params['search_criteria']
       session[:search] = params['search_criteria'] ||{}
@@ -35,7 +34,6 @@ class StudentSearchesController < ApplicationController
   end
 
   private
-
 
   def check_school_and_set_grades
     @grades = check_school.grades_by_user(current_user)

@@ -284,6 +284,5 @@ describe Intervention do
       intervention.participant_users.should == []
     end
 
-
   end
 end

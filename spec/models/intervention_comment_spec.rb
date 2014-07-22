@@ -28,5 +28,4 @@ describe InterventionComment do
 
   it 'should get the user from the intervention when creating'
 
-
 end

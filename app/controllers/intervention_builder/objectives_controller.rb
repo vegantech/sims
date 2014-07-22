@@ -80,7 +80,6 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
     end
   end
 
-
   def move
     @objective_definition = @goal_definition.objective_definitions.find(params[:id])
 
@@ -93,7 +92,6 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
       format.js {@objective_definitions=@goal_definition.objective_definitions}
     end
   end
-
 
   private
   def get_goal_definition

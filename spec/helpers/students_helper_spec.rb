@@ -25,15 +25,9 @@ describe StudentsHelper do
       o.should include(label_tag(dom_id(group),"THE TITLE"))
       o.should include(check_box_tag("intervention_group_types[]",'id1', false, :id=>dom_id(group), :class=>"active_intervention_checkbox"))
 
-
     end
 
-
-
   end
-
-
-
 
   describe 'selected_navigation' do
     it 'should return nil when there is only one student selected'  do
@@ -69,7 +63,6 @@ describe StudentsHelper do
         o.should_not have_link("Previous")
         o.should_not have_link("<<")
       end
-
 
       it 'should only show previous  and first when the last student is current' do
         helper.should_receive("multiple_selected_students?").and_return(true)
@@ -149,7 +142,6 @@ describe StudentsHelper do
       end
     end
   end
-
 
 end
 

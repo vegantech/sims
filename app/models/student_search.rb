@@ -77,7 +77,6 @@ class StudentSearch
     end
   end
 
-
   def search_type
     @enrollments = case search_hash[:search_type]
     when 'list_all'
@@ -117,7 +116,6 @@ class StudentSearch
     end
     scope = scope.where conditions
   end
-
 
   def active_interventions
     scope=@enrollments.where(

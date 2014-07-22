@@ -10,8 +10,6 @@ class RemoveRolesTable < ActiveRecord::Migration
     drop_table "roles"
   end
 
-
-
   def self.down
     create_table "roles", :force => true do |t|
       t.string   "name"

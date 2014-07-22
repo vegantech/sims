@@ -29,13 +29,11 @@ module CSVImporter
         "Additional information displayed in a table at the top."
       end
 
-
       def csv_headers
         [
           :district_student_id,:home_language, :street_address, :city_state_zip, :meal_status, :english_proficiency, :special_ed_status, :disability1, :disability2, :single_parent, :race_ethnicity, :suspensions_in, :suspensions_out, :years_in_district, :school_changes, :years_at_current_school, :previous_school_name, :current_attendance_rate, :previous_attendance_rate, :esl, :tardies
         ]
       end
-
 
       def overwritten
       end
@@ -68,7 +66,6 @@ module CSVImporter
     end
 
     private
-
 
     def load_data_infile
       headers=csv_headers
@@ -152,7 +149,6 @@ module CSVImporter
       ActiveRecord::Base.connection.update query
     end
 
-
     
     def insert
       query=("insert into ext_summaries
@@ -171,7 +167,6 @@ module CSVImporter
      return true
    end
  
-
 
   end
 end

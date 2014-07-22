@@ -14,7 +14,6 @@ describe InterventionsHelper do
           end
         end
 
-
     end
 
     it 'should have select_tag without blank' do
@@ -50,8 +49,6 @@ describe InterventionsHelper do
       g11=mock_intervention_definition(:title => 'Quicklist1',:id=>6, :objective_definition => 'Objective 1',:tier=>'1-Basic')
       g11b=mock_intervention_definition(:title => 'Quicklist2',:id=>2, :objective_definition => 'Objective 1',:tier=>'1-Basic')
       g00=mock_intervention_definition(:title => 'Quicklist3',:id=>3, :objective_definition => '',:tier=>'')
-
-
 
       arr=[g11,g00,g11b]
       helper.tiered_quicklist(arr).should have_tag("form") do

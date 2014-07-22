@@ -38,7 +38,6 @@ describe AutomatedIntervention do
       ]
       @importer.messages.should =~ expected_messages
 
-
     end
 
     it 'should have created the first intervention in the file'  do
@@ -68,10 +67,7 @@ describe AutomatedIntervention do
 
     end
 
-
-
   end
-
 
 end
 

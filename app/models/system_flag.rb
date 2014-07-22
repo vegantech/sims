@@ -20,7 +20,6 @@ class SystemFlag < Flag
     "#{reason} on #{created_at.to_s(:report)}"
   end
 
-
   define_statistic :flags , :count => :all, :joins => :student
   define_statistic :students_with_flags , :count => :all,  :column_name => 'distinct student_id', :joins => :student
   define_statistic :districts_with_flags, :count => :all, :column_name => 'distinct students.district_id', :joins => :student

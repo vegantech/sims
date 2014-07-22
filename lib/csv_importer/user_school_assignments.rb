@@ -46,7 +46,6 @@ module CSVImporter
 
     end
 
-
     private
 
     def index_options

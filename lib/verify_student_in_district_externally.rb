@@ -7,10 +7,6 @@ class VerifyStudentInDistrictExternally
   require 'timeout'
   require 'yaml'
 
-
-
-
-
   def self.enabled?
     if defined?@@enabled
       @@enabled
@@ -27,8 +23,6 @@ class VerifyStudentInDistrictExternally
       @@enabled = false
     end
   end
-
-
 
   def self.verify(student,district)
     if enabled?

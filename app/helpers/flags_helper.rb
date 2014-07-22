@@ -6,7 +6,6 @@ module FlagsHelper
     drafts
   end
 
-
   def image_with_popup(image, popup)
     image_tag(image, :class => "popup", "data-help" => popup.html_safe) + " "
   end
@@ -48,7 +47,6 @@ module FlagsHelper
   def default_show_team_concerns?(student = current_student, user = current_user)
     current_district.show_team_consultations_if_pending? && student.team_consultations.pending_for_user(user).present?
   end
-
 
   def custom_flags(student)
     unless student.custom_flags.blank?
@@ -118,7 +116,6 @@ module FlagsHelper
       intervention_dot(student.inactive_interventions, "gray-dot.gif")
     ].join(" ")
   end
-
 
   def intervention_dot(interventions, filename)
     popup =  interventions.collect{|i| h i.title}.join('<br />')

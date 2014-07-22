@@ -22,7 +22,6 @@ describe SchoolTeam do
     let(:contact) {FactoryGirl.create(:user, :username => 'contact')}
     let(:cara) {FactoryGirl.create(:user, :username => 'cara')}
 
-
     describe 'remove contact alice from team' do
       it 'should not have alice as member' do
         subject.update_attributes :contact_ids => [contact.id], :user_ids => [bob.id]

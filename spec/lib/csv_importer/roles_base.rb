@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
 
-
   shared_context "role importer"  do
     it_should_behave_like "csv importer"
     before(:all) do
@@ -16,7 +15,6 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
       @other_user2.roles.sort.should == [role,@other_role].sort
       User.update_all("updated_at = '1999-01-01'")
 
-
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
       @role_no_district_user_id = Factory(:user,:district_id => @district.id, :roles=>[role])
@@ -29,7 +27,6 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
       @i=myclass.new "#{Rails.root}/spec/csv/roles_base.csv",@district
       @i.import
 
-
       @no_role_or_district_user_id.reload.roles.should == []
       @role_no_district_user_id.reload.roles.should == [role]
       @should_keep_role.reload.roles.sort.should == [role,@other_role].sort
@@ -40,7 +37,6 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
       @should_keep_no_role.reload.updated_at.utc.to_date.to_s.should == "2000-01-01"
       @should_keep_no_role.roles.should == [@other_role]
 
-
       @should_gain_role.reload.roles.should == [role]
       @should_gain_role.updated_at.to_date == Date.today
 
@@ -50,7 +46,6 @@ require File.expand_path(File.dirname(__FILE__) + '/import_base.rb')
       @other_user.reload.roles.sort.should == []
       @other_user2.reload.roles.sort.should == [role,@other_role].sort
       @other_user3.reload.roles.sort.should == [role].sort
-
 
     end
     #end

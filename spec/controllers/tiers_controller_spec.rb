@@ -5,7 +5,6 @@ describe TiersController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_tier(stubs={})
     @mock_tier ||= mock_model(Tier, stubs)
   end
@@ -13,7 +12,6 @@ describe TiersController do
   before do
     controller.stub!(:current_district=>mock_district(:tiers=>Tier))
   end
-
 
   describe "GET index" do
     it "assigns all tiers as @tiers" do
@@ -178,10 +176,7 @@ describe TiersController do
         response.should render_template(:destroy)
       end
 
-
     end
   end
-
-
 
 end

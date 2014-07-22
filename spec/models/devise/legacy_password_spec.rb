@@ -44,8 +44,6 @@ describe Devise::LegacyPassword do
 
       end
 
-
-
       it 'should set the new hash' do
         expect {
           user.valid_password?('other123')

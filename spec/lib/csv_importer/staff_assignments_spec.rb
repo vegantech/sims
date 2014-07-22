@@ -30,12 +30,10 @@ describe CSVImporter::AllStudentsInSchools do
         u.staff_assignments.create!(:school_id => @school_with_link.id)
       end
 
-
       @role_no_district_user_id.staff_assignments.create!(:school_id => @school_no_link.id)
       @district.users.update_all("updated_at = '2000-01-01'")
       @i=CSVImporter::StaffAssignments.new "#{Rails.root}/spec/csv/staff_assignments.csv",@district
       @i.import
-
 
       @no_role_or_district_user_id.reload.staff_assignments.size.should == 1
       @no_role_or_district_user_id.staff_assignments.find_all_by_school_id(@school_no_link.id).size.should == 1

@@ -28,5 +28,4 @@ class System
      "system#{news.last(:order=>'updated_at').try(:cache_key)}"
   end
 
-
 end

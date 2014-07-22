@@ -43,7 +43,6 @@ describe Notifications do
 '
     @expected.date    = Time.now
 
-
     assert_equal @expected.encoded, Notifications.create_intervention_starting(@expected.date).encoded
   end
 
@@ -111,6 +110,5 @@ describe Notifications do
    obj.sneaky_save
    obj
   end
-
 
 end

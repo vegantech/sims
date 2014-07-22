@@ -5,7 +5,6 @@ describe GroupsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_group(stubs={})
     @mock_group ||= mock_model(Group, stubs)
   end
@@ -24,7 +23,6 @@ describe GroupsController do
       assigns(:groups).should == [mock_group]
     end
 
-
   end
 
   describe "responding to GET show" do
@@ -34,7 +32,6 @@ describe GroupsController do
       get :show, :id => "37"
       assigns(:group).should equal(mock_group)
     end
-
 
   end
 
@@ -79,9 +76,6 @@ describe GroupsController do
         post :create, :group => {}
         flash[:notice].should match(/#{edit_group_path(mock_group)}/)
       end
-
-
-
 
     end
 
@@ -131,7 +125,6 @@ describe GroupsController do
         flash[:notice].should match(/#{edit_group_path(mock_group)}/)
       end
 
-
     end
 
     describe "with invalid params" do
@@ -174,7 +167,6 @@ describe GroupsController do
 
   end
 
-
   describe "responding to DELETE remove_user"  do
     it "should remove the user from the group" do
       mg=mock_group
@@ -187,6 +179,5 @@ describe GroupsController do
     end
 
   end
-
 
 end

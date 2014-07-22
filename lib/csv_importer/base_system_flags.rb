@@ -55,7 +55,6 @@ module CSVImporter
       [:district_student_id]
     end
 
-
     def sims_model
       SystemFlag
     end
@@ -95,10 +94,7 @@ module CSVImporter
      return true
    end
 
-
-
   end
-
 
   Flag::FLAGTYPES.keys.each do |key|
      CSVImporter.const_set("#{key.capitalize}SystemFlags".intern, Class.new(CSVImporter::BaseSystemFlags) do
@@ -106,6 +102,5 @@ module CSVImporter
      end)
 
   end
-
 
 end

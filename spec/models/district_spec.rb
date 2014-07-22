@@ -86,7 +86,6 @@ describe District do
 
   end
 
-
   it 'should have spec for check keys'
 
   describe 'claim student' do
@@ -143,7 +142,6 @@ describe District do
       new_district.should be_new_record
       new_district.name.should == "Please Select a District"
     end
-
 
     it 'should create a new district when not found' do
       other_district = FactoryGirl.create(:district)

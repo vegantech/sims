@@ -41,7 +41,6 @@ Sims::Application.routes.draw do
   match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
   match '/preview_graph/:intervention_id' => 'interventions/probe_assignments#preview_graph', :as => :preview_graph
 
-
   resources :help
   resources :quicklist_items
   match '/stats' => 'stats#index', :as  => :stats, :via => [:get, :post]
@@ -82,8 +81,6 @@ Sims::Application.routes.draw do
     end
   end
 
-
-
   resources :groups do
     scope :module => :groups, :only => [:new, :create, :destroy] do
       resources :students
@@ -91,7 +88,6 @@ Sims::Application.routes.draw do
     end
   end
   resources :special_user_groups, :only => [:show, :edit, :create, :destroy]
-
 
   resources :checklists
   resources :recommendations
@@ -102,12 +98,9 @@ Sims::Application.routes.draw do
 
   resources :enrollments
 
-
-
   resources :students, :only => [:index, :create, :show] do
     resources :student_comments, :except => :index
   end
-
 
   resources :schools , :only => [:index, :show, :create] do
     resource :student_search, :only => [:show, :create] do
@@ -161,7 +154,6 @@ Sims::Application.routes.draw do
       end
     end
   end
-
 
   namespace :intervention_builder do
     put "regenerate_intervention_pdfs", :controller => :base
@@ -246,7 +238,6 @@ Sims::Application.routes.draw do
   scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id", :module => "interventions" do
     resources :probes
   end
-
 
   #or just railmail_index controller railmail?
   resources :railmail, :only => %w(index) do

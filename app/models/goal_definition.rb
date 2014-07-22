@@ -31,15 +31,11 @@ class GoalDefinition < ActiveRecord::Base
   validates_presence_of :title, :description
   acts_as_list :scope=>:district_id
 
-
-
   define_statistic :count , :count => :all
   define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct title'
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => 'title', :having => 'count(title)=1',:select =>'distinct district_id').length
   end
-
-
 
   def disable!
     objective_definitions.each(&:disable!)

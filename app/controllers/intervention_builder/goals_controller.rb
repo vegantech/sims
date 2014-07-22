@@ -82,8 +82,6 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
     end
   end
 
-
-
   def move
     @goal_definition = current_district.goal_definitions.find(params[:id])
 

@@ -11,7 +11,6 @@
 #  updated_at :datetime
 #
 
-
 #Also known as team_note
 class StudentComment < ActiveRecord::Base
   DISTRICT_PARENT=:user
@@ -25,6 +24,5 @@ class StudentComment < ActiveRecord::Base
   define_statistic :students_with_notes , :count => :all,  :column_name => 'distinct student_id', :joins => :student
   define_statistic :districts_with_team_notes, :count => :all, :column_name => 'distinct district_id', :joins => :student
   define_statistic :users_with_team_notes, :count => :all, :column_name => 'distinct user_id', :joins => :user
-
 
 end

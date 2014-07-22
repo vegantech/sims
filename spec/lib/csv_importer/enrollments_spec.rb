@@ -24,7 +24,6 @@ describe CSVImporter::Enrollments do
       @should_lose_enrollment = Factory(:student,:district_id => @district.id,  :district_student_id => 'lose_enrollment')
       @should_lose_enrollment.enrollments.create!(:grade => 'gone', :school_id => @school_with_link.id)
 
-
       @should_keep_enrollment = Factory(:student,:district_id => @district.id,  :district_student_id => 'keep_enrollment')
       @should_keep_enrollment.enrollments.create!(:grade => '01', :school_id => @school_with_link.id)
       @should_keep_enrollment.enrollments.create!(:grade => 'grade_should_go', :school_id => @school_with_link.id)

@@ -17,7 +17,6 @@ class Probe < ActiveRecord::Base
   #delegate :something, :to=>'(something_else or return nil)' when optional
   delegate :probe_definition, :to => '(intervention_probe_assignment or return nil)'
 
-
   validates_presence_of :score
   validates_numericality_of :score
   validate :score_in_range
@@ -35,8 +34,6 @@ class Probe < ActiveRecord::Base
   def set_administered_at
     self.administered_at = Time.now  if self.administered_at.blank?
   end
-
-
 
   def score_in_range
     if score.present? and self.probe_definition.present?

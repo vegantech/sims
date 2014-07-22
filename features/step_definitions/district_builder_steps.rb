@@ -42,7 +42,6 @@ When /^I magically visit "([^\"]*)"$/ do |_url|
   step 'I follow "redirected"' if page.has_content? 'redirected'
 end
 
-
 Given /^a school in my district named "([^\"]*)"$/ do |name|
   @default_user.district.schools.find_by_name(name) or Factory(:school,:name => name, :district_id => @default_user.district_id)
 end

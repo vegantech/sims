@@ -44,7 +44,6 @@ class CustomFlagsController < ApplicationController
     end
   end
 
-
   def ignore_flag
     if params[:category] then
       @ignore_flag=current_student.ignore_flags.build(:category=>params[:category], :user_id => current_user.id)

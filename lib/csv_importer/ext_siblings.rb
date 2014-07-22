@@ -56,7 +56,6 @@ module CSVImporter
       [:district_student_id]
     end
 
-
     def sims_model
       ExtArbitrary
     end
@@ -105,7 +104,6 @@ module CSVImporter
      return true
    end
  
-
 
   end
 end

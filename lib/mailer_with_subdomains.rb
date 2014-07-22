@@ -13,5 +13,4 @@ class MailerWithSubdomains < ActionMailer::Base
     (url_for(url) + " (#{text})").html_safe
   end
 
-
 end

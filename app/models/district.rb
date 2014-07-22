@@ -48,9 +48,7 @@ class District < ActiveRecord::Base
   has_many :staff_assignments,:through => :schools
   has_many :special_user_groups, :through => :schools
 
-
   has_attached_file  :logo
-
 
   scope :normal, where(:admin=>false).order('name')
   scope :admin, where(:admin=>true)
@@ -58,8 +56,6 @@ class District < ActiveRecord::Base
   scope :for_dropdown, normal.select("id,name,abbrev")
 
   define_statistic :districts_with_at_least_one_user_account , :count => :in_use
-
-
 
   validates_presence_of :abbrev,:name
   validates_uniqueness_of :abbrev,:name
@@ -72,8 +68,6 @@ class District < ActiveRecord::Base
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
   before_update :backup_key
-
-
 
   GRADES=  %w{ PK KG 01 02 03 04 05 06 07 08 09 10 11 12}
 
@@ -100,7 +94,6 @@ class District < ActiveRecord::Base
       self
     end
   end
-
 
   def system_admin?
     admin?
@@ -137,7 +130,6 @@ class District < ActiveRecord::Base
   def state_district
     @state2||=admin_district
   end
-
 
   def find_probe_definition(p_id)
     probe_definitions.find_by_id(p_id)
@@ -181,7 +173,6 @@ class District < ActiveRecord::Base
   def pilot2_env?
     pilot_env? || ['mmsd','ripon','maps','rhinelander','grafton'].include?(self.abbrev)
   end
-
 
   def claim(student)
     res=false
@@ -227,7 +218,6 @@ class District < ActiveRecord::Base
     state_dpi_num == 3269
   end
 
-
   private
 
   def self.only_district
@@ -263,7 +253,6 @@ class District < ActiveRecord::Base
     students.destroy_all
     news.destroy_all
   end
-
 
   def create_admin_user
     if users.blank?

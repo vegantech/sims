@@ -16,5 +16,4 @@ describe MoveUpDownButtonsHelper do
     end
  end
 
-
 end

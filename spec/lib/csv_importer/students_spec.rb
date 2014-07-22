@@ -16,7 +16,6 @@ describe CSVImporter::Students do
                   1000 => [false, false], 1001 =>[true,false], 1002 => [true,false]
         }
 
-
       Student.find_all_by_id_state(expected.keys).each do |student|
         esl = expected[student[:id_state].to_i][0]
         spec_ed = expected[student[:id_state].to_i][1]
@@ -24,11 +23,9 @@ describe CSVImporter::Students do
         student.special_ed.should be(spec_ed)
       end
 
-
     end
 
   end
-
 
   describe 'delete' do
     it 'should remove the students from the district and clear out the enrollments' do
@@ -64,8 +61,6 @@ describe CSVImporter::Students do
     end
   end
 
-
-
   describe 'reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side' do
     it 'should reject students with matching id state but nonmatching birthdate or name' do
       District.delete_all
@@ -100,12 +95,10 @@ describe CSVImporter::Students do
       i.send :reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
      i.send(:drop_temporary_table)
 
-
       i.messages.sort.should ==
         ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.",
          "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       ]
-
 
     end
   end

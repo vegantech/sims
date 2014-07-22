@@ -62,7 +62,6 @@ class InterventionDefinition < ActiveRecord::Base
           tiers.position <= #{student_tier.position}").joins([:tier, {:intervention_cluster => {:objective_definition => :goal_definition }}])
   }
 
-
   scope :general, where(["intervention_definitions.custom is null or intervention_definitions.custom = ?",false])
   scope :content_export, general
   scope :enabled, where(:disabled => false)

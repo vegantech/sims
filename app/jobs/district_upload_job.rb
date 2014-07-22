@@ -9,7 +9,6 @@ class DistrictUploadJob
 
   end
 
-
   def perform(upload_file, district, email = false)
     importer = ::ImportCSV.new upload_file, district
     begin

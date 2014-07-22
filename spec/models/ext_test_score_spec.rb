@@ -53,7 +53,5 @@ describe ExtTestScore do
       scores.sort.should == [scores[0],scores[2],scores[1],scores[3]]
     end
 
-
-
   end
 end

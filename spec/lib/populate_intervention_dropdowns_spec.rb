@@ -59,7 +59,6 @@ describe "Populate Intervention Dropdowns Module" do
     end
   end
 
-
   describe 'populate_goals' do
     it 'should populate @goal_definitions' do
       GoalDefinition.delete_all

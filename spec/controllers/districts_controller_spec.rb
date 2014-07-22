@@ -24,7 +24,6 @@ describe DistrictsController do
     end
   end
 
-
   it 'should show index' do
     get :index
     response.should be_success
@@ -54,7 +53,6 @@ describe DistrictsController do
     end
   end
 
-
   it 'test_should_get_edit' do
     pending 'test:unuit needs updating'
     get :edit, :id => districts(:one).id
@@ -74,7 +72,6 @@ describe DistrictsController do
     response.should be_success
     response.should render_template("edit")
   end
-
 
   it 'test_should_destroy_district' do
     pending 'test unit needs updating'

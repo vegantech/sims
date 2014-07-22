@@ -131,7 +131,6 @@ describe InterventionBuilder::InterventionsController do
         @intervention_definition.should_receive(:find).with("37").and_return(@intervention_definition=mock_intervention_definition(:save=>false,:attributes= =>true, :intervention_cluster => @intervention_cluster))
       end
 
-
       it "should update the requested intervention" do
         @intervention_definition.should_receive(:attributes=).with('these' => 'params')
         put :update, :id => "37", :intervention_definition => {:these => 'params'}

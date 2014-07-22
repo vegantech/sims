@@ -10,7 +10,6 @@ module Stats::User
       ).where("interventions.id is not null or student_comments.id is not null or
         team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
-
     FILTER_HASH_FOR_IN_USE_DATE_RANGE=
       {
       :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
@@ -18,7 +17,6 @@ module Stats::User
       :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
     or consultation_form_requests.created_at <=?)"
       }
-
 
       define_calculated_statistic :users_in_use  do
         stats_in_use(@filters).count

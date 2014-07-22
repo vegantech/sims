@@ -20,13 +20,11 @@ set :login_note, 'This is the demo.   You use names like oneschool (look to the 
 
 set :errbit_url, "vegantech-errbit.herokuapp.com"
 
-
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret,
       "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :seed, :create_intervention_pdfs, :create_file_directory, :create_secret
 before "deploy", "deploy:prime_errbit"
-
 
 namespace :deploy do
   desc "Reset Files and data"
@@ -104,7 +102,6 @@ task :create_intervention_pdfs do
   run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} ruby script/runner DailyJobs.regenerate_intervention_reports"
 end
 
-
 desc 'create authenticated file directory'
 task :create_file_directory do
    run "mkdir #{deploy_to}/file"
@@ -116,13 +113,10 @@ task :link_file_directory do
   run "ln -nfs #{deploy_to}/file #{release_path}/file"
 end
 
-
-
 task :overwrite_login_pilot_note do
   put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", :mode=>0755, :via=>:scp)
 
 end
-
 
 desc 'Link External Student Verification Config if it exists'
 task :link_external_student_verification_config do

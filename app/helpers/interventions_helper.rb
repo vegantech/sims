@@ -18,8 +18,6 @@ module InterventionsHelper
                                                             :name => "intervention_definition[id]")
   end
 
-
-
   def tiered_quicklist(quicklist_items)
     if quicklist_items.blank?
       "Quicklist is empty."

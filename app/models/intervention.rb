@@ -74,7 +74,6 @@ class Intervention < ActiveRecord::Base
   scope :inactive, where(:active => false).desc
   scope :for_report
 
-
   def end(ended_by,reason='', fidelity = nil)
     self.ended_by_id = ended_by
     self.active = false
@@ -144,7 +143,6 @@ class Intervention < ActiveRecord::Base
     end
   end
 
-
   def orphaned?
     active? &&
       (end_date < Date.today ||
@@ -163,13 +161,11 @@ class Intervention < ActiveRecord::Base
     [goal_definition.title, objective_definition.title, intervention_cluster.title].join(" ")
   end
 
-
   def participant_user_ids=(ids)
     #remove duplicates and blanks
     ids=ids.reject(&:blank?).uniq
     self.participant_users=User.where(:id =>(ids))
   end
-
 
   delegate :for_user, to: :assets, prefix: true
 

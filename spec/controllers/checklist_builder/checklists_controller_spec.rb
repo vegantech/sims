@@ -36,9 +36,7 @@ describe ChecklistBuilder::ChecklistsController do
     assigns(:checklist).checklist_definition.should == a
     response.should be_success
 
-
   end
-
 
   it 'should get new' do
     d=Factory(:district)
@@ -111,7 +109,6 @@ describe ChecklistBuilder::ChecklistsController do
     end
   end
 
-
   describe 'destroy' do
     it 'should destroy the selected checklist' do
       d=Factory(:district)
@@ -119,14 +116,9 @@ describe ChecklistBuilder::ChecklistsController do
       controller.stub!(:current_district).and_return(d)
       proc{delete :destroy, :id => a.id}.should change(ChecklistDefinition, :count).by(-1)
 
-
     end
 
   end
-
-
-
-
 
 end
 

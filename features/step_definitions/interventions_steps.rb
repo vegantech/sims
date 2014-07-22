@@ -7,13 +7,11 @@ Given /^an intervention with one progress monitor chosen but no recommended moni
   ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
 end
 
-
 Given /^an intervention with one progress monitor chosen and one recommended monitor$/ do
   intervention = Factory(:intervention,:student => @student)
   ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
   intervention.intervention_definition.probe_definitions << ipa.probe_definition
 end
-
 
 Given /^an intervention with two progress monitors but none selected$/ do
   intervention = Factory(:intervention,:student => @student)
@@ -22,7 +20,6 @@ Given /^an intervention with two progress monitors but none selected$/ do
 end
 
 # <select onchange="$('spinnerassign_progress').show(); new Ajax.Updater('intervention_probe_assignment', 'http://localhost:3333/interventions/ajax_probe_assignment', {asynchronous:true, evalScripts:true, method:'get', onSuccess:function(request){$('spinnerassign_progress').hide();}, parameters:'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&amp;intervention_id=184330825' + '&amp;authenticity_token=' + encodeURIComponent('y8JC6pkZq5A1TeDKjKAyCRU5sRzodSD27pTWfebGgkI=')})" name="intervention[intervention_probe_assignment][probe_definition_id]" id="intervention_intervention_probe_assignment_probe_definition_id" class="fixed_width">
-
 
 #  <a href="?enter_score=true" onclick="new Ajax.Request('/interventions/1/probe_assignments?probe_definition_id=1', {asynchronous:true, evalScripts:true, method:'get', onLoading:function(request){$('spinnerscore_link').show();}}); return false;">Enter/view scores</a>
 
@@ -34,12 +31,10 @@ Given /^I should see onchange for "(.*)" that updates (.*)$/ do |observed_field,
   field_labeled(observed_field).native.to_s.should match(/#{target_fields}/)
 end
 
-
 When /^I should see onchange for "([^\"]*)" that calls "([^\"]*)"$/ do |observed_field, target|
   field_labeled(observed_field).native.to_s.should match(/onchange/)
   field_labeled(observed_field).native.to_s.should match(/#{target}/)
 end
-
 
 When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
 
@@ -64,8 +59,6 @@ When /^xhr "([^\"]*)" "([^\"]*)"$/ do |event, field|
     fail
   end
 end
-
-
 
 # When /^xhr "search_criteria_user_id" updates ["search_criteria_group_id"]
 When /^22222222xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|

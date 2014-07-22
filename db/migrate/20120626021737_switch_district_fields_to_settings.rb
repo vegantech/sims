@@ -16,7 +16,6 @@ class SwitchDistrictFieldsToSettings < ActiveRecord::Migration
     remove_column :districts, :lock_tier
   end
 
-
   def self.down
     District.all.each do |d|
       KEYS.each do |k|

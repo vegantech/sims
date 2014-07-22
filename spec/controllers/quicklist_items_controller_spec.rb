@@ -5,12 +5,9 @@ describe QuicklistItemsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_quicklist_item(stubs={})
     @mock_quicklist_item ||= mock_model(QuicklistItem, stubs)
   end
-
-
 
   describe "responding to GET index" do
     it "should expose all quicklist_items as @quicklist_items" do
@@ -35,7 +32,6 @@ describe QuicklistItemsController do
       end
 
     end
-
 
   end
 

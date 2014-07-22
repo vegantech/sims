@@ -31,7 +31,6 @@ class Recommendation < ActiveRecord::Base
   has_many :recommendation_answers, :dependent => :destroy, :inverse_of => :recommendation
   attr_protected :district_id
 
-
   validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id,
   validates_presence_of :other, :if => lambda{|r| r.validate_other?}
@@ -43,7 +42,6 @@ class Recommendation < ActiveRecord::Base
   before_save :mark_promoted_if_needed
   after_initialize :setup_from_checklist_or_definition
   accepts_nested_attributes_for :recommendation_answers
-
 
    #there's a custom sort for this in the checklist helper
   RECOMMENDATION={

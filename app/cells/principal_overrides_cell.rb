@@ -17,5 +17,4 @@ class PrincipalOverridesCell < Cell::Base
     render
   end
 
-
 end

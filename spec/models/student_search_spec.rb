@@ -23,7 +23,6 @@ describe StudentSearch do
       @e4=school.enrollments.create!(:grade => 2, :end_year => 3)
     end
 
-
     it 'should return the given scope if there is no year' do
       search_def_hash.should =~ [@e1,@e2,@e3,@e4]
     end
@@ -38,7 +37,6 @@ describe StudentSearch do
       search_def_hash(:year => '3').should == [@e4]
       search_def_hash(:year => '4').should == []
     end
-
 
   end
 
@@ -112,9 +110,7 @@ describe StudentSearch do
         res.last.esl.should == false
         res.last.special_ed.should == false
 
-
       end
-
 
     end
 

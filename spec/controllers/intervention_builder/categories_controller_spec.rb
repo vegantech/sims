@@ -5,7 +5,6 @@ describe InterventionBuilder::CategoriesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_category(stubs={})
     @mock_category ||= mock_model(InterventionCluster, stubs)
   end
@@ -18,7 +17,6 @@ describe InterventionBuilder::CategoriesController do
     @goal_definition.stub!(:find => @goal_definition)
     controller.stub_association!(:current_district,:goal_definitions => @goal_definition)
   end
-
 
   describe "responding to GET index" do
 
@@ -37,7 +35,6 @@ describe InterventionBuilder::CategoriesController do
       get :show, :id => "37"
       assigns(:intervention_cluster).should equal(mock_category)
     end
-
 
   end
 

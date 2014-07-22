@@ -41,7 +41,6 @@ module CSVImporter
       end
     end
 
-
   end
 end
 

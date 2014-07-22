@@ -192,7 +192,6 @@ class DistrictExport
     File.open(dir.join("sims_export.sh"), 'w') {|f| f.write(curl_string)}
   end
 
-
   def schema_obj(table)
     if table == "students_outside_district_with_content"
       obj = Student
@@ -236,8 +235,6 @@ class DistrictExport
       end
     end
   end
-
-
 
   def generate_csv( table, headers, sql="where district_id = #{district.id}", filename = table)
     @files[filename]=headers

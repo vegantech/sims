@@ -5,7 +5,6 @@ describe Interventions::ProbeAssignmentsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_intervention_probe_assignments(stubs={})
     @mock_intervention_probe_assignments ||= mock_model(InterventionProbeAssignments, stubs)
   end
@@ -56,6 +55,5 @@ describe Interventions::ProbeAssignmentsController do
     it 'should have a spec for an id passed in'
     it 'should have a spec for a new intervention probe assignment'
   end
-
 
 end

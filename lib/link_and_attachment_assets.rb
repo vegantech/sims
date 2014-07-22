@@ -5,8 +5,6 @@ module LinkAndAttachmentAssets
     klass.send :has_many, :assets, :as => :attachable, :dependent => :destroy
   end
 
-
-
   def new_asset_attributes=(asset_attributes)
     asset_attributes.each do |attributes|
 #      attributes={:document=>attributes} unless attributes.respond_to?(:values)    #needed for webrat attach_file?

@@ -49,7 +49,6 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
 
     end
 
-
     private
 
     def load_data_infile
@@ -76,7 +75,6 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
     def index_options
       [[:district_user_id, :district_group_id]]
     end
-
 
     def migration t
       t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null

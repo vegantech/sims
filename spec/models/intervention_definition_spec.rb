@@ -77,8 +77,6 @@ describe InterventionDefinition do
         @ic1.intervention_definitions.restrict_tiers_and_disabled(@tier1,@district).should == [@id1,@id2]
       end
 
-
-
       it 'should allow when the district lock tiers but individual exemptions are in place' do
         @id1.update_attribute(:exempt_tier,true)
         InterventionDefinition.restrict_tiers_and_disabled(@tier1,@district).should == [@id1]

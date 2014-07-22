@@ -7,7 +7,6 @@ describe SpellCheckController do
     controller.should be_an_instance_of(SpellCheckController)
   end
 
-
   describe "GET 'field with spellign mistakes'" do
     it "should be successful" do
       pending

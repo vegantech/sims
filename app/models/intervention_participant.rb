@@ -17,7 +17,6 @@ class InterventionParticipant < ActiveRecord::Base
 
   delegate :email, :fullname, :to => '(user or return nil)'
 
-
 #  validates_uniqueness_of :user_id, :scope => :intervention_id, :message => "has already been assigned to this intervention"
   validates_presence_of :user_id, :intervention
   after_create :notify_new_participant, :if => :send_email

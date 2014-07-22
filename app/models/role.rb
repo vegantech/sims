@@ -9,7 +9,6 @@ class Role
                   "news_admin"  => 'Create and edit news items that appear on the left' ,
                 }
 
-
   ADMIN_ROLES = ["local_system_administrator"]
 
   ROLES = %w{ local_system_administrator content_admin school_admin regular_user news_admin}
@@ -21,17 +20,12 @@ class Role
 
   HELP.default = []
 
-
-
-
 #  acts_as_list # :scope =>[:district_id,:state_id, :country_id, :system]  need to fix this
 #  named_scope :system, :conditions => {:district_id => nil}
-
 
   def self.cache_key
     Digest::MD5.hexdigest(constants.collect{|c| const_get(c)}.inspect)
   end
-
 
   def self.mask_to_roles(mask)
     roles=ROLES.reject{ |r| (mask || 0)[ROLES.index(r)].zero?}

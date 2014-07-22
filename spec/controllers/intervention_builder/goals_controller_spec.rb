@@ -5,7 +5,6 @@ describe InterventionBuilder::GoalsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_goal(stubs={})
     @mock_goal ||= mock_model(GoalDefinition, stubs)
   end
@@ -36,7 +35,6 @@ describe InterventionBuilder::GoalsController do
       get :show, :id => "37"
       assigns(:goal_definition).should equal(mock_goal)
     end
-
 
   end
 

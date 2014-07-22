@@ -7,7 +7,6 @@ describe ConsultationFormRequestsController do
   include_context "authenticated"
   include_context "schools_requiring"
 
-
   def mock_consultation_form_request(stubs={})
     @mock_consultation_form_request ||= mock_model(ConsultationFormRequest, stubs)
   end
@@ -63,6 +62,5 @@ describe ConsultationFormRequestsController do
     end
 
   end
-
 
 end

@@ -32,7 +32,6 @@ describe InterventionBuilder::ProbesController do
       assigns(:probe_definition).should equal(@mock_probe_definition)
     end
 
-
   end
 
   describe "responding to GET new" do
@@ -151,7 +150,6 @@ describe InterventionBuilder::ProbesController do
 
   end
 
-
   describe "responding to put disable" do
     it 'should toggle the active state' do
       @district.should_receive(:find_probe_definition).with("37").and_return(mpd=mock_probe_definition)
@@ -194,8 +192,6 @@ describe InterventionBuilder::ProbesController do
       response.should redirect_to(intervention_builder_probes_url)
 
     end
-
-
 
   end
 

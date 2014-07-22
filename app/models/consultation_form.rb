@@ -30,7 +30,6 @@ class ConsultationForm < ActiveRecord::Base
   after_create :email_concern_recipient
   attr_accessor :new_team_consult
 
-
   define_statistic :consultation_forms , :count => :all, :joins => {:team_consultation => :student}
   define_statistic :students_with_forms , :count => :all,  :column_name => 'distinct team_consultations.student_id', :joins => {:team_consultation=>:student}
   define_statistic :districts_with_forms, :count => :all, :column_name => 'distinct district_id', :joins => :user

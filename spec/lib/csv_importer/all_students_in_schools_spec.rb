@@ -30,14 +30,12 @@ describe CSVImporter::AllStudentsInSchools do
         u.special_user_groups.create!(:school_id => @school_with_link.id)
       end
 
-
       @role_no_district_user_id.special_user_groups.create!(:school_id => @school_no_link.id)
       @district.users.update_all("updated_at = '2000-01-01'")
       @i=CSVImporter::AllStudentsInSchools.new "#{Rails.root}/spec/csv/all_students_in_schools.csv",@district
       @i.import
 
       @i.messages.should include("8 Users automatically assigned to a school")
-
 
       @no_role_or_district_user_id.reload.special_user_groups.size.should == 2
       @no_role_or_district_user_id.user_school_assignments.find_all_by_school_id(@school_no_link.id).size.should == 1

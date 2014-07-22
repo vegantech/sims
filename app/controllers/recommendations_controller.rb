@@ -46,8 +46,6 @@ class RecommendationsController < ApplicationController
       render :action=>'new'
     end
 
-
-
   end
 
   def destroy

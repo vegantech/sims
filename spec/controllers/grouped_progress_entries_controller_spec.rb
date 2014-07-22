@@ -5,7 +5,6 @@ describe GroupedProgressEntriesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     controller.stub!(:current_user=>current_user)
     controller.stub!(:search_criteria=>search_criteria)

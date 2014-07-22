@@ -61,7 +61,6 @@ class GroupedProgressEntriesController < ApplicationController
     redirect_to(grouped_progress_entries_url)
   end
 
-
   private
   def search_criteria
     session[:search].merge(
@@ -74,7 +73,6 @@ class GroupedProgressEntriesController < ApplicationController
     true
   end
 
-
   rescue_from(ActiveRecord::RecordNotFound) do
     respond_to do |format|
       format.html do
@@ -84,7 +82,5 @@ class GroupedProgressEntriesController < ApplicationController
       format.js {render :nothing => true}
     end
   end
-
-
 
 end

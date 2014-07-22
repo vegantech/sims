@@ -49,6 +49,4 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
 
   end
 
-
-
 end

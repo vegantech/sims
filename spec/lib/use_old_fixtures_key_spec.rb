@@ -9,7 +9,6 @@ describe 'Use Old Fixtures Key' do
 
       ActiveRecord::Fixtures.identify(:district_admin).should == 659073605  #used in a feature, but updated there to use the new fixture identifier
 
-
     end
   end
 end

@@ -5,7 +5,6 @@ describe District::SchoolsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_schools(stubs={})
     @mock_schools ||= mock_model(School, stubs)
   end
@@ -61,7 +60,6 @@ describe District::SchoolsController do
         flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
       end
 
-
     end
     describe "with invalid params" do
       it "should expose a newly created but unsaved schools as @schools" do
@@ -103,7 +101,6 @@ describe District::SchoolsController do
         put :update, :id => "1"
         flash[:notice].should match(/#{edit_district_school_path(mock_schools)}/)
       end
-
 
     end
     describe "with invalid params" do

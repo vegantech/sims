@@ -4,7 +4,6 @@ class Gchart
    '/chart?'
   end
 
-
   def text_encoding
      chds = @chds || dataset.map{|ds| "#{ds[:min_value]},#{ds[:max_value]}" }.join(",")
      if custom and custom.include?("&chds")

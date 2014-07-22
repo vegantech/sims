@@ -13,8 +13,6 @@ describe StudentFlagReport do
       @student.ignore_flags.create!(:category=>"math", :reason=>"Ignored Math")
       @student.system_flags.create!(:category=>"attendance", :reason=>"Attendance rate of 25%")
 
-
-
       pending 'This really is not implemented properly yet'
       report_body = StudentFlagReport.render_text(:school => @school, :grade=>"3")
       report_body = StudentFlagReport.render_text(:school => @school, :grade=>"3")

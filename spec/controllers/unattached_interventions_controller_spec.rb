@@ -5,22 +5,18 @@ describe UnattachedInterventionsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     controller.stub!(:current_user=>current_user)
   end
 
   it 'is pending'
 
-
   def current_user
     @current_user ||= mock_user
   end
 
-
   describe "GET index" do
   end
-
 
   describe "GET edit" do
   end

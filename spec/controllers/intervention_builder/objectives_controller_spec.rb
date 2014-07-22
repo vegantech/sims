@@ -5,7 +5,6 @@ describe InterventionBuilder::ObjectivesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_objective(stubs={})
     @mock_objective ||= mock_model(ObjectiveDefinition, stubs)
   end
@@ -34,7 +33,6 @@ describe InterventionBuilder::ObjectivesController do
       assigns(:objective_definition).should equal(mock_objective)
     end
 
-
   end
 
   describe "responding to GET new" do
@@ -54,7 +52,6 @@ describe InterventionBuilder::ObjectivesController do
       assigns(:objective_definition).should equal(mock_objective)
     end
   end
-
 
   describe "responding to POST create" do
 
@@ -91,7 +88,6 @@ describe InterventionBuilder::ObjectivesController do
     end
 
   end
-
 
   describe "responding to PUT update" do
 
@@ -140,8 +136,6 @@ describe InterventionBuilder::ObjectivesController do
     end
 
   end
-
-
 
 end
 =begin

@@ -43,13 +43,11 @@ module CSVImporter
       end
     end
 
-
     private
 
     def index_options
       [:district_user_id, :district_school_id]
     end
-
 
     def remove_duplicates?
       true

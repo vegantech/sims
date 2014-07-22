@@ -13,15 +13,9 @@ describe ProbeGraph do
 
         puts ipa.google_line_chart
 
-
-
       end
 
       it 'should have have a lot of other spects'
-
-
-
-
 
     end
   end

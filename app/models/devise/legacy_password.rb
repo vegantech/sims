@@ -34,7 +34,6 @@ module Devise
       end
     end
 
-
     private
     def self.legacy_encrypted_password(password, salt=nil, district_key = nil)
       Digest::SHA1.hexdigest("#{password.downcase}#{district_key}#{salt}")

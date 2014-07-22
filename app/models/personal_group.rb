@@ -9,12 +9,10 @@ class PersonalGroup < ActiveRecord::Base
   ID_MATCH = /^pg/i
   TITLE_MATCH = /^pg- /i
 
-
   scope :by_school, lambda { |school| where(:school_id=>school).order(:name)}
   scope :by_grade, lambda { |grade| where(["exists(select 1 from enrollments inner join personal_groups_students pgs on enrollments.student_id = pgs.student_id
   where enrollments.school_id = personal_groups.school_id
   and enrollments.student_id = pgs.student_id and pgs.personal_group_id = personal_groups.id and grade = ? ) ",grade])}
-
 
   def title
    "pg- #{name}"

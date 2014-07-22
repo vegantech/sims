@@ -5,7 +5,6 @@ describe Interventions::CommentsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_intervention_comment(stubs={})
     @mock_intervention_comment ||= mock_model(InterventionComment, stubs)
   end

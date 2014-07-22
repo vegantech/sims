@@ -2,7 +2,6 @@ class UsageByDistrict
   def self.usage start="2000-01-01".to_date, end_date = '2100-01-01'.to_date
     dhash =Hash.new { |h,k| h[k]={} }
 
-
     i1= Intervention.find(:all, :select => "districts.name, count(interventions.id) as interventions, count(distinct student_id) as students_with_interventions", 
                                 :joins => {:student => :district}, :group => "districts.name", 
                                 :conditions => "interventions.created_at between '#{start}' and '#{end_date}'")
@@ -23,9 +22,6 @@ class UsageByDistrict
     end
 
     dhash
-
-
-
 
   end
 end

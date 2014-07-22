@@ -30,12 +30,9 @@ describe AnswerDefinition do
     AnswerDefinition.create!(@valid_attributes)
   end
 
-
-
   it 'should require value' do
     AnswerDefinition.new(@valid_attributes.merge(:value=>nil)).should_not be_valid
   end
-
 
 end
 

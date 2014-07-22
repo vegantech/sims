@@ -109,8 +109,6 @@ describe School do
        @sch.user_school_assignments.should be_empty
      end
 
-
-
      it 'should change existing ones when there are none' do
        @sch.update_attributes('user_school_assignments_attributes'=>[{:id =>@e1.id.to_s,:user_id=>'3'}])
        @e1.reload.user_id.should == 3
@@ -144,13 +142,11 @@ describe School do
        @sch.should_not be_valid
      end
 
-
      it 'should not new user_school_assignment that matches itself' do
        @sch.update_attributes('user_school_assignments_attributes'=>
                               [{:user_id=>'3', :admin=>false},{:user_id=>'3', :admin=>false}]).should be_false
        @sch.should_not be_valid
      end
-
 
    end
 

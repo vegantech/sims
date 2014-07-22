@@ -40,7 +40,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   scope :active, where(:enabled=>true)
 
-
   def self.disable(ipas)
     Array(ipas).each(&:disable)
   end
@@ -86,7 +85,6 @@ class InterventionProbeAssignment < ActiveRecord::Base
                            :end_date => end_date,
                            :goal => goal)
   end
-
 
   protected
   def last_date_must_be_after_first_date

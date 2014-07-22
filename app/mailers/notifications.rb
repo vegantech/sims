@@ -6,7 +6,6 @@ class Notifications < MailerWithSubdomains
 #    raise 'missing district' if @district.blank?
 #  end
 
-
   def change_password(user)
     @district = user.district
     subject  =  '[SIMS] Email Registration/ Change Password'
@@ -16,7 +15,6 @@ class Notifications < MailerWithSubdomains
 
     mail(:subject => subject, :to => recipients)
   end
-
 
   def principal_override_request(override)
     subject =   '[SIMS] Principal Override Request'
@@ -81,7 +79,6 @@ class Notifications < MailerWithSubdomains
     @participant = @intervention_person
     mail(:subject => subject, :to => recipients)
   end
-
 
   def special_ed_referral rec, user_name, user_email, student
     subject = 'SIMS- Checklist Completed'

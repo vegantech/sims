@@ -100,8 +100,6 @@ class GroupedProgressEntry
     Notifications.intervention_participant_added(InterventionParticipant.find_all_by_intervention_id_and_user_id(new_intervention_participant, user.id),Intervention.find_all_by_id(new_intervention_participant)).deliver unless new_intervention_participant.blank?
   end
 
-
-
   def students_with_scores_count
     ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
       @probe_definition.id,
@@ -129,8 +127,6 @@ class GroupedProgressEntry
     end
   end
 
-
-
   private
   def self.interventions(id)
     #TODO TESTS
@@ -157,7 +153,6 @@ class GroupedProgressEntry
                                                        ).collect{|i| ScoreComment.new(i, @user)}
 
   end
-
 
 end
 

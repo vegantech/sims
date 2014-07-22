@@ -5,7 +5,6 @@ describe District::UsersController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_user(stubs={})
     @mock_user ||= mock_model(User,stubs.merge(:first_name => 'Mock', :last_name => 'User', :to_s => 'Mock User'))
   end

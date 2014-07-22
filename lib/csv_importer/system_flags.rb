@@ -53,11 +53,9 @@ module CSVImporter
 
     end
 
-
     def index_options
       [:district_student_id, :category]
     end
-
 
     def sims_model
       SystemFlag
@@ -107,7 +105,6 @@ module CSVImporter
 
    end
 
-
    def before_import
      keys=valid_categories
      query ="select * from #{temporary_table_name}
@@ -120,7 +117,6 @@ module CSVImporter
      end
    end
  
-
 
   end
 end

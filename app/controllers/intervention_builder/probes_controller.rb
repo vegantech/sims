@@ -43,11 +43,7 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
        render :action=>"edit"
      end
 
-
-
-
   end
-
 
   def disable
     if params[:commit]
@@ -56,7 +52,6 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
       flash[:notice] = "#{view_context.pluralize(pds.size, 'Progress Monitor')} disabled."
       redirect_to intervention_builder_probes_url and return
     end
-
 
     #disable/reenable
     probe_definition=current_district.find_probe_definition((params[:id]))

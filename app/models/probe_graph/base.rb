@@ -50,7 +50,6 @@ class ProbeGraph::Base
     ProbeDefinitionBenchmark.new(:benchmark=>@goal, :grade_level => '   Goal') if @goal.present?
   end
 
-
   def custom_string(custom_chm)
     [custom_chm,chxp].compact.join("&")
   end
@@ -83,7 +82,6 @@ class ProbeGraph::Base
     end
     vals
   end
-
 
   def axis_labels(p_for_this_graph)
     [

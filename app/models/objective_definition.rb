@@ -37,7 +37,6 @@ class ObjectiveDefinition < ActiveRecord::Base
     @filename ||= "#{title.split(" ").join("_")}".gsub("/","-").gsub("&","and")
   end
 
-
   def disable!
     intervention_clusters.each(&:disable!)
     update_attribute(:disabled,true)

@@ -59,7 +59,6 @@ describe SchoolTeamsController do
         flash[:notice].should match(/#{edit_school_team_path(mock_school_team)}/)
       end
 
-
     end
 
     describe "with invalid params" do

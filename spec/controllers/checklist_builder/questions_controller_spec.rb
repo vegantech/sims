@@ -45,7 +45,6 @@ describe ChecklistBuilder::QuestionsController do
     end
   end
 
-
   describe "GET 'create'" do
     it "should be successful" do
       pending

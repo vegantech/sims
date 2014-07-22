@@ -29,7 +29,6 @@ describe Student do
 
   it "should be valid"
 
-
  describe 'extended_profile?' do
 
     describe 'when file exists' do
@@ -60,7 +59,6 @@ describe Student do
     end
 
   end
-
 
   describe 'extended_profile' do
     describe 'when file exists' do
@@ -122,7 +120,6 @@ describe Student do
     end
   end
 
-
   describe 'latest checklist' do
     it  'there should be specs for both paths see #193 in Lighthouse' do
       pending
@@ -167,7 +164,6 @@ describe Student do
       @student.max_tier.should == high_tier
     end
 
-
   end
 
   describe 'birthdate' do
@@ -188,15 +184,11 @@ describe Student do
       student.should be_valid
     end
 
-
     it 'should not allow an invalid birthdate' do
       student.birthdate = "2000"
       student.birthdate.should be_nil
     end
   end
-
-
-
 
   describe 'safe_destroy' do
     let(:student) {Factory(:student)}
@@ -212,10 +204,5 @@ describe Student do
       student.should_not be_destroyed
     end
   end
-
-
-
-
-
 
 end

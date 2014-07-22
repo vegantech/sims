@@ -23,7 +23,6 @@ module District::Settings
         define_method("#{s}?") {!!send(s)}
       end
 
-
     end
 
     public

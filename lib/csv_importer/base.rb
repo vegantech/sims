@@ -34,7 +34,6 @@ module CSVImporter
       @messages.compact.join(", ")
     end
 
-
     class << self
       def file_name
         name.tableize.split("/").last+".csv"
@@ -126,7 +125,6 @@ module CSVImporter
       remove_count = '/\([0-9] rows affected\)/d'
       hexify = 's/0[xX]\([a-fA-F0-9]\{40\}\)/\1/'
 
-
       a =  "sed -e '/^\\W*$/d' -e 's/, ([JjSs]r)/ \1/' -e 's/NULL//g' -e 's/  *,/,/g' -e 's/  *$//g' -e 's/  *\r/\r/' -e '#{remove_count}' -e '#{hexify}' -e 's/\r$//'  -e 's/,  */,/g' -e 's/^ *//g' -i #{@clean_file}"  #trailing space after quoted fields,  change faster csv to accomodate
       system a
       @messages << 'File could not be found' and return false unless File.exist?(@file_name)
@@ -134,7 +132,6 @@ module CSVImporter
       @line_count = `wc -l #{@clean_file}`.to_i
 
     end
-
 
     def confirm_header row
       h= row.split(",").collect(&:strip)

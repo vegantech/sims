@@ -25,8 +25,6 @@ describe CSVImporter::AdminsOfSchools do
                                                                                :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school_without_key)])}
     let(:import_messages) { subject.import }
 
-
-
     it 'should import_properly' do
       #I would have liked to split this up into multiple it blocks, but the lets would run each time
       #I should rewrite it with before(:all) and instance variables

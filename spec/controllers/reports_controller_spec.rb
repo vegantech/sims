@@ -7,7 +7,6 @@ describe ReportsController do
 
   let(:user) {FactoryGirl.create(:user, :roles => "regular_user")}
 
-
   describe 'student_flag_summary' do
     render_views
 

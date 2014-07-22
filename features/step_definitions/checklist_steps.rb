@@ -18,7 +18,6 @@ Given /^I am at the student search page$/ do
   click_button 'Login'
 end
 
-
 When /^I try to view an invalid checklist$/ do
     visit checklist_url("invalid")
 end

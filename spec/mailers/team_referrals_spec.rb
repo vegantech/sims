@@ -8,7 +8,6 @@ describe TeamReferrals do
 
       note = TeamConsultation.new(:student=>student,:requestor => user, :school_team => team )
 
-
       proc{@mail=TeamReferrals.concern_note_created(note).deliver}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Team Consultation Form Created -- Testing'
       @mail.header["to"].to_s.should ==  user.email
@@ -30,8 +29,6 @@ describe TeamReferrals do
       sims_domain = "sims_test_host"
 
       student.district.should == user.district
-
-
 
       proc{@mail=TeamReferrals.gather_information_request(users,student,requestor).deliver}.should change(ActionMailer::Base.deliveries,:size).by(1)
       @mail.subject.should ==  'Consultation Form Request'

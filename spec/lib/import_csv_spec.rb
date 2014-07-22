@@ -114,7 +114,6 @@ describe ImportCSV do
 
     end
 
-
   end
 
   describe 'sort_files' do
@@ -125,7 +124,6 @@ describe ImportCSV do
       i.send(:sorted_filenames, ['/tmp/Dog.csv', '/a/users.csv','/b/SChOOls.csv']).should == ['/b/SChOOls.csv', '/a/users.csv', '/tmp/Dog.csv']
     end
   end
-
 
 end
 

@@ -25,7 +25,6 @@ describe ApplicationHelper do
     r.should match(/testing of Stuff Suffix/)
     r=helper.link_to_with_icon( "no.ztb", url, " Suffix").should have_tag("a[href=\"#{url}\"]>img[src*=\"icon_htm.gif\"]")
 
-
   end
 
   it 'should provide render_with_empty' do
@@ -105,7 +104,6 @@ describe ApplicationHelper do
 
       helper.restrict_to_principals?(student).should be_false
 
-
     end
 
     it 'should return false when the district has the flag off'  do
@@ -123,13 +121,11 @@ describe ApplicationHelper do
     end
   end
 
-
   describe 'help_popup' do
     it 'should escape properly' do
       helper.help_popup(%q{test<script>alert('HACKED')</script><p> 'quoted' "double_quoted" </p>}).should == helper.content_tag(:span,"?", :class => "help-question", :'data-help' => "test<p> 'quoted' &quotdouble_quoted&quot </p>".html_safe)
     end
 
   end
-
 
 end

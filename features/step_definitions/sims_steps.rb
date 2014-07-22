@@ -24,14 +24,11 @@ Given /^user "([^\"]*)" with no password in district with key "([^\"]*)"$/ do |u
   @user.update_attribute(:email,'b723176@madison.k12.wi.us')
   @user.district.update_attribute(:key, key)
 
-
 end
 
 Given /clear login dropdowns/ do
   clear_login_dropdowns
 end
-
-
 
 Given /^with additional student$/i do
   s=Factory(:student,:district=>@student.district)
@@ -109,9 +106,6 @@ Given /^there is a student in my group$/ do
   g.users << @default_user
 end
 
-
-
-
 Given /^I am a state admin$/ do
   step "I am a district admin"
   @default_user.district.update_attribute(:admin , true)
@@ -158,9 +152,6 @@ Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" in (\d+)$/ do |f
 	s= create_student first, last, student_grade, school
   s.enrollments.first.update_attribute(:end_year,year)
 end
-
-
-
 
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with ignore_flag for "(.*)" with reason "(.*)"$/ do
   |first, last, student_grade, school_name, ignore_type, reason|
@@ -225,7 +216,6 @@ Given /group "(.*)" for school "(.*)" with students (.*)$/ do |group_title, scho
   end
 end
 
-
 Given /^load demo data$/ do
   fixtures_dir = Rails.root.join("test","fixtures")
 
@@ -277,7 +267,6 @@ Then /^I should verify the updated rjs has options (.*)$/ do |options|
     page.source.should match(/<option value=\\\".*\\\">#{o}<\/option>/)
   end
 end
-
 
 Given /^I enter URL "(.*)"$/ do |url|
   visit url
@@ -364,7 +353,6 @@ Then /^"([^\"]*)" should have "([^\"]*)" groups$/ do |school_name, num_groups|
   school.groups.size.should == num_groups.to_i
 end
 
-
 Given /^district "([^"]*)"$/ do |district|
   Factory(:district, :name => district)
 end
@@ -384,8 +372,6 @@ end
 Given /^user has an email address$/ do
   @user.update_attribute(:email, "b723176@madison.k12.wi.us")
 end
-
-
 
 Given /^district has forgot_password$/ do
   @user.district.update_attribute(:forgot_password, true)

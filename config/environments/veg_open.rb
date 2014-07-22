@@ -12,7 +12,6 @@ config.cache_classes = true
 config.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 
-
 config.log_level = :info
 config.active_support.deprecation = :notify
 
@@ -43,8 +42,6 @@ config.active_support.deprecation = :notify
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-
-
 
 end
 require 'mail'

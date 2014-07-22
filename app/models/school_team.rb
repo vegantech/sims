@@ -20,7 +20,6 @@ class SchoolTeam < ActiveRecord::Base
   has_many :team_contacts, :through =>:school_team_memberships, :source=>:user,:conditions => ["school_team_memberships.contact =?", true]
   has_many :team_consultations
 
-
   DESCRIPTION="Used to set up teams to be used to identify the potential team recipients of the Team Consultation Form."
 
   scope :named, where(:anonymous => false).order('name')
@@ -61,6 +60,5 @@ class SchoolTeam < ActiveRecord::Base
       school_team_memberships.where(:user_id => @contact_ids).update_all(:contact => true)
     end
   end
-
 
 end

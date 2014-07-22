@@ -57,7 +57,6 @@ class Interventions::ProbesController < ApplicationController
     end
   end
 
-
   protected
   def load_intervention
     @intervention=current_student.interventions.find(params[:intervention_id])

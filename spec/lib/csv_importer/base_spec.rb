@@ -37,13 +37,11 @@ describe CSVImporter::Base do
       SystemFlag.delete_all
       District.delete_all
 
-
       @district = Factory(:district)
       @other_district = Factory(:district)
       @other_lose_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'lose')
       @other_new_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'new_flag')
       @other_lose_flags.system_flags.create!(:category=>'math', :reason => 'lose this one in another district')
-
 
       @unlinked_student = Factory(:student, :district_id => @district.id)
       @keep_flags = Factory(:student, :district_id => @district.id, :district_student_id => 'keep')

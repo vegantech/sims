@@ -11,7 +11,6 @@ When /^I am at the recovery_url$/ do
   visit "/users/password/edit?district_abbrev=#{@user.district.abbrev}&reset_password_token=#{@user.reset_password_token}"
 end
 
-
 When /^I am at the old recovery_url$/ do
   visit "/change_password?district_abbrev=#{@user.district.abbrev}&token=#{@user.reset_password_token}"
 end

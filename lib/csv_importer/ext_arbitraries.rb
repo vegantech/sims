@@ -39,7 +39,6 @@ module CSVImporter
         "There should be one (or none) row per student where this is used.   "
       end
 
-
 #      def alternate
 #      end
 
@@ -54,7 +53,6 @@ module CSVImporter
     def index_options
       [:district_student_id]
     end
-
 
     def sims_model
       ExtArbitrary
@@ -97,7 +95,6 @@ module CSVImporter
      return true
    end
  
-
 
   end
 end

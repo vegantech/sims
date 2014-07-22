@@ -5,7 +5,6 @@ module CSVImporter
       :district_user_id => 'Key for user'
     }
 
-
     class << self
       def file_name
         "all_students_in_district.csv"
@@ -18,7 +17,6 @@ module CSVImporter
       def csv_headers
         [:district_user_id]
       end
-
 
       def overwritten
         "Users in this file will be given access to all students in the district."
@@ -52,9 +50,6 @@ module CSVImporter
       end
 
     end
-
-
-
 
     private
     def index_options
@@ -90,7 +85,6 @@ module CSVImporter
                "
       User.connection.update query
     end
-
 
   end
 end

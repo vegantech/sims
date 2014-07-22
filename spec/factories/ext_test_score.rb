@@ -1,6 +1,5 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
-
 FactoryGirl::TRAINING_EXT_TEST_SCORES = [
       {:name => "PMA 1 Total", :date => "2001-10-06", :result => 3},
       {:name => "PMA 2 Total", :date => "2002-10-06", :result => 2},

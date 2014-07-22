@@ -1,6 +1,5 @@
 module CSVImporter
 
-
   class Students < CSVImporter::Base
     #13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
     #19.3717708587646,
@@ -65,7 +64,6 @@ module CSVImporter
 
     end
 
-
     private
     def load_data_infile
       headers=csv_headers
@@ -111,7 +109,6 @@ module CSVImporter
       [[:id_state, :birthdate, :first_name, :last_name], :district_student_id]
     end
 
-
     def sims_model
       Student
     end
@@ -133,9 +130,6 @@ module CSVImporter
 
       s= "update #{temporary_table_name} set #{to_strip.collect{|c| "#{c} = trim(#{c})"}.join(', ')}  "
 
-
-
-
       ActiveRecord::Base.connection.execute(s)
       #"
 
@@ -156,7 +150,6 @@ module CSVImporter
     end
 
     #try to claim students in other_districts
-
 
     def try_to_claim_students_in_other_districts
       q = "select s.id from  #{temporary_table_name} ts inner join students s on
@@ -192,13 +185,11 @@ module CSVImporter
         @messages << "Student with matching id_state: #{reject['id_state']}, #{reject['first_name']} #{reject['last_name']} could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       end
 
-
       q="delete from ts using #{shared}"
       ActiveRecord::Base.connection.execute q
     end
 
     def claim_students_with_nil_district
-
 
       claimed_count = ActiveRecord::Base.connection.update("update students s inner join #{temporary_table_name} ts on
       ts.id_state = s.id_state and s.district_id is null set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id")
@@ -209,7 +200,6 @@ module CSVImporter
       where ts.birthdate = s.birthdate and ts.first_name = s.first_name and
                                                                ts.last_name = s.last_name and ts.birthdate is not null    ")
       @other_messages << "#{claimed_count} students claimed that had left another district" if claimed_count > 0
-
 
       #do select and add to messages
       # select * from students_546713874_importer ts inner join students s on ts.id_state = s.id_state
@@ -262,7 +252,6 @@ module CSVImporter
       "
       )
 
-
      @created = ActiveRecord::Base.connection.update(query)
     end
 
@@ -276,8 +265,6 @@ module CSVImporter
         true
       end
     end
-
-
 
   end
 end

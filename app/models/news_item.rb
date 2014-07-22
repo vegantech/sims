@@ -20,7 +20,6 @@ class NewsItem < ActiveRecord::Base
   validates_presence_of :text
   scope :system, where(:system=>true)
 
-
   def self.build(args={})
     new(args.merge(:system=>true))
   end

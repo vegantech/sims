@@ -56,7 +56,6 @@ class ChecklistBuilder::QuestionsController < ChecklistBuilder::Base
     @question_definition = QuestionDefinition.find(params[:id])
     @question_definition.attributes = params[:question_definition]
 
-
     respond_to do |format|
       if @question_definition.save
         flash[:notice] = 'Question Definition was successfully updated.'

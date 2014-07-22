@@ -70,5 +70,4 @@ describe FlagDescriptionsController do
 
   end
 
-
 end

@@ -32,7 +32,6 @@ class DistrictLog < ActiveRecord::Base
   define_statistic :non_admin_users_that_have_logged_in, :count => :successful_login_non_admin, :column_name => 'distinct user_id'
   define_statistic :districts_with_successful_non_admins, :count => :successful_login_non_admin, :column_name => 'distinct district_logs.district_id'
 
-
   def to_s
     if status == SUCCESS
       if user

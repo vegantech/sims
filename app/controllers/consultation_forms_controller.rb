@@ -50,8 +50,6 @@ class ConsultationFormsController < ApplicationController
     end
   end
 
-
-
   # POST /consultation_forms
   # POST /consultation_forms.xml
   def create

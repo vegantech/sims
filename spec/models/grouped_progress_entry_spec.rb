@@ -21,7 +21,6 @@ describe GroupedProgressEntry do
 
       @gpe.should_receive(:student_interventions).and_return([@mock_intervention1, @mock_intervention2])
 
-
     end
 
     it 'should do nothing when there are no end_intervention passed in' do

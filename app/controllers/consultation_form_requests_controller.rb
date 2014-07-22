@@ -38,7 +38,6 @@ class ConsultationFormRequestsController < ApplicationController
     end
   end
 
-
   private
   def set_users_and_teams
     if current_school.blank?

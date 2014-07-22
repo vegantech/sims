@@ -7,7 +7,6 @@ describe TeamConsultationsController do
   include_context "authenticated"
   include_context "schools_requiring"
 
-
   def mock_team_consultation(stubs={})
     stubs.reverse_merge!(:draft? =>false, :student => mock_student)
     @mock_team_consultation ||= mock_model(TeamConsultation, stubs)
@@ -140,7 +139,6 @@ describe TeamConsultationsController do
     end
   end
 
-
   describe 'complete and undo' do
     before do
       @mock_team_consultation = mock_team_consultation
@@ -180,7 +178,6 @@ describe TeamConsultationsController do
       end
 
     end
-
 
   end
 end

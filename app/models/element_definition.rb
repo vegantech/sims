@@ -30,7 +30,6 @@ class ElementDefinition < ActiveRecord::Base
   acts_as_list :scope => :question_definition
   scope :content_export, order
 
-
   validates_presence_of :question_definition_id,  :kind
   validates_presence_of :text, :unless =>:applicable_kind?
   validates_uniqueness_of :kind, :scope => [:question_definition_id], :if => :applicable_kind_uniqueness?
@@ -56,7 +55,6 @@ class ElementDefinition < ActiveRecord::Base
   def has_answers?
     Answer.count(:include => :answer_definition, :conditions => "answer_definitions.id = #{id}" ) > 0
   end
-
 
   protected
   def applicable_kind_uniqueness?

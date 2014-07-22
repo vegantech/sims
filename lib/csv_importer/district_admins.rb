@@ -48,7 +48,6 @@ module CSVImporter
       "local_system_administrator"
     end
 
-
   end
 end
 

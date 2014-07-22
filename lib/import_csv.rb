@@ -127,7 +127,6 @@ class ImportCSV
   #file nonzip
   #file zip
 
-
   def try_to_unzip filename, originalname
     if originalname =~ /\.zip$/
       @messages << "Trying to unzip #{originalname}"

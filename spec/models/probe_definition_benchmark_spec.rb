@@ -45,6 +45,5 @@ describe ProbeDefinitionBenchmark do
     pd.update_attributes(:probe_definition_benchmarks_attributes=>[:benchmark=>'9', :grade_level => '1']).should == false
   end
 
-
   
 end

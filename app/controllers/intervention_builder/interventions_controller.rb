@@ -91,7 +91,6 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
     end
   end
 
-
   def move
     @intervention_definition = @intervention_cluster.intervention_definitions.find(params[:id])
     @intervention_definition.move_higher if params[:direction].to_s == "up"

@@ -15,7 +15,6 @@ def cucumber_school
   @cucumber_school ||= Factory(:school, :district => cucumber_district, :name => "Cucumber School")
 end
 
-
 def cucumber_enrollment
   @enrollment ||= Factory(:enrollment, :school => cucumber_school, :student => cucumber_student, :grade => "09", :end_year => "2010")
 end

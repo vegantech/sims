@@ -4,7 +4,6 @@ describe FileController do
   it_should_behave_like "an authenticated controller"
   include_context "authenticated"
 
-
   describe "GET 'download'" do
     it "should call sendfile with filename" do
       controller.should_receive(:send_file).with(Rails.root.join("file","shawn").to_s, :x_sendfile=>true)

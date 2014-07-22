@@ -4,8 +4,6 @@ class RecommendationObserver < ActiveRecord::Observer
     contact_coordinator(recommendation)
   end
 
-
-
   private
   def contact_coordinator recommendation
     if recommendation.send(:request_referral) && recommendation.school.try(:school_sp_ed_referral)

@@ -63,7 +63,6 @@ class Flag < ActiveRecord::Base
   validates_presence_of :category, :reason, :type
   validates_inclusion_of :category, :in => FLAGTYPES.keys
 
-
   scope :custom, where(:type=>'CustomFlag')
   scope :ignore, where(:type=>'IgnoreFlag')
   scope :system, where(:type=>'SystemFlag')

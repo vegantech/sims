@@ -19,7 +19,6 @@ describe CSVImporter::StudentGroups do
       @other_student.groups << @other_group
       @other_student.reload.group_ids.should == [@other_group.id]
 
-
       @district = Factory(:district)
       @school_no_link = Factory(:school, :district_id => @district.id)
       @school_with_link = Factory(:school, :district_school_id => '2', :district_id => @district.id)
@@ -30,8 +29,6 @@ describe CSVImporter::StudentGroups do
       @linked_to_empty = Factory(:group, :school_id => @school_with_link.id, :title => "should get emptied", :district_group_id=>'linked_to_empty')
       @existing_group = Factory(:group, :school_id => @school_with_link.id, :title => "existing group", :district_group_id=>'existing_group')
       @new_group = Factory(:group, :school_id => @school_with_link.id, :title => "new group", :district_group_id=>'new_group')
-
-
 
       @unlinked_user = Factory(:student, :district_id => @district.id)
       @linked_principal = Factory(:student, :district_id => @district.id, :district_student_id => 'linked_principal')
@@ -59,7 +56,6 @@ describe CSVImporter::StudentGroups do
       @linked_user.reload.group_ids.sort.should == [@unlinked_group_at_linked_school,@linked_group_at_unlinked_school,@unlinked_group_at_unlinked_school,@new_group].collect(&:id).sort
       @linked_principal.reload.group_ids.sort.should == [@existing_group,@new_group].collect(&:id).sort
       @other_student.reload.group_ids.should == [@other_group.id]
-
 
     end
 

@@ -33,7 +33,6 @@ module HtmlSelectorsHelpers
     when /^.profile_page #checklists$/
       ".profile_page #checklists"
 
-
     else
       raise "Can't find mapping from \"#{locator}\" to a selector.\n" +
         "Now, go and add a mapping in #{__FILE__}"

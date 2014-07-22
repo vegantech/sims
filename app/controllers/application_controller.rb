@@ -46,7 +46,6 @@ class ApplicationController < ActionController::Base
     session[:selected_student]=sid
   end
 
-
   def current_student
     @student ||= Student.find_by_id(current_student_id)
   end
@@ -101,7 +100,6 @@ class ApplicationController < ActionController::Base
       format.js {render :nothing => true}
     end
   end
-
 
   def check_student
     #TODO generalize this

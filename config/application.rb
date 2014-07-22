@@ -10,7 +10,6 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-
 module Sims
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -74,8 +73,6 @@ module Sims
     config.generators do |g|
       g.fixture_replacement :factory_girl
     end
-
-
 
     config.to_prepare do
       Devise::Mailer.layout "email"

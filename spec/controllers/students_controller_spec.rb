@@ -5,7 +5,6 @@ describe StudentsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   describe 'get index' do
     it 'should get index when there is a current school and search criteria' do
       a=mock_enrollment(:student_id => 1)
@@ -49,7 +48,6 @@ describe StudentsController do
         controller.should_receive(:setup_students_for_index)
         controller.should_receive(:student_search).and_return([e1,e2])
         post :create, {:id=>['1','5','6']}, :search=>{}
-
 
       end
       it 'should put error in flash' do
@@ -116,7 +114,6 @@ describe StudentsController do
       controller.should_receive(:current_school).at_least(:once).and_return(school)
     end
 
-
     it 'should test setup_students_for_index' do
       pending
       controller.should_receive(:flags_above_threshold).and_return([])
@@ -128,8 +125,6 @@ describe StudentsController do
 
     end
   end
-
-
 
   describe 'GET show' do
 
@@ -165,7 +160,6 @@ describe StudentsController do
     end
   end
 
-
   it 'has student search should call Enrollment.search' do
     StudentSearch.should_receive(:search).and_return([1,2,3])
     session = {:search => {}}
@@ -174,7 +168,6 @@ describe StudentsController do
     controller.send(:student_search).should == [1,2,3]
 
   end
-
 
   #controller.should_receive(:group_users).and_return([])
   #     controller.should_receive(:student_groups).and_return([])

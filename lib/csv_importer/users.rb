@@ -60,8 +60,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
     end
 
-
-
     private
     def index_options
       [:district_user_id ]
@@ -78,7 +76,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
         t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
       end
     end
-
 
     def update
     updates=csv_headers[0..-3].collect{|e| "u.#{e} = tu.#{e}"}.join(", ")
@@ -100,8 +97,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
       @created=insert
       @other_messages << "#{update_passwords} passwords updated"
     end
-
-
 
     def delete
      query = "select id from users u left outer join #{temporary_table_name} tu
@@ -141,7 +136,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
       )
       User.connection.update query
     end
-
 
     def confirm_count?
       model_name = "user"

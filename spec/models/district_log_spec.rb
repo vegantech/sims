@@ -101,7 +101,6 @@ describe DistrictLog do
     end
   end
 
-
   describe 'to_s' do
     let(:user) { User.new first_name: 'Test', last_name: 'User' }
 

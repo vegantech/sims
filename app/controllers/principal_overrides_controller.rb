@@ -60,7 +60,6 @@ class PrincipalOverridesController < ApplicationController
     end
   end
 
-
   def undo
     @principal_override=current_user.principal_override_responses.find(params[:id])
     @principal_override.undo!

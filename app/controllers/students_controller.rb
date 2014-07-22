@@ -3,12 +3,10 @@ class StudentsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   helper_method :index_cache_key
 
-
   # GET /students
   def index
     try_to_auto_select_school or return false unless current_school_id
     flash[:notice]= "Please choose some search criteria" and redirect_to [current_school,StudentSearch] and return unless session[:search]
-
 
     @students = student_search(index_includes=true)
 
@@ -40,7 +38,6 @@ class StudentsController < ApplicationController
 
     setup_students_for_index
 
-
     render :action=>"index"
   end
 
@@ -57,7 +54,6 @@ class StudentsController < ApplicationController
       format.html # show.html.erb
     end
   end
-
 
   private
 

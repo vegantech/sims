@@ -9,9 +9,7 @@ describe 'ConsultationFormBuilder', :type => :helper do
     @builder.instance_variable_set("@template", helper)
   end
 
-
   it 'should have other specs'
-
 
   describe 'assets' do
     it 'should show empty ul when there are no assets' do

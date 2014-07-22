@@ -59,7 +59,6 @@ class User < ActiveRecord::Base
   has_many :recommendations
   has_many :logs, :class_name => 'DistrictLog'
 
-
   attr_protected :district_id
 
   accepts_nested_attributes_for :staff_assignments, :allow_destroy => true, :reject_if => :duplicate_staff_assignment?
@@ -68,15 +67,12 @@ class User < ActiveRecord::Base
 #  define_statistic :users_with_content
 #  define_statistic :districts_with_users_with_content
 
-
   validates_presence_of :username
   validates_presence_of :password, :on => :create, :unless => :blank_password_ok?
 #  validates_presence_of :passwordhash, :on => :update, :unless => :blank_password_ok?
   validates_uniqueness_of :username, :scope => :district_id
   validates_confirmation_of :password
   validate :validate_unique_user_school_assignments
-
-
 
   def authorized_groups_for_school(school,grade=nil)
     if all_students_in_school?(school)
@@ -173,7 +169,6 @@ class User < ActiveRecord::Base
           ) or user_group_assignments.id is not null)
     ")#.select(&:orphaned?)
 
-
   end
 
  def self.remove_from_district(user_ids = [])
@@ -194,7 +189,6 @@ class User < ActiveRecord::Base
     @roles = nil
     self.roles_mask = Role.roles_to_mask(roles)
   end
-
 
   def roles
     @roles ||= Role.mask_to_roles(roles_mask)
@@ -299,8 +293,6 @@ class User < ActiveRecord::Base
            and user_group_assignments.user_id = #{self.id})
           on groups_students.student_id = students.id",
                                      :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
-
-
 
   end
 

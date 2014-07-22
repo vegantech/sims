@@ -11,7 +11,6 @@ class GroupedProgressEntry
               "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0",
               "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"  ]
 
-
     def initialize(opts ={})
       @probe_definition = opts[:probe_definition]
       @intervention = opts[:intervention]
@@ -87,15 +86,11 @@ class GroupedProgressEntry
 
           end.join("|")
 
-
           students.each_with_index{|_s,idx| chm << "o,#{COLORS[idx]},#{idx},,4"}
 
           #    student_names
           #   probe_defintion
           #  probe_brenchmark
-
-
-
 
           { 'chdl' => students.collect(&:fullname).join("|"),
             'chco' => COLORS[low..high].join(","),

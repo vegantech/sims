@@ -8,12 +8,10 @@ class ProbeGraph::Bar < ProbeGraph::Base
       }.join("<br />")
   end
 
-
   protected
   def numbers_in_bars
     #show the value in white in the bar
     'chm=N,FFFFFF,0,,12,,c'
   end
-
 
 end

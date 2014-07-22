@@ -18,12 +18,9 @@ When /^I try to edit the comment anyway$/ do
   visit edit_student_student_comment_url(cucumber_student, @student_comment)
 end
 
-
-
 Then /^it should not work$/ do
   page.should have_content("Record not found")
 end
-
 
 When /^I follow Delete(?: within "([^"]*)")?$/ do |selector|
   with_scope(selector) do

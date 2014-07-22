@@ -5,7 +5,6 @@ describe District::StudentsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_student(stubs={})
     @mock_student ||= mock_model(Student, stubs)
   end
@@ -157,7 +156,6 @@ describe District::StudentsController do
     end
 
   end
-
 
   describe "check_id_state" do
     it 'should have specs'

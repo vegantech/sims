@@ -5,7 +5,6 @@ describe Interventions::ProbesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_probe(stubs={})
     @mock_probe ||= mock_model(Probe, stubs)
   end

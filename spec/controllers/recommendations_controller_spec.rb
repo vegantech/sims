@@ -5,7 +5,6 @@ describe RecommendationsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   #Delete these examples and add some real ones
   it "should use RecommendationsController" do
     controller.should be_an_instance_of(RecommendationsController)

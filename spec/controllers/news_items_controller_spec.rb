@@ -10,8 +10,6 @@ describe NewsItemsController do
     controller.stub!(:current_district).and_return(district)
   end
 
-
-
   def mock_news_item(stubs={})
     @mock_news_item ||= mock_model(NewsItem, stubs)
   end

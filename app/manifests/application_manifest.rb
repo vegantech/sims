@@ -74,7 +74,6 @@ class ApplicationManifest < Moonshine::Manifest::Rails
 
     cron 'backup_daily', :command => "/home/rails/backups/backup.sh", :hour => 8,:user => configuration[:user], :minute => 0
 
-
     # %w( root rails ).each do |user|
     #   mailalias user, :recipient => 'you@domain.com'
     # end

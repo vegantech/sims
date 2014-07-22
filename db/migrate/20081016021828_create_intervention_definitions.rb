@@ -16,7 +16,6 @@ class CreateInterventionDefinitions < ActiveRecord::Migration
       t.integer :position
       t.string :rec_mon_preface
 
-
       t.timestamps
     end
   end

@@ -26,10 +26,8 @@ describe QuestionDefinition do
     QuestionDefinition.create!(@valid_attributes)
   end
 
-
   it 'should require_text' do
     QuestionDefinition.new(@valid_attributes.merge(:text=>nil)).should_not be_valid
   end
-
 
 end

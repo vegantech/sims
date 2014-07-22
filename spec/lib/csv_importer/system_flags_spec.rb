@@ -10,7 +10,6 @@ describe CSVImporter::SystemFlags do
       SystemFlag.delete_all
       District.delete_all
 
-
       @other_district = Factory(:district)
       @other_lose_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'lose')
       @other_new_flags = Factory(:student, :district_id => @other_district.id, :district_student_id => 'new_flag')

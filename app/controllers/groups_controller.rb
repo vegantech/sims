@@ -100,7 +100,6 @@ class GroupsController < SchoolAdminController
     end
   end
 
-
   def add_user_form
     @group = current_school.groups.find(params[:id])
     @users = current_school.assigned_users

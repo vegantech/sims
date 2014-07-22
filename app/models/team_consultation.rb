@@ -37,7 +37,6 @@ class TeamConsultation < ActiveRecord::Base
   define_statistic :districts_with_requests, :count => :all, :column_name => 'distinct district_id', :joins => :student
   define_statistic :users_with_requests, :count => :all, :column_name => 'distinct requestor_id', :joins => :requestor
 
-
   def email_concern_recipient
     if student && requestor && !draft
       TeamReferrals.concern_note_created(self).deliver
@@ -49,8 +48,6 @@ class TeamConsultation < ActiveRecord::Base
       TeamReferrals.concern_note_withdrawn(self).deliver
     end
   end
-
-
 
   def recipients
     if school_team.present?

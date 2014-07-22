@@ -4,7 +4,6 @@ class CustomInterventionsController < InterventionsController
     super
   end
 
-
   def create
     @tiers = current_district.tiers
     super

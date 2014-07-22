@@ -5,7 +5,6 @@ describe Interventions::ParticipantsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_intervention_participant(stubs={})
     @mock_intervention_participant ||= mock_model(InterventionParticipant, stubs)
   end
@@ -20,8 +19,6 @@ describe Interventions::ParticipantsController do
     controller.stub!(:current_school).and_return(mock_school(:assigned_users=>[1,2,3]))
   end
 
-
-
   describe "responding to GET new" do
 
     it "should expose a new intervention_participant as @intervention_participant" do
@@ -33,7 +30,6 @@ describe Interventions::ParticipantsController do
   end
 
   describe "responding to POST create" do
-
 
     describe "with valid params" do
       before :each do

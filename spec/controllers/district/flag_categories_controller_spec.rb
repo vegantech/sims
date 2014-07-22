@@ -5,11 +5,9 @@ describe District::FlagCategoriesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_flag_category(stubs={})
     @mock_flag_category ||= mock_model(FlagCategory, stubs)
   end
-
 
   before do
     controller.stub_association!(:current_district,:flag_categories=>FlagCategory)

@@ -34,7 +34,6 @@ describe CSVImporter::UserSchoolAssignments do
         u.user_school_assignments.create!(:school_id => @school_with_link.id)
       end
 
-
       @role_no_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
       @district.users.update_all("updated_at = '2000-01-01'")
       @i=CSVImporter::UserSchoolAssignments.new "#{Rails.root}/spec/csv/user_school_assignments.csv",@district
@@ -42,7 +41,6 @@ describe CSVImporter::UserSchoolAssignments do
 
       @school_with_link_admin.reload.user_school_assignments.collect(&:admin).should == [true]
       @school_with_link_admin2.reload.user_school_assignments.collect(&:admin).should == [true]
-
 
       @no_role_or_district_user_id.reload.user_school_assignments.size.should == 1
       @no_role_or_district_user_id.user_school_assignments.find_all_by_school_id(@school_no_link.id).size.should == 1

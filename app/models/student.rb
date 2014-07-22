@@ -54,15 +54,8 @@ class Student < ActiveRecord::Base
   accepts_nested_attributes_for :enrollments, :allow_destroy => true
   accepts_nested_attributes_for :system_flags, :allow_destroy => true
 
-
-
   scope :by_state_id_and_id_state, lambda { |state_id, id_state|
     joins(:district).where(:districts=>{:state_id => state_id}, :id_state => id_state).limit(1)}
-
-
-
-
-
 
   validates_presence_of :district_id
   validates_uniqueness_of :district_student_id, :scope => :district_id, :allow_blank => true
@@ -72,8 +65,6 @@ class Student < ActiveRecord::Base
 
   after_save :save_extended_profile
   #  before_validation :clear_extended_profile
-
-
 
   def extended_profile?
     ext_arbitrary.present? || ext_siblings.present? || ext_adult_contacts.present? || ext_test_scores.present? || ext_summary.present? || assets.present?
@@ -95,7 +86,6 @@ class Student < ActiveRecord::Base
     return district.active_checklist_definition if checklists.empty? or latest_checklist.promoted?
     latest_checklist.checklist_definition
   end
-
 
   def has_content?
     CUSTOM_CONTENT.any?{|c| self.send(c).any?}

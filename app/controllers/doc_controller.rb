@@ -20,5 +20,4 @@ class DocController < ActionController::Base
     end
   end
 
-
 end

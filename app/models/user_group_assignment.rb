@@ -24,7 +24,6 @@ class UserGroupAssignment < ActiveRecord::Base
          groups_students.student_id")
   }
 
-
   validates_uniqueness_of :user_id, :scope => :group_id, :message=>"-- Remove the user first"
   validates_presence_of :user, :group
 end

@@ -11,8 +11,6 @@ module Stats::Student
   scope :with_comments_count, joins("left outer join student_comments on students.id = student_comments.student_id").group("students.id").select("count(student_comments.id) as comments_count")
   scope :with_pending_consultations_count, joins("left outer join team_consultations on students.id = team_consultations.student_id and !team_consultations.draft  and !team_consultations.complete ").group("students.id").select("count(team_consultations.id) as team_consultations_pending_count")
 
-
-
 #FIXDATES on first two
   FILTER_HASH_FOR_IN_USE_DATE_RANGE=
   {
@@ -32,7 +30,6 @@ module Stats::Student
   define_calculated_statistic :students_in_use  do
     stats_in_use.count
   end
-
 
   define_calculated_statistic :districts_with_students_in_use  do
     stats_in_use.count("distinct district_id")

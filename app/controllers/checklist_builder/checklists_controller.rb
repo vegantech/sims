@@ -63,7 +63,6 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
     @checklist_definition = current_district.checklist_definitions.find(params[:id])
     @checklist_definition.attributes = params[:checklist_definition]
 
-
     respond_to do |format|
       if @checklist_definition.valid? and
         @checklist_definition.save!

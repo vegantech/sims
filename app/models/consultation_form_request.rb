@@ -18,7 +18,6 @@ class ConsultationFormRequest < ActiveRecord::Base
   belongs_to :requestor, :class_name => 'User'
   belongs_to :school_team, :foreign_key => 'team_id'
 
-
   validates_presence_of :user_ids, :if => proc{|e| e.whom.include? 'other' or e.whom.blank?}
   after_create :email_requests
   before_create :assign_team
@@ -41,14 +40,12 @@ class ConsultationFormRequest < ActiveRecord::Base
     @whom=target
   end
 
-
   private
 
   def email_requests
     get_recipients
     TeamReferrals.gather_information_request(@recipients, student, requestor).deliver if @recipients
   end
-
 
   def get_recipients
 

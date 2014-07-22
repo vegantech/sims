@@ -17,9 +17,6 @@ When /^I uncheck all district_settings boxes$/ do
   end
 end
 
-
-
-
 Then /^all boolean district settings should be true$/ do
   @default_user.district.reload
   District::BOOLEAN_SETTINGS.each do |setting|

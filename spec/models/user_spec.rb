@@ -61,7 +61,6 @@ describe User do
       u.stub_association!(:groups,:by_school => "GROUPS BY SCHOOL" )
       u.authorized_groups_for_school(s).should ==  "GROUPS BY SCHOOL"
 
-
     end
   end
 
@@ -92,7 +91,6 @@ describe User do
       user3 = FactoryGirl.create(:user, :groups => [g2])
       user.filtered_members_by_school(s).should == [user,user2, user3]
     end
-
 
   end
 
@@ -171,8 +169,6 @@ describe User do
     end
   end
 
-
-
   describe 'students for school' do
     before :all do
       @authorized_students_user = FactoryGirl.create(:user, :username => "oneschool")
@@ -194,7 +190,6 @@ describe User do
       @all_students_in_grade_6.special_user_groups.create!(:school => @oneschool_elementary, :grade => 6)
 
     end
-
 
     it 'should return an empty array when user has access to no students' do
       @authorized_students_user.students_for_school(@oneschool_elementary).should == []
@@ -229,7 +224,6 @@ describe User do
       u.roles_mask.should == 1
     end
 
-
     it 'should assign the role when appended with <<' do
       u=FactoryGirl.create(:user)
       u.roles_mask.should == 0
@@ -237,7 +231,6 @@ describe User do
       u.roles << Role::ROLES.first
       }.to raise_error(NoMethodError)
 #      u.roles_mask.should == 1   warning for now
-
 
     end
 
@@ -268,7 +261,6 @@ describe User do
       check_user user1
       check_user user2
     end
-
 
   end
 
@@ -322,7 +314,6 @@ describe User do
        @user.should_not be_valid
      end
 
-
      it 'should not new user_school_assignment that matches itself' do
        @user.update_attributes('user_school_assignments_attributes'=>
                               [{:school_id=>'3', :admin=>false},{:school_id=>'3', :admin=>false}]).should be_false
@@ -336,7 +327,6 @@ describe User do
        @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>'1', :id => @e1.id.to_s, :admin=>false, :all_students => "false"}])
        @e1.reload.all_students.should be_false
      end
-
 
    end
 
@@ -454,7 +444,6 @@ describe User do
          its(:custom_interventions_enabled?) {should == true}
        end
      end
-
 
      describe 'enabled' do
        let(:custom_intervention){''}

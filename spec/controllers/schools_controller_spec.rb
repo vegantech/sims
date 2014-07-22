@@ -12,7 +12,6 @@ describe SchoolsController do
         controller.stub!(:current_user => user)
       end
 
-
       it 'should automatically redirect if the user when the flash is not already set'  do
         controller.stub!(:current_school => school)
         get :index
@@ -37,7 +36,6 @@ describe SchoolsController do
         flash[:notice].should == ' Mock Elementary has been automatically selected.'
         response.should_not redirect_to(school_student_search_url(school))
       end
-
 
     end
     it 'should set @schools instance variable' do

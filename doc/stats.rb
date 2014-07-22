@@ -28,7 +28,6 @@ districts.each do |district|
  #first login on or after start_date? 
 end;nil
 
-
 puts e.values.compact.first.keys.to_csv;nil
 e.values.compact.each{|r| puts r.values.to_csv};nil
 

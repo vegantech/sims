@@ -21,7 +21,6 @@ describe PrincipalOverrideReason do
     }
   end
 
-
   it "needs tests"
   it "should create a new instance given valid attributes" do
     PrincipalOverrideReason.create!(@valid_attributes)

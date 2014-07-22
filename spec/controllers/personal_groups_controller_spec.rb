@@ -5,7 +5,6 @@ describe PersonalGroupsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   def mock_personal_group(stubs={})
     @mock_personal_group ||= mock_model(PersonalGroup, stubs.merge(:name=>'mock_group'))
   end

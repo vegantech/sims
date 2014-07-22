@@ -34,7 +34,6 @@ class PrincipalOverride < ActiveRecord::Base
   REJECTED_SEEN = 3
   APPROVED_NOT_SEEN =4
 
-
   validates_inclusion_of :action, :in =>['accept','reject'], :unless => Proc.new{|p| p.status == NEW_REQUEST}
   validates_presence_of :teacher_request, :message => "reason must be provided"
   validates_presence_of :principal_response, :message => "Reason must be provided", :unless => Proc.new{|p| p.status == NEW_REQUEST}
@@ -81,7 +80,6 @@ class PrincipalOverride < ActiveRecord::Base
 
   end
 
-
   def can_create?
     @unavailable_reason = ''
     if self.start_tier.blank?
@@ -100,8 +98,6 @@ class PrincipalOverride < ActiveRecord::Base
   def set_start_tier
     self.start_tier = student.max_tier if start_tier.blank? and !student.blank?
   end
-
-
 
   def set_status
     #TODO make sure the principal is actually a principal for this student
@@ -132,6 +128,5 @@ class PrincipalOverride < ActiveRecord::Base
     end
 
   end
-
 
 end

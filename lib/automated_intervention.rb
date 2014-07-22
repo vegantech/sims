@@ -12,9 +12,6 @@ class AutomatedIntervention
     :comment => "An optional comment to be added to the intervention."
   }
 
-
-
-
   def initialize file,user
     @count=0
     @messages = []
@@ -32,7 +29,6 @@ class AutomatedIntervention
   def messages
     @messages
   end
-
 
   private
   def process_file
@@ -61,7 +57,6 @@ class AutomatedIntervention
                                              :end_date => line[:end_date],
                                              :called_internally=>true)
 
-
     unless intervention.send(:end_date_after_start_date?)
       @messages << "#{intervention.errors.full_messages.join} #{line}" and return false
     end
@@ -89,9 +84,6 @@ class AutomatedIntervention
       end
 
     end
-
-
-
 
     check_for_duplicate(intervention,line) and return false
     intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
@@ -123,6 +115,5 @@ class AutomatedIntervention
     i.student.interventions.find_by_intervention_definition_id_and_user_id_and_start_date(i.intervention_definition_id,i.user_id,i.start_date) and
     @messages << "Duplicate entry for #{line}"
   end
-
 
 end

@@ -18,13 +18,11 @@ When /^I reload based on the following table:$/ do |table|
   end
 end
 
-
 Then /^the custom intervention should have the school and user set$/ do
   ci= InterventionDefinition.last
   ci.user_id.should == @default_user.id
   ci.school_id.should == @school.id
 end
-
 
 Given /^a single intervention category$/ do
   gd=Factory(:goal_definition, :district => cucumber_district)

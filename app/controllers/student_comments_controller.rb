@@ -21,7 +21,6 @@ class StudentCommentsController < ApplicationController
     @student_comment = @student.comments.build(params[:student_comment])
     @student_comment.user = current_user
 
-
     respond_to do |format|
       if @student_comment.save
         format.html {

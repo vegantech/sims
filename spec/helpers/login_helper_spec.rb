@@ -53,7 +53,6 @@ describe LoginHelper do
     end
   end
 
-
   describe "windows_live_icon" do
     it 'should display if windows_live? is true' do
       pending "windows_live omniauth provider not available" unless Devise.omniauth_providers.include? :windowslive

@@ -14,7 +14,6 @@ class UnattachedInterventionsController < ApplicationController
     end
   end
 
-
   def new
     #new participant
   end
@@ -84,6 +83,5 @@ class UnattachedInterventionsController < ApplicationController
       format.js
     end
   end
-
 
 end

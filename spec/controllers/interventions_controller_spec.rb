@@ -5,7 +5,6 @@ describe InterventionsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     @student = mock_student
     @intervention_definition = mock_intervention_definition(:recommended_monitors_with_custom => [1,3,2])
@@ -29,7 +28,6 @@ describe InterventionsController do
       response.should redirect_to(root_url)
 
     end
-
 
   end
 
@@ -76,7 +74,6 @@ describe InterventionsController do
       end
     end
   end
-
 
   describe "responding to GET show" do
     it "should expose the requested intervention as @intervention" do

@@ -80,7 +80,6 @@ module CSVImporter
       [[:district_user_id, :district_school_id],[:principal,:grade]]
     end
 
-
     def migration t
       t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
       t.integer :district_school_id, :limit => School.columns_hash["district_school_id"].limit, :null => School.columns_hash["district_school_id"].null
@@ -125,7 +124,6 @@ module CSVImporter
      query= "insert into user_school_assignments (school_id,user_id) select uug.school_id,uug.user_id from(#{finder_sql}) uug"
      SpecialUserGroup.connection.update query
   end
-
 
     def after_import
      sum=autoassign_user_school_assignments

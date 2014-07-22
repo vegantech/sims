@@ -38,7 +38,6 @@ describe Recommendation do
     Recommendation.create!(@valid_attributes.merge(:checklist=>checklist))
   end
 
-
   it "should show previous answers" do
     pending "Use a factory"
     #be sure to test with an existing rec to make sure newer ones don't appear
@@ -55,6 +54,5 @@ describe Recommendation do
       pending
     end
   end
-
 
 end

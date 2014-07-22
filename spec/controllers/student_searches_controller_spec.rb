@@ -21,7 +21,6 @@ describe StudentSearchesController do
       controller.should_receive(:current_school).at_least(:once).and_return(school)
     end
 
-
     it 'should test setup_students_for_show' do
       pending
       controller.should_receive(:flags_above_threshold).and_return([])
@@ -33,7 +32,6 @@ describe StudentSearchesController do
 
     end
   end
-
 
   describe 'show' do
     let(:user) {mock_user}
@@ -119,7 +117,6 @@ describe StudentSearchesController do
       end
     end
   end
-
 
   describe 'grade' do
     before do

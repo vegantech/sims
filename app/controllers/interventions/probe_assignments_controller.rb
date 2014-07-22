@@ -42,5 +42,4 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     end
   end
 
-
 end

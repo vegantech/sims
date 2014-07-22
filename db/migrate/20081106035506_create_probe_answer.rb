@@ -5,7 +5,6 @@ class CreateProbeAnswer < ActiveRecord::Migration
       t.column :probe_question_id, :integer
     end
 
-
   end
 
   def self.down

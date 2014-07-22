@@ -6,7 +6,6 @@ class CreateDistricts < ActiveRecord::Migration
       t.integer :state_dpi_num
       t.references :state
 
-
       t.timestamps
     end
   end

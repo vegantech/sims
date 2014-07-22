@@ -10,7 +10,6 @@ describe CSVImporter::AllStudentsInSchools do
       Group.delete_all
       District.delete_all
 
-
       @district = Factory(:district)
       @school_with_link = Factory(:school, :district_school_id => '2', :district_id => @district.id)
       @another_linked_school = Factory(:school, :district_school_id => '1', :district_id => @district.id)

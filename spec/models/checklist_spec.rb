@@ -182,7 +182,6 @@ describe Checklist do
     assert !@checklist.answers.blank?
     assert !@checklist.show_score?
 
-
     #should test this with existing checklists
     #1. most recent one is scorable  (has score and answers)
     #2. most recent one passed (no score, should import answers)
@@ -216,13 +215,11 @@ describe Checklist do
     @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
     Answer.delete_all
 
-
     params={:student_id=>@student.id, :element_definition=>{@saElement.id=>{:element_definition_id=>@saElement.id,:id=>2,:text=>"Short Answer content"},
                                                             @commentElement.id=>{:id=>3,:text=>"Comment content",:element_definition_id=>@commentElement.id,},
                                                             @scaleElement.id=>{:id=>4,:element_definition_id=>@scaleElement.id,}
     }
     }
-
 
     #@chk=Checklist.new_from_params_and_teacher(params,@teacher)
    # assert_equal 3,@chk.answers.count
@@ -245,7 +242,6 @@ describe Checklist do
     @student.checklists.create
     assert_nil @student.checklists.build.previous_answer_for(@element_definition), "Existing empty checklist"
   end
-
 
   it 'test_previous_answer_for_existing_checklist_with_answers' do
     pending
@@ -308,7 +304,6 @@ describe Checklist do
     assert_equal Checklist::STATUS[:draft], @checklist.status
     assert @checklist.deletable
 
-
     @checklist=Checklist.find(:first)
     @checklist.is_draft=false
     @checklist.recommendation=nil
@@ -332,10 +327,8 @@ describe Checklist do
     @checklist.build_recommendation(:recommendation=>5,:should_advance=>false)
     assert_equal Checklist::STATUS[:ineligable_to_refer], @checklist.status
 
-
     @checklist.build_recommendation(:recommendation=>4,:should_advance=>false)
     assert_equal Checklist::STATUS[:nonadvancing], @checklist.status
-
 
     @checklist.build_recommendation(:recommendation=>4,:should_advance=>true)
     assert_equal Checklist::STATUS[:passed] % 1, @checklist.status
@@ -366,8 +359,6 @@ describe Checklist do
 
   describe 'can_build?' do
   end
-
-
 
   describe 'max_tier' do
     it 'should return nil when there are no checklists' do

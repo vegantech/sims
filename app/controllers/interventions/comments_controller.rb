@@ -49,7 +49,6 @@ class Interventions::CommentsController < ApplicationController
     @intervention_comment = @intervention.comments.find(params[:id])
     @intervention_comment.comment = params[:intervention_comment][:comment] unless params[:intervention_comment].blank?
 
-
     respond_to do |format|
       if @intervention_comment.update_attributes(params[:intervention_comment].merge('user'=>current_user))
         flash[:notice] = 'InterventionComment was successfully updated.'

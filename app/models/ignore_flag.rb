@@ -18,7 +18,6 @@ class IgnoreFlag < Flag
   validates_uniqueness_of :category, :scope => :student_id
   validate :either_custom_or_ignore
 
-
   define_statistic :flags , :count => :all, :joins => :student
   define_statistic :students_with_flags , :count => :all,  :column_name => 'distinct student_id', :joins => :student
   define_statistic :districts_with_flags, :count => :all, :column_name => 'distinct students.district_id', :joins => :student

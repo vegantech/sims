@@ -5,7 +5,6 @@ describe ChecklistBuilder::ElementsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     district=mock_district
     @checklist_definition=mock_checklist_definition

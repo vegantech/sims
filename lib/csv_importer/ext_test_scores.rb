@@ -70,7 +70,6 @@ module CSVImporter
       [:district_student_id]
     end
 
-
     def sims_model
       ExtTestScore
     end
@@ -132,8 +131,6 @@ module CSVImporter
    def confirm_count?
      return true
    end
-
-
 
   end
 end

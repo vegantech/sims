@@ -12,7 +12,6 @@ config.cache_classes = true
 config.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 
-
 config.log_level = :debug
 config.active_support.deprecation = :log
 
@@ -25,8 +24,6 @@ config.active_support.deprecation = :log
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
  config.action_mailer.delivery_method = :test
-
-
 
   # Expands the lines which load the assets
   config.assets.debug = true
@@ -48,8 +45,6 @@ config.active_support.deprecation = :log
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-
-
 
 #ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.sims-open.vegantech.com')
 

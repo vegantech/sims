@@ -5,7 +5,6 @@ describe Interventions::QuicklistsController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     @district = mock_district(:intervention_definitions => InterventionDefinition)
     controller.stub!(:current_district => @district)

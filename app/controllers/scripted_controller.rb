@@ -35,7 +35,6 @@ class ScriptedController < ApplicationController
     render :layout=>false
   end
 
-
   protected
   def authenticate_user!
     authenticate_or_request_with_http_basic do |username, password|
@@ -46,7 +45,6 @@ class ScriptedController < ApplicationController
   def current_district
     @current_district ||= District.find_by_subdomain(params[:district_abbrev].presence || current_subdomain.presence)
   end
-
 
   def bulk_import
 

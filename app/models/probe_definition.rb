@@ -57,8 +57,6 @@ class ProbeDefinition < ActiveRecord::Base
     end
   end
 
-
-
   def probes
     intervention_probe_assignments
   end
@@ -106,6 +104,5 @@ class ProbeDefinition < ActiveRecord::Base
   def cache_key
     super + "-probes-#{probes.empty?}"
   end
-
 
 end

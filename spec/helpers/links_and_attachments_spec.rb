@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe LinksAndAttachmentsHelper do
 
-
   describe 'add_asset_link' do
     it 'add_asset_link should call link_to_function with name' do
       mu=mock_user
@@ -24,7 +23,6 @@ describe LinksAndAttachmentsHelper do
         "#{name} -- #{url}"
       end
       document = mock(:original_filename=>"original_filename", :url=>"new_doc_url", :content_type=>'blah')
-
 
       empty_asset=mock_asset(:url=>nil, 'document?'=>false)
       link_asset=mock_asset('document?' =>false, :name=> 'link_asset', :url => 'www.link_asset.ant')

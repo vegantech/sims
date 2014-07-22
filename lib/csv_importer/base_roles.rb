@@ -44,7 +44,6 @@ module CSVImporter
       end
     end
 
-
     private
     def role
       self.class.name.demodulize.tableize.singularize
@@ -57,7 +56,6 @@ module CSVImporter
     def index_options
       [[:district_user_id]]
     end
-
 
     def migration t
       @col=User.columns_hash["district_user_id"]

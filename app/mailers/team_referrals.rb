@@ -35,7 +35,6 @@ class TeamReferrals < MailerWithSubdomains
     mail(:subject => subject, :to => recipients)
   end
 
-
   def concern_note_withdrawn(note, _sent_at = Time.now)
     subject=    "Team Consultation Form Withdrawn -- #{note.school_team_name}"
     recipients= note.recipients.collect(&:email).join(",")

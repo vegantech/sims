@@ -47,7 +47,6 @@ describe ChecklistsHelper do
     self.should_receive(:correct_element?).with(6,7,8).and_return(false)
     highlight_if_wrong_element(6,7,8).should == incorrect_answer_highlight
 
-
   end
 
   describe 'markdown_with_span' do
@@ -64,13 +63,6 @@ describe ChecklistsHelper do
     end
 
   end
-
-
-
-
-
-
-
 
 end
 =begin

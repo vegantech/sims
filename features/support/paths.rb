@@ -15,7 +15,6 @@ module NavigationHelpers
     when /the cucumber student profile page/
       student_path(cucumber_student)
 
-
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

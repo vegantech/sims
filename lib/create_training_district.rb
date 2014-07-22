@@ -20,7 +20,6 @@ class CreateTrainingDistrict
     td.news.create(:text=>"Content as of %s" % File.mtime(district_dir).to_s(:short))
   end
 
-
   def self.destroy_district abbrev
     d=District.find_by_abbrev(abbrev)
      if d.present?
@@ -51,8 +50,6 @@ class CreateTrainingDistrict
     melody.groups << other_homeroom
     melody.user_school_assignments.create!(:school => alpha_elem)
     oneschool.user_school_assignments.create!(:school => alpha_elem)
-
-
 
     oneschool.save!
     melody.save!

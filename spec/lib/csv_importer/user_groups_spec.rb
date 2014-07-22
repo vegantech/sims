@@ -11,7 +11,6 @@ describe CSVImporter::UserGroups do
       Group.delete_all
       District.delete_all
 
-
       @district = Factory(:district)
       @school_no_link = Factory(:school, :district_id => @district.id)
       @school_with_link = Factory(:school, :district_school_id => '2', :district_id => @district.id)
@@ -22,9 +21,6 @@ describe CSVImporter::UserGroups do
       @linked_to_empty = Factory(:group, :school_id => @school_with_link.id, :title => "should get emptied", :district_group_id=>'linked_to_empty')
       @existing_group = Factory(:group, :school_id => @school_with_link.id, :title => "existing group", :district_group_id=>'existing_group')
       @new_group = Factory(:group, :school_id => @school_with_link.id, :title => "new group", :district_group_id=>'new_group')
-
-
-
 
       @unlinked_user = Factory(:user, :district_id => @district.id)
       @linked_principal = Factory(:user, :district_id => @district.id, :district_user_id => 'linked_principal')
@@ -48,7 +44,6 @@ describe CSVImporter::UserGroups do
       @linked_to_empty.user_ids.should == [@unlinked_user.id]
       @existing_group.user_ids.sort.should == [@unlinked_user.id,@linked_principal.id].sort
       @new_group.user_ids.sort.should == [@linked_user.id,@linked_principal.id].sort
-
 
     end
 

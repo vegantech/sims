@@ -42,8 +42,6 @@ class ChecklistsController < ApplicationController
     end
  end
 
-
-
   # POST /checklists
   # POST /checklists.xml
   def create

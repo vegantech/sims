@@ -54,7 +54,6 @@ module CSVImporter
       [[:district_student_id, :district_group_id]]
     end
 
-
     def temporary_table?
       true
     end
@@ -98,12 +97,10 @@ module CSVImporter
       Group.connection.update query
     end
 
-
     def insert_update_delete
       @deleted=delete
       @created=insert
     end
-
 
  end
 end

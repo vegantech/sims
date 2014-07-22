@@ -13,7 +13,6 @@
 #  updated_at              :datetime
 #
 
-
 #Also known as category
 class InterventionCluster < ActiveRecord::Base
   belongs_to :objective_definition
@@ -33,8 +32,6 @@ class InterventionCluster < ActiveRecord::Base
   define_calculated_statistic :districts_with_changes do
     find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id', :joins => {:objective_definition=>:goal_definition}).length
   end
-
-
 
   def disable!
     intervention_definitions.each(&:disable!)

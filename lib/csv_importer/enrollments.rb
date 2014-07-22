@@ -49,7 +49,6 @@ module CSVImporter
 
     end
 
-
     #12 seconds to preprocess the file and setup the temporary table
     # @real=638.522989988327 with the delete outer join
     #16.5350589752197 with the not exists call
@@ -120,8 +119,6 @@ module CSVImporter
         true
       end
     end
-
-
 
   end
 end

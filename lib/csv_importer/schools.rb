@@ -47,14 +47,10 @@ module CSVImporter
 
     end
 
-
-
-
     private
     def index_options
       [:district_school_id]
     end
-
 
     def sims_model
       School
@@ -64,7 +60,6 @@ module CSVImporter
       t.column :district_school_id, :integer
       t.column :name, :string
    end
-
 
     def update
       query = "update schools s inner join 
@@ -79,7 +74,6 @@ module CSVImporter
       @created=insert
       @deleted=delete
     end
-
 
     def delete
       query = "delete from s

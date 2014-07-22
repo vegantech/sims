@@ -5,7 +5,6 @@ describe PrincipalOverridesController do
   include_context "authorized"
   include_context "authenticated"
 
-
   before do
     @override=mock_principal_override
     @user=mock_user(:grouped_principal_overrides=>[@override],
@@ -14,7 +13,6 @@ describe PrincipalOverridesController do
     @student = mock_student
     controller.stub!(:current_user => @user, :current_student => @student)
   end
-
 
   describe "responding to GET index" do
 

@@ -27,7 +27,6 @@ Then /^there should be an extended_profile for student "([^\"]*)"$/ do |student_
   Student.find_by_first_name_and_last_name(first,last).extended_profile?.should be_true
 end
 
-
 When /^I import_users_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
   @district = District.find_by_name(district_name)
   i=ImportCSV.new(filename, @district)
@@ -51,7 +50,6 @@ end
 Then /^the command should have "([^\"]*)"$/ do |arg1|
    @command_return_val.should match(/#{arg1}/)
 end
-
 
 Then /^there should be a user with username "([^\"]*)"$/ do |username|
   @district.users.find_by_username(username).should be_true
@@ -120,7 +118,6 @@ When /^I import_csv with "([^\"]*)"$/ do |filename|
   @command_return_val = i.messages.join(", ")
 end
 
-
 Then /^there should be "([^\"]*)" students*$/ do |count|
   @district.students(reload=true).count.should == count.to_i
 end
@@ -156,8 +153,6 @@ Then /^"([^\"]*)" should have groups (.*)$/ do |school_name, group_names|
   school.groups.map(&:title).to_set.should == group_names.to_set
 end
 
-
-
 When /^I remove the student and state_id$/ do
   Student.update_all("district_id = null, district_student_id = '', id_state = null")
 end
@@ -167,7 +162,6 @@ Then /^all students with last name "([^\"]*)" should be "([^\"]*)"$/ do |name, b
     wrong=all.select{|s| s.esl !=eval(bool) || s.special_ed !=eval(bool)}
     wrong.should == []
 end
-
 
 When /^I enter all csv urls$/ do
   ImportCSV::VALID_FILES.each do |file|

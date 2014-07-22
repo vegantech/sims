@@ -10,7 +10,6 @@ set :user, 'shawn'
 #set :rails_env, 'production'
 after "deploy:update_code", :copy_database_yml
 
-
 namespace :deploy do
  desc "Restart Application"
  task :restart, :roles => :app do

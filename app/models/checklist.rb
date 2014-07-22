@@ -37,7 +37,6 @@ class Checklist < ActiveRecord::Base
   before_validation :assign_associated_from_student, :on => :create
   attr_protected :district_id
 
-
   STATUS = {
           :unknown => "UNKNOWN_STATUS",
           :draft => "Draft, make changes and submit",
@@ -85,7 +84,6 @@ class Checklist < ActiveRecord::Base
 
    def self.max_tier
    end
-
 
   def self.new_from_teacher(teacher)
     #this builds a new checklist and scores it by copying the old values?
@@ -223,7 +221,6 @@ class Checklist < ActiveRecord::Base
     self.tier = student.max_tier if tier.blank?
     self.district_id = student.district_id if district.blank?
   end
-
 
   #End of refactoring for edit/create  These might change when I refactor the view ^^^^^
 

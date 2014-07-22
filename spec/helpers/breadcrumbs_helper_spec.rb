@@ -44,7 +44,6 @@ describe BreadcrumbsHelper do
       its(:students_crumb){should == link_to("Student Selection", students_path)}
     end
 
-
     #
     #test current student present, missing, and new record
     describe 'current_student_crumb' do

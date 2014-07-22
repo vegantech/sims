@@ -38,7 +38,6 @@ describe ApplicationController do
         controller.send(:authorize).should == false
         flash[:notice].should == "You are not authorized to access that page"
 
-
       end
     end
 
@@ -122,7 +121,6 @@ describe ApplicationController do
     end
   end
 
-
   describe 'check_domain' do
     before do
       @c = ApplicationController.new
@@ -161,8 +159,6 @@ describe ApplicationController do
       @c.send(:check_domain).should be_nil
     end
   end
-
-
 
 end
 

@@ -45,7 +45,6 @@ module CSVImporter
 
     end
 
-
     private
     def index_options
       [[:district_group_id, :district_school_id] ]
@@ -64,7 +63,6 @@ module CSVImporter
       end
     end
 
-
     def temporary_table?
       true
     end
@@ -78,7 +76,6 @@ module CSVImporter
       from #{temporary_table_name} group by district_group_id,district_school_id having count(name) > 1"
       @other_messages << v.join("; ") unless v.blank?
     end
-
 
     def update
       query=("update groups

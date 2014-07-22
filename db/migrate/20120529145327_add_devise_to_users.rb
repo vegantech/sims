@@ -14,7 +14,6 @@ class AddDeviseToUsers < ActiveRecord::Migration
       # t.lockable :lock_strategy => :failed_attempts, :unlock_strategy => :both
       # t.token_authenticatable
 
-
       # Uncomment below if timestamps were not included in your original model.
       # t.timestamps
     end

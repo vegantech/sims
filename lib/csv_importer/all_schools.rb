@@ -15,7 +15,6 @@ module CSVImporter
         [:district_user_id]
       end
 
-
       def overwritten
       end
 
@@ -32,7 +31,6 @@ module CSVImporter
 #      def alternate
 #      end
 
-
       def how_often
         "Start of each semester (depending on frequency of new staff may need to be done more or less often; should be done at same time as the \"users\" file)."
       end
@@ -46,8 +44,6 @@ module CSVImporter
       end
 
     end
-
-
 
     private
     def index_options

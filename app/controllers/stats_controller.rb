@@ -19,7 +19,6 @@ class StatsController < ApplicationController
       @end_date = 1.day.since.to_date
     end
 
-
     @stats=ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation,
      ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition

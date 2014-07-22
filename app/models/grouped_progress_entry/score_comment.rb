@@ -28,7 +28,6 @@ class GroupedProgressEntry
       end
       @score = params[:score]
 
-
       @probe=@intervention.intervention_probe_assignment.probes.build(:score => @score, :administered_at => @date) unless @score.blank?
     end
 

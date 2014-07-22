@@ -14,8 +14,6 @@ When /^I enter url "([^"]*)" with abbrev$/ do |url|
   visit "#{url}?district_abbrev=#{@user.district.abbrev}"
 end
 
-
-
 Given /^a user "([^"]*)"$/ do |username|
   @user = User.find_by_username(username) || Factory(:user,:username=>username,:email => "#{username}@example.com",:password=>'e')
 end
