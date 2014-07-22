@@ -7,8 +7,8 @@ module ProbeGraph::HTML
   protected
   def html_header
     content_tag :p,
-      [html_title,html_benchmarks, html_goal].flatten.compact.join("<br />").html_safe,
-      :style =>"text-align:center"
+                [html_title,html_benchmarks, html_goal].flatten.compact.join("<br />").html_safe,
+                :style =>"text-align:center"
   end
 
   def html_benchmarks

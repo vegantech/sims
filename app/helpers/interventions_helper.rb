@@ -57,7 +57,7 @@ module InterventionsHelper
     select_tag(obj_id,
                options_from_collection_for_select(
                  collection,:id,:title,selected_obj.try(:id)),
-                 {:prompt => "", :class => "fixed_width sim_submit"}
+               {:prompt => "", :class => "fixed_width sim_submit"}
               )
   end
 

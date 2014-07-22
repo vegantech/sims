@@ -22,7 +22,7 @@ set :errbit_url, "vegantech-errbit.herokuapp.com"
 
 
 after "deploy:update_code", :setup_domain_constant, :overwrite_login_pilot_note, :link_file_directory, :update_new_relic_name, :link_secret,
-  "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
+      "deploy:clean_vendored_submodules", "link_external_student_verification_config", "link_windows_live_yml"
 after "deploy:restart",  "deploy:kickstart"
 after "deploy:cold", :seed, :create_intervention_pdfs, :create_file_directory, :create_secret
 before "deploy", "deploy:prime_errbit"

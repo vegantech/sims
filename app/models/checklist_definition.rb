@@ -50,8 +50,8 @@ class ChecklistDefinition < ActiveRecord::Base
 
   def answer_definitions2
     @answer_definitions||=AnswerDefinition.find(:all,
-    :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
-    :joins=>"and question_definitions.checklist_definition_id=#{id}")
+                                                :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
+                                                :joins=>"and question_definitions.checklist_definition_id=#{id}")
   end
 
   def checklist_definition_id

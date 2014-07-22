@@ -4,8 +4,8 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :multiple_selected_students?, :selected_student_ids,
-    :current_student_id, :current_student, :current_district, :current_school, :current_user,
-    :index_url_with_page, :readonly?
+                :current_student_id, :current_student, :current_district, :current_school, :current_user,
+                :index_url_with_page, :readonly?
 
   #protect_from_forgery  TODO enable this
 

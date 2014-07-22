@@ -5,8 +5,8 @@ class ScriptedController < ApplicationController
     response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
 
     send_data(ReferralReport.csv(current_district),
-       :type => 'text/csv; charset=utf-8; header=present',
-       :filename => "referrals.csv"
+              :type => 'text/csv; charset=utf-8; header=present',
+              :filename => "referrals.csv"
        )
   end
 

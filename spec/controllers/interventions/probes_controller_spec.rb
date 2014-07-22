@@ -30,7 +30,7 @@ describe Interventions::ProbesController do
       @intervention=mock_intervention
       @intervention_probe_assignment = mock_model(InterventionProbeAssignment)
       @intervention.stub_association!(:intervention_probe_assignments,
-      :find=>@intervention_probe_assignment)
+                                      :find=>@intervention_probe_assignment)
       student.stub_association!(:interventions,:find=>@intervention)
 
       controller.stub!(:current_student).and_return(student)

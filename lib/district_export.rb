@@ -111,7 +111,7 @@ class DistrictExport
     TO_EXPORT.each do |t|
       cols=csv_cols(t)
       self.generate_csv(t.to_s,cols,
-                       district.send(t).select(cols_with_table_name(cols,t)).to_sql)
+                        district.send(t).select(cols_with_table_name(cols,t)).to_sql)
     end
   end
 
@@ -125,7 +125,7 @@ class DistrictExport
         cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
         cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
         self.generate_content_csv(t.to_s,cols,
-                         district.send(t).content_export.select(cols_with_table_name).to_sql)
+                                  district.send(t).content_export.select(cols_with_table_name).to_sql)
     end
   end
 
@@ -143,7 +143,7 @@ class DistrictExport
   def generate_students
     self.generate_csv('students', 'id,id_state',
                       Student.select("distinct id,id_state").where("district_id is null or district_id != #{district.id}").where(:id => @student_ids_in_use).to_sql,
-    "students_outside_district_with_content")
+                      "students_outside_district_with_content")
   end
 
   def zip

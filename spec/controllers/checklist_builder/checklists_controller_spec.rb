@@ -69,7 +69,7 @@ describe ChecklistBuilder::ChecklistsController do
     pending
     old_count = ChecklistDefinition.count
     post :create,
-    :checklist_definition => { :directions => "Fill all of these out please" }
+         :checklist_definition => { :directions => "Fill all of these out please" }
     response.should redirect_to(checklist_builder_checklist_path(assigns(:checklist_definition)))
     ChecklistDefinition.count should ==  old_count+1
   end

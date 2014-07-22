@@ -134,8 +134,8 @@ class StudentsController < ApplicationController
       missed_students = @students
     end
     ActiveRecord::Associations::Preloader.new(missed_students,
-      [{:custom_flags=>:user}, {:interventions => :intervention_definition},
-       {:flags => :user}, {:ignore_flags=>:user} ]).run
+                                              [{:custom_flags=>:user}, {:interventions => :intervention_definition},
+                                               {:flags => :user}, {:ignore_flags=>:user} ]).run
     @flags_above_threshold= flags_above_threshold
   end
 

@@ -61,7 +61,7 @@ describe ReportsController do
             StudentFlagReport.stub!(:render_html=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'html', :grade => 'B'}},
-            {:user_id => '1', :school_id => @school.id, :district_id => @district.id}
+                 {:user_id => '1', :school_id => @school.id, :district_id => @district.id}
 
             response.should_not be_redirect
             assigns(:report).should equal(m)
@@ -79,7 +79,7 @@ describe ReportsController do
             StudentFlagReport.stub!(:render_csv=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'csv', :grade => 'C'}},
-            {:user_id => '1', :school_id => @school.id}
+                 {:user_id => '1', :school_id => @school.id}
 
             response.should_not be_redirect
             response.should be_success
@@ -98,7 +98,7 @@ describe ReportsController do
             StudentFlagReport.stub!(:render_pdf=>m)
 
             post :student_flag_summary, {:generate => "Do the report", :report_params => {:format => 'pdf', :grade => 'D'}},
-            {:user_id => '1', :school_id => @school.id}
+                 {:user_id => '1', :school_id => @school.id}
 
             response.should_not be_redirect
             response.should be_success
@@ -156,7 +156,7 @@ describe ReportsController do
     it 'should show top summary when selected' do
 
       get :student_overall, {:report_params => {:format => "html", :top_summary => "1"},:student_id => @student.id.to_s},
-      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+          {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should_not be_redirect
@@ -175,7 +175,7 @@ describe ReportsController do
       @student.save!
 
       get :student_overall, {:report_params => {:format => "html", :team_notes => "1"},:student_id => @student.id.to_s},
-      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+          {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should_not be_redirect
@@ -196,7 +196,7 @@ describe ReportsController do
       @student.flags << SystemFlag.create!(:category => 'attendance', :reason => 'Late every day')
 
       get :student_overall, {:report_params => {:format => "html", :flags => "1"},:student_id => @student.id.to_s},
-      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+          {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should render_template('reports/_flags_for_student')
@@ -214,7 +214,7 @@ describe ReportsController do
       @student.interventions.should_not be_empty
 
       get :student_overall, {:report_params => {:format => "html", :intervention_summary => "1"},:student_id => @student.id.to_s},
-      {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
+          {:user_id => '1', :district_id => @district.id, :selected_student => @student.id.to_s}
 
       response.should be_success
       response.should render_template("students/_intervention_table")

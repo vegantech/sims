@@ -15,7 +15,7 @@ describe LoginHelper do
     def copy_sample_file
       unless Rails.root.join('config','windows_live.yml').exist?
         FileUtils.cp Rails.root.join('config','windows_live.yml.sample'),
-          Rails.root.join('config','windows_live.yml')
+                     Rails.root.join('config','windows_live.yml')
       end
     end
 
