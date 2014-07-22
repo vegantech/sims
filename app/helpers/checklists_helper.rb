@@ -2,8 +2,8 @@ module ChecklistsHelper
   def mmsd_eligibility_criteria menu=false
     if current_district.try(:madison?)
     elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
-     "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
-       "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
+               "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
+               "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
        f=elig_crit.collect do |elig_file|
         content_tag(:li,(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria"))
        end

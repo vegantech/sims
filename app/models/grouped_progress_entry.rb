@@ -106,7 +106,7 @@ class GroupedProgressEntry
     ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
       @probe_definition.id,
       :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
-        @intervention.intervention_definition_id])
+                                                                       @intervention.intervention_definition_id])
 
         ipa.size
   end

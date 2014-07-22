@@ -38,9 +38,9 @@ describe DistrictLog do
     describe 'filter' do
       it 'should match all when blank' do
         DistrictLog.for_display({}).should =~ [@blank,
-                                              @mistyped_username,
-                                              @valid_success,
-                                              @valid_failure]
+                                               @mistyped_username,
+                                               @valid_success,
+                                               @valid_failure]
       end
 
       it 'should match mistyped username' do

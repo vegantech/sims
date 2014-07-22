@@ -139,7 +139,7 @@ describe School do
 
      it 'should not new user_school_assignment that matches changed existing ' do
        @sch.update_attributes({'user_school_assignments_attributes'=>[{:user_id=>1, :admin=>true},
-                              {:id => @e1.id.to_s,:admin=>true}]}
+                                                                      {:id => @e1.id.to_s,:admin=>true}]}
                              ).should be_false
        @sch.should_not be_valid
      end

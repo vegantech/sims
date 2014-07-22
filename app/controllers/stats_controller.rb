@@ -22,7 +22,7 @@ class StatsController < ApplicationController
 
     @stats=ActiveSupport::OrderedHash.new
     [District,DistrictLog,User,School,Student, Recommendation, Checklist, StudentComment, Intervention, InterventionParticipant, Probe, TeamConsultation,
-      ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition
+     ConsultationForm, CustomFlag, SystemFlag, IgnoreFlag, GoalDefinition, ObjectiveDefinition, InterventionCluster, InterventionDefinition
     ].each do |klass|
       klass.filter_all_stats_on(:created_after, "DATE(#{klass.table_name}.created_at) >= DATE(?)")
       klass.filter_all_stats_on(:created_before, "DATE(#{klass.table_name}.created_at) <= DATE(?)")

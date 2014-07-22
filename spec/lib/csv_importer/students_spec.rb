@@ -103,7 +103,7 @@ describe CSVImporter::Students do
 
       i.messages.sort.should ==
         ["Student with matching id_state: 96, NULL_BIRTHDATE MISMATCHED_NAME2 could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator.",
-        "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
+         "Student with matching id_state: 97, NON_MATCHING_BIRTHDATE MATCHED_NAME could be claimed but does not appear to be the same student.  Please make sure the id_state is correct for this student, and if so contact the state administrator."
       ]
 
 
