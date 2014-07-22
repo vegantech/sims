@@ -32,12 +32,12 @@ describe CSVImporter::Students do
       District.delete_all
       Student.delete_all
       d=Factory(:district)
-      s1=d.students.create!(:id_state=>1, :first_name => 'keep', :last_name => 'student', :district_student_id => 's1')
-      s1.enrollments.create(:school_id=>1, :grade =>'01')
-      s2=d.students.create!(:id_state=>2, :first_name => 'destroy', :last_name => 'student', :district_student_id => 's2')
-      s2.enrollments.create!(:school_id=>1, :grade =>'02')
-      e3=Enrollment.create!(:student_id=>-1,:grade=>-1,:school_id=>-1)
-      s3=d.students.create!(:id_state=>nil, :first_name => 'blank_district_student_id', :last_name => 'student', :district_student_id => '')
+      s1=d.students.create!(id_state: 1, first_name: 'keep', last_name: 'student', district_student_id: 's1')
+      s1.enrollments.create(school_id: 1, grade: '01')
+      s2=d.students.create!(id_state: 2, first_name: 'destroy', last_name: 'student', district_student_id: 's2')
+      s2.enrollments.create!(school_id: 1, grade: '02')
+      e3=Enrollment.create!(student_id: -1,grade: -1,school_id: -1)
+      s3=d.students.create!(id_state: nil, first_name: 'blank_district_student_id', last_name: 'student', district_student_id: '')
 
       file_name = ''
       i=CSVImporter::Students.new file_name,d
@@ -66,14 +66,14 @@ describe CSVImporter::Students do
       District.delete_all
       Student.delete_all
       d=Factory(:district)
-      d.students.create!(:id_state => 99, :first_name => "MISMATCHED", :last_name => "NAME_BUT_MATCHED_BIRTHDATE", :birthdate => "2006-01-01")
-      d.students.create!(:id_state => 98, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MATCHING_NAME", :birthdate => nil)
-      d.students.create!(:id_state => 97, :first_name => "NONMATCHING_BIRTHDATE_IN_DB", :last_name => "MATCHED_NAME", :birthdate => '2006-01-02')
-      d.students.create!(:id_state => 96, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "MISMATCHED_NAME", :birthdate =>nil )
-      d.students.create!(:id_state => 95, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "MATCHED_NAME", :birthdate =>'2006-01-04' )
-      d.students.create!(:id_state => 94, :first_name => "NULL_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>nil )
-      d.students.create!(:id_state => 93, :first_name => "NULL_BIRTHDATE_IN_CSV", :last_name => "mismatched_case", :birthdate =>'2006-01-05' )
-      d.students.create!(:id_state => 92, :first_name => "ZERO_BIRTHDATE_IN_DB", :last_name => "mismatched_case", :birthdate =>'0000-00-00' )
+      d.students.create!(id_state: 99, first_name: "MISMATCHED", last_name: "NAME_BUT_MATCHED_BIRTHDATE", birthdate: "2006-01-01")
+      d.students.create!(id_state: 98, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "MATCHING_NAME", birthdate: nil)
+      d.students.create!(id_state: 97, first_name: "NONMATCHING_BIRTHDATE_IN_DB", last_name: "MATCHED_NAME", birthdate: '2006-01-02')
+      d.students.create!(id_state: 96, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "MISMATCHED_NAME", birthdate: nil )
+      d.students.create!(id_state: 95, first_name: "NULL_BIRTHDATE_IN_CSV", last_name: "MATCHED_NAME", birthdate: '2006-01-04' )
+      d.students.create!(id_state: 94, first_name: "NULL_BIRTHDATE_IN_DB", last_name: "mismatched_case", birthdate: nil )
+      d.students.create!(id_state: 93, first_name: "NULL_BIRTHDATE_IN_CSV", last_name: "mismatched_case", birthdate: '2006-01-05' )
+      d.students.create!(id_state: 92, first_name: "ZERO_BIRTHDATE_IN_DB", last_name: "mismatched_case", birthdate: '0000-00-00' )
       Student.update_all("birthdate = 0", "id_state = 92")
       Student.update_all("district_id = null")
       file_name = ''

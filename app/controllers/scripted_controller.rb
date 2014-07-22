@@ -5,34 +5,34 @@ class ScriptedController < ApplicationController
     response.headers["Content-Disposition"] = "attachment; filename=referrals.csv"
 
     send_data(ReferralReport.csv(current_district),
-              :type => 'text/csv; charset=utf-8; header=present',
-              :filename => "referrals.csv"
+              type: 'text/csv; charset=utf-8; header=present',
+              filename: "referrals.csv"
        )
   end
 
   def district_export
-    send_file(DistrictExport.generate(current_district), :x_sendfile => true, :filename => 'sims_export.zip')
+    send_file(DistrictExport.generate(current_district), x_sendfile: true, filename: 'sims_export.zip')
   end
 
   def district_upload
     if request.post?
       DistrictUploadJob.new.async_perform params[:upload_file], current_district, @u.email
-      render :text=> ''
+      render text: ''
     else
-      render :layout=>false
+      render layout: false
     end
   end
 
   def automated_intervention
     if request.post?
-      Spawnling.new(:method => :yield) do
+      Spawnling.new(method: :yield) do
         importer=AutomatedIntervention.new params[:upload_file], @u
         @messages=importer.import
         Notifications.district_upload_results( @messages, @u.email || ::UNASSIGNED_EMAIL).deliver
       end
-        render :text=>"response will be emailed to #{@u.email}" and return
+        render text: "response will be emailed to #{@u.email}" and return
     end
-    render :layout=>false
+    render layout: false
   end
 
   protected
@@ -55,7 +55,7 @@ class ScriptedController < ApplicationController
         @results = "#{importer.messages.join(", ")} #{x}"
         #request redirect_to root_url
       end
-      render :layout => false
+      render layout: false
     else
       raise 'needs to be a post'
     end

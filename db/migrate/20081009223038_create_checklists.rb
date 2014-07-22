@@ -6,7 +6,7 @@ class CreateChecklists < ActiveRecord::Migration
       t.belongs_to :student
       t.boolean :promoted
       t.belongs_to :user
-      t.boolean :is_draft, :default => true
+      t.boolean :is_draft, default: true
       t.belongs_to :district
 
       t.timestamps

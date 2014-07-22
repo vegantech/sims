@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_filter :enforce_session_selections, :except => [:index, :create, :search]
+  before_filter :enforce_session_selections, except: [:index, :create, :search]
   skip_before_filter :verify_authenticity_token
   helper_method :index_cache_key
 
@@ -38,7 +38,7 @@ class StudentsController < ApplicationController
 
     setup_students_for_index
 
-    render :action=>"index"
+    render action: "index"
   end
 
   # GET /students/1
@@ -46,7 +46,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     if @student.district_id != current_district.id
       flash[:notice] = 'Student not enrolled in district'
-      redirect_to :action=>:index and return
+      redirect_to action: :index and return
     end
 
     current_student_id || self.current_student_id = @student.id.to_s  #537 hopefully this will fix it
@@ -89,9 +89,9 @@ class StudentsController < ApplicationController
   def student_search(index_includes=false)
     session[:search] ||= {}
     StudentSearch.search(session[:search].merge(
-      :school_id => current_school_id,
-      :user => current_user,
-      :index_includes =>index_includes))
+      school_id: current_school_id,
+      user: current_user,
+      index_includes: index_includes))
   end
 
   def ic_entry
@@ -99,7 +99,7 @@ class StudentsController < ApplicationController
       session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
       student = current_district.students.find_by_district_student_id(params[:contextID])
       if student
-        session[:requested_url]= student_url(student,:username => params[:username])
+        session[:requested_url]= student_url(student,username: params[:username])
       else
         session[:requested_url] = root_url
         flash[:notice] = 'Student is not enrolled in this district'
@@ -130,8 +130,8 @@ class StudentsController < ApplicationController
       missed_students = @students
     end
     ActiveRecord::Associations::Preloader.new(missed_students,
-                                              [{:custom_flags=>:user}, {:interventions => :intervention_definition},
-                                               {:flags => :user}, {:ignore_flags=>:user} ]).run
+                                              [{custom_flags: :user}, {interventions: :intervention_definition},
+                                               {flags: :user}, {ignore_flags: :user} ]).run
     @flags_above_threshold= flags_above_threshold
   end
 

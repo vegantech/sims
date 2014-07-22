@@ -11,9 +11,9 @@ module Pageable
 
     private
     def paged_by col, val, page
-      paginate :per_page => 25, :page => page,
-               :conditions=> ["#{col} like ?", "%#{val}%"],
-               :order => col
+      paginate per_page: 25, page: page,
+               conditions: ["#{col} like ?", "%#{val}%"],
+               order: col
     end
   end
 end

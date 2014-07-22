@@ -7,7 +7,7 @@ class CreateInterventionProbeAssignments < ActiveRecord::Migration
       t.belongs_to :frequency
       t.datetime :first_date
       t.datetime :end_date
-      t.boolean :enabled, :default=>false
+      t.boolean :enabled, default: false
 
       t.timestamps
     end

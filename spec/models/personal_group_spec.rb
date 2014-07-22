@@ -4,16 +4,16 @@ describe PersonalGroup do
   describe 'name' do
     it 'should exist and be unique for a school/user' do
       PersonalGroup.new.should_not be_valid
-      pg1 = PersonalGroup.create!(:name => 'pg1', :school_id => 1, :user_id => 1)
-      PersonalGroup.new(:name=>'pg1',:school_id => 1, :user_id => 1).should_not be_valid
-      PersonalGroup.new(:name=>'pg1',:school_id => 2, :user_id => 1).should be_valid
-      PersonalGroup.new(:name=>'pg1',:school_id => 1, :user_id => 2).should be_valid
+      pg1 = PersonalGroup.create!(name: 'pg1', school_id: 1, user_id: 1)
+      PersonalGroup.new(name: 'pg1',school_id: 1, user_id: 1).should_not be_valid
+      PersonalGroup.new(name: 'pg1',school_id: 2, user_id: 1).should be_valid
+      PersonalGroup.new(name: 'pg1',school_id: 1, user_id: 2).should be_valid
     end
   end
 
   describe 'aliases' do
     before :all do
-      @pg = PersonalGroup.new :name => 'pg1'
+      @pg = PersonalGroup.new name: 'pg1'
       @pg.id = 665
     end
 
@@ -34,7 +34,7 @@ describe PersonalGroup do
 
   before(:each) do
     @valid_attributes = {
-      :name => "value for name"
+      name: "value for name"
     }
   end
 

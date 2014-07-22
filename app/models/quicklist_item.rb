@@ -14,6 +14,6 @@
 class QuicklistItem < ActiveRecord::Base
   belongs_to :school
   belongs_to :intervention_definition
-  delegate :title, :to=> :intervention_definition
+  delegate :title, to: :intervention_definition
   attr_protected :district_id
 end

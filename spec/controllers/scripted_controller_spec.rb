@@ -12,13 +12,13 @@ describe ScriptedController do
     before(:each) do
       user='automated_intervention'
       pw='automated_intervention'
-      @auto_user=Factory(:user,:username=>user,:password=>pw,:first_name=>'automated', :last_name => 'intervention',:email=>'test@test.com')
+      @auto_user=Factory(:user,username: user,password: pw,first_name: 'automated', last_name: 'intervention',email: 'test@test.com')
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user,pw)
     end
 
     describe "GET" do
       it 'should be successful' do
-        get 'automated_intervention',:district_abbrev => @auto_user.district.abbrev
+        get 'automated_intervention',district_abbrev: @auto_user.district.abbrev
         response.should_not render_template("layouts/application")
         response.should be_success
       end
@@ -27,9 +27,9 @@ describe ScriptedController do
     describe "POST" do
       it 'should render check to check email' do
         AutomatedIntervention.should_receive(:new).with('test',@auto_user).and_return(
-        mock(:import => 'These are the messages'))
-        Notifications.should_receive(:district_upload_results).with('These are the messages', @auto_user.email).and_return(mock(:deliver => true))
-        post 'automated_intervention', :district_abbrev => @auto_user.district.abbrev, :upload_file => 'test'
+        mock(import: 'These are the messages'))
+        Notifications.should_receive(:district_upload_results).with('These are the messages', @auto_user.email).and_return(mock(deliver: true))
+        post 'automated_intervention', district_abbrev: @auto_user.district.abbrev, upload_file: 'test'
         response.should be_success
         response.body.should == "response will be emailed to #{@auto_user.email}"
       end

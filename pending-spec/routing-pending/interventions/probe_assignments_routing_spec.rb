@@ -4,7 +4,7 @@ describe Interventions::ProbeAssignmentsController do
   describe "route generation" do
     it "should map #index" do
       pending
-      route_for(:controller => "intervention_probe_assignments", :action => "index").should == "/intervention_probe_assignments"
+      route_for(controller: "intervention_probe_assignments", action: "index").should == "/intervention_probe_assignments"
     end
   
  end
@@ -12,7 +12,7 @@ describe Interventions::ProbeAssignmentsController do
   describe "route recognition" do
     it "should generate params for #index" do
       pending
-      params_from(:get, "/intervention_probe_assignments").should == {:controller => "intervention_probe_assignments", :action => "index"}
+      params_from(:get, "/intervention_probe_assignments").should == {controller: "intervention_probe_assignments", action: "index"}
     end
   
   end

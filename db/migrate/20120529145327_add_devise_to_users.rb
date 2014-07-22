@@ -1,7 +1,7 @@
 class AddDeviseToUsers < ActiveRecord::Migration
   def self.up
     change_table(:users) do |t|
-      t.string :encrypted_password, :null => false
+      t.string :encrypted_password, null: false
       t.rename :token,:reset_password_token
       t.datetime :reset_password_sent_at
 

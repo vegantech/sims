@@ -21,10 +21,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe FlagDescription do
   before(:each) do
     @valid_attributes = {
-      :languagearts => "value for languagearts",
-      :math => "value for math",
-      :suspension => "value for suspension",
-      :attendance => "value for attendance"
+      languagearts: "value for languagearts",
+      math: "value for math",
+      suspension: "value for suspension",
+      attendance: "value for attendance"
     }
   end
 

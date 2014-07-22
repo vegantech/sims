@@ -28,47 +28,47 @@ class Recommendation < ActiveRecord::Base
   belongs_to :student
   belongs_to :tier
   belongs_to :district
-  has_many :recommendation_answers, :dependent => :destroy, :inverse_of => :recommendation
+  has_many :recommendation_answers, dependent: :destroy, inverse_of: :recommendation
   attr_protected :district_id
 
-  validates_presence_of :recommendation, :message => "is not indicated", :if =>lambda{|r| !r.draft?}
+  validates_presence_of :recommendation, message: "is not indicated", if: lambda{|r| !r.draft?}
 #  validates_presence_of :checklist_id,
-  validates_presence_of :other, :if => lambda{|r| r.validate_other?}
+  validates_presence_of :other, if: lambda{|r| r.validate_other?}
   validates_associated :recommendation_answers
   attr_accessor :request_referral, :school
 
-  define_statistic :count, :count => :all,:joins => :student
-  define_statistic :count_of_districts, :count => :all, :column_name => 'distinct students.district_id', :joins => :student
+  define_statistic :count, count: :all,joins: :student
+  define_statistic :count_of_districts, count: :all, column_name: 'distinct students.district_id', joins: :student
   before_save :mark_promoted_if_needed
   after_initialize :setup_from_checklist_or_definition
   accepts_nested_attributes_for :recommendation_answers
 
    #there's a custom sort for this in the checklist helper
   RECOMMENDATION={
-    0=>{:text=>"The student made progress and no longer requires intervention.", :readonly => true},
-    1 =>{:text=>"The student is making progress; choose new interventions from the next level; continue to monitor progress.",:promote=>true},
-    2 =>{:text=>"The student is making progress; continue the same intervention; continue to monitor progress.",:promote=>false},
-    3=>{:text => "The student is not making progress; choose new interventions from the current level; continue to monitor progress.",
+    0=>{text: "The student made progress and no longer requires intervention.", readonly: true},
+    1 =>{text: "The student is making progress; choose new interventions from the next level; continue to monitor progress.",promote: true},
+    2 =>{text: "The student is making progress; continue the same intervention; continue to monitor progress.",promote: false},
+    3=>{text: "The student is not making progress; choose new interventions from the current level; continue to monitor progress.",
       },
-    4 => {:text => "The student has not made progress.  Choose new interventions from the next level and continue to monitor progress.",:promote=>true},
-    5 => {:text => "The student has not made progress.  Make a referral to special education.",:promote=>true,
-          :show_elig => true},
-    6 => {:text => "Other", :require_other => true ,:promote=>true}
+    4 => {text: "The student has not made progress.  Choose new interventions from the next level and continue to monitor progress.",promote: true},
+    5 => {text: "The student has not made progress.  Make a referral to special education.",promote: true,
+          show_elig: true},
+    6 => {text: "Other", require_other: true ,promote: true}
 
   }
 
   STATUS={
-          :unknown => "UNKNOWN_STATUS",
-          :draft => "Draft, make changes to recommendation and submit.",
-          :can_refer => "Referred to Special Ed.",
-          :cannot_refer => "Criteria not met (need 3 or above on all questions) for referral.",
-          :ineligable_to_refer=> "Impairment Suspected, but eligibility not met.",
-          :nonadvancing => "Recommendation submitted, continue working at same tier",
-          :passed =>  "Recommendation submitted, next tier is available.",
-          :failing_score => "Submitted, did not meet criteria to move to next tier.",
-          :optional_checklist => "Optional Checklist Completed.",
-          :other => "Other Status",
-          :disabled => "Recommendations are disabled"
+          unknown: "UNKNOWN_STATUS",
+          draft: "Draft, make changes to recommendation and submit.",
+          can_refer: "Referred to Special Ed.",
+          cannot_refer: "Criteria not met (need 3 or above on all questions) for referral.",
+          ineligable_to_refer: "Impairment Suspected, but eligibility not met.",
+          nonadvancing: "Recommendation submitted, continue working at same tier",
+          passed: "Recommendation submitted, next tier is available.",
+          failing_score: "Submitted, did not meet criteria to move to next tier.",
+          optional_checklist: "Optional Checklist Completed.",
+          other: "Other Status",
+          disabled: "Recommendations are disabled"
         }
 
   def should_promote?
@@ -99,12 +99,12 @@ class Recommendation < ActiveRecord::Base
   end
 
   def previous_answers
-    @prev_answers ||=RecommendationAnswer.find(:all,:include=>:recommendation,:conditions=>["recommendations.student_id=? and recommendations.id !=? and recommendations.created_at < ?",self.student_id,self.id, self.created_at],:order=>"recommendation_answers.updated_at").group_by{|a| a.recommendation_answer_definition_id}
+    @prev_answers ||=RecommendationAnswer.find(:all,include: :recommendation,conditions: ["recommendations.student_id=? and recommendations.id !=? and recommendations.created_at < ?",self.student_id,self.id, self.created_at],order: "recommendation_answers.updated_at").group_by{|a| a.recommendation_answer_definition_id}
   end
 
   def answers
     recommendation_definition.recommendation_answer_definitions.each do |ad|
-      self.recommendation_answers.build(:recommendation_answer_definition => ad) unless recommendation_answers.any?{|a| a.recommendation_answer_definition == ad}
+      self.recommendation_answers.build(recommendation_answer_definition: ad) unless recommendation_answers.any?{|a| a.recommendation_answer_definition == ad}
     end
     self.recommendation_answers
   end
@@ -115,7 +115,7 @@ class Recommendation < ActiveRecord::Base
   end
 
   def self.without_checklist
-    find(:all, :conditions => "checklist_id is null")
+    find(:all, conditions: "checklist_id is null")
   end
 
   def self.max_tier

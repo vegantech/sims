@@ -21,10 +21,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ConsultationForm do
   before(:each) do
     @valid_attributes = {
-      :do_differently => "value for do_differently",
-      :parent_notified => "value for parent_notified",
-      :not_in_sims => "value for not_in_sims",
-      :desired_outcome => "value for desired_outcome",
+      do_differently: "value for do_differently",
+      parent_notified: "value for parent_notified",
+      not_in_sims: "value for not_in_sims",
+      desired_outcome: "value for desired_outcome",
     }
   end
 
@@ -35,7 +35,7 @@ describe ConsultationForm do
   describe "filled_in?" do
     it "should return false when all fields are blank" do
       ConsultationForm.new.filled_in?.should be_false
-      ConsultationForm.new(:desired_outcome => '').filled_in?.should be_false
+      ConsultationForm.new(desired_outcome: '').filled_in?.should be_false
     end
 
     it "should return false when all fields are blank and associated concerns are also blank" do
@@ -46,12 +46,12 @@ describe ConsultationForm do
 
     it "should return true if all fields are blank but an associated concern is populated" do
        cf=ConsultationForm.new
-       cf.consultation_form_concerns.build(:strengths => 'true')
+       cf.consultation_form_concerns.build(strengths: 'true')
        cf.filled_in?.should be_true
     end
 
     it "should return true if  fields are blank but an associated concern is populated" do
-       cf=ConsultationForm.new(:race_culture => 'e')
+       cf=ConsultationForm.new(race_culture: 'e')
        cf.consultation_form_concerns.build
        cf.filled_in?.should be_true
     end

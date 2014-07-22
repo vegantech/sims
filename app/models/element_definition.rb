@@ -14,28 +14,28 @@
 
 class ElementDefinition < ActiveRecord::Base
   KINDS_OF_ELEMENTS = {
-    :scale => "Scale",
-    :sa => "Short Answer",
-    :comment => "Comment",
-    :applicable => "Applicable Choice"
+    scale: "Scale",
+    sa: "Short Answer",
+    comment: "Comment",
+    applicable: "Applicable Choice"
   }
 
   belongs_to :question_definition
 
-  has_many :answer_definitions, :dependent => :destroy, :order => "position ASC"
-  has_many :answers, :through => :answer_definitions
+  has_many :answer_definitions, dependent: :destroy, order: "position ASC"
+  has_many :answers, through: :answer_definitions
 
-  delegate :checklist_definition, :to => :question_definition
+  delegate :checklist_definition, to: :question_definition
 
-  acts_as_list :scope => :question_definition
+  acts_as_list scope: :question_definition
   scope :content_export, order
 
   validates_presence_of :question_definition_id,  :kind
-  validates_presence_of :text, :unless =>:applicable_kind?
-  validates_uniqueness_of :kind, :scope => [:question_definition_id], :if => :applicable_kind_uniqueness?
-  validates_inclusion_of :kind, :in => KINDS_OF_ELEMENTS.keys.collect(&:to_s), :message => "must have a one of the following kinds: #{KINDS_OF_ELEMENTS.keys.to_sentence}"
+  validates_presence_of :text, unless: :applicable_kind?
+  validates_uniqueness_of :kind, scope: [:question_definition_id], if: :applicable_kind_uniqueness?
+  validates_inclusion_of :kind, in: KINDS_OF_ELEMENTS.keys.collect(&:to_s), message: "must have a one of the following kinds: #{KINDS_OF_ELEMENTS.keys.to_sentence}"
 
-  after_create :move_to_top, :if => :applicable_kind?
+  after_create :move_to_top, if: :applicable_kind?
 
   def self.kinds_of_elements
     KINDS_OF_ELEMENTS
@@ -53,7 +53,7 @@ class ElementDefinition < ActiveRecord::Base
   end
 
   def has_answers?
-    Answer.count(:include => :answer_definition, :conditions => "answer_definitions.id = #{id}" ) > 0
+    Answer.count(include: :answer_definition, conditions: "answer_definitions.id = #{id}" ) > 0
   end
 
   protected

@@ -14,7 +14,7 @@
 class RecommendationAnswer < ActiveRecord::Base
   DISTRICT_PARENT = :recommendation
   belongs_to :recommendation_answer_definition
-  belongs_to :recommendation, :inverse_of => :recommendation_answers
-  validates_presence_of :text, :if=>lambda{|r| !r.recommendation.try(:draft?)}
+  belongs_to :recommendation, inverse_of: :recommendation_answers
+  validates_presence_of :text, if: lambda{|r| !r.recommendation.try(:draft?)}
   validates_presence_of :recommendation_answer_definition_id
 end

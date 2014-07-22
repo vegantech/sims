@@ -35,7 +35,7 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
         flash[:notice] = 'Category was successfully created.'
         format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -48,7 +48,7 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
         flash[:notice] = 'Category was successfully updated.'
         format.html { redirect_to intervention_builder_categories_url(@goal_definition,@objective_definition) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -86,7 +86,7 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
       @intervention_cluster.move_lower if params[:direction].to_s == "down"
     end
     respond_to do |format|
-      format.html {redirect_to :action => :index}
+      format.html {redirect_to action: :index}
       format.js {@intervention_clusters=@objective_definition.intervention_clusters}
     end
   end
@@ -99,6 +99,6 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
   end
 
   def move_path(item, direction)
-    move_intervention_builder_category_path(:id=>item,:direction=>direction)
+    move_intervention_builder_category_path(id: item,direction: direction)
   end
 end

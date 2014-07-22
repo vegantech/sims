@@ -1,7 +1,7 @@
 module CSVImporter
   class BaseRoles < CSVImporter::Base
     FIELD_DESCRIPTIONS = {
-      :district_user_id =>"Key for user"
+      district_user_id: "Key for user"
     }
     class << self
       def csv_headers
@@ -59,7 +59,7 @@ module CSVImporter
 
     def migration t
       @col=User.columns_hash["district_user_id"]
-      t.string :district_user_id, :limit => @col.limit, :null => @col.null
+      t.string :district_user_id, limit: @col.limit, null: @col.null
     end
 
     def delete

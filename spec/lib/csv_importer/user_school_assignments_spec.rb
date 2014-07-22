@@ -13,28 +13,28 @@ describe CSVImporter::UserSchoolAssignments do
 
       @no_role_or_district_user_id = Factory(:user)
       @district = @no_role_or_district_user_id.district
-      @school_no_link = Factory(:school, :district_id => @district.id)
-      @school_with_link = Factory(:school, :district_id => @district.id, :district_school_id => 2)
-      @school_with_link_admin = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin')
-      @school_with_link_admin.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true) 
-      @school_with_link_admin2 = Factory(:user, :district_id => @district.id, :district_user_id => 'school_with_link_admin2')
-      @school_with_link_admin2.user_school_assignments.create!(:school_id => @school_with_link.id, :admin => true) 
+      @school_no_link = Factory(:school, district_id: @district.id)
+      @school_with_link = Factory(:school, district_id: @district.id, district_school_id: 2)
+      @school_with_link_admin = Factory(:user, district_id: @district.id, district_user_id: 'school_with_link_admin')
+      @school_with_link_admin.user_school_assignments.create!(school_id: @school_with_link.id, admin: true) 
+      @school_with_link_admin2 = Factory(:user, district_id: @district.id, district_user_id: 'school_with_link_admin2')
+      @school_with_link_admin2.user_school_assignments.create!(school_id: @school_with_link.id, admin: true) 
       
-      @no_role_or_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
+      @no_role_or_district_user_id.user_school_assignments.create!(school_id: @school_no_link.id)
       
       
-      @role_no_district_user_id = Factory(:user,:district_id => @district.id)
-      @should_lose_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_lose_role')
-      @should_keep_role = Factory(:user,:district_id => @district.id,  :district_user_id => 'should_keep_role')
-      @should_keep_no_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_keep_no_role')
-      @should_gain_role = Factory(:user,:district_id => @district.id, :district_user_id => 'should_gain_role')
-      @dup_person_id = Factory(:user,:district_id => @district.id, :district_user_id => @should_gain_role.district_user_id)
-      @dup_person_id.user_school_assignments.create!(:school_id => @school_no_link.id)
+      @role_no_district_user_id = Factory(:user,district_id: @district.id)
+      @should_lose_role = Factory(:user,district_id: @district.id,  district_user_id: 'should_lose_role')
+      @should_keep_role = Factory(:user,district_id: @district.id,  district_user_id: 'should_keep_role')
+      @should_keep_no_role = Factory(:user,district_id: @district.id, district_user_id: 'should_keep_no_role')
+      @should_gain_role = Factory(:user,district_id: @district.id, district_user_id: 'should_gain_role')
+      @dup_person_id = Factory(:user,district_id: @district.id, district_user_id: @should_gain_role.district_user_id)
+      @dup_person_id.user_school_assignments.create!(school_id: @school_no_link.id)
       [@role_no_district_user_id, @should_lose_role, @should_keep_role].each do |u|
-        u.user_school_assignments.create!(:school_id => @school_with_link.id)
+        u.user_school_assignments.create!(school_id: @school_with_link.id)
       end
 
-      @role_no_district_user_id.user_school_assignments.create!(:school_id => @school_no_link.id)
+      @role_no_district_user_id.user_school_assignments.create!(school_id: @school_no_link.id)
       @district.users.update_all("updated_at = '2000-01-01'")
       @i=CSVImporter::UserSchoolAssignments.new "#{Rails.root}/spec/csv/user_school_assignments.csv",@district
       @i.import

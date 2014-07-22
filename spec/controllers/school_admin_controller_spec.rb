@@ -11,10 +11,10 @@ describe SchoolAdminController do
 
   describe 'mock_request' do
     before do
-      @req=mock(:subdomain=>'')
+      @req=mock(subdomain: '')
       controller.stub!(:request).and_return(@req)
-      @req.stub!(:url=>"gopher://www.example.com/")
-      @req.stub!(:domain=>"www.example.com")
+      @req.stub!(url: "gopher://www.example.com/")
+      @req.stub!(domain: "www.example.com")
       controller.stub!(:params).and_return(flash)
     end
 

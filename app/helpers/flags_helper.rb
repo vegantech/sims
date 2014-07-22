@@ -68,7 +68,7 @@ module FlagsHelper
         popup = "#{igflag.category.humanize} - #{igflag.reason}  by #{igflag.user} #{'on ' + igflag.created_at.to_s(:chatty) if igflag.created_at}"
 
         form_tag(igflag,
-                 :class => "flag_button", :style => "display:inline", :remote => true, :method => "delete") {
+                 class: "flag_button", style: "display:inline", remote: true, method: "delete") {
           image_submit_tag(igflag.icon, :class => "popup", "data-help" => popup.html_safe) }
       end
       s.join(" ").html_safe
@@ -81,8 +81,8 @@ module FlagsHelper
       popup = "#{Flag::FLAGTYPES[flagtype][:humanize]} : #{flag_summary(flags)}"
 
       if changeable
-        form_tag(new_ignore_flag_path(:category => flags.first.category),
-                 :style => "display:inline", :remote => true, :method => :get) {
+        form_tag(new_ignore_flag_path(category: flags.first.category),
+                 style: "display:inline", remote: true, method: :get) {
           image_submit_tag(flags.first.icon, :class => "popup", "data-help" => popup.html_safe) }
       else
         image_with_popup(Flag::FLAGTYPES[flagtype][:icon], popup)
@@ -96,8 +96,8 @@ module FlagsHelper
 
   def flag_checkbox(flagtype)
     f = Flag::TYPES[flagtype.to_s]
-    check_box_tag("flagged_intervention_types[]", flagtype, false, :id => "flag_#{flagtype}", :class=>"flag_checkbox") +
-    content_tag(:label, image_tag(f[:icon], :title=>f[:humanize]), 'for' => "flag_#{flagtype}")
+    check_box_tag("flagged_intervention_types[]", flagtype, false, id: "flag_#{flagtype}", class: "flag_checkbox") +
+    content_tag(:label, image_tag(f[:icon], title: f[:humanize]), 'for' => "flag_#{flagtype}")
   end
 
   def display_flag_legend?(&_block)

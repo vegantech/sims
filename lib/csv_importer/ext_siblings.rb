@@ -1,14 +1,14 @@
 module CSVImporter
   class ExtSiblings < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-      :district_student_id =>"Key for student",        
-      :first_name =>"First Name",
-      :middle_name =>"Middle Name",
-      :last_name =>"Last Name",
-      :student_number =>"Student number that would appear on report card or student id card.",
-      :grade =>"Grade",
-      :school_name =>"Currently Enrolled at School",
-      :age =>"Age"
+      district_student_id: "Key for student",        
+      first_name: "First Name",
+      middle_name: "Middle Name",
+      last_name: "Last Name",
+      student_number: "Student number that would appear on report card or student id card.",
+      grade: "Grade",
+      school_name: "Currently Enrolled at School",
+      age: "Age"
     }
     class << self
       def description
@@ -60,7 +60,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :first_name, :string
       t.column :middle_name, :string
       t.column :last_name, :string

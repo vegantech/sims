@@ -1,20 +1,20 @@
 Given /^I am at the student profile page$/ do
   minimum_for_profile
-  @school ||= Factory(:school, :district => cucumber_district)
-  @enrollment ||= Factory(:enrollment, :school => @school, :student => @student)
+  @school ||= Factory(:school, district: cucumber_district)
+  @enrollment ||= Factory(:enrollment, school: @school, student: @student)
   visit student_url(cucumber_student)
-  fill_in "Login", :with =>cucumber_user.username
-  fill_in 'Password', :with => cucumber_user.username
+  fill_in "Login", with: cucumber_user.username
+  fill_in 'Password', with: cucumber_user.username
   click_button 'Login'
 end
 
 Given /^I am at the student search page$/ do
   minimum_for_profile
-  @school ||= Factory(:school, :district => cucumber_district)
-  @enrollment ||= Factory(:enrollment, :school => @school, :student => @student)
+  @school ||= Factory(:school, district: cucumber_district)
+  @enrollment ||= Factory(:enrollment, school: @school, student: @student)
   visit school_student_search_url(@school)
-  fill_in "Login", :with =>cucumber_user.username
-  fill_in 'Password', :with => cucumber_user.username
+  fill_in "Login", with: cucumber_user.username
+  fill_in 'Password', with: cucumber_user.username
   click_button 'Login'
 end
 
@@ -33,9 +33,9 @@ Then /^I should see a notice for "([^"]*)"$/ do |regexp|
 end
 
 Given /^a completed checklist$/ do
-  @checklist_definition ||= Factory(:checklist_definition, :district => cucumber_district)
-  @tier ||= Factory(:tier, :district => cucumber_district)
-  @checklist ||= Factory(:checklist, :checklist_definition => @checklist_definition, :tier => @tier, :teacher => cucumber_user, :student => cucumber_student)
+  @checklist_definition ||= Factory(:checklist_definition, district: cucumber_district)
+  @tier ||= Factory(:tier, district: cucumber_district)
+  @checklist ||= Factory(:checklist, checklist_definition: @checklist_definition, tier: @tier, teacher: cucumber_user, student: cucumber_student)
 end
 
 When /^I view the checklist$/ do

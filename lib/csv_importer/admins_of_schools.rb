@@ -1,8 +1,8 @@
 module CSVImporter
   class AdminsOfSchools < CSVImporter::Base
      FIELD_DESCRIPTIONS = {
-      :district_user_id => 'Key for user',
-      :district_school_id => 'Key for school'
+      district_user_id: 'Key for user',
+      district_school_id: 'Key for school'
     }
     class << self
       def description
@@ -24,7 +24,7 @@ module CSVImporter
       end
 
       def related
-        {:user_school_assignments => "Non-admin user school assignments."}
+        {user_school_assignments: "Non-admin user school assignments."}
       end
 
       def how_often
@@ -57,7 +57,7 @@ module CSVImporter
 
     def migration t
       t.column :district_school_id, :integer
-      t.column :district_user_id, :string, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.column :district_user_id, :string, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
     end
 
     def delete

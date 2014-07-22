@@ -1,5 +1,5 @@
 class InterventionBuilder::InterventionsController < InterventionBuilder::BaseController
-  skip_before_filter :verify_authenticity_token, :only => :disable
+  skip_before_filter :verify_authenticity_token, only: :disable
   before_filter :get_intervention_cluster
   # GET /intervention_definitions
   def index
@@ -38,7 +38,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
         flash[:notice] = 'Intervention was successfully created.'
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
-        format.html {@tiers=current_district.tiers; render :action => "new" }
+        format.html {@tiers=current_district.tiers; render action: "new" }
       end
     end
   end
@@ -53,7 +53,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
         format.html { redirect_to intervention_builder_interventions_url(@goal_definition,@objective_definition,@intervention_cluster) }
       else
 
-        format.html { edit;render :action => "edit" }
+        format.html { edit;render action: "edit" }
       end
     end
   end
@@ -96,7 +96,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
     @intervention_definition.move_higher if params[:direction].to_s == "up"
     @intervention_definition.move_lower if params[:direction].to_s == "down"
     respond_to do |format|
-      format.html {redirect_to :action => :index}
+      format.html {redirect_to action: :index}
       format.js {@intervention_definitions=@intervention_cluster.intervention_definitions}
     end
   end
@@ -118,9 +118,9 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
 
   def move_path(item, direction)
     unless action_name=="show"
-      move_intervention_builder_intervention_path(:id=>item,:direction=>direction)
+      move_intervention_builder_intervention_path(id: item,direction: direction)
     else
-      url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
+      url_for(controller: "recommended_monitors",action: :move,direction: direction,id: item)
     end
   end
 

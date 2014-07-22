@@ -3,7 +3,7 @@ class CreateUserSchoolAssignments < ActiveRecord::Migration
     create_table :user_school_assignments do |t|
       t.belongs_to :school
       t.belongs_to :user
-      t.boolean :admin, :default=>false
+      t.boolean :admin, default: false
 
       t.timestamps
     end

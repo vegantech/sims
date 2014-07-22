@@ -1,12 +1,12 @@
 module CSVImporter
   class ExtTestScores < CSVImporter::Base
     FIELD_DESCRIPTIONS = {
-        :district_student_id =>"Key for student",
-        :name =>"Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
-        :date =>"Date of exam",
-        :scale_score =>"Scaled Score",
-        :result =>"Interpreted result",
-        :end_date =>"Not used"
+        district_student_id: "Key for student",
+        name: "Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
+        date: "Date of exam",
+        scale_score: "Scaled Score",
+        result: "Interpreted result",
+        end_date: "Not used"
     }
     class << self
       def description
@@ -73,7 +73,7 @@ module CSVImporter
     end
 
     def migration t
-      t.column :district_student_id, :string, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :name, :string
       t.column :date, :date
       t.column :scale_score, :float

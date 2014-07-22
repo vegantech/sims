@@ -1,22 +1,22 @@
 Given /^an intervention with no progress monitors$/ do
-  intervention = Factory(:intervention, :student => @student, :user_id => 222)
+  intervention = Factory(:intervention, student: @student, user_id: 222)
 end
 
 Given /^an intervention with one progress monitor chosen but no recommended monitors$/ do
-  intervention = Factory(:intervention,:student => @student)
-  ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
+  intervention = Factory(:intervention,student: @student)
+  ipa=Factory(:intervention_probe_assignment, intervention: intervention)
 end
 
 Given /^an intervention with one progress monitor chosen and one recommended monitor$/ do
-  intervention = Factory(:intervention,:student => @student)
-  ipa=Factory(:intervention_probe_assignment, :intervention => intervention)
+  intervention = Factory(:intervention,student: @student)
+  ipa=Factory(:intervention_probe_assignment, intervention: intervention)
   intervention.intervention_definition.probe_definitions << ipa.probe_definition
 end
 
 Given /^an intervention with two progress monitors but none selected$/ do
-  intervention = Factory(:intervention,:student => @student)
-  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "First Progress Monitor")
-  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, :title => "Second Progress Monitor")
+  intervention = Factory(:intervention,student: @student)
+  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, title: "First Progress Monitor")
+  intervention.intervention_definition.probe_definitions << Factory(:probe_definition, title: "Second Progress Monitor")
 end
 
 # <select onchange="$('spinnerassign_progress').show(); new Ajax.Updater('intervention_probe_assignment', 'http://localhost:3333/interventions/ajax_probe_assignment', {asynchronous:true, evalScripts:true, method:'get', onSuccess:function(request){$('spinnerassign_progress').hide();}, parameters:'id=' + $('intervention_intervention_probe_assignment_probe_definition_id').value + '&amp;intervention_id=184330825' + '&amp;authenticity_token=' + encodeURIComponent('y8JC6pkZq5A1TeDKjKAyCRU5sRzodSD27pTWfebGgkI=')})" name="intervention[intervention_probe_assignment][probe_definition_id]" id="intervention_intervention_probe_assignment_probe_definition_id" class="fixed_width">
@@ -67,9 +67,9 @@ When /^22222222xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    xml_http_request  :post, "/students/grade_search/", {:grade=>3}, :user_id => user.id.to_s, :school_id=>school.id.to_s
+    xml_http_request  :post, "/students/grade_search/", {grade: 3}, user_id: user.id.to_s, school_id: school.id.to_s
   elsif observed_field == "search_criteria_user_id"
-    xml_http_request  :post, "/students/member_search/", {:grade=>3,:user=>other_guy.id.to_s}, :user_id => user.id.to_s, :school_id=>school.id.to_s
+    xml_http_request  :post, "/students/member_search/", {grade: 3,user: other_guy.id.to_s}, user_id: user.id.to_s, school_id: school.id.to_s
   else
     flunk response.body
   end

@@ -25,28 +25,28 @@ class ProbeDefinition < ActiveRecord::Base
   belongs_to :district
   belongs_to :user
   belongs_to :school
-  has_many :probe_definition_benchmarks, :order =>:grade_level, :dependent => :destroy, :before_add => proc {|pd,pdb| pdb.probe_definition=pd}
-  has_many :recommended_monitors, :dependent => :delete_all
-  has_many :intervention_definitions,:through => :recommended_monitors
+  has_many :probe_definition_benchmarks, order: :grade_level, dependent: :destroy, before_add: proc {|pd,pdb| pdb.probe_definition=pd}
+  has_many :recommended_monitors, dependent: :delete_all
+  has_many :intervention_definitions,through: :recommended_monitors
   has_many :intervention_probe_assignments
-  accepts_nested_attributes_for :probe_definition_benchmarks, :allow_destroy => true, :reject_if=>proc {|attrs| attrs.values.all?(&:blank?)}
+  accepts_nested_attributes_for :probe_definition_benchmarks, allow_destroy: true, reject_if: proc {|attrs| attrs.values.all?(&:blank?)}
 
   validates_presence_of :title, :description
-  validates_uniqueness_of :title, :scope => ['active', 'district_id']
-  validates_numericality_of :maximum_score, :allow_nil => true, :greater_than_or_equal_to => Proc.new{|p| p.minimum_score}, :if  => :minimum_score
-  validates_numericality_of :minimum_score, :allow_nil => true, :less_than_or_qual_to => Proc.new{|p|  p.maximum_score}, :if => :maximum_score
+  validates_uniqueness_of :title, scope: ['active', 'district_id']
+  validates_numericality_of :maximum_score, allow_nil: true, greater_than_or_equal_to: Proc.new{|p| p.minimum_score}, if: :minimum_score
+  validates_numericality_of :minimum_score, allow_nil: true, less_than_or_qual_to: Proc.new{|p|  p.maximum_score}, if: :maximum_score
   #validates_associated(:probe_definition_benchmarks)
 
   attr_protected :district_id
-  acts_as_list :scope => :district_id
+  acts_as_list scope: :district_id
 
-  scope :active, where(:active=> true)
+  scope :active, where(active: true)
   scope :content_export, order
 
-  define_statistic :count , :count => :all
-  define_statistic :distinct , :count => :all,  :column_name => 'distinct title'
+  define_statistic :count , count: :all
+  define_statistic :distinct , count: :all,  column_name: 'distinct title'
   define_calculated_statistic :districts_with_changes do
-    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
+    find(:all,group: "#{self.name.tableize}.title", having: "count(#{self.name.tableize}.title)=1",select: 'distinct district_id').length
   end
 
   def title
@@ -75,20 +75,20 @@ class ProbeDefinition < ActiveRecord::Base
 
     #refactor this to use recommended monitors?
     probes = filter(params).order("active desc, custom, position").
-      includes([{:intervention_definitions=>{:intervention_cluster=>:objective_definition}},:intervention_probe_assignments, :recommended_monitors])
+      includes([{intervention_definitions: {intervention_cluster: :objective_definition}},:intervention_probe_assignments, :recommended_monitors])
 
     my_hash = ActiveSupport::OrderedHash.new()
 
-    unassigned = {:clusters => {}}
-    unassigned[:clusters][:none] = {:probes=>[]}
+    unassigned = {clusters: {}}
+    unassigned[:clusters][:none] = {probes: []}
 
     probes.each do |probe|
       if probe.intervention_definitions.any?
         probe.intervention_definitions.compact.each do |id|
           ic=id.intervention_cluster
           od=ic.objective_definition
-          my_hash[od.title] ||= {:clusters=>{}}
-          my_hash[od.title][:clusters][ic.title] ||= {:probes=>[]}
+          my_hash[od.title] ||= {clusters: {}}
+          my_hash[od.title][:clusters][ic.title] ||= {probes: []}
           my_hash[od.title][:clusters][ic.title][:probes] |= [probe]
         end
       else

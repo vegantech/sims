@@ -10,10 +10,10 @@ describe DistrictsController do
 
   before do
     @district=mock_district(:admin? => true)
-    District.stub!(:normal => @n=[1,2,3,4,5,6])
-    District.stub!(:for_dropdown => @n)
+    District.stub!(normal: @n=[1,2,3,4,5,6])
+    District.stub!(for_dropdown: @n)
 
-    controller.stub!(:current_district=>@district)
+    controller.stub!(current_district: @district)
   end
 
   describe 'responding to GET bulk_import_form' do
@@ -38,15 +38,15 @@ describe DistrictsController do
 
   describe 'create' do
     it 'should create district when valid' do
-      @n.should_receive(:build).with(['45']).and_return(mock_district(:save=>true))
-      post :create, :district => (['45'])
+      @n.should_receive(:build).with(['45']).and_return(mock_district(save: true))
+      post :create, district: (['45'])
       flash[:notice].should ==  'District was successfully created.'
 
       response.should redirect_to(districts_url)
     end
 
     it 'should render new when  invalid district' do
-      @n.should_receive(:build).with(nil).and_return(m=mock_district(:save=>false))
+      @n.should_receive(:build).with(nil).and_return(m=mock_district(save: false))
       post :create
       assigns(:district).should == m
       response.should render_template("new")
@@ -55,14 +55,14 @@ describe DistrictsController do
 
   it 'test_should_get_edit' do
     pending 'test:unuit needs updating'
-    get :edit, :id => districts(:one).id
+    get :edit, id: districts(:one).id
     assert_response :success
   end
 
   it  'test_should_update_district' do
     pending 'test unit needs updating'
     @district.should_receive(:update_attributes).and_return(true)
-    put :update, :id => districts(:one).id, :district => { }
+    put :update, id: districts(:one).id, district: { }
     assert_redirected_to root_url
   end
 
@@ -76,7 +76,7 @@ describe DistrictsController do
   it 'test_should_destroy_district' do
     pending 'test unit needs updating'
     assert_difference('District.count', -1) do
-      delete :destroy, :id => districts(:one).id
+      delete :destroy, id: districts(:one).id
     end
 
     assert_redirected_to districts_path

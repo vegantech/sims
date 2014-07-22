@@ -5,7 +5,7 @@ module StatsInUse
     def stats_in_use(filters={})
       calc_start_date = filters[:created_after] || "2000-01-01".to_date
       calc_end_date = filters[:created_before] || "2100-01-01".to_date
-      date_conditions = {:created_at => calc_start_date..calc_end_date}
+      date_conditions = {created_at: calc_start_date..calc_end_date}
       k= stats_in_use_joins(stats_in_use_union(date_conditions))
       k=k.where(["district_id != ?", filters[:without]]) if filters[:without]
       k

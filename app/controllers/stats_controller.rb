@@ -40,9 +40,9 @@ class StatsController < ApplicationController
           else
            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end
-        @stats[klass.name] = klass.statistics(:exclude_district_id => @without.to_i, :created_after=> @start_date, :created_before => @end_date)
+        @stats[klass.name] = klass.statistics(exclude_district_id: @without.to_i, created_after: @start_date, created_before: @end_date)
       else
-        @stats[klass.name] = klass.statistics(:created_after=> @start_date, :created_before => @end_date)
+        @stats[klass.name] = klass.statistics(created_after: @start_date, created_before: @end_date)
       end
     end
     flash.now[:notice]="Excluding district with id #{@without.to_i}" if @without

@@ -1,10 +1,10 @@
 Sims::Application.routes.draw do
-  devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks", :sessions => "users/sessions", :passwords => "users/passwords"} do
+  devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks", sessions: "users/sessions", passwords: "users/passwords"} do
     match '/logout' => 'users/sessions#destroy', :as => :logout
     match '/login' => "users/sessions#new"
     match 'login/login' => "users/sessions#new"
     match 'login/logout' => 'users/sessions#destroy'
-    match '/change_password' => "users/passwords#edit", :constraints => {:query_string => /token=/}
+    match '/change_password' => "users/passwords#edit", :constraints => {query_string: /token=/}
     match '/users/sign_out' => 'users/sessions#destroy'
   end
   match '/change_password' => 'main#change_password', :as => :change_password
@@ -38,7 +38,7 @@ Sims::Application.routes.draw do
 
   match '/main' => 'main#not_authorized', :as => :not_authorized
   match '/spell_check/' => 'spell_check#index', :as => :spell_check
-  match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
+  match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { filename: /[^\/;,?]+/ }
   match '/preview_graph/:intervention_id' => 'interventions/probe_assignments#preview_graph', :as => :preview_graph
 
   resources :help
@@ -65,10 +65,10 @@ Sims::Application.routes.draw do
         put :claim
       end
     end
-    resources :logs, :only => [:index]
+    resources :logs, only: [:index]
   end
   scope "district" do
-    resources :flag_categories, :as => "flag_categories", :module => "district"
+    resources :flag_categories, as: "flag_categories", module: "district"
   end
 
   resources :custom_probes
@@ -82,12 +82,12 @@ Sims::Application.routes.draw do
   end
 
   resources :groups do
-    scope :module => :groups, :only => [:new, :create, :destroy] do
+    scope module: :groups, only: [:new, :create, :destroy] do
       resources :students
       resources :users
     end
   end
-  resources :special_user_groups, :only => [:show, :edit, :create, :destroy]
+  resources :special_user_groups, only: [:show, :edit, :create, :destroy]
 
   resources :checklists
   resources :recommendations
@@ -98,12 +98,12 @@ Sims::Application.routes.draw do
 
   resources :enrollments
 
-  resources :students, :only => [:index, :create, :show] do
-    resources :student_comments, :except => :index
+  resources :students, only: [:index, :create, :show] do
+    resources :student_comments, except: :index
   end
 
-  resources :schools , :only => [:index, :show, :create] do
-    resource :student_search, :only => [:show, :create] do
+  resources :schools , only: [:index, :show, :create] do
+    resource :student_search, only: [:show, :create] do
       collection do
         get :member
         get :grade
@@ -156,10 +156,10 @@ Sims::Application.routes.draw do
   end
 
   namespace :intervention_builder do
-    put "regenerate_intervention_pdfs", :controller => :base
-    get "interventions_without_recommended_monitors",   :controller => :base
+    put "regenerate_intervention_pdfs", controller: :base
+    get "interventions_without_recommended_monitors",   controller: :base
 
-    match "recommended_montors/:action", :controller => :recommended_monitors
+    match "recommended_montors/:action", controller: :recommended_monitors
     resources :probes do
       member do
         put :disable
@@ -205,10 +205,10 @@ Sims::Application.routes.draw do
     end
   end
 
-  namespace :interventions, :only => [:index, :create] do
+  namespace :interventions, only: [:index, :create] do
     resources :quicklists
   end
-  resources :custom_interventions, :only => [:new,:create] do
+  resources :custom_interventions, only: [:new,:create] do
     member do
       post :new
     end
@@ -222,7 +222,7 @@ Sims::Application.routes.draw do
     collection do
       get :ajax_probe_assignment
     end
-    scope :module => "interventions" do
+    scope module: "interventions" do
       resources :comments
       resources :participants
       resources :probe_assignments do
@@ -235,22 +235,22 @@ Sims::Application.routes.draw do
       end
     end
   end
-  scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id", :module => "interventions" do
+  scope "/interventions/:intervention_id/probe_assignments/:probe_assignment_id", module: "interventions" do
     resources :probes
   end
 
   #or just railmail_index controller railmail?
-  resources :railmail, :only => %w(index) do
-    get  'raw',    :on => :member
-    get  'part',   :on => :member
-    post 'resend', :on => :collection
-    post 'read',   :on => :collection
+  resources :railmail, only: %w(index) do
+    get  'raw',    on: :member
+    get  'part',   on: :member
+    post 'resend', on: :collection
+    post 'read',   on: :collection
   end
-  root :to =>'main#index'
+  root to: 'main#index'
 
-  match 'reports/:action(.:format)', :controller => "reports"
-  match 'doc/:action(/:id)(.:format)', :controller => "doc"
-  match 'scripted/:action(.:format)', :controller => "scripted"
+  match 'reports/:action(.:format)', controller: "reports"
+  match 'doc/:action(/:id)(.:format)', controller: "doc"
+  match 'scripted/:action(.:format)', controller: "scripted"
   match 'intervention_builder/:controller/:action(.:format)'# for controller specs
   match 'spell_check/check_spelling' => "spell_check#check_spelling"
   match '/chart' => ChartProxyApp.action(:index)

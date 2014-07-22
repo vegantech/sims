@@ -24,8 +24,8 @@ class GroupedProgressEntry
     @student_ids =student_ids
     @school = School.find(search[:school_id])
     @aggregate_chart = AggregateChart.new(
-      :intervention => @intervention,
-      :probe_definition => @probe_definition)
+      intervention: @intervention,
+      probe_definition: @probe_definition)
   end
 
   def to_param
@@ -102,7 +102,7 @@ class GroupedProgressEntry
   def students_with_scores_count
     ipa=InterventionProbeAssignment.find_all_by_probe_definition_id(
       @probe_definition.id,
-      :include => [:probes,{:intervention=>:student}], :conditions => ["probes.score is not null and interventions.intervention_definition_id = ?",
+      include: [:probes,{intervention: :student}], conditions: ["probes.score is not null and interventions.intervention_definition_id = ?",
                                                                        @intervention.intervention_definition_id])
 
         ipa.size
@@ -129,26 +129,26 @@ class GroupedProgressEntry
   private
   def self.interventions(id)
     #TODO TESTS
-    Intervention.find(:all,:include => :intervention_participants,
-                           :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
+    Intervention.find(:all,include: :intervention_participants,
+                           conditions: ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end
 
   def self.interventions2(id, student_ids)
     Intervention.find_all_by_active_and_student_id(true,student_ids,
-                                                   :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition],
-                                                   :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)
+                                                   joins: [:intervention_probe_assignments,:intervention_participants,:intervention_definition],
+                                                   conditions: ["(intervention_participants.user_id = ? or interventions.user_id = ?)
                                    and intervention_probe_assignments.id is not null and intervention_probe_assignments.enabled=true",id,id],
-                                                   :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id',
-                                                   :having => 'count(distinct student_id) > 1',
-                                                   :select => 'intervention_definitions.title, interventions.id,
+                                                   group: 'intervention_definition_id,intervention_probe_assignments.probe_definition_id',
+                                                   having: 'count(distinct student_id) > 1',
+                                                   select: 'intervention_definitions.title, interventions.id,
                                  interventions.intervention_definition_id,probe_definition_id, count(distinct student_id) as student_count'
                      )
   end
 
   def find_student_interventions
      Intervention.find_all_by_intervention_definition_id_and_active_and_student_id(@intervention.intervention_definition_id, true, @student_ids,
-                                                                                   :include => [:student, :intervention_probe_assignments, :intervention_participants],
-                                                                                   :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
+                                                                                   include: [:student, :intervention_probe_assignments, :intervention_participants],
+                                                                                   conditions: ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
                                                        ).collect{|i| ScoreComment.new(i, @user)}
   end
 end

@@ -3,10 +3,10 @@ Given /^common data$/i do
   clear_login_dropdowns
   @district = default_district
   @default_user.district = @district
-  @school = Factory(:school, :district => @district, :name => "Default School")
-  @default_user.user_school_assignments.create!(:school => @school)
-  @another_user = Factory(:user, :username => "cucumber_another", :district => @district, :email => 'cucumber@pickle.com')
-  @another_user.user_school_assignments.create!(:school => @school)
+  @school = Factory(:school, district: @district, name: "Default School")
+  @default_user.user_school_assignments.create!(school: @school)
+  @another_user = Factory(:user, username: "cucumber_another", district: @district, email: 'cucumber@pickle.com')
+  @another_user.user_school_assignments.create!(school: @school)
   @default_user.save!
   create_default_student
   @student.district = @district
@@ -31,21 +31,21 @@ Given /clear login dropdowns/ do
 end
 
 Given /^with additional student$/i do
-  s=Factory(:student,:district=>@student.district)
-  s.enrollments.create!(@student.enrollments.first.attributes.merge(:student_id => s.id))
+  s=Factory(:student,district: @student.district)
+  s.enrollments.create!(@student.enrollments.first.attributes.merge(student_id: s.id))
   @additional_student=true
   s.save!
 end
 
 Given /^quicklist choices (.*)$/i do |choices_array|
   choices = Array(eval(choices_array))
-  goal = Factory(:goal_definition, :title => "Cucumber Goal", :district => @district)
-  objective = Factory(:objective_definition, :title=> "Cucumber Objective", :goal_definition => goal)
-  cluster = Factory(:intervention_cluster, :title => "Cucumber Category", :objective_definition => objective)
+  goal = Factory(:goal_definition, title: "Cucumber Goal", district: @district)
+  objective = Factory(:objective_definition, title: "Cucumber Objective", goal_definition: goal)
+  cluster = Factory(:intervention_cluster, title: "Cucumber Category", objective_definition: objective)
 
   choices.each do |choice|
-    idef = Factory(:intervention_definition, :title => choice, :intervention_cluster => cluster)
-    Factory(:quicklist_item, :school => @school, :intervention_definition => idef)
+    idef = Factory(:intervention_definition, title: choice, intervention_cluster: cluster)
+    Factory(:quicklist_item, school: @school, intervention_definition: idef)
   end
 end
 
@@ -70,8 +70,8 @@ Given /^I log in as content_builder$/ do
   @content_district = u.district
 
   visit '/'
-  fill_in 'Login', :with => 'content_builder'
-  fill_in 'Password', :with => 'content_builder'
+  fill_in 'Login', with: 'content_builder'
+  fill_in 'Password', with: 'content_builder'
   click_button 'Login'
 end
 
@@ -86,7 +86,7 @@ Given /^I am a school admin$/ do
   clear_login_dropdowns
   log_in
   @default_user.roles = (Role.mask_to_roles(@default_user.roles_mask) | ["school_admin"])
-  @default_user.user_school_assignments.create(:school_id => @school.id, :admin=>true)
+  @default_user.user_school_assignments.create(school_id: @school.id, admin: true)
   @default_user.save!
 end
 
@@ -95,13 +95,13 @@ Given /^I am not a school admin$/ do
   log_in
   @default_user.roles = ["regular_user"]
   @default_user.user_school_assignments.clear
-  @default_user.user_school_assignments.create(:school_id => @school.id, :admin=>false)
+  @default_user.user_school_assignments.create(school_id: @school.id, admin: false)
   @default_user.save!
 end
 
 Given /^there is a student in my group$/ do
   s=create_student "A", "Student", "05", @school
-  g=@school.groups.create!(:title => "My Group")
+  g=@school.groups.create!(title: "My Group")
   g.students << s
   g.users << @default_user
 end
@@ -157,14 +157,14 @@ Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with ignore_flag
   |first, last, student_grade, school_name, ignore_type, reason|
 	school = School.find_by_name(school_name)
 	s=create_student first, last, student_grade, school
-  s.ignore_flags.create!(:category=>ignore_type, :reason=>reason)
+  s.ignore_flags.create!(category: ignore_type, reason: reason)
 end
 
 Given /^student "([^"]*)" "([^"]*)" in grade (\d+) at "([^"]*)" with custom_flag for "(.*)" with reason "(.*)"$/ do
   |first, last, student_grade, school_name, custom_type, reason|
 	school = School.find_by_name(school_name)
 	s=create_student first, last, student_grade, school
-  s.custom_flags.create!(:category=>custom_type, :reason=>reason)
+  s.custom_flags.create!(category: custom_type, reason: reason)
 end
 
 # # use this if you want the default user to belong to a group for the school
@@ -189,7 +189,7 @@ end
 
 Given /group "(.*)" for school "(.*)" with student "([^\"]*)"$/ do |group_title, school_name, student_name|
   school = School.find_by_name(school_name)
-  group = Group.create!(:title => group_title, :school => school)
+  group = Group.create!(title: group_title, school: school)
   first,last=student_name.split(" ")
   student = create_student(first,last, '1', school)
   group.students << student
@@ -198,7 +198,7 @@ end
 # TODO: extract helper
 Given /group "(.*)" for school "(.*)" with student "([^\"]*)" in grade "(.*)"$/ do |group_title, school_name, student_name, grade|
   school = School.find_by_name(school_name)
-  group = Group.create!(:title => group_title, :school => school)
+  group = Group.create!(title: group_title, school: school)
   first,last=student_name.split(" ")
   student = create_student(first,last, grade, school)
   group.students << student
@@ -206,7 +206,7 @@ end
 
 Given /group "(.*)" for school "(.*)" with students (.*)$/ do |group_title, school_name, students_array|
   school = School.find_by_name(school_name)
-  group = Group.create!(:title => group_title, :school => school)
+  group = Group.create!(title: group_title, school: school)
 
   students = Array(eval(students_array))
   students.each do |student_name|
@@ -245,9 +245,9 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
   school=School.find_by_name("Central")
 
   if observed_field == "search_criteria_grade"
-    page.driver.get  "/schools/#{school.id}/student_search/grade", {:grade=>3, :format => 'js'}, :user_id => user.id.to_s, :school_id=>school.id.to_s
+    page.driver.get  "/schools/#{school.id}/student_search/grade", {grade: 3, format: 'js'}, user_id: user.id.to_s, school_id: school.id.to_s
   elsif observed_field == "search_criteria_user_id"
-    page.driver.get "/schools/#{school.id}/student_search/member", {:grade=>3,:user=>other_guy.id.to_s, :format => 'js'}, :user_id => user.id.to_s, :school_id=>school.id.to_s
+    page.driver.get "/schools/#{school.id}/student_search/member", {grade: 3,user: other_guy.id.to_s, format: 'js'}, user_id: user.id.to_s, school_id: school.id.to_s
   else
     flunk page.source
   end
@@ -259,7 +259,7 @@ When /^xhr "(.*)" updates (.*)$/ do |observed_field, target_fields|
 end
 
 Then /^I should verify rjs has options (.*)$/ do |options|
-  page.should have_select("Student Group", :options =>(Array(eval(options))))
+  page.should have_select("Student Group", options: (Array(eval(options))))
 end
 
 Then /^I should verify the updated rjs has options (.*)$/ do |options|
@@ -292,30 +292,30 @@ end
 Given /^other district team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
   nondistrict_student = Factory(:student)  #will create another district
-  nondistrict_student.comments.create!(:body => content, :created_at => date)
+  nondistrict_student.comments.create!(body: content, created_at: date)
 end
 
 Given /^team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = Date.strptime date_string, '%m/%d/%Y'
-  @student.comments.create!(:body => content, :created_at => date)
+  @student.comments.create!(body: content, created_at: date)
 end
 
 Given /^other school team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  non_selected_school_student = Factory(:student, :district => @student.district) #will create student in an unselected school
-  non_selected_school_student.comments.create!(:body => content, :created_at => date)
+  non_selected_school_student = Factory(:student, district: @student.district) #will create student in an unselected school
+  non_selected_school_student.comments.create!(body: content, created_at: date)
 end
 
 Given /^unauthorized student team note "(.*)" on "(.*)"$/ do |content, date_string|
   date = date_string.to_date
-  unauthorized_student = Factory(:student, :district => @student.district)  #will create a student in same district
-  unauthorized_student.enrollments.create!(:grade => "ZZ", :school => @student.enrollments.first.school)
+  unauthorized_student = Factory(:student, district: @student.district)  #will create a student in same district
+  unauthorized_student.enrollments.create!(grade: "ZZ", school: @student.enrollments.first.school)
 
   # TODO: Change this, so it doesn't remain a trap for later?
   @default_user.special_user_groups.destroy_all
-  @default_user.special_user_groups.create!(:school_id=>@school.id, :grade=>@student.enrollments.first.grade)
+  @default_user.special_user_groups.create!(school_id: @school.id, grade: @student.enrollments.first.grade)
 
-  unauthorized_student.comments.create!(:body => content, :created_at => date)
+  unauthorized_student.comments.create!(body: content, created_at: date)
 end
 
 When /^page should contain "(.*)"$/ do |arg1|
@@ -326,24 +326,24 @@ Given /^student "([^\"]*)" directly owns consultation form with team consultatio
   first_name, last_name = student_name.split
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
   tc=nil
-  consultation_form = Factory(:consultation_form, :team_consultation => tc)
+  consultation_form = Factory(:consultation_form, team_consultation: tc)
 
-  concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
-                                                 :recent_changes => "Recent changes #{concern_label}", :area => 3)
+  concern = Factory(:consultation_form_concern,  strengths: "Strengths #{concern_label}", concerns: "Concerns #{concern_label}",
+                                                 recent_changes: "Recent changes #{concern_label}", area: 3)
 
   consultation_form.consultation_form_concerns << concern
-  team_consultation = Factory(:team_consultation, :consultation_form => consultation_form)
+  team_consultation = Factory(:team_consultation, consultation_form: consultation_form)
   student.team_consultations << team_consultation
 end
 
 Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*)"$/ do |student_name, concern_label|
   first_name, last_name = student_name.split
   student = Student.find_by_first_name_and_last_name(first_name, last_name)
-  tc=TeamConsultation.create!(:student=>student)
-  consultation_form = Factory(:consultation_form, :team_consultation => tc)
+  tc=TeamConsultation.create!(student: student)
+  consultation_form = Factory(:consultation_form, team_consultation: tc)
 
-  concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
-                                                 :recent_changes => "Recent changes #{concern_label}", :area => 3)
+  concern = Factory(:consultation_form_concern,  strengths: "Strengths #{concern_label}", concerns: "Concerns #{concern_label}",
+                                                 recent_changes: "Recent changes #{concern_label}", area: 3)
 
   consultation_form.consultation_form_concerns << concern
 end
@@ -354,11 +354,11 @@ Then /^"([^\"]*)" should have "([^\"]*)" groups$/ do |school_name, num_groups|
 end
 
 Given /^district "([^"]*)"$/ do |district|
-  Factory(:district, :name => district)
+  Factory(:district, name: district)
 end
 
 Then /^"([^"]*)" should have "([^"]*)" district selected$/ do |field, district|
-  page.has_select?(field, :selected => district)
+  page.has_select?(field, selected: district)
 end
 
 Given /^PENDING/ do

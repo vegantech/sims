@@ -71,7 +71,7 @@ class VerifyStudentInDistrictExternally
    end
 
    #raise if timeout
-   Rails.cache.write("ext_verify_cookie", @response.response['set-cookie'], :ttl=>25.minutes.to_i)
+   Rails.cache.write("ext_verify_cookie", @response.response['set-cookie'], ttl: 25.minutes.to_i)
    parsed_response=Nokogiri.parse(@response.body)
 
    if parsed_response.css('error').first.content == "false"

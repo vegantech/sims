@@ -11,10 +11,10 @@ describe ApplicationController do
 
   describe 'mock_request' do
     before do
-      @req=mock(:subdomain=>'')
+      @req=mock(subdomain: '')
       controller.stub!(:request).and_return(@req)
-      @req.stub!(:url=>"gopher://www.example.com/")
-      @req.stub!(:domain=>"www.example.com")
+      @req.stub!(url: "gopher://www.example.com/")
+      @req.stub!(domain: "www.example.com")
       controller.stub!(:params).and_return(flash)
     end
 
@@ -59,7 +59,7 @@ describe ApplicationController do
 
         controller.should_receive(:current_school).and_return("")
         @req.should_receive(:xhr?).and_return(true)
-        controller.should_receive(:render).with(:js=>"$('#flash_notice').prepend('<br />Please reselect the school.');")
+        controller.should_receive(:render).with(js: "$('#flash_notice').prepend('<br />Please reselect the school.');")
         controller.send(:require_current_school).should == false
       end
 
@@ -71,11 +71,11 @@ describe ApplicationController do
     end
 
     it 'has selected_student session helkpers' do
-      controller.stub!(:session=>{:selected_students=>[1,2,3]})
+      controller.stub!(session: {selected_students: [1,2,3]})
       controller.send(:selected_student_ids).should == [1,2,3]
       controller.send('multiple_selected_students?').should == true
 
-      controller.stub!(:session=>{:selected_students=>[1]})
+      controller.stub!(session: {selected_students: [1]})
       controller.send('multiple_selected_students?').should == false
     end
 
@@ -92,8 +92,8 @@ describe ApplicationController do
     end
 
     before do
-      @session = {:session_id => 'tree'}
-      controller.stub!(:session => @session, :current_user => mock_user)
+      @session = {session_id: 'tree'}
+      controller.stub!(session: @session, current_user: mock_user)
     end
 
     it 'memcache is required' do
@@ -116,7 +116,7 @@ describe ApplicationController do
       controller.send(:selected_student_ids).should_not == values  #if session_id changes
       controller.instance_variable_set "@memcache_student_ids", nil
       @session[:session_id] = "tree"
-      controller.stub!(:current_user => User.new)
+      controller.stub!(current_user: User.new)
       controller.send(:selected_student_ids).should_not == values  #if user changes
     end
   end
@@ -140,22 +140,22 @@ describe ApplicationController do
     end
 
     it 'should pass through if the current district matches the subdomain' do
-      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
+      @c.stub!(current_district: mock_district(abbrev: "test"))
       @c.should_receive(:current_subdomain).and_return "test"
       @c.send(:check_domain).should be_nil
     end
 
     it 'should sign out if the subdomain matches another district' do
-      @c.stub!(:current_district=> mock_district(:abbrev => "test"))
-      @c.stub!(:current_subdomain => "other")
-      FactoryGirl.create(:district, :abbrev => "other")
+      @c.stub!(current_district: mock_district(abbrev: "test"))
+      @c.stub!(current_subdomain: "other")
+      FactoryGirl.create(:district, abbrev: "other")
       @c.should_receive(:sign_out_and_redirect)
       @c.send(:check_domain).should be_false
     end
 
     it 'should pass theough if the subdomain matches no district' do
-      @c.stub!(:current_district => mock_district(:abbrev => "test"))
-      @c.stub!(:current_subdomain => "www")
+      @c.stub!(current_district: mock_district(abbrev: "test"))
+      @c.stub!(current_subdomain: "www")
       @c.send(:check_domain).should be_nil
     end
   end

@@ -4,6 +4,6 @@ class AddIndexToDistrict < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :districts, :column => [:admin,:name]
+    remove_index :districts, column: [:admin,:name]
   end
 end

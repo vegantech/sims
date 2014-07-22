@@ -3,7 +3,7 @@ class CreateSchoolTeams < ActiveRecord::Migration
     create_table :school_teams do |t|
       t.belongs_to :school
       t.string :name
-      t.boolean :anonymous, :default => false
+      t.boolean :anonymous, default: false
 
       t.timestamps
     end

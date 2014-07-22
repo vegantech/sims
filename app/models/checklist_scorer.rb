@@ -5,7 +5,7 @@ class ChecklistScorer
     @score_results=Hash.new{|h,k| h[k]={}}
   end
 
-  delegate :checklist_definition_cache, :from_tier, :answers, :element_definitions_for_answers, :to => :checklist
+  delegate :checklist_definition_cache, :from_tier, :answers, :element_definitions_for_answers, to: :checklist
 
   def score
     # all 1-8 must be answered, all 9 must have some content common to all tiers

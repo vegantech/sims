@@ -1,5 +1,5 @@
 class InterventionsController < ApplicationController
-  before_filter :find_intervention, :only => [:show, :edit, :update, :end, :destroy, :undo_end]
+  before_filter :find_intervention, only: [:show, :edit, :update, :end, :destroy, :undo_end]
   skip_before_filter :verify_authenticity_token
 
   helper_method :new_path, :create_path
@@ -49,7 +49,7 @@ class InterventionsController < ApplicationController
 
     if @intervention.save
       flash[:notice] = "Intervention was successfully created. #{@intervention.autoassign_message} "
-      redirect_to(student_url(current_student, :tn=>0, :ep=>0))
+      redirect_to(student_url(current_student, tn: 0, ep: 0))
     else
       # This is to make validation work
       i = @intervention
@@ -62,7 +62,7 @@ class InterventionsController < ApplicationController
       @intervention_probe_assignment.valid? if @intervention_probe_assignment #So errors show up on creation  TODO REFACTOR
       @intervention = i
       # end code to make validation work
-      render :action => "new"
+      render action: "new"
     end
   end
 
@@ -77,13 +77,13 @@ class InterventionsController < ApplicationController
     respond_to do |format|
       if @intervention.update_attributes(params[:intervention])
         flash[:notice] = 'Intervention was successfully updated.'
-        format.html { redirect_to(student_url(current_student, :tn => 0, :ep => 0)) }
+        format.html { redirect_to(student_url(current_student, tn: 0, ep: 0)) }
       else
         format.html do
           edit
           params[:enter_score] = true
           #@intervention_comment = InterventionComment.new(params[:intervention][:comment]) if params[:intervention]
-          render :action => "edit"
+          render action: "edit"
         end
       end
     end
@@ -126,7 +126,7 @@ class InterventionsController < ApplicationController
       end
     end
     respond_to do |format|
-      format.html {render :layout => false}
+      format.html {render layout: false}
       format.js
     end
   end

@@ -17,7 +17,7 @@
 #
 
 class Asset < ActiveRecord::Base
-  belongs_to :attachable, :polymorphic => true
+  belongs_to :attachable, polymorphic: true
   belongs_to :user
 
   scope :for_user, lambda { |u| where(user_id: u) }

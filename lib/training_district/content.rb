@@ -54,12 +54,12 @@ class TrainingDistrict::Content
     end
 
     raise row.inspect if url == "/file/0"
-    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => url, :name => row[:name])
+    Asset.create!(attachable_type: row[:attachable_type], attachable_id: attachable_id, url: url, name: row[:name])
   end
 
   def generate_asset_from_file(attachable_id, row)
     filename = row[:document_file_name]
-    Asset.create!(:attachable_type => row[:attachable_type], :attachable_id => attachable_id, :url => "/file/#{filename}", :name => filename)
+    Asset.create!(attachable_type: row[:attachable_type], attachable_id: attachable_id, url: "/file/#{filename}", name: filename)
   end
 
   def generate_checklist_definitions

@@ -14,7 +14,7 @@ describe LinksAndAttachmentsHelper do
 
   describe 'links_and_attachments' do
     it 'display nothing when there are no assets' do
-      k=mock(:assets=>[])
+      k=mock(assets: [])
       helper.links_and_attachments(k,:blink).should be_blank
     end
 
@@ -22,7 +22,7 @@ describe LinksAndAttachmentsHelper do
       def helper.link_to_with_icon(name, url)
         "#{name} -- #{url}"
       end
-      document = mock(:original_filename=>"original_filename", :url=>"new_doc_url", :content_type=>'blah')
+      document = mock(original_filename: "original_filename", url: "new_doc_url", content_type: 'blah')
 
       empty_asset=mock_asset(:url=>nil, 'document?'=>false)
       link_asset=mock_asset('document?' =>false, :name=> 'link_asset', :url => 'www.link_asset.ant')
@@ -35,7 +35,7 @@ describe LinksAndAttachmentsHelper do
 
     it 'should not display anything when the assets are destroyed' do
       comment = StudentComment.new
-      asset = comment.assets.build(:url => 'test', :name => 'test')
+      asset = comment.assets.build(url: 'test', name: 'test')
       asset.destroy
       comment.assets.should_not be_empty
       helper.links_and_attachments(comment, :dict).should == ''

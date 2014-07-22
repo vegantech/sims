@@ -1,8 +1,8 @@
 module CSVImporter
   class StaffAssignments < CSVImporter::Base
    FIELD_DESCRIPTIONS = { 
-      :district_user_id => 'Key for user',
-      :district_school_id => 'Key for school'
+      district_user_id: 'Key for user',
+      district_school_id: 'Key for school'
     }
 
     
@@ -54,7 +54,7 @@ module CSVImporter
     end
 
     def migration t
-      t.column :district_user_id, :string, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
+      t.column :district_user_id, :string, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
       t.column :district_school_id, :integer
     end
 

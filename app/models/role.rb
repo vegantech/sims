@@ -14,7 +14,7 @@ class Role
   CSV_HEADERS = [:district_user_id]
 
   HELP = {
-    "local_system_administrator" => [{:name => "Change your logo and url", :url=> "/help/edit_district"}]
+    "local_system_administrator" => [{name: "Change your logo and url", url: "/help/edit_district"}]
   }
 
   HELP.default = []
@@ -41,13 +41,13 @@ class Role
 
   def self.add_users(name, users)
     unless ROLES.index(name).nil?
-      User.update_all("roles_mask = roles_mask | #{1 << ROLES.index(name)}",:id=>Array(users))
+      User.update_all("roles_mask = roles_mask | #{1 << ROLES.index(name)}",id: Array(users))
     end
   end
 
   def self.remove_users(name,users)
     unless ROLES.index(name).nil?
-      User.update_all("roles_mask = roles_mask & ~#{1 << ROLES.index(name)}",:id=>Array(users))
+      User.update_all("roles_mask = roles_mask & ~#{1 << ROLES.index(name)}",id: Array(users))
 
     end
   end

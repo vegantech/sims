@@ -1,7 +1,7 @@
 class GroupedProgressEntry
   class ScoreComment
     attr_accessor :date,:score,:comment,:intervention,:id,:numerator,:denominator
-    delegate :end, :to => :intervention
+    delegate :end, to: :intervention
 
     def initialize(intervention,user)
       @intervention = intervention
@@ -20,7 +20,7 @@ class GroupedProgressEntry
     def update_attributes(params)
       @comment = params['comment']
       @intervention.comment_author=@user.id
-      @intervention.comments_attributes = {"0" => {:comment => @comment}}
+      @intervention.comments_attributes = {"0" => {comment: @comment}}
       begin
         @date = Date.civil(params["date(1i)"].to_i,params["date(2i)"].to_i,params["date(3i)"].to_i)
       rescue ArgumentError
@@ -28,7 +28,7 @@ class GroupedProgressEntry
       end
       @score = params[:score]
 
-      @probe=@intervention.intervention_probe_assignment.probes.build(:score => @score, :administered_at => @date) unless @score.blank?
+      @probe=@intervention.intervention_probe_assignment.probes.build(score: @score, administered_at: @date) unless @score.blank?
     end
 
     def valid?

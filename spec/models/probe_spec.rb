@@ -16,8 +16,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Probe do
   before(:each) do
     @valid_attributes = {
-      :administered_at => Time.now,
-      :score => "1",
+      administered_at: Time.now,
+      score: "1",
     }
   end
 
@@ -32,14 +32,14 @@ describe Probe do
     end
 
     it 'should be valid if it has a score' do
-      p=Probe.new(:score=>5)
+      p=Probe.new(score: 5)
       p.should be_valid
     end
 
     it 'should not be valid if is above the maximum_score' do
-      p=Probe.new(:score=>5)
-      pd= ProbeDefinition.new(:maximum_score=>4)
-      p.stub!(:probe_definition =>pd)
+      p=Probe.new(score: 5)
+      pd= ProbeDefinition.new(maximum_score: 4)
+      p.stub!(probe_definition: pd)
       p.should_not be_valid
 
       p.score=3
@@ -48,9 +48,9 @@ describe Probe do
     end
 
     it 'should not be valid if is below the minimum_score' do
-      p=Probe.new(:score=>3)
-      pd= ProbeDefinition.new(:minimum_score=>4)
-      p.stub!(:probe_definition =>pd)
+      p=Probe.new(score: 3)
+      pd= ProbeDefinition.new(minimum_score: 4)
+      p.stub!(probe_definition: pd)
       p.should_not be_valid
 
       p.score=4
@@ -58,9 +58,9 @@ describe Probe do
     end
 
     it 'should not be valid if is not between the minimum_score and maximum' do
-      p=Probe.new(:score=>3)
-      pd= ProbeDefinition.new(:minimum_score=>4, :maximum_score => 6)
-      p.stub!(:probe_definition =>pd)
+      p=Probe.new(score: 3)
+      pd= ProbeDefinition.new(minimum_score: 4, maximum_score: 6)
+      p.stub!(probe_definition: pd)
       p.should_not be_valid
 
       p.score=4

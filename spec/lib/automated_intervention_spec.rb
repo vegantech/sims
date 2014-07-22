@@ -9,15 +9,15 @@ describe AutomatedIntervention do
   describe 'successful upload' do
     before(:all) do
       @user=Factory(:user)
-      stu=Factory(:student,:district_id => @user.district_id).update_attribute(:district_student_id,'cuke123')
+      stu=Factory(:student,district_id: @user.district_id).update_attribute(:district_student_id,'cuke123')
       InterventionDefinition.delete_all
       Intervention.delete_all
       InterventionComment.delete_all
       ProbeDefinition.delete_all
-      pd=Factory(:probe_definition, :minimum_score=>0,:district_id => @user.district_id)
+      pd=Factory(:probe_definition, minimum_score: 0,district_id: @user.district_id)
       ProbeDefinition.update_all("id = 99876", "id = #{pd.id}")
 
-      int_def = Factory(:intervention_definition, :title => 'cuke1', :description => 'cuke1' )
+      int_def = Factory(:intervention_definition, title: 'cuke1', description: 'cuke1' )
       InterventionDefinition.update_all("id = 99876", "id = #{int_def.id}")
       GoalDefinition.update_all("district_id = #{@user.district_id}")
       @importer=AutomatedIntervention.new File.new('test/csv/automated_intervention/sample.csv'), @user

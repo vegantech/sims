@@ -3,7 +3,7 @@ class CreateSchoolTeamMemberships < ActiveRecord::Migration
     create_table :school_team_memberships do |t|
       t.belongs_to :school_team
       t.belongs_to :user
-      t.boolean :contact, :default => false
+      t.boolean :contact, default: false
 
       t.timestamps
     end

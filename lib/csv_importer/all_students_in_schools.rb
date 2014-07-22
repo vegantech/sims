@@ -1,10 +1,10 @@
 module CSVImporter
   class AllStudentsInSchools < CSVImporter::Base
     FIELD_DESCRIPTIONS = {
-      :district_user_id => 'Key for user',
-      :district_school_id =>"Key for school",
-      :principal =>"True if the user is the principal of this group (or school)  otherwise blank",
-      :grade =>"Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade"
+      district_user_id: 'Key for user',
+      district_school_id: "Key for school",
+      principal: "True if the user is the principal of this group (or school)  otherwise blank",
+      grade: "Should match grade in enrollments.  Leave blank for all students in school instead of limiting to a specific grade"
     }
 
     class << self
@@ -79,8 +79,8 @@ module CSVImporter
     end
 
     def migration t
-      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
-      t.integer :district_school_id, :limit => School.columns_hash["district_school_id"].limit, :null => School.columns_hash["district_school_id"].null
+      t.string :district_user_id, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
+      t.integer :district_school_id, limit: School.columns_hash["district_school_id"].limit, null: School.columns_hash["district_school_id"].null
       t.boolean :principal
       t.string :grade
     end

@@ -32,7 +32,7 @@ class UnattachedInterventionsController < ApplicationController
 
     if Date.valid_civil?(params[:year].to_i,params[:month].to_i,params[:day].to_i)
       @end_date = Date.civil(params[:year].to_i,params[:month].to_i,params[:day].to_i)
-      @intervention.update_attributes(:end_date=> @end_date)
+      @intervention.update_attributes(end_date: @end_date)
     end
 
     respond_to do |format|
@@ -44,7 +44,7 @@ class UnattachedInterventionsController < ApplicationController
   def update
     @intervention = Intervention.find_by_id(params[:id])
     if params[:user_id].present?  && !@intervention.participant_user_ids.include?(params[:user_id].to_i)
-      @participant=@intervention.intervention_participants.build(:user_id => params[:user_id])
+      @participant=@intervention.intervention_participants.build(user_id: params[:user_id])
       if @participant.valid?
         @participant.save!
       else

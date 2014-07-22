@@ -12,9 +12,9 @@ module Stats::User
 
     FILTER_HASH_FOR_IN_USE_DATE_RANGE=
       {
-      :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
+      created_after: "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
     or consultation_form_requests.created_at >=?)",
-      :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+      created_before: "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
     or consultation_form_requests.created_at <=?)"
       }
 
@@ -26,6 +26,6 @@ module Stats::User
         stats_in_use(@filters).count("distinct district_id")
       end
 
-      define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
+      define_statistic :user_accounts, count: :all, conditions: "username != 'district_admin'"
   end
 end

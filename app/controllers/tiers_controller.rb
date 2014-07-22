@@ -36,7 +36,7 @@ class TiersController < ApplicationController
         flash[:notice] = 'Tier was successfully created.'
         format.html { redirect_to tiers_url }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -52,7 +52,7 @@ class TiersController < ApplicationController
         flash[:notice] = 'Tier was successfully updated.'
         format.html { redirect_to tiers_url }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -95,6 +95,6 @@ class TiersController < ApplicationController
 
   protected
   def move_path(obj,direction)
-    move_tier_path(obj,:direction=>direction)
+    move_tier_path(obj,direction: direction)
   end
 end

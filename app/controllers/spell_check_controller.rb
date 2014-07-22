@@ -16,6 +16,6 @@ class SpellCheckController < ApplicationController
       @words[idx] = FckeditorSpellCheck.check_spelling(plain_text)
     end
 
-    render :layout => false
+    render layout: false
   end
 end

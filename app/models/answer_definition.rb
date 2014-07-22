@@ -14,13 +14,13 @@
 #
 
 class AnswerDefinition < ActiveRecord::Base
-  acts_as_list :scope => :element_definition
+  acts_as_list scope: :element_definition
 
   belongs_to :element_definition
   has_many :answers
 
-  delegate :question_definition, :to => :element_definition
-  delegate :checklist_definition, :to => :question_definition
+  delegate :question_definition, to: :element_definition
+  delegate :checklist_definition, to: :question_definition
 
   validates_presence_of  :value
   scope :content_export, order

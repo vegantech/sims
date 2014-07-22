@@ -3,7 +3,7 @@ class CreateEnrollments < ActiveRecord::Migration
     create_table :enrollments do |t|
       t.references :school
       t.references :student
-      t.string :grade, :limit=>16
+      t.string :grade, limit: 16
 
       t.timestamps
     end

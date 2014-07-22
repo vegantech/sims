@@ -16,8 +16,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Tier do
   before(:each) do
     @valid_attributes = {
-      :title => "value for title",
-      :position => "1"
+      title: "value for title",
+      position: "1"
     }
   end
 
@@ -44,13 +44,13 @@ describe Tier do
     end
 
     it 'should return true if 1 PrincipalOverride that uses this tier' do
-      po = create_without_callbacks(PrincipalOverride,:start_tier => @tier)
+      po = create_without_callbacks(PrincipalOverride,start_tier: @tier)
       # @tier.used_by.should == [po]
       @tier.used_at_all?.should be_true
     end
 
     it 'should return true if 1 Principal Override response thatuses this tier' do
-      po = create_without_callbacks(PrincipalOverride,:end_tier => @tier)
+      po = create_without_callbacks(PrincipalOverride,end_tier: @tier)
       # @tier.used_by.should == [po]
       @tier.used_at_all?.should be_true
     end
@@ -93,7 +93,7 @@ describe Tier do
     it 'should be called before destroy' do
       Tier.delete_all
       t0 = FactoryGirl.create(:tier)
-      p1 = create_without_callbacks(Checklist, :tier => t0)
+      p1 = create_without_callbacks(Checklist, tier: t0)
       t0.should_receive(:move_children_to_delete_successor)
       t0.destroy
     end
@@ -101,8 +101,8 @@ describe Tier do
     it 'should move a child checklist and recommendation to the appropriate tier' do
       t0 = FactoryGirl.create(:tier)
       t1 = FactoryGirl.create(:tier)
-      p1 = create_without_callbacks(Checklist, :tier => t0)
-      p2 = create_without_callbacks(Recommendation, :tier => t0)
+      p1 = create_without_callbacks(Checklist, tier: t0)
+      p2 = create_without_callbacks(Recommendation, tier: t0)
       t0.send(:move_children_to_delete_successor)
       p1.reload.tier.should == t1
       p2.reload.tier.should == t1
@@ -111,7 +111,7 @@ describe Tier do
     it 'should move a child intervention_definition to the appropriate tier' do
       t0 = FactoryGirl.create(:tier)
       t1 = FactoryGirl.create(:tier)
-      intervention_def = create_without_callbacks(InterventionDefinition, :tier => t1)
+      intervention_def = create_without_callbacks(InterventionDefinition, tier: t1)
       t1.send(:move_children_to_delete_successor)
       intervention_def.reload.tier.should == t0
     end
@@ -125,8 +125,8 @@ describe Tier do
     it 'should move child principal overrides to the appropriate tier' do
       t0 = FactoryGirl.create(:tier)
       t1 = FactoryGirl.create(:tier)
-      pos = create_without_callbacks(PrincipalOverride,:start_tier => t0)
-      poe = create_without_callbacks(PrincipalOverride,:end_tier => t0)
+      pos = create_without_callbacks(PrincipalOverride,start_tier: t0)
+      poe = create_without_callbacks(PrincipalOverride,end_tier: t0)
       t0.send(:move_children_to_delete_successor)
       pos.reload.start_tier.should == t1
       poe.reload.end_tier.should == t1
@@ -136,7 +136,7 @@ describe Tier do
       pending
     end
   end
-  def create_without_callbacks(o, opts={:tier=>@tier})
+  def create_without_callbacks(o, opts={tier: @tier})
     obj=o.new(opts)
     obj.sneaky_save
     obj

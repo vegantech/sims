@@ -196,7 +196,7 @@ module CSVImporter
 
     def add_indexes
       index_options.each_with_index do |e,idx|
-        ActiveRecord::Migration.add_index temporary_table_name, e, :name=>"temporary_index_#{idx}"
+        ActiveRecord::Migration.add_index temporary_table_name, e, name: "temporary_index_#{idx}"
       end
     end
 
@@ -208,7 +208,7 @@ module CSVImporter
 
     def create_temporary_table
       ActiveRecord::Migration.suppress_messages do
-        ActiveRecord::Migration.create_table temporary_table_name, :id => false, :temporary => temporary_table? do |t|
+        ActiveRecord::Migration.create_table temporary_table_name, id: false, temporary: temporary_table? do |t|
           migration t
         end
         add_indexes

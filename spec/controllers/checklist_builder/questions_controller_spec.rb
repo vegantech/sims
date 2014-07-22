@@ -8,9 +8,9 @@ describe ChecklistBuilder::QuestionsController do
   before do
     district=mock_district
     @checklist_definition=mock_checklist_definition
-    controller.stub!(:current_district=>district)
-    district.stub_association!(:checklist_definitions,:find=>@checklist_definition)
-    @checklist_definition.stub!(:question_definitions => QuestionDefinition)
+    controller.stub!(current_district: district)
+    district.stub_association!(:checklist_definitions,find: @checklist_definition)
+    @checklist_definition.stub!(question_definitions: QuestionDefinition)
 
   end
 
@@ -25,7 +25,7 @@ describe ChecklistBuilder::QuestionsController do
   describe "GET 'show'" do
     it "should be successful" do
       QuestionDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'show', :id=>'37'
+      get 'show', id: '37'
       assigns(:question_definition).should == 'yes'
     end
   end
@@ -40,7 +40,7 @@ describe ChecklistBuilder::QuestionsController do
   describe "GET 'edit'" do
     it "should be successful" do
       QuestionDefinition.should_receive(:find).with("37").and_return('yes')
-      get 'edit', :id=>'37'
+      get 'edit', id: '37'
       assigns(:question_definition).should == 'yes'
     end
   end
@@ -64,7 +64,7 @@ describe ChecklistBuilder::QuestionsController do
   describe "GET 'destroy'" do
     it "should be successful" do
       QuestionDefinition.should_receive(:find).with("37").and_return(mock_question_definition(:destroy=>true, :has_answers? => false))
-      get 'destroy' , :id => '37'
+      get 'destroy' , id: '37'
       response.should redirect_to(checklist_builder_checklist_url(@checklist_definition))
     end
   end

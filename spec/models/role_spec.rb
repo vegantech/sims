@@ -20,15 +20,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Role do
   before(:each) do
     @valid_attributes = {
-      :name => "regular_user",
-      :position => "1",
-      :district_id =>1
+      name: "regular_user",
+      position: "1",
+      district_id: 1
     }
   end
 
   it "should create a new instance given valid attributes" do
     pending
-    Role.create!(@valid_attributes.merge(:district_id=>1))
+    Role.create!(@valid_attributes.merge(district_id: 1))
   end
 
         
@@ -36,7 +36,7 @@ describe Role do
   describe 'has_controller_and_action_group?' do
     it 'should return nothing when there are no matching controllers and something when there is' do
     pending
-      r= Role.create!(@valid_attributes.merge(:district_id=>1))
+      r= Role.create!(@valid_attributes.merge(district_id: 1))
       Role.has_controller_and_action_group?('puppies', 'read_access').should == false
       Role.has_controller_and_action_group?('students', 'read_access').should == true
       Role.has_controller_and_action_group?('students', 'write_access').should == false

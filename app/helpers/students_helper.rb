@@ -21,8 +21,8 @@ module StudentsHelper
   end
 
   def intervention_group_checkbox(grp)
-    content_tag :div, :class => "small_bump_right" do
-    check_box_tag("intervention_group_types[]",grp.id,false,:id=>dom_id(grp), :class => 'active_intervention_checkbox') +
+    content_tag :div, class: "small_bump_right" do
+    check_box_tag("intervention_group_types[]",grp.id,false,id: dom_id(grp), class: 'active_intervention_checkbox') +
       label_tag(dom_id(grp), grp.title)
     end.html_safe
   end
@@ -57,15 +57,15 @@ module StudentsHelper
   end
 
   def team_notes_count(student)
-    content_tag :span, "(#{student.comments.size})", :id => 'team_notes_count'
+    content_tag :span, "(#{student.comments.size})", id: 'team_notes_count'
   end
 
   def active_interventions_count(student)
-    content_tag :span, "(#{student.interventions.active.size})", :id =>'active_interventions_count'
+    content_tag :span, "(#{student.interventions.active.size})", id: 'active_interventions_count'
   end
 
   def inactive_interventions_count(student)
-    content_tag :span, "(#{student.interventions.inactive.size})", :id => 'inactive_interventions_count'
+    content_tag :span, "(#{student.interventions.inactive.size})", id: 'inactive_interventions_count'
   end
 
   def grade_select(grades)
@@ -80,13 +80,13 @@ module StudentsHelper
 
   def group_select_options(groups)
     if groups.length > 1 or current_user.all_students_in_school?(current_school)
-      groups.unshift(Group.new(:title=>'Filter by Group'))
+      groups.unshift(Group.new(title: 'Filter by Group'))
     end
     groups
   end
 
   def group_member_select_options(members)
-    members.unshift(User.new(:first_name=>'All', :last_name=>'Staff')) if members.size > 1 or current_user.all_students_in_school?(current_school)
+    members.unshift(User.new(first_name: 'All', last_name: 'Staff')) if members.size > 1 or current_user.all_students_in_school?(current_school)
     members
   end
 end

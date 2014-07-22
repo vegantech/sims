@@ -22,10 +22,10 @@ class InterventionProbeAssignment < ActiveRecord::Base
   belongs_to :intervention
   belongs_to :probe_definition
   belongs_to :frequency
-  has_many :probes, :dependent => :destroy
+  has_many :probes, dependent: :destroy
 
-  delegate :title, :to => :probe_definition
-  delegate :student, :to => :intervention
+  delegate :title, to: :probe_definition
+  delegate :student, to: :intervention
   validates_associated :probes #,:probe_definition
   validate :last_date_must_be_after_first_date
   validate :goal_in_range
@@ -38,14 +38,14 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
 #  validates_date :first_date, :end_date
 
-  scope :active, where(:enabled=>true)
+  scope :active, where(enabled: true)
 
   def self.disable(ipas)
     Array(ipas).each(&:disable)
   end
 
   def disable
-    update_attributes(:enabled=>false)
+    update_attributes(enabled: false)
   end
 
   def student_grade
@@ -77,13 +77,13 @@ class InterventionProbeAssignment < ActiveRecord::Base
   end
 
   def graph(graph_type=nil)
-    ProbeGraph::Base.build(:graph_type => graph_type,
-                           :probes => probes.to_a,
-                           :probe_definition => probe_definition,
-                           :district => student.district,
-                           :first_date => first_date,
-                           :end_date => end_date,
-                           :goal => goal)
+    ProbeGraph::Base.build(graph_type: graph_type,
+                           probes: probes.to_a,
+                           probe_definition: probe_definition,
+                           district: student.district,
+                           first_date: first_date,
+                           end_date: end_date,
+                           goal: goal)
   end
 
   protected

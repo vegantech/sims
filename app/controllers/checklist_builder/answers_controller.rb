@@ -44,7 +44,7 @@ class ChecklistBuilder::AnswersController < ApplicationController
         format.html { redirect_to checklist_builder_answer_url(@checklist_definition, @question_definition, @element_definition, @answer_definition) }
         format.js
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js
       end
     end
@@ -60,7 +60,7 @@ class ChecklistBuilder::AnswersController < ApplicationController
         format.html { redirect_to checklist_builder_answer_url(@checklist_definition, @question_definition, @element_definition, @answer_definition) }
         format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
         format.js
       end
     end

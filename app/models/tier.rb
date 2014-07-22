@@ -13,23 +13,23 @@
 
 class Tier < ActiveRecord::Base
   belongs_to :district
-  has_many :checklists, :foreign_key=>:from_tier
+  has_many :checklists, foreign_key: :from_tier
   has_many :recommendations
   has_many :intervention_definitions
-  has_many :principal_override_requests, :class_name=>'PrincipalOverride', :foreign_key=>:start_tier_id
-  has_many :principal_override_acceptances, :class_name=>'PrincipalOverride', :foreign_key=>:end_tier_id
+  has_many :principal_override_requests, class_name: 'PrincipalOverride', foreign_key: :start_tier_id
+  has_many :principal_override_acceptances, class_name: 'PrincipalOverride', foreign_key: :end_tier_id
 
-  before_destroy :move_children_to_delete_successor, :if => :used_at_all?
-  acts_as_list :scope => :district_id
+  before_destroy :move_children_to_delete_successor, if: :used_at_all?
+  acts_as_list scope: :district_id
   validates_presence_of :title
   attr_protected :district_id
 
   scope :content_export, order
 
-  define_statistic :count , :count => :all
-  define_statistic :distinct , :count => :all,  :column_name => 'distinct title'
+  define_statistic :count , count: :all
+  define_statistic :distinct , count: :all,  column_name: 'distinct title'
   define_calculated_statistic :districts_with_changes do
-    find(:all,:group => "#{self.name.tableize}.title", :having => "count(#{self.name.tableize}.title)=1",:select =>'distinct district_id').length
+    find(:all,group: "#{self.name.tableize}.title", having: "count(#{self.name.tableize}.title)=1",select: 'distinct district_id').length
   end
   def to_s
     "#{position} - #{title}"

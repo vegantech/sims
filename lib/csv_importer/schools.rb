@@ -2,8 +2,8 @@ module CSVImporter
   class Schools < CSVImporter::Base
 #
     FIELD_DESCRIPTIONS = { 
-        :district_school_id =>"Key for school",
-        :name =>"Name of school"
+        district_school_id: "Key for school",
+        name: "Name of school"
     }
     class << self
       def description

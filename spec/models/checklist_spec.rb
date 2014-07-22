@@ -23,13 +23,13 @@ describe Checklist do
 
   before do
     @valid_attributes = {
-      :checklist_definition => 1,
-      :from_tier => "1",
-      :student => 1,
-      :promoted => false,
-      :user => 1,
-      :is_draft => false,
-      :district =>  1
+      checklist_definition: 1,
+      from_tier: "1",
+      student: 1,
+      promoted: false,
+      user: 1,
+      is_draft: false,
+      district: 1
     }
   end
 
@@ -54,12 +54,12 @@ describe Checklist do
           @s.should_receive(:checklist_definition).and_return(@cd)
           @s.should_receive(:max_tier).and_return(@tier)
           @s.should_receive(:district_id).and_return(15)
-          Student.should_receive(:find).with(@s.id,:conditions => nil).and_return(@s)
+          Student.should_receive(:find).with(@s.id,conditions: nil).and_return(@s)
         end
 
         describe 'and the student checklist we are copying still exists' do
           before do
-            @old_cl = mock_checklist(:answers => [Factory(:answer)], :score_results => 'Score Results')
+            @old_cl = mock_checklist(answers: [Factory(:answer)], score_results: 'Score Results')
             Checklist.should_receive(:find_by_checklist_definition_id).and_return(@old_cl)
           end
 
@@ -163,16 +163,16 @@ describe Checklist do
     Answer.destroy_all
     @teacher=User.find(:first)
     @checklist = new_from_student_and_teacher_permutation{|checklist,_ig1,_ig2| return checklist}
-    @checklist.answers.create!(:answer_definition=>@answer_definition_one)
+    @checklist.answers.create!(answer_definition: @answer_definition_one)
     @checklist.save!
-    @checklist.recommendations.create!(:should_advance=>true, :progress=>1,:recommendation=>4)
+    @checklist.recommendations.create!(should_advance: true, progress: 1,recommendation: 4)
     assert @checklist.show_score?
     new_from_student_and_teacher_permutation{|checklist,import_previous_answers,score|
     assert checklist.score_results if score
     assert !checklist.answers.blank? if import_previous_answers
     @checklist=checklist and checklist.save! if score and import_previous_answers
     }
-    @checklist.recommendations.create!(:should_advance=>true, :progress=>1,:recommendation=>4)
+    @checklist.recommendations.create!(should_advance: true, progress: 1,recommendation: 4)
     assert @checklist.passed, @checklist.score_results
     @checklist=Checklist.new_from_student_and_teacher(@student,@teacher,true,true)
     assert !@checklist.answers.blank?
@@ -194,7 +194,7 @@ describe Checklist do
       [true,false].each do |score|
         message="score #{score} import_previous #{import_previous_answers}"
         checklist=Checklist.new_from_student_and_teacher(@student,@teacher,import_previous_answers,score)
-        assert_validity checklist, :message=>"invalid #{message}"
+        assert_validity checklist, message: "invalid #{message}"
         assert (score or checklist.score_results.blank?) , message
         #checkist should not have score results unless score is true
         assert checklist.is_draft?,message
@@ -209,14 +209,14 @@ describe Checklist do
 
   it 'test_new_from_params_and_teacher' do
     pending
-    @saElement=ElementDefinition.create!(:text=>"Short Answer", :question_definition_id=>1, :kind=>'sa')
-    @commentElement=ElementDefinition.create!(:text=>"Comment", :question_definition_id=>1, :kind=>'comment')
-    @scaleElement=ElementDefinition.create!(:text=>"Scale", :question_definition_id=>1, :kind=>'scale')
+    @saElement=ElementDefinition.create!(text: "Short Answer", question_definition_id: 1, kind: 'sa')
+    @commentElement=ElementDefinition.create!(text: "Comment", question_definition_id: 1, kind: 'comment')
+    @scaleElement=ElementDefinition.create!(text: "Scale", question_definition_id: 1, kind: 'scale')
     Answer.delete_all
 
-    params={:student_id=>@student.id, :element_definition=>{@saElement.id=>{:element_definition_id=>@saElement.id,:id=>2,:text=>"Short Answer content"},
-                                                            @commentElement.id=>{:id=>3,:text=>"Comment content",:element_definition_id=>@commentElement.id,},
-                                                            @scaleElement.id=>{:id=>4,:element_definition_id=>@scaleElement.id,}
+    params={student_id: @student.id, element_definition: {@saElement.id=>{element_definition_id: @saElement.id,id: 2,text: "Short Answer content"},
+                                                            @commentElement.id=>{id: 3,text: "Comment content",element_definition_id: @commentElement.id,},
+                                                            @scaleElement.id=>{id: 4,element_definition_id: @scaleElement.id,}
     }
     }
 
@@ -247,7 +247,7 @@ describe Checklist do
 
     Checklist.destroy_all
     Answer.delete_all
-    def_opts={:user_id=>4, :from_tier=>1, :checklist_definition_id=>1}
+    def_opts={user_id: 4, from_tier: 1, checklist_definition_id: 1}
     @checklist=@student.checklists.create(def_opts)
     assert_not_nil @checklist.created_at
     @answer=@checklist.answers.build
@@ -312,7 +312,7 @@ describe Checklist do
 
     @checklist=Checklist.find(:first)
     @checklist.is_draft=false
-    @checklist.build_recommendation(:recommendation=>5,:should_advance=>true)
+    @checklist.build_recommendation(recommendation: 5,should_advance: true)
 
     assert_equal Checklist::STATUS[:cannot_refer], @checklist.status
     assert !@checklist.deletable
@@ -323,13 +323,13 @@ describe Checklist do
     assert !@checklist.deletable
     assert !@checklist.needs_recommendation
 
-    @checklist.build_recommendation(:recommendation=>5,:should_advance=>false)
+    @checklist.build_recommendation(recommendation: 5,should_advance: false)
     assert_equal Checklist::STATUS[:ineligable_to_refer], @checklist.status
 
-    @checklist.build_recommendation(:recommendation=>4,:should_advance=>false)
+    @checklist.build_recommendation(recommendation: 4,should_advance: false)
     assert_equal Checklist::STATUS[:nonadvancing], @checklist.status
 
-    @checklist.build_recommendation(:recommendation=>4,:should_advance=>true)
+    @checklist.build_recommendation(recommendation: 4,should_advance: true)
     assert_equal Checklist::STATUS[:passed] % 1, @checklist.status
 
     @checklist.promoted=false
@@ -344,14 +344,14 @@ describe Checklist do
 
   describe 'find_and_score_checklist' do
     it 'should include the answes and score by default' do
-      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(c=Checklist.new)
+      Checklist.should_receive(:find_by_id).with('55',include: {answers: :answer_definition}).and_return(c=Checklist.new)
       c.should_receive(:show_score?).and_return(true)
       c.should_receive(:score_checklist)
       Checklist.find_and_score('55').should == c
     end
 
     it 'should return nil if it is not found' do
-      Checklist.should_receive(:find_by_id).with('55',:include=>{:answers=>:answer_definition}).and_return(nil)
+      Checklist.should_receive(:find_by_id).with('55',include: {answers: :answer_definition}).and_return(nil)
       Checklist.find_and_score('55').should be_nil
     end
   end

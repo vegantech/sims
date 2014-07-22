@@ -25,7 +25,7 @@ class Interventions::ParticipantsController < ApplicationController
         format.html { redirect_to(@intervention) }
       else
         @users = [nil] | current_school.assigned_users
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end

@@ -24,13 +24,13 @@ describe Group do
     Group.destroy_all
     Group.members.should == []
     
-    g1=FactoryGirl.create(:group,:title=>"Group 1")
-    g2=FactoryGirl.create(:group,:title=>"Group 2")
-    g3=FactoryGirl.create(:group,:title=>"Group 3")
-    g4=FactoryGirl.create(:group,:title=>"Group 4")
+    g1=FactoryGirl.create(:group,title: "Group 1")
+    g2=FactoryGirl.create(:group,title: "Group 2")
+    g3=FactoryGirl.create(:group,title: "Group 3")
+    g4=FactoryGirl.create(:group,title: "Group 4")
     district=FactoryGirl.create(:district)
-    u1=FactoryGirl.create(:user, :district=>district)
-    u2=FactoryGirl.create(:user, :district=>district)
+    u1=FactoryGirl.create(:user, district: district)
+    u2=FactoryGirl.create(:user, district: district)
 
     g1.users << [u1]
     g2.users << [u2]
@@ -42,7 +42,7 @@ describe Group do
   end
 
   it 'should not allow titles beginning with pg- ' do
-    pg = Group.new :title => 'pg- woo!'
+    pg = Group.new title: 'pg- woo!'
     pg.should_not be_valid
     pg.should have_at_least(1).error_on(:title)
   end

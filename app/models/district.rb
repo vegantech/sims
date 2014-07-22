@@ -26,43 +26,43 @@ class District < ActiveRecord::Base
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
   include District::ScopedAssociations, ::LighterTouch, District::Settings
-  has_many :users, :order => :username
-  has_many :checklist_definitions, :inverse_of => :district
+  has_many :users, order: :username
+  has_many :checklist_definitions, inverse_of: :district
   has_many :flag_categories
-  has_many :core_practice_assets, :through => :flag_categories, :source=>"assets"
-  has_many :goal_definitions, :order=>'position'
-  has_many :objective_definitions, :through => :goal_definitions, :order => 'title'
+  has_many :core_practice_assets, through: :flag_categories, source: "assets"
+  has_many :goal_definitions, order: 'position'
+  has_many :objective_definitions, through: :goal_definitions, order: 'title'
   has_many :probe_definitions
-  has_many :quicklist_items, :dependent=>:destroy
-  has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
-  has_many :recommended_monitors, :through => :probe_definitions
-  has_many :tiers, :order => 'position', :dependent => :delete_all
-  has_many :schools, :order => :name
-  has_many :enrollments, :through => :schools
+  has_many :quicklist_items, dependent: :destroy
+  has_many :quicklist_interventions, class_name: "InterventionDefinition", through: :quicklist_items, source: "intervention_definition"
+  has_many :recommended_monitors, through: :probe_definitions
+  has_many :tiers, order: 'position', dependent: :delete_all
+  has_many :schools, order: :name
+  has_many :enrollments, through: :schools
   has_many :students
-  has_many :news,:class_name=>"NewsItem"
+  has_many :news,class_name: "NewsItem"
   has_many :principal_override_reasons
-  has_many :logs, :class_name => "DistrictLog", :order => "district_logs.created_at DESC"
+  has_many :logs, class_name: "DistrictLog", order: "district_logs.created_at DESC"
   has_many :flag_descriptions
-  has_many :staff_assignments,:through => :schools
-  has_many :special_user_groups, :through => :schools
+  has_many :staff_assignments,through: :schools
+  has_many :special_user_groups, through: :schools
 
   has_attached_file  :logo
 
-  scope :normal, where(:admin=>false).order('name')
-  scope :admin, where(:admin=>true)
+  scope :normal, where(admin: false).order('name')
+  scope :admin, where(admin: true)
   scope :in_use,  where("users.username != 'district_admin' and users.id is not null").includes(:users)
   scope :for_dropdown, normal.select("id,name,abbrev")
 
-  define_statistic :districts_with_at_least_one_user_account , :count => :in_use
+  define_statistic :districts_with_at_least_one_user_account , count: :in_use
 
   validates_presence_of :abbrev,:name
   validates_uniqueness_of :abbrev,:name
-  validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
-  validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
-  validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
-  validate  :check_keys, :on => :update
-  validates :google_apps_domain, :presence => true, :if => :google_apps?
+  validates_uniqueness_of :admin,  if: lambda{|d| d.admin?}  #only 1 admin district
+  validates_format_of :abbrev, with: /\A[0-9a-z]+\Z/i, message: "Can only contain letters or numbers"
+  validates_exclusion_of :abbrev, in: System::RESERVED_SUBDOMAINS
+  validate  :check_keys, on: :update
+  validates :google_apps_domain, presence: true, if: :google_apps?
   before_destroy :make_sure_there_are_no_schools
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
@@ -203,8 +203,8 @@ class District < ActiveRecord::Base
   end
 
   def self.find_by_subdomain(subdomain)
-    where(:abbrev => parse_subdomain(subdomain)).first || only_district ||
-       new(:name => 'Please Select a District')
+    where(abbrev: parse_subdomain(subdomain)).first || only_district ||
+       new(name: 'Please Select a District')
   end
 
   def google_apps_domain?
@@ -254,7 +254,7 @@ class District < ActiveRecord::Base
 
   def create_admin_user
     if users.blank?
-      u=users.build(:username=>"district_admin", :first_name=>name, :last_name => "Administrator")
+      u=users.build(username: "district_admin", first_name: name, last_name: "Administrator")
       u.roles='local_system_administrator'
       u.reset_password!('district_admin','district_admin')
       u.save!

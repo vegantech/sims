@@ -5,7 +5,7 @@ class AddStatusToDistrictLogs < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :district_logs, :column => [:district_id, :status]
+    remove_index :district_logs, column: [:district_id, :status]
     remove_column :district_logs, :status
   end
 end

@@ -13,7 +13,7 @@ class SchoolsController < ApplicationController
   end
 
   def show
-    redirect_to :action => 'index' and return
+    redirect_to action: 'index' and return
   end
 
   def create

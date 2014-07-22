@@ -29,8 +29,8 @@ class StudentCommentsController < ApplicationController
          }
         format.js {responds_to_parent {render}}
       else
-        format.html { render :action => "new" }
-        format.js { responds_to_parent{render :action => "new" } }
+        format.html { render action: "new" }
+        format.js { responds_to_parent{render action: "new" } }
       end
     end
   end
@@ -47,8 +47,8 @@ class StudentCommentsController < ApplicationController
         }
         format.js {responds_to_parent {render}}
       else
-        format.html { render :action => "edit" }
-        format.js   { responds_to_parent{render :action => "edit" } }
+        format.html { render action: "edit" }
+        format.js   { responds_to_parent{render action: "edit" } }
       end
     end
   end

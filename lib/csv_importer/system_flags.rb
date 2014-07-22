@@ -1,9 +1,9 @@
 module CSVImporter
   class SystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_student_id =>"Key for student",
-        :category =>"Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}  It must match one of these exactly, no spaces, all lowercase",
-        :reason =>"A description of the reason the student was flagged.",
+        district_student_id: "Key for student",
+        category: "Type of flag, currently one of #{Flag::FLAGTYPES.keys.join(", ")}  It must match one of these exactly, no spaces, all lowercase",
+        reason: "A description of the reason the student was flagged.",
     }
     class << self
       def description
@@ -61,8 +61,8 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
-      t.column :category,  :string, :limit => Flag.columns_hash["category"].limit, :null => false
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
+      t.column :category,  :string, limit: Flag.columns_hash["category"].limit, null: false
       t.column :reason, :text
       
     end

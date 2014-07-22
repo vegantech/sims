@@ -47,7 +47,7 @@ class ProbeGraph::Base
   end
 
   def goal_benchmark
-    ProbeDefinitionBenchmark.new(:benchmark=>@goal, :grade_level => '   Goal') if @goal.present?
+    ProbeDefinitionBenchmark.new(benchmark: @goal, grade_level: '   Goal') if @goal.present?
   end
 
   def custom_string(custom_chm)
@@ -56,15 +56,15 @@ class ProbeGraph::Base
 
   def gchart(probes_for_this_graph, chm)
     Gchart.send self.class::CHART,
-      :data => probes_for_this_graph.collect(&:score), :axis_with_labels => 'x,x,y,r',
-      :axis_labels => axis_labels(probes_for_this_graph),
-      :bar_width_and_spacing => '30,25',
-      :bar_colors => probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
-      :format=>'image_tag',
-      :min_value=>min, :max_value=>max,
-      :encoding => 'text',
-      :custom => custom_string(chm),
-      :size => '600x250'
+      data: probes_for_this_graph.collect(&:score), axis_with_labels: 'x,x,y,r',
+      axis_labels: axis_labels(probes_for_this_graph),
+      bar_width_and_spacing: '30,25',
+      bar_colors: probes_for_this_graph.collect{|e| (e.score<0)? '8DACD0': '5A799D'}.join("|"),
+      format: 'image_tag',
+      min_value: min, max_value: max,
+      encoding: 'text',
+      custom: custom_string(chm),
+      size: '600x250'
   end
 
   def y_axis_labels

@@ -12,7 +12,7 @@ after "deploy:update_code", :copy_database_yml
 
 namespace :deploy do
  desc "Restart Application"
- task :restart, :roles => :app do
+ task :restart, roles: :app do
     run "touch #{current_path}/tmp/restart.txt"
  end
 end

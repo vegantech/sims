@@ -26,9 +26,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe District do
 
   before(:all) do
-    @local_district = District.find_by_name("GD_TEST") || FactoryGirl.create(:district, :name=>"GD_TEST", :abbrev=>"CKAZZ2")
-    @district2 = District.find_by_name("district_2") || FactoryGirl.create(:district, :name=>"district_2", :abbrev=>"DIST2")
-    @state_district = District.admin.first ||  FactoryGirl.create(:district, :admin=>true)
+    @local_district = District.find_by_name("GD_TEST") || FactoryGirl.create(:district, name: "GD_TEST", abbrev: "CKAZZ2")
+    @district2 = District.find_by_name("district_2") || FactoryGirl.create(:district, name: "district_2", abbrev: "DIST2")
+    @state_district = District.admin.first ||  FactoryGirl.create(:district, admin: true)
   end
   it 'should be valid' do
     FactoryGirl.build(:district).should be_valid
@@ -37,7 +37,7 @@ describe District do
   describe 'active_checklist_definition method' do
     before(:all) do
       ChecklistDefinition.delete_all
-      @ld_cd = FactoryGirl.create(:checklist_definition, :district => @local_district)
+      @ld_cd = FactoryGirl.create(:checklist_definition, district: @local_district)
     end
 
     describe 'with active district definition' do
@@ -118,7 +118,7 @@ describe District do
   end
 
   describe 'find_by_subdomain' do
-    let!(:district) {District.delete_all;FactoryGirl.create(:district, :abbrev => 'rspec123')}
+    let!(:district) {District.delete_all;FactoryGirl.create(:district, abbrev: 'rspec123')}
     describe 'with matching subdomain' do
       specify{ District.find_by_subdomain('rspec123').should == district }
       specify{ District.find_by_subdomain('rspec123-wi-us').should == district }

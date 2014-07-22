@@ -35,7 +35,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
         flash[:notice] = 'Goal was successfully created.'
         format.html { redirect_to intervention_builder_goals_url }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -51,7 +51,7 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
         flash[:notice] = 'Goal was successfully updated.'
         format.html { redirect_to intervention_builder_goals_url }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -97,6 +97,6 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
 
   protected
     def move_path(obj,direction)
-      move_intervention_builder_goal_path(obj,:direction=>direction)
+      move_intervention_builder_goal_path(obj,direction: direction)
     end
 end

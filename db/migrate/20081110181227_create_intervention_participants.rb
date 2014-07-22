@@ -3,7 +3,7 @@ class CreateInterventionParticipants < ActiveRecord::Migration
     create_table :intervention_participants do |t|
       t.belongs_to :intervention
       t.belongs_to :user
-      t.integer :role, :default=>InterventionParticipant::PARTICIPANT
+      t.integer :role, default: InterventionParticipant::PARTICIPANT
 
       t.timestamps
     end

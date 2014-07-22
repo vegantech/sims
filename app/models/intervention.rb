@@ -45,19 +45,19 @@ class Intervention < ActiveRecord::Base
     or has no participants at all."
 
   belongs_to :user
-  belongs_to :student, :touch => true
+  belongs_to :student, touch: true
   belongs_to :intervention_definition
   belongs_to :frequency
-  belongs_to :ended_by, :class_name => "User"
-  has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
-  has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
-  has_many :participant_users, :through => :intervention_participants, :source => :user
-  has_many :intervention_probe_assignments, :dependent => :destroy
+  belongs_to :ended_by, class_name: "User"
+  has_many :comments, class_name: "InterventionComment", dependent: :destroy, order: "updated_at DESC", inverse_of: :intervention, include: :user
+  has_many :intervention_participants, dependent: :delete_all, before_add: :notify_new_participant, inverse_of: :intervention
+  has_many :participant_users, through: :intervention_participants, source: :user
+  has_many :intervention_probe_assignments, dependent: :destroy
   validates_numericality_of :frequency_multiplier
   validates_presence_of :intervention_definition
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment
-  accepts_nested_attributes_for :comments, :reject_if =>proc{|e| e["comment"].blank?}
+  accepts_nested_attributes_for :comments, reject_if: proc{|e| e["comment"].blank?}
 
   before_create :assign_implementer
   after_create :autoassign_probe, :create_other_students, :send_creation_emails
@@ -66,12 +66,12 @@ class Intervention < ActiveRecord::Base
   attr_accessor :selected_ids, :apply_to_all, :auto_implementer, :called_internally, :school_id, :creation_email, :comment_author
   attr_reader :autoassign_message
 
-  delegate :title, :tier, :description, :intervention_cluster,:tier_summary, :to => :intervention_definition
-  delegate :objective_definition, :to => :intervention_cluster
-  delegate :goal_definition, :to => :objective_definition
+  delegate :title, :tier, :description, :intervention_cluster,:tier_summary, to: :intervention_definition
+  delegate :objective_definition, to: :intervention_cluster
+  delegate :goal_definition, to: :objective_definition
   scope :desc, order("created_at desc")
-  scope :active, where(:active => true).desc
-  scope :inactive, where(:active => false).desc
+  scope :active, where(active: true).desc
+  scope :inactive, where(active: false).desc
   scope :for_report
 
   def end(ended_by,reason='', fidelity = nil)
@@ -93,7 +93,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def participants_with_author
-    intervention_participants | [intervention_participants.build(:user => self.user,:role => InterventionParticipant::AUTHOR).destroy]
+    intervention_participants | [intervention_participants.build(user: self.user,role: InterventionParticipant::AUTHOR).destroy]
   end
 
   def auto_implementer?
@@ -105,7 +105,7 @@ class Intervention < ActiveRecord::Base
   end
 
   def intervention_probe_assignment=(params)
-    intervention_probe_assignments.update_all(:enabled => false) #disable all others
+    intervention_probe_assignments.update_all(enabled: false) #disable all others
     params.stringify_keys! unless params.blank? #fix for LH #392
     return if params.blank? or (params['probe_definition_id']=='' and params['probe_definition_attributes'].blank? )
 
@@ -113,7 +113,7 @@ class Intervention < ActiveRecord::Base
       params['probe_definition_id'] = nil
     end
     @ipa = intervention_probe_assignments.find_by_probe_definition_id(params['probe_definition_id']) || intervention_probe_assignments.build
-    @ipa.attributes = params.merge(:enabled => true)
+    @ipa.attributes = params.merge(enabled: true)
   end
 
   def intervention_probe_assignment(probe_definition_id = nil)
@@ -163,7 +163,7 @@ class Intervention < ActiveRecord::Base
   def participant_user_ids=(ids)
     #remove duplicates and blanks
     ids=ids.reject(&:blank?).uniq
-    self.participant_users=User.where(:id =>(ids))
+    self.participant_users=User.where(id: (ids))
   end
 
   delegate :for_user, to: :assets, prefix: true
@@ -180,7 +180,7 @@ class Intervention < ActiveRecord::Base
     # make sure it doesn't create double interventions for the selected student
     # make sure it creates interventions for each student
     if self.apply_to_all == "1"
-      comment = {:comment => comments.present? ? comments.first.comment : nil}
+      comment = {comment: comments.present? ? comments.first.comment : nil}
       student_ids = Array(self.selected_ids)
       student_ids.delete(self.student_id.to_s)
       ipa = @ipa.try(:attributes)
@@ -191,13 +191,13 @@ class Intervention < ActiveRecord::Base
 
   def create_other_student(other_student_id, comment, ipa_attrs)
     Intervention.create!(
-      self.attributes.merge(:student_id => other_student_id, :apply_to_all => false,
-                            :comment_author => self.comment_author,
-                            :auto_implementer => self.auto_implementer,
-                            :called_internally => true,
-                            :participant_user_ids => self.participant_user_ids,
-                            :comments_attributes => {"0" => comment},
-                            :intervention_probe_assignment => ipa_attrs))
+      self.attributes.merge(student_id: other_student_id, apply_to_all: false,
+                            comment_author: self.comment_author,
+                            auto_implementer: self.auto_implementer,
+                            called_internally: true,
+                            participant_user_ids: self.participant_user_ids,
+                            comments_attributes: {"0" => comment},
+                            intervention_probe_assignment: ipa_attrs))
   end
 
   def assign_implementer
@@ -216,7 +216,7 @@ class Intervention < ActiveRecord::Base
     when 0
       @autoassign_message = 'No Monitors Available for this intervention.'
     when 1
-      p=intervention_probe_assignments.active.create!(:probe_definition_id=>intervention_definition.recommended_monitors.first.probe_definition_id,:end_date=>self.end_date,:first_date=>self.start_date, :enabled=>true)
+      p=intervention_probe_assignments.active.create!(probe_definition_id: intervention_definition.recommended_monitors.first.probe_definition_id,end_date: self.end_date,first_date: self.start_date, enabled: true)
       @autoassign_message = "#{p.title} has been automatically assigned."
     else
       @autoassign_message = 'Please assign a progress monitor.'

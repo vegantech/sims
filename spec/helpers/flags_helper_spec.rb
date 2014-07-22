@@ -35,17 +35,17 @@ describe FlagsHelper do
   describe 'default_show_team_concerns?' do
     it 'should be false if the district setting is disabled' do
       helper.stub(:team_concerns? => true)
-      helper.stub(:current_district => District.new)
+      helper.stub(current_district: District.new)
       helper.default_show_team_concerns?(Student.new,User.new).should be_false
     end
     it 'should be false if there are no pending concerns'do
       helper.stub(:team_concerns? => false)
-      helper.stub(:current_district => District.new(:show_team_consultations_if_pending => true))
+      helper.stub(current_district: District.new(show_team_consultations_if_pending: true))
       helper.default_show_team_concerns?(Student.new,User.new).should be_false
     end
     it 'should be true if te district setting is enabled and there are pending concerns' do
-      TeamConsultation.stub!(:pending_for_user => [2])
-      helper.stub(:current_district => District.new(:show_team_consultations_if_pending => true))
+      TeamConsultation.stub!(pending_for_user: [2])
+      helper.stub(current_district: District.new(show_team_consultations_if_pending: true))
       helper.default_show_team_concerns?(Student.new,User.new).should be_true
     end
 
@@ -58,8 +58,8 @@ describe FlagsHelper do
 
     it 'should return an image when there are comments' do
       student=FactoryGirl.create(:student)
-      student.comments.create!(:body=>'This si comment 1')
-      student.comments.create!(:body=>'This si comment 2')
+      student.comments.create!(body: 'This si comment 1')
+      student.comments.create!(body: 'This si comment 2')
       helper.team_notes(student).should == helper.image_with_popup("note.png", "2 team notes")
 
     end
@@ -75,13 +75,13 @@ describe FlagsHelper do
 
   describe 'custom flags' do
     it 'should return empty string when student has no custom flags' do
-      student = mock_student(:custom_flags => [])
+      student = mock_student(custom_flags: [])
       helper.custom_flags(student).should == ""
     end
 
     it 'should show the custom flag icon with the summary as a popup' do
       flag = mock_flag(:summary => "Custom Flag Summary", :any? => true)
-      student = mock_student(:custom_flags => [flag])
+      student = mock_student(custom_flags: [flag])
       helper.should_receive(:image_with_popup).with("C.gif", 'Custom Flags : Custom Flag Summary').and_return('RSPEC CUSTOM FLAGS')
       helper.custom_flags(student).should == "RSPEC CUSTOM FLAGS"
     end
@@ -90,7 +90,7 @@ describe FlagsHelper do
   describe 'current_flags' do
     describe 'without flags' do
       it 'should return blank string' do
-        student = mock_student(:current_flags => [])
+        student = mock_student(current_flags: [])
         helper.current_flags(student).should == ""
       end
     end
@@ -98,8 +98,8 @@ describe FlagsHelper do
     describe 'with flags' do
       describe 'not changeable' do
         it 'should show current flags' do
-          cf = mock_flag(:summary => 'Current Flag Summary')
-          student = mock_student(:current_flags => {'math' => [cf]})
+          cf = mock_flag(summary: 'Current Flag Summary')
+          student = mock_student(current_flags: {'math' => [cf]})
           helper.should_receive(:image_with_popup).with("M.gif", "Math : Current Flag Summary").and_return('Rspec Current Flags')
           helper.current_flags(student).should == 'Rspec Current Flags'
         end
@@ -107,8 +107,8 @@ describe FlagsHelper do
 
       describe 'changeable' do
         it 'should return a form' do
-          cf = mock_flag(:category => 'languagearts', :summary => 'Current Flag Summary', :icon => 'CF.png')
-          student = mock_student(:current_flags => {'math' => [cf]})
+          cf = mock_flag(category: 'languagearts', summary: 'Current Flag Summary', icon: 'CF.png')
+          student = mock_student(current_flags: {'math' => [cf]})
           helper.current_flags(student, true).should == "<form accept-charset=\"UTF-8\" action=\"/ignore_flags/new?category=languagearts\" data-remote=\"true\" method=\"get\" style=\"display:inline\"><div style=\"margin:0;padding:0;display:inline\"><input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" /></div><input class=\"popup\" data-help=\"Math : Current Flag Summary\" src=\"/assets/CF.png\" type=\"image\" /></form>"
        end
       end
@@ -118,7 +118,7 @@ describe FlagsHelper do
   describe 'ignore_flags' do
     describe 'for student without ignore flags' do
       it 'should return blank string' do
-        student = mock_student(:ignore_flags => [])
+        student = mock_student(ignore_flags: [])
         helper.ignore_flags(student).should == ''
       end
     end
@@ -126,8 +126,8 @@ describe FlagsHelper do
     describe 'for student with ignore flags' do
       describe 'not changeable' do
         it 'should show I.gif image with popup message' do
-          flag = mock_flag(:summary => 'Ignore Flag Summary')
-          student = mock_student(:ignore_flags => [flag])
+          flag = mock_flag(summary: 'Ignore Flag Summary')
+          student = mock_student(ignore_flags: [flag])
           helper.should_receive(:image_with_popup).with("I.gif", "Ignore Flags :  Ignore Flag Summary").and_return('Rspec Ignore Flags')
           helper.ignore_flags(student).should == 'Rspec Ignore Flags'
         end
@@ -135,12 +135,12 @@ describe FlagsHelper do
 
       describe 'passed changeable set to true' do
         it 'should return form remote tag output' do
-          u = mock_user(:to_s => 'Mock User')
+          u = mock_user(to_s: 'Mock User')
 
-          flag = mock_flag(:category => 'SomeCategory', :reason => 'Just because', :user => u, :created_at => Date.new(2009, 1, 12).to_time,
-                           :icon => 'fubar.png')
+          flag = mock_flag(category: 'SomeCategory', reason: 'Just because', user: u, created_at: Date.new(2009, 1, 12).to_time,
+                           icon: 'fubar.png')
 
-          student = mock_student(:ignore_flags => [flag])
+          student = mock_student(ignore_flags: [flag])
           pending "Testing on rcr"
           helper.ignore_flags(student, true).should == "<form action=\"/custom_flags/unignore_flag/#{flag.id}\" class=\"flag_button\" method=\"post\"" +
             " onsubmit=\"new Ajax.Request('/custom_flags/unignore_flag/#{flag.id}'," +
@@ -154,7 +154,7 @@ describe FlagsHelper do
   end
 
   describe 'intervention_status' do
-    let(:student) {mock_student(:active_interventions => "active_interventions", :inactive_interventions => "inactive_interventions")}
+    let(:student) {mock_student(active_interventions: "active_interventions", inactive_interventions: "inactive_interventions")}
     it 'should display them separated by a space' do
       helper.should_receive(:intervention_dot).with("active_interventions","green-dot.gif").and_return("green int")
       helper.should_receive(:intervention_dot).with("inactive_interventions","gray-dot.gif").and_return("gray in int")
@@ -169,8 +169,8 @@ describe FlagsHelper do
 
     it 'should escape the intervention titles and join them with a br' do
       interventions = [
-        mock_intervention(:title => 'Quote"Inside'),
-        mock_intervention(:title => 'Normal')
+        mock_intervention(title: 'Quote"Inside'),
+        mock_intervention(title: 'Normal')
       ]
       helper.intervention_dot(interventions,"e").should == "<img alt=\"E\" class=\"popup\" data-help=\"Quote&quot;Inside<br />Normal\" src=\"/assets/e\" /> "
 

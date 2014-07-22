@@ -16,18 +16,18 @@
 class ObjectiveDefinition < ActiveRecord::Base
   include LinkAndAttachmentAssets
   belongs_to :goal_definition
-  has_many :intervention_clusters, :order =>:position, :dependent=> :destroy
-  has_many :intervention_definitions, :through => :intervention_clusters
-  scope :enabled, where(:disabled => false)
+  has_many :intervention_clusters, order: :position, dependent: :destroy
+  has_many :intervention_definitions, through: :intervention_clusters
+  scope :enabled, where(disabled: false)
   scope :content_export, enabled
 
   validates_presence_of :title, :description
-  validates_uniqueness_of :description, :scope => [:goal_definition_id,:title]
-  acts_as_list :scope => :goal_definition_id
-  delegate :district, :to => :goal_definition, :allow_nil => true
+  validates_uniqueness_of :description, scope: [:goal_definition_id,:title]
+  acts_as_list scope: :goal_definition_id
+  delegate :district, to: :goal_definition, allow_nil: true
 
-  define_statistic :count , :count => :all, :joins => :goal_definition
-  define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct objective_definitions.title', :joins=>:goal_definition
+  define_statistic :count , count: :all, joins: :goal_definition
+  define_statistic :distinct_titles , count: :all,  column_name: 'distinct objective_definitions.title', joins: :goal_definition
   define_calculated_statistic :districts_with_changes do
     group("#{self.name.tableize}.title").having("count(#{self.name.tableize}.title)=1").select(
       'distinct district_id').joins(:goal_definition).length

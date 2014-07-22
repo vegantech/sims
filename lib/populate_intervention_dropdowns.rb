@@ -1,9 +1,9 @@
 module PopulateInterventionDropdowns
   protected
   def values_from_session
-    { :user_id => current_user.id,
-      :selected_ids => selected_student_ids,
-      :school_id => session[:school_id]
+    { user_id: current_user.id,
+      selected_ids: selected_student_ids,
+      school_id: session[:school_id]
     }
   end
 
@@ -19,7 +19,7 @@ module PopulateInterventionDropdowns
     find_intervention_definition
     @recommended_monitors = @intervention_definition.active_progress_monitors
     params[:intervention] ||= {}
-    params[:intervention].merge!(:intervention_definition => @intervention_definition)
+    params[:intervention].merge!(intervention_definition: @intervention_definition)
     build_from_session_and_params
     @users = [nil] | current_school.assigned_users.collect{|e| [e.fullname, e.id]}
   end

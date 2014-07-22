@@ -15,30 +15,30 @@
 
 class School < ActiveRecord::Base
   belongs_to :district
-  has_many :enrollments, :dependent => :destroy
-  has_many :students, :through =>:enrollments
-  has_many :special_user_groups, :dependent => :destroy
-  has_many :groups, :order => :title, :dependent => :destroy
-  has_many :user_school_assignments, :dependent => :destroy
-  has_many :users, :through=> :user_school_assignments
-  has_many :quicklist_items, :dependent => :destroy
-  has_many :school_teams, :dependent => :destroy
+  has_many :enrollments, dependent: :destroy
+  has_many :students, through: :enrollments
+  has_many :special_user_groups, dependent: :destroy
+  has_many :groups, order: :title, dependent: :destroy
+  has_many :user_school_assignments, dependent: :destroy
+  has_many :users, through: :user_school_assignments
+  has_many :quicklist_items, dependent: :destroy
+  has_many :school_teams, dependent: :destroy
   has_many :staff_assignments
-  has_many :staff, :through => :staff_assignments, :source => :user
+  has_many :staff, through: :staff_assignments, source: :user
   has_many :personal_groups
-  has_many :quicklist_interventions, :class_name=>"InterventionDefinition", :through => :quicklist_items, :source=>"intervention_definition"
-  has_one :school_sp_ed_referral, :dependent => :destroy
-  accepts_nested_attributes_for :user_school_assignments, :allow_destroy => true
+  has_many :quicklist_interventions, class_name: "InterventionDefinition", through: :quicklist_items, source: "intervention_definition"
+  has_one :school_sp_ed_referral, dependent: :destroy
+  accepts_nested_attributes_for :user_school_assignments, allow_destroy: true
 
   attr_protected :district_id
 
-  define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct schools.id',
-                                               :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
-  define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct schools.district_id',
-                                                                :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+  define_statistic :schools_with_enrollments , count: :all, joins: :enrollments, column_name: 'distinct schools.id',
+                                               filter_on: {created_after: "enrollments.created_at >= ?", created_before: "enrollments.created_at <= ?"}
+  define_statistic :districts_having_schools_with_enrollments , count: :all, joins: :enrollments, column_name: 'distinct schools.district_id',
+                                                                filter_on: {created_after: "enrollments.created_at >= ?", created_before: "enrollments.created_at <= ?"}
 
   validates_presence_of :name,:district
-  validates_uniqueness_of :name, :scope => :district_id
+  validates_uniqueness_of :name, scope: :district_id
 
   validate :validate_unique_user_school_assignments
   def validate_unique_user_school_assignments

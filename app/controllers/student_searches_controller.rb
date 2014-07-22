@@ -18,7 +18,7 @@ class StudentSearchesController < ApplicationController
       redirect_to students_url
     else
       flash[:notice] = 'Missing search criteria'
-      redirect_to :action => :show
+      redirect_to action: :show
     end
   end
 

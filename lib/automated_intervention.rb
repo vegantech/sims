@@ -1,14 +1,14 @@
 class AutomatedIntervention
   FORMAT="district_student_id,intervention_definition_id,start_date,end_date,probe_definition_id,score,comment"
   FIELDS={
-    :district_student_id => "Primary key in your student information system",
-    :intervention_definition_id => "Have the content admin navigate to the intervention in the content builder.  It is the number at the end of the url.",
-    :start_date => "Start of intervention in yyyy-mm-dd format",
-    :end_date => "If present, the end date of the intervention in yyyy-mm-dd format.  If absent, the intervention will be active.",
-    :probe_definition_id => "If present, the progress monitor assigned to this intervention.
+    district_student_id: "Primary key in your student information system",
+    intervention_definition_id: "Have the content admin navigate to the intervention in the content builder.  It is the number at the end of the url.",
+    start_date: "Start of intervention in yyyy-mm-dd format",
+    end_date: "If present, the end date of the intervention in yyyy-mm-dd format.  If absent, the intervention will be active.",
+    probe_definition_id: "If present, the progress monitor assigned to this intervention.
       Have the content admin navigate to this in the content builder.  It is the number at the end of the url.",
-    :score => "If entered, a score will be entered.  It must be within the max and min of the assigned progress monitor.",
-    :comment => "An optional comment to be added to the intervention."
+    score: "If entered, a score will be entered.  It must be within the max and min of the assigned progress monitor.",
+    comment: "An optional comment to be added to the intervention."
   }
 
   def initialize file,user
@@ -50,9 +50,9 @@ class AutomatedIntervention
     student= check_student(line[:district_student_id]) or return false
     int_def=check_intervention_definition(line[:intervention_definition_id]) or return false
 
-    intervention=int_def.interventions.build(:student => student, :user => @user, :start_date => line[:start_date],
-                                             :end_date => line[:end_date],
-                                             :called_internally=>true)
+    intervention=int_def.interventions.build(student: student, user: @user, start_date: line[:start_date],
+                                             end_date: line[:end_date],
+                                             called_internally: true)
 
     unless intervention.send(:end_date_after_start_date?)
       @messages << "#{intervention.errors.full_messages.join} #{line}" and return false
@@ -67,11 +67,11 @@ class AutomatedIntervention
       pd or
       (@messages << "Invalid Probe Definition ID #{line}" and return false)
 
-      intervention.intervention_probe_assignment={:probe_definition_id => line[:probe_definition_id],
-                                                  :first_date => line[:start_date], :end_date => line[:start_date]}
+      intervention.intervention_probe_assignment={probe_definition_id: line[:probe_definition_id],
+                                                  first_date: line[:start_date], end_date: line[:start_date]}
 
       if line[:score].present?
-        probe=intervention.intervention_probe_assignment.probes.build(:score => line[:score], :administered_at => line[:start_date])
+        probe=intervention.intervention_probe_assignment.probes.build(score: line[:score], administered_at: line[:start_date])
         max = pd.maximum_score || (1.0/0) #infinity
         min = pd.minimum_score || (-1.0/0) #-infinity
 
@@ -83,7 +83,7 @@ class AutomatedIntervention
     end
 
     check_for_duplicate(intervention,line) and return false
-    intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
+    intervention.comments.build(user: @user, comment: line[:comment]) unless line[:comment].blank?
     intervention.save!
     @count +=1
   end
@@ -94,9 +94,8 @@ class AutomatedIntervention
   end
 
   def check_intervention_definition int_def_id
-    id= InterventionDefinition.find_by_id(int_def_id,:joins =>
-                                 {:intervention_cluster => {:objective_definition => :goal_definition}},
-                                                     :conditions => {"goal_definitions.district_id" => @district.id})
+    id= InterventionDefinition.find_by_id(int_def_id,joins:                                  {intervention_cluster: {objective_definition: :goal_definition}},
+                                                     conditions: {"goal_definitions.district_id" => @district.id})
 
     if id
       return id

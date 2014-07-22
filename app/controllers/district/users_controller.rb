@@ -3,7 +3,7 @@ class District::UsersController < ApplicationController
   # GET /users.xml
   def index
     @users = current_district.users.paged_by_last_name(params[:last_name],params[:page])
-    redirect_to(district_users_url(:last_name => params[:last_name], :page => @users.total_pages)) and return if wp_out_of_bounds?(@users)
+    redirect_to(district_users_url(last_name: params[:last_name], page: @users.total_pages)) and return if wp_out_of_bounds?(@users)
     capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
@@ -39,7 +39,7 @@ class District::UsersController < ApplicationController
         format.html { redirect_to(index_url_with_page)}
       else
         @schools = current_district.schools
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -58,12 +58,12 @@ class District::UsersController < ApplicationController
         end
         if @user == current_user
           #Keep the user logged in in case s/he changed their own password here
-          sign_in(@user, :bypass => true)
+          sign_in(@user, bypass: true)
         end
         format.html { redirect_to(index_url_with_page)}
       else
         @schools = current_district.schools
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

@@ -14,11 +14,11 @@
 class InterventionComment < ActiveRecord::Base
   DISTRICT_PARENT = :user
   belongs_to :user
-  belongs_to :intervention, :inverse_of => :comments
+  belongs_to :intervention, inverse_of: :comments
   validates_presence_of :comment
 
-  before_validation :get_user_from_intervention, :if => :intervention
-  before_validation :verify_user, :on => :update
+  before_validation :get_user_from_intervention, if: :intervention
+  before_validation :verify_user, on: :update
 
   def to_s
     "#{comment} by #{user} on #{updated_at.to_date}"

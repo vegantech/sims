@@ -28,31 +28,31 @@ before "deploy", "deploy:prime_errbit"
 
 namespace :deploy do
   desc "Reset Files and data"
-  task :reset_files_and_data, :roles => "app" do
+  task :reset_files_and_data, roles: "app" do
     run "cd #{deploy_to}/current && RAILS_ENV=#{fetch(:rails_env, "production")} rake db:reset && rm -rf #{deploy_to}/current/system/*"
     create_intervention_pdfs
   end
 
-  task :start, :roles => "app" do
+  task :start, roles: "app" do
     puts "go start passenger and make sure it is configured"
   end
 
-  task :stop, :roles=> "app" do
+  task :stop, roles: "app" do
     puts "go stop passenger"
   end
 
-  task :kickstart, :roles => "app" do
+  task :kickstart, roles: "app" do
     kickstart_url = fetch(:default_url) || fetch(:domain)
     system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
   end
 
-  task :prime_errbit, :roles => "app" do
+  task :prime_errbit, roles: "app" do
     kickstart_url = fetch(:errbit_url) || "vegantech-errbit.herokuapp.com"
     system("curl -k -s -I  #{kickstart_url} -o /dev/null &")
   end
 
   desc 'clean out vendor directory to remove submodules that are no longer used'
-  task :clean_vendored_submodules, :roles => "app" do
+  task :clean_vendored_submodules, roles: "app" do
     run "cd #{deploy_to}/shared/cached-copy && git clean -d -f vendor && cd #{release_path} && git clean -d -f vendor"
   end
 
@@ -90,11 +90,11 @@ task :setup_https_protocol do
 end
 
 task :setup_default_url do
-  put("DEFAULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb", :via => :scp)
+  put("DEFAULT_URL= \"#{default_url}\"", "#{release_path}/config/initializers/default_url.rb", via: :scp)
 end
 
 task :enable_subdomains do
-  put("ENABLE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", :via => :scp)
+  put("ENABLE_SUBDOMAINS = true", "#{release_path}/config/initializers/use_subdomains.rb", via: :scp)
 end
 
 desc 'Create the intervention pdf reports'
@@ -114,7 +114,7 @@ task :link_file_directory do
 end
 
 task :overwrite_login_pilot_note do
-  put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", :mode=>0755, :via=>:scp)
+  put("#{login_note}", "#{release_path}/app/views/login/_demo_pilot_login_note.html.erb", mode: 0755, via: :scp)
 
 end
 

@@ -10,16 +10,16 @@ module CSVImporter
     end
 =end
     FIELD_DESCRIPTIONS = {
-        :id_state =>"WSLS# (or other state id for student)",
-        :district_student_id =>"Key used by district for student (40 char limit)",
-        :number =>"Student number that would appear on report card or student id card.",
-        :first_name =>"First name of student.",
-        :middle_name =>"Middle name (or initial) of student.",
-        :last_name =>"Last name of student.",
-        :suffix =>"Suffix of student (jr. III).",
-        :birthdate =>"Date of Birth  (YYYY-MM-DD or MM/DD/YYYY)",
-        :esl =>"true if student is considered English as a Second Language  (false or blank if not Y/N also works).  You can also use the language proficiency here.  Values 1-6 will be true,  7 is false.  ",
-        :special_ed =>"true if student is in Special Educatin (false or blank if not Y/N also works)"
+        id_state: "WSLS# (or other state id for student)",
+        district_student_id: "Key used by district for student (40 char limit)",
+        number: "Student number that would appear on report card or student id card.",
+        first_name: "First name of student.",
+        middle_name: "Middle name (or initial) of student.",
+        last_name: "Last name of student.",
+        suffix: "Suffix of student (jr. III).",
+        birthdate: "Date of Birth  (YYYY-MM-DD or MM/DD/YYYY)",
+        esl: "true if student is considered English as a Second Language  (false or blank if not Y/N also works).  You can also use the language proficiency here.  Values 1-6 will be true,  7 is false.  ",
+        special_ed: "true if student is in Special Educatin (false or blank if not Y/N also works)"
     }
     class << self
       def description
@@ -115,7 +115,7 @@ module CSVImporter
       @cols = sims_model.columns_hash
       csv_headers.each do |col|
         c=col.to_s
-        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
+        t.column col, @cols[c].type, limit: @cols[c].limit, null: @cols[c].null
       end
     end
 
@@ -252,7 +252,7 @@ module CSVImporter
 
     def confirm_count?
       model_name = sims_model.name
-      model_count = @district.send(model_name.tableize).count(:conditions=>'district_student_id is not null and district_student_id !=""')
+      model_count = @district.send(model_name.tableize).count(conditions: 'district_student_id is not null and district_student_id !=""')
       if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
         @messages << "Probable bad CSV file.  We are refusing to delete over 40% of your #{model_name.pluralize} records."
         false

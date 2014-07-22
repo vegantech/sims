@@ -7,8 +7,8 @@ class ImportCSV
   STRIP_FILTER = lambda{ |field| field.to_s.strip}
   NULLIFY_FILTER = lambda{ |field| field == "NULL" ? nil : field}
   HEXIFY_FILTER  = lambda{ |field| hex=field.to_i(16).to_s(16); hex.length == 40 ? hex : field}
-  CLEAN_CSV_OPTS ={:converters => [STRIP_FILTER,:symbol]}
-  DEFAULT_CSV_OPTS={:skip_blanks=>true, :headers =>true, :header_converters => [STRIP_FILTER,:symbol], :converters => [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
+  CLEAN_CSV_OPTS ={converters: [STRIP_FILTER,:symbol]}
+  DEFAULT_CSV_OPTS={skip_blanks: true, headers: true, header_converters: [STRIP_FILTER,:symbol], converters: [STRIP_FILTER,NULLIFY_FILTER,HEXIFY_FILTER]}
   SKIP_SIZE_COUNT = ['enrollment','system_flag','role', 'extended_profile']
   EOF = '@@END UPLOAD RESULTS@@'
 
@@ -48,8 +48,8 @@ class ImportCSV
       identify_and_unzip
       sorted_filenames.each {|f| process_file f}
       FileUtils.rm_rf @f_path
-      @district.students.update_all(:updated_at => Time.now) #expire any student related cache
-      @district.users.update_all(:updated_at => Time.now) #expire any user related cache
+      @district.students.update_all(updated_at: Time.now) #expire any student related cache
+      @district.users.update_all(updated_at: Time.now) #expire any user related cache
       @messages << "No csv files uploaded" if sorted_filenames.blank?
     end
     @messages << b

@@ -20,17 +20,17 @@ class DistrictLog < ActiveRecord::Base
 
 #  attr_protected :district_id
 
-  scope :success, where(:status => SUCCESS)
+  scope :success, where(status: SUCCESS)
   scope :successful_login_non_admin,  success.joins(:user).merge(User.non_admin)
-  scope :failure, where(:status => FAILURE)
+  scope :failure, where(status: FAILURE)
 
-  define_statistic :successful_logins, :count => [:success]
-  define_statistic :failed_logins, :count => :failure
-  define_statistic :first_recorded_login, :minimum => :all, :column_name => 'created_at'
-  define_statistic :districts_with_successful_login, :count => :success, :column_name => 'distinct district_logs.district_id'
-  define_statistic :users_that_have_logged_in, :count => :success, :column_name => 'distinct user_id'
-  define_statistic :non_admin_users_that_have_logged_in, :count => :successful_login_non_admin, :column_name => 'distinct user_id'
-  define_statistic :districts_with_successful_non_admins, :count => :successful_login_non_admin, :column_name => 'distinct district_logs.district_id'
+  define_statistic :successful_logins, count: [:success]
+  define_statistic :failed_logins, count: :failure
+  define_statistic :first_recorded_login, minimum: :all, column_name: 'created_at'
+  define_statistic :districts_with_successful_login, count: :success, column_name: 'distinct district_logs.district_id'
+  define_statistic :users_that_have_logged_in, count: :success, column_name: 'distinct user_id'
+  define_statistic :non_admin_users_that_have_logged_in, count: :successful_login_non_admin, column_name: 'distinct user_id'
+  define_statistic :districts_with_successful_non_admins, count: :successful_login_non_admin, column_name: 'distinct district_logs.district_id'
 
   def to_s
     if status == SUCCESS
@@ -61,7 +61,7 @@ class DistrictLog < ActiveRecord::Base
   def self.for_display(params)
       includes(:user).
       where(filter(params)).
-      paginate(:page => params[:page], :per_page => PER_PAGE)
+      paginate(page: params[:page], per_page: PER_PAGE)
   end
 
   def self.filter(q)
@@ -69,7 +69,7 @@ class DistrictLog < ActiveRecord::Base
       fil = '%' + q[:filter].gsub(/ /,'%') + '%'
       fullname = "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name)"
       ["users.username like :fil or body like :fil or
-       #{fullname} like :fil", :fil=> fil]
+       #{fullname} like :fil", fil: fil]
     end
   end
 end

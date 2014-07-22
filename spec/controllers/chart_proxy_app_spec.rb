@@ -9,7 +9,7 @@ end
 describe ChartProxyApp do
   describe 'index' do
     it 'should proxy the request to google' do
-      controller.stub(:env => {'QUERY_STRING' => 'woowoo'})
+      controller.stub(env: {'QUERY_STRING' => 'woowoo'})
       Net::HTTP.should_receive(:get).with('chart.apis.google.com', "/chart?woowoo").and_return('google_return')
       result = get :index
       result.body.should == "google_return"

@@ -9,7 +9,7 @@ describe HelpController do
 
   describe 'show' do
     it 'should sanitize the param' do
-      get :show, :id=>"../../dog"
+      get :show, id: "../../dog"
       assigns(:file).should == "%2F%2Fdog"
 
     end

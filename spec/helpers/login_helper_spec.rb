@@ -44,11 +44,11 @@ describe LoginHelper do
 
   describe "google_apps?" do
     it 'should return true if the district has google_apps enabled' do
-      helper.stub!(:current_district => mock_district(:google_apps? => false))
+      helper.stub!(current_district: mock_district(:google_apps? => false))
       helper.google_apps?.should be_false
     end
     it 'should return false if the district does not google_apps enabled' do
-      helper.stub!(:current_district => mock_district(:google_apps? => true))
+      helper.stub!(current_district: mock_district(:google_apps? => true))
       helper.google_apps?.should be_true
     end
   end
@@ -76,7 +76,7 @@ describe LoginHelper do
       end
 
       it 'should display with icon' do
-        helper.google_apps_link(:icon => true).should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
+        helper.google_apps_link(icon: true).should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
       end
 
       it 'should display with link' do

@@ -1,5 +1,5 @@
 class InterventionBuilder::ProbesController < InterventionBuilder::BaseController
-  skip_before_filter :verify_authenticity_token, :only => :disable
+  skip_before_filter :verify_authenticity_token, only: :disable
 
   def index
     params[:enabled]=true and params[:commit]=true unless params[:commit]
@@ -26,7 +26,7 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
        flash[:notice]= 'Progress Monitor Definition was successfully created'
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
-       render :action=>"new"
+       render action: "new"
      end
   end
 
@@ -38,7 +38,7 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
        flash[:notice]= 'Progress Monitor Definition was successfully updated'
        redirect_to intervention_builder_probe_url(@probe_definition)
      else
-       render :action=>"edit"
+       render action: "edit"
      end
   end
 

@@ -27,16 +27,16 @@ describe CustomFlagsController do
     describe "with valid params" do
 
       it "should expose a newly created custom_flag as @custom_flag" do
-        CustomFlag.should_receive(:new).with('these' => 'params').and_return(mock_custom_flag(:save => true))
+        CustomFlag.should_receive(:new).with('these' => 'params').and_return(mock_custom_flag(save: true))
         controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-        post :create, :custom_flag => {:these => 'params'}
+        post :create, custom_flag: {these: 'params'}
         assigns(:custom_flag).should equal(mock_custom_flag)
       end
 
       it "should redirect to the created custom_flag" do
-        CustomFlag.stub!(:new).and_return(mock_custom_flag(:save => true))
+        CustomFlag.stub!(:new).and_return(mock_custom_flag(save: true))
         controller.should_receive(:current_student).and_return(mock_student(:id=>1, 'new_record?'=>false))
-        post :create, :custom_flag => {}
+        post :create, custom_flag: {}
         response.should redirect_to(student_url(1))
       end
 
@@ -45,14 +45,14 @@ describe CustomFlagsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved custom_flag as @custom_flag" do
-        CustomFlag.stub!(:new).with('these' => 'params').and_return(mock_custom_flag(:save => false))
-        post :create, :custom_flag => {:these => 'params'}
+        CustomFlag.stub!(:new).with('these' => 'params').and_return(mock_custom_flag(save: false))
+        post :create, custom_flag: {these: 'params'}
         assigns(:custom_flag).should equal(mock_custom_flag)
       end
 
       it "should re-render the 'new' template" do
-        CustomFlag.stub!(:new).and_return(mock_custom_flag(:save => false))
-        post :create, :custom_flag => {}
+        CustomFlag.stub!(:new).and_return(mock_custom_flag(save: false))
+        post :create, custom_flag: {}
         response.should render_template('new')
       end
 
@@ -67,14 +67,14 @@ describe CustomFlagsController do
     end
 
     it "should destroy the requested custom_flag" do
-      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag(:student_id => 1))
+      CustomFlag.should_receive(:find).with("37").and_return(mock_custom_flag(student_id: 1))
       mock_custom_flag.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      delete :destroy, id: "37"
     end
 
     it "should redirect to the student profile" do
-      CustomFlag.stub!(:find).and_return(mock_custom_flag(:destroy => true, :student_id => 1))
-      delete :destroy, :id => "1"
+      CustomFlag.stub!(:find).and_return(mock_custom_flag(destroy: true, student_id: 1))
+      delete :destroy, id: "1"
       response.should redirect_to(student_url(1))
     end
 

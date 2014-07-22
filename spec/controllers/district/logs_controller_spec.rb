@@ -6,7 +6,7 @@ describe District::LogsController do
   include_context "authenticated"
 
   before do
-    controller.stub_association!(:current_district,:logs=>DistrictLog)
+    controller.stub_association!(:current_district,logs: DistrictLog)
   end
 
   describe 'index' do

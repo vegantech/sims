@@ -21,10 +21,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe InterventionProbeAssignment do
   before(:each) do
     @valid_attributes = {
-      :frequency_multiplier => "1",
-      :first_date => Time.now,
-      :end_date => Time.now,
-      :enabled => false
+      frequency_multiplier: "1",
+      first_date: Time.now,
+      end_date: Time.now,
+      enabled: false
     }
   end
 
@@ -33,7 +33,7 @@ describe InterventionProbeAssignment do
   end
 
   it 'should validate end_date after first_date' do
-    ipa = InterventionProbeAssignment.new(@valid_attributes.merge(:end_date => Date.today.yesterday))
+    ipa = InterventionProbeAssignment.new(@valid_attributes.merge(end_date: Date.today.yesterday))
     ipa.should_not be_valid
   end
 

@@ -26,9 +26,9 @@ class SwitchDistrictFieldsToSettings < ActiveRecord::Migration
 
     add_column :districts, :key, :string
     add_column :districts, :previous_key, :string
-    add_column :districts, :restrict_free_lunch, :boolean, :null => false, :default => true
-    add_column :districts, :forgot_password, :boolean, :null => false, :default => false
+    add_column :districts, :restrict_free_lunch, :boolean, null: false, default: true
+    add_column :districts, :forgot_password, :boolean, null: false, default: false
     add_column :districts, :marked_state_goal_ids, :string
-    add_column :districts, :lock_tier, :boolean, :null => false, :default => false
+    add_column :districts, :lock_tier, :boolean, null: false, default: false
   end
 end

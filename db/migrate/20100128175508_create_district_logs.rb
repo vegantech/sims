@@ -9,7 +9,7 @@ class CreateDistrictLogs < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :district_logs, :column => [:district_id, :created_at]
+    remove_index :district_logs, column: [:district_id, :created_at]
     drop_table :district_logs
   end
 end

@@ -19,8 +19,8 @@ class UserSchoolAssignment < ActiveRecord::Base
   # validates_presence_of :school_id
   # validates_presence_of :user_id
 
-  scope :admin, where(:admin => true)
-  scope :non_admin, where(:admin => false)
+  scope :admin, where(admin: true)
+  scope :non_admin, where(admin: false)
   scope :school_id, select("school_id")
   after_save :create_all_students
   after_destroy :remove_special_user_groups

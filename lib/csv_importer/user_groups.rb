@@ -5,9 +5,9 @@ module CSVImporter
     #
     #
     FIELD_DESCRIPTIONS = { 
-    :district_user_id => 'Key for user',
-    :district_group_id => "Key for group (the one you created for the SIMS group.)",
-    :principal => "true if the user is the principal for that group, blank otherwise.   
+    district_user_id: 'Key for user',
+    district_group_id: "Key for group (the one you created for the SIMS group.)",
+    principal: "true if the user is the principal for that group, blank otherwise.   
 The most common case this would be used would be for assistant principals assigned to teams or neighborhoods.  
 Schoolwide (or asst principals by grade) would be covered by all_students_in_school.csv  (Y/N also works)"
 }
@@ -76,8 +76,8 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
     end
 
     def migration t
-      t.string :district_user_id, :limit => User.columns_hash["district_user_id"].limit, :null => User.columns_hash["district_user_id"].null
-      t.string :district_group_id, :limit => Group.columns_hash["district_group_id"].limit, :null => Group.columns_hash["district_group_id"].null
+      t.string :district_user_id, limit: User.columns_hash["district_user_id"].limit, null: User.columns_hash["district_user_id"].null
+      t.string :district_group_id, limit: Group.columns_hash["district_group_id"].limit, null: Group.columns_hash["district_group_id"].null
       t.boolean :principal
     end
 

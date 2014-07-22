@@ -15,7 +15,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe DistrictLog do
   before(:each) do
     @valid_attributes = {
-      :body => "value for body"
+      body: "value for body"
     }
   end
 
@@ -31,7 +31,7 @@ describe DistrictLog do
       DistrictLog.delete_all
 
       @blank = DistrictLog.create!
-      @mistyped_username = DistrictLog.failure.create! :body => 'mistyped'
+      @mistyped_username = DistrictLog.failure.create! body: 'mistyped'
       @valid_success = DistrictLog.success.create! user: @user, district: @user.district
       @valid_failure = DistrictLog.failure.create! user: @user, district: @user.district
     end

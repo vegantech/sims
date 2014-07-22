@@ -57,12 +57,12 @@ class ChecklistBuilder::ElementsController < ChecklistBuilder::Base
   def save_or_update redirect_action, result_verb
     respond_to do |format|
       if @element_definition.save
-        @element_definition.answer_definitions.create!(:value=>0) unless @element_definition.answer_definitions.count >0
+        @element_definition.answer_definitions.create!(value: 0) unless @element_definition.answer_definitions.count >0
         flash[:notice] = "Element Definition was successfully #{result_verb}"
         format.html { redirect_to checklist_definition_question_definition_element_definition_url(@checklist_definition, @question_definition, @element_definition) }
         format.js
       else
-        format.html { render :action => redirect_action }
+        format.html { render action: redirect_action }
         format.js
       end
     end

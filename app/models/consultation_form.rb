@@ -22,18 +22,18 @@ class ConsultationForm < ActiveRecord::Base
   belongs_to :user
   belongs_to :team_consultation
 
-  has_many :consultation_form_concerns, :dependent => :destroy
-  delegate :district,  :to => '(team_consultation or return nil)'
-  delegate :school_team,  :to => '(team_consultation or return nil)'
+  has_many :consultation_form_concerns, dependent: :destroy
+  delegate :district,  to: '(team_consultation or return nil)'
+  delegate :school_team,  to: '(team_consultation or return nil)'
   attr_writer :school, :student
   attr_protected :district_id
   after_create :email_concern_recipient
   attr_accessor :new_team_consult
 
-  define_statistic :consultation_forms , :count => :all, :joins => {:team_consultation => :student}
-  define_statistic :students_with_forms , :count => :all,  :column_name => 'distinct team_consultations.student_id', :joins => {:team_consultation=>:student}
-  define_statistic :districts_with_forms, :count => :all, :column_name => 'distinct district_id', :joins => :user
-  define_statistic :users_with_forms, :count => :all, :column_name => 'distinct user_id',:joins => :user
+  define_statistic :consultation_forms , count: :all, joins: {team_consultation: :student}
+  define_statistic :students_with_forms , count: :all,  column_name: 'distinct team_consultations.student_id', joins: {team_consultation: :student}
+  define_statistic :districts_with_forms, count: :all, column_name: 'distinct district_id', joins: :user
+  define_statistic :users_with_forms, count: :all, column_name: 'distinct user_id',joins: :user
 
   accepts_nested_attributes_for :consultation_form_concerns
   before_save :set_team_consultation, :set_user
@@ -41,7 +41,7 @@ class ConsultationForm < ActiveRecord::Base
   FIELD_SIZE = '60x3'
 
   def build_concerns
-     0.upto(ConsultationFormConcern::AREAS.length() -1 ){|i| consultation_form_concerns.build(:area => i)} if consultation_form_concerns.blank?
+     0.upto(ConsultationFormConcern::AREAS.length() -1 ){|i| consultation_form_concerns.build(area: i)} if consultation_form_concerns.blank?
   end
 
   def filled_in?
@@ -52,7 +52,7 @@ class ConsultationForm < ActiveRecord::Base
   private
   def set_team_consultation
     if @student.present? && @school.present?
-      self.team_consultation = @student.team_consultations.pending(:joins=>:school_teams,:conditions=>{:school_teams=>{:school_id=>@school.id}}).first
+      self.team_consultation = @student.team_consultations.pending(joins: :school_teams,conditions: {school_teams: {school_id: @school.id}}).first
     end
   end
 

@@ -10,14 +10,14 @@ describe Interventions::ProbeAssignmentsController do
   end
 
   def params
-    {:intervention_id=>1}
+    {intervention_id: 1}
   end
 
   before do
     @student=mock_student
     @intervention=mock_intervention
-    @student.stub_association!(:interventions,:find=>@intervention)
-    controller.stub!(:current_student=>@student)
+    @student.stub_association!(:interventions,find: @intervention)
+    controller.stub!(current_student: @student)
   end
 
   it 'should load_intervention' do
@@ -32,7 +32,7 @@ describe Interventions::ProbeAssignmentsController do
       ipa=mock_intervention_probe_assignment
       @intervention.should_receive(:intervention_probe_assignment).and_return(ipa)
 
-      xhr :get, :index, :intervention_id => 1
+      xhr :get, :index, intervention_id: 1
       assigns(:intervention_probe_assignments).should == [ipa]
       assigns(:intervention).should == @intervention
       response.should be_success
@@ -43,10 +43,10 @@ describe Interventions::ProbeAssignmentsController do
       ipa=mock_intervention_probe_assignment
       @intervention.should_receive(:intervention_probe_assignment).and_return(ipa)
 
-      get :index, :intervention_id => 1
+      get :index, intervention_id: 1
       assigns(:intervention_probe_assignments).should == [ipa]
       assigns(:intervention).should == @intervention
-      response.should redirect_to(edit_intervention_url(@intervention, :enter_score => true))
+      response.should redirect_to(edit_intervention_url(@intervention, enter_score: true))
     end
 
   end

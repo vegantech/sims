@@ -18,8 +18,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe CustomFlag do
   before(:each) do
     @valid_attributes = {
-      :category => "attendance",
-      :reason => "value for reason",
+      category: "attendance",
+      reason: "value for reason",
     }
   end
 

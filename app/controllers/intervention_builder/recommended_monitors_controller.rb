@@ -21,7 +21,7 @@ class InterventionBuilder::RecommendedMonitorsController < InterventionBuilder::
       redirect_to intervention_builder_probes_url and return
     end
     @recommended_monitors = @probe_definition.recommended_monitors.collect(&:intervention_definition_id)
-    @goal_definitions=current_district.goal_definitions.find(:all,:include=>{:objective_definitions=>{:intervention_clusters=>:intervention_definitions}})
+    @goal_definitions=current_district.goal_definitions.find(:all,include: {objective_definitions: {intervention_clusters: :intervention_definitions}})
   end
 
   def move
@@ -40,7 +40,7 @@ class InterventionBuilder::RecommendedMonitorsController < InterventionBuilder::
   end
 
   def move_path(item, direction)
-     url_for(:controller=>"recommended_monitors",:action=>:move,:direction=>direction,:id=>item)
+     url_for(controller: "recommended_monitors",action: :move,direction: direction,id: item)
   end
 end
 

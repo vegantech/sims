@@ -10,8 +10,8 @@ Then /^I should see the note on the student profile page$/ do
 end
 
 Given /^there is a comment not by me$/ do
-  other_user = Factory(:user, :district => cucumber_district)
-  @student_comment = Factory(:student_comment, :student => cucumber_student, :user => other_user)
+  other_user = Factory(:user, district: cucumber_district)
+  @student_comment = Factory(:student_comment, student: cucumber_student, user: other_user)
 end
 
 When /^I try to edit the comment anyway$/ do
@@ -37,7 +37,7 @@ When /^I try to delete the comment anyway$/ do
 end
 
 Given /^there is a comment by me$/ do
- @student_comemnt = Factory(:student_comment, :student => cucumber_student, :user => cucumber_user)
+ @student_comemnt = Factory(:student_comment, student: cucumber_student, user: cucumber_user)
 end
 
 Then /^I should not see my comment$/ do
@@ -51,6 +51,6 @@ When /^I edit the comment$/ do
 end
 
 When /^I fill in the note and save$/ do
-  fill_in "Note", :with => "This is my team note"
+  fill_in "Note", with: "This is my team note"
   click_button "Save"
 end

@@ -57,7 +57,7 @@ class StudentSearch
     @enrollments = @enrollments.joins("inner join user_group_assignments on 
                                       groups_students.group_id = user_group_assignments.group_id"
                                      ).where(
-                                     :user_group_assignments=>{:user_id => group_user[:user_id]}) if group_user[:user_id]
+                                     user_group_assignments: {user_id: group_user[:user_id]}) if group_user[:user_id]
   end
 
   def last_name
@@ -69,7 +69,7 @@ class StudentSearch
       ids=@enrollments.pluck(:student_id)
       @enrollments=Student.joins(:enrollments).order('students.last_name, students.first_name').select(
         "students.id, grade, students.district_id, last_name, first_name, number, esl, special_ed, students.updated_at"
-      ).where(:id => ids).with_comments_count.with_pending_consultations_count.group("enrollments.id").where("enrollments.school_id" => sch_id)
+      ).where(id: ids).with_comments_count.with_pending_consultations_count.group("enrollments.id").where("enrollments.school_id" => sch_id)
 
 #this is worse.
 #      Enrollment.send(:preload_associations, res,  {:student => [:comments ,{:custom_flags=>:user}, {:interventions => :intervention_definition},
@@ -95,7 +95,7 @@ class StudentSearch
   def flagged
     # only include enrollments for students who have at least one of the intervention types.
     scope =@enrollments.where("exists (select id from flags where flags.student_id = students.id)"
-                             ).joins(:student=>:flags)
+                             ).joins(student: :flags)
 
     flag_types = Array(search_hash[:flagged_intervention_types])
 
@@ -121,12 +121,11 @@ class StudentSearch
     scope=@enrollments.where(
       ["exists (select id from interventions where interventions.student_id = enrollments.student_id and
         interventions.active = ?)",true]).joins(
-        :student=>:interventions)
+        student: :interventions)
 
     unless search_hash[:intervention_group_types].blank?
       scope=scope.joins(
-        :student=>{:interventions=>{:intervention_definition=>
-          {:intervention_cluster=>{:objective_definition=>:goal_definition}}}}).where(
+        student: {interventions: {intervention_definition:           {intervention_cluster: {objective_definition: :goal_definition}}}}).where(
         ["objective_definitions.id in (?)", search_hash[:intervention_group_types]])
     end
     scope
@@ -138,9 +137,9 @@ class StudentSearch
 
   def restrict_to_user
     unless @user.blank? || @user.all_students?
-      grades = @school.special_user_groups.where(:user_id => @user).uniq.pluck(:grade)
+      grades = @school.special_user_groups.where(user_id: @user).uniq.pluck(:grade)
       unless grades.include? nil  #special user group with nil grade = all students in school
-        explicit_group_assignment_sql = @user.groups.where(:school_id => @school).joins(:students).select("students.id").reorder('').to_sql
+        explicit_group_assignment_sql = @user.groups.where(school_id: @school).joins(:students).select("students.id").reorder('').to_sql
         @enrollments = @enrollments.where ["grade in (?) or enrollments.student_id in (#{explicit_group_assignment_sql})", grades]
       end
     end

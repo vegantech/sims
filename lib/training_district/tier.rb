@@ -19,9 +19,9 @@ module TrainingDistrict::Tier
 
   def generate_tiers_without_file
     @oldtiers=[781074649, 781074650, 781074651]
-    @tier = district.tiers.create!(:title=>'First tier')
-    second_tier = district.tiers.create!(:title=>'Second tier')
-    third_tier = district.tiers.create!(:title=>'Third tier')
+    @tier = district.tiers.create!(title: 'First tier')
+    second_tier = district.tiers.create!(title: 'Second tier')
+    third_tier = district.tiers.create!(title: 'Third tier')
     @tiers = [@tier,second_tier,third_tier]
   end
 

@@ -22,8 +22,8 @@ class ConsultationFormRequestsController < ApplicationController
    # POST /consultation_form_requests
   # POST /consultation_form_requests.xml
   def create
-    @consultation_form_request = ConsultationFormRequest.new(params[:consultation_form_request].merge(:student=>current_student,
-                                                                                                      :requestor => current_user))
+    @consultation_form_request = ConsultationFormRequest.new(params[:consultation_form_request].merge(student: current_student,
+                                                                                                      requestor: current_user))
 
     respond_to do |format|
       if @consultation_form_request.save
@@ -32,8 +32,8 @@ class ConsultationFormRequestsController < ApplicationController
         format.js { flash.now[:notice] = msg}
       else
         set_users_and_teams
-        format.html { render :action => "new" }
-        format.js {render :action => "new" }
+        format.html { render action: "new" }
+        format.js {render action: "new" }
       end
     end
   end
@@ -43,7 +43,7 @@ class ConsultationFormRequestsController < ApplicationController
     if current_school.blank?
 
       if request.xhr?
-        render :nothing => true
+        render nothing: true
       else
         redirect_to schools_url
       end

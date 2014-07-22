@@ -7,7 +7,7 @@ class NewsItemsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @news_item }
+      format.xml  { render xml: @news_item }
     end
   end
 
@@ -25,10 +25,10 @@ class NewsItemsController < ApplicationController
       if @news_item.save
         flash[:notice] = 'NewsItem was successfully created.'
         format.html { redirect_to(root_url) }
-        format.xml  { render :xml => @news_item, :status => :created, :location => @news_item }
+        format.xml  { render xml: @news_item, status: :created, location: @news_item }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @news_item.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @news_item.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -45,8 +45,8 @@ class NewsItemsController < ApplicationController
         format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @news_item.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @news_item.errors, status: :unprocessable_entity }
       end
     end
   end

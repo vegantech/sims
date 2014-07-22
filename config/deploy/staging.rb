@@ -1,4 +1,4 @@
-server "staging.sims.widpi.managedmachine.com", :app, :web, :db, :primary => true
+server "staging.sims.widpi.managedmachine.com", :app, :web, :db, primary: true
 set :rails_env, "staging"
 set :branch, 'rm_production'
 #set :branch, 'asset_pipeline'

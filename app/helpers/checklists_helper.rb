@@ -81,9 +81,9 @@ module ChecklistsHelper
    a=b.collect do |k,v|
      opts={}
      next  if  v[:show_elig] && !show_referral_option?
-     opts={:class => 'show_elig'} if v[:show_elig]
+     opts={class: 'show_elig'} if v[:show_elig]
      form.radio_button(:recommendation, k,opts) +
-       form.label("recommendation_#{k}",v[:text], :radio_button_value=>k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
+       form.label("recommendation_#{k}",v[:text], radio_button_value: k) +(v[:require_other] ? recommendation_other_extras(form) : "") if form.object.show_button?(k)
    end
    a.compact.join("<br />\n").html_safe
 
@@ -91,17 +91,17 @@ module ChecklistsHelper
   end
 
   def recommendation_other_extras(form)
-    form.text_field(:other,:size=>"90", :class =>'spell_check')   +
+    form.text_field(:other,size: "90", class: 'spell_check')   +
     form.check_box(:advance_tier) + form.label(:advance_tier) + ' ' +
     help_popup("Choose to advance the tier or not, only applies if you are choosing 'Other'")
   end
 
   def markdown_note
-      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",:target=>"_blank"
+      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",target: "_blank"
   end
 
   def markdown_with_span(text)
-    content_tag :span, markdown(text.to_s.gsub(/\r\n\*/,"\n\n*")),:class=>'markdown'
+    content_tag :span, markdown(text.to_s.gsub(/\r\n\*/,"\n\n*")),class: 'markdown'
   end
 
   def markdown(t)

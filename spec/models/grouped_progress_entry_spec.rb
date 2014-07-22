@@ -16,8 +16,8 @@ describe GroupedProgressEntry do
   describe 'end_intervention!' do
     before do
       @gpe = GroupedProgressEntry.allocate
-      @mock_intervention1 = double(:intervention, :id => 1)
-      @mock_intervention2 = double(:intervention, :id => 2)
+      @mock_intervention1 = double(:intervention, id: 1)
+      @mock_intervention2 = double(:intervention, id: 2)
 
       @gpe.should_receive(:student_interventions).and_return([@mock_intervention1, @mock_intervention2])
 

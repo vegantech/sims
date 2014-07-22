@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_student_id=(sid)
-    cookies[:selected_student]={:value =>sid, :domain => session_domain}
+    cookies[:selected_student]={value: sid, domain: session_domain}
     session[:selected_student]=sid
   end
 
@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
   def require_current_school
     if current_school.blank?
       if request.xhr?
-        render :js => "$('#flash_notice').prepend('<br />Please reselect the school.');"
+        render js: "$('#flash_notice').prepend('<br />Please reselect the school.');"
       else
         flash[:notice] = "Please reselect the school"
         redirect_to schools_url
@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
           redirect_to root_url
         end
       end
-      format.js {render :nothing => true}
+      format.js {render nothing: true}
     end
   end
 
@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
     else
       flash[:notice] = "The student is not accessible for this user"
       respond_to do |format|
-        format.js { render :template => "/main/inaccessible_student.js"}
+        format.js { render template: "/main/inaccessible_student.js"}
         format.html  {redirect_to :back }
       end
      return false
@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
   end
 
   def capture_paged_controller_params
-    session[:paged_controller]={:path => params[:controller], :opts =>{ :last_name => params[:last_name],:page => params[:page], :title => params[:title] }}
+    session[:paged_controller]={path: params[:controller], opts: { last_name: params[:last_name],page: params[:page], title: params[:title] }}
   end
 
   def index_url_with_page
@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
 
   def check_domain
     return true if devise_controller?
-    if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
+    if current_district && current_subdomain != current_district.abbrev && District.exists?(abbrev: current_subdomain)
       sign_out_and_redirect root_url
       return false
     end

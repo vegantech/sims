@@ -1,5 +1,5 @@
 Given /^Shawn Balestracci is a team contact for "([^\"]*)"$/ do |team_name|
-  u = Factory(:user, :first_name => 'Shawn', :last_name => 'Balestracci', :email => 'b723176@madison.k12.wi.us', :district => cucumber_district)
+  u = Factory(:user, first_name: 'Shawn', last_name: 'Balestracci', email: 'b723176@madison.k12.wi.us', district: cucumber_district)
   @user ||= u
   st=cucumber_school.school_teams.find_or_create_by_name(team_name)
   st.contact_ids = [u.id]
@@ -41,7 +41,7 @@ When /^I reload the team consultation based on the following table:$/ do |table|
     when 'other_draft'
       step 'I follow "Create Team Consultation Form"'
       click_button 'Save as Draft'
-      TeamConsultation.update_all :requestor_id => -1
+      TeamConsultation.update_all requestor_id: -1
     when 'none'
     else
       raise "unknown #{row['consultation?']}"
@@ -49,10 +49,10 @@ When /^I reload the team consultation based on the following table:$/ do |table|
       visit pg
     css_sel= "#consultations_group"
     if row["display?"] == "true"
-      page.should have_selector(css_sel,:visible => true), row.inspect
+      page.should have_selector(css_sel,visible: true), row.inspect
     else
       @user.district.inspect
-      page.should have_selector(css_sel, :visible => false), row.inspect
+      page.should have_selector(css_sel, visible: false), row.inspect
     end
   end
 end

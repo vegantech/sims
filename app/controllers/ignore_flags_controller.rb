@@ -3,7 +3,7 @@ class IgnoreFlagsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def new
-    @ignore_flag=current_student.ignore_flags.build(:category=>params[:category], :user_id => current_user.id)
+    @ignore_flag=current_student.ignore_flags.build(category: params[:category], user_id: current_user.id)
     respond_to do |format|
       format.html
       format.js
@@ -11,7 +11,7 @@ class IgnoreFlagsController < ApplicationController
   end
 
   def create
-    @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(:user_id=>current_user.id))
+    @ignore_flag=current_student.ignore_flags.build(params[:ignore_flag].merge(user_id: current_user.id))
     if @ignore_flag.save
       respond_to do |format|
         format.html { redirect_to student_url(current_student)}

@@ -8,7 +8,7 @@ module FullName
   module ClassMethods
     def find_by_fullname(fullname)
       #this fails if the middle name is excluded from the search
-      find(:first, :conditions => "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
+      find(:first, conditions: "concat(first_name,' ', if(coalesce(middle_name,'') !='' , concat(left(middle_name,1),'. '),'') , last_name) = \"#{fullname}\"")
     end
   end
 

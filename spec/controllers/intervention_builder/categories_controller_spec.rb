@@ -10,12 +10,12 @@ describe InterventionBuilder::CategoriesController do
   end
   before do
     @intervention_cluster = mock_intervention_cluster
-    @intervention_cluster.stub!(:find => @intervention_cluster)
-    @objective_definition = mock_objective_definition(:intervention_clusters=>InterventionCluster)
-    @objective_definition.stub!(:find => @objective_definition)
-    @goal_definition = mock_goal_definition(:objective_definitions => @objective_definition)
-    @goal_definition.stub!(:find => @goal_definition)
-    controller.stub_association!(:current_district,:goal_definitions => @goal_definition)
+    @intervention_cluster.stub!(find: @intervention_cluster)
+    @objective_definition = mock_objective_definition(intervention_clusters: InterventionCluster)
+    @objective_definition.stub!(find: @objective_definition)
+    @goal_definition = mock_goal_definition(objective_definitions: @objective_definition)
+    @goal_definition.stub!(find: @goal_definition)
+    controller.stub_association!(:current_district,goal_definitions: @goal_definition)
   end
 
   describe "responding to GET index" do
@@ -32,7 +32,7 @@ describe InterventionBuilder::CategoriesController do
 
     it "should expose the requested category as @intervention_cluster" do
       InterventionCluster.should_receive(:find).with("37").and_return(mock_category)
-      get :show, :id => "37"
+      get :show, id: "37"
       assigns(:intervention_cluster).should equal(mock_category)
     end
 
@@ -52,7 +52,7 @@ describe InterventionBuilder::CategoriesController do
 
     it "should expose the requested category as @intervention_cluster" do
       InterventionCluster.should_receive(:find).with("37").and_return(mock_category)
-      get :edit, :id => "37"
+      get :edit, id: "37"
       assigns(:intervention_cluster).should equal(mock_category)
     end
 
@@ -63,14 +63,14 @@ describe InterventionBuilder::CategoriesController do
     describe "with valid params" do
 
       it "should expose a newly created category as @intervention_cluster" do
-        InterventionCluster.should_receive(:build).with('these' => 'params').and_return(mock_category(:save => true))
-        post :create, :intervention_cluster => {:these => 'params'}
+        InterventionCluster.should_receive(:build).with('these' => 'params').and_return(mock_category(save: true))
+        post :create, intervention_cluster: {these: 'params'}
         assigns(:intervention_cluster).should equal(mock_category)
       end
 
       it "should redirect to the index" do
-        InterventionCluster.stub!(:build).and_return(mock_category(:save => true))
-        post :create, :intervention_cluster => {}
+        InterventionCluster.stub!(:build).and_return(mock_category(save: true))
+        post :create, intervention_cluster: {}
         response.should redirect_to(intervention_builder_categories_url(@goal_definition,@objective_definition))
       end
 
@@ -79,14 +79,14 @@ describe InterventionBuilder::CategoriesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved category as @intervention_cluster" do
-        InterventionCluster.stub!(:build).with('these' => 'params').and_return(mock_category(:save => false))
-        post :create, :intervention_cluster => {:these => 'params'}
+        InterventionCluster.stub!(:build).with('these' => 'params').and_return(mock_category(save: false))
+        post :create, intervention_cluster: {these: 'params'}
         assigns(:intervention_cluster).should equal(mock_category)
       end
 
       it "should re-render the 'new' template" do
-        InterventionCluster.stub!(:build).and_return(mock_category(:save => false))
-        post :create, :intervention_cluster => {}
+        InterventionCluster.stub!(:build).and_return(mock_category(save: false))
+        post :create, intervention_cluster: {}
         response.should render_template('new')
       end
 
@@ -99,20 +99,20 @@ describe InterventionBuilder::CategoriesController do
     describe "with valid params" do
 
       it "should update the requested category" do
-        InterventionCluster.should_receive(:find).with("37").and_return(mock_category(:save=>true))
+        InterventionCluster.should_receive(:find).with("37").and_return(mock_category(save: true))
         mock_category.should_receive(:attributes=).with('these' => 'params')
-        put :update, :id => "37", :intervention_cluster => {:these => 'params'}
+        put :update, id: "37", intervention_cluster: {these: 'params'}
       end
 
       it "should expose the requested category as @intervention_cluster" do
         InterventionCluster.stub!(:find).and_return(mock_category(:attributes= => true, :save=>true))
-        put :update, :id => "37"
+        put :update, id: "37"
         assigns(:intervention_cluster).should equal(mock_category)
       end
 
       it "should redirect to the category" do
         InterventionCluster.stub!(:find).and_return(mock_category(:attributes= => true, :save=>true))
-        put :update, :id => "37"
+        put :update, id: "37"
         response.should redirect_to(intervention_builder_categories_url(@goal_definition,@objective_definition))
       end
 
@@ -121,20 +121,20 @@ describe InterventionBuilder::CategoriesController do
     describe "with invalid params" do
 
       it "should update the requested category" do
-        InterventionCluster.should_receive(:find).with("37").and_return(mock_category(:save=>false))
+        InterventionCluster.should_receive(:find).with("37").and_return(mock_category(save: false))
         mock_category.should_receive(:attributes=).with('these' => 'params')
-        put :update, :id => "37", :intervention_cluster => {:these => 'params'}
+        put :update, id: "37", intervention_cluster: {these: 'params'}
       end
 
       it "should expose the category as @intervention_cluster" do
         InterventionCluster.stub!(:find).and_return(mock_category(:attributes= => false, :save=>false))
-        put :update, :id => "1"
+        put :update, id: "1"
         assigns(:intervention_cluster).should equal(mock_category)
       end
 
       it "should re-render the 'edit' template" do
         InterventionCluster.stub!(:find).and_return(mock_category(:attributes= => false, :save=>false))
-        put :update, :id => "1"
+        put :update, id: "1"
         response.should render_template('edit')
       end
 
@@ -145,14 +145,14 @@ describe InterventionBuilder::CategoriesController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested category" do
-      InterventionCluster.should_receive(:find).with("37").and_return(mock_category(:intervention_definitions=>[]))
+      InterventionCluster.should_receive(:find).with("37").and_return(mock_category(intervention_definitions: []))
       mock_category.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      delete :destroy, id: "37"
     end
 
     it "should redirect to the intervention_builder_categories list" do
-      InterventionCluster.stub!(:find).and_return(mock_category(:destroy => true, :intervention_definitions=>[]))
-      delete :destroy, :id => "1"
+      InterventionCluster.stub!(:find).and_return(mock_category(destroy: true, intervention_definitions: []))
+      delete :destroy, id: "1"
       response.should redirect_to(intervention_builder_categories_url(@goal_definition,@objective_definition))
     end
 

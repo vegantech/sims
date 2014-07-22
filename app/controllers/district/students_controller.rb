@@ -3,7 +3,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students.xml
   def index
     @students = current_district.students.paged_by_last_name(params[:last_name],params[:page])
-    redirect_to(district_students_url(:last_name => params[:last_name], :page => @students.total_pages)) and return if wp_out_of_bounds?(@students)
+    redirect_to(district_students_url(last_name: params[:last_name], page: @students.total_pages)) and return if wp_out_of_bounds?(@students)
     capture_paged_controller_params
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students/new.xml
   def new
     @student = Student.new
-    @student.enrollments.build(:end_year => Date.today.year)
+    @student.enrollments.build(end_year: Date.today.year)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -24,7 +24,7 @@ class District::StudentsController < ApplicationController
   # GET /district_students/1/edit
   def edit
     @student = current_district.students.find(params[:id])
-    @student.enrollments.build(:end_year => Date.today.year) if @student.enrollments.empty?
+    @student.enrollments.build(end_year: Date.today.year) if @student.enrollments.empty?
   end
 
   # POST /district_students
@@ -37,7 +37,7 @@ class District::StudentsController < ApplicationController
         flash[:notice] = "#{edit_obj_link(@student)} was successfully created.".html_safe
         format.html { redirect_to(index_url_with_page) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -52,7 +52,7 @@ class District::StudentsController < ApplicationController
         flash[:notice] = "#{edit_obj_link(@student)} was successfully updated.".html_safe
         format.html { redirect_to(index_url_with_page) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

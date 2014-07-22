@@ -5,7 +5,7 @@ module TrainingDistrict::Intervention
       ckhash[:intervention_cluster_id]= clusterhash[ck[:intervention_cluster_id]]
       unless ckhash[:disabled] or ckhash[:custom]
         ckhash[:notify_email] = nil
-        newcd= InterventionDefinition.create!(ckhash.merge(:tier_id => map_tier_id(ck)))
+        newcd= InterventionDefinition.create!(ckhash.merge(tier_id: map_tier_id(ck)))
         @definitionhash[ck[:id]]=newcd.id
       end
     end

@@ -3,57 +3,57 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Interventions::CommentsController do
   describe "route generation" do
     it "should map #index" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "index").should == "/interventions/2/comments"
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "index").should == "/interventions/2/comments"
     end
   
     it "should map #new" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "new").should == "/interventions/2/comments/new"
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "new").should == "/interventions/2/comments/new"
     end
   
     it "should map #show" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "show", :id => "1").should == "/interventions/2/comments/1"
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "show", id: "1").should == "/interventions/2/comments/1"
     end
   
     it "should map #edit" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "edit", :id => "1").should == "/interventions/2/comments/1/edit"
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "edit", id: "1").should == "/interventions/2/comments/1/edit"
     end
   
     it "should map #update" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "update", :id => "1").should == {:path => "/interventions/2/comments/1", :method => :put}
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "update", id: "1").should == {path: "/interventions/2/comments/1", method: :put}
     end
   
     it "should map #destroy" do
-      route_for(:controller => "interventions/comments",:intervention_id => "2", :action => "destroy", :id => "1").should == {:path => "/interventions/2/comments/1", :method => :delete}
+      route_for(controller: "interventions/comments",intervention_id: "2", action: "destroy", id: "1").should == {path: "/interventions/2/comments/1", method: :delete}
     end
   end
 
   describe "route recognition" do
     it "should generate params for #index" do
-      params_from(:get, "/interventions/2/comments").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "index"}
+      params_from(:get, "/interventions/2/comments").should == {controller: "interventions/comments",intervention_id: "2", action: "index"}
     end
   
     it "should generate params for #new" do
-      params_from(:get, "/interventions/2/comments/new").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "new"}
+      params_from(:get, "/interventions/2/comments/new").should == {controller: "interventions/comments",intervention_id: "2", action: "new"}
     end
   
     it "should generate params for #create" do
-      params_from(:post, "/interventions/2/comments").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "create"}
+      params_from(:post, "/interventions/2/comments").should == {controller: "interventions/comments",intervention_id: "2", action: "create"}
     end
   
     it "should generate params for #show" do
-      params_from(:get, "/interventions/2/comments/1").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "show", :id => "1"}
+      params_from(:get, "/interventions/2/comments/1").should == {controller: "interventions/comments",intervention_id: "2", action: "show", id: "1"}
     end
   
     it "should generate params for #edit" do
-      params_from(:get, "/interventions/2/comments/1/edit").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "edit", :id => "1"}
+      params_from(:get, "/interventions/2/comments/1/edit").should == {controller: "interventions/comments",intervention_id: "2", action: "edit", id: "1"}
     end
   
     it "should generate params for #update" do
-      params_from(:put, "/interventions/2/comments/1").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "update", :id => "1"}
+      params_from(:put, "/interventions/2/comments/1").should == {controller: "interventions/comments",intervention_id: "2", action: "update", id: "1"}
     end
   
     it "should generate params for #destroy" do
-      params_from(:delete, "/interventions/2/comments/1").should == {:controller => "interventions/comments",:intervention_id => "2", :action => "destroy", :id => "1"}
+      params_from(:delete, "/interventions/2/comments/1").should == {controller: "interventions/comments",intervention_id: "2", action: "destroy", id: "1"}
     end
   end
 end

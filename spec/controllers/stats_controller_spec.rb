@@ -10,7 +10,7 @@ describe StatsController do
 
     it 'should work without error when excluding a district' do
       Factory(:district)  #need a district to exclude
-      get :index, :without => District.last.id
+      get :index, without: District.last.id
       response.should be_success
 
     end

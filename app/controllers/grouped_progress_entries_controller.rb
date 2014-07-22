@@ -8,7 +8,7 @@ class GroupedProgressEntriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @grouped_progress_entries }
+      format.xml  { render xml: @grouped_progress_entries }
     end
   end
 
@@ -38,7 +38,7 @@ class GroupedProgressEntriesController < ApplicationController
         flash[:notice] = 'Scores and Comments were successfully entered.'
         format.html { redirect_to(grouped_progress_entries_url) }
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -51,7 +51,7 @@ class GroupedProgressEntriesController < ApplicationController
     logger.info(google_params)
 
     res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'),google_params)
-    send_data res.body, :type =>'image/png', :disposition => 'inline'
+    send_data res.body, type: 'image/png', disposition: 'inline'
   end
 
   def end
@@ -64,8 +64,8 @@ class GroupedProgressEntriesController < ApplicationController
   private
   def search_criteria
     session[:search].merge(
-      :school_id => current_school_id,
-      :user => current_user)
+      school_id: current_school_id,
+      user: current_user)
   end
 
   def confirm_search
@@ -79,7 +79,7 @@ class GroupedProgressEntriesController < ApplicationController
         flash[:notice]='Record not found. Try redoing the search'
           redirect_to root_url
       end
-      format.js {render :nothing => true}
+      format.js {render nothing: true}
     end
   end
 end

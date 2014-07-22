@@ -5,7 +5,7 @@ class MailerWithSubdomains < ActionMailer::Base
     raise 'set @district in mailer model method' if @district.blank?
     host = default_url_options[:host].gsub(/^www/,@district.abbrev)
 
-    super(opts.merge(:host => host, :only_path => false))
+    super(opts.merge(host: host, only_path: false))
   end
 
   def url_with_text text,url

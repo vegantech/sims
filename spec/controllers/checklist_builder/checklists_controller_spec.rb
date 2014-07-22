@@ -6,7 +6,7 @@ describe ChecklistBuilder::ChecklistsController do
   include_context "authenticated"
 
   before do
-    controller.stub!(:current_user => mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"],:principal_override_requests=> [], "principal?" => false))
+    controller.stub!(current_user: mock_user(:district => District.new, "authorized_for?" => true, :roles => ["regular_user"],:principal_override_requests=> [], "principal?" => false))
   end
 
   render_views
@@ -17,9 +17,9 @@ describe ChecklistBuilder::ChecklistsController do
 
   it 'should get index' do
     d=Factory(:district)
-    admin = District.admin.first || Factory(:district,:admin=>true)
+    admin = District.admin.first || Factory(:district,admin: true)
     controller.stub!(:current_district).and_return(d)
-    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
+    a=ChecklistDefinition.create!(text: 'text', directions: 'directions',district: d)
     get :index
     assigns(:checklist_definitions).should == [a]
     response.should be_success
@@ -28,9 +28,9 @@ describe ChecklistBuilder::ChecklistsController do
   it 'should get preview' do
     d=Factory(:district)
     controller.stub!(:current_district).and_return(d)
-    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
+    a=ChecklistDefinition.create!(text: 'text', directions: 'directions',district: d)
 
-    get :preview, :id=>a.id.to_s
+    get :preview, id: a.id.to_s
     assigns(:checklist_definition).should == a
     assigns(:checklist).skip_cache.should be_true
     assigns(:checklist).checklist_definition.should == a
@@ -48,8 +48,8 @@ describe ChecklistBuilder::ChecklistsController do
   it 'should show checklist definition' do
     d=Factory(:district)
     controller.stub!(:current_district).and_return(d)
-    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
-    get :show, :id=>a.id
+    a=ChecklistDefinition.create!(text: 'text', directions: 'directions',district: d)
+    get :show, id: a.id
     response.should be_success
     assigns(:checklist_definition).should ==(a)
   end
@@ -57,8 +57,8 @@ describe ChecklistBuilder::ChecklistsController do
   it 'should get edit' do
     d=Factory(:district)
     controller.stub!(:current_district).and_return(d)
-    a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
-    get :edit, :id=>a.id
+    a=ChecklistDefinition.create!(text: 'text', directions: 'directions',district: d)
+    get :edit, id: a.id
     response.should be_success
     assigns(:checklist_definition).should ==(a)
   end
@@ -67,7 +67,7 @@ describe ChecklistBuilder::ChecklistsController do
     pending
     old_count = ChecklistDefinition.count
     post :create,
-         :checklist_definition => { :directions => "Fill all of these out please" }
+         checklist_definition: { directions: "Fill all of these out please" }
     response.should redirect_to(checklist_builder_checklist_path(assigns(:checklist_definition)))
     ChecklistDefinition.count should ==  old_count+1
   end
@@ -76,10 +76,10 @@ describe ChecklistBuilder::ChecklistsController do
 
     it 'should set the flash and not save if the checklist is not available to the current district' do
       d=Factory(:district)
-      a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions')
+      a=ChecklistDefinition.create!(text: 'text', directions: 'directions')
       a.update_attribute(:district_id, nil)
       controller.stub!(:current_district).and_return(d)
-      post :new_from_this, :id=>a.id
+      post :new_from_this, id: a.id
       assigns(:new_checklist_definition).should be_nil
       flash[:notice].should == "Checklist Definition could not be copied"
       response.should redirect_to(checklist_builder_checklists_url)
@@ -87,9 +87,9 @@ describe ChecklistBuilder::ChecklistsController do
 
     it 'should set the flash and save if the old checklist belongs to the district' do
       d=Factory(:district)
-      a=d.checklist_definitions.create!(:text=>'text', :directions=>'directions')
+      a=d.checklist_definitions.create!(text: 'text', directions: 'directions')
       controller.stub!(:current_district).and_return(d)
-      post :new_from_this, :id=>a.id
+      post :new_from_this, id: a.id
       assigns(:new_checklist_definition).new_record?.should be_false
       flash[:notice].should == "Checklist Definition was successfully copied"
       response.should redirect_to(checklist_builder_checklists_url)
@@ -98,11 +98,11 @@ describe ChecklistBuilder::ChecklistsController do
 
     it 'should set the flashand save if the old checklist belongs to the state_district' do
       d=Factory(:district)
-      admin_district = District.admin.first || Factory(:district, :admin => true)
-      a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions')
+      admin_district = District.admin.first || Factory(:district, admin: true)
+      a=ChecklistDefinition.create!(text: 'text', directions: 'directions')
       a.update_attribute(:district_id,d.admin_district.id)
       controller.stub!(:current_district).and_return(d)
-      post :new_from_this, :id=>a.id
+      post :new_from_this, id: a.id
       assigns(:new_checklist_definition).new_record?.should be_false
       flash[:notice].should == "Checklist Definition was successfully copied"
       response.should redirect_to(checklist_builder_checklists_url)
@@ -112,9 +112,9 @@ describe ChecklistBuilder::ChecklistsController do
   describe 'destroy' do
     it 'should destroy the selected checklist' do
       d=Factory(:district)
-      a=d.checklist_definitions.create!(:text=>'text', :directions=>'directions')
+      a=d.checklist_definitions.create!(text: 'text', directions: 'directions')
       controller.stub!(:current_district).and_return(d)
-      proc{delete :destroy, :id => a.id}.should change(ChecklistDefinition, :count).by(-1)
+      proc{delete :destroy, id: a.id}.should change(ChecklistDefinition, :count).by(-1)
 
     end
 

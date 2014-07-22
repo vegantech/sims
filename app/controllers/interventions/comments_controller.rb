@@ -1,5 +1,5 @@
 class Interventions::CommentsController < ApplicationController
-  before_filter :load_intervention, :except => :index
+  before_filter :load_intervention, except: :index
 
   def index
     @intervention=current_student.interventions.find(params[:intervention_id]) if current_student.present?
@@ -16,7 +16,7 @@ class Interventions::CommentsController < ApplicationController
 
   def show
     @intervention_comment = @intervention.comments.find(params[:id])
-    render :layout => false
+    render layout: false
   end
 
   # GET /comments/1/edit
@@ -37,7 +37,7 @@ class Interventions::CommentsController < ApplicationController
         flash[:notice] = 'InterventionComment was successfully created.'
         format.html { redirect_to(@intervention) }
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -52,8 +52,8 @@ class Interventions::CommentsController < ApplicationController
         flash[:notice] = 'InterventionComment was successfully updated.'
         format.html {}
       else
-        format.js   { render :action => 'edit' }
-        format.html { render :action => "edit" }
+        format.js   { render action: 'edit' }
+        format.html { render action: "edit" }
       end
     end
   end

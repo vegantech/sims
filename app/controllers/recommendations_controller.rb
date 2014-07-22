@@ -13,19 +13,19 @@ class RecommendationsController < ApplicationController
   end
 
   def create
-    params.deep_merge!(:recommendation => {:draft => !!params[:draft],
-                                           :user_id => current_user.id})
+    params.deep_merge!(recommendation: {draft: !!params[:draft],
+                                           user_id: current_user.id})
 
     if params[:checklist_id]
       @checklist = current_student.checklists.find(params[:checklist_id])
-      @recommendation = @checklist.build_recommendation(params[:recommendation].merge(:school => current_school))
+      @recommendation = @checklist.build_recommendation(params[:recommendation].merge(school: current_school))
     else
-      @recommendation = current_student.recommendations.build(params[:recommendation].merge(:student=>current_student, :school => current_school))
+      @recommendation = current_student.recommendations.build(params[:recommendation].merge(student: current_student, school: current_school))
     end
     if @recommendation.save
       redirect_to current_student
     else
-      render :action=>"new"
+      render action: "new"
     end
   end
 
@@ -42,7 +42,7 @@ class RecommendationsController < ApplicationController
     if  @recommendation.update_attributes(params[:recommendation])
       redirect_to current_student
     else
-      render :action=>'new'
+      render action: 'new'
     end
   end
 

@@ -1,6 +1,6 @@
 Given /^Recommendations enabled$/ do
   FactoryGirl.create :basic_recommendation_definition
-  Tier.create! :title => "Tier", :district => cucumber_district
+  Tier.create! title: "Tier", district: cucumber_district
 end
 
 When /^I create a valid recommendation that does not increase the tier$/ do

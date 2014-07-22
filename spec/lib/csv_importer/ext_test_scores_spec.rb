@@ -9,15 +9,15 @@ describe CSVImporter::ExtTestScores do
     ExtTestScore.delete_all
     @district = Factory(:district)
     @district2 = Factory(:district)
-    @d2s2=@district2.students.create!(:id_state=>3, :first_name => 'second', :last_name => 'student', :district_student_id => 's2')
-    @s1=@district.students.create!(:id_state=>1, :first_name => 'first', :last_name => 'student', :district_student_id => 's1')
-    @s2=@district.students.create!(:id_state=>2, :first_name => 'second', :last_name => 'student', :district_student_id => 's2')
-    @s1.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Update 2' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Update 3' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s1.ext_test_scores.create!(:name => 'Not in csv' , :date => '2011-01-01', :enddate => '2011-02-02', :result => '1', :scaleScore => 2)
-    @s2.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
-    @d2s2.ext_test_scores.create!(:name => 'Update 1' , :date => '2011-01-01', :enddate => nil, :result => '1', :scaleScore => 2)
+    @d2s2=@district2.students.create!(id_state: 3, first_name: 'second', last_name: 'student', district_student_id: 's2')
+    @s1=@district.students.create!(id_state: 1, first_name: 'first', last_name: 'student', district_student_id: 's1')
+    @s2=@district.students.create!(id_state: 2, first_name: 'second', last_name: 'student', district_student_id: 's2')
+    @s1.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Update 2' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Update 3' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s1.ext_test_scores.create!(name: 'Not in csv' , date: '2011-01-01', enddate: '2011-02-02', result: '1', scaleScore: 2)
+    @s2.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
+    @d2s2.ext_test_scores.create!(name: 'Update 1' , date: '2011-01-01', enddate: nil, result: '1', scaleScore: 2)
     @ext_test_scores = ExtTestScore.all
 
   end

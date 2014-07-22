@@ -25,10 +25,10 @@ describe ChecklistDefinition do
     ChecklistDefinition.delete_all
     @district = District.first || Factory(:district)
     @valid_attributes = {
-      :text => "value for text",
-      :directions => "value for directions",
-      :active => false,
-      :district => @district
+      text: "value for text",
+      directions: "value for directions",
+      active: false,
+      district: @district
     }
   end
 
@@ -38,7 +38,7 @@ describe ChecklistDefinition do
  
 
   it "should return the active_checklist_definition" do
-      c=ChecklistDefinition.find_by_active(true) || ChecklistDefinition.create!(@valid_attributes.merge(:active=>true))
+      c=ChecklistDefinition.find_by_active(true) || ChecklistDefinition.create!(@valid_attributes.merge(active: true))
       ChecklistDefinition.active_checklist_definition.should ==(c)
   end
 

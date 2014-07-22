@@ -1,8 +1,8 @@
 module CSVImporter
   class BaseSystemFlags < CSVImporter::Base
     FIELD_DESCRIPTIONS = {
-        :district_student_id =>"Key for student",
-        :reason =>"A description of the reason the student was flagged.",
+        district_student_id: "Key for student",
+        reason: "A description of the reason the student was flagged.",
     }
     class << self
       def flag_category
@@ -37,7 +37,7 @@ module CSVImporter
       end
 
       def alternate
-        {:system_flags => "You can put all categories together in one file instead.  It's possible to do some categories combined in the system flags file and
+        {system_flags: "You can put all categories together in one file instead.  It's possible to do some categories combined in the system flags file and
           do the rest individually as long as you load the system flags first." }
       end
 
@@ -59,7 +59,7 @@ module CSVImporter
     end
 
     def migration t
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :reason, :text
     end
 

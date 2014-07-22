@@ -7,9 +7,9 @@ describe ProbeGraph do
         pending
         ipa = Factory(:intervention_probe_assignment)
         pd = ipa.probe_definition
-        pd.update_attributes!(:maximum_score => 6, :minimum_score => nil)
-        pd.probe_definition_benchmarks.create!(:grade_level => '02', :benchmark => 6)
-        ipa.probes.create!(:score => 4, :administered_at => 2.days.ago)
+        pd.update_attributes!(maximum_score: 6, minimum_score: nil)
+        pd.probe_definition_benchmarks.create!(grade_level: '02', benchmark: 6)
+        ipa.probes.create!(score: 4, administered_at: 2.days.ago)
 
         puts ipa.google_line_chart
 

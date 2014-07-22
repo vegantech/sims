@@ -17,9 +17,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe RecommendationDefinition do
   before(:each) do
     @valid_attributes = {
-      :active => false,
-      :text => "value for text",
-      :score_options => "1"
+      active: false,
+      text: "value for text",
+      score_options: "1"
     }
   end
 

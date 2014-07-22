@@ -22,11 +22,11 @@ class ApplicationManifest < Moonshine::Manifest::Rails
 
   def custom_networking
     file '/etc/network/interfaces',
-         :ensure => :present,
-         :content => template('interfaces.erb', binding),
-         :group => 'root',
-         :owner => 'root',
-         :mode => '644'
+         ensure: :present,
+         content: template('interfaces.erb', binding),
+         group: 'root',
+         owner: 'root',
+         mode: '644'
   end
 
   if configuration[:network] && configuration[:network][:interfaces]
@@ -35,7 +35,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
 
   recipe :scout if deploy_stage == 'production'
   recipe :xsendfile
-  configure(:passenger => { :vhost_extra => """
+  configure(passenger: { vhost_extra: """
     <Location />
         # enable tracking uploads in /
         TrackUploads On
@@ -58,21 +58,21 @@ class ApplicationManifest < Moonshine::Manifest::Rails
   def application_packages
     # If you've already told Moonshine about a package required by a gem with
     # :apt_gems in <tt>moonshine.yml</tt> you do not need to include it here.
-    package 'aspell', :ensure => :installed
-    package 'zip', :ensure => :installed
+    package 'aspell', ensure: :installed
+    package 'zip', ensure: :installed
     package 'libxml2-dev'#, :before => exec('bundle install')
     package 'libxslt1-dev'#, :before => exec('bundle install')
 
     daily_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run"
-    cron 'daily_jobs', :command => daily_jobs, :user => configuration[:user], :minute => 0, :hour => 6
+    cron 'daily_jobs', command: daily_jobs, user: configuration[:user], minute: 0, hour: 6
 
     weekly_jobs = "cd #{configuration[:deploy_to]}/current && bundle exec rails runner -e #{ENV['RAILS_ENV']} DailyJobs.run_weekly"
-    cron 'weekly_jobs', :command => weekly_jobs, :user => configuration[:user], :minute => 0, :hour => 7, :weekday => 0
+    cron 'weekly_jobs', command: weekly_jobs, user: configuration[:user], minute: 0, hour: 7, weekday: 0
 
     prime_cache = "cd #{configuration[:deploy_to]}/current && nice -n15 bundle exec rails runner -e #{ENV['RAILS_ENV']}  PrimeCache.flags >> #{configuration[:deploy_to]}/current/log/prime_cache.log"
-    cron 'prime_cache', :command => prime_cache, :user => configuration[:user], :minute => "*/10"
+    cron 'prime_cache', command: prime_cache, user: configuration[:user], minute: "*/10"
 
-    cron 'backup_daily', :command => "/home/rails/backups/backup.sh", :hour => 8,:user => configuration[:user], :minute => 0
+    cron 'backup_daily', command: "/home/rails/backups/backup.sh", hour: 8,user: configuration[:user], minute: 0
 
     # %w( root rails ).each do |user|
     #   mailalias user, :recipient => 'you@domain.com'
@@ -86,7 +86,7 @@ class ApplicationManifest < Moonshine::Manifest::Rails
 
     # Logs for Rails, MySQL, and Apache are rotated by default
     # logrotate '/var/log/some_service.log', :options => %w(weekly missingok compress), :postrotate => '/etc/init.d/some_service restart'
-    configure(:rails_logrotate => {:options => %w(daily missingok compress delaycompress sharedscripts rotate\ 52 ) })
+    configure(rails_logrotate: {options: %w(daily missingok compress delaycompress sharedscripts rotate\ 52 ) })
 
     # Only run the following on the 'testing' stage using capistrano-ext's multistage functionality.
     # on_stage 'testing' do

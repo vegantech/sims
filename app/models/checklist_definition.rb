@@ -19,10 +19,10 @@
 
 class ChecklistDefinition < ActiveRecord::Base
   DISTRICT_PARENT = :district
-  belongs_to :district, :touch => true, :inverse_of => :checklist_definitions
+  belongs_to :district, touch: true, inverse_of: :checklist_definitions
   belongs_to :recommendation_definition
-  has_many :question_definitions, :dependent => :destroy, :order => "position ASC"
-  has_many :element_definitions, :through =>:question_definitions
+  has_many :question_definitions, dependent: :destroy, order: "position ASC"
+  has_many :element_definitions, through: :question_definitions
   has_many :checklists
 
   has_attached_file  :document
@@ -30,7 +30,7 @@ class ChecklistDefinition < ActiveRecord::Base
 
   before_validation :clear_document
   validates_presence_of :directions, :text
-  before_save :mark_other_checklist_definitions_inactive, :if => :active
+  before_save :mark_other_checklist_definitions_inactive, if: :active
   attr_protected :district_id
 
   def save_all!
@@ -50,8 +50,8 @@ class ChecklistDefinition < ActiveRecord::Base
 
   def answer_definitions2
     @answer_definitions||=AnswerDefinition.find(:all,
-                                                :include=>[:element_definition=>{:question_definition=>:checklist_definition}],
-                                                :joins=>"and question_definitions.checklist_definition_id=#{id}")
+                                                include: [element_definition: {question_definition: :checklist_definition}],
+                                                joins: "and question_definitions.checklist_definition_id=#{id}")
   end
 
   def checklist_definition_id

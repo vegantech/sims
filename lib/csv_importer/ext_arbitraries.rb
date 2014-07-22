@@ -1,8 +1,8 @@
 module CSVImporter
   class ExtArbitraries < CSVImporter::Base
     FIELD_DESCRIPTIONS = { 
-        :district_student_id =>"Key for student",
-        :arbitrary =>"Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag."      
+        district_student_id: "Key for student",
+        arbitrary: "Custom HTML content to appear in the extended profile.  I recommend putting everything in a div tag."      
     }
     class << self
       def description
@@ -58,7 +58,7 @@ module CSVImporter
 
     def migration t
       
-      t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
+      t.column :district_student_id, :string, limit: Student.columns_hash["district_student_id"].limit, null: Student.columns_hash["district_student_id"].null
       t.column :arbitrary, :text
       
     end

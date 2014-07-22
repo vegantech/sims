@@ -11,7 +11,7 @@ module BuilderHelper
       str += "<p><div class='fake_label'>"
       str += form.check_box(:exempt_tier)
       str += "</div>"
-      str += form.label(:exempt_tier, "Available to all tiers", :class => "checkbox_label_span")
+      str += form.label(:exempt_tier, "Available to all tiers", class: "checkbox_label_span")
       str += help_popup(popup)
       str += "</p>"
     end

@@ -4,6 +4,6 @@ class AddIndexesToPersonalGroups < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :personal_groups, :column => [:user_id, :school_id]
+    remove_index :personal_groups, column: [:user_id, :school_id]
   end
 end

@@ -27,8 +27,8 @@ describe User do
     System.send(:remove_const, 'HASH_KEY') if System.const_defined? 'HASH_KEY'
     System::HASH_KEY=nil
     User.destroy_all
-    @user = FactoryGirl.create(:user, :username => "oneschool")
-    @school = FactoryGirl.create(:school, :district => @user.district)
+    @user = FactoryGirl.create(:user, username: "oneschool")
+    @school = FactoryGirl.create(:school, district: @user.district)
   end
 
   it 'should include FullName' do
@@ -36,11 +36,11 @@ describe User do
   end
 
   it 'should have a middle_name' do
-    FactoryGirl.create(:user, :middle_name => 'Edward').middle_name.should == 'Edward'
+    FactoryGirl.create(:user, middle_name: 'Edward').middle_name.should == 'Edward'
   end
 
   describe 'full_name' do
-    u=User.new(:first_name=>"0First.", :last_name=>"noschools")
+    u=User.new(first_name: "0First.", last_name: "noschools")
     u.fullname.should == ("0First. noschools")
     u.to_s.should == ("0First. noschools")
   end
@@ -48,7 +48,7 @@ describe User do
   describe 'authorized_groups_for_school' do
     it 'should return school groups when user is a member of all groups in school' do
       u=User.new
-      s=mock_school(:groups=>"THEE GROUPS HERE")
+      s=mock_school(groups: "THEE GROUPS HERE")
 
       u.stub_association!(:special_user_groups,:all_students_in_school? =>true )
       u.authorized_groups_for_school(s).should == s.groups
@@ -58,7 +58,7 @@ describe User do
       u=User.new
       s=mock_school
       u.stub_association!(:special_user_groups,:all_students_in_school? =>false )
-      u.stub_association!(:groups,:by_school => "GROUPS BY SCHOOL" )
+      u.stub_association!(:groups,by_school: "GROUPS BY SCHOOL" )
       u.authorized_groups_for_school(s).should ==  "GROUPS BY SCHOOL"
 
     end
@@ -77,18 +77,18 @@ describe User do
 
     it 'should filter groups if prompt' do
       s=FactoryGirl.create(:school)
-      @user.filtered_groups_by_school(s,:grade=>'E',:user=>5 ).should == []
+      @user.filtered_groups_by_school(s,grade: 'E',user: 5 ).should == []
     end
   end
 
   describe 'filtered_members_by_school' do
     it 'should return all authorized_members' do
       s=FactoryGirl.create(:school)
-      g1 = FactoryGirl.create(:group, :school=>s)
-      g2 = FactoryGirl.create(:group, :school=>s)
-      user = FactoryGirl.create(:user, :groups => [g1,g2])
-      user2 = FactoryGirl.create(:user ,:groups => [g1])
-      user3 = FactoryGirl.create(:user, :groups => [g2])
+      g1 = FactoryGirl.create(:group, school: s)
+      g2 = FactoryGirl.create(:group, school: s)
+      user = FactoryGirl.create(:user, groups: [g1,g2])
+      user2 = FactoryGirl.create(:user ,groups: [g1])
+      user3 = FactoryGirl.create(:user, groups: [g2])
       user.filtered_members_by_school(s).should == [user,user2, user3]
     end
 
@@ -116,7 +116,7 @@ describe User do
     it 'should return true if principal of a group or special user group and false if not' do
       u=@user
       u.principal?.should == false
-      u.user_group_assignments.create!(:is_principal=>true, :group=>Group.new)
+      u.user_group_assignments.create!(is_principal: true, group: Group.new)
       u.principal?.should == true
       u.user_group_assignments.clear
       u.principal?.should == false
@@ -126,16 +126,16 @@ describe User do
   describe 'grouped_principal_overrides' do
     it 'should group requests, responses and pending' do
       @user = FactoryGirl.create(:user)
-      @user.grouped_principal_overrides.should == {:user_requests => []}
+      @user.grouped_principal_overrides.should == {user_requests: []}
       req='New Override Request'
-      @user.stub!(:principal_override_requests=> [req])
-      @user.grouped_principal_overrides.should == {:user_requests => [req]}
+      @user.stub!(principal_override_requests: [req])
+      @user.grouped_principal_overrides.should == {user_requests: [req]}
 
       @user.stub!(:principal? => true)
-      @user.stub!(:principal_override_responses => ["Principal Override Response"])
+      @user.stub!(principal_override_responses: ["Principal Override Response"])
       PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
-      @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"],
-                                                   :pending_requests => ["Pending For Principal"]}
+      @user.grouped_principal_overrides.should == {user_requests: [req], principal_responses: ["Principal Override Response"],
+                                                   pending_requests: ["Pending For Principal"]}
     end
   end
 
@@ -149,9 +149,9 @@ describe User do
 
     it 'should return all schools for user with access to all schools' do
       @user.district.schools.delete_all
-      s1=FactoryGirl.create(:school, :district => @user.district)
-      s2=FactoryGirl.create(:school, :district => @user.district)
-      s3=FactoryGirl.create(:school, :district => @user.district)
+      s1=FactoryGirl.create(:school, district: @user.district)
+      s2=FactoryGirl.create(:school, district: @user.district)
+      s3=FactoryGirl.create(:school, district: @user.district)
       s4=FactoryGirl.create(:school)
       @user.update_attribute(:all_students, true)
       @user.schools.should =~ [s1,s2,s3]
@@ -159,35 +159,35 @@ describe User do
 
     it 'should return s1 and s3 for user with access to s1 and special access tp s3' do
       @user.update_attribute(:all_students, false)
-      s1=FactoryGirl.create(:school, :district => @user.district, :name => "A")
-      s2=FactoryGirl.create(:school, :district => @user.district, :name => "B")
-      s3=FactoryGirl.create(:school, :district => @user.district, :name => "C")
+      s1=FactoryGirl.create(:school, district: @user.district, name: "A")
+      s2=FactoryGirl.create(:school, district: @user.district, name: "B")
+      s3=FactoryGirl.create(:school, district: @user.district, name: "C")
 
-      @user.user_school_assignments.create!(:school => s1)
-      @user.special_user_groups.create!( :school => s3)
+      @user.user_school_assignments.create!(school: s1)
+      @user.special_user_groups.create!( school: s3)
       @user.schools.should == [s1,s3]
     end
   end
 
   describe 'students for school' do
     before :all do
-      @authorized_students_user = FactoryGirl.create(:user, :username => "oneschool")
+      @authorized_students_user = FactoryGirl.create(:user, username: "oneschool")
       @other_district = FactoryGirl.create(:student)
-      @oneschool_elementary = FactoryGirl.create(:school, :district => @authorized_students_user.district)
-      @other_elementary = FactoryGirl.create(:school, :district => @authorized_students_user.district)
-      @oneschool_red_6 = FactoryGirl.create(:student, :district => @authorized_students_user.district)
-      @oneschool_red_6.enrollments.create!(:grade=>6, :school => @oneschool_elementary)
-      @oneschool_red_5 = FactoryGirl.create(:student, :district => @authorized_students_user.district)
-      @oneschool_red_5.enrollments.create!(:grade=>5, :school => @oneschool_elementary)
-      @other_elementary_6 = FactoryGirl.create(:student, :district => @authorized_students_user.district)
-      @other_elementary_6.enrollments.create!(:grade=>6, :school => @other_elementary)
-      @red_team=@oneschool_elementary.groups.create(:title => 'red')
+      @oneschool_elementary = FactoryGirl.create(:school, district: @authorized_students_user.district)
+      @other_elementary = FactoryGirl.create(:school, district: @authorized_students_user.district)
+      @oneschool_red_6 = FactoryGirl.create(:student, district: @authorized_students_user.district)
+      @oneschool_red_6.enrollments.create!(grade: 6, school: @oneschool_elementary)
+      @oneschool_red_5 = FactoryGirl.create(:student, district: @authorized_students_user.district)
+      @oneschool_red_5.enrollments.create!(grade: 5, school: @oneschool_elementary)
+      @other_elementary_6 = FactoryGirl.create(:student, district: @authorized_students_user.district)
+      @other_elementary_6.enrollments.create!(grade: 6, school: @other_elementary)
+      @red_team=@oneschool_elementary.groups.create(title: 'red')
       @red_team.students << [@oneschool_red_6,@oneschool_red_5]
-      @all_students_in_district = FactoryGirl.create(:user, :district => @authorized_students_user.district, :all_students => true)
-      @all_students_in_school = FactoryGirl.create(:user,  :district => @authorized_students_user.district)
-      @all_students_in_school.special_user_groups.create!(:school => @oneschool_elementary)
-      @all_students_in_grade_6 =  FactoryGirl.create(:user,  :district => @authorized_students_user.district)
-      @all_students_in_grade_6.special_user_groups.create!(:school => @oneschool_elementary, :grade => 6)
+      @all_students_in_district = FactoryGirl.create(:user, district: @authorized_students_user.district, all_students: true)
+      @all_students_in_school = FactoryGirl.create(:user,  district: @authorized_students_user.district)
+      @all_students_in_school.special_user_groups.create!(school: @oneschool_elementary)
+      @all_students_in_grade_6 =  FactoryGirl.create(:user,  district: @authorized_students_user.district)
+      @all_students_in_grade_6.special_user_groups.create!(school: @oneschool_elementary, grade: 6)
 
     end
 
@@ -250,13 +250,13 @@ describe User do
       user.email.should be_blank
     end
     it 'should remove a user from a district and clear out noncontent settings' do
-      user = FactoryGirl.create(:user, :username=>'user1', :email=>'woo')
+      user = FactoryGirl.create(:user, username: 'user1', email: 'woo')
       user.remove_from_district
       check_user user
    end
     it 'should remove users in a list of ids form the district and clear out concontent settings' do
-      user1 = FactoryGirl.create(:user, :username=>'user1', :email=>'woo')
-      user2 = FactoryGirl.create(:user, :username=>'user2', :email=>'woo2')
+      user1 = FactoryGirl.create(:user, username: 'user1', email: 'woo')
+      user2 = FactoryGirl.create(:user, username: 'user2', email: 'woo2')
       User.remove_from_district( [user1.id, user2.id])
       check_user user1
       check_user user2
@@ -267,8 +267,8 @@ describe User do
    describe 'setting user_school_assignments' do
      before :each do
        @user=FactoryGirl.create(:user)
-       @e1=@user.user_school_assignments.create!(:school_id=>'1',:admin=>false)
-       @e2=@user.user_school_assignments.create!(:school_id=>'2',:admin=>true)
+       @e1=@user.user_school_assignments.create!(school_id: '1',admin: false)
+       @e2=@user.user_school_assignments.create!(school_id: '2',admin: true)
      end
 
      it 'should not change existing ones when there are none' do
@@ -277,18 +277,18 @@ describe User do
      end
 
      it 'should not removeexisting ones' do
-       @user.update_attribute('user_school_assignments_attributes',[{:id => @e1.id, :_destroy => 1},{:id => @e2.id, :_destroy => '1'} ])
+       @user.update_attribute('user_school_assignments_attributes',[{id: @e1.id, _destroy: 1},{id: @e2.id, _destroy: '1'} ])
        @user.user_school_assignments.should be_empty
      end
 
      it 'should change existing ones when there are none' do
-       @user.update_attributes('user_school_assignments_attributes'=>{:id=>@e1.id.to_s,:school_id=>'3'})
+       @user.update_attributes('user_school_assignments_attributes'=>{id: @e1.id.to_s,school_id: '3'})
        @e1.reload.school_id.should == 3
        @user.user_school_assignments.should ==[@e1,@e2]
      end
 
      it 'should not validate when changing existing to match' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{:id => @e1.id.to_s,:school_id=>'2',:admin=>true}, {:id => @e2.id.to_s,:school_id=>'2'}])
+       @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '2',admin: true}, {id: @e2.id.to_s,school_id: '2'}])
        @user.should_not be_valid
        @user.user_school_assignments.first.errors_on(:admin).should_not be_nil
        @user.user_school_assignments.first.errors_on(:school_id).should_not be_nil
@@ -297,34 +297,34 @@ describe User do
      end
 
      it 'should add new user_school_assignment' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true}]).should be_true
+       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true}]).should be_true
        @user.user_school_assignments.find_by_school_id_and_admin(1,true).should_not be_nil
        @user.user_school_assignments[0..1].should == [@e1,@e2]
      end
 
      it 'should not new user_school_assignment that matches existing ' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>'1', :admin=>false}]).should be_false
+       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', admin: false}]).should be_false
        @user.should_not be_valid
      end
 
      it 'should not new user_school_assignment that matches changed existing ' do
-       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>1, :admin=>true},
-                                                                       {:id => @e1.id.to_s,:admin=>true}]
+       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: 1, admin: true},
+                                                                       {id: @e1.id.to_s,admin: true}]
                              ).should be_false
        @user.should_not be_valid
      end
 
      it 'should not new user_school_assignment that matches itself' do
        @user.update_attributes('user_school_assignments_attributes'=>
-                              [{:school_id=>'3', :admin=>false},{:school_id=>'3', :admin=>false}]).should be_false
+                              [{school_id: '3', admin: false},{school_id: '3', admin: false}]).should be_false
        @user.should_not be_valid
      end
 
      it 'should set all_students on a matching user_school_assignment' do
        #lh
-       @user.update_attributes('user_school_assignments_attributes'=>[{:id => @e1.id.to_s,:school_id=>'1', :admin=>false, :all_students => "true"}])
+       @user.update_attributes('user_school_assignments_attributes'=>[{id: @e1.id.to_s,school_id: '1', admin: false, all_students: "true"}])
        @e1.reload.all_students.should be_true
-       @user.update_attributes('user_school_assignments_attributes'=>[{:school_id=>'1', :id => @e1.id.to_s, :admin=>false, :all_students => "false"}])
+       @user.update_attributes('user_school_assignments_attributes'=>[{school_id: '1', id: @e1.id.to_s, admin: false, all_students: "false"}])
        @e1.reload.all_students.should be_false
      end
 
@@ -333,40 +333,40 @@ describe User do
    describe 'staff_assignment' do
      before do
        @u=FactoryGirl.create(:user)
-       @s1=FactoryGirl.create(:school, :district_id => @u.district_id)
-       @s2=FactoryGirl.create(:school, :district_id => @u.district_id)
-       @s3=FactoryGirl.create(:school, :district_id => @u.district_id)
+       @s1=FactoryGirl.create(:school, district_id: @u.district_id)
+       @s2=FactoryGirl.create(:school, district_id: @u.district_id)
+       @s3=FactoryGirl.create(:school, district_id: @u.district_id)
      end
      it 'should add a staff assignment' do
-       @u.staff_assignments_attributes = [{:school_id => @s1.id}]
+       @u.staff_assignments_attributes = [{school_id: @s1.id}]
        @u.save
        @u.staff_assignments.count.should == 1
        @u.staff_assignments.first.school_id.should == @s1.id
 
      end
      it 'should remove a staff assignment' do
-       sa=@u.staff_assignments.create!(:school_id => @s1.id)
-       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}]
+       sa=@u.staff_assignments.create!(school_id: @s1.id)
+       @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}]
        @u.save
        @u.staff_assignments.reload.should be_empty
      end
      it 'should add and delete the same staff_assignment' do
-       sa=@u.staff_assignments.create!(:school_id => @s1.id)
-       @u.staff_assignments_attributes =[{:id =>sa.id, :_destroy => true}, {:school_id => @s1.id}]
+       sa=@u.staff_assignments.create!(school_id: @s1.id)
+       @u.staff_assignments_attributes =[{id: sa.id, _destroy: true}, {school_id: @s1.id}]
        @u.save
        @u.staff_assignments.count.should == 1
        @u.staff_assignments.first.school_id.should == @s1.id
      end
      it 'should remove new assignments when they already exist' do
-       sa=@u.staff_assignments.create!(:school_id => @s1.id)
-       @u.staff_assignments_attributes =[{:school_id => @s1.id}]
+       sa=@u.staff_assignments.create!(school_id: @s1.id)
+       @u.staff_assignments_attributes =[{school_id: @s1.id}]
        @u.save
        @u.staff_assignments.count.should == 1
        @u.staff_assignments.first.school_id.should == @s1.id
      end
 
      it 'should add only 1 new staff assignment when new ones are duplicated' do
-       @u.staff_assignments_attributes =[{:school_id => @s1.id},{:school_id => @s1.id}]
+       @u.staff_assignments_attributes =[{school_id: @s1.id},{school_id: @s1.id}]
        @u.save
        @u.staff_assignments.count.should == 1
        @u.staff_assignments.first.school_id.should == @s1.id
@@ -379,12 +379,12 @@ describe User do
      let(:user) {FactoryGirl.create(:user)}
 
      it 'should return true if the user is an admin of the school' do
-       user.user_school_assignments.create!(:school => school, :admin => true)
+       user.user_school_assignments.create!(school: school, admin: true)
        user.admin_of_school?(school).should be_true
      end
 
      it 'should return false if the user is not an admin of the school' do
-       user.user_school_assignments.create!(:school => school, :admin => false)
+       user.user_school_assignments.create!(school: school, admin: false)
        user.admin_of_school?(school).should be_false
      end
    end
@@ -409,9 +409,9 @@ describe User do
 
    describe 'custom_interventions_enabled?' do
      subject do
-       User.new(:district => district, :roles=>[role])
+       User.new(district: district, roles: [role])
      end
-     let(:district){ District.new(:custom_interventions => custom_intervention)}
+     let(:district){ District.new(custom_interventions: custom_intervention)}
      let(:role) {}
      let(:custom_intervention) {}
 

@@ -1,6 +1,6 @@
 Given /^a district "([^\"]*)"$/ do |district_name|
    @district = District.find_by_name(district_name) 
-   @district ||= Factory(:district,:name => district_name)
+   @district ||= Factory(:district,name: district_name)
 end
 
 When /^I import_extended_profiles_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, district_name|
@@ -60,7 +60,7 @@ Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |us
   user = district.users.find_by_username(username)
   user = nil unless user.try(:valid_password?, password)
   dui=username == 'no_password'? 3 : rand(50000)
-  user ||= Factory(:user, :district=>district, :password => password, :username => username, :district_user_id => dui)
+  user ||= Factory(:user, district: district, password: password, username: username, district_user_id: dui)
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
@@ -79,12 +79,12 @@ end
 
 Given /^a student "([^\"]*)"$/ do |fullname|
   first,last = fullname.split(' ')
-  @student = Factory(:student,:district => @district, :district_student_id => 31337, :id_state => 33, :first_name => first, :last_name => last)
+  @student = Factory(:student,district: @district, district_student_id: 31337, id_state: 33, first_name: first, last_name: last)
 end
 
 Given /^a school "([^\"]*)"$/ do |name|
   @school = School.find_by_name(name)
-  @school ||=  Factory(:school,:district=> @district, :district_school_id => 42, :name => name)
+  @school ||=  Factory(:school,district: @district, district_school_id: 42, name: name)
 end
 
 Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |group_title, school_name, group_id_district|
@@ -95,7 +95,7 @@ Given /group "(.*)" for school "([^\"]*)" with id_district "([^\"]*)"$/ do |grou
 end
 
 Given /^enrollment "([^\"]*)" in "([^\"]*)" for grade "([^\"]*)"$/ do |_arg1, _arg2, grade|
-  @student.enrollments.create(:school=>@school, :grade=>grade, :end_year => 2009)
+  @student.enrollments.create(school: @school, grade: grade, end_year: 2009)
 end
 
 When /^I import_enrollments_from_csv with "([^\"]*)", "([^\"]*)"$/ do |filename, _district|

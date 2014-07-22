@@ -16,7 +16,7 @@ class SpecialUserGroupsController < SchoolAdminController
     @group=params[:id]
     grade = @group.split("-").last.downcase
     grade= nil if grade == "school"
-    @special_user_group = current_school.special_user_groups.build(:grade=>grade)
+    @special_user_group = current_school.special_user_groups.build(grade: grade)
     @users = current_school.assigned_users
   end
 
@@ -27,7 +27,7 @@ class SpecialUserGroupsController < SchoolAdminController
     if @special_user_group.save
     else
       @users=current_school.assigned_users
-      render :action=>:edit
+      render action: :edit
     end
   end
 

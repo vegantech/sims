@@ -4,6 +4,6 @@ class AddIndexForDistrictAbbrev < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :districts, :column => :abbrev
+    remove_index :districts, column: :abbrev
   end
 end

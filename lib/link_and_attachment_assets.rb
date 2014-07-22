@@ -2,7 +2,7 @@ module LinkAndAttachmentAssets
   def self.included(klass)
     klass.send :after_update, :save_assets
     klass.send :after_rollback, :preserve_uploads, unless: "errors.empty?"
-    klass.send :has_many, :assets, :as => :attachable, :dependent => :destroy
+    klass.send :has_many, :assets, as: :attachable, dependent: :destroy
   end
 
   def new_asset_attributes=(asset_attributes)
@@ -29,7 +29,7 @@ module LinkAndAttachmentAssets
   def save_assets
     assets.each do |asset|
       @touch_me = true if asset.frozen? or asset.changed?
-      asset.save(:validate => false) if !asset.frozen? and asset.changed?
+      asset.save(validate: false) if !asset.frozen? and asset.changed?
     end
     if attributes["updated_at"] && @touch_me
       self.class.update_all(["updated_at = ?", Time.now], "id = #{self.id}")

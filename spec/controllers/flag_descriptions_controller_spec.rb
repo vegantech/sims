@@ -10,7 +10,7 @@ describe FlagDescriptionsController do
   end
 
   before do
-    controller.stub!(:current_district=>@district=mock_district)
+    controller.stub!(current_district: @district=mock_district)
 
   end
 
@@ -38,32 +38,32 @@ describe FlagDescriptionsController do
     describe "with valid params" do
       it "updates the requested flag_description" do
         @fd.should_receive(:update_attributes).with('these' => 'params')
-        put :update, :id => "37", :flag_description => {:these => 'params'}
+        put :update, id: "37", flag_description: {these: 'params'}
       end
 
       it "assigns the requested flag_description as @flag_description" do
-        @fd.stub!(:update_attributes => true)
-        put :update, :id => "1"
+        @fd.stub!(update_attributes: true)
+        put :update, id: "1"
         assigns(:flag_description).should equal(mock_flag_description)
       end
 
       it "redirects to the root url" do
-        @fd.stub!(:update_attributes => true)
-        put :update, :id => "1"
+        @fd.stub!(update_attributes: true)
+        put :update, id: "1"
         response.should redirect_to(root_url)
       end
     end
 
     describe "with invalid params" do
       it "assigns the flag_description as @flag_description" do
-        @fd.stub!(:update_attributes => false)
-        put :update, :id => "1"
+        @fd.stub!(update_attributes: false)
+        put :update, id: "1"
         assigns(:flag_description).should equal(mock_flag_description)
       end
 
       it "re-renders the 'edit' template" do
-        @fd.stub!(:update_attributes => false)
-        put :update, :id => "1"
+        @fd.stub!(update_attributes: false)
+        put :update, id: "1"
         response.should render_template('edit')
       end
     end

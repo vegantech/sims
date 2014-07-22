@@ -16,7 +16,7 @@
 class GoalDefinition < ActiveRecord::Base
   belongs_to :district
   attr_protected :district_id
-  has_many :objective_definitions, :order =>:position, :dependent => :destroy do
+  has_many :objective_definitions, order: :position, dependent: :destroy do
     def build_with_new_asset
       x=build
       x.assets.build
@@ -24,17 +24,17 @@ class GoalDefinition < ActiveRecord::Base
     end
   end
 
-  scope :enabled, where(:disabled => false)
+  scope :enabled, where(disabled: false)
   scope :content_export, order
-  validates_uniqueness_of :description, :scope=>[:district_id,:title]
+  validates_uniqueness_of :description, scope: [:district_id,:title]
 
   validates_presence_of :title, :description
-  acts_as_list :scope=>:district_id
+  acts_as_list scope: :district_id
 
-  define_statistic :count , :count => :all
-  define_statistic :distinct_titles , :count => :all,  :column_name => 'distinct title'
+  define_statistic :count , count: :all
+  define_statistic :distinct_titles , count: :all,  column_name: 'distinct title'
   define_calculated_statistic :districts_with_changes do
-    find(:all,:group => 'title', :having => 'count(title)=1',:select =>'distinct district_id').length
+    find(:all,group: 'title', having: 'count(title)=1',select: 'distinct district_id').length
   end
 
   def disable!

@@ -2,7 +2,7 @@ class SchoolTeamsController < SchoolAdminController
   # GET /school_teams
   # GET /school_teams.xml
   def index
-    @school_teams = current_school.school_teams.named(:include => :users)
+    @school_teams = current_school.school_teams.named(include: :users)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,7 +46,7 @@ class SchoolTeamsController < SchoolAdminController
         format.html { redirect_to(school_teams_url) }
       else
         set_users_in_groups
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
       end
     end
   end
@@ -63,7 +63,7 @@ class SchoolTeamsController < SchoolAdminController
         format.html { redirect_to(school_teams_url) }
       else
         set_users_in_groups
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
     end
   end

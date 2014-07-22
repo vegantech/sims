@@ -53,7 +53,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         end
 #        format.js
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
 #        format.js
       end
     end
@@ -72,7 +72,7 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
         end
 #        format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
 #        format.js
       end
     end

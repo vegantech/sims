@@ -41,7 +41,7 @@ class ConsultationFormsController < ApplicationController
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
         format.js  {responds_to_parent {render}}
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
       end
 
       format.html # show.html.erb
@@ -63,7 +63,7 @@ class ConsultationFormsController < ApplicationController
         format.html { flash[:notice]=msg; redirect_to(current_student) }
         format.js { flash.now[:notice] = msg; responds_to_parent {render}}
       else
-        format.html { render :action => "new" }
+        format.html { render action: "new" }
         format.js { responds_to_parent{render} }
       end
     end

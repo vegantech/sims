@@ -16,7 +16,7 @@ class ReferralReport
 
   def referral_report
     csv_string = ''
-    CSV.generate(csv_string,:row_sep=>"\r\n") do |csv|
+    CSV.generate(csv_string,row_sep: "\r\n") do |csv|
       csv << ["personID","referral_request","main_concerns","interventions_tried","family_involvement","external_factors","date","schoolyear"]
       dates_of_sims_data.each do |student|
         if student["id"]

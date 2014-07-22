@@ -17,8 +17,8 @@ class RecommendedMonitor < ActiveRecord::Base
   belongs_to :intervention_definition
   belongs_to :probe_definition
 
-  delegate :title, :to=>:probe_definition
-  acts_as_list :scope=>:intervention_definition_id
+  delegate :title, to: :probe_definition
+  acts_as_list scope: :intervention_definition_id
   scope :active, joins(:probe_definition).merge(ProbeDefinition.active)
   scope :content_export, order
 

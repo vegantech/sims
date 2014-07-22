@@ -39,7 +39,7 @@ class District::SchoolsController < ApplicationController
       redirect_to district_schools_path
     else
       set_users
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -54,7 +54,7 @@ class District::SchoolsController < ApplicationController
       redirect_to district_schools_path
     else
       set_users
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 

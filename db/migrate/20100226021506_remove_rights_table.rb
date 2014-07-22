@@ -4,7 +4,7 @@ class RemoveRightsTable < ActiveRecord::Migration
   end
 
   def self.down
-    create_table "rights", :force => true do |t|
+    create_table "rights", force: true do |t|
       t.string   "controller"
       t.boolean  "read_access"
       t.boolean  "write_access"
@@ -12,6 +12,6 @@ class RemoveRightsTable < ActiveRecord::Migration
       t.datetime "created_at"
       t.datetime "updated_at"
     end
-    add_index "rights", ["role_id"], :name => "index_rights_on_role_id"
+    add_index "rights", ["role_id"], name: "index_rights_on_role_id"
   end
 end

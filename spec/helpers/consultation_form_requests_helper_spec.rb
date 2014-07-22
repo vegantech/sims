@@ -15,32 +15,32 @@ describe ConsultationFormRequestsHelper do
   describe 'show_consultation_form' do
     before do
       district = mock_district(:show_team_consultation_attachments? => true)
-      helper.stub!(:current_district=>district)
+      helper.stub!(current_district: district)
     end
     it 'should return true when the form is filled in' do
       o=mock(:filled_in? => true,:school_team => SchoolTeam.new)
-      f=mock(:object => o)
+      f=mock(object: o)
       helper.show_consultation_form?(f).should be_true
     end
     it 'should retrun true when the team is nil and @teams is undefined' do
       o=mock(:filled_in? => false,:school_team => nil)
-      f=mock(:object => o)
+      f=mock(object: o)
       helper.show_consultation_form?(f).should be_true
     end
     it 'should return true when the team has no assets' do
       o=mock(:filled_in? => false,:school_team => SchoolTeam.new)
-      f=mock(:object => o)
+      f=mock(object: o)
       helper.show_consultation_form?(f).should be_true
     end
     it 'should return false when the team is present, has assets, and the object is not filled in' do
-      o=mock(:filled_in? => false,:school_team => SchoolTeam.new(:assets => [Asset.new]))
-      f=mock(:object => o)
+      o=mock(:filled_in? => false,:school_team => SchoolTeam.new(assets: [Asset.new]))
+      f=mock(object: o)
       helper.show_consultation_form?(f).should be_false
     end
     it 'should return false when no team is present, but the first team in @teams has assets, and the object is not filled in' do
       o=mock(:filled_in? => false,:school_team => nil)
-      @teams = [SchoolTeam.new(:assets => [Asset.new])]
-      f=mock(:object => o)
+      @teams = [SchoolTeam.new(assets: [Asset.new])]
+      f=mock(object: o)
       helper.show_consultation_form?(f).should be_false
     end
   end

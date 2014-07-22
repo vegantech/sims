@@ -18,10 +18,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe GoalDefinition do
   before do
     @valid_attributes = {
-      :title => "value for title",
-      :description => "value for description",
-      :position => "1",
-      :disabled => false
+      title: "value for title",
+      description: "value for description",
+      position: "1",
+      disabled: false
     }
   end
 

@@ -29,7 +29,7 @@ describe Intervention do
       pending 'Remove this, after refactoring'
       e= {"end_date(3i)"=>"25", "start_date(1i)"=>"2009", "apply_to_all"=>"0", "start_date(2i)"=>"4", "auto_implementer"=>"0", "intervention_probe_assignment"=>{"end_date(3i)"=>"25", "probe_definition_id"=>"", "probe_definition"=>{"title"=>"", "minimum_score"=>"", "description"=>"jhj", "maximum_score"=>""}, "frequency_multiplier"=>"2", "first_date(1i)"=>"2009", "first_date(2i)"=>"4", "frequency_id"=>"284292352", "first_date(3i)"=>"26", "end_date(1i)"=>"2009", "end_date(2i)"=>"7"}, "start_date(3i)"=>"26", "frequency_multiplier"=>"1", "time_length_id"=>"503752779", "frequency_id"=>"284292352", "intervention_definition_id"=>"", "comment"=>{"comment"=>""}, "end_date(1i)"=>"2009", "time_length_number"=>"1", "intervention_definition"=>{"title"=>"Custom Intervention Title", "description"=>"Custom Intervention Desc", "tier_id"=>"284451385", "intervention_cluster_id"=>"34708545"}, "end_date(2i)"=>"7"}
       c=ProbeDefinition.count
-      i=Intervention.new(e.merge(:user_id=>1,:selected_ids=>1,:school_id=>1))
+      i=Intervention.new(e.merge(user_id: 1,selected_ids: 1,school_id: 1))
       id=i.intervention_definition
       id.valid?
       puts id.errors.inspect
@@ -40,9 +40,9 @@ describe Intervention do
       if false
         @intervention = current_student.interventions.new(params[:intervention].merge(values_from_session))
        ppp= {"commit"=>"Save", "action"=>"create", "authenticity_token"=>"KkZvosXOVNLa0OE9SWx7otNQgilYP39jbwHXqZVtvD4=", "intervention"=>{"end_date(3i)"=>"25", "start_date(1i)"=>"2009", "apply_to_all"=>"0", "start_date(2i)"=>"4", "auto_implementer"=>"0", "intervention_probe_assignment"=>{"end_date(3i)"=>"25", "probe_definition_id"=>"", "probe_definition"=>{"title"=>"", "minimum_score"=>"", "description"=>"jhj", "maximum_score"=>""}, "frequency_multiplier"=>"2", "first_date(1i)"=>"2009", "first_date(2i)"=>"4", "frequency_id"=>"284292352", "first_date(3i)"=>"26", "end_date(1i)"=>"2009", "end_date(2i)"=>"7"}, "start_date(3i)"=>"26", "frequency_multiplier"=>"1", "time_length_id"=>"503752779", "frequency_id"=>"284292352", "intervention_definition_id"=>"", "comment"=>{"comment"=>""}, "end_date(1i)"=>"2009", "time_length_number"=>"1", "intervention_definition"=>{"title"=>"Custom Intervention Title", "description"=>"Custom Intervention Desc", "tier_id"=>"284451385", "intervention_cluster_id"=>"34708545"}, "end_date(2i)"=>"7"}, "controller"=>"interventions"}
-       values_from_sess={:user_id => session[:user_id],
-                         :selected_ids => selected_students_ids,
-                         :school_id => session[:school_id]
+       values_from_sess={user_id: session[:user_id],
+                         selected_ids: selected_students_ids,
+                         school_id: session[:school_id]
                  }
       end
     end
@@ -58,7 +58,7 @@ describe Intervention do
 
     describe 'with auto_implementer set to "1"' do
       it 'should create an implementer' do
-        i = FactoryGirl.create(:intervention, :auto_implementer => '1')
+        i = FactoryGirl.create(:intervention, auto_implementer: '1')
         i.intervention_participants.size.should == 2 #Author and participant
       end
     end
@@ -69,7 +69,7 @@ describe Intervention do
       it 'should cause a validation error on the intervention itself' do
         pending
         i = FactoryGirl.create(:intervention)
-        i.intervention_probe_assignments.build(:end_date => Date.new(2004, 1, 1), :first_date => Date.new(2009, 1, 1))
+        i.intervention_probe_assignments.build(end_date: Date.new(2004, 1, 1), first_date: Date.new(2009, 1, 1))
         i.valid?.should be_false
 
         ipa = i.intervention_probe_assignments.first
@@ -78,7 +78,7 @@ describe Intervention do
         i.should be_valid
 
         i.reload
-        i.update_attributes(:intervention_probe_assignment => {'first_date(1i)' => '2009', 'first_date(2i)' => '1', 'first_date(3i)' => '1',
+        i.update_attributes(intervention_probe_assignment: {'first_date(1i)' => '2009', 'first_date(2i)' => '1', 'first_date(3i)' => '1',
                                                                'end_date(1i)' => '2004', 'end_date(2i)' => '1', 'end_date(3i)' => '1', 'probe_definition_id' => 2}).should be_false
       end
     end
@@ -89,7 +89,7 @@ describe Intervention do
     definition when saved' do
       pending
       i = FactoryGirl.create(:intervention)
-      p = i.build_custom_probe(:title => "test", :description => "test")
+      p = i.build_custom_probe(title: "test", description: "test")
       p.save!
 
       i.reload
@@ -103,7 +103,7 @@ describe Intervention do
   end
 
   it "should end an intervention" do
-    i = FactoryGirl.create(:intervention, :start_date => 2.days.ago, :end_date => Date.today)
+    i = FactoryGirl.create(:intervention, start_date: 2.days.ago, end_date: Date.today)
 
     i.end(1)
     i.active.should ==(false)
@@ -112,7 +112,7 @@ describe Intervention do
   end
 
   it 'should require end_date be after (or same as) start date' do
-    i = FactoryGirl.create(:intervention, :start_date => Date.today, :end_date => Date.today + 1.day)
+    i = FactoryGirl.create(:intervention, start_date: Date.today, end_date: Date.today + 1.day)
     i.start_date = nil
     i.should_not be_valid
     i.errors_on(:end_date).should_not be_nil
@@ -131,9 +131,9 @@ describe Intervention do
     describe 'without an intervention definition' do
       it 'should have the frequency set to 2 times weekly' do
         pending "This should be moved to custom"
-        Frequency.create!(:title=>'Daily')
-        Frequency.create!(:title=>'Weekly')
-        Frequency.create!(:title=>'Monthly')
+        Frequency.create!(title: 'Daily')
+        Frequency.create!(title: 'Weekly')
+        Frequency.create!(title: 'Monthly')
 
         Intervention.new.frequency_multiplier.should == InterventionDefinition::DEFAULT_FREQUENCY_MULTIPLIER
         Intervention.new.frequency.should == Frequency.find_by_title('Weekly')
@@ -141,30 +141,30 @@ describe Intervention do
 
       it 'should have the time length set to 4 weeks' do
         pending "This should be moved to custom"
-        TimeLength.create!(:days=>1, :title => 'Day')
-        TimeLength.create!(:days=>7, :title => 'Week')
-        TimeLength.create!(:days=>30, :title => 'Month')
+        TimeLength.create!(days: 1, title: 'Day')
+        TimeLength.create!(days: 7, title: 'Week')
+        TimeLength.create!(days: 30, title: 'Month')
         Intervention.new.time_length_number.should == InterventionDefinition::DEFAULT_TIME_LENGTH_NUMBER
         Intervention.new.time_length.should == TimeLength.find_by_title('Week')
 
       end
 
       it 'should set the end date based on the start date and time length' do
-        tl=TimeLength.new(:days => 3, :title => 'Triad')
-        attrs = {:time_length => tl, :time_length_number => 5, :start_date =>"2006-05-05"}
+        tl=TimeLength.new(days: 3, title: 'Triad')
+        attrs = {time_length: tl, time_length_number: 5, start_date: "2006-05-05"}
         Intervention.new(attrs).end_date.should == "2006-05-20".to_date
       end
     end
 
     describe 'with an intervention definition' do
       it 'should set the frequency and time lengh based on the intervention definition' do
-        f1=Frequency.create!(:title=>'Daily')
-        tl1=TimeLength.create!(:days=>30, :title => 'Month')
+        f1=Frequency.create!(title: 'Daily')
+        tl1=TimeLength.create!(days: 30, title: 'Month')
 
-        id_attrs = {:frequency => f1, :time_length => tl1, :frequency_multiplier => 60, :time_length_num => 7}
+        id_attrs = {frequency: f1, time_length: tl1, frequency_multiplier: 60, time_length_num: 7}
         int_def = FactoryGirl.create(:intervention_definition, id_attrs)
 
-        intervention=Intervention.new(:intervention_definition => int_def)
+        intervention=Intervention.new(intervention_definition: int_def)
 
         intervention.start_date.should == Date.today
         intervention.frequency.should == f1
@@ -181,7 +181,7 @@ describe Intervention do
       end
 
       it 'should leave auto_implementor alone if it is set to 0' do
-        Intervention.new(:auto_implementer => "0").auto_implementer.should == "0"
+        Intervention.new(auto_implementer: "0").auto_implementer.should == "0"
       end
       it 'should also have proper specs for build and initialize'
     end
@@ -192,8 +192,8 @@ describe Intervention do
   describe 'creating for other students' do
     before :all do
       @student1 = FactoryGirl.create(:student)
-      @student2 = FactoryGirl.create(:student, :district => @student1.district)
-      @intervention = FactoryGirl.build(:intervention, :student => @student1)
+      @student2 = FactoryGirl.create(:student, district: @student1.district)
+      @intervention = FactoryGirl.build(:intervention, student: @student1)
     end
     describe 'with apply_to_all = 1' do
       before :all do
@@ -201,7 +201,7 @@ describe Intervention do
       end
 
       it 'should add the comment to all interventions' do
-        @intervention.comments.build(:comment => "woo")
+        @intervention.comments.build(comment: "woo")
         @intervention.comment_author = @intervention.user_id
         @intervention.send(:create_other_students)
         Intervention.last.comments.first.comment.should == "woo"
@@ -239,13 +239,13 @@ describe Intervention do
      it 'should send intervention starting email' do
       Intervention.delete_all
       @student1 = FactoryGirl.create(:student)
-      @student2 = FactoryGirl.create(:student, :district => @student1.district)
-      @user1 = FactoryGirl.create(:user, :district => @student1.district)
-      @user2 = FactoryGirl.create(:user, :district => @student1.district)
-      @intervention = FactoryGirl.build(:intervention, :student => @student1, :user => @user1, :apply_to_all => "1",
-                                                       :selected_ids => [@student1.id.to_s, @student2.id.to_s],
-                                                       :participant_user_ids => [@user1.id.to_s, @user2.id.to_s])
-      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(:deliver=>true))
+      @student2 = FactoryGirl.create(:student, district: @student1.district)
+      @user1 = FactoryGirl.create(:user, district: @student1.district)
+      @user2 = FactoryGirl.create(:user, district: @student1.district)
+      @intervention = FactoryGirl.build(:intervention, student: @student1, user: @user1, apply_to_all: "1",
+                                                       selected_ids: [@student1.id.to_s, @student2.id.to_s],
+                                                       participant_user_ids: [@user1.id.to_s, @user2.id.to_s])
+      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(deliver: true))
       Notifications.should_not_receive(:intervention_participant_added)
       @intervention.save!
      end
@@ -254,11 +254,11 @@ describe Intervention do
     describe 'updating intervention' do
       it 'should send new participant email if a new participant is added' do
         @intervention= FactoryGirl.create(:intervention)
-        @user2 = FactoryGirl.create(:user, :district => @intervention.user.district)
-        @user3 = FactoryGirl.create(:user, :district => @intervention.user.district)
+        @user2 = FactoryGirl.create(:user, district: @intervention.user.district)
+        @user3 = FactoryGirl.create(:user, district: @intervention.user.district)
         @intervention = Intervention.find(@intervention.id)
         Notifications.should_not_receive(:intervention_starting)
-        Notifications.should_receive(:intervention_participant_added).twice.and_return(mock(:deliver => true))
+        Notifications.should_receive(:intervention_participant_added).twice.and_return(mock(deliver: true))
         @intervention.frequency_multiplier = 10
         @intervention.participant_user_ids=[@user2.id.to_s, @user3.id.to_s]
         @intervention.save

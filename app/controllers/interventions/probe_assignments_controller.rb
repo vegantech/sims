@@ -8,7 +8,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
 
     respond_to do |format|
       format.js
-      format.html {redirect_to edit_intervention_url(@intervention, :enter_score => true)} # index.html.erb
+      format.html {redirect_to edit_intervention_url(@intervention, enter_score: true)} # index.html.erb
     end
   end
 
@@ -25,7 +25,7 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     @ipa = InterventionProbeAssignment.find_by_id(params[:id]) || @intervention.intervention_probe_assignments.build
     @ipa.attributes = params[:intervention][:intervention_probe_assignment]
     @count = params[:count].to_i
-    render :layout => false
+    render layout: false
   end
 
   protected

@@ -4,6 +4,6 @@ class AddIndicesForStiAndPolymorphicColumns < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :flags, :column => :type
+    remove_index :flags, column: :type
   end
 end
