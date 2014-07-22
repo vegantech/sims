@@ -9,8 +9,8 @@ describe PrincipalOverridesController do
   before do
     @override=mock_principal_override
     @user=mock_user(:grouped_principal_overrides=>[@override],
-    :principal_override_requests=>PrincipalOverride,
-    :principal_override_responses => PrincipalOverride)
+                    :principal_override_requests=>PrincipalOverride,
+                    :principal_override_responses => PrincipalOverride)
     @student = mock_student
     controller.stub!(:current_user => @user, :current_student => @student)
   end

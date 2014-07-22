@@ -7,17 +7,17 @@ class ProbeGraph::Linexy < ProbeGraph::Base
     end
 
     Gchart.line_xy({:data => line_graph_data(probes_for_graph),
-                   :axis_with_labels => 'x,x,y,r',
-                   :axis_labels => line_axis_labels,
-                   :bar_colors => "8DACD0,99DD99",
-                   :format=>'image_tag',
-                   :encoding => 'text',
-                   :custom => custom_string(custom_chm),
-                   :bar_width_and_spacing => nil,
-                   :size => '800x250',
-                   :thickness => "2|1,4,2", #thickness of scores | aim line with dashing
-                   :chds => chds,
-                   :axis_range => [[0,line_graph_date_denom],[],[0,100],[0,100]]
+                    :axis_with_labels => 'x,x,y,r',
+                    :axis_labels => line_axis_labels,
+                    :bar_colors => "8DACD0,99DD99",
+                    :format=>'image_tag',
+                    :encoding => 'text',
+                    :custom => custom_string(custom_chm),
+                    :bar_width_and_spacing => nil,
+                    :size => '800x250',
+                    :thickness => "2|1,4,2", #thickness of scores | aim line with dashing
+                    :chds => chds,
+                    :axis_range => [[0,line_graph_date_denom],[],[0,100],[0,100]]
     })
   end
   protected

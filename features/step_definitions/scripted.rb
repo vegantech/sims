@@ -30,7 +30,7 @@ Given /^a probe_definition with id "([^"]*)"$/ do |id|
   ProbeDefinition.delete_all
   Probe.delete_all
   pd = Factory(:probe_definition, :title => 'cuke1', :description => 'cuke1', :district_id => @user.district_id, 
-                    :minimum_score => -10, :maximum_score => 10 )
+                                  :minimum_score => -10, :maximum_score => 10 )
   ProbeDefinition.update_all("id=#{id}", "id = #{pd.id}")
 end
 

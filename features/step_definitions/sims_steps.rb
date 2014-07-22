@@ -340,7 +340,7 @@ Given /^student "([^\"]*)" directly owns consultation form with team consultatio
   consultation_form = Factory(:consultation_form, :team_consultation => tc)
 
   concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
-    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+                                                 :recent_changes => "Recent changes #{concern_label}", :area => 3)
 
   consultation_form.consultation_form_concerns << concern
   team_consultation = Factory(:team_consultation, :consultation_form => consultation_form)
@@ -354,7 +354,7 @@ Given /^student "([^\"]*)" directly owns consultation form with concern "([^\"]*
   consultation_form = Factory(:consultation_form, :team_consultation => tc)
 
   concern = Factory(:consultation_form_concern,  :strengths => "Strengths #{concern_label}", :concerns => "Concerns #{concern_label}",
-    :recent_changes => "Recent changes #{concern_label}", :area => 3)
+                                                 :recent_changes => "Recent changes #{concern_label}", :area => 3)
 
   consultation_form.consultation_form_concerns << concern
 end

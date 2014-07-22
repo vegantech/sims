@@ -51,7 +51,7 @@ class DistrictLog < ActiveRecord::Base
                          district_id: params["district_id_for_login"])
                         .pluck(:id).first
     failure.create! district_id: params["district_id_for_login"],
-      body: params["username"], user_id: user_id
+                    body: params["username"], user_id: user_id
   end
 
   def self.record_success(user)

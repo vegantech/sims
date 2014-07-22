@@ -79,12 +79,12 @@ class InterventionProbeAssignment < ActiveRecord::Base
 
   def graph(graph_type=nil)
     ProbeGraph::Base.build(:graph_type => graph_type,
-                   :probes => probes.to_a,
-                   :probe_definition => probe_definition,
-                   :district => student.district,
-                   :first_date => first_date,
-                   :end_date => end_date,
-                   :goal => goal)
+                           :probes => probes.to_a,
+                           :probe_definition => probe_definition,
+                           :district => student.district,
+                           :first_date => first_date,
+                           :end_date => end_date,
+                           :goal => goal)
   end
 
 

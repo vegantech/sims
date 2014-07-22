@@ -4,11 +4,11 @@ class UsageByDistrict
 
 
     i1= Intervention.find(:all, :select => "districts.name, count(interventions.id) as interventions, count(distinct student_id) as students_with_interventions", 
-                          :joins => {:student => :district}, :group => "districts.name", 
-                          :conditions => "interventions.created_at between '#{start}' and '#{end_date}'")
+                                :joins => {:student => :district}, :group => "districts.name", 
+                                :conditions => "interventions.created_at between '#{start}' and '#{end_date}'")
     i2= StudentComment.find(:all, :select => "districts.name, count(student_comments.id) as team_notes, count(distinct student_id) as students_with_team_notes", 
-                            :joins => {:student => :district}, :group => "districts.name", 
-                            :conditions => "student_comments.created_at between '#{start}' and '#{end_date}'")
+                                  :joins => {:student => :district}, :group => "districts.name", 
+                                  :conditions => "student_comments.created_at between '#{start}' and '#{end_date}'")
     i3= TeamConsultation.find(:all, 
                               :select => "districts.name, 
                               count(team_consultations.id) as team_consultations, count(distinct student_id) as students_with_team_consultations", 

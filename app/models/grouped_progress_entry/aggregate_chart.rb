@@ -103,8 +103,8 @@ class GroupedProgressEntry
             'chs' => '600x500',
             'chxt'=> 'x,y',
             'chxr' => "1,#{min_score},#{max_score}",
-          'chxl' => "0:|#{min_date}|#{max_date}",
-          'chm' => chm.join("|"),
+            'chxl' => "0:|#{min_date}|#{max_date}",
+            'chm' => chm.join("|"),
             'chid' => Time.now.usec,
             'chd' => "t:#{scaled_scores}"}
     end

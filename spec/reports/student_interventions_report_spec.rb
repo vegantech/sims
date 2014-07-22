@@ -84,7 +84,7 @@ describe "StudentInterventionsReport" do
     mock_int_clust = mock_model(InterventionCluster, :title => "Category Title #{n}", :objective_definition => mock_obj_def)
 
     mock_int_def = mock_model(InterventionDefinition, :title => "Intervention Definition Title #{n}", :intervention_cluster => mock_int_clust,
-      :description => "Intervention Definition Desc #{n}", :tier_summary => "Tier - #{n}")
+                                                      :description => "Intervention Definition Desc #{n}", :tier_summary => "Tier - #{n}")
 
     mock_ended_teacher = User.new(:first_name => 'Ender', :last_name => 'Wiggin')
     intervention_people = mock_intervention_people n_participants

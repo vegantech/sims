@@ -44,7 +44,7 @@ RIGHTS={
                     "district/flag_categories",
                     "reports",
                     "tiers",],
- "local_system_administrator"=>["district/users",
+  "local_system_administrator"=>["district/users",
                                 "district/schools",
                                 "district/logs",
                                 "flag_descriptions",

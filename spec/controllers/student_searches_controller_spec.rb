@@ -109,12 +109,12 @@ describe StudentSearchesController do
       describe 'with search criteria' do
         it 'should capture search criteria in session and redirect to students_url' do
           post :create, 'search_criteria' => {'grade' => '1', 'last_name' => 'Buckley', 'search_type' => 'Search Type'},
-          'flagged_intervention_types' => ['attendance', 'math'], :school_id => school.id
+                        'flagged_intervention_types' => ['attendance', 'math'], :school_id => school.id
 
           response.should redirect_to(students_url)
 
           session[:search].should == {'flagged_intervention_types'=>['attendance', 'math'],
-          'last_name'=>'Buckley', 'intervention_group_types'=>nil, 'grade'=>'1', 'search_type'=>'Search Type'}
+                                      'last_name'=>'Buckley', 'intervention_group_types'=>nil, 'grade'=>'1', 'search_type'=>'Search Type'}
         end
       end
     end

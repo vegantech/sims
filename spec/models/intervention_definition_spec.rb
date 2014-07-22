@@ -101,15 +101,15 @@ describe InterventionDefinition do
       od=FactoryGirl.create(:objective_definition, :goal_definition => gd)
       @category = FactoryGirl.create(:intervention_cluster, :objective_definition => od)
       @suss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
-              :user_id => @cucumber_user.id, :school_id => @cucumber_school.id, :custom => true)
+                                                           :user_id => @cucumber_user.id, :school_id => @cucumber_school.id, :custom => true)
       @suds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
-              :user_id => @cucumber_user.id, :school_id => -1, :custom => true)
+                                                           :user_id => @cucumber_user.id, :school_id => -1, :custom => true)
       @duss = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
-              :user_id => -1, :school_id => @cucumber_school.id, :custom => true)
+                                                           :user_id => -1, :school_id => @cucumber_school.id, :custom => true)
       @duds = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
-              :user_id => -1, :school_id => -1, :custom => true)
+                                                           :user_id => -1, :school_id => -1, :custom => true)
       @dis = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "disabled",
-              :disabled => true)
+                                                          :disabled => true)
       @sys = FactoryGirl.create(:intervention_definition, :intervention_cluster => @category, :title => "system")
     end
 

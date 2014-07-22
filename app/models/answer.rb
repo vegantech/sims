@@ -16,7 +16,7 @@ class Answer < ActiveRecord::Base
   belongs_to :checklist
   belongs_to :answer_definition
   has_many :previous_answers, :class_name => 'Answer',
-    :finder_sql => 'select * from answers where id = #{id} and checklist_id in (#{checklist.student.checklists.collect(&:checklist_id)}) and created_at < \' #{(checklist.created_at || Time.now).to_s(:db)}\' order by created_at ASC'
+                              :finder_sql => 'select * from answers where id = #{id} and checklist_id in (#{checklist.student.checklists.collect(&:checklist_id)}) and created_at < \' #{(checklist.created_at || Time.now).to_s(:db)}\' order by created_at ASC'
 
   validates_presence_of :answer_definition_id
   delegate :value, :to => :answer_definition

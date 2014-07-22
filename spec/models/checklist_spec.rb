@@ -218,8 +218,8 @@ describe Checklist do
 
 
     params={:student_id=>@student.id, :element_definition=>{@saElement.id=>{:element_definition_id=>@saElement.id,:id=>2,:text=>"Short Answer content"},
-    @commentElement.id=>{:id=>3,:text=>"Comment content",:element_definition_id=>@commentElement.id,},
-    @scaleElement.id=>{:id=>4,:element_definition_id=>@scaleElement.id,}
+                                                            @commentElement.id=>{:id=>3,:text=>"Comment content",:element_definition_id=>@commentElement.id,},
+                                                            @scaleElement.id=>{:id=>4,:element_definition_id=>@scaleElement.id,}
     }
     }
 

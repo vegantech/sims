@@ -297,7 +297,7 @@ describe ReportsController do
         TeamNotesReport.stub!(:render_html=>m)
 
         post :team_notes, :start_date => {:month => 10, :day => 15, :year => 2008}, :end_date => {:month => 10, :day => 19, :year => 2008},
-        "report_params"=>{"format"=>"html"}, "generate"=>"Generate Report"
+                          "report_params"=>{"format"=>"html"}, "generate"=>"Generate Report"
 
         assigns(:today).should == Date.current
         assigns(:start_date).should == Date.new(2008, 10, 15)

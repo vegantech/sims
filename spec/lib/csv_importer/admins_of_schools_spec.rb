@@ -10,19 +10,19 @@ describe CSVImporter::AdminsOfSchools do
     let!(:other_district) {Factory(:district)}
     let!(:user_to_add) {Factory(:user, :district => upload_district, :district_user_id => 'user_to_add')}
     let!(:user_to_remove) {  Factory(:user, :district => upload_district, :district_user_id => 'user_to_remove',
-                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
+                                            :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
     let!(:school) {Factory(:school, :district => upload_district, :district_school_id => 222)}
     let!(:other_school) {Factory(:school, :district => other_district, :district_school_id => 222)}
     let!(:other_district_user_to_add) {Factory(:user, :district => other_district, :district_user_id => 'user_to_add')}
     let!(:other_district_user_to_remove) {  Factory(:user, :district => other_district, :district_user_id => 'user_to_remove',
-                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => other_school)])}
+                                                           :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => other_school)])}
     let!(:school_without_key) {Factory(:school, :district => other_district)}
     let!(:user_without_key_to_remove) {  Factory(:user, :district => upload_district,
-                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
+                                                        :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school)])}
     let!(:user_to_non_admin) {  Factory(:user, :district => upload_district, :district_user_id => 'user_with_non_admin',
-                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => false, :school => school)])}
+                                               :user_school_assignments => [UserSchoolAssignment.new(:admin => false, :school => school)])}
     let!(:user_with_key_but_assignment_to_school_without_key) { Factory(:user, :district => upload_district, :district_user_id => 'user_with_other_key',
-                                     :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school_without_key)])}
+                                                                               :user_school_assignments => [UserSchoolAssignment.new(:admin => true, :school => school_without_key)])}
     let(:import_messages) { subject.import }
 
 

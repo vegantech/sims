@@ -18,35 +18,35 @@ class Flag < ActiveRecord::Base
 
   TYPES = {
       "attendance" => {:icon => "A.gif", :humanize => "Attendance",
-        :how_often_to_upload => "If using this flag, needs to be done daily or weekly to be effective."
+                       :how_often_to_upload => "If using this flag, needs to be done daily or weekly to be effective."
                       },
       "suspension" => {:icon=> "B.gif", :humanize => "Behavior",
-        :how_often_to_upload =>
+                       :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "math" => {:icon => "M.gif", :humanize => "Math",
-        :how_often_to_upload =>
+                 :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "languagearts" => {:icon => "LA.gif", :humanize => "Language Arts",
-        :how_often_to_upload =>
+                         :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "science" => {:icon=> "Beaker.png", :humanize => "Science",
-        :how_often_to_upload =>
+                    :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "socialstudies" => {:icon=> "world_edit.png", :humanize => "Social Studies",
-        :how_often_to_upload =>
+                          :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },
       "gifted" => {:icon=> "lightbulb.png", :humanize => "Gifted/Talented",
-        :how_often_to_upload =>
+                   :how_often_to_upload =>
                       "As soon as possible after availability.
           (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
                       },

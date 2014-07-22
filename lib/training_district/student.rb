@@ -15,7 +15,7 @@ class TrainingDistrict::Student
       first_name = first_names[(i%50) -1 + 50*(i %2)].strip
       last_name = last_names[i-1].capitalize.strip
       s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_name, :last_name => last_name,
-        :number => (i-1).to_s, :esl => esl, :special_ed => special_ed)
+                                     :number => (i-1).to_s, :esl => esl, :special_ed => special_ed)
       s.enrollments.create!(:school => school, :grade => grades[i%6])
       s.groups << group
       s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies
@@ -29,7 +29,7 @@ class TrainingDistrict::Student
   def self.generate_students(district,school,group)
     1.upto(30) do |i|
       s=FactoryGirl.create(:student, :district => district, :birthdate=>10.years.ago, :first_name => first_names[i-1+ 50*(i %2)].strip, :last_name => "#{i.to_s.rjust(2,'0')}-#{last_names[i-1].capitalize.strip}",
-        :number => (i-1).to_s)
+                                     :number => (i-1).to_s)
       s.enrollments.create!(:school => school, :grade => 5)
       s.groups << group
       s.system_flags.create!(:category=>"languagearts", :reason => "1-edits writing, 1-revises writing, 1-applies

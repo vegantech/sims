@@ -76,7 +76,7 @@ class AutomatedIntervention
       (@messages << "Invalid Probe Definition ID #{line}" and return false)
 
       intervention.intervention_probe_assignment={:probe_definition_id => line[:probe_definition_id],
-        :first_date => line[:start_date], :end_date => line[:start_date]}
+                                                  :first_date => line[:start_date], :end_date => line[:start_date]}
 
       if line[:score].present?
         probe=intervention.intervention_probe_assignment.probes.build(:score => line[:score], :administered_at => line[:start_date])
@@ -109,7 +109,7 @@ class AutomatedIntervention
 
     id= InterventionDefinition.find_by_id(int_def_id,:joins =>
                                  {:intervention_cluster => {:objective_definition => :goal_definition}},
-                                   :conditions => {"goal_definitions.district_id" => @district.id})
+                                                     :conditions => {"goal_definitions.district_id" => @district.id})
 
     if id
       return id

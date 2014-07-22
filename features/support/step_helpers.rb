@@ -58,11 +58,11 @@ end
 
 def create_user user_name='first_last', password=user_name
   @user=Factory :user, :username => user_name,
-    :first_name => user_name.split("_").first || 'First',
-    :last_name => user_name.split("_").last || 'Last',
-    :password=> password,
-    :district_id => default_district.id,
-    :email => user_name+"@cucumber.testing"
+                       :first_name => user_name.split("_").first || 'First',
+                       :last_name => user_name.split("_").last || 'Last',
+                       :password=> password,
+                       :district_id => default_district.id,
+                       :email => user_name+"@cucumber.testing"
 end
 
 def create_school school_name
@@ -94,16 +94,16 @@ def create_student first_name, last_name, grade, school, flag_type = nil, ignore
 
   if flag_type
     f = SystemFlag.create!(:student => s,
-      :category => flag_type,
-      :reason => 'some reason or another',
-      :user => @default_user)
+                           :category => flag_type,
+                           :reason => 'some reason or another',
+                           :user => @default_user)
   end
 
   if ignore_type and ignore_reason
     i = IgnoreFlag.create!(:student => s,
-      :category => ignore_type,
-      :reason => ignore_reason,
-      :user => @default_user)
+                           :category => ignore_type,
+                           :reason => ignore_reason,
+                           :user => @default_user)
   end
   s
 end

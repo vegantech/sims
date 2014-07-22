@@ -137,7 +137,7 @@ describe User do
       @user.stub!(:principal_override_responses => ["Principal Override Response"])
       PrincipalOverride.should_receive(:pending_for_principal).with(@user).and_return(["Pending For Principal"])
       @user.grouped_principal_overrides.should == {:user_requests => [req], :principal_responses => ["Principal Override Response"],
-          :pending_requests => ["Pending For Principal"]}
+                                                   :pending_requests => ["Pending For Principal"]}
     end
   end
 

@@ -23,7 +23,7 @@ class ConsultationFormRequestsController < ApplicationController
   # POST /consultation_form_requests.xml
   def create
     @consultation_form_request = ConsultationFormRequest.new(params[:consultation_form_request].merge(:student=>current_student,
-    :requestor => current_user))
+                                                                                                      :requestor => current_user))
 
     respond_to do |format|
       if @consultation_form_request.save

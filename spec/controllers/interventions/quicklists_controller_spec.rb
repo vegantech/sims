@@ -34,8 +34,8 @@ describe Interventions::QuicklistsController do
     it "should redirect to the new_intervention_url with that intervention_definition" do
       InterventionDefinition.should_receive(:find).with('1').and_return(
       mock_intervention_definition(:goal_definition_id => 1,
-      :objective_definition_id => 2,
-      :intervention_cluster_id => 3, :id =>1))
+                                   :objective_definition_id => 2,
+                                   :intervention_cluster_id => 3, :id =>1))
       post :create, :intervention_definition_id=> '1'
       response.should redirect_to(new_intervention_url(:goal_id => 1, :objective_id => 2, :category_id => 3, :definition_id =>1))
     end

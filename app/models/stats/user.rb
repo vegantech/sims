@@ -15,7 +15,7 @@ module Stats::User
       {
       :created_after => "(interventions.created_at >= ? or student_comments.created_at >= ? or team_consultations.created_at >= ?
     or consultation_form_requests.created_at >=?)",
-    :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
+      :created_before => "(interventions.created_at <= ? or student_comments.created_at <= ? or team_consultations.created_at <= ?
     or consultation_form_requests.created_at <=?)"
       }
 

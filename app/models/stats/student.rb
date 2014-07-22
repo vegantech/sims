@@ -23,9 +23,9 @@ module Stats::Student
   }
 
   define_statistic :students_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct students.id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+                                                :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_with_enrolled_students , :count => :all, :joins => :enrollments, :column_name => 'distinct students.district_id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+                                                       :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_with_students, :count => :all, :column_name => 'distinct district_id'
 
   #TODO DRY THESE

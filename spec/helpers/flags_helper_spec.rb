@@ -138,7 +138,7 @@ describe FlagsHelper do
           u = mock_user(:to_s => 'Mock User')
 
           flag = mock_flag(:category => 'SomeCategory', :reason => 'Just because', :user => u, :created_at => Date.new(2009, 1, 12).to_time,
-            :icon => 'fubar.png')
+                           :icon => 'fubar.png')
 
           student = mock_student(:ignore_flags => [flag])
           pending "Testing on rcr"

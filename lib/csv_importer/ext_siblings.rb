@@ -4,12 +4,12 @@ module CSVImporter
     FIELD_DESCRIPTIONS = { 
       :district_student_id =>"Key for student",        
       :first_name =>"First Name",
-        :middle_name =>"Middle Name",
-        :last_name =>"Last Name",
-        :student_number =>"Student number that would appear on report card or student id card.",
-        :grade =>"Grade",
-        :school_name =>"Currently Enrolled at School",
-        :age =>"Age"
+      :middle_name =>"Middle Name",
+      :last_name =>"Last Name",
+      :student_number =>"Student number that would appear on report card or student id card.",
+      :grade =>"Grade",
+      :school_name =>"Currently Enrolled at School",
+      :age =>"Age"
     }
     class << self
       def description

@@ -111,7 +111,7 @@ describe GroupedProgressEntriesController do
       GroupedProgressEntry.stub!(:find).and_return(mock_grouped_progress_entry)
       mock_grouped_progress_entry.should_receive("end_interventions!").with(['1','2','3'], 'End Reason', 'Fidelity')
       put :end, {:id => "1", :end_intervention => [1,2,3],
-        :end_reason => 'End Reason', :fidelity => 'Fidelity', }, {:search => true}
+                 :end_reason => 'End Reason', :fidelity => 'Fidelity', }, {:search => true}
     end
   end
 

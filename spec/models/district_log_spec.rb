@@ -26,7 +26,7 @@ describe DistrictLog do
   describe 'for_display' do
     before :all do
       @user = FactoryGirl.create :user, username: 'valid_user', first_name: 'First',
-        middle_name: 'Middle', last_name: 'Last'
+                                        middle_name: 'Middle', last_name: 'Last'
 
       DistrictLog.delete_all
 

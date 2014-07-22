@@ -34,13 +34,13 @@ end
 
 Given /^an assortment of custom interventions$/ do
   Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_same_school",
-          :user_id => cucumber_user.id, :school_id => cucumber_school.id, :custom => true)
+                                    :user_id => cucumber_user.id, :school_id => cucumber_school.id, :custom => true)
   Factory(:intervention_definition, :intervention_cluster => @category, :title => "same_user_different_school",
-          :user_id => cucumber_user.id, :school_id => -1, :custom => true)
+                                    :user_id => cucumber_user.id, :school_id => -1, :custom => true)
   Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_same_school",
-          :user_id => -1, :school_id => cucumber_school.id, :custom => true)
+                                    :user_id => -1, :school_id => cucumber_school.id, :custom => true)
   Factory(:intervention_definition, :intervention_cluster => @category, :title => "different_user_different_school",
-          :user_id => -1, :school_id => -1, :custom => true)
+                                    :user_id => -1, :school_id => -1, :custom => true)
 end
 
 Then /^I start a new intervention based on the following table:$/ do |table|

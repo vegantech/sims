@@ -15,7 +15,7 @@ class RecommendationsController < ApplicationController
 
   def create
     params.deep_merge!(:recommendation => {:draft => !!params[:draft],
-                      :user_id => current_user.id})
+                                           :user_id => current_user.id})
 
     if params[:checklist_id]
       @checklist = current_student.checklists.find(params[:checklist_id])

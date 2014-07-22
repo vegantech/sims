@@ -11,9 +11,9 @@ describe CSVImporter::Students do
       i=CSVImporter::Students.new "#{Rails.root}/spec/csv/students.csv",d
       i.import
       expected=  {997 => [false,true], 992 => [false,false], 993 => [false, false],
-          994 => [false,false], 995 => [false,false], 996 => [false,false],
-          998 => [true, true], 999 => [true,true],
-          1000 => [false, false], 1001 =>[true,false], 1002 => [true,false]
+                  994 => [false,false], 995 => [false,false], 996 => [false,false],
+                  998 => [true, true], 999 => [true,true],
+                  1000 => [false, false], 1001 =>[true,false], 1002 => [true,false]
         }
 
 

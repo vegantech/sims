@@ -197,7 +197,7 @@ describe StudentSearch do
 
         it 'should return students in an active intervention when no checkboxes selected' do
           search_results = StudentSearch.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
-                                             :intervention_group_types=>[])
+                                                :intervention_group_types=>[])
           search_results.should == [@e2]
         end
 
@@ -210,7 +210,7 @@ describe StudentSearch do
           FactoryGirl.create(:intervention,:student=>@e4.student,:active=>true)
 
           search_results = StudentSearch.search(:search_type => 'active_intervention',:intervention_group=>'ObjectiveDefinition',
-                                             :intervention_group_types=>[ob2,ob3])
+                                                :intervention_group_types=>[ob2,ob3])
 
           search_results.should == [@e2,@e3]
         end
@@ -242,16 +242,16 @@ describe StudentSearch do
         it 'should return students with any of the selected flagged interventions' do
 
           search_results = StudentSearch.search( :search_type => 'flagged_intervention',
-            :flagged_intervention_types => ['attendance', 'suspension'])
+                                                 :flagged_intervention_types => ['attendance', 'suspension'])
 
           search_results.should == [@e1, @e3]
 
           search_results = StudentSearch.search( :search_type => 'flagged_intervention',
-            :flagged_intervention_types => ['attendance', 'ignored'])
+                                                 :flagged_intervention_types => ['attendance', 'ignored'])
           search_results.should == [@e4, @e5]
 
           search_results = StudentSearch.search( :search_type => 'flagged_intervention',
-            :flagged_intervention_types => ['ignored'])
+                                                 :flagged_intervention_types => ['ignored'])
           search_results.should == [@e1,@e4, @e5]
         end
       end

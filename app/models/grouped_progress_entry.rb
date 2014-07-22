@@ -135,17 +135,17 @@ class GroupedProgressEntry
   def self.interventions(id)
     #TODO TESTS
     Intervention.find(:all,:include => :intervention_participants,
-                      :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
+                           :conditions => ["intervention_participants.user_id = ? or interventions.user_id = ?",id,id])
   end
 
   def self.interventions2(id, student_ids)
     Intervention.find_all_by_active_and_student_id(true,student_ids,
                                                    :joins => [:intervention_probe_assignments,:intervention_participants,:intervention_definition],
-                                 :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)
+                                                   :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)
                                    and intervention_probe_assignments.id is not null and intervention_probe_assignments.enabled=true",id,id],
-                                 :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id',
-                                 :having => 'count(distinct student_id) > 1',
-                                 :select => 'intervention_definitions.title, interventions.id,
+                                                   :group=>'intervention_definition_id,intervention_probe_assignments.probe_definition_id',
+                                                   :having => 'count(distinct student_id) > 1',
+                                                   :select => 'intervention_definitions.title, interventions.id,
                                  interventions.intervention_definition_id,probe_definition_id, count(distinct student_id) as student_count'
                      )
   end

@@ -33,9 +33,9 @@ class School < ActiveRecord::Base
   attr_protected :district_id
 
   define_statistic :schools_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct schools.id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+                                               :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
   define_statistic :districts_having_schools_with_enrollments , :count => :all, :joins => :enrollments, :column_name => 'distinct schools.district_id',
-    :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
+                                                                :filter_on => {:created_after => "enrollments.created_at >= ?", :created_before => "enrollments.created_at <= ?"}
 
   validates_presence_of :name,:district
   validates_uniqueness_of :name, :scope => :district_id

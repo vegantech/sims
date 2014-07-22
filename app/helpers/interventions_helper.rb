@@ -15,7 +15,7 @@ module InterventionsHelper
       end
     end
    select_tag("intervention_definition_id", opts.html_safe, :class => "fixed_width sim_submit",
-              :name => "intervention_definition[id]")
+                                                            :name => "intervention_definition[id]")
   end
 
 

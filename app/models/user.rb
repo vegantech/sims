@@ -149,7 +149,7 @@ class User < ActiveRecord::Base
   def orphaned_interventions_where_principal(school)
     return [] if school.blank?
     Intervention.find_all_by_active(true,:select => "distinct interventions.*",
-                                    :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
+                                         :joins => "inner join students on interventions.student_id = students.id and students.district_id = #{district_id}
         left outer join special_user_groups on  special_user_groups.user_id = #{self.id} and is_principal=true
         left outer join enrollments on enrollments.student_id = students.id and enrollments.school_id = #{school.id}
         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
         ip.intervention_id = interventions.id
 
         ",
-           :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
+                                         :conditions => "(interventions.end_date < '#{Date.today}' or iu.id is null or iu.district_id != students.district_id
            or not exists (  select 2 from special_user_groups sug where sug.user_id = iu.id and  ((iu.all_students = 1 )
            or ( sug.school_id = enrollments.school_id
            and ( sug.grade is null or sug.grade = enrollments.grade ) ))
@@ -292,13 +292,13 @@ class User < ActiveRecord::Base
     #TODO TEST THIS
     ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
  Student.send(:construct_finder_sql, :select => "students.id",
-                  :joins =>
+                                     :joins =>
 "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
          left outer join enrollments on enrollments.student_id = students.id
          left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
            and user_group_assignments.user_id = #{self.id})
           on groups_students.student_id = students.id",
-                  :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
+                                     :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
 
 
 

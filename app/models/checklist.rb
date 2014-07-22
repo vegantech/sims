@@ -199,7 +199,7 @@ class Checklist < ActiveRecord::Base
         answer_hash = {:answer_definition_id => answer.to_i}
       elsif ['comment','sa'].include?(element_definition.kind) && answer['text'].present?
           answer_hash = { :answer_definition_id => answer['id'].to_i,
-                                  :text => answer['text']}
+                          :text => answer['text']}
       else
         next  #text is empty
       end

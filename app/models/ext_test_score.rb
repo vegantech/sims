@@ -20,7 +20,7 @@ class ExtTestScore < ActiveRecord::Base
   PROFICIENCIES=[nil,"1-minimal", "2-basic", "3-proficient", "4-advanced"]
   TEST_GROUPS=Hash.new {|h,k| h[k] = "#{k}: Results given as scaled score / result"}
   TEST_GROUPS.merge!("PMA"=> "Primary Math Assessment", "PLAA"=>"Primary Language Arts Assessment",
-  "DWS"=>"District Writing Sample: Results given as scaled score", "WKCE"=>"WKCE")
+                     "DWS"=>"District Writing Sample: Results given as scaled score", "WKCE"=>"WKCE")
 
   def test_group
     if name and name.split[0].upcase == name.split[0]

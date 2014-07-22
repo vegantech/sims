@@ -48,10 +48,10 @@ class PrincipalOverride < ActiveRecord::Base
     school_wide=pending.find(:all, :joins => "inner join enrollments on enrollments.student_id = principal_overrides.student_id
     inner join special_user_groups on is_principal and
     special_user_groups.school_id = enrollments.school_id and (special_user_groups.grade is null or special_user_groups.grade=enrollments.grade)",
-    :conditions => {:special_user_groups=>{:user_id=>user}})
+                                   :conditions => {:special_user_groups=>{:user_id=>user}})
     group_wide = pending.find(:all, :joins => "inner join groups_students on  groups_students.student_id = principal_overrides.student_id inner join user_group_assignments on is_principal
     and user_group_assignments.group_id = groups_students.group_id",
-    :conditions => {:user_group_assignments=>{:user_id => user}})
+                                    :conditions => {:user_group_assignments=>{:user_id => user}})
 
     school_wide | group_wide
   end
