@@ -58,5 +58,4 @@ module LinkAndAttachmentAssets
   def show_asset_info?
     false
   end
-
 end

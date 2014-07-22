@@ -1,6 +1,5 @@
 module CSVImporter
   class StudentGroups < CSVImporter::Base
-
    #<Benchmark::Tms:0x41da63f8 @real=1328.59576916695, @utime=0.0200000000000005, @cstime=0.77, @cutime=20.16, @label="", @total=20.97, @stime=0.02>
    #884 SECONDS NOW.. (there wasn't anything to delete)  delete took 937..   1792 total with delete...    630 seconds after initial load now
   FIELD_DESCRIPTIONS = { 
@@ -44,7 +43,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
   
@@ -101,6 +99,5 @@ module CSVImporter
       @deleted=delete
       @created=insert
     end
-
  end
 end

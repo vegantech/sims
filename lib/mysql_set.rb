@@ -29,7 +29,6 @@ module MysqlSet
         super
       end
       end
-
    end
 
     module  Mysql2Adapter
@@ -46,7 +45,6 @@ module MysqlSet
           super
         end
       end
-
     end
 end
 

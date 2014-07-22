@@ -12,7 +12,6 @@ class ConvertRolesToRolesMask < ActiveRecord::Migration
       u.old_roles=db_roles.collect{|k,v| v if  u.roles.include?(k)}.compact.flatten
     end
   end
-
 end
 
   class User < ActiveRecord::Base
@@ -28,7 +27,6 @@ end
         ((roles_mask || 0) & 2**ROLES.index(r)).zero?
       end
     end
-
   end
 
   class Role < ActiveRecord::Base

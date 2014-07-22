@@ -61,5 +61,4 @@ class ProbeGraph::Linexy < ProbeGraph::Base
       r_axis_labels
     ]
   end
-
 end

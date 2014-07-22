@@ -22,6 +22,5 @@ class UsageByDistrict
     end
 
     dhash
-
   end
 end

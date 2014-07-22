@@ -110,7 +110,6 @@ module CSVImporter
   end
 
     def clean_file
-
       @line_count = 0
 
       @clean_file = File.expand_path(File.join(File.dirname(@file_name), "clean_#{File.basename(@file_name)}"))
@@ -130,7 +129,6 @@ module CSVImporter
       @messages << 'File could not be found' and return false unless File.exist?(@file_name)
 
       @line_count = `wc -l #{@clean_file}`.to_i
-
     end
 
     def confirm_header row

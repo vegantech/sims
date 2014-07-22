@@ -1,7 +1,5 @@
 module InterventionsHelper
-
   def tiered_intervention_definition_select(intervention_definitions, include_blank=true, selected = nil)
-
    opts = ""
    opts += content_tag :option,"",:value => "" if include_blank
 
@@ -36,7 +34,6 @@ module InterventionsHelper
         concat(content_tag(:noscript, submit_tag("Pick from Quicklist")))
       end
     end
-
   end
 
   def custom_intervention?

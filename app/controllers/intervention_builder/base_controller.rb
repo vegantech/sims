@@ -18,5 +18,4 @@ class InterventionBuilder::BaseController < ApplicationController
     current_district.objective_definitions.each(&:touch)
     current_district.touch
   end
-
 end

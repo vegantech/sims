@@ -32,7 +32,6 @@ module CSVImporter
       def how_often
         "As soon as possible after availability. 
          (Note - if you are using this data for flags, it needs to be uploaded quickly in order to be used effectively.)"
-
       end
 
       def alternate
@@ -50,7 +49,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     def index_options
@@ -102,7 +100,6 @@ module CSVImporter
 
    def valid_categories
      keys=Flag::FLAGTYPES.keys.collect{|e| "'" + e + "'"}.join(",")
-
    end
 
    def before_import
@@ -117,7 +114,6 @@ module CSVImporter
      end
    end
  
-
   end
 end
 

@@ -60,5 +60,4 @@ class SchoolTeam < ActiveRecord::Base
       school_team_memberships.where(:user_id => @contact_ids).update_all(:contact => true)
     end
   end
-
 end

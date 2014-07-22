@@ -190,7 +190,6 @@ describe Checklist do
     end
 
     def new_from_student_and_teacher_permutation(&block)
-
     [true,false].each do |import_previous_answers|
       [true,false].each do |score|
         message="score #{score} import_previous #{import_previous_answers}"

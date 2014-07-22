@@ -1,6 +1,5 @@
 module CSVImporter
   class ExtSummaries < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = { 
         :district_student_id =>"Key for student",
         :home_language =>"Language spoken at home",
@@ -62,7 +61,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -110,7 +108,6 @@ module CSVImporter
     end
 
     def migration t
-
       t.column :district_student_id, :string, :limit =>Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
       t.column :home_language, :string
      t.column :street_address, :string
@@ -167,7 +164,6 @@ module CSVImporter
      return true
    end
  
-
   end
 end
 

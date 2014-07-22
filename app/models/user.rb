@@ -168,7 +168,6 @@ class User < ActiveRecord::Base
           and ( special_user_groups.grade is null or special_user_groups.grade = enrollments.grade )
           ) or user_group_assignments.id is not null)
     ")#.select(&:orphaned?)
-
   end
 
  def self.remove_from_district(user_ids = [])
@@ -293,7 +292,6 @@ class User < ActiveRecord::Base
            and user_group_assignments.user_id = #{self.id})
           on groups_students.student_id = students.id",
                                      :conditions => "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
-
   end
 
   def blank_password_ok?

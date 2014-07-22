@@ -22,7 +22,6 @@
 #
 
 class District < ActiveRecord::Base
-
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
@@ -151,7 +150,6 @@ class District < ActiveRecord::Base
     end
 
     "#{SIMS_PROTO}://#{host}/#{path}?abbrev=#{abbrev}"
-
   end
 
   def show_aim_line?

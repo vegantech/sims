@@ -5,12 +5,10 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
     params[:enabled]=true and params[:commit]=true unless params[:commit]
     @probe_definitions_in_groups =
       current_district.probe_definitions.group_by_cluster_and_objective(params)
-
   end
 
   def show
     @probe_definition=current_district.probe_definitions.find(params[:id])
-
   end
 
   def new
@@ -42,7 +40,6 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
      else
        render :action=>"edit"
      end
-
   end
 
   def disable
@@ -71,6 +68,5 @@ class InterventionBuilder::ProbesController < InterventionBuilder::BaseControlle
       probe_definition.destroy if probe_definition
     end
     redirect_to intervention_builder_probes_url
-
   end
 end

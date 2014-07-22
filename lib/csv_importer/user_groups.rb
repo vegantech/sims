@@ -46,7 +46,6 @@ Schoolwide (or asst principals by grade) would be covered by all_students_in_sch
       def how_many_rows
         "One row per user per group.   A group might have one or multiple users, and a user could be assigned to multiple groups."
       end
-
     end
 
     private

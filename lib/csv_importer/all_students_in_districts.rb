@@ -1,6 +1,5 @@
 module CSVImporter
   class AllStudentsInDistricts < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = {
       :district_user_id => 'Key for user'
     }
@@ -39,7 +38,6 @@ module CSVImporter
 
       def how_many_rows
         "One row per user with this access."
-
       end
 
 #      def alternate
@@ -48,7 +46,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -85,6 +82,5 @@ module CSVImporter
                "
       User.connection.update query
     end
-
   end
 end

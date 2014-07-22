@@ -6,11 +6,9 @@ class MailerWithSubdomains < ActionMailer::Base
     host = default_url_options[:host].gsub(/^www/,@district.abbrev)
 
     super(opts.merge(:host => host, :only_path => false))
-
   end
 
   def url_with_text text,url
     (url_for(url) + " (#{text})").html_safe
   end
-
 end

@@ -36,5 +36,4 @@ class AnswerDefinition < ActiveRecord::Base
   def has_answers?
     answers.any?
   end
-
 end

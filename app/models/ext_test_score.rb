@@ -45,7 +45,6 @@ class ExtTestScore < ActiveRecord::Base
     d.delete "Fall"
     d.delete "Spr"
     d.join " "
-
   end
 
   def score

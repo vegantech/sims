@@ -100,5 +100,4 @@ class Flag < ActiveRecord::Base
   def self.humanized_categories
     all.collect(&:humanized_category).join(", ")
   end
-
 end

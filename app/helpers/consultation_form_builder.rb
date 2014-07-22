@@ -10,5 +10,4 @@ class ConsultationFormBuilder < ActionView::Helpers::FormBuilder
   def assets
     @template.content_tag(:ul,  @template.links_and_attachments(object,'li') )
   end
-
 end

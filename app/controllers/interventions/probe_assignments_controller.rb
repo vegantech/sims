@@ -19,7 +19,6 @@ class Interventions::ProbeAssignmentsController < ApplicationController
     respond_to do |format|
       format.html {redirect_to(@intervention)}
     end
-
   end
 
   def preview_graph
@@ -41,5 +40,4 @@ class Interventions::ProbeAssignmentsController < ApplicationController
       obj.send "#{field}=", Date.civil(*ary)
     end
   end
-
 end

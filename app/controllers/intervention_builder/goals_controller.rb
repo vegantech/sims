@@ -99,5 +99,4 @@ class InterventionBuilder::GoalsController < InterventionBuilder::BaseController
     def move_path(obj,direction)
       move_intervention_builder_goal_path(obj,:direction=>direction)
     end
-
 end

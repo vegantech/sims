@@ -104,5 +104,4 @@ class ProbeDefinition < ActiveRecord::Base
   def cache_key
     super + "-probes-#{probes.empty?}"
   end
-
 end

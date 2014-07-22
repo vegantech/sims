@@ -83,5 +83,4 @@ class UnattachedInterventionsController < ApplicationController
       format.js
     end
   end
-
 end

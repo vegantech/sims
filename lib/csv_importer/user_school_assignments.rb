@@ -43,7 +43,6 @@ module CSVImporter
       def how_many_rows
         "One row per user per school.  A school will have multiple users and a user can belong to multiple schools."
       end
-
     end
 
     private
@@ -87,7 +86,6 @@ module CSVImporter
       )
       ActiveRecord::Base.connection.update query
     end
-
   end
 end
 

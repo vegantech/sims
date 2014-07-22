@@ -205,7 +205,6 @@ class Checklist < ActiveRecord::Base
       (answers.find_by_answer_definition_id(answer_hash[:answer_definition_id]) || answers.build).attributes=answer_hash
       @answer_definition_ids << answer_hash[:answer_definition_id]
     end
-
   end
 
   private

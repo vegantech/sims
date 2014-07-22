@@ -16,5 +16,4 @@ class PrincipalOverridesCell < Cell::Base
     @responses=overrides[:principal_responses].size
     render
   end
-
 end

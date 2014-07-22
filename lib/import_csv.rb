@@ -95,11 +95,9 @@ class ImportCSV
       @messages << "#{file_name} did not exist when attempting to load #{model_name.pluralize} from csv"
       false
     end
-
   end
 
   def sorted_filenames filenames=@filenames
-
     filenames.compact.sort_by do |f|
       2 * (FILE_ORDER.index(File.basename(f.downcase.gsub(APPEND_FILE_MATCHER,'')))  || FILE_ORDER.length) +
       (f.match(APPEND_FILE_MATCHER) ? 1 : 0)
@@ -138,7 +136,5 @@ class ImportCSV
     else
       false
     end
-
   end
-
 end

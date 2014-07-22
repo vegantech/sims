@@ -48,7 +48,6 @@ module CSVImporter
       def how_many_rows
         "One row per flag per student.   Multiple rows of the same flagtype will be combined within SIMS, so each student could have multiple rows in this file."
       end
-
     end
 
     def index_options
@@ -93,7 +92,6 @@ module CSVImporter
    def confirm_count?
      return true
    end
-
   end
 
   Flag::FLAGTYPES.keys.each do |key|
@@ -102,5 +100,4 @@ module CSVImporter
      end)
 
   end
-
 end

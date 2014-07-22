@@ -30,8 +30,6 @@ module CSVImporter
 
       #      def alternate
       #      end
-
     end
-
   end
 end

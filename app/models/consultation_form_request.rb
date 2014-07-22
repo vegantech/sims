@@ -48,11 +48,9 @@ class ConsultationFormRequest < ActiveRecord::Base
   end
 
   def get_recipients
-
     @recipients = []
     @recipients |= student.all_staff_for_student if all_student_scheduled_staff
     @recipients |= school_team.users if school_team
-
   end
 
   def assign_team

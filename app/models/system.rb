@@ -17,7 +17,6 @@ class System
       u.roles=['local_system_administrator','state_admin']
       u.save!
     end
-
   end
 
   def self.admin_district
@@ -27,5 +26,4 @@ class System
   def self.cache_key
      "system#{news.last(:order=>'updated_at').try(:cache_key)}"
   end
-
 end

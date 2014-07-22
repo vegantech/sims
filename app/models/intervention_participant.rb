@@ -44,12 +44,10 @@ class InterventionParticipant < ActiveRecord::Base
       self.role = IMPLEMENTER
     end
     save!
-
   end
 
   def self.roles
     [RoleStruct.new(IMPLEMENTER, ROLES[IMPLEMENTER]), RoleStruct.new(PARTICIPANT, ROLES[PARTICIPANT])]
-
   end
 
   private

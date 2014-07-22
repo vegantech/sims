@@ -29,7 +29,6 @@ class ConsultationFormsController < ApplicationController
       format.html # show.html.erb
       format.js
     end
-
   end
 
   def update
@@ -78,5 +77,4 @@ class ConsultationFormsController < ApplicationController
       format.js
     end
   end
-
 end

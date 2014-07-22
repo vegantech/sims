@@ -7,5 +7,4 @@ class FileController < ApplicationController
       redirect_to root_url, :status=>403
     end
   end
-
 end

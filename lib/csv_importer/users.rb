@@ -57,7 +57,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
       def upload_responses
         super
       end
-
     end
 
     private
@@ -88,7 +87,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
     )
 
     User.connection.update query
-
     end
 
     def insert_update_delete
@@ -119,7 +117,6 @@ password is the user\'s password in lowercase, district_key is set by the distri
     )
 
       User.connection.update query
-
     end
 
     def insert

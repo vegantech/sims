@@ -1,6 +1,5 @@
 module CSVImporter
   class AllStudentsInSchools < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = {
       :district_user_id => 'Key for user',
       :district_school_id =>"Key for school",
@@ -50,7 +49,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -103,7 +101,6 @@ module CSVImporter
     end
 
     def insert
-
       query=("insert into special_user_groups
       (user_id,school_id,is_principal,grade, created_at, updated_at)
       select u.id ,schools.id, tug.principal, nullif(tug.grade,''), CURDATE(), CURDATE() from #{temporary_table_name} tug inner join

@@ -31,5 +31,4 @@ class AddDeviseToUsers < ActiveRecord::Migration
       t.rename :reset_password_token, :token
     end
   end
-
 end

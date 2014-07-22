@@ -39,7 +39,5 @@ class PrimeCache
     ctrl.write_fragment(last_ran_key,this_run)
 
     puts "hits: #{hit}   misses:#{miss}"
-
   end
-
 end

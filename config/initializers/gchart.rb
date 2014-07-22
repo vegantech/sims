@@ -12,5 +12,4 @@ class Gchart
        "t" + number_visible + ":" + datasets.map{ |ds| ds.map{|e|e||'_'}.join(',') }.join('|') + "&chds=" + chds
      end
   end
-
 end

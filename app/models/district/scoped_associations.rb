@@ -52,5 +52,4 @@ module District::ScopedAssociations
       return {bel_ref.name => district_joins(bel_ref.klass)}
     end
   end
-
 end

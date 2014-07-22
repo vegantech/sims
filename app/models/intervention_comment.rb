@@ -38,5 +38,4 @@ class InterventionComment < ActiveRecord::Base
     end
     return true
   end
-
 end

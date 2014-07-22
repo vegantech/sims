@@ -46,7 +46,6 @@ class GroupedProgressEntry
 
   def student_count
     "(#{@intervention.student_count})"
-
   end
 
   def student_interventions
@@ -151,9 +150,7 @@ class GroupedProgressEntry
                                                                                    :include => [:student, :intervention_probe_assignments, :intervention_participants],
                                                                                    :conditions => ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
                                                        ).collect{|i| ScoreComment.new(i, @user)}
-
   end
-
 end
 
 

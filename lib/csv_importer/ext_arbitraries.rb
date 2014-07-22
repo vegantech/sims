@@ -24,7 +24,6 @@ module CSVImporter
       def removed
         "Any text manually entered for the extended profile and anything
         previously uploaded that isn't in this file."
-
       end
 
 #      def related
@@ -45,7 +44,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -95,7 +93,6 @@ module CSVImporter
      return true
    end
  
-
   end
 end
 

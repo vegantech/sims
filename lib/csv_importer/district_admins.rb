@@ -47,7 +47,6 @@ module CSVImporter
     def role
       "local_system_administrator"
     end
-
   end
 end
 

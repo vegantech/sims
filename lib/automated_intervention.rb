@@ -1,5 +1,4 @@
 class AutomatedIntervention
-
   FORMAT="district_student_id,intervention_definition_id,start_date,end_date,probe_definition_id,score,comment"
   FIELDS={
     :district_student_id => "Primary key in your student information system",
@@ -18,7 +17,6 @@ class AutomatedIntervention
     @file = file.path if file
     @user = user
     @district=@user.district
-
   end
 
   def import
@@ -41,7 +39,6 @@ class AutomatedIntervention
     end
 
     @messages << "#{@count} interventions added"
-
   end
 
   def check_headers
@@ -89,7 +86,6 @@ class AutomatedIntervention
     intervention.comments.build(:user => @user, :comment => line[:comment]) unless line[:comment].blank?
     intervention.save!
     @count +=1
-
   end
 
   def check_student(id)
@@ -98,7 +94,6 @@ class AutomatedIntervention
   end
 
   def check_intervention_definition int_def_id
-
     id= InterventionDefinition.find_by_id(int_def_id,:joins =>
                                  {:intervention_cluster => {:objective_definition => :goal_definition}},
                                                      :conditions => {"goal_definitions.district_id" => @district.id})
@@ -115,5 +110,4 @@ class AutomatedIntervention
     i.student.interventions.find_by_intervention_definition_id_and_user_id_and_start_date(i.intervention_definition_id,i.user_id,i.start_date) and
     @messages << "Duplicate entry for #{line}"
   end
-
 end

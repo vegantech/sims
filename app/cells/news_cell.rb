@@ -7,5 +7,4 @@ class NewsCell < Cell::Rails
     render
 #    raise @opts.inspect.inspect if @parent == System
   end
-
 end

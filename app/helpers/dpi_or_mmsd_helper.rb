@@ -1,5 +1,4 @@
 module DpiOrMmsdHelper
-
   def show_checklist_section?
     current_student.checklists.present? || current_district.active_checklist_definition.present?
   end

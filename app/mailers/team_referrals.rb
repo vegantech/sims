@@ -46,5 +46,4 @@ class TeamReferrals < MailerWithSubdomains
 
     mail(:subject => subject, :to => recipients)
   end
-
 end

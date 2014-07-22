@@ -13,7 +13,6 @@
 #
 
 class Enrollment < ActiveRecord::Base
-
   CSV_HEADERS=[:grade, :district_school_id, :district_student_id, :end_year]
   belongs_to :student
   belongs_to :school

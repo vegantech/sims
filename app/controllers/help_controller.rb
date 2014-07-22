@@ -4,5 +4,4 @@ class HelpController < ApplicationController
   def show
     @file=CGI.escape(params[:id].gsub(/\./,""))
   end
-
 end

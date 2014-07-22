@@ -30,6 +30,5 @@ class SwitchDistrictFieldsToSettings < ActiveRecord::Migration
     add_column :districts, :forgot_password, :boolean, :null => false, :default => false
     add_column :districts, :marked_state_goal_ids, :string
     add_column :districts, :lock_tier, :boolean, :null => false, :default => false
-
   end
 end

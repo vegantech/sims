@@ -94,7 +94,6 @@ class ChecklistBuilder::ChecklistsController < ApplicationController
   end
 
   def new_from_this
-
     @old_checklist_definition = ChecklistDefinition.find(params[:id])
     districts=[current_district, current_district.admin_district].compact
     if districts.include?(@old_checklist_definition.district)

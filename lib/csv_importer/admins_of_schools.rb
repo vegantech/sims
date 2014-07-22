@@ -43,7 +43,6 @@ module CSVImporter
       def how_many_rows
         "One row per user admin per school.  A school could have multiple admins and a user can be an admin to multiple schools."
       end
-
     end
 
     private

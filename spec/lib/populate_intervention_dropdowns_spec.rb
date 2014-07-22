@@ -30,7 +30,6 @@ describe "Populate Intervention Dropdowns Module" do
 
   def max_tier
    @mock_tier ||= mock_tier()
-
   end
 
   def current_district

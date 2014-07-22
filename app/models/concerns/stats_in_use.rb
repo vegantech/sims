@@ -1,7 +1,6 @@
 module StatsInUse
   extend ActiveSupport::Concern
   module ClassMethods
-
     #combined
     def stats_in_use(filters={})
       calc_start_date = filters[:created_after] || "2000-01-01".to_date

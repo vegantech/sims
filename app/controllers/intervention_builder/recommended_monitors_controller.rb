@@ -1,7 +1,5 @@
 class InterventionBuilder::RecommendedMonitorsController < InterventionBuilder::BaseController
-
   def assign_probes_to_intervention
-
     @intervention_definition=current_district.intervention_definitions.find(params[:id])
     @back_path =  intervention_builder_intervention_url(*@intervention_definition.ancestor_ids)
 
@@ -12,7 +10,6 @@ class InterventionBuilder::RecommendedMonitorsController < InterventionBuilder::
     end
     @recommended_monitors = @intervention_definition.recommended_monitors.collect(&:probe_definition_id)
     @probe_definitions_in_groups =  current_district.probe_definitions.active.group_by_cluster_and_objective
-
   end
 
   def assign_interventions_to_probe

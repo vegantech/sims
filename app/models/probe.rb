@@ -46,7 +46,6 @@ class Probe < ActiveRecord::Base
       end
 
     end
-
   end
 end
 

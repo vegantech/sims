@@ -28,5 +28,4 @@ class FlagDescriptionsController < ApplicationController
       end
     end
   end
-
 end

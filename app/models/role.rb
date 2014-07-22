@@ -1,5 +1,4 @@
 class Role
-
   SYSTEM_ROLES ={
                   "local_system_administrator" => 'Add a logo, set the district key, add users, add schools,
                   assign roles, add students, enroll students, import files, set district abbreviation (formerly district admin)',
@@ -51,6 +50,5 @@ class Role
       User.update_all("roles_mask = roles_mask & ~#{1 << ROLES.index(name)}",:id=>Array(users))
 
     end
-
   end
 end

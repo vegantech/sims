@@ -82,5 +82,4 @@ class GroupedProgressEntriesController < ApplicationController
       format.js {render :nothing => true}
     end
   end
-
 end

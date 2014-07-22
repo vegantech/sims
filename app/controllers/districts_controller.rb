@@ -77,7 +77,6 @@ class DistrictsController < ApplicationController
 
   def export
     send_file(DistrictExport.generate(current_district), :type => 'application/zip', :x_sendfile => true)
-
   end
 
   def bulk_import_form
@@ -119,7 +118,5 @@ class DistrictsController < ApplicationController
                                    $('#import_results').load('/districts/bulk_import');
                                        }, 5000);</script>"
     end
-
   end
-
 end

@@ -67,5 +67,4 @@ class ConsultationForm < ActiveRecord::Base
       TeamReferrals.concern_note_response(self).deliver
     end
   end
-
 end

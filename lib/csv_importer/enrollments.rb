@@ -46,7 +46,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     #12 seconds to preprocess the file and setup the temporary table
@@ -119,7 +118,6 @@ module CSVImporter
         true
       end
     end
-
   end
 end
 

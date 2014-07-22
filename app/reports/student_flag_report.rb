@@ -36,5 +36,4 @@ class StudentFlagReport
     @search=options
     @search[:flagged_intervention_types]=[]
   end
-
 end

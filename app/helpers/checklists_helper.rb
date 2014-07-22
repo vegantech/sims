@@ -16,7 +16,6 @@ module ChecklistsHelper
    else
      ""
    end
-
   end
 
   def previous_answers(checklist, answer_definition, &block)

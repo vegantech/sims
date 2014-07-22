@@ -14,7 +14,6 @@ class AddDeletedAtColumns < ActiveRecord::Migration
     add_column :probe_questions, :deleted_at, :datetime
     add_column :recommendation_definitions, :deleted_at, :datetime
     add_column :recommendation_answer_definitions, :deleted_at, :datetime
-
   end
 
   def self.down

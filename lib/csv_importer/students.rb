@@ -1,5 +1,4 @@
 module CSVImporter
-
   class Students < CSVImporter::Base
     #13.1196098327637 seconds of overhead for preprocessing the csv and loading into the temporary table (and indexing)
     #19.3717708587646,
@@ -61,7 +60,6 @@ module CSVImporter
       def how_many_rows
         "One row per student."
       end
-
     end
 
     private
@@ -132,7 +130,6 @@ module CSVImporter
 
       ActiveRecord::Base.connection.execute(s)
       #"
-
     end
 
     def insert_update_delete
@@ -190,7 +187,6 @@ module CSVImporter
     end
 
     def claim_students_with_nil_district
-
       claimed_count = ActiveRecord::Base.connection.update("update students s inner join #{temporary_table_name} ts on
       ts.id_state = s.id_state and s.district_id is null set s.district_id = #{@district.id}, s.district_student_id = ts.district_student_id")
 
@@ -207,7 +203,6 @@ module CSVImporter
 
       #update students s set district_id = ? where district_id is null
       #  and exists (select * from tt where s.id_state = tt.id_state and tt.id_state is not null)
-
     end
 
     def update_students_already_in_district
@@ -265,7 +260,6 @@ module CSVImporter
         true
       end
     end
-
   end
 end
 

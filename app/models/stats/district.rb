@@ -1,3 +1,2 @@
 module Stats::District
-
 end

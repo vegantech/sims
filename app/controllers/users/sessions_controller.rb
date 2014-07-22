@@ -41,5 +41,4 @@ class Users::SessionsController < Devise::SessionsController
       render :action => 'new'
     end
   end
-
 end

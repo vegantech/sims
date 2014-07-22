@@ -82,5 +82,4 @@ class CustomFlagsController < ApplicationController
     params[:student_id] = current_student_id
     params[:user_id] = current_user.id
   end
-
 end

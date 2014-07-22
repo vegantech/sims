@@ -47,7 +47,6 @@ class ScriptedController < ApplicationController
   end
 
   def bulk_import
-
     if request.post?
       Spawnling.new do
         importer= ImportCSV.new params[:import_file], current_district
@@ -60,6 +59,5 @@ class ScriptedController < ApplicationController
     else
       raise 'needs to be a post'
     end
-
   end
 end

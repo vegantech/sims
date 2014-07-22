@@ -59,7 +59,6 @@ class ChecklistDefinition < ActiveRecord::Base
   end
 
   def deep_clone
-
     k=clone
     k.active=false
     k.question_definitions = question_definitions.collect{|o| o.deep_clone}
@@ -87,5 +86,4 @@ class ChecklistDefinition < ActiveRecord::Base
   def clear_document
      self.document=nil if @delete_document && !document.dirty?
   end
-
 end

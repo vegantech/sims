@@ -80,5 +80,4 @@ class ChecklistBuilder::ElementsController < ChecklistBuilder::Base
       format.js
     end
   end
-
 end

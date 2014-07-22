@@ -12,7 +12,6 @@ class InterventionBuilder::CategoriesController < InterventionBuilder::BaseContr
 
   # GET /intervention_clusters/1
   def show
-
     respond_to do |format|
       format.html # show.rhtml
     end

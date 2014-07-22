@@ -5,7 +5,6 @@ class RemoveCountriesAndStates < ActiveRecord::Migration
     remove_column :news_items, :country_id
     remove_column :news_items, :state_id
     remove_column :districts, :state_id
-
   end
 
  def self.down
@@ -34,7 +33,5 @@ class RemoveCountriesAndStates < ActiveRecord::Migration
     end
 
     add_index "states", ["country_id"], :name => "index_states_on_country_id"
-
   end
-
 end

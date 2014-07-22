@@ -60,5 +60,4 @@ class StudentSearchesController < ApplicationController
     end
     current_school
   end
-
 end

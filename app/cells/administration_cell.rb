@@ -15,7 +15,6 @@ class AdministrationCell < Cell::Base
 
     @show = @show_schools || @show_users || @show_students || @show_district || @show_flag_descriptions
     render
-
   end
 
   def school opts

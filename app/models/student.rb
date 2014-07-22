@@ -21,7 +21,6 @@
 #
 
 class Student < ActiveRecord::Base
-
   include FullName, Pageable, LighterTouch, StatsInUse,Stats::Student
   include LinkAndAttachmentAssets
 

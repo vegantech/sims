@@ -34,5 +34,4 @@ class InterventionBuilderSweeper < ActionController::Caching::Sweeper
     district = objective_definition.district
     FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",district.id.to_s,"#{objective_definition.filename}.*")))
   end
-
 end

@@ -6,7 +6,6 @@ class DistrictUploadJob
     ::Spawnling.new do
       perform(upload_file, district, email)
     end
-
   end
 
   def perform(upload_file, district, email = false)
@@ -27,5 +26,4 @@ class DistrictUploadJob
 
     end
   end
-
 end

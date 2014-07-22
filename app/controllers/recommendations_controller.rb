@@ -10,7 +10,6 @@ class RecommendationsController < ApplicationController
 
   def show
     @recommendation = current_student.recommendations.find(params[:id])
-
   end
 
   def create
@@ -45,7 +44,6 @@ class RecommendationsController < ApplicationController
     else
       render :action=>'new'
     end
-
   end
 
   def destroy
@@ -53,6 +51,5 @@ class RecommendationsController < ApplicationController
     @recommendation.destroy
     redirect_to current_student
   end
-
 end
 

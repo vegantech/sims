@@ -12,7 +12,6 @@
 #
 
 class Tier < ActiveRecord::Base
-
   belongs_to :district
   has_many :checklists, :foreign_key=>:from_tier
   has_many :recommendations

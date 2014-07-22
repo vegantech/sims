@@ -1,12 +1,10 @@
 module CSVImporter
   class AllSchools < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = {
       :district_user_id => 'Key for user'
     }
 
     class << self
-
       def description
         "List of users with access to all schools in the district. Be sure to also give them regular user access and to assign them to groups."
       end
@@ -42,7 +40,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private

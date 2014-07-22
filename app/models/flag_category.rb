@@ -32,5 +32,4 @@ class FlagCategory < ActiveRecord::Base
          flags.student_id =flags2.student_id) ", student_ids]
         )
   end
-
 end

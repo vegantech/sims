@@ -17,5 +17,4 @@ class ProbeGraph::Line < ProbeGraph::Base
       gchart(probes_for_this_graph, custom_chm)
     }.join("<br />")
   end
-
 end

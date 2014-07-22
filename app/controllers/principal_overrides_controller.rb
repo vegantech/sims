@@ -1,5 +1,4 @@
 class PrincipalOverridesController < ApplicationController
-
   # GET /principal_overrides
   def index
     @principal_overrides = current_user.grouped_principal_overrides
@@ -67,7 +66,6 @@ class PrincipalOverridesController < ApplicationController
       format.html {redirect_to principal_overrides_url}
       format.js {}
     end
-
   end
 
   # DELETE /principal_overrides/1

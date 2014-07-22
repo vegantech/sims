@@ -64,6 +64,5 @@ class RemoveCopiedFromAndCopiedAt < ActiveRecord::Migration
     add_column :goal_definitions, :copied_from, :integer
     add_column :objective_definitions, :copied_from, :integer
   end
-
 end
 

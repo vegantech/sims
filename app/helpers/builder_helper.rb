@@ -17,5 +17,4 @@ module BuilderHelper
     end
     str
   end
-
 end

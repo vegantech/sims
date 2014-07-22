@@ -82,7 +82,6 @@ class CreateTrainingDistrict
   end
 
   def self.generate_one(num = '')
-
     abbrev = "training#{num}"
     name = abbrev.capitalize
     destroy_district abbrev
@@ -97,5 +96,4 @@ class CreateTrainingDistrict
     td.news.create(:text=>"District Reset %s" % Time.now.to_s(:short))
    td
   end
-
 end

@@ -45,7 +45,6 @@ class ReferralReport
   protected
 
   def dates_of_sims_data
-
     referrals= Student.connection.select_all("select distinct s.district_student_id,r.id, r.created_at, (year(r.updated_at + INTERVAL 6 month))  as schoolyear
     from students s inner join recommendations r on r.student_id = s.id and r.promoted=true and r.recommendation=5
     where s.district_id = #{current_district.id}")
@@ -117,5 +116,4 @@ class ReferralReport
 
     referrals + students
   end
-
 end

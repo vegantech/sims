@@ -28,5 +28,4 @@ module Stats::User
 
       define_statistic :user_accounts, :count => :all, :conditions => "username != 'district_admin'"
   end
-
 end

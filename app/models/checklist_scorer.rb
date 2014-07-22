@@ -48,6 +48,5 @@ class ChecklistScorer
       @score_results.delete(iq)
     end
   end
-
 end
 

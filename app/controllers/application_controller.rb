@@ -114,7 +114,6 @@ class ApplicationController < ActionController::Base
       end
      return false
     end
-
   end
 
   def edit_obj_link(u)
@@ -171,5 +170,4 @@ class ApplicationController < ActionController::Base
     self.current_student_id = student.id
     self.selected_student_ids = [student.id]
   end
-
 end

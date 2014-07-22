@@ -63,7 +63,6 @@ class PrincipalOverride < ActiveRecord::Base
 
     @action=action
     self.end_tier=self.start_tier
-
   end
 
   def status_text
@@ -77,7 +76,6 @@ class PrincipalOverride < ActiveRecord::Base
     self.status=NEW_REQUEST
     @action="undo"
     self.save!
-
   end
 
   def can_create?
@@ -116,7 +114,6 @@ class PrincipalOverride < ActiveRecord::Base
       self.status=-1
     end
     true
-
   end
 
   def check_autopromote
@@ -126,7 +123,5 @@ class PrincipalOverride < ActiveRecord::Base
         self.end_tier = student.district.tiers.last
       end
     end
-
   end
-
 end

@@ -1,6 +1,5 @@
 module CSVImporter
   class ExtAdultContacts < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = { 
         :district_student_id =>"Key for student",
         :relationship =>"String describing relationship.  Something like Parent or Emergency Contact",
@@ -51,7 +50,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -134,7 +132,6 @@ module CSVImporter
      return true
    end
  
-
   end
 end
 

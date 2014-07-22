@@ -24,7 +24,6 @@ describe CSVImporter::ExtTestScores do
 
   def append_file
     File.join Rails.root, "spec", "csv", "ext_test_scores_appends.csv"
-
   end
 
   def file

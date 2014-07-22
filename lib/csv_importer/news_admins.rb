@@ -39,7 +39,6 @@ module CSVImporter
         "One row per user with this access."
       end
     end
-
   end
 end
 

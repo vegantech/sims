@@ -80,7 +80,6 @@ module CSVImporter
       ActiveRecord::Base.connection.update query
     end
    
-
   end
 end
 

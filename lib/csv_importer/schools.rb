@@ -44,7 +44,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private

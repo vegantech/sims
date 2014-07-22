@@ -11,5 +11,4 @@ class RemovePaperclipFromStudent < ActiveRecord::Migration
     add_column :students, :extended_profile_file_size, :integer
     add_column :students, :extended_profile_updated_at, :datetime
   end
-
 end

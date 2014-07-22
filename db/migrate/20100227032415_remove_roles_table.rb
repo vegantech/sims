@@ -33,5 +33,4 @@ class RemoveRolesTable < ActiveRecord::Migration
     add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
     add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
   end
-
 end

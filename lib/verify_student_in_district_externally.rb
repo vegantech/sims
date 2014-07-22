@@ -30,7 +30,6 @@ class VerifyStudentInDistrictExternally
     else
       raise StudentVerificationError, 'External Verification is not enabled'
     end
-
   end
 
 #true return true
@@ -38,7 +37,6 @@ class VerifyStudentInDistrictExternally
 #error raise exception
 
   def verify_externally(student,district)
-
 #   curl "https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure"
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 

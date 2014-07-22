@@ -88,7 +88,6 @@ class GroupsController < SchoolAdminController
     respond_to do |format|
       format.js {}
     end
-
   end
 
   def add_student
@@ -108,7 +107,6 @@ class GroupsController < SchoolAdminController
     respond_to do |format|
       format.js {}
     end
-
   end
 
   def add_user

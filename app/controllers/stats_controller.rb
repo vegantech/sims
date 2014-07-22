@@ -47,5 +47,4 @@ class StatsController < ApplicationController
     end
     flash.now[:notice]="Excluding district with id #{@without.to_i}" if @without
   end
-
 end

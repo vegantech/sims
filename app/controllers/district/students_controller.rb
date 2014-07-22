@@ -82,5 +82,4 @@ class District::StudentsController < ApplicationController
        redirect_to :back
      end
   end
-
 end

@@ -1,6 +1,5 @@
 module CSVImporter
   class ExtSiblings < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = { 
       :district_student_id =>"Key for student",        
       :first_name =>"First Name",
@@ -47,7 +46,6 @@ module CSVImporter
       def upload_responses
         super
       end
-
     end
 
     private
@@ -104,7 +102,6 @@ module CSVImporter
      return true
    end
  
-
   end
 end
 

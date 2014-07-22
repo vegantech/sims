@@ -37,7 +37,6 @@ class UserSchoolAssignment < ActiveRecord::Base
     elsif [false,"false",0,"0"].include? val
       @all_students=false
     end
-
   end
 
   private
@@ -52,5 +51,4 @@ class UserSchoolAssignment < ActiveRecord::Base
       user.special_user_groups.find_all_by_school_id_and_grade(school_id, nil).each(&:destroy)
     end
   end
-
 end

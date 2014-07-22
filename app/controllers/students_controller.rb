@@ -138,5 +138,4 @@ class StudentsController < ApplicationController
   def index_cache_key(s)
     fragment_cache_key ["status_display", s]
   end
-
 end

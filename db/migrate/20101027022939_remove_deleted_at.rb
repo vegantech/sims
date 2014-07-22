@@ -1,6 +1,5 @@
 class RemoveDeletedAt < ActiveRecord::Migration
   def self.up
-
     remove_column2 :recommendation_answer_definitions, :deleted_at
     remove_column2 :recommendation_definitions, :deleted_at
     remove_column2 :probe_questions, :deleted_at
@@ -32,14 +31,12 @@ class RemoveDeletedAt < ActiveRecord::Migration
     add_column :probe_questions, :deleted_at, :datetime
     add_column :recommendation_definitions, :deleted_at, :datetime
     add_column :recommendation_answer_definitions, :deleted_at, :datetime
-
   end
 
   def self.remove_column2 table, column
     table.to_s.classify.constantize.delete_all("deleted_at is not null")
     remove_column(table, column)
   end
-
 end
 
 

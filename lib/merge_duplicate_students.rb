@@ -15,7 +15,6 @@ class MergeDuplicateStudents
       end
     end
     return manual,used
-
   end
 
   def self.safe_destroy_except_first(ids)
@@ -32,5 +31,4 @@ class MergeDuplicateStudents
     end
     Student.find(ids.first).touch
   end
-
 end

@@ -63,7 +63,6 @@ class Notifications < MailerWithSubdomains
     subject  =  'Notifications#intervention_reminder'
     recipients =  ''
     mail(:subject => subject, :to => recipients)
-
   end
 
   def intervention_participant_added(intervention_person,intervention=nil)
@@ -122,5 +121,4 @@ class Notifications < MailerWithSubdomains
     interventions = Intervention.active.find(:all, :conditions=>{"end_date" =>(Date.today..7.day.from_now.to_date)})
     interventions.reject{|i| i.student.blank?}
   end
-
 end

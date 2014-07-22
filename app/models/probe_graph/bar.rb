@@ -13,5 +13,4 @@ class ProbeGraph::Bar < ProbeGraph::Base
     #show the value in white in the bar
     'chm=N,FFFFFF,0,,12,,c'
   end
-
 end

@@ -149,7 +149,6 @@ class Intervention < ActiveRecord::Base
        participant_users.blank? ||
        !participant_users.all?{|ipu| student.belongs_to_user? ipu}
       )
-
   end
 
   def self.orphaned
@@ -237,7 +236,6 @@ class Intervention < ActiveRecord::Base
 
     end
     @ipa.save
-
   end
 
   def send_creation_emails

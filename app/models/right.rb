@@ -1,5 +1,4 @@
 class Right
-
 RIGHTS={
   "news_admin"=>["news_items"],
   "regular_user"=>["custom_flags",
@@ -54,5 +53,4 @@ RIGHTS={
   def self.cache_key
     Digest::MD5.hexdigest(RIGHTS.inspect)
   end
-
 end

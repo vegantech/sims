@@ -1,6 +1,5 @@
 module CSVImporter
   class ExtTestScores < CSVImporter::Base
-
     FIELD_DESCRIPTIONS = {
         :district_student_id =>"Key for student",
         :name =>"Name of exam.   For WKCE it should be WKCE 4 Reading   (WKCE Grade Subject)",
@@ -61,7 +60,6 @@ module CSVImporter
       def append_file_name
         file_name.sub(/.csv$/, "_append.csv")
       end
-
     end
 
     private
@@ -75,7 +73,6 @@ module CSVImporter
     end
 
     def migration t
-
       t.column :district_student_id, :string, :limit => Student.columns_hash["district_student_id"].limit, :null => Student.columns_hash["district_student_id"].null
       t.column :name, :string
       t.column :date, :date
@@ -116,7 +113,6 @@ module CSVImporter
     end
 
     def fail_if_matches_and_appending?
-
       inner_query = "select s.id, name, date from #{temporary_table_name} tets inner join students s on s.district_student_id = tets.district_student_id
       and s.district_id = #{@district.id}
       limit 10"
@@ -131,7 +127,6 @@ module CSVImporter
    def confirm_count?
      return true
    end
-
   end
 end
 

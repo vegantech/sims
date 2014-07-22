@@ -5,7 +5,6 @@ class ChangeIdDistrict < ActiveRecord::Migration
     rename_column :groups, :id_district, :district_group_id
     rename_column :schools, :id_district, :district_school_id
     
-
   end
 
   def self.down

@@ -45,9 +45,7 @@ module CSVImporter
       def how_many_rows
         "There should be one row per example."
       end
-
     end
-
   end
 end
 

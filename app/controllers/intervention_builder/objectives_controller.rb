@@ -58,7 +58,6 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
 
   # DELETE /objective_definitions/1
   def destroy
-
     if @objective_definition.intervention_clusters.any?
       flash[:notice]= "Intervention Categories, please remove them first"
     else
@@ -102,5 +101,4 @@ class InterventionBuilder::ObjectivesController < InterventionBuilder::BaseContr
   def move_path(item, direction)
     move_intervention_builder_objective_path(:id=>item,:direction=>direction)
   end
-
 end
