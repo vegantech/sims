@@ -1,5 +1,5 @@
 When /^I pick my district$/ do
-    select(@user.district.name, from: "District")
+  select(@user.district.name, from: "District")
 end
 
 Given /^user has expired token$/ do

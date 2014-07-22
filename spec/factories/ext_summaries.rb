@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :ext_summary do
-    streetAddress  {"123 Training Blvd Apt #{student.first_name[0..1]}"}
+     streetAddress  {"123 Training Blvd Apt #{student.first_name[0..1]}"}
     cityStateZip  "Madison, WI 53704"
     HomeLanguage  "English"
     mealstatus  "F"

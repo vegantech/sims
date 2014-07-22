@@ -1,17 +1,17 @@
 module ChecklistsHelper
   def mmsd_eligibility_criteria menu=false
     if current_district.try(:madison?)
-    elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
-               "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
-               "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
+      elig_crit=["Autism.doc", "Cognitive_Disability.doc", "Emotional_Behavioral_Disability.doc",
+                 "Hearing_Impairment.doc", "Other_Health_Impaired.doc", "Specific_Learning_Disability_reeval.doc", "Specific_Learning_Disability-Initial.doc",
+                 "Speech_and_Language_Impairment.doc","Visual_Impairment.doc"]
     f=elig_crit.collect do |elig_file|
-     content_tag(:li,(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria"))
+      content_tag(:li,(link_to_with_icon elig_file,"/system/#{elig_file}" , suffix=" criteria"))
     end
 
     if menu
       plus_minus_li("Special Ed Eligibility Criteria" ,f.join("").html_safe)
    else
-      content_tag(:ul, f.join.html_safe)
+     content_tag(:ul, f.join.html_safe)
     end
    else
      ""
@@ -76,7 +76,7 @@ module ChecklistsHelper
   end
 
   def recommendation_buttons(form)
-  b=Recommendation::RECOMMENDATION.sort
+    b=Recommendation::RECOMMENDATION.sort
   b[1],b[2] = b[2],b[1]   #No progress at current level should be the second element
   a=b.collect do |k,v|
     opts={}
@@ -97,7 +97,7 @@ module ChecklistsHelper
   end
 
   def markdown_note
-      link_to "You can use markdown","http://daringfireball.net/projects/markdown/",target: "_blank"
+    link_to "You can use markdown","http://daringfireball.net/projects/markdown/",target: "_blank"
   end
 
   def markdown_with_span(text)

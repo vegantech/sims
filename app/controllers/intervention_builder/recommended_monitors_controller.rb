@@ -40,7 +40,7 @@ class InterventionBuilder::RecommendedMonitorsController < InterventionBuilder::
   end
 
   def move_path(item, direction)
-     url_for(controller: "recommended_monitors",action: :move,direction: direction,id: item)
+    url_for(controller: "recommended_monitors",action: :move,direction: direction,id: item)
   end
 end
 

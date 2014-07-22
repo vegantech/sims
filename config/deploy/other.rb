@@ -9,7 +9,7 @@ set :domain, "sims-open.vegantech.com"
 after  :setup_domain_constant, :enable_subdomains, :update_email
 
 task :update_new_relic_name do
-    run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-other#{stage}/' newrelic.yml "
+  run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-other#{stage}/' newrelic.yml "
 end
 
 task :update_email do 

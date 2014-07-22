@@ -19,7 +19,7 @@ Given /^I am at the student search page$/ do
 end
 
 When /^I try to view an invalid checklist$/ do
-    visit checklist_url("invalid")
+  visit checklist_url("invalid")
 end
 
 Then /^I should be at the student profile page$/ do

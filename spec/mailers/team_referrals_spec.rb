@@ -1,20 +1,20 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TeamReferrals do
   describe "concern_note_created" do
-   it 'should send the email' do
-      user=FactoryGirl.create(:user, email: 'bob@e.fg')
-      student = FactoryGirl.create(:student, district: user.district)
-      team = SchoolTeam.create!(name: 'Testing', contact_ids: [user.id])
+    it 'should send the email' do
+       user=FactoryGirl.create(:user, email: 'bob@e.fg')
+       student = FactoryGirl.create(:student, district: user.district)
+       team = SchoolTeam.create!(name: 'Testing', contact_ids: [user.id])
 
-      note = TeamConsultation.new(student: student,requestor: user, school_team: team )
+       note = TeamConsultation.new(student: student,requestor: user, school_team: team )
 
-      proc{@mail=TeamReferrals.concern_note_created(note).deliver}.should change(ActionMailer::Base.deliveries,:size).by(1)
-      @mail.subject.should ==  'Team Consultation Form Created -- Testing'
-      @mail.header["to"].to_s.should ==  user.email
-      expected_body =  "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming (Testing) team meeting.\n\n\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message,\n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
-      @mail.body.raw_source.should == expected_body
+       proc{@mail=TeamReferrals.concern_note_created(note).deliver}.should change(ActionMailer::Base.deliveries,:size).by(1)
+       @mail.subject.should ==  'Team Consultation Form Created -- Testing'
+       @mail.header["to"].to_s.should ==  user.email
+       expected_body =  "A team consultation form has been generated for (First Last) on #{Time.now.to_date} by (#{user.first_name} Last_Name). Please schedule an initial discussion at an upcoming (Testing) team meeting.\n\n\n\n\nThis is an automated message sent by SIMS.  If you have questions about the content of this message,\n     please contact the participants directly.  Replies to this message are not regularly reviewed.\n"
+       @mail.body.raw_source.should == expected_body
 
-    end
+     end
   end
 
   describe "gather_information_request" do

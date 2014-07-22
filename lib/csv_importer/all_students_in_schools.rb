@@ -35,7 +35,7 @@ module CSVImporter
 #      end
 
       def how_often
-         "Start of each semester (depending on frequency of new staff may need to be done more or less often; should be done at same time as the \"users\" file)."
+        "Start of each semester (depending on frequency of new staff may need to be done more or less often; should be done at same time as the \"users\" file)."
       end
 
       def how_many_rows
@@ -123,7 +123,7 @@ module CSVImporter
     end
 
     def after_import
-     sum=autoassign_user_school_assignments
+      sum=autoassign_user_school_assignments
      @other_messages << "#{sum} Users automatically assigned to a school" if sum > 0
     end
 

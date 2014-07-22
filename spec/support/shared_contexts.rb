@@ -38,5 +38,5 @@ shared_examples_for "a schools_requiring controller" do
 end
 
 def before_filters(controller)
- controller._process_action_callbacks.select{|k| k.kind == :before}.collect(&:filter)
+  controller._process_action_callbacks.select{|k| k.kind == :before}.collect(&:filter)
 end

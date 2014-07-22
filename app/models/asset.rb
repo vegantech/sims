@@ -50,7 +50,7 @@ class Asset < ActiveRecord::Base
      when /^\/file/
        File.exist?(File.join(Rails.root,url))
      when /^\/help/
-      File.exist?(File.join(Rails.root,'app/views/help',"_#{url.split('/').last}.html.erb"))
+       File.exist?(File.join(Rails.root,'app/views/help',"_#{url.split('/').last}.html.erb"))
      else
        false #go to it yourself
      end

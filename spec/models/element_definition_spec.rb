@@ -33,7 +33,7 @@ describe ElementDefinition do
   end
 
   it  'should requiretext' do
-    ElementDefinition.new(@valid_attributes.merge(text: nil)).should_not be_valid
+   ElementDefinition.new(@valid_attributes.merge(text: nil)).should_not be_valid
  end
 
   it 'should return question kinds' do

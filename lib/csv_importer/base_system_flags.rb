@@ -95,9 +95,9 @@ module CSVImporter
   end
 
   Flag::FLAGTYPES.keys.each do |key|
-     CSVImporter.const_set("#{key.capitalize}SystemFlags".intern, Class.new(CSVImporter::BaseSystemFlags) do
+    CSVImporter.const_set("#{key.capitalize}SystemFlags".intern, Class.new(CSVImporter::BaseSystemFlags) do
 
-     end)
+    end)
 
   end
 end

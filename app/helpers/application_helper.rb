@@ -15,7 +15,7 @@ module ApplicationHelper
   end
 
   def li_link_to_if_authorized(name, options = {}, html_options = {}, *rest)
-     r= link_to_if_authorized(name, options, html_options, *rest)
+    r= link_to_if_authorized(name, options, html_options, *rest)
      content_tag :li,((r + rest.join(" ").html_safe).html_safe) if r.present?
   end
 
@@ -78,7 +78,7 @@ module ApplicationHelper
   end
 
   def help_popup(msg,tag=:span)
-     content_tag tag,'?', :class => "help-question", :'data-help' => sanitize_and_js_escape_double_quotes(msg)
+    content_tag tag,'?', :class => "help-question", :'data-help' => sanitize_and_js_escape_double_quotes(msg)
   end
 
   def spinner(suffix = nil)

@@ -17,7 +17,7 @@ describe InterventionsHelper do
     end
 
     it 'should have select_tag without blank' do
-       helper.tiered_intervention_definition_select([Factory(:intervention_definition)],false).should_not have_tag("option",with: { value: ""})
+      helper.tiered_intervention_definition_select([Factory(:intervention_definition)],false).should_not have_tag("option",with: { value: ""})
     end
 
   end
@@ -29,7 +29,7 @@ describe InterventionsHelper do
     end
 
     it 'should be sorted by objective then tier' do
-      arr = []
+     arr = []
       arr << mock_intervention_definition(title: 'Quicklist1',id: 6, objective_definition: 'Objective 2',tier: '3-Basic')
       arr << mock_intervention_definition(title: 'Quicklist2',id: 2, objective_definition: 'Objective 1',tier: '2-Basic')
       arr << mock_intervention_definition(title: 'Quicklist2',id: 2, objective_definition: 'Objective 3',tier: '3-Basic')

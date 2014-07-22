@@ -58,11 +58,11 @@ class StudentsController < ApplicationController
   private
 
   def flags_above_threshold
-      if  session[:search][:search_type] == 'flagged_intervention'
-        []
-      else
-        current_district.flag_categories.above_threshold(@students.collect(&:id))
-      end
+    if  session[:search][:search_type] == 'flagged_intervention'
+      []
+    else
+      current_district.flag_categories.above_threshold(@students.collect(&:id))
+    end
   end
 
   def enforce_session_selections
@@ -72,7 +72,7 @@ class StudentsController < ApplicationController
       self.current_student_id=params[:id]
       return true
     else
-     return ic_entry if params[:id] == "ic_jump"
+      return ic_entry if params[:id] == "ic_jump"
      student=Student.find(params[:id])
      if student.belongs_to_user?(current_user)
        session[:school_id] = (student.schools & current_user.schools).first.id
@@ -96,7 +96,7 @@ class StudentsController < ApplicationController
 
   def ic_entry
     #TODO FIXME
-      session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
+    session[:user_id]= nil if current_user.district_user_id.to_s != params[:personID]
       student = current_district.students.find_by_district_student_id(params[:contextID])
       if student
         session[:requested_url]= student_url(student,username: params[:username])

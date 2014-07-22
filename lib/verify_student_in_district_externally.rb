@@ -41,7 +41,7 @@ class VerifyStudentInDistrictExternally
  #  -d wsn=9000000099 -d district=3456 -H "Accept: text/xml"
 
    #uri = URI.parse("https://uaapps.dpi.wi.gov/SIMS_Student_Location_Confirm/SIMS/nonsecure")
-   uri = URI.parse(@@config['url'])
+    uri = URI.parse(@@config['url'])
    http=Net::HTTP.new(uri.host, uri.port)
    http.use_ssl=true
    http.verify_mode = OpenSSL::SSL::VERIFY_NONE

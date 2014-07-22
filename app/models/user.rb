@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
   end
 
   def self.remove_from_district(user_ids = [])
-     user_ids = Array(user_ids).flatten.collect(&:to_i)
+    user_ids = Array(user_ids).flatten.collect(&:to_i)
      return nil if user_ids.blank?
      User.connection.update("update users set username = concat(district_id,'-',username,'-',#{Time.now.usec}), roles_mask=0, passwordhash='disabled',district_id=NULL,email=NULL,encrypted_password='' where id in (#{user_ids.join(",")})")
      UserSchoolAssignment.delete_all(["user_id in (?)",user_ids])
@@ -216,7 +216,7 @@ class User < ActiveRecord::Base
   end
 
   def schools
-   s=School.where(district_id: district_id).order("schools.name")
+    s=School.where(district_id: district_id).order("schools.name")
    if all_schools_in_district?
      s
    else
@@ -284,13 +284,13 @@ class User < ActiveRecord::Base
   def student_ids_where_principal(school_id)
     #TODO TEST THIS
     ##User.connection.select_values(User.find(10).send( :student_ids_where_principal,School.last.id))
- Student.send(:construct_finder_sql, select: "students.id",
-                                     joins: "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
-         left outer join enrollments on enrollments.student_id = students.id
-         left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
-           and user_group_assignments.user_id = #{self.id})
-          on groups_students.student_id = students.id",
-                                     conditions: "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
+    Student.send(:construct_finder_sql, select: "students.id",
+                                        joins: "left outer join special_user_groups on  special_user_groups.user_id = #{self.id}
+            left outer join enrollments on enrollments.student_id = students.id
+            left outer join ( groups_students inner join user_group_assignments on groups_students.group_id = user_group_assignments.group_id
+              and user_group_assignments.user_id = #{self.id})
+             on groups_students.student_id = students.id",
+                                        conditions: "students.district_id = #{self.district_id} and enrollments.school_id = #{school_id}")
   end
 
   def blank_password_ok?
@@ -303,10 +303,10 @@ class User < ActiveRecord::Base
   end
 
   def duplicate_staff_assignment?(attributes)
-     staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
+    staff_assignments.reject(&:marked_for_destruction?).collect(&:school_id).include?(attributes[:school_id])
   end
 
   def duplicate_user_school_assignment?(attributes)
-     staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
+    staff_assignments.reject(&:marked_for_destruction?).collect{|r| [r.school_id, r.admin]}.include?([attributes[:school_id], attributes[:admin]])
   end
 end

@@ -24,7 +24,7 @@ FactoryGirl.define do
   end
 
   factory :user do
-   username
+    username
    password {username}
    password_confirmation {password}
    last_name "Last_Name"

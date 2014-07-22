@@ -228,7 +228,7 @@ describe User do
       u=FactoryGirl.create(:user)
       u.roles_mask.should == 0
       expect {
-      u.roles << Role::ROLES.first
+        u.roles << Role::ROLES.first
       }.to raise_error(NoMethodError)
 #      u.roles_mask.should == 1   warning for now
 
@@ -250,7 +250,7 @@ describe User do
       user.email.should be_blank
     end
     it 'should remove a user from a district and clear out noncontent settings' do
-      user = FactoryGirl.create(:user, username: 'user1', email: 'woo')
+     user = FactoryGirl.create(:user, username: 'user1', email: 'woo')
       user.remove_from_district
       check_user user
    end

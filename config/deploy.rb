@@ -59,7 +59,7 @@ namespace :deploy do
 end 
 
 task :update_new_relic_name do
-    run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-#{stage}/' newrelic.yml "
+  run "cd #{release_path}/config/ && sed -i  -e 's/SIMS-open/SIMS-#{stage}/' newrelic.yml "
 end
 
 task :create_secret do
@@ -104,7 +104,7 @@ end
 
 desc 'create authenticated file directory'
 task :create_file_directory do
-   run "mkdir #{deploy_to}/file"
+  run "mkdir #{deploy_to}/file"
 
 end
 

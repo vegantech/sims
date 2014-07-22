@@ -58,7 +58,7 @@ class ConsultationFormRequest < ActiveRecord::Base
     self.team_id = nil unless (@whom.include?('predetermined_teams') || @whom.blank?)
 
     if @whom.include?('other') && @user_ids.present?
-        @user_ids |= school_team.user_ids if school_team
+      @user_ids |= school_team.user_ids if school_team
         self.team_id=nil
         create_school_team(anonymous: true,user_ids: @user_ids)
     end

@@ -120,9 +120,9 @@ class DistrictExport
   end
 
   def export_content_csv
-   @assets= Hash.new{|h, k| h[k] = []}
+    @assets= Hash.new{|h, k| h[k] = []}
    CONTENT_ONLY.each do |t|
-       cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
+     cols = SPECIAL_COLS[t] || t.to_s.classify.constantize.column_names.join(",")
        cols_with_table_name = cols.split(",").collect{|c| "#{t}.#{c}"}.join(",")
        self.generate_content_csv(t.to_s,cols,
                                  district.send(t).content_export.select(cols_with_table_name).to_sql)
@@ -209,9 +209,9 @@ class DistrictExport
   end
 
   def generate_schema
-     File.open(dir.join("schema.txt"),"a+") do |f|
-       @files.keys.sort.each {|table| schema_table table,f}
-     end
+    File.open(dir.join("schema.txt"),"a+") do |f|
+      @files.keys.sort.each {|table| schema_table table,f}
+    end
   end
 
   def generate_csv_rows(csv,tsv,sql,student_id_index)

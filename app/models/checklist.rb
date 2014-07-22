@@ -79,7 +79,7 @@ class Checklist < ActiveRecord::Base
   end
 
   def missing_checklist_definition?
-     checklist_definition.blank?
+    checklist_definition.blank?
   end
 
   def self.max_tier
@@ -197,8 +197,8 @@ class Checklist < ActiveRecord::Base
       if ['scale','applicable'].include?(element_definition.kind)
         answer_hash = {answer_definition_id: answer.to_i}
       elsif ['comment','sa'].include?(element_definition.kind) && answer['text'].present?
-          answer_hash = { answer_definition_id: answer['id'].to_i,
-                          text: answer['text']}
+        answer_hash = { answer_definition_id: answer['id'].to_i,
+                        text: answer['text']}
       else
         next  #text is empty
       end

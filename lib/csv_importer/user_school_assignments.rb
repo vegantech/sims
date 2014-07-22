@@ -1,9 +1,9 @@
 module CSVImporter
   class UserSchoolAssignments < CSVImporter::Base
-     FIELD_DESCRIPTIONS = {
-      district_user_id: 'Key for user',
-      district_school_id: 'Key for school'
-    }
+    FIELD_DESCRIPTIONS = {
+     district_user_id: 'Key for user',
+     district_school_id: 'Key for school'
+   }
      class << self
        def description
          "Assigns users to schools. This provides access in the school selection screen."

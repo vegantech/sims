@@ -109,9 +109,9 @@ class Notifications < MailerWithSubdomains
     end
     users_with_interventions.each do |user,interventions|
       begin
-      self.intervention_ending_reminder(user,interventions).deliver
-      rescue => e
-        errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
+        self.intervention_ending_reminder(user,interventions).deliver
+        rescue => e
+          errors << "#{e.message} for #{user} #{interventions.collect(&:id)}"
       end
     end
     puts errors.inspect unless errors.blank?

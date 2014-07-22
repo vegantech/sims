@@ -1,13 +1,13 @@
 #require 'active_record/connection_adapters/mysql_adapter'
 
 module MysqlSet
-    module TableDefinition
-      def set(*args)
-        options = args.extract_options!                                       #   options = args.extract_options!a
-        column_names = args
-        column_names.each {|name| column(name,'set',options)}
-      end
+  module TableDefinition
+    def set(*args)
+      options = args.extract_options!                                       #   options = args.extract_options!a
+      column_names = args
+      column_names.each {|name| column(name,'set',options)}
     end
+  end
 
     module MysqlColumn# < Column
       def simplified_type(field_type)
@@ -23,16 +23,16 @@ module MysqlSet
       end
       private
       def extract_limit(sql_type)
-       if sql_type =~ /^set/i
-         sql_type[4..-2]
-       else
-         super
-       end
+        if sql_type =~ /^set/i
+          sql_type[4..-2]
+        else
+          super
+        end
        end
    end
 
     module  Mysql2Adapter
-     def type_to_sql(type, limit = nil, precision = nil, scale = nil)
+      def type_to_sql(type, limit = nil, precision = nil, scale = nil)
         if type == :set
           native = native_database_types[type]
           column_type_sql =  'set'
@@ -44,7 +44,7 @@ module MysqlSet
         else
           super
         end
-      end
+       end
     end
 end
 

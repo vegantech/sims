@@ -51,7 +51,7 @@ class TeamConsultation < ActiveRecord::Base
 
   def recipients
     if school_team.present?
-    User.find_all_by_id(school_team.contact_ids)
+      User.find_all_by_id(school_team.contact_ids)
     else
       []
     end

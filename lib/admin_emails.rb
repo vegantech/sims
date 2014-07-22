@@ -1,5 +1,5 @@
 class AdminEmails
-    ADMIN_MASK = 7
+  ADMIN_MASK = 7
     def self.get
       users=User.find(:all, conditions: "roles_mask & #{ADMIN_MASK} > 0 and email is not null and email !='tbiever@cesa6.k12.wi.us'", include: :district)
       users.reject!{|e| e.last_login.nil? || e.email.blank?}

@@ -1,5 +1,5 @@
 Given /^a district "([^\"]*)"$/ do |district_name|
-   @district = District.find_by_name(district_name) 
+  @district = District.find_by_name(district_name) 
    @district ||= Factory(:district,name: district_name)
 end
 
@@ -48,7 +48,7 @@ Then /^the command should have succeeded$/ do
 end
 
 Then /^the command should have "([^\"]*)"$/ do |arg1|
-   @command_return_val.should match(/#{arg1}/)
+  @command_return_val.should match(/#{arg1}/)
 end
 
 Then /^there should be a user with username "([^\"]*)"$/ do |username|
@@ -64,12 +64,12 @@ Given /^user "([^\"]*)" in district "([^\"]*)" with password "([^\"]*)"$/ do |us
 end
 
 Given /^User "([^\"]*)" should authenticate with password "([^\"]*)" for district "([^\"]*)"$/ do |username, password, district_name|
-   u=District.find_by_name(district_name).users.find_by_username(username)
+  u=District.find_by_name(district_name).users.find_by_username(username)
    u.valid_password?(password).should be_true
 end
 
 Then /^there should be (\d+) users in the district$/ do |num_users|
-    @district ||= @default_user.district
+  @district ||= @default_user.district
     @district.users.count.should == num_users.to_i
 end
 
@@ -128,19 +128,19 @@ Then /^the system should have "([^\"]*)" students not assigned to districts$/ do
 end
 
 Given /^no other enrollments$/ do
-   Enrollment.delete_all
+  Enrollment.delete_all
 end
 
 Given /^no other schools$/ do
-   School.delete_all
+  School.delete_all
 end
 
 Given /^no other users$/ do
-   User.delete_all
+  User.delete_all
 end
 
 Given /^no other students$/ do
-   Student.delete_all
+  Student.delete_all
 end
 
 Given /^no other groups$/ do

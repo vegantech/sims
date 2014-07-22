@@ -236,7 +236,7 @@ class District < ActiveRecord::Base
     if schools.blank?
       destroy_associated!
         else
-      errors.add(:base, "Have the district admin remove the schools first.")
+          errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
   end

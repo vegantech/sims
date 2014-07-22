@@ -20,15 +20,15 @@ Given /^student exists with no district and id_state of (.*)$/ do |id_state|
 end
 
 Then /^page should not contain "([^\"]*)"$/ do |taboo|
-    page.source.should_not =~ /#{taboo}/
+  page.source.should_not =~ /#{taboo}/
 end
 
 Then /^page source should contain \/(.*)\/$/ do |taboo|
-    page.source.should =~ /#{taboo}/
+  page.source.should =~ /#{taboo}/
 end
 
 Then /^page source should contain "([^\"]*)"$/ do |taboo|
-    page.source.should =~ /#{taboo}/
+  page.source.should =~ /#{taboo}/
 end
 
 When /^I follow Claim First Last for your district$/ do
@@ -47,7 +47,7 @@ Given /^a school in my district named "([^\"]*)"$/ do |name|
 end
 
 Given /^I am assigned to "([^"]*)"$/ do |_name|
-    s=Factory(:school, district_id: @user.district_id)
+  s=Factory(:school, district_id: @user.district_id)
     @user.staff_assignments.create!(school: s)
 end
 

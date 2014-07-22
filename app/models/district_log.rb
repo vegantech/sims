@@ -59,9 +59,9 @@ class DistrictLog < ActiveRecord::Base
   end
 
   def self.for_display(params)
-      includes(:user).
-      where(filter(params)).
-      paginate(page: params[:page], per_page: PER_PAGE)
+    includes(:user).
+    where(filter(params)).
+    paginate(page: params[:page], per_page: PER_PAGE)
   end
 
   def self.filter(q)

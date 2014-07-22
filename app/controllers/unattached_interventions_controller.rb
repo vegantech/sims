@@ -3,7 +3,7 @@ class UnattachedInterventionsController < ApplicationController
   # GET /grouped_progress_entries.xml
   def index
     if current_school.blank?
-     flash.now[:notice] = "Please select a school first"
+      flash.now[:notice] = "Please select a school first"
     else
       @users =  current_school.assigned_users
     end

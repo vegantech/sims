@@ -3,7 +3,7 @@ When /^I select a blank year$/ do
 end
 
 Then /^page should have a "([^"]*)" button$/ do |button_name|
-    page.should have_button button_name
+  page.should have_button button_name
 end
 
 

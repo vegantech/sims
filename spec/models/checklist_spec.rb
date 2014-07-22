@@ -158,7 +158,7 @@ describe Checklist do
 
   it 'test_new_from_student_and_teacher' do
     #Empty Checklists
-    pending
+      pending
     Checklist.destroy_all
     Answer.destroy_all
     @teacher=User.find(:first)
@@ -168,7 +168,7 @@ describe Checklist do
     @checklist.recommendations.create!(should_advance: true, progress: 1,recommendation: 4)
     assert @checklist.show_score?
     new_from_student_and_teacher_permutation{|checklist,import_previous_answers,score|
-    assert checklist.score_results if score
+      assert checklist.score_results if score
     assert !checklist.answers.blank? if import_previous_answers
     @checklist=checklist and checklist.save! if score and import_previous_answers
     }
@@ -190,19 +190,19 @@ describe Checklist do
     end
 
   def new_from_student_and_teacher_permutation(&block)
-  [true,false].each do |import_previous_answers|
-    [true,false].each do |score|
-      message="score #{score} import_previous #{import_previous_answers}"
-      checklist=Checklist.new_from_student_and_teacher(@student,@teacher,import_previous_answers,score)
-      assert_validity checklist, message: "invalid #{message}"
-      assert (score or checklist.score_results.blank?) , message
-      #checkist should not have score results unless score is true
-      assert checklist.is_draft?,message
-      assert !checklist.promoted ,message
-      yield checklist,score,import_previous_answers if block
+    [true,false].each do |import_previous_answers|
+      [true,false].each do |score|
+        message="score #{score} import_previous #{import_previous_answers}"
+        checklist=Checklist.new_from_student_and_teacher(@student,@teacher,import_previous_answers,score)
+        assert_validity checklist, message: "invalid #{message}"
+        assert (score or checklist.score_results.blank?) , message
+        #checkist should not have score results unless score is true
+        assert checklist.is_draft?,message
+        assert !checklist.promoted ,message
+        yield checklist,score,import_previous_answers if block
+      end
+  
     end
-
-  end
 
   #creating passing checklist (with recommendation and test more)
 end
@@ -281,7 +281,7 @@ end
   it 'test_definition_references' do
     pending
     [:text, :directions, :question_definitions].each do |r|
-    assert_equal @checklist.send(r), @checklist_definition.send(r)
+      assert_equal @checklist.send(r), @checklist_definition.send(r)
     end
   end
 

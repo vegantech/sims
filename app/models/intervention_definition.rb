@@ -75,10 +75,10 @@ class InterventionDefinition < ActiveRecord::Base
       #shared only with author
       return res.where(["custom = ? or user_id = ?", false, user.id])
       elsif district.custom_interventions == 'one_off'
-        return res.where(["custom = ?", false])
+      return res.where(["custom = ?", false])
       else
       #shared with author and school (enabled and content_admins)
-      return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
+        return res.where(["custom = ? or user_id = ? or school_id = ?", false, user.id,school_id])
     end
   }
 

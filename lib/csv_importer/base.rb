@@ -13,14 +13,14 @@ module CSVImporter
     end
 
     def import
-     return if append_failure?
+      return if append_failure?
      if clean_file
-        if confirm_count?
-          create_temporary_table
-          populate_temporary_table
-          insert_update_delete
-          drop_temporary_table
-        end
+       if confirm_count?
+         create_temporary_table
+         populate_temporary_table
+         insert_update_delete
+         drop_temporary_table
+       end
       end
 
      @messages << "Successful import of #{File.basename(@file_name)}" if @messages.blank?

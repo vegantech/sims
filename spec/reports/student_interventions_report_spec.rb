@@ -14,7 +14,7 @@ describe "StudentInterventionsReport" do
 
   describe 'for student with one intervention' do
     before :each do
-     @report = StudentInterventionsReport.render_text(student: mock_student(1, 2))
+      @report = StudentInterventionsReport.render_text(student: mock_student(1, 2))
     end
 
     it 'should say has 1 intervention' do

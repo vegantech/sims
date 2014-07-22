@@ -147,7 +147,7 @@ class Recommendation < ActiveRecord::Base
   end
 
   def should_advance
-     should_promote? unless recommendation.blank? or self.draft?
+    should_promote? unless recommendation.blank? or self.draft?
   end
 
   def mark_promoted_if_needed

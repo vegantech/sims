@@ -2,10 +2,10 @@ module CSVImporter
   class StudentGroups < CSVImporter::Base
    #<Benchmark::Tms:0x41da63f8 @real=1328.59576916695, @utime=0.0200000000000005, @cstime=0.77, @cutime=20.16, @label="", @total=20.97, @stime=0.02>
    #884 SECONDS NOW.. (there wasn't anything to delete)  delete took 937..   1792 total with delete...    630 seconds after initial load now
-  FIELD_DESCRIPTIONS = { 
-      district_student_id: 'Key for student',
-      district_group_id: 'Key for group (the one you created for the SIMS group.)'
-    }
+    FIELD_DESCRIPTIONS = { 
+        district_student_id: 'Key for student',
+        district_group_id: 'Key for group (the one you created for the SIMS group.)'
+      }
 
     
   class << self
@@ -62,16 +62,16 @@ module CSVImporter
   end
 
   def delete
-  query = "delete from sg using groups_students sg
-            inner join students on sg.student_id = students.id
-            inner join groups on sg.group_id = groups.id
-            inner join schools on groups.school_id = schools.id
-            where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !=''
-            and students.district_student_id != ''
-            and not exists (
-                                        select 1 from #{temporary_table_name} tug
-                                                where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id
-                                                      )"
+    query = "delete from sg using groups_students sg
+              inner join students on sg.student_id = students.id
+              inner join groups on sg.group_id = groups.id
+              inner join schools on groups.school_id = schools.id
+              where schools.district_id = #{@district.id} and students.district_id = #{@district.id} and schools.district_school_id is not null and groups.district_group_id !=''
+              and students.district_student_id != ''
+              and not exists (
+                                          select 1 from #{temporary_table_name} tug
+                                                  where tug.district_student_id = students.district_student_id and tug.district_group_id = groups.district_group_id
+                                                        )"
 
   UserGroupAssignment.connection.update query
   end

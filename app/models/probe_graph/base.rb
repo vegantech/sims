@@ -9,7 +9,7 @@ class ProbeGraph::Base
     elsif opts[:district].try(:show_aim_line?)
       ProbeGraph::Linexy.new(opts)
     else
-     ProbeGraph::Line.new(opts)
+      ProbeGraph::Line.new(opts)
     end
   end
 

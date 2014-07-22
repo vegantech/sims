@@ -1,9 +1,9 @@
 module CSVImporter
   class StaffAssignments < CSVImporter::Base
-   FIELD_DESCRIPTIONS = { 
-      district_user_id: 'Key for user',
-      district_school_id: 'Key for school'
-    }
+    FIELD_DESCRIPTIONS = { 
+       district_user_id: 'Key for user',
+       district_school_id: 'Key for school'
+     }
 
     
    class << self

@@ -22,8 +22,8 @@ module StudentsHelper
 
   def intervention_group_checkbox(grp)
     content_tag :div, class: "small_bump_right" do
-    check_box_tag("intervention_group_types[]",grp.id,false,id: dom_id(grp), class: 'active_intervention_checkbox') +
-      label_tag(dom_id(grp), grp.title)
+      check_box_tag("intervention_group_types[]",grp.id,false,id: dom_id(grp), class: 'active_intervention_checkbox') +
+        label_tag(dom_id(grp), grp.title)
     end.html_safe
   end
 

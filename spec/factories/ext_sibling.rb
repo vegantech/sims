@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :ext_sibling do
-    first_name  "Brother"
+     first_name  "Brother"
     last_name  {student.last_name}
     student_number  "123456"
     age  12

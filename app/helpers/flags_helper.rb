@@ -26,7 +26,7 @@ module FlagsHelper
 
   def team_notes(student)
     if team_notes?(student)
-       image_with_popup('note.png',"#{pluralize student.comments.size, "team note"}")
+      image_with_popup('note.png',"#{pluralize student.comments.size, "team note"}")
     else
       ''.html_safe
     end
@@ -91,7 +91,7 @@ module FlagsHelper
   end
 
   def flag_select
-   content_tag( :div,  Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>").html_safe)
+    content_tag( :div,  Flag::ORDERED_TYPE_KEYS.in_groups(2,false).collect{|group| group.inject(''){|result,flagtype| result += flag_checkbox(flagtype)}}.join("</div><div>").html_safe)
   end
 
   def flag_checkbox(flagtype)

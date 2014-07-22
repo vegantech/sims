@@ -24,11 +24,11 @@ module Duration
   end
 
   def default_end_date
-   if time_length_number and time_length
+    if time_length_number and time_length
       (start_date + (time_length_number*time_length.days).days)
-   else
+    else
       start_date
-   end
+    end
   end
 
   def setup_default_duration

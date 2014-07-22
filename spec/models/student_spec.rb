@@ -101,7 +101,7 @@ describe Student do
     end
 
     it 'should return true if the grade contains a student belonging to that user' do
-    pending
+      pending
     school = School.create!(name: 'My School', district: mock_district)
     e = Enrollment.create!(grade: '1',school: school, student: mock_student)
     user = User.new

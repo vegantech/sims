@@ -106,7 +106,7 @@ describe Notifications do
   end
 
   def create_without_callbacks(o, opts={tier: @tier})
-   obj=o.new(opts)
+    obj=o.new(opts)
    obj.sneaky_save
    obj
   end

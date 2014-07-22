@@ -1,7 +1,7 @@
 class CreateTrainingDistrict
   require 'csv'
   def self.generate
-      generate_one
+    generate_one
       2.upto(20){ |i| generate_one(i.to_s)}
       generate_named_districts
   end
@@ -23,7 +23,7 @@ class CreateTrainingDistrict
   def self.destroy_district abbrev
     d=District.find_by_abbrev(abbrev)
     if d.present?
-     d.schools.destroy_all
+      d.schools.destroy_all
      d.tiers.delete_all
      d.flag_categories.destroy_all
      FileUtils.rm(Dir.glob(Rails.root.join("public","system","district_generated_docs",d.id.to_s,"*")))
@@ -34,7 +34,7 @@ class CreateTrainingDistrict
   def self.create_with_schools_and_users(abbrev,name)
     td=District.create!(abbrev: abbrev, name: name, forgot_password: true)
     ActiveRecord::Base.transaction do
-    td.send :create_admin_user
+      td.send :create_admin_user
     #alpha elementary
     alpha_elem=td.schools.create!(name: 'Alpha Elementary')
 

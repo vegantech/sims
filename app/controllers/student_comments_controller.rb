@@ -24,7 +24,7 @@ class StudentCommentsController < ApplicationController
     respond_to do |format|
       if @student_comment.save
         format.html {
-          flash[:notice] = 'Team Note was successfully created.'
+           flash[:notice] = 'Team Note was successfully created.'
           redirect_to(@student)
          }
         format.js {responds_to_parent {render}}

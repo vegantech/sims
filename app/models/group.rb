@@ -38,7 +38,7 @@ class Group < ActiveRecord::Base
   end
 
   def principals
-   users.where(user_group_assignments: {is_principal: true})
+    users.where(user_group_assignments: {is_principal: true})
   end
 
   def to_s

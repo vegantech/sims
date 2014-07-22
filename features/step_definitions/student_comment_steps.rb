@@ -37,7 +37,7 @@ When /^I try to delete the comment anyway$/ do
 end
 
 Given /^there is a comment by me$/ do
- @student_comemnt = Factory(:student_comment, student: cucumber_student, user: cucumber_user)
+  @student_comemnt = Factory(:student_comment, student: cucumber_student, user: cucumber_user)
 end
 
 Then /^I should not see my comment$/ do

@@ -26,13 +26,13 @@ describe Tier do
   end
 
   describe 'used_at_all? method' do
-    before do
-      Tier.delete_all
-      Checklist.destroy_all
-      Recommendation.destroy_all
-      PrincipalOverride.destroy_all
-      @tier = FactoryGirl.create(:tier)
-    end
+   before do
+     Tier.delete_all
+     Checklist.destroy_all
+     Recommendation.destroy_all
+     PrincipalOverride.destroy_all
+     @tier = FactoryGirl.create(:tier)
+   end
 
     it 'should return false when the tier is not in use' do
       @tier.used_at_all?.should be_false

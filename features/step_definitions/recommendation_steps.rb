@@ -10,6 +10,6 @@ When /^I create a valid recommendation that does not increase the tier$/ do
 end
 
 Then /^I should see a summary of that recommendation$/ do
-    page.should have_content("Recommendation completed by Cucumber Last_Name")
+  page.should have_content("Recommendation completed by Cucumber Last_Name")
 end
 

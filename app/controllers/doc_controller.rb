@@ -1,7 +1,7 @@
 class DocController < ActionController::Base
   helper :application
   def self.page_cache_directory
-  "#{Rails.root}/public/doc"
+    "#{Rails.root}/public/doc"
   end
 
 #  caches_page :index, :district_upload

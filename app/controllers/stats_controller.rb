@@ -28,17 +28,17 @@ class StatsController < ApplicationController
       if @without
         case klass.name
           when 'Recommendation'
-           klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
           when 'District'
-           klass.filter_all_stats_on(:exclude_district_id, "districts.id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "districts.id != ?")
           when 'Probe'
-           klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
           when /Flag$/
-           klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "students.district_id != ?")
           when /DistrictLog$/
-           klass.filter_all_stats_on(:exclude_district_id, "district_logs.district_id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "district_logs.district_id != ?")
           else
-           klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
+            klass.filter_all_stats_on(:exclude_district_id, "district_id != ?")
           end
         @stats[klass.name] = klass.statistics(exclude_district_id: @without.to_i, created_after: @start_date, created_before: @end_date)
       else

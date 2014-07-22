@@ -41,7 +41,7 @@ class GroupedProgressEntry
   end
 
   def staff
-     [nil] | @school.assigned_users.collect{|e| [e.fullname, e.id]}
+    [nil] | @school.assigned_users.collect{|e| [e.fullname, e.id]}
   end
 
   def student_count
@@ -146,10 +146,10 @@ class GroupedProgressEntry
   end
 
   def find_student_interventions
-     Intervention.find_all_by_intervention_definition_id_and_active_and_student_id(@intervention.intervention_definition_id, true, @student_ids,
-                                                                                   include: [:student, :intervention_probe_assignments, :intervention_participants],
-                                                                                   conditions: ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
-                                                       ).collect{|i| ScoreComment.new(i, @user)}
+    Intervention.find_all_by_intervention_definition_id_and_active_and_student_id(@intervention.intervention_definition_id, true, @student_ids,
+                                                                                  include: [:student, :intervention_probe_assignments, :intervention_participants],
+                                                                                  conditions: ["(intervention_participants.user_id = ? or interventions.user_id = ?)", @user.id, @user.id]
+                                                      ).collect{|i| ScoreComment.new(i, @user)}
   end
 end
 

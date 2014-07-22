@@ -16,7 +16,7 @@ class DistrictUploadJob
         ::Notifications.district_upload_results(importer.messages, email.presence || ::UNASSIGNED_EMAIL).deliver
       end
     rescue => e
-       Rails.logger.error "Job Exception #{Time.now} #{e.message} #{e.backtrace}"
+      Rails.logger.error "Job Exception #{Time.now} #{e.message} #{e.backtrace}"
        Rails.cache.write("#{district.id}_import", "We're sorry, but something went wrong.  We've been notified and will take a look at it shortly.#{::ImportCSV::EOF}")
        Airbrake.notify(e,
                        backtrace: e.backtrace,

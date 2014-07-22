@@ -84,6 +84,6 @@ class ChecklistDefinition < ActiveRecord::Base
   end
 
   def clear_document
-     self.document=nil if @delete_document && !document.dirty?
+    self.document=nil if @delete_document && !document.dirty?
   end
 end

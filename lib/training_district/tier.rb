@@ -26,6 +26,6 @@ module TrainingDistrict::Tier
   end
 
   def map_tier_id(ck)
-     tiers[oldtiers.index(ck[:tier_id].to_i)].try(:id) || @tier
+    tiers[oldtiers.index(ck[:tier_id].to_i)].try(:id) || @tier
   end
 end

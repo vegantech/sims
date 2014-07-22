@@ -106,7 +106,7 @@ class ReportsController < ApplicationController
     #pdf
     #html
     respond_to do |format|
-     format.html { render layout: "pdf" }
+      format.html { render layout: "pdf" }
      format.pdf { render text: PDFKit.new(intervention_definition_summary_report_html).to_pdf }
     end
   end

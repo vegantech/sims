@@ -1,9 +1,9 @@
 module CSVImporter
   class AdminsOfSchools < CSVImporter::Base
-     FIELD_DESCRIPTIONS = {
-      district_user_id: 'Key for user',
-      district_school_id: 'Key for school'
-    }
+    FIELD_DESCRIPTIONS = {
+     district_user_id: 'Key for user',
+     district_school_id: 'Key for school'
+   }
      class << self
        def description
          "Assigns administrators to schools.  The file looks just like user_school_assignments.csv, but will assign the users here as the admin of the school."

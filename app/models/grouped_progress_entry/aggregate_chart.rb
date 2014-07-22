@@ -63,7 +63,7 @@ class GroupedProgressEntry
       #      probe_scores
       #       scores, grouped by date?
 
-          low=page.to_i*group_size
+      low=page.to_i*group_size
           high = (low+group_size) -1
 
           probes=all_probes[low..high]

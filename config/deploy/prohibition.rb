@@ -11,9 +11,9 @@ set :user, 'shawn'
 after "deploy:update_code", :copy_database_yml
 
 namespace :deploy do
- desc "Restart Application"
+  desc "Restart Application"
  task :restart, roles: :app do
-    run "touch #{current_path}/tmp/restart.txt"
+   run "touch #{current_path}/tmp/restart.txt"
  end
 end
 

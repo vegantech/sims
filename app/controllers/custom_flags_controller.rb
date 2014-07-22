@@ -18,7 +18,7 @@ class CustomFlagsController < ApplicationController
   end
 
   def create
-     @custom_flag = CustomFlag.new(params[:custom_flag])
+    @custom_flag = CustomFlag.new(params[:custom_flag])
 
      respond_to do |format|
        if @custom_flag.save

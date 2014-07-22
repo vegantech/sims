@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :ext_adult_contact do
-    relationship  "Parent"
+     relationship  "Parent"
     guardian  true
     firstName  "Plato"
     lastName  {student.last_name}

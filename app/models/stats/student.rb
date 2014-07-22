@@ -1,12 +1,12 @@
 module Stats::Student
   extend ActiveSupport::Concern
   included do
-  scope :with_sims_content, joins("left outer join interventions on interventions.student_id = students.id
-  left outer join student_comments on students.id = student_comments.student_id
-  left outer join team_consultations on team_consultations.student_id = students.id
-  left outer join consultation_form_requests on consultation_form_requests.student_id = students.id"
-   ).where("interventions.id is not null or student_comments.id is not null or
-                  team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
+    scope :with_sims_content, joins("left outer join interventions on interventions.student_id = students.id
+    left outer join student_comments on students.id = student_comments.student_id
+    left outer join team_consultations on team_consultations.student_id = students.id
+    left outer join consultation_form_requests on consultation_form_requests.student_id = students.id"
+     ).where("interventions.id is not null or student_comments.id is not null or
+                    team_consultations.student_id is not null or consultation_form_requests.student_id is not null")
 
   scope :with_comments_count, joins("left outer join student_comments on students.id = student_comments.student_id").group("students.id").select("count(student_comments.id) as comments_count")
   scope :with_pending_consultations_count, joins("left outer join team_consultations on students.id = team_consultations.student_id and !team_consultations.draft  and !team_consultations.complete ").group("students.id").select("count(team_consultations.id) as team_consultations_pending_count")

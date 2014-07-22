@@ -8,7 +8,7 @@
 
 require 'active_record/fixtures'
 %w(frequencies time_lengths recommendation_definitions recommendation_answer_definitions).each do |f|
-ActiveRecord::Fixtures.create_fixtures(Rails.root.join("db","training"),f)
+  ActiveRecord::Fixtures.create_fixtures(Rails.root.join("db","training"),f)
 end
 System.bootstrap
 

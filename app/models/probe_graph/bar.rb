@@ -4,7 +4,7 @@ class ProbeGraph::Bar < ProbeGraph::Base
     #groups of 10
     custom_chm=[numbers_in_bars,max_min_zero,benchmark_lines].compact.join("|")
     probes_for_graph.in_groups_of(10,false).collect{|probes_for_this_graph|
-      gchart(probes_for_this_graph, custom_chm)
+        gchart(probes_for_this_graph, custom_chm)
       }.join("<br />")
   end
 

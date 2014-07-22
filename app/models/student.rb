@@ -196,9 +196,9 @@ class Student < ActiveRecord::Base
 
   protected
   def save_extended_profile
-   if @extended_profile == ''
-       ext_arbitrary.destroy if ext_arbitrary
-   end
+    if @extended_profile == ''
+      ext_arbitrary.destroy if ext_arbitrary
+    end
    if @extended_profile.present?
      create_ext_arbitrary(content: @extended_profile)
      @extended_profile=nil

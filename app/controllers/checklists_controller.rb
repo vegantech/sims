@@ -32,9 +32,9 @@ class ChecklistsController < ApplicationController
     if @checklist.update_attributes(params.slice("commit","save_draft","element_definition"))
       flash[:notice] = "Checklist has been updated"
       if @checklist.needs_recommendation?
-          redirect_to new_recommendation_url(checklist_id: @checklist.id) and return
+        redirect_to new_recommendation_url(checklist_id: @checklist.id) and return
       else
-          redirect_to(current_student) and return
+        redirect_to(current_student) and return
       end
     else
       flash.now[:notice] = "There was a problem with updating the checklist"

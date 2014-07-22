@@ -15,11 +15,11 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def current_student
-   @current_student ||= mock_student(interventions: mock_intervention, max_tier: max_tier)
+    @current_student ||= mock_student(interventions: mock_intervention, max_tier: max_tier)
   end
 
   def current_school
-   @current_school ||= mock_school(quicklist: [])
+    @current_school ||= mock_school(quicklist: [])
   end
 
   delegate :id, to: :current_school, prefix: true
@@ -29,7 +29,7 @@ describe "Populate Intervention Dropdowns Module" do
   end
 
   def max_tier
-   @mock_tier ||= mock_tier()
+    @mock_tier ||= mock_tier()
   end
 
   def current_district

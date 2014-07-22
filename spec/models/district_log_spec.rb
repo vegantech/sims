@@ -116,7 +116,7 @@ describe DistrictLog do
     end
 
     describe 'failure' do
-        subject { DistrictLog.failure.build body: "test_user" }
+      subject { DistrictLog.failure.build body: "test_user" }
         its(:to_s) { should match("Failed login of test_user") }
     end
   end

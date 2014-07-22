@@ -4,7 +4,7 @@ describe ImportCSV do
 
   describe 'doc' do
     before :all do
-        @files=ImportCSV.importers.collect(&:file_name)
+      @files=ImportCSV.importers.collect(&:file_name)
         @append_files = ImportCSV.importers.select(&:supports_append?).collect(&:file_name_with_append)
         @all_files = @files + @append_files
     end
@@ -44,8 +44,8 @@ describe ImportCSV do
 
   describe "sorted_filenames" do
     before(:all) do
-      @files =["users.csv","other_append.csv","ext_test_scores_appends.csv","students.csv", "schools.csv", "other.csv",
-               "ext_test_scores.csv", "groups.csv", "system_flags.csv", "user_school_assignments.csv"]
+        @files =["users.csv","other_append.csv","ext_test_scores_appends.csv","students.csv", "schools.csv", "other.csv",
+                 "ext_test_scores.csv", "groups.csv", "system_flags.csv", "user_school_assignments.csv"]
       end
 
     it 'should pick out the initial files and put them in order' do

@@ -125,7 +125,7 @@ class InterventionBuilder::InterventionsController < InterventionBuilder::BaseCo
   end
 
   def setup_parent_instance_variables
-        @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
+    @intervention_cluster,@objective_definition,@goal_definition = @intervention_definition.intervention_cluster,@intervention_definition.intervention_cluster.objective_definition,@intervention_definition.intervention_cluster.objective_definition.goal_definition if @intervention_cluster != @intervention_definition.intervention_cluster
         @tiers=current_district.tiers
         true #meeded for spellcheck call
   end

@@ -1,18 +1,18 @@
 require 'rubygems'
 
 begin
-require 'spork'
-#uncomment the following line to use spork with the debugger
-#require 'spork/ext/ruby-debug'
-rescue LoadError  #excluding development gems on travis-ci,  this is a hack to keep the tests running
-  class Spork
-    def self.prefork
-      yield
+  require 'spork'
+  #uncomment the following line to use spork with the debugger
+  #require 'spork/ext/ruby-debug'
+  rescue LoadError  #excluding development gems on travis-ci,  this is a hack to keep the tests running
+    class Spork
+      def self.prefork
+        yield
+      end
+      def self.each_run
+        yield
+      end
     end
-    def self.each_run
-      yield
-    end
-  end
 end
 
 Spork.prefork do

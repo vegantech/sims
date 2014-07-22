@@ -35,15 +35,15 @@ describe School do
   end
 
   describe 'grades_by_user' do
-    it 'should return all grades in school when user has access to 
-    all students in the school' do
-      user=mock_user
-      @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,grade: i,school: @school)}
-      user.should_receive('all_students_in_school?').with(@school).and_return(true)
-      @school.grades_by_user(user).should == ['1','2','3','4']
+   it 'should return all grades in school when user has access to 
+   all students in the school' do
+    user=mock_user
+     @school.enrollments= [2,1,3,4].collect{|i| Factory(:enrollment,grade: i,school: @school)}
+     user.should_receive('all_students_in_school?').with(@school).and_return(true)
+     @school.grades_by_user(user).should == ['1','2','3','4']
 
-                                 
-   end
+                                
+  end
 
     it 'should not prepend * if there is only one' do 
      @school.enrollments.create!(grade: 'only',student_id: -1) 

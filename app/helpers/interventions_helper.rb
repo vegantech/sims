@@ -1,6 +1,6 @@
 module InterventionsHelper
   def tiered_intervention_definition_select(intervention_definitions, include_blank=true, selected = nil)
-   opts = ""
+    opts = ""
    opts += content_tag :option,"",value: "" if include_blank
 
    c=intervention_definitions.group_by{|e| e.tier.to_s}

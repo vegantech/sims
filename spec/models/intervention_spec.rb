@@ -236,19 +236,19 @@ describe Intervention do
 
   describe 'email' do
     describe 'new intervention' do
-     it 'should send intervention starting email' do
-      Intervention.delete_all
-      @student1 = FactoryGirl.create(:student)
-      @student2 = FactoryGirl.create(:student, district: @student1.district)
-      @user1 = FactoryGirl.create(:user, district: @student1.district)
-      @user2 = FactoryGirl.create(:user, district: @student1.district)
-      @intervention = FactoryGirl.build(:intervention, student: @student1, user: @user1, apply_to_all: "1",
-                                                       selected_ids: [@student1.id.to_s, @student2.id.to_s],
-                                                       participant_user_ids: [@user1.id.to_s, @user2.id.to_s])
-      Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(deliver: true))
-      Notifications.should_not_receive(:intervention_participant_added)
-      @intervention.save!
-     end
+      it 'should send intervention starting email' do
+        Intervention.delete_all
+       @student1 = FactoryGirl.create(:student)
+       @student2 = FactoryGirl.create(:student, district: @student1.district)
+       @user1 = FactoryGirl.create(:user, district: @student1.district)
+       @user2 = FactoryGirl.create(:user, district: @student1.district)
+       @intervention = FactoryGirl.build(:intervention, student: @student1, user: @user1, apply_to_all: "1",
+                                                        selected_ids: [@student1.id.to_s, @student2.id.to_s],
+                                                        participant_user_ids: [@user1.id.to_s, @user2.id.to_s])
+       Notifications.should_receive(:intervention_starting).with([@intervention, kind_of(Intervention)]).and_return(mock(deliver: true))
+       Notifications.should_not_receive(:intervention_participant_added)
+       @intervention.save!
+      end
     end
 
     describe 'updating intervention' do

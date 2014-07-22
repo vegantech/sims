@@ -40,12 +40,12 @@ class StudentSearch
   private
 
   def personal_group_search
-     if PersonalGroup::ID_MATCH.match search_hash[:group_id]
-       pg=search_hash.delete(:group_id)[2..-1]
-       @enrollments = @enrollments.joins("inner join personal_groups_students on
-                                         personal_groups_students.student_id = enrollments.student_id"
-                                        ).where( "personal_groups_students.personal_group_id" => pg)
-     end
+    if PersonalGroup::ID_MATCH.match search_hash[:group_id]
+      pg=search_hash.delete(:group_id)[2..-1]
+      @enrollments = @enrollments.joins("inner join personal_groups_students on
+                                        personal_groups_students.student_id = enrollments.student_id"
+                                       ).where( "personal_groups_students.personal_group_id" => pg)
+    end
    end
 
   def group_search
@@ -132,7 +132,7 @@ class StudentSearch
   end
 
   def without_intervention
-     @enrollments.where ["not exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
+    @enrollments.where ["not exists (select id from interventions where interventions.student_id = enrollments.student_id and interventions.active = ?)",true]
   end
 
   def restrict_to_user

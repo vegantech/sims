@@ -111,7 +111,7 @@ class GroupsController < SchoolAdminController
 
   def add_user
     #need to handle special user groups as well
-   @group = current_school.groups.find(params[:id])
+    @group = current_school.groups.find(params[:id])
 
    @user_assignment = @group.user_group_assignments.build(params[:user_group_assignment])
    respond_to do |format|

@@ -15,7 +15,7 @@ class PersonalGroup < ActiveRecord::Base
   and enrollments.student_id = pgs.student_id and pgs.personal_group_id = personal_groups.id and grade = ? ) ",grade])}
 
   def title
-   "pg- #{name}"
+    "pg- #{name}"
   end
 
   def id_with_prefix

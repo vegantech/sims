@@ -209,7 +209,7 @@ module CSVImporter
       # def csv_headers
       # :number, :last_name, :first_name, :birthdate, :middle_name, :suffix, :esl, :special_ed]
       # end
-       updates=csv_headers.collect{|e| "s.#{e} = ts.#{e}"}.join(", ")
+      updates=csv_headers.collect{|e| "s.#{e} = ts.#{e}"}.join(", ")
        q="update students s inner join #{temporary_table_name} ts on
            ts.district_student_id = s.district_student_id set s.updated_at = CURDATE(), #{updates}
            where s.district_id = #{@district.id} and s.district_student_id is not null"
@@ -218,10 +218,10 @@ module CSVImporter
 
     def delete
       #unset the district of  all students that are not in the temporary table
-       q="delete e from enrollments e inner join students s on s.id = e.student_id
-       left outer join #{temporary_table_name} ts on
-          ts.district_student_id = s.district_student_id
-          where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null and s.district_student_id != ''"
+      q="delete e from enrollments e inner join students s on s.id = e.student_id
+      left outer join #{temporary_table_name} ts on
+         ts.district_student_id = s.district_student_id
+         where s.district_id = #{@district.id} and ts.district_student_id is null and s.district_student_id is not null and s.district_student_id != ''"
 
        clear_enrollments=ActiveRecord::Base.connection.update(q)
        q="update students s left outer join #{temporary_table_name} ts on
