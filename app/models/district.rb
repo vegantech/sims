@@ -166,10 +166,6 @@ class District < ActiveRecord::Base
 
   end
 
-  def show_aim_line?
-    pilot_env?
-  end
-
   def show_personal_groups?
     pilot2_env?
   end
