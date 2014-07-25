@@ -4,12 +4,13 @@ class ProbeGraph::Base
   attr_reader :benchmarks, :title, :goal
 
   def self.build(opts = {})
-    if opts[:graph_type].to_s == "bar"
+    case opts[:graph_type].to_s
+    when  "bar"
       ProbeGraph::Bar.new(opts)
-    elsif opts[:district].try(:show_aim_line?)
+    when 'scaled_line'
       ProbeGraph::Linexy.new(opts)
     else
-     ProbeGraph::Line.new(opts)
+      ProbeGraph::Line.new(opts)
     end
   end
 
