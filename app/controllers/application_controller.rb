@@ -162,9 +162,21 @@ class ApplicationController < ActionController::Base
 
   def check_domain
     return true if devise_controller?
-    if current_district && current_subdomain != current_district.abbrev && District.exists?(:abbrev => current_subdomain)
+    if current_district && subdomain_mismatch? && District.exists?(:abbrev => current_subdomain)
       sign_out_and_redirect root_url
       return false
     end
   end
+
+  def setup_session_from_user_and_student(user,student)
+    session[:school_id] = (student.schools & user.schools).first.id
+    self.current_student_id = student.id
+    self.selected_student_ids = [student.id]
+  end
+
+  def subdomain_mismatch?
+    #case insensitive strcmp so 0 is true
+    !current_subdomain.casecmp(current_district.abbrev).zero?
+  end
+
 end
