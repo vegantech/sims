@@ -66,7 +66,7 @@ class District < ActiveRecord::Base
 
 
   validates_presence_of :abbrev,:name
-  validates_uniqueness_of :abbrev,:name
+  validates_uniqueness_of :abbrev,:name, case_sensitive: false
   validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
