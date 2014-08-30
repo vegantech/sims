@@ -115,6 +115,31 @@ describe StudentSearch do
 
       end
 
+      describe 'lh803 students with multiple enrollments' do
+        before(:all) do
+          Enrollment.delete_all
+          student1=FactoryGirl.create(:student)
+          @e1 = student1.enrollments.create!(:grade=>"1",:school_id=>999, :end_year=> 2005 )
+          @e2 = student1.enrollments.create!(:grade=>"2",:school_id=>999, :end_year=> 2006 )
+          res= StudentSearch.search(:search_type=>'list_all',:index_includes=>true,:school_id => 999)
+        end
+
+        it 'should limit to chosen end_year' do
+          res= StudentSearch.search(:search_type=>'list_all',
+                                    :index_includes=>true,:school_id => 999,
+                                    :year => 2005)
+          res.should == [@e1.student]
+        end
+
+        it 'should limit to chosen grade' do
+          res= StudentSearch.search(:search_type=>'list_all',
+                                    :index_includes=>true,:school_id => 999,
+                                    :grade => "2")
+          res.should == [@e2.student]
+        end
+      end
+
+
 
     end
 
