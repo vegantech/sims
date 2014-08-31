@@ -11,6 +11,7 @@ Feature: Search By Student Last Name
     Given school "Glenn Stephens"
 		And student "Sally" "Carpenter" in grade 1 at "Glenn Stephens"
 		And student "Eric" "Aagard" in grade 1 at "Glenn Stephens" in 2008
+    And student "Eric" "Aagard" also in grade LH803 at "Glenn Stephens" in 2007
 		And student "Mike" "Baumeister" in grade 2 at "Glenn Stephens" in 2009
 		And group "My Group" for school "Glenn Stephens" with students ['Eric Aagard', 'Mike Baumeister', 'Sally Carpenter']
 		And I have access to "My Group"
@@ -22,7 +23,7 @@ Feature: Search By Student Last Name
     Then I should see select box with id of "search_criteria_year" and contains ['All', '', '2008', '2009']
     When I select "All" from "Year"
 		When I press "Search for Students"
-		Then I should see "3 students selected"
+		Then I should see "4 students selected"
 
     When I follow "Student Search"
     And I select "2008" from "Year"
@@ -41,6 +42,8 @@ Feature: Search By Student Last Name
     And I press "Search for Students"
 		Then I should see "1 student selected"
     And I should see "Carpenter, Sally"
+
+
 
 
   Scenario: Other Enrollments

@@ -147,6 +147,14 @@ describe ApplicationController do
       @c.send(:check_domain).should be_nil
     end
 
+    it 'should pass through if the current district matches the subdomain but in different case' do
+      #LH802
+      @c.stub!(:current_district=> mock_district(:abbrev => "TEST"))
+      @c.should_receive(:current_subdomain).and_return "test"
+      @c.send(:check_domain).should be_nil
+    end
+
+
     it 'should sign out if the subdomain matches another district' do
       @c.stub!(:current_district=> mock_district(:abbrev => "test"))
       @c.stub!(:current_subdomain => "other")

@@ -28,6 +28,7 @@ Feature: Search Page
   Scenario: Search by First Grade
     Given school "Glenn Stephens"
 		And student "First" "Grader" in grade 1 at "Glenn Stephens"
+    And student "First" "Grader" also in grade LH803 at "Glenn Stephens" in 2007
 		And student "Second" "Grader" in grade 2 at "Glenn Stephens"
 		And group "My Group" for school "Glenn Stephens" with students ['First Grader', 'Second Grader']
 		And I have access to "My Group"
