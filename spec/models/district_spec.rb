@@ -118,6 +118,18 @@ describe District do
     it 'should have specs'
   end
 
+  describe 'unique abbrev' do
+    let!(:district) {District.delete_all;FactoryGirl.create(:district, :abbrev => 'rspec123')}
+    it 'should be case insensitive' do
+      d = FactoryGirl.build(:district,  abbrev: 'RSPEC123', name: 'RSPEC321')
+      d.should_not be_valid
+      d.should have(1).error_on(:abbrev)
+      d.abbrev = 'rspec321'
+      d.should be_valid
+    end
+
+  end
+
   describe 'find_by_subdomain' do
     let!(:district) {District.delete_all;FactoryGirl.create(:district, :abbrev => 'rspec123')}
     describe 'with matching subdomain' do
