@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   has_many :school_team_memberships
   has_many :school_teams, :through => :school_team_memberships
   has_many :team_consultations,:foreign_key => :requestor_id
-  has_many :personal_groups
+  has_many :personal_groups, :dependent => :destroy
   has_many :staff_assignments
   has_many :checklists
   has_many :consultation_forms

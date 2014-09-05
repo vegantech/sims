@@ -7,6 +7,8 @@ module CSVImporter
       :district_school_id =>"Key for school",
       :name =>"The name of the group that will appear in SIMS."
     }
+    
+    
     class << self
       def description
         "Named collections of students within a school. It could be classroom sections of students, neighborhoods, teams. Students and Users get assigned to them."
@@ -91,14 +93,25 @@ module CSVImporter
     end
 
     def delete
-      query ="
-       delete from g using  groups g
+      query1 ="
+       delete from gs, uga  using  groups g
+       left outer join #{temporary_table_name} tg
+       on tg.district_group_id = g.district_group_id
+       inner join schools sch on g.school_id = sch.id and sch.district_id= #{@district.id}
+       left outer join user_group_assignments uga on uga.group_id = g.id
+       left outer join groups_students gs on gs.group_id = g.id
+       where tg.district_school_id is null and sch.district_school_id is not null and g.district_group_id != ''
+        "
+
+      query2 ="
+       delete from g  using  groups g
        left outer join #{temporary_table_name} tg
        on tg.district_group_id = g.district_group_id
        inner join schools sch on g.school_id = sch.id and sch.district_id= #{@district.id}
        where tg.district_school_id is null and sch.district_school_id is not null and g.district_group_id != ''
         "
-      ActiveRecord::Base.connection.update query
+       ActiveRecord::Base.connection.update query1
+       ActiveRecord::Base.connection.update query2
     end
 
     def insert
@@ -114,6 +127,7 @@ module CSVImporter
       )
       ActiveRecord::Base.connection.update query
     end
+
   end
 end
 
