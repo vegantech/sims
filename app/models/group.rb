@@ -20,7 +20,7 @@ class Group < ActiveRecord::Base
   include Pageable
   belongs_to :school
   has_and_belongs_to_many :students
-  has_many :user_group_assignments
+  has_many :user_group_assignments, :dependent => :destroy
   has_many :users, :through=>:user_group_assignments
   validates_presence_of :title, :school_id
   validates_uniqueness_of :title, :scope=>:school_id
