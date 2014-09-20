@@ -8,7 +8,7 @@ end
 
 def local_dirs path
   Dir.entries(path).select do |entry|
-    File.directory?("#{path}#{entry}") && !(['.', '..'].include? entry)
+    File.directory?("#{path}#{entry}") && !(['.', '..'].include?(entry))
   end
 end
 
@@ -16,7 +16,7 @@ def local_files path
   Dir.entries(path).select do |entry|
     File.file?("#{path}#{entry}") &&
     entry[0] != '.' &&
-    (Time.new - File.mtime "#{path}#{entry}") > 30
+    (Time.new - File.mtime("#{path}#{entry}")) > 30
   end
 end
 
