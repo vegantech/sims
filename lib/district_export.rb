@@ -174,8 +174,19 @@ class DistrictExport
     district.intervention_definitions.collect(&:assets)
   end
 
+
+  def export_asset_sql
+    [
+      :probe_definitions,
+      :intervention_definitions,
+      :student_comments
+    ].collect { |asset|
+      district.send(asset).joins(:assets).select("assets.*").to_sql
+    }.join(" UNION ")
+  end
+
   def export_assets
-    generate_csv('assets',Asset.column_names.join(","),Asset.where(:id => district_asset_ids).to_sql)
+    generate_csv('assets',Asset.column_names.join(","),export_asset_sql)
   end
 
   def export_content_assets
