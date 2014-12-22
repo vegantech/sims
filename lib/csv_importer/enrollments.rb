@@ -46,6 +46,9 @@ module CSVImporter
         super
       end
 
+      def supports_append?
+        true
+      end
     end
 
 
@@ -90,7 +93,7 @@ module CSVImporter
         )
         and sch.district_school_id is not null and stu.district_student_id != ''
        "
-       ActiveRecord::Base.connection.update query
+       ActiveRecord::Base.connection.update query unless @append
     end
 
     def insert

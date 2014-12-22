@@ -63,6 +63,9 @@ module CSVImporter
         "One row per student."
       end
 
+      def supports_append?
+        true
+      end
     end
 
 
@@ -150,9 +153,9 @@ module CSVImporter
       try_to_claim_students_in_other_districts
       reject_students_with_nil_data_but_nonmatching_birthdate_or_last_name_if_birthdate_is_nil_on_one_side
       claim_students_with_nil_district
-      update_students_already_in_district
+      update_students_already_in_district unless @append
       insert
-      delete
+      delete unless @append
     end
 
     #try to claim students in other_districts
@@ -267,6 +270,7 @@ module CSVImporter
     end
 
     def confirm_count?
+      return true if @append
       model_name = sims_model.name
       model_count = @district.send(model_name.tableize).count(:conditions=>'district_student_id is not null and district_student_id !=""')
       if @line_count < (model_count * ImportCSV::DELETE_PERCENT_THRESHOLD  ) && model_count > ImportCSV::DELETE_COUNT_THRESHOLD
