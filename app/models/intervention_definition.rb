@@ -27,12 +27,12 @@ class InterventionDefinition < ActiveRecord::Base
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
+  TIME_LENGTH_NUM = :time_length_num
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   include FrequencyAndDuration
 
   belongs_to :intervention_cluster
-  belongs_to :time_length
   belongs_to :tier
   belongs_to :user
   belongs_to :school
@@ -40,9 +40,8 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :probe_definitions, :through => :recommended_monitors
   has_many :quicklist_items, :dependent => :destroy
   has_many :interventions
-  validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
+  validates_presence_of :title, :description
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
-  validates_numericality_of :time_length_num
 
   acts_as_list :scope => :intervention_cluster_id
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
@@ -118,16 +117,8 @@ class InterventionDefinition < ActiveRecord::Base
     [objective_definition.goal_definition_id, objective_definition.id, intervention_cluster_id, id]
   end
 
-  def frequency_duration_summary
-    "#{time_length_summary} / #{frequency_summary}"
-  end
-
   def monitor_summary
     "#{probe_definitions.collect(&:title).join("; ")}"
-  end
-
-  def time_length_summary
-    pluralize time_length_num, time_length.title if time_length
   end
 
   def tier_summary

@@ -2,17 +2,9 @@ module FrequencyAndDuration
   extend ActiveSupport::Concern
   include FrequencyConcern
   include DurationConcern
-=begin
-  include ActionView::Helpers::TextHelper #for pluralize
-  included do
-    belongs_to :frequency
-    validates_presence_of :frequency_id, :frequency_multiplier
-    validates_numericality_of :frequency_multiplier
+
+  def frequency_duration_summary
+    "#{time_length_summary} / #{frequency_summary}"
   end
 
-  def frequency_summary
-    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
-  end
-
-=end
 end

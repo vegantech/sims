@@ -23,6 +23,7 @@
 
 class Intervention < ActiveRecord::Base
   DISTRICT_PARENT = :intervention_definition
+  TIME_LENGTH_NUM = :time_length_number
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
   include Stats::Intervention
@@ -44,13 +45,11 @@ class Intervention < ActiveRecord::Base
   belongs_to :user
   belongs_to :student, :touch => true
   belongs_to :intervention_definition
-  belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
   has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
   has_many :intervention_probe_assignments, :dependent => :destroy
-  validates_numericality_of :time_length_number
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
@@ -133,10 +132,6 @@ class Intervention < ActiveRecord::Base
 
   def auto_implementer?
     @auto_implementer == "1"
-  end
-
-  def time_length_summary
-    pluralize time_length_number, time_length.title
   end
 
   def intervention_probe_assignment=(params)
@@ -289,23 +284,8 @@ class Intervention < ActiveRecord::Base
     false
   end
 
-
-  def end_date_after_start_date?
-    errors.add(:end_date, "Must be after start date") and return false if end_date.blank? || start_date.blank? || end_date < start_date
-    true
-  end
-
-  def default_end_date
-   if time_length_number and time_length
-      (start_date + (time_length_number*time_length.days).days)
-   else
-      start_date
-   end
-  end
-
   def set_defaults_from_definition
     return unless new_record?
-    self.start_date ||= Date.today
 
     if intervention_definition.blank? || intervention_definition.new_record?
       self.frequency ||= Frequency.find_by_title('Weekly')
@@ -316,8 +296,7 @@ class Intervention < ActiveRecord::Base
     else
       set_missing_values_from_intervention_definition
     end
-
-    self.end_date ||= default_end_date
+    setup_default_dates
   end
 
   def notify_new_participant(participant)
