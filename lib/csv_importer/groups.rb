@@ -58,11 +58,7 @@ module CSVImporter
 
     def migration t
       @cols = sims_model.columns_hash.merge(School.columns_hash)
-
-      csv_headers.each do |col|
-        c=col.to_s
-        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
-      end
+      migrate_cols(t,@cols)
     end
 
 

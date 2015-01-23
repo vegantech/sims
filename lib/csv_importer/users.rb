@@ -73,10 +73,7 @@ password is the user\'s password in lowercase, district_key is set by the distri
 
     def migration t
       @cols = User.columns_hash
-      csv_headers.each do |col|
-        c=col.to_s
-        t.column col, @cols[c].type, :limit => @cols[c].limit, :null => @cols[c].null
-      end
+      migrate_cols(t,@cols)
     end
 
 

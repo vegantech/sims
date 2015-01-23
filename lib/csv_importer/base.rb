@@ -248,5 +248,12 @@ module CSVImporter
       end
       return false
     end
+
+    def migrate_cols(t,cols)
+      csv_headers.each do |col|
+        c=col.to_s
+        t.column col, cols[c].type, :limit => cols[c].limit, :null => cols[c].null
+      end
+    end
   end
 end
