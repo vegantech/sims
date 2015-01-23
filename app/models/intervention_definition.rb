@@ -29,8 +29,9 @@ class InterventionDefinition < ActiveRecord::Base
   DEFAULT_TIME_LENGTH_NUMBER = 4
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
+  include FrequencyAndDuration
+
   belongs_to :intervention_cluster
-  belongs_to :frequency
   belongs_to :time_length
   belongs_to :tier
   belongs_to :user
@@ -41,7 +42,7 @@ class InterventionDefinition < ActiveRecord::Base
   has_many :interventions
   validates_presence_of :title, :description, :time_length_id, :time_length_num, :frequency_id, :frequency_multiplier
   validates_uniqueness_of :description, :scope =>[:intervention_cluster_id, :school_id, :title], :unless=>:custom
-  validates_numericality_of :frequency_multiplier, :time_length_num
+  validates_numericality_of :time_length_num
 
   acts_as_list :scope => :intervention_cluster_id
   define_statistic :count , :count => :all, :joins => {:intervention_cluster=>{:objective_definition=>:goal_definition}}
@@ -119,10 +120,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   def frequency_duration_summary
     "#{time_length_summary} / #{frequency_summary}"
-  end
-
-  def frequency_summary
-    "#{pluralize frequency_multiplier, "time"} #{frequency.title}" if frequency
   end
 
   def monitor_summary

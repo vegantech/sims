@@ -26,6 +26,7 @@ class Intervention < ActiveRecord::Base
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
   include Stats::Intervention
+  include FrequencyAndDurationWithDates
 
   END_REASONS = [
     "Sufficient progress made",
@@ -43,14 +44,13 @@ class Intervention < ActiveRecord::Base
   belongs_to :user
   belongs_to :student, :touch => true
   belongs_to :intervention_definition
-  belongs_to :frequency
   belongs_to :time_length
   belongs_to :ended_by, :class_name => "User"
   has_many :comments, :class_name => "InterventionComment", :dependent => :destroy, :order => "updated_at DESC", :inverse_of => :intervention, :include => :user
   has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
   has_many :intervention_probe_assignments, :dependent => :destroy
-  validates_numericality_of :time_length_number, :frequency_multiplier
+  validates_numericality_of :time_length_number
   validates_presence_of :intervention_definition, :start_date, :end_date
   #validates_associated :intervention_probe_assignments
   validate :validate_intervention_probe_assignment, :end_date_after_start_date?
@@ -133,10 +133,6 @@ class Intervention < ActiveRecord::Base
 
   def auto_implementer?
     @auto_implementer == "1"
-  end
-
-  def frequency_summary
-    "#{pluralize frequency_multiplier, "time"} #{frequency.title}"
   end
 
   def time_length_summary
