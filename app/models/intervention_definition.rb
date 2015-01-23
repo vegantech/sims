@@ -27,7 +27,6 @@ class InterventionDefinition < ActiveRecord::Base
 
   DEFAULT_FREQUENCY_MULTIPLIER = 2
   DEFAULT_TIME_LENGTH_NUMBER = 4
-  TIME_LENGTH_NUM = :time_length_num
   include ActionView::Helpers::TextHelper # to pick up pluralize
   include LinkAndAttachmentAssets
   include FrequencyAndDuration

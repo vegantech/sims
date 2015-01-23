@@ -23,7 +23,6 @@
 
 class Intervention < ActiveRecord::Base
   DISTRICT_PARENT = :intervention_definition
-  TIME_LENGTH_NUM = :time_length_number
   include LinkAndAttachmentAssets
   include ActionView::Helpers::TextHelper
   include Stats::Intervention
@@ -50,9 +49,9 @@ class Intervention < ActiveRecord::Base
   has_many :intervention_participants, :dependent => :delete_all, :before_add => :notify_new_participant, :inverse_of => :intervention
   has_many :participant_users, :through => :intervention_participants, :source => :user
   has_many :intervention_probe_assignments, :dependent => :destroy
-  validates_presence_of :intervention_definition, :start_date, :end_date
+  validates_presence_of :intervention_definition
   #validates_associated :intervention_probe_assignments
-  validate :validate_intervention_probe_assignment, :end_date_after_start_date?
+  validate :validate_intervention_probe_assignment
   accepts_nested_attributes_for :intervention_definition, :reject_if =>proc{|e| false}
   accepts_nested_attributes_for :comments, :reject_if =>proc{|e| e["comment"].blank?}
 
