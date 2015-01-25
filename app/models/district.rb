@@ -275,18 +275,22 @@ private
 
   def make_sure_there_are_no_schools
     if schools.blank?
-      schools.destroy_all
-      users.destroy_all
-      checklist_definitions.destroy_all
-      goal_definitions.destroy_all
-      probe_definitions.destroy_all
-      tiers.destroy_all
-      students.destroy_all
-      news.destroy_all
+      destroy_all_associated!
     else
       errors.add(:base, "Have the district admin remove the schools first.")
       false
     end
+  end
+
+  def destroy_all_associated!
+    schools.destroy_all
+    users.destroy_all
+    checklist_definitions.destroy_all
+    goal_definitions.destroy_all
+    probe_definitions.destroy_all
+    tiers.destroy_all
+    students.destroy_all
+    news.destroy_all
   end
 
 
