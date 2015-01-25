@@ -266,7 +266,6 @@ Sims::Application.routes.draw do
   match 'scripted/:action(.:format)', :controller => "scripted"
   match 'intervention_builder/:controller/:action(.:format)'# for controller specs
   match 'spell_check/check_spelling' => "spell_check#check_spelling"
-  match '/chart' => ChartProxyApp.action(:index)
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 #  match 'checklist_builder/:controller/:action(.:format)'# for controller specs
 #  match ':controller(/:action(/:id(.:format)))'
