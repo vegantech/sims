@@ -1,5 +1,5 @@
-require '12_hour_time'
-require 'unobtrusive_date_picker'
+require 'unobtrusive_date_picker/12_hour_time'
+require 'unobtrusive_date_picker/unobtrusive_date_picker'
 
 # Include all the necessary functions in to the appropriate point in the Rails framework
 ActionView::Base.send :include, UnobtrusiveDatePicker::UnobtrusiveDatePickerHelper
