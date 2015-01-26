@@ -56,8 +56,6 @@ module Sims
 #    config.action_mailer.delivery_method = :railmail
     config.time_zone = 'Central Time (US & Canada)'
     config.cache_store = :dalli_store
-    config.paths['app/manifests'] = "app/manifests"
-    config.paths['app/manifests'].skip_eager_load!
 
     # Enable the asset pipeline
     config.assets.enabled = true
