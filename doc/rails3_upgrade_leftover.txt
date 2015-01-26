@@ -1,0 +1,105 @@
+[31m[1mSoon-to-be-deprecated ActiveRecord calls[0m
+[37mMethods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
+[1mMore information:[0m [36mhttp://m.onkey.org/2010/1/22/active-record-query-interface
+
+[37mThe culprits: 
+[33m	- app/controllers/intervention_builder/recommended_monitors_controller.rb
+[33m	- app/controllers/intervention_builder/categories_controller.rb
+[33m	- app/controllers/intervention_builder/base_controller.rb
+[33m	- app/controllers/tiers_controller.rb
+[33m	- app/models/grouped_progress_entry.rb
+[33m	- app/models/checklist.rb
+[33m	- app/models/checklist_definition.rb
+[33m	- app/models/student.rb
+[33m	- app/models/goal_definition.rb
+[33m	- app/models/recommendation.rb
+[33m	- app/models/answer.rb
+[33m	- app/models/probe_definition.rb
+[33m	- app/models/flag_category.rb
+[33m	- app/models/intervention_cluster.rb
+[33m	- app/models/group.rb
+[33m	- app/models/principal_override.rb
+[33m	- app/models/tier.rb
+[33m	- app/models/user.rb
+[33m	- app/models/intervention_definition.rb
+[33m	- app/models/intervention.rb
+[33m	- app/mailers/notifications.rb
+[33m	- app/models/checklist.rb
+[33m	- app/models/student.rb
+[33m	- app/models/concerns/full_name.rb
+[33m	- app/controllers/intervention_builder/base_controller.rb
+[33m	- app/models/student.rb
+[33m	- app/models/recommendation.rb
+[33m	- app/models/user.rb
+[33m	- app/models/concerns/full_name.rb
+[33m	- app/models/grouped_progress_entry.rb
+[33m	- app/models/school.rb
+[33m	- app/models/student.rb
+[33m	- app/models/recommendation.rb
+[33m	- app/models/team_consultation.rb
+[33m	- app/models/stats/student.rb
+[33m	- app/models/stats/intervention.rb
+[33m	- app/models/intervention_participant.rb
+[33m	- app/models/custom_flag.rb
+[33m	- app/models/system_flag.rb
+[33m	- app/models/consultation_form.rb
+[33m	- app/models/student_comment.rb
+[33m	- app/models/flag_category.rb
+[33m	- app/models/intervention_cluster.rb
+[33m	- app/models/group.rb
+[33m	- app/models/principal_override.rb
+[33m	- app/models/objective_definition.rb
+[33m	- app/models/user.rb
+[33m	- app/models/intervention_definition.rb
+[33m	- app/models/ignore_flag.rb
+[33m	- app/models/probe.rb
+[0m
+[31m[1mOld ActionMailer class API[0m
+[37mYou're using the old API in a mailer class.
+[1mMore information:[0m [36mhttp://lindsaar.net/2010/1/26/new-actionmailer-api-in-rails-3
+
+[37mThe culprits: 
+[33m	- app/models/consultation_form_request.rb
+[33m	- app/models/school_team.rb
+[33m	- app/models/student_comment.rb
+[33m	- app/models/student_search.rb
+[33m	- app/models/recommendation.rb
+[33m	- app/models/answer.rb
+[33m	- app/models/flag_category.rb
+[33m	- app/models/personal_group.rb
+[33m	- app/models/group.rb
+[33m	- app/models/district.rb
+[33m	- app/models/user.rb
+[0m
+[31m[1mDeprecated AJAX helper calls[0m
+[37mAJAX javascript helpers have been switched to be unobtrusive and use :remote => true instead of having a seperate function to handle remote requests.
+[1mMore information:[0m [36mhttp://www.themodestrubyist.com/2010/02/24/rails-3-ujs-and-csrf-meta-tags/
+
+[37mThe culprits: 
+[33m	- app/views/checklist_builder/answers/_rjs_new_form.html.erb
+[33m	- app/views/checklist_builder/answers/_answer_definition_2.html.erb
+[33m	- app/views/checklist_builder/answers/_rjs_edit_form.html.erb
+[33m	- app/views/checklist_builder/checklists/_show.html.erb
+[33m	- app/views/checklist_builder/checklists/_checklist_definition.html.erb
+[33m	- app/views/checklist_builder/elements/_rjs_new_form.html.erb
+[33m	- app/views/checklist_builder/elements/_element_definition_2.html.erb
+[33m	- app/views/checklist_builder/elements/_rjs_edit_form.html.erb
+[33m	- app/views/checklist_builder/questions/_rjs_new_form.html.erb
+[33m	- app/views/checklist_builder/questions/_question_definition_2.html.erb
+[33m	- app/views/consultation_forms/_consultation_form_summary.html.erb
+[33m	- app/views/groups/students/_add_student_link.html.erb
+[33m	- app/views/groups/students/_student.html.erb
+[33m	- app/views/groups/users/_user_assignment.html.erb
+[33m	- app/views/groups/users/_add_user_assignment_link.html.erb
+[33m	- app/views/interventions/probe_assignments/_probe_assignment.html.erb
+[33m	- app/views/interventions/probes/_probe.html.erb
+[33m	- app/views/principal_overrides/_principal_override.html.erb
+[33m	- app/views/special_user_groups/_add_special_user_group_link.html.erb
+[33m	- app/views/special_user_groups/_special_user_group_assignment.html.erb
+[33m	- app/views/students/_add_note_link.html.erb
+[33m	- app/views/students/_recommendations.html.erb
+[33m	- app/views/team_consultations/_commands.html.erb
+[33m	- app/views/team_consultations/_draft.html.erb
+[33m	- app/views/team_consultations/_team_consultation.html.erb
+[33m	- app/views/unattached_interventions/_participant.html.erb
+[0m
