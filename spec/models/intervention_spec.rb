@@ -103,7 +103,7 @@ describe Intervention do
   end
 
   it "should end an intervention" do
-    i = Factory(:intervention, :start_date => 2.days.ago, :end_date => Date.today)
+    i = Factory(:intervention, :start_date => 2.days.ago.to_date, :end_date => Date.today)
 
     i.end(1)
     i.active.should ==(false)
@@ -116,9 +116,9 @@ describe Intervention do
     i.start_date = nil
     i.should_not be_valid
     i.errors_on(:end_date).should_not be_nil
-    i.start_date = 5.days.ago
+    i.start_date = 5.days.ago.to_date
     i.should be_valid
-    i.start_date = 5.days.since
+    i.start_date = 5.days.since.to_date
     i.should_not be_valid
     i.errors_on(:end_date).should_not be_nil
   end

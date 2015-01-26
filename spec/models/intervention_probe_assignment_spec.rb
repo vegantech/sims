@@ -22,8 +22,8 @@ describe InterventionProbeAssignment do
   before(:each) do
     @valid_attributes = {
       :frequency_multiplier => "1",
-      :first_date => Time.now,
-      :end_date => Time.now,
+      :first_date => Date.today,
+      :end_date => Date.today,
       :enabled => false
     }
   end
