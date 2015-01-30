@@ -1,3 +1,5 @@
+# originally a plugin from https://github.com/brianjlandau/unobtrusive_date_picker
+
 module UnobtrusiveDatePicker
   
   DATEPICKER_DEFAULT_NAME_ID_SUFFIXES = { :year  => {:id => '',   :name => 'year'},
