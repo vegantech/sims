@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'rails', '3.2.21'
+gem 'rails', '4.0.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -102,11 +102,17 @@ group :development do
 end
 
 
-group :assets do
-  gem 'sass-rails',   "~> 3.2.0"
-  gem 'coffee-rails', "~> 3.2.0"
-  gem 'uglifier'
-end
+gem 'sass-rails',   "~> 4.0.0"
+gem 'coffee-rails', "~> 4.0.0"
+gem 'uglifier'
+
+
+gem 'protected_attributes'
+gem 'rails-observers'
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+gem 'activerecord-deprecated_finders'
+
 
 gem 'rpm_contrib'
 gem 'newrelic_rpm'
