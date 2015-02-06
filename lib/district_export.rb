@@ -262,4 +262,6 @@ class DistrictExport
         generate_csv_rows(csv,tsv,sql,student_id_index)
       end;end
   end
+
+  ActiveRecord::Base.define_singleton_method(:content_export){where(nil)}
 end

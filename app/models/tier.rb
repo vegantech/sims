@@ -25,7 +25,6 @@ class Tier < ActiveRecord::Base
   validates_presence_of :title
   attr_protected :district_id
 
-  scope :content_export, order
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :column_name => 'distinct title'

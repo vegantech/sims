@@ -23,7 +23,6 @@ class AnswerDefinition < ActiveRecord::Base
   delegate :checklist_definition, :to => :question_definition
 
   validates_presence_of  :value
-  scope :content_export, order
 
   def sibling_definitions
     element_definition.answer_definitions

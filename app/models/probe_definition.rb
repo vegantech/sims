@@ -41,7 +41,6 @@ class ProbeDefinition < ActiveRecord::Base
   acts_as_list :scope => :district_id
 
   scope :active, where(:active=> true)
-  scope :content_export, order
 
   define_statistic :count , :count => :all
   define_statistic :distinct , :count => :all,  :column_name => 'distinct title'

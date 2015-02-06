@@ -19,7 +19,6 @@ class ProbeDefinitionBenchmark < ActiveRecord::Base
   validates_numericality_of :benchmark
   validate :validate_within_probe_definition_range
 
-  scope :content_export, order
 
   def to_s
     "Gr: #{grade_level}  - #{benchmark}"

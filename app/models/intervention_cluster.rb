@@ -19,7 +19,6 @@ class InterventionCluster < ActiveRecord::Base
   belongs_to :objective_definition
   has_many :intervention_definitions, :order =>'disabled, custom, position', :dependent => :destroy
   scope :enabled, where(:disabled => false)
-  scope :content_export, order
 
   delegate :goal_definition, :to => :objective_definition
   delegate :goal_definition_id, :to => :objective_definition

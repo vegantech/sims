@@ -15,5 +15,4 @@
 class RecommendationDefinition < ActiveRecord::Base
   has_many :checklist_definitions
   has_many :recommendation_answer_definitions, :dependent => :destroy
-  scope :content_export, order
 end
