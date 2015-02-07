@@ -3,7 +3,7 @@ require 'simplecov'
 
   if ENV['TRAVIS']
     require 'coveralls'
-    Coveralls.wear_merged!
+    Coveralls.wear_merged!('rails')
   else
     SimpleCov.start 'rails' do
       coverage_dir 'spec/coverage/cucumber'

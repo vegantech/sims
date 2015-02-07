@@ -23,7 +23,7 @@ Spork.prefork do
 
   if ENV['TRAVIS']
     require 'coveralls'
-    Coveralls.wear_merged!
+    Coveralls.wear_merged!('rails')
   else
     unless ENV['DRB']
       SimpleCov.start 'rails' do
