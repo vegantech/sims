@@ -6,4 +6,3 @@ std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'}  --tags ~@wip"
 default: <%= std_opts %> features -r features
 wip: --tags @wip:3 --wip features -r features
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip -r features
-rcov: --format progress features  -r features

@@ -22,13 +22,6 @@ namespace :spec do
     end
   end
 
-  desc "Run all specs with rcov"
-  RSpec::Core::RakeTask.new(:rcov => spec_prereq) do |t|
-    t.rcov = true
-    t.pattern = "./spec/**/*_spec.rb"
-    t.rcov_opts = '--exclude /gems/,/Library/,/usr/,lib/tasks,.bundle,config,/lib/rspec/,/lib/rspec-,spec'
-  end
-
   task :statsetup do
     require 'rails/code_statistics'
     ::STATS_DIRECTORIES << %w(Model\ specs spec/models) if File.exist?('spec/models')
