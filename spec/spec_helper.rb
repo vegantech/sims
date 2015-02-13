@@ -70,10 +70,12 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  SimpleCov.start 'rails' do
-    coverage_dir 'spec/coverage/unit_functional'
-    merge_timeout 1200
-    add_filter "/vendor/"
+  unless ENV['TRAVIS']
+    SimpleCov.start 'rails' do
+      coverage_dir 'spec/coverage/unit_functional'
+      merge_timeout 1200
+      add_filter "/vendor/"
+    end
   end
   # This code will be run each time you run your specs.
   Dir[Rails.root.join("app/controllers/district/*.rb")].each {|f| require f}
