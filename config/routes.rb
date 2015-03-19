@@ -1,11 +1,18 @@
 Sims::Application.routes.draw do
-  devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks", :sessions => "users/sessions", :passwords => "users/passwords"} do
+  devise_for :users, controllers: {
+    omniauth_callbacks: "users/omniauth_callbacks",
+    sessions: "users/sessions",
+    passwords: "users/passwords"
+  }
+
+  devise_scope :user do
     get '/logout' => 'users/sessions#destroy', :as => :logout
     get '/login' => "users/sessions#new"
     get 'login/login' => "users/sessions#new"
     get 'login/logout' => 'users/sessions#destroy'
     get '/users/sign_out' => 'users/sessions#destroy'
   end
+
   match '/change_password' => 'main#change_password', :as => :change_password, :via => [:get, :put, :patch]
 
   resources :personal_groups
