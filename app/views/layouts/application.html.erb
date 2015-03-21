@@ -43,7 +43,10 @@
         </div>
         <p id="flash_notice"><%= flash[:notice] %>
         <span id="session_notice"></span>
-        <span id="flash_alert"><%= flash[:alert] %></span>
+        <span id="flash_alert">
+          <%= flash[:alert] %>
+          <%= flash[:error] %>
+        </span>
         </p>
         <%= yield %>
         <%= yield :bottom_of_main %>

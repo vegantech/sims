@@ -83,7 +83,8 @@ describe LoginHelper do
     describe 'when google_apps is enabled' do
       before do
         pending "google_oauth omniauth provider not available" unless Devise.omniauth_providers.include? :google_oauth2
-        helper.should_receive(:current_district).twice().and_return(District.new)
+        d=District.new abbrev: "", google_apps_domain: ""
+        helper.should_receive(:current_district).twice().and_return(d)
         helper.should_receive(:google_apps?).and_return(true)
         helper.should_receive(:resource_name).and_return(:user)
       end
