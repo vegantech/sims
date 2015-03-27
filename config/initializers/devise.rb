@@ -197,15 +197,21 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  require 'openid/store/filesystem'
+  begin
+    GOOGLE_OAUTH_CONFIG =  YAML.load_file(Rails.root.join("config","google_oauth.yml"))
+    config.omniauth :google_oauth2, GOOGLE_OAUTH_CONFIG['app_id'], GOOGLE_OAUTH_CONFIG['secret'], {}
+  rescue
+    nil
+  end
 
-  config.omniauth :google_apps, :store => OpenID::Store::Filesystem.new('/tmp')
   begin
     WINDOWS_LIVE_CONFIG =  YAML.load_file(Rails.root.join("config","windows_live.yml"))
     config.omniauth :windowslive, WINDOWS_LIVE_CONFIG['app_id'], WINDOWS_LIVE_CONFIG['secret'], :scope => 'wl.emails'
   rescue
     nil
   end
+
+
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -77,11 +77,11 @@ describe LoginHelper do
       end
 
       it 'should display with icon' do
-        helper.google_apps_link(:icon => true).should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
+        helper.google_apps_link(:icon => true).should == "<a href=\"/users/auth/google_oauth2?hd=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
       end
 
       it 'should display with link' do
-        helper.google_apps_link.should == "<a href=\"/users/auth/google_apps?domain=\" class=\"google-oauth\">Sign in with Gmail/Google Apps</a>"
+        helper.google_apps_link.should == "<a href=\"/users/auth/google_oauth2?hd=\" class=\"google-oauth\">Sign in with Gmail/Google Apps</a>"
       end
     end
     describe 'when google_apps is disabled' do

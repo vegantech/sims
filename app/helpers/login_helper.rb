@@ -10,8 +10,8 @@ module LoginHelper
       title = opts.fetch(:title, "Sign in with Gmail/Google Apps")
       title = image_tag("Gmail-128.png",:alt => title, :title => title) if opts[:icon]
       link_to title,
-        omniauth_authorize_path(resource_name, "google_apps",
-                                :domain => current_district.google_apps_domain),
+        omniauth_authorize_path(resource_name, "google_oauth2",
+                                :hd => current_district.google_apps_domain),
                                 :class => 'google-oauth'
     end
   end

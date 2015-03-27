@@ -8,6 +8,7 @@ doc/app
 config/database.yml
 config/secret
 config/windows_live.yml
+config/google_oauth.yml
 *~
 *.swp
 *.sqlite3
