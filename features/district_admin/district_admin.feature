@@ -63,7 +63,7 @@ Feature: District Admin
     Then all boolean district settings should be false
     When I follow "Edit your district"
     And I check all district_settings boxes
-    And I fill in "Google apps domain" with "whatever"
+    And I fill in "Google apps domain" if it exists with "whatever"
     And I press "Update"
     Then all boolean district settings should be true
     When I follow "Edit your district"

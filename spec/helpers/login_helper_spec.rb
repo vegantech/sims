@@ -11,16 +11,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 #   end
 # end
 describe LoginHelper do
-  describe 'windows_live?' do
-    def copy_sample_file
-      unless Rails.root.join('config','windows_live.yml').exist?
-        FileUtils.cp Rails.root.join('config','windows_live.yml.sample'),
-          Rails.root.join('config','windows_live.yml')
-      end
+  def copy_sample_file(name_root="windows_live")
+    unless Rails.root.join('config',"#{name_root}.yml").exist?
+      FileUtils.cp Rails.root.join('config',"#{name_root}.yml.sample"),
+        Rails.root.join('config',"#{name_root}.yml")
     end
+  end
 
+  describe 'windows_live?' do
     it 'should work' do
-      copy_sample_file
       old_const = ::WINDOWS_LIVE_CONFIG if defined? ::WINDOWS_LIVE_CONFIG
       no_live = District.new
       no_live.stub!(:windows_live? => false)
@@ -43,13 +42,25 @@ describe LoginHelper do
   end
 
   describe "google_apps?" do
-    it 'should return true if the district has google_apps enabled' do
-      helper.stub!(:current_district => mock_district(:google_apps? => false))
-      helper.google_apps?.should be_false
-    end
-    it 'should return false if the district does not google_apps enabled' do
-      helper.stub!(:current_district => mock_district(:google_apps? => true))
-      helper.google_apps?.should be_true
+    it 'should work' do
+      old_const = ::GOOGLE_OAUTH_CONFIG if defined? ::GOOGLE_OAUTH_CONFIG
+      no_live = District.new
+      no_live.stub!(:google_apps? => false)
+      live = District.new
+      live.stub!(:google_apps? => true)
+
+      Object.send :remove_const, "GOOGLE_OAUTH_CONFIG" if defined? ::GOOGLE_OAUTH_CONFIG
+      helper.google_apps?(no_live).should be_false
+      helper.google_apps?(live).should be_false
+
+      ::GOOGLE_OAUTH_CONFIG=2
+      helper.google_apps?(no_live).should be_false
+      helper.google_apps?(live).should be_true
+
+      Object.send :remove_const, "GOOGLE_OAUTH_CONFIG"
+
+      ::GOOGLE_OAUTH_CONFIG = old_const if defined? old_const
+
     end
   end
 
@@ -71,6 +82,7 @@ describe LoginHelper do
   describe "google_apps_link" do
     describe 'when google_apps is enabled' do
       before do
+        pending "google_oauth omniauth provider not available" unless Devise.omniauth_providers.include? :google_oauth2
         helper.should_receive(:current_district).and_return(District.new)
         helper.should_receive(:google_apps?).and_return(true)
         helper.should_receive(:resource_name).and_return(:user)

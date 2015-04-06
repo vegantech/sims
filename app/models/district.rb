@@ -24,9 +24,14 @@
 class District < ActiveRecord::Base
 
 #  ActiveSupport::Dependencies.load_missing_constant self, :StudentsController
-  SETTINGS = [:key, :previous_key, :google_apps_domain, :custom_interventions ]
-  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :google_apps, :email_on_team_consultation_response, :show_team_consultations_if_pending]
+  SETTINGS = [:key, :previous_key, :custom_interventions ]
+  BOOLEAN_SETTINGS = [:restrict_free_lunch, :forgot_password, :lock_tier, :email_on_team_consultation_response, :show_team_consultations_if_pending]
   BOOLEAN_SETTINGS <<  :windows_live  if defined? ::WINDOWS_LIVE_CONFIG
+  if defined? ::GOOGLE_OAUTH_CONFIG
+    BOOLEAN_SETTINGS <<  :google_apps
+    SETTINGS << :google_apps_domain
+  end
+
   SETTINGS.push *BOOLEAN_SETTINGS
   LOGO_SIZE = "200x40"
   include LinkAndAttachmentAssets
@@ -71,7 +76,7 @@ class District < ActiveRecord::Base
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate  :check_keys, :on => :update
-  validates :google_apps_domain, :presence => true, :if => :google_apps?
+  validates :google_apps_domain, :presence => true, :if => :google_apps? if defined? ::GOOGLE_OAUTH_CONFIG
   before_destroy :make_sure_there_are_no_schools
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo

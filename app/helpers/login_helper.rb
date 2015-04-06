@@ -21,6 +21,6 @@ module LoginHelper
   end
 
   def google_apps?(district = current_district)
-    district.google_apps?
+    defined?(::GOOGLE_OAUTH_CONFIG) && district.google_apps?
   end
 end

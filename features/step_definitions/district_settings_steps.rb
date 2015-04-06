@@ -26,3 +26,7 @@ Then /^all boolean district settings should be true$/ do
     @default_user.district.send("#{setting}?").should be, setting.to_s + "? should be truthy"
   end
 end
+
+When(/^I fill in "(.*?)" if it exists with "(.*?)"$/) do |field, value|
+  fill_in(field, with: value) rescue Capybara::ElementNotFound
+end

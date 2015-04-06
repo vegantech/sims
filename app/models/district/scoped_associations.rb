@@ -32,6 +32,7 @@ module District::ScopedAssociations
   end
 
   def district_joins(klass)
+    return false if klass == NameError
     if klass.const_defined?("DISTRICT_PARENT")
       return joins_from_reflection(klass.reflect_on_association(klass.const_get("DISTRICT_PARENT")))
     end
