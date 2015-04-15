@@ -9,7 +9,7 @@ module LoginHelper
     if google_apps?
       title = opts.fetch(:title, "Sign in with Gmail/Google Apps")
       title = image_tag("Gmail-128.png",:alt => title, :title => title) if opts[:icon]
-      link_to title, google_oauth_path, :class => 'google-oauth'
+      link_to title, google_oauth_path.html_safe, :class => 'google-oauth'
     end
   end
 

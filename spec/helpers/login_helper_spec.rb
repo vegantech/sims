@@ -83,17 +83,19 @@ describe LoginHelper do
     describe 'when google_apps is enabled' do
       before do
         pending "google_oauth omniauth provider not available" unless Devise.omniauth_providers.include? :google_oauth2
-        helper.should_receive(:current_district).and_return(District.new)
+        helper.should_receive(:current_district).twice().and_return(District.new)
         helper.should_receive(:google_apps?).and_return(true)
         helper.should_receive(:resource_name).and_return(:user)
       end
 
       it 'should display with icon' do
-        helper.google_apps_link(:icon => true).should == "<a href=\"/users/auth/google_oauth2?hd=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
+        helper.google_apps_link(:icon => true).should ==
+          "<a href=\"http://auth.test.host/users/auth/google_oauth2?hd=&state=\" class=\"google-oauth\"><img alt=\"Sign in with Gmail/Google Apps\" src=\"/assets/Gmail-128.png\" title=\"Sign in with Gmail/Google Apps\" /></a>"
       end
 
       it 'should display with link' do
-        helper.google_apps_link.should == "<a href=\"/users/auth/google_oauth2?hd=\" class=\"google-oauth\">Sign in with Gmail/Google Apps</a>"
+        helper.google_apps_link.should ==
+          "<a href=\"http://auth.test.host/users/auth/google_oauth2?hd=&state=\" class=\"google-oauth\">Sign in with Gmail/Google Apps</a>"
       end
     end
     describe 'when google_apps is disabled' do
