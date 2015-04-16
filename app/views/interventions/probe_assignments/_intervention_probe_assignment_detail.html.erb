@@ -5,7 +5,12 @@
     <% unless  custom_intervention? && @intervention_probe_assignment.probe_definition.new_record? %>
       <div class = "form_row">
         <div class="fake_label">Description</div>
-        <div> <%=@intervention_probe_assignment.probe_definition.description %> </div>
+        <div> <table class="description">
+            <tr><td>
+                <%=@intervention_probe_assignment.probe_definition.description %>
+            </td></tr>
+          </table>
+        </div>
       </div>
       <br class="brclear" />
     <% end %>
