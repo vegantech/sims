@@ -50,8 +50,12 @@ class GroupedProgressEntriesController < ApplicationController
     google_params= @grouped_progress_entry.aggregate_chart(params[:page])
     logger.info(google_params)
 
-    res = Net::HTTP.post_form(URI.parse('https://chart.googleapis.com/chart'),google_params)
-    send_data res.body, :type =>'image/png', :disposition => 'inline'
+    if google_params.present?
+      res = Net::HTTP.post_form(URI.parse('https://chart.googleapis.com/chart'),google_params)
+      send_data res.body, :type =>'image/png', :disposition => 'inline'
+    else
+      send_file Rails.root.join("app","assets","images","no_scores.png"), :type =>'image/png', :disposition => 'inline'
+    end
   end
 
   def end

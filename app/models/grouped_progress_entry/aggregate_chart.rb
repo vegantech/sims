@@ -45,7 +45,7 @@ class GroupedProgressEntry
     end
 
     def min_score
-      @min_score ||= [0,scores.min].min || 0
+      @min_score ||= ([0] | scores).min
     end
 
     def max_date
@@ -68,6 +68,7 @@ class GroupedProgressEntry
           high = (low+group_size) -1
 
           probes=all_probes[low..high]
+          return nil if probes.blank?
           students=all_students[low..high]
           chm=[]
 
