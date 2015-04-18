@@ -19,8 +19,9 @@ end
 
 When /^I click the change_password link in the email$/ do
   current_email.body.should =~ /.example.com.*district_abbrev=#{@user.district.abbrev}/
-  current_email.body.should =~ /users\/password\/edit?.*reset_password_token=#{@user.reload.reset_password_token}/
-  visit("/users/password/edit?reset_password_token=#{@user.reset_password_token}&district_abbrev=#{@user.district.abbrev}")
+  current_email.body.should =~ /users\/password\/edit?.*reset_password_token=/
+  token = current_email.body.match(/reset_password_token=(.*)"/)[1]
+  visit("/users/password/edit?reset_password_token=#{token}&district_abbrev=#{@user.district.abbrev}")
 end
 
 

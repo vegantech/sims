@@ -3,10 +3,10 @@ When /^I pick my district$/ do
 end
 
 Given /^user has expired token$/ do
-  @user.send :generate_reset_password_token!
+  @reset_token = @user.send_reset_password_instructions
   @user.update_attribute(:reset_password_sent_at, 2.years.ago)
 end
 
 When /^I am at the recovery_url$/ do
-  visit "/users/password/edit?district_abbrev=#{@user.district.abbrev}&reset_password_token=#{@user.reset_password_token}"
+  visit "/users/password/edit?district_abbrev=#{@user.district.abbrev}&reset_password_token=#{@reset_token}"
 end

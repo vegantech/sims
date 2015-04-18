@@ -208,6 +208,15 @@ Devise.setup do |config|
   end
 
 
+  secret_file = Rails.root.join("config","devise_secret")
+  if File.exist?(secret_file)
+    secret=File.read(secret_file)
+  else
+    secret = '63d92d8011a5bdfe67367f34f2b588f4642f8961a0bc8fb07268234535540748b27a60fe4dfd38f1ff6c7fed71de9e6ffbb4c926d745de31fef048ba42b23587'
+  end
+
+  config.secret_key = secret
+
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
