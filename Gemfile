@@ -47,7 +47,7 @@ gem 'acts_as_list'
 gem 'will_paginate'
 gem 'pdfkit'
 gem 'statistics'
-gem 'devise', '~> 3.2.0'
+gem 'devise', '~> 3.3.0'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-windowslive'
 gem 'railmail', :git => "git://github.com/vegantech/railmail.git", :group => [:wip, :staging, :veg_open, :development, :test,:development_with_cache]

@@ -108,7 +108,7 @@ GEM
     daemons (1.1.9)
     dalli (2.6.2)
     database_cleaner (0.8.0)
-    devise (3.2.4)
+    devise (3.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -369,7 +369,7 @@ DEPENDENCIES
   cucumber-rails
   dalli
   database_cleaner (>= 0.5.0)
-  devise (~> 3.2.0)
+  devise (~> 3.3.0)
   dynamic_form
   email_spec (= 1.2.1)
   factory_girl_rails
