@@ -1,17 +1,17 @@
 Sims::Application.routes.draw do
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks", :sessions => "users/sessions", :passwords => "users/passwords"} do
-    match '/logout' => 'users/sessions#destroy', :as => :logout
-    match '/login' => "users/sessions#new"
-    match 'login/login' => "users/sessions#new"
-    match 'login/logout' => 'users/sessions#destroy'
-    match '/users/sign_out' => 'users/sessions#destroy'
+    get '/logout' => 'users/sessions#destroy', :as => :logout
+    get '/login' => "users/sessions#new"
+    get 'login/login' => "users/sessions#new"
+    get 'login/logout' => 'users/sessions#destroy'
+    get '/users/sign_out' => 'users/sessions#destroy'
   end
-  match '/change_password' => 'main#change_password', :as => :change_password
+  match '/change_password' => 'main#change_password', :as => :change_password, :via => [:get, :put, :patch]
 
   resources :personal_groups
 
-  match '/doc/' => 'doc#index', :as => :doc
-  match '/system/district_generated_docs/:district_id/:filename(.:format)' => "reports#intervention_definition_summary_report"
+  get '/doc/' => 'doc#index', :as => :doc
+  get '/system/district_generated_docs/:district_id/:filename(.:format)' => "reports#intervention_definition_summary_report"
   resources :unattached_interventions do
     member do
       put :update_end_date
@@ -35,17 +35,16 @@ Sims::Application.routes.draw do
     end
   end
 
-  match '/main' => 'main#not_authorized', :as => :not_authorized
-  match '/spell_check/' => 'spell_check#index', :as => :spell_check
-  match '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
-  match '/preview_graph/:intervention_id' => 'interventions/probe_assignments#preview_graph', :as => :preview_graph
+  get '/main' => 'main#not_authorized', :as => :not_authorized
+  get '/file/:filename' => 'file#download', :as => :download_file, :constraints => { :filename => /[^\/;,?]+/ }
+  post '/preview_graph/:intervention_id' => 'interventions/probe_assignments#preview_graph', :as => :preview_graph
 
 
   resources :help
   resources :quicklist_items
   match '/stats' => 'stats#index', :as  => :stats, :via => [:get, :post]
 
-  match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier
+  match "/tiers/:id/destroy" => "tiers#destroy", :as => :destroy_tier, :via => [:get, :delete]
   resources :tiers do
     member do
       put :move
@@ -95,7 +94,7 @@ Sims::Application.routes.draw do
   resources :checklists
   resources :recommendations
 
-  match '/custom_flags/delete/:id' => 'custom_flags#destroy', :as => :delete_custom_flag
+  get '/custom_flags/delete/:id' => 'custom_flags#destroy', :as => :delete_custom_flag
   resources :custom_flags
   resources :ignore_flags
 
@@ -166,7 +165,7 @@ Sims::Application.routes.draw do
     put "regenerate_intervention_pdfs", :controller => :base
     get "interventions_without_recommended_monitors",   :controller => :base
 
-    match "recommended_montors/:action", :controller => :recommended_monitors
+    match "recommended_montors/:action", :controller => :recommended_monitors, :via => [:get, :post, :put, :patch]
     resources :probes do
       member do
         put :disable
@@ -260,11 +259,11 @@ Sims::Application.routes.draw do
   end
   root :to =>'main#index'
 
-  match 'reports/:action(.:format)', :controller => "reports"
-  match 'doc/:action(/:id)(.:format)', :controller => "doc"
-  match 'scripted/:action(.:format)', :controller => "scripted"
-  match 'intervention_builder/:controller/:action(.:format)'# for controller specs
-  match 'spell_check/check_spelling' => "spell_check#check_spelling"
+  match 'reports/:action(.:format)', :controller => "reports", :via => [:get, :post]
+  get 'doc/:action(/:id)(.:format)', :controller => "doc"
+  match 'scripted/:action(.:format)', :controller => "scripted", :via => [:get, :post]
+  match 'intervention_builder/:controller/:action(.:format)', :via => [:get, :post, :put, :delete, :patch] # for controller specs
+  post 'spell_check/check_spelling' => "spell_check#check_spelling"
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 #  match 'checklist_builder/:controller/:action(.:format)'# for controller specs
 #  match ':controller(/:action(/:id(.:format)))'
