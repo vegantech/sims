@@ -19,15 +19,6 @@ Feature: Forgot Password
         And I press "Change my password"
         Then I should see "Reset password token has expired, please request a new one"
 
-    Scenario: Old email with valid Token
-        Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
-        And user has an email address
-        And district has forgot_password
-        And user has expired token
-        When I am at the old recovery_url
-        Then I should see "Reset password token has expired, please request a new one"
-
-
     Scenario: No district support, multiple districts
         Given user "cuke_oneschool" with password "fr0d0L1v3s" exists
         And a district "other district"

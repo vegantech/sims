@@ -7,17 +7,6 @@ class Notifications < MailerWithSubdomains
 #  end
 
 
-  def change_password(user)
-    @district = user.district
-    subject  =  '[SIMS] Email Registration/ Change Password'
-    recipients = user.email
-
-    @user=user
-
-    mail(:subject => subject, :to => recipients)
-  end
-
-
   def principal_override_request(override)
     subject =   '[SIMS] Principal Override Request'
     recipients = override.student.principals.collect(&:email).join(',')

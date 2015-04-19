@@ -2,10 +2,6 @@ class Users::PasswordsController < Devise::PasswordsController
   before_filter :check_district
   layout 'main'
 
-  def edit
-    redirect_to login_url, :notice =>"Reset password token " + I18n.t("errors.messages.expired") and return false if params['token']
-    super
-  end
   def update
     if params['user'] && params['user']['password'].blank?
       self.resource ||= User.new
