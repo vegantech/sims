@@ -1,7 +1,7 @@
 <a name="<%= dom_id(element_definition, "new_answer_definition_errors_anchor") %>">
   <div id="<%= dom_id(element_definition, "new_answer_definition_errors") %>" style="display:none"></div>
 </a>
-<%= form_for :answer_definition, :url => checklist_builder_answers_path, :id => 'new_answer_definition_form', :remote => true do |f| -%>
+<%= form_for :answer_definition, :url => checklist_builder_answers_path, :html => {:id => 'new_answer_definition_form'}, :remote => true do |f| -%>
   <%= render :partial => 'form', :locals => { :f => f, :answer_definition => answer_definition } %>
   <p>
     <%= submit_tag "Create" %> |
