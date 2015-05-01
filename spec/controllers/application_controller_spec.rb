@@ -159,7 +159,8 @@ describe ApplicationController do
       @c.stub!(:current_district=> mock_district(:abbrev => "test"))
       @c.stub!(:current_subdomain => "other")
       FactoryGirl.create(:district, :abbrev => "other")
-      @c.should_receive(:sign_out_and_redirect)
+      @c.should_receive(:sign_out)
+      @c.should_receive(:redirect_to)
       @c.send(:check_domain).should be_false
     end
 

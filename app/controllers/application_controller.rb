@@ -163,7 +163,8 @@ class ApplicationController < ActionController::Base
   def check_domain
     return true if devise_controller?
     if current_district && subdomain_mismatch? && District.exists?(:abbrev => current_subdomain)
-      sign_out_and_redirect root_url
+      sign_out
+      redirect_to root_url
       return false
     end
   end
