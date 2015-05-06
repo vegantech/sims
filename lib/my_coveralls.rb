@@ -7,15 +7,9 @@ class MyCoveralls
       Dir.glob(dir).each do |ruby_file|
         obj = ruby_file.split("#{target_dir}/",2).last.split(".rb").first
         obj = obj.split("/",2).last if target_dir == "/app"
-        begin
-          obj.classify.constantize
-        rescue NameError, LoadError
-          #app/manifests are used with moonshine, but not needed during project execution
-           require ruby_file
-        end
+        require ruby_file
       end
     end
-
   end
 
 end
