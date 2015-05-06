@@ -252,6 +252,7 @@ class District < ActiveRecord::Base
 
     private
     def default_settings_to_hash
+      return unless has_attribute?(:settings)
       self[:settings] ||= {}
       self[:settings][:restrict_free_lunch] = true unless self.settings.keys.include?(:restrict_free_lunch)
     end
