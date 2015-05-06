@@ -16,8 +16,8 @@ describe ChecklistBuilder::ChecklistsController do
   end
 
   it 'should get index' do
-    d=Factory(:district)
-    admin = District.admin.first || Factory(:district,:admin=>true)
+    d=FactoryGirl.create(:district)
+    admin = District.admin.first || FactoryGirl.create(:district,:admin=>true)
     controller.stub!(:current_district).and_return(d)
     a=ChecklistDefinition.create!(:text=>'text', :directions=>'directions',:district=>d)
     get :index
