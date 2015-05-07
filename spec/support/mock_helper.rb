@@ -1,3 +1,4 @@
+require 'factory'
 module RSpec
   module Rails
     module Mocks
