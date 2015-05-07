@@ -72,11 +72,11 @@ class District < ActiveRecord::Base
 
   validates_presence_of :abbrev,:name
   validates_uniqueness_of :abbrev,:name, case_sensitive: false
-  validates_uniqueness_of :admin,  :if=>lambda{|d| d.admin?}  #only 1 admin district
   validates_format_of :abbrev, :with => /\A[0-9a-z]+\Z/i, :message => "Can only contain letters or numbers"
   validates_exclusion_of :abbrev, :in => System::RESERVED_SUBDOMAINS
   validate  :check_keys, :on => :update
   validates :google_apps_domain, :presence => true, :if => :google_apps? if defined? ::GOOGLE_OAUTH_CONFIG
+  validate :only_one_admin_district
   before_destroy :make_sure_there_are_no_schools
   after_destroy :destroy_intervention_menu_reports
   before_validation :clear_logo
@@ -334,5 +334,13 @@ private
   def destroy_intervention_menu_reports
     dir = Rails.root.join("public","system","district_generated_docs",self.id.to_s)
     FileUtils.rm_rf(dir) if File.exists?dir
+  end
+
+  def only_one_admin_district
+    if admin?
+      if District.admin.pluck(:id).first != self.id
+        errors.add(:admin, "There can be only one admin district")
+      end
+    end
   end
 end
