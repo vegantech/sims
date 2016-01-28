@@ -19,6 +19,22 @@ module District::ScopedAssociations
     news
   end
 
+  def student_comments
+    StudentComment.joins(:user).where(["users.district_id = ? OR (users.district_id IS NULL and users.username like '?-%')",id,id])
+  end
+
+  def intervention_comments
+    InterventionComment.joins(:user).where(["users.district_id = ? OR (users.district_id IS NULL and users.username like '?-%')",id,id])
+  end
+
+  def student_comments
+    StudentComment.joins(:user).where(["users.district_id = ? OR (users.district_id IS NULL and users.username like '?-%')",id,id])
+  end
+
+  def intervention_comments
+    InterventionComment.joins(:user).where(["users.district_id = ? OR (users.district_id IS NULL and users.username like '?-%')",id,id])
+  end
+
   def method_missing(method_name,*args,&block)
     if klass=get_class_for_method_missing(method_name) and joins=district_joins(klass)
       klass.joins(joins).where("districts.id" => self.id)

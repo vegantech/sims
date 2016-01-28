@@ -24,7 +24,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Student do
   before do
-    @student = Factory(:student, :id_state => 1234)
+    @student = Student.find_by_id_state(1234) || Factory(:student, :id_state => 1234)
   end
 
   it "should be valid"
