@@ -229,7 +229,7 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
-    pdfkit (0.5.4)
+    pdfkit (0.8.7.2)
     phantomjs (1.9.7.0)
     polyglot (0.3.5)
     pry (0.9.10)
