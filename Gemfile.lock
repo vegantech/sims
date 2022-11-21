@@ -100,7 +100,7 @@ GEM
       nokogiri (>= 1.4.4)
       rack-test (>= 0.5.7)
     daemons (1.1.9)
-    dalli (2.6.2)
+    dalli (3.2.3)
     database_cleaner (0.8.0)
     devise (3.3.0)
       bcrypt (~> 3.0)
